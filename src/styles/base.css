@@ -1,0 +1,38 @@
+/* Minimal page shell. The interactive map's own styles live in
+   src/lib/nerc/map/nerc-org-map.css and are scoped under #nerc-app. */
+
+html {
+  background: #fff;
+}
+
+body {
+  margin: 0;
+  padding: max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px))
+    max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: #fff;
+  color: #000;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-text-size-adjust: 100%;
+}
+
+main {
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+/* The map page is wide; .nerc-bleed inside it then breaks out to full width. */
+.main-wide {
+  max-width: 48rem;
+}
+
+a {
+  color: #0000ee;
+  text-decoration: underline;
+  -webkit-tap-highlight-color: rgba(0, 0, 238, 0.12);
+}
+
+a:visited {
+  color: #551a8b;
+}

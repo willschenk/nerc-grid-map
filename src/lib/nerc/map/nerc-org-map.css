@@ -1,0 +1,771 @@
+#nerc-app {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #111;
+}
+
+#nerc-app h2 {
+  font-family: "Times New Roman", Times, serif;
+  margin-top: 2rem;
+}
+
+#nerc-app .nerc-prose,
+#nerc-app .nerc-glossary dd {
+  font-family: "Times New Roman", Times, serif;
+}
+
+#nerc-app .nerc-prose {
+  max-width: 34rem;
+  line-height: 1.5;
+}
+
+.nerc-bleed {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-bottom: 1.5rem;
+}
+
+.nerc-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.nerc-map-shell {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.nerc-dashboard {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.nerc-kpi {
+  min-width: 0;
+  border: 1px solid #d8d8d0;
+  background: #fbfbf7;
+  border-radius: 6px;
+  padding: 0.55rem 0.65rem;
+}
+
+.nerc-kpi span {
+  display: block;
+  color: #666;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.nerc-kpi strong {
+  display: block;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.nerc-explorer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21.5rem;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.nerc-map-area,
+.nerc-directory {
+  min-width: 0;
+}
+
+.nerc-stage {
+  position: relative;
+  min-height: 32rem;
+}
+
+#nerc-svg {
+  width: 100%;
+  height: 100%;
+  min-height: 32rem;
+  display: block;
+  background: #f3f3ee;
+  border: 1px solid #d5d5cb;
+  border-radius: 6px;
+  touch-action: none;
+}
+
+#nerc-svg .state {
+  fill: #e1e1d9;
+  stroke: #fff;
+  stroke-width: 0.6;
+}
+
+#nerc-svg .nation {
+  fill: none;
+  stroke: #b6b6aa;
+  stroke-width: 0.9;
+}
+
+#nerc-svg .org {
+  fill-opacity: 0.58;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 0.75;
+  cursor: pointer;
+  transition: fill-opacity 120ms, opacity 120ms, stroke-width 120ms;
+}
+
+#nerc-svg .org.estimated {
+  stroke: #555;
+  stroke-width: 0.9;
+  stroke-dasharray: 2 1.5;
+}
+
+#nerc-svg .org.labeled {
+  fill-opacity: 0.86;
+  stroke-width: 0.95;
+}
+
+#nerc-svg .org.hide {
+  display: none;
+}
+
+#nerc-svg .org.hot,
+#nerc-svg .org.selected {
+  fill-opacity: 1;
+  stroke: #111;
+  stroke-width: 1.8;
+}
+
+#nerc-svg .org.peer-dim {
+  opacity: 0.2;
+}
+
+#nerc-svg .org.tour-dim {
+  opacity: 0.16;
+}
+
+#nerc-svg .org.tour-flash {
+  animation: nerc-tour-pulse 720ms ease-in-out 2;
+  fill-opacity: 1;
+  stroke: #111;
+  stroke-width: 2;
+}
+
+#nerc-svg .olabel {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  fill: #141414;
+  font-weight: 650;
+  paint-order: stroke;
+  stroke: #f3f3ee;
+  stroke-width: 3;
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+#nerc-svg .olabel.dim {
+  display: none;
+}
+
+#nerc-svg .olabel.peer-dim {
+  opacity: 0.18;
+}
+
+#nerc-svg .olabel.hot-label,
+#nerc-svg .olabel.selected-label {
+  fill: #000;
+  stroke-width: 3.5;
+}
+
+#nerc-svg .olabel.tour-flash {
+  animation: nerc-label-pulse 720ms ease-in-out 2;
+}
+
+.nerc-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #777;
+  font-size: 0.9rem;
+  background: rgba(243, 243, 238, 0.75);
+}
+
+.nerc-tooltip {
+  position: fixed;
+  z-index: 30;
+  max-width: 20rem;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid #b8b8ad;
+  border-radius: 6px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.16);
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  pointer-events: none;
+}
+
+.nerc-tooltip .tt-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+
+.nerc-tooltip .tt-acronym {
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 0.1rem;
+}
+
+.nerc-tooltip .tt-sub {
+  color: #666;
+  margin: 0.12rem 0 0.45rem;
+}
+
+.nerc-tooltip .tt-meta {
+  color: #555;
+  margin-top: 0.45rem;
+  line-height: 1.35;
+}
+
+.nerc-tt-pills,
+.nerc-row-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.22rem;
+}
+
+.nerc-rolepill {
+  font-size: 0.68rem;
+  line-height: 1.4;
+  padding: 0.03rem 0.36rem;
+  border-radius: 999px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.nerc-map-actions {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  z-index: 10;
+}
+
+.nerc-tour-status {
+  position: absolute;
+  left: 0.65rem;
+  bottom: 0.65rem;
+  z-index: 10;
+  max-width: calc(100% - 1.3rem);
+  border: 1px solid #c8c8be;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.78rem;
+  color: #333;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.nerc-icon-btn,
+.nerc-action-btn,
+.nerc-pill {
+  font: inherit;
+  border: 1px solid #c7c7bc;
+  background: #fbfbf8;
+  color: #222;
+  cursor: pointer;
+}
+
+.nerc-icon-btn {
+  width: 2rem;
+  height: 2rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 6px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.nerc-action-btn {
+  min-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
+.nerc-pill {
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  line-height: 1.4;
+}
+
+.nerc-icon-btn:hover,
+.nerc-action-btn:hover,
+.nerc-pill:hover {
+  border-color: #777;
+  background: #fff;
+}
+
+.nerc-pill.active,
+.nerc-quick-filter.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.nerc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  align-items: flex-start;
+  margin-top: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.8rem;
+  background: #f7f7f2;
+  border: 1px solid #deded6;
+  border-radius: 6px;
+}
+
+.nerc-tool-roles {
+  flex: 1 1 25rem;
+}
+
+.nerc-tool-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  font-size: 0.7rem;
+}
+
+.nerc-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.nerc-slider label {
+  color: #444;
+  white-space: nowrap;
+}
+
+.nerc-slider input {
+  width: 8rem;
+}
+
+.nerc-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  max-width: 38rem;
+}
+
+.nerc-role .nerc-dot,
+.nerc-glossary .nerc-dot {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: var(--c, #999);
+  display: inline-block;
+  flex: none;
+}
+
+.nerc-role.active .nerc-dot {
+  box-shadow: 0 0 0 2px #fff;
+}
+
+.nerc-count {
+  color: #888;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.7rem;
+}
+
+.nerc-role.active .nerc-count {
+  color: #ddd;
+}
+
+.nerc-mode {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+}
+
+.nerc-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  min-height: 1.8rem;
+  margin-top: 0.45rem;
+}
+
+.nerc-filter-chip {
+  border-color: #999;
+  background: #fff;
+  font-size: 0.72rem;
+}
+
+.nerc-stat {
+  color: #666;
+  font-size: 0.8rem;
+  margin: 0.35rem 0 0;
+}
+
+.nerc-directory {
+  border: 1px solid #d8d8d0;
+  background: #fbfbf8;
+  border-radius: 6px;
+  padding: 0.75rem;
+  position: sticky;
+  top: 0.75rem;
+  max-height: calc(100vh - 1.5rem);
+  display: grid;
+  grid-template-rows: auto auto auto auto minmax(0, 1fr);
+  gap: 0.55rem;
+}
+
+.nerc-directory-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+#nerc-app .nerc-directory h2 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.nerc-directory-head p {
+  margin: 0.1rem 0 0;
+  color: #666;
+  font-size: 0.76rem;
+}
+
+.nerc-search-label {
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.nerc-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem;
+  gap: 0.35rem;
+}
+
+.nerc-search-row input {
+  width: 100%;
+  min-height: 2rem;
+  border: 1px solid #c7c7bc;
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.3rem 0.45rem;
+}
+
+.nerc-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+}
+
+.nerc-list {
+  min-height: 12rem;
+  overflow: auto;
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  padding-right: 0.15rem;
+}
+
+.nerc-list-empty {
+  margin: 0.8rem 0;
+  color: #666;
+  font-size: 0.82rem;
+}
+
+.nerc-list-row {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 0.25rem;
+  border: 1px solid #d7d7cf;
+  border-left: 0.32rem solid var(--org-color, #777);
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.nerc-list-row:hover,
+.nerc-list-row.selected {
+  border-color: #777;
+  background: #fffffb;
+}
+
+.nerc-list-row.selected {
+  box-shadow: 0 0 0 1px #111 inset;
+}
+
+.nerc-list-row.tour-flash {
+  animation: nerc-row-pulse 720ms ease-in-out 2;
+}
+
+.nerc-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.nerc-row-acronym {
+  flex: none;
+  color: #111;
+  font-weight: 800;
+  font-size: 0.78rem;
+}
+
+.nerc-row-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  font-weight: 650;
+}
+
+.nerc-row-meta {
+  color: #666;
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.nerc-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(23rem, 92%);
+  height: 100%;
+  background: #fff;
+  border: 1px solid #d8dce3;
+  border-radius: 8px;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.12);
+  padding: 1rem 1.1rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  z-index: 20;
+}
+
+.nerc-panel-close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  border: none;
+  background: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #777;
+}
+
+.nerc-panel h3 {
+  margin: 0 1.2rem 0.1rem 0;
+  font-size: 1.05rem;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.nerc-panel .p-sub {
+  color: #777;
+  margin: 0 0 0.7rem;
+  font-size: 0.78rem;
+}
+
+.nerc-panel dl {
+  margin: 0.6rem 0;
+}
+
+.nerc-panel dt {
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: #555;
+  margin-top: 0.6rem;
+}
+
+.nerc-panel dd {
+  margin: 0.15rem 0 0;
+}
+
+.nerc-panel .p-roles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.3rem;
+}
+
+.nerc-panel .p-role {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.nerc-panel .p-links a {
+  display: inline-block;
+  margin-right: 0.8rem;
+}
+
+.nerc-panel .p-seed {
+  background: #fff7e6;
+  border: 1px solid #f0d690;
+  color: #765700;
+  padding: 0.3rem 0.45rem;
+  border-radius: 5px;
+  font-size: 0.74rem;
+  margin-top: 0.6rem;
+}
+
+.nerc-muted {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+.nerc-glossary {
+  margin-top: 1rem;
+}
+
+.nerc-glossary h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.3rem;
+}
+
+.nerc-glossary dl {
+  margin: 0;
+}
+
+.nerc-gloss-row {
+  display: grid;
+  grid-template-columns: 4.2rem 1fr;
+  gap: 0.5rem;
+  padding: 0.12rem 0;
+  align-items: baseline;
+}
+
+.nerc-glossary dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.nerc-glossary dd {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@keyframes nerc-tour-pulse {
+  0% { stroke-width: 1; }
+  35% { stroke-width: 4; }
+  100% { stroke-width: 1.8; }
+}
+
+@keyframes nerc-label-pulse {
+  0% { opacity: 0.5; }
+  35% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes nerc-row-pulse {
+  0% { background: #fff; }
+  35% { background: #fff4bf; }
+  100% { background: #fff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nerc-svg .org,
+  #nerc-svg .org.tour-flash,
+  #nerc-svg .olabel.tour-flash,
+  .nerc-list-row.tour-flash {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .nerc-dashboard {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nerc-explorer {
+    grid-template-columns: 1fr;
+  }
+
+  .nerc-directory {
+    position: static;
+    max-height: none;
+  }
+
+  .nerc-list {
+    max-height: 26rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .nerc-inner {
+    padding: 0 0.6rem;
+  }
+
+  .nerc-dashboard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nerc-stage {
+    min-height: 26rem;
+  }
+
+  #nerc-svg {
+    min-height: 26rem;
+  }
+
+  .nerc-map-actions {
+    right: 0.65rem;
+  }
+
+  .nerc-toolbar {
+    max-height: 16rem;
+    overflow: auto;
+  }
+
+  .nerc-slider {
+    flex-wrap: wrap;
+  }
+
+  .nerc-panel {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: min(72%, 30rem);
+    border-radius: 8px 8px 0 0;
+  }
+}
