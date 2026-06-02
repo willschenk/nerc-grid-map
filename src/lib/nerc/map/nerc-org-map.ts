@@ -37,7 +37,6 @@ type Org = {
   seed?: boolean;
   _x?: number;
   _y?: number;
-  _search?: string;
 };
 
 type OrgsPayload = {
@@ -53,7 +52,6 @@ type PassOptions = {
   ignoreTypes?: boolean;
   ignoreConfidence?: boolean;
   ignoreQuick?: boolean;
-  ignoreQuery?: boolean;
   ignoreMinCount?: boolean;
 };
 
@@ -82,6 +80,25 @@ const QUICK_LABELS: Record<string, string> = {
   iso: "ISO / RTO",
   ba: "BA",
   review: "Needs review",
+};
+
+const ROLE_TOUR_LABELS: Record<string, string> = {
+  BA: "Balancing Authorities (BA)",
+  RC: "Reliability Coordinators (RC)",
+  PC: "Planning Coordinators (PC)",
+  TOP: "Transmission Operators (TOP)",
+  TSP: "Transmission Service Providers (TSP)",
+  TP: "Transmission Planners (TP)",
+  RSG: "Reserve Sharing Groups (RSG)",
+  FRSG: "Frequency Response Sharing Groups (FRSG)",
+  RRSG: "Reactive Reserve Sharing Groups (RRSG)",
+  RP: "Resource Planners (RP)",
+  TO: "Transmission Owners (TO)",
+  GO: "Generator Owners (GO)",
+  GOP: "Generator Operators (GOP)",
+  LSE: "Load-Serving Entities (LSE)",
+  DP: "Distribution Providers (DP)",
+  PSE: "Purchasing-Selling Entities (PSE)",
 };
 
 const REGION_ORDER = ["WECC", "MRO", "SPP", "SERC", "RFC", "RF", "NPCC", "TRE", "FRCC"];
@@ -189,14 +206,11 @@ export function mountNercOrgMap(): void {
   const tooltip = byId<HTMLElement>("nerc-tooltip");
   const panel = byId<HTMLElement>("nerc-panel");
   const panelBody = byId<HTMLElement>("nerc-panel-body");
+  const infoPanel = byId<HTMLElement>("nerc-info-panel");
   const statEl = byId<HTMLElement>("nerc-stat");
   const loadingEl = byId<HTMLElement>("nerc-loading");
   const tourStatus = byId<HTMLElement>("nerc-tour-status");
-  const listEl = byId<HTMLElement>("nerc-list");
-  const directoryCount = byId<HTMLElement>("nerc-directory-count");
   const activeFiltersEl = byId<HTMLElement>("nerc-active-filters");
-  const searchInput = byId<HTMLInputElement>("nerc-search");
-  const clearSearchBtn = byId<HTMLButtonElement>("nerc-clear-search");
   const slider = byId<HTMLInputElement>("nerc-mincount");
   const sliderVal = byId<HTMLElement>("nerc-mincount-val");
   const modeBtn = byId<HTMLButtonElement>("nerc-mode");
@@ -226,7 +240,6 @@ export function mountNercOrgMap(): void {
   const quickFilters = new Set<string>();
   let roleMode: RoleMode = "OR";
   let minCount = 1;
-  let query = "";
 
   function colorFor(role: string): string {
     const el = document.querySelector(`.nerc-role[data-role="${CSS.escape(role)}"] .nerc-dot`) as HTMLElement | null;
@@ -237,32 +250,6 @@ export function mountNercOrgMap(): void {
     const pill = createEl("span", "nerc-rolepill", full ? `${role} - ${roleFullName(role)}` : role);
     pill.style.backgroundColor = colorFor(role);
     return pill;
-  }
-
-  function searchable(o: Org): string {
-    if (!o._search) {
-      o._search = [
-        o.entity_name,
-        o.acronym,
-        o.ncr_id,
-        o.region,
-        o.city,
-        o.state,
-        o.org_type,
-        ...o.roles,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-    }
-    return o._search;
-  }
-
-  function matchesQuery(o: Org): boolean {
-    const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (!tokens.length) return true;
-    const haystack = searchable(o);
-    return tokens.every((token) => haystack.includes(token));
   }
 
   function matchesQuick(o: Org): boolean {
@@ -281,7 +268,6 @@ export function mountNercOrgMap(): void {
 
   function passes(o: Org, opts: PassOptions = {}): boolean {
     if (!opts.ignoreMinCount && o.role_count < minCount) return false;
-    if (!opts.ignoreQuery && !matchesQuery(o)) return false;
     if (!opts.ignoreQuick && !matchesQuick(o)) return false;
     if (!opts.ignoreRegions && selRegions.size && !(o.region && selRegions.has(o.region))) return false;
     if (!opts.ignoreTypes && selTypes.size && !(o.org_type && selTypes.has(o.org_type))) return false;
@@ -329,8 +315,18 @@ export function mountNercOrgMap(): void {
     const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
 
     const labelCandidates = placeableOrgs
-      .filter((o) => passes(o) && shouldTryLabel(o, k))
-      .sort((a, b) => b.weight - a.weight || b.role_count - a.role_count || a.entity_name.localeCompare(b.entity_name));
+      .filter((o) => {
+        if (!passes(o)) return false;
+        return tourIds.has(o.ncr_id) || selectedOrg?.ncr_id === o.ncr_id || hoverOrg?.ncr_id === o.ncr_id || shouldTryLabel(o, k);
+      })
+      .sort(
+        (a, b) =>
+          Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
+          Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
+          b.weight - a.weight ||
+          b.role_count - a.role_count ||
+          a.entity_name.localeCompare(b.entity_name),
+      );
 
     for (const o of labelCandidates) {
       if (o._x == null || o._y == null) continue;
@@ -395,8 +391,8 @@ export function mountNercOrgMap(): void {
     statIso.textContent = String(iso);
     statBa.textContent = String(ba);
     statRegion.textContent = String(regions);
-    directoryCount.textContent = `${shown.length} shown`;
-    statEl.textContent = `${shown.length} of ${total} entities shown` + (transform.k > 1.05 ? ` | zoom ${transform.k.toFixed(1)}x` : "");
+    statEl.textContent =
+      `${shown.length} of ${total} entities shown` + (transform.k > 1.05 ? ` | zoom ${transform.k.toFixed(1)}x` : "");
   }
 
   function renderTooltip(o: Org): void {
@@ -452,11 +448,6 @@ export function mountNercOrgMap(): void {
       .classed("hot-label", (d) => hot?.ncr_id === d.ncr_id)
       .classed("selected-label", (d) => selectedOrg?.ncr_id === d.ncr_id)
       .classed("peer-dim", (d) => !!hoverOrg && hoverOrg.ncr_id !== d.ncr_id);
-
-    listEl.querySelectorAll<HTMLElement>(".nerc-list-row").forEach((row) => {
-      row.classList.toggle("selected", selectedOrg?.ncr_id === row.dataset.orgId);
-      row.setAttribute("aria-selected", selectedOrg?.ncr_id === row.dataset.orgId ? "true" : "false");
-    });
   }
 
   function applyTourClasses(): void {
@@ -469,10 +460,6 @@ export function mountNercOrgMap(): void {
     gLabels
       .selectAll<SVGTextElement, Org>("text.olabel")
       .classed("tour-flash", (d) => active && tourIds.has(d.ncr_id));
-
-    listEl.querySelectorAll<HTMLElement>(".nerc-list-row").forEach((row) => {
-      row.classList.toggle("tour-flash", active && tourIds.has(row.dataset.orgId ?? ""));
-    });
   }
 
   function addDlRow(dl: HTMLDListElement, term: string, value: string | Node): void {
@@ -485,10 +472,10 @@ export function mountNercOrgMap(): void {
 
   function renderPanel(o: Org): void {
     panelBody.replaceChildren();
-    panelBody.append(
-      createEl("h3", undefined, o.entity_name),
-      createEl("p", "p-sub", `${orgAcronym(o)} | ${o.ncr_id}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`),
-    );
+    const title = createEl("div", "p-title");
+    title.style.setProperty("--org-color", safeColor(o.color));
+    title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, o.entity_name));
+    panelBody.append(title, createEl("p", "p-sub", `${o.ncr_id}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`));
 
     const dl = createEl("dl");
     const roles = createEl("div", "p-roles");
@@ -497,9 +484,10 @@ export function mountNercOrgMap(): void {
       row.append(createRolePill(role), createEl("span", undefined, roleFullName(role)));
       roles.append(row);
     });
-    addDlRow(dl, `Roles (${o.role_count}) | weight ${o.weight}${o.is_iso_rto ? " | ISO/RTO scale" : ""}`, roles);
+    addDlRow(dl, `Roles (${o.role_count})`, roles);
+    addDlRow(dl, "Role weight", `${o.weight}${o.is_iso_rto ? " | ISO/RTO scale" : ""}`);
     addDlRow(dl, "NERC region", o.region ?? "-");
-    addDlRow(dl, "Headquarters", o.headquarters_address ?? locationLabel(o));
+    addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     if (o.geo_notes) addDlRow(dl, "Notes", o.geo_notes);
 
@@ -511,12 +499,6 @@ export function mountNercOrgMap(): void {
       map.rel = "noopener";
       links.append(map);
     }
-    const websearch = createEl("a", undefined, "Web search");
-    websearch.href = `https://www.google.com/search?q=${encodeURIComponent(`${o.entity_name} electric utility headquarters`)}`;
-    websearch.target = "_blank";
-    websearch.rel = "noopener";
-    links.append(websearch);
-
     const sourceUrl = safeHttpUrl(o.geo_source_url);
     if (sourceUrl) {
       const source = createEl("a", undefined, "Source");
@@ -543,7 +525,11 @@ export function mountNercOrgMap(): void {
   function closePanel(): void {
     panel.hidden = true;
     selectedOrg = null;
-    applyHighlights();
+    redraw();
+  }
+
+  function closeInfo(): void {
+    infoPanel.hidden = true;
   }
 
   function animateTransform(next: ZoomTransform, duration = 350): void {
@@ -596,62 +582,12 @@ export function mountNercOrgMap(): void {
   function selectOrg(o: Org, opts: { center?: boolean } = {}): void {
     stopTour();
     selectedOrg = o;
+    infoPanel.hidden = true;
     renderPanel(o);
+    hideTooltip();
     if (opts.center) centerOnOrg(o);
+    else redraw();
     applyHighlights();
-    renderList();
-  }
-
-  function sortForList(a: Org, b: Org): number {
-    return (
-      Number(b.is_iso_rto) - Number(a.is_iso_rto) ||
-      b.weight - a.weight ||
-      b.role_count - a.role_count ||
-      (a.region ?? "").localeCompare(b.region ?? "") ||
-      a.entity_name.localeCompare(b.entity_name)
-    );
-  }
-
-  function renderList(): void {
-    const shown = filteredOrgs().sort(sortForList);
-    listEl.replaceChildren();
-
-    if (!shown.length) {
-      listEl.append(createEl("p", "nerc-list-empty", "No entities match the current filters."));
-      return;
-    }
-
-    const frag = document.createDocumentFragment();
-    for (const o of shown) {
-      const row = createEl("button", "nerc-list-row");
-      row.type = "button";
-      row.dataset.orgId = o.ncr_id;
-      row.setAttribute("role", "option");
-      row.setAttribute("aria-selected", selectedOrg?.ncr_id === o.ncr_id ? "true" : "false");
-      row.style.setProperty("--org-color", safeColor(o.color));
-      row.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
-      row.classList.toggle("tour-flash", tourIds.has(o.ncr_id));
-
-      const top = createEl("div", "nerc-row-top");
-      top.append(createEl("span", "nerc-row-acronym", orgAcronym(o)), createEl("span", "nerc-row-name", o.entity_name));
-      const meta = createEl("div", "nerc-row-meta", `${o.region ?? "No region"} | ${typeLabel(o.org_type)} | ${locationLabel(o)} | ${o.role_count} roles`);
-      const roles = createEl("div", "nerc-row-roles");
-      o.roles.slice(0, 7).forEach((role) => roles.append(createRolePill(role)));
-      if (o.roles.length > 7) roles.append(createEl("span", "nerc-muted", `+${o.roles.length - 7}`));
-
-      row.append(top, meta, roles);
-      row.addEventListener("click", () => selectOrg(o, { center: true }));
-      row.addEventListener("mouseenter", () => {
-        hoverOrg = o;
-        applyHighlights();
-      });
-      row.addEventListener("mouseleave", () => {
-        hoverOrg = null;
-        applyHighlights();
-      });
-      frag.append(row);
-    }
-    listEl.append(frag);
   }
 
   function renderActiveFilters(): void {
@@ -669,10 +605,6 @@ export function mountNercOrgMap(): void {
       frag.append(btn);
     };
 
-    if (query) addChip(`Search: ${query}`, () => {
-      query = "";
-      searchInput.value = "";
-    });
     if (minCount > 1) addChip(`Min roles ${minCount}`, () => {
       minCount = 1;
       slider.value = "1";
@@ -721,7 +653,6 @@ export function mountNercOrgMap(): void {
     if (opts.stopTourFirst) stopTour();
     syncControls();
     redraw();
-    renderList();
     renderActiveFilters();
     updateRoleCounts();
   }
@@ -805,18 +736,6 @@ export function mountNercOrgMap(): void {
       updateView({ stopTourFirst: true });
     });
 
-    searchInput.addEventListener("input", () => {
-      query = searchInput.value.trim();
-      updateView({ stopTourFirst: true });
-    });
-
-    clearSearchBtn.addEventListener("click", () => {
-      query = "";
-      searchInput.value = "";
-      updateView({ stopTourFirst: true });
-      searchInput.focus();
-    });
-
     byId<HTMLButtonElement>("nerc-reset").addEventListener("click", () => {
       selRoles.clear();
       selRegions.clear();
@@ -825,10 +744,8 @@ export function mountNercOrgMap(): void {
       quickFilters.clear();
       minCount = 1;
       roleMode = "OR";
-      query = "";
       slider.value = "1";
       sliderVal.textContent = "1";
-      searchInput.value = "";
       selectedOrg = null;
       hoverOrg = null;
       panel.hidden = true;
@@ -837,6 +754,10 @@ export function mountNercOrgMap(): void {
     });
 
     byId<HTMLButtonElement>("nerc-panel-close").addEventListener("click", closePanel);
+    byId<HTMLButtonElement>("nerc-info-toggle").addEventListener("click", () => {
+      infoPanel.hidden = !infoPanel.hidden;
+    });
+    byId<HTMLButtonElement>("nerc-info-close").addEventListener("click", closeInfo);
     byId<HTMLButtonElement>("nerc-fit-filtered").addEventListener("click", () => {
       stopTour();
       fitTo(filteredOrgs());
@@ -859,6 +780,7 @@ export function mountNercOrgMap(): void {
       if (ev.key === "Escape") {
         stopTour();
         closePanel();
+        closeInfo();
         hideTooltip();
       }
     });
@@ -874,6 +796,10 @@ export function mountNercOrgMap(): void {
       });
     svg.call(zoomBehavior);
     svg.on("dblclick.zoom", null);
+    svg.on("click", () => {
+      closePanel();
+      hideTooltip();
+    });
   }
 
   function stopTour(): void {
@@ -881,21 +807,20 @@ export function mountNercOrgMap(): void {
     tourTimers = [];
     tourIds = new Set();
     tourStatus.hidden = true;
-    applyTourClasses();
+    if (placeableOrgs.length) redraw();
+    else applyTourClasses();
   }
 
-  function scrollFirstTourRow(): void {
-    const first = listEl.querySelector<HTMLElement>(".nerc-list-row.tour-flash");
-    if (first) first.scrollIntoView({ block: "nearest" });
-  }
-
-  function showTourStep(label: string, match: (o: Org) => boolean): void {
+  function showTourStep(label: string, description: string, match: (o: Org) => boolean): void {
     const matches = filteredOrgs().filter(match);
     tourIds = new Set(matches.map((o) => o.ncr_id));
-    tourStatus.textContent = `${label}: ${matches.length}`;
+    tourStatus.replaceChildren(
+      createEl("span", "tour-kicker", "Role focus"),
+      createEl("strong", "tour-title", label),
+      createEl("span", "tour-sub", `${matches.length} entities highlighted | ${description}`),
+    );
     tourStatus.hidden = matches.length === 0;
-    applyTourClasses();
-    scrollFirstTourRow();
+    redraw();
   }
 
   function startTour(): void {
@@ -903,18 +828,20 @@ export function mountNercOrgMap(): void {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const steps = [
-      { label: "ISO / RTO", match: (o: Org) => o.is_iso_rto },
+      { label: "ISOs and RTOs", description: "regional grid and market operators", match: (o: Org) => o.is_iso_rto },
       ...roleOrder().map((role) => ({
-        label: `${role} ${roleFullName(role)}`,
+        label: ROLE_TOUR_LABELS[role] ?? `${roleFullName(role)} (${role})`,
+        description: roleFullName(role),
         match: (o: Org) => o.roles.includes(role),
       })),
     ].filter((step) => filteredOrgs().some(step.match));
 
-    const stepMs = 680;
+    const firstStepMs = 900;
+    const stepMs = 1700;
     steps.forEach((step, idx) => {
-      tourTimers.push(window.setTimeout(() => showTourStep(step.label, step.match), 180 + idx * stepMs));
+      tourTimers.push(window.setTimeout(() => showTourStep(step.label, step.description, step.match), firstStepMs + idx * stepMs));
     });
-    tourTimers.push(window.setTimeout(() => stopTour(), 180 + steps.length * stepMs + 250));
+    tourTimers.push(window.setTimeout(() => stopTour(), firstStepMs + steps.length * stepMs + 900));
   }
 
   async function init(): Promise<void> {
@@ -983,7 +910,10 @@ export function mountNercOrgMap(): void {
           selectOrg(o);
         }
       })
-      .on("click", (_ev, o) => selectOrg(o));
+      .on("click", (ev, o) => {
+        (ev as MouseEvent).stopPropagation();
+        selectOrg(o);
+      });
 
     gLabels
       .selectAll("text.olabel")
@@ -999,7 +929,7 @@ export function mountNercOrgMap(): void {
     wireControls();
     loadingEl.style.display = "none";
     updateView();
-    window.setTimeout(() => startTour(), 350);
+    window.setTimeout(() => startTour(), 1200);
   }
 
   init().catch((err) => {

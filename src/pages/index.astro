@@ -41,18 +41,21 @@ const confidenceLevels = [
 ];
 ---
 
-<BaseLayout title="Interactive Grid Organizations Chart" wide>
+<BaseLayout title="NERC Grid Map" wide>
   <div id="nerc-app">
-    <h1>Interactive Grid Organizations Chart</h1>
-    <p class="nerc-prose">
-      Every dot is an organization registered with NERC to plan, operate, own, or trade on the North
-      American bulk power system. Color encodes the mix of functional roles it holds; size encodes how
-      much grid authority those roles carry. Filter by role, region, type, and confidence, or search by
-      name.
-    </p>
-    <div class="nerc-bleed">
-      <div class="nerc-inner">
-        <div class="nerc-map-shell" data-nerc-map>
+    <div class="nerc-map-shell" data-nerc-map>
+      <section class="nerc-stage" aria-label="NERC organization map">
+        <svg id="nerc-svg" viewBox="0 0 960 600" role="img" aria-label="Map of NERC-registered organizations across the United States"></svg>
+        <div id="nerc-loading" class="nerc-loading">Loading map...</div>
+        <div id="nerc-tooltip" class="nerc-tooltip" hidden></div>
+        <div id="nerc-tour-status" class="nerc-tour-status" hidden></div>
+
+        <header class="nerc-topbar" aria-label="Map controls and summary">
+          <div class="nerc-brand">
+            <h1>NERC Grid Map</h1>
+            <div class="nerc-stat" id="nerc-stat">Loading registry map...</div>
+          </div>
+
           <div class="nerc-dashboard" aria-label="Map summary">
             <div class="nerc-kpi">
               <span>Shown</span>
@@ -76,163 +79,133 @@ const confidenceLevels = [
             </div>
           </div>
 
-          <div class="nerc-explorer">
-            <section class="nerc-map-area" aria-label="NERC organization map">
-              <div class="nerc-stage">
-                <svg id="nerc-svg" viewBox="0 0 960 600" role="img" aria-label="Map of NERC-registered organizations across the United States"></svg>
-                <div id="nerc-loading" class="nerc-loading">Loading map...</div>
-                <div id="nerc-tooltip" class="nerc-tooltip" hidden></div>
-                <div id="nerc-tour-status" class="nerc-tour-status" hidden></div>
-
-                <div class="nerc-map-actions" aria-label="Map controls">
-                  <button id="nerc-zoom-in" type="button" class="nerc-icon-btn" aria-label="Zoom in">+</button>
-                  <button id="nerc-zoom-out" type="button" class="nerc-icon-btn" aria-label="Zoom out">-</button>
-                  <button id="nerc-zoom-home" type="button" class="nerc-action-btn">Reset view</button>
-                  <button id="nerc-replay-tour" type="button" class="nerc-action-btn">Replay sequence</button>
-                </div>
-
-                <aside id="nerc-panel" class="nerc-panel" hidden>
-                  <button id="nerc-panel-close" type="button" class="nerc-panel-close" aria-label="Close">x</button>
-                  <div id="nerc-panel-body"></div>
-                </aside>
-              </div>
-
-              <div class="nerc-toolbar" aria-label="Map filters">
-                <div class="nerc-tool nerc-tool-roles">
-                  <div class="nerc-tool-head">
-                    <span>Roles</span>
-                    <button id="nerc-mode" type="button" class="nerc-pill nerc-mode" data-mode="OR" title="Toggle match mode">
-                      match: ANY
-                    </button>
-                  </div>
-                  <div id="nerc-roles" class="nerc-pills">
-                    {
-                      roleRows.map((r) => (
-                        <button
-                          type="button"
-                          class="nerc-pill nerc-role"
-                          data-role={r.tag}
-                          style={`--c:${r.color}`}
-                          title={`${r.name} (weight ${r.weight})`}
-                        >
-                          <span class="nerc-dot" />
-                          {r.tag}
-                          <span class="nerc-count" data-count-for={r.tag} />
-                        </button>
-                      ))
-                    }
-                  </div>
-                </div>
-
-                <div class="nerc-tool">
-                  <div class="nerc-tool-head"><span>Region</span></div>
-                  <div id="nerc-regions" class="nerc-pills"></div>
-                </div>
-
-                <div class="nerc-tool">
-                  <div class="nerc-tool-head"><span>Type</span></div>
-                  <div id="nerc-types" class="nerc-pills">
-                    {
-                      orgTypes.map((t) => (
-                        <button type="button" class="nerc-pill nerc-type" data-type={t.value}>
-                          {t.label}
-                        </button>
-                      ))
-                    }
-                  </div>
-                </div>
-
-                <div class="nerc-tool">
-                  <div class="nerc-tool-head"><span>Confidence</span></div>
-                  <div id="nerc-confidence" class="nerc-pills">
-                    {
-                      confidenceLevels.map((c) => (
-                        <button type="button" class="nerc-pill nerc-confidence" data-confidence={c.value}>
-                          {c.label}
-                        </button>
-                      ))
-                    }
-                  </div>
-                </div>
-
-                <div class="nerc-tool nerc-slider">
-                  <label for="nerc-mincount">Min roles: <span id="nerc-mincount-val">1</span></label>
-                  <input id="nerc-mincount" type="range" min="1" max="12" value="1" step="1" />
-                  <button id="nerc-reset" type="button" class="nerc-pill">Reset filters</button>
-                </div>
-              </div>
-
-              <div id="nerc-active-filters" class="nerc-active-filters" aria-live="polite"></div>
-              <p class="nerc-stat" id="nerc-stat"></p>
-            </section>
-
-            <aside class="nerc-directory" aria-label="Organizations">
-              <div class="nerc-directory-head">
-                <div>
-                  <h2>Organizations</h2>
-                  <p id="nerc-directory-count">0 shown</p>
-                </div>
-                <button id="nerc-fit-filtered" type="button" class="nerc-action-btn">Fit shown</button>
-              </div>
-
-              <label class="nerc-search-label" for="nerc-search">Search</label>
-              <div class="nerc-search-row">
-                <input id="nerc-search" type="search" autocomplete="off" placeholder="Search entities" />
-                <button id="nerc-clear-search" type="button" class="nerc-icon-btn" aria-label="Clear search">x</button>
-              </div>
-
-              <div class="nerc-quick">
-                <button type="button" class="nerc-pill nerc-quick-filter" data-quick="iso">ISO / RTO</button>
-                <button type="button" class="nerc-pill nerc-quick-filter" data-quick="ba">BA</button>
-                <button type="button" class="nerc-pill nerc-quick-filter" data-quick="review">Needs review</button>
-              </div>
-
-              <div id="nerc-list" class="nerc-list" role="listbox" aria-label="Organization list"></div>
-            </aside>
+          <div class="nerc-map-actions" aria-label="Map actions">
+            <button id="nerc-info-toggle" type="button" class="nerc-icon-btn nerc-info-button" aria-label="About this map" title="About this map">i</button>
+            <button id="nerc-zoom-in" type="button" class="nerc-icon-btn" aria-label="Zoom in">+</button>
+            <button id="nerc-zoom-out" type="button" class="nerc-icon-btn" aria-label="Zoom out">-</button>
+            <button id="nerc-fit-filtered" type="button" class="nerc-action-btn">Fit shown</button>
+            <button id="nerc-zoom-home" type="button" class="nerc-action-btn">Reset</button>
+            <button id="nerc-replay-tour" type="button" class="nerc-action-btn">Replay</button>
           </div>
-        </div>
-      </div>
-    </div>
+        </header>
 
-    <h2>The functional roles</h2>
-    <p class="nerc-prose">
-      NERC registers entities by function, not by company type. One organization can hold many roles;
-      a small generator may hold only one. Weight reflects how much grid authority a role carries, which
-      drives both dot size and how strongly a role pulls a dot's color. These labels come from NERC's
-      functional model; each role is listed below with its full name and weight.
-    </p>
-    {
-      tiers.map((t) => (
-        <div class="nerc-glossary">
-          <h3>
-            Tier {t.tier}: {t.name}
-          </h3>
-          <dl>
-            {t.roles.map((r) => (
-              <div class="nerc-gloss-row">
-                <dt style={`--c:${r.color}`}>
-                  <span class="nerc-dot" />
-                  {r.tag}
-                </dt>
-                <dd>
-                  <strong>{r.name}</strong> <span class="nerc-muted">· weight {r.weight}</span>
-                </dd>
+        <div class="nerc-filter-dock">
+          <div class="nerc-quick" aria-label="Quick filters">
+            <button type="button" class="nerc-pill nerc-quick-filter" data-quick="iso">ISO / RTO</button>
+            <button type="button" class="nerc-pill nerc-quick-filter" data-quick="ba">BA</button>
+            <button type="button" class="nerc-pill nerc-quick-filter" data-quick="review">Needs review</button>
+          </div>
+
+          <div class="nerc-toolbar" aria-label="Map filters">
+            <div class="nerc-tool nerc-tool-roles">
+              <div class="nerc-tool-head">
+                <span>Roles</span>
+                <button id="nerc-mode" type="button" class="nerc-pill nerc-mode" data-mode="OR" title="Toggle match mode">
+                  match: ANY
+                </button>
               </div>
-            ))}
-          </dl>
-        </div>
-      ))
-    }
+              <div id="nerc-roles" class="nerc-pills">
+                {
+                  roleRows.map((r) => (
+                    <button
+                      type="button"
+                      class="nerc-pill nerc-role"
+                      data-role={r.tag}
+                      style={`--c:${r.color}`}
+                      title={`${r.tag}: ${r.name}`}
+                    >
+                      <span class="nerc-dot" />
+                      {r.tag}
+                      <span class="nerc-count" data-count-for={r.tag} />
+                    </button>
+                  ))
+                }
+              </div>
+            </div>
 
-    <h2>About the data</h2>
-    <p class="nerc-prose">
-      This view is an experimental visualization, not a compliance record. It currently shows a curated
-      seed set of real organizations at real headquarters, with illustrative role assignments, while the
-      full NERC Compliance Registry is ingested. Locations carry a confidence level; estimated points are
-      drawn with a dashed outline. Roles, weights, and colors are computed at build time from the
-      published functional model. Rendering uses SVG, which is comfortable up to a few thousand dots; the
-      full registry will switch dot rendering to Canvas with spatial clustering.
-    </p>
+            <div class="nerc-tool">
+              <div class="nerc-tool-head"><span>Region</span></div>
+              <div id="nerc-regions" class="nerc-pills"></div>
+            </div>
+
+            <div class="nerc-tool">
+              <div class="nerc-tool-head"><span>Type</span></div>
+              <div id="nerc-types" class="nerc-pills">
+                {
+                  orgTypes.map((t) => (
+                    <button type="button" class="nerc-pill nerc-type" data-type={t.value}>
+                      {t.label}
+                    </button>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div class="nerc-tool">
+              <div class="nerc-tool-head"><span>Confidence</span></div>
+              <div id="nerc-confidence" class="nerc-pills">
+                {
+                  confidenceLevels.map((c) => (
+                    <button type="button" class="nerc-pill nerc-confidence" data-confidence={c.value}>
+                      {c.label}
+                    </button>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div class="nerc-tool nerc-slider">
+              <label for="nerc-mincount">Min roles <span id="nerc-mincount-val">1</span></label>
+              <input id="nerc-mincount" type="range" min="1" max="12" value="1" step="1" />
+              <button id="nerc-reset" type="button" class="nerc-pill">Reset filters</button>
+            </div>
+          </div>
+
+          <div id="nerc-active-filters" class="nerc-active-filters" aria-live="polite"></div>
+        </div>
+
+        <aside id="nerc-panel" class="nerc-panel" hidden>
+          <button id="nerc-panel-close" type="button" class="nerc-panel-close" aria-label="Close">x</button>
+          <div id="nerc-panel-body"></div>
+        </aside>
+
+        <aside id="nerc-info-panel" class="nerc-info-panel" hidden>
+          <button id="nerc-info-close" type="button" class="nerc-panel-close" aria-label="Close">x</button>
+          <h2>How to read it</h2>
+          <p>Each dot is one NERC-registered organization placed at its headquarters.</p>
+          <ul>
+            <li>Color shows the mix of registered functions.</li>
+            <li>Size shows how much grid authority those functions carry.</li>
+            <li>Dashed outlines mark low-confidence or estimated locations.</li>
+            <li>Click any dot to keep its details on screen.</li>
+          </ul>
+        </aside>
+
+        <div class="nerc-bottom-dock" aria-label="Role guide">
+          <details class="nerc-role-guide" open>
+            <summary>Role guide</summary>
+            <div class="nerc-role-guide-grid">
+              {
+                tiers.map((t) => (
+                  <section class="nerc-role-group" aria-label={t.name}>
+                    <h2>{t.name}</h2>
+                    <div class="nerc-role-defs">
+                      {t.roles.map((r) => (
+                        <span class="nerc-role-def" style={`--c:${r.color}`} title={r.name}>
+                          <span class="nerc-dot" />
+                          <strong>{r.tag}</strong>
+                          <span>{r.name}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </section>
+                ))
+              }
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
   </div>
 </BaseLayout>
 
