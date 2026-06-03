@@ -499,18 +499,15 @@ export function mountNercOrgMap(): void {
     return counts;
   }
 
-  // A titled list of count rows with a proportional bar, sorted by count.
+  // A titled list of count rows, sorted by count.
   function statSection(title: string, counts: Map<string, number>, labelFn: (k: string) => string): HTMLElement {
     const sec = createEl("section", "nerc-statsec");
     sec.append(createEl("h3", undefined, title));
     const list = createEl("div", "nerc-statlist");
     const entries = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-    const max = Math.max(1, ...entries.map((e) => e[1]));
     for (const [key, n] of entries) {
       const row = createEl("div", "nerc-statrow");
-      const bar = createEl("span", "nerc-statbar");
-      bar.style.setProperty("--p", `${((n / max) * 100).toFixed(1)}%`);
-      row.append(createEl("span", "nerc-statname", labelFn(key)), bar, createEl("span", "nerc-statnum", String(n)));
+      row.append(createEl("span", "nerc-statname", labelFn(key)), createEl("span", "nerc-statnum", String(n)));
       list.append(row);
     }
     sec.append(list);

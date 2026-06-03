@@ -221,7 +221,7 @@
 
 .nerc-statrow {
   display: grid;
-  grid-template-columns: minmax(6.5rem, 9rem) 1fr 2.2rem;
+  grid-template-columns: minmax(0, 1fr) 2.2rem;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.78rem;
@@ -233,23 +233,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.nerc-statbar {
-  position: relative;
-  height: 0.5rem;
-  border-radius: 999px;
-  background: rgba(31, 47, 42, 0.1);
-  overflow: hidden;
-}
-
-.nerc-statbar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: var(--p, 0%);
-  border-radius: 999px;
-  background: #1d6f62;
 }
 
 .nerc-statnum {
