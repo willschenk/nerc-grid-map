@@ -90,7 +90,7 @@
 }
 
 #nerc-svg .org.tour-flash {
-  animation: nerc-tour-pulse 2400ms ease-in-out infinite;
+  animation: nerc-tour-pulse 1300ms ease-out infinite;
   fill-opacity: 1;
   stroke: #07110e;
   transform-box: fill-box;
@@ -119,7 +119,7 @@
 }
 
 #nerc-svg .olabel.tour-flash {
-  animation: nerc-label-pulse 2400ms ease-in-out infinite;
+  animation: nerc-label-pulse 1300ms ease-out infinite;
 }
 
 .nerc-topbar,
@@ -704,24 +704,24 @@
 /* Bubbles breathe (scale gently up and down) with a thin, restrained ring. */
 @keyframes nerc-tour-pulse {
   0% {
-    transform: scale(0.94);
-    stroke-width: 1.1;
+    transform: scale(0.98);
+    stroke-width: 1.4;
   }
 
   50% {
-    transform: scale(1.13);
-    stroke-width: 2.4;
+    transform: scale(1.07);
+    stroke-width: 2.1;
   }
 
   100% {
-    transform: scale(0.94);
-    stroke-width: 1.1;
+    transform: scale(0.98);
+    stroke-width: 1.4;
   }
 }
 
 @keyframes nerc-label-pulse {
   0% {
-    opacity: 0.6;
+    opacity: 0.72;
   }
 
   50% {
@@ -729,7 +729,7 @@
   }
 
   100% {
-    opacity: 0.6;
+    opacity: 0.72;
   }
 }
 
@@ -787,6 +787,11 @@
 
   .tour-title {
     font-size: clamp(1.5rem, 6vw, 2.1rem);
+  }
+
+  #nerc-svg .org.tour-flash,
+  #nerc-svg .olabel.tour-flash {
+    animation-duration: 950ms;
   }
 
   .nerc-panel,

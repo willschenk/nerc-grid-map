@@ -28,9 +28,9 @@ export const ROLE_WEIGHTS = {
 // of its roles' points, so similar role sets land at nearby colors. (Spec Part 3.3.2.)
 /** @type {Record<string, number[]>} */
 export const ROLE_ANCHORS = {
-  RC: [260, 75, 45], // violet - rarest, most authoritative; stands alone
-  BA: [230, 70, 42], // deep blue - close to RC (RC oversees BA)
-  PC: [245, 65, 48], // blue-violet - close to RC/BA (planning authority)
+  RC: [260, 68, 54], // lighter violet - rarest, most authoritative; stands alone
+  BA: [230, 64, 52], // lighter blue - close to RC (RC oversees BA)
+  PC: [245, 58, 56], // lighter blue-violet - close to RC/BA (planning authority)
   TOP: [175, 72, 38], // teal - transmission operations cluster
   TSP: [158, 65, 42], // green-teal - commercial twin of TOP
   TP: [145, 60, 44], // mid-green - planning twin of TSP
@@ -39,8 +39,8 @@ export const ROLE_ANCHORS = {
   GOP: [38, 65, 48], // amber - close to GO (operator of GO's assets)
   LSE: [95, 58, 42], // yellow-green - commercial load cluster
   PSE: [5, 65, 44], // red-orange - market player; warm, distinct from TO
-  DP: [210, 25, 55], // muted blue - low saturation; supporting role
-  RP: [200, 30, 52], // muted blue - close to DP
+  DP: [210, 24, 61], // muted blue - low saturation; supporting role
+  RP: [200, 28, 59], // muted blue - close to DP
   RSG: [190, 30, 50], // muted teal - coordination roles; low saturation
   FRSG: [182, 28, 52],
   RRSG: [185, 26, 54],
