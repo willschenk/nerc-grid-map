@@ -185,6 +185,7 @@ export function mountNercOrgMap(): void {
   const infoPanel = byId<HTMLElement>("nerc-info-panel");
   const metricsPanel = byId<HTMLElement>("nerc-metrics-panel");
   const playBtn = byId<HTMLButtonElement>("nerc-play-tour");
+  const fabBtn = byId<HTMLButtonElement>("nerc-tour-fab");
   const metricsBody = byId<HTMLElement>("nerc-metrics-body");
   const loadingEl = byId<HTMLElement>("nerc-loading");
   const tourStatus = byId<HTMLElement>("nerc-tour-status");
@@ -202,7 +203,14 @@ export function mountNercOrgMap(): void {
   let hoverOrg: Org | null = null;
   let tourIds = new Set<string>();
   let tourTimers: number[] = [];
+  // Tour mode is on (button shows Stop) even between steps / during the reset.
+  let tourRunning = false;
+  // Cache for hit-circle radii: they only change with zoom, so skip the
+  // per-redraw setAttribute storm during a tour (transform is static).
+  let hitK = NaN;
   let nationFeature: unknown = null;
+  const prefersReducedMotion = (): boolean =>
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   // User-space units per on-screen pixel (W / element width). Lets us size
   // labels in real pixels so they read the same on desktop and iOS.
   let unitPerPx = 1;
@@ -299,6 +307,7 @@ export function mountNercOrgMap(): void {
   // on every resize.
   function project(): void {
     if (!nationFeature) return;
+    hitK = NaN;
     projection.fitSize([W, H], nationFeature as never);
     gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
     gMap.select<SVGPathElement>("path.nation").attr("d", path(nationFeature as never));
@@ -330,6 +339,8 @@ export function mountNercOrgMap(): void {
 
   let resizePending = false;
   function onResize(): void {
+    // Orientation/viewport changes hand control back to the user.
+    if (tourRunning) stopTour();
     if (resizePending) return;
     resizePending = true;
     requestAnimationFrame(() => {
@@ -361,6 +372,9 @@ export function mountNercOrgMap(): void {
 
     const hot = hoverOrg ?? selectedOrg;
     const tourActive = tourIds.size > 0;
+    // Hit radii only depend on zoom, so only rewrite them when k changes.
+    const hitChanged = hitK !== k;
+    hitK = k;
 
     // Project to screen space once, drop off-screen dots, collect label candidates.
     const margin = 90;
@@ -401,7 +415,8 @@ export function mountNercOrgMap(): void {
     type Box = { x0: number; x1: number; y0: number; y1: number };
     const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
     const placed: Box[] = [];
-    const maxLabels = tourActive ? 999 : labelLimit(k);
+    // Bound tour labels so the animated/highlighted set stays cheap on iOS.
+    const maxLabels = tourActive ? (compact ? 60 : 140) : labelLimit(k);
     const topSafe = compact && !tourActive ? 72 * unitPerPx : 0;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
     const clusterRadius = (compact ? 24 : 18) * unitPerPx;
@@ -459,17 +474,22 @@ export function mountNercOrgMap(): void {
         node.setAttribute("r", String(Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1)) / k));
         o._rk = k;
       }
-      node.classList.toggle("labeled", labelState.has(o.ncr_id));
+      const labeled = labelState.has(o.ncr_id);
+      const inTour = tourActive && tourIds.has(o.ncr_id);
+      node.classList.toggle("labeled", labeled);
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
-      node.classList.toggle("tour-flash", tourActive && tourIds.has(o.ncr_id));
+      // Only the labeled subset breathes (bounded count = cheap on iOS); the
+      // rest of the focus set gets a static highlight, others dim.
+      node.classList.toggle("tour-flash", inTour && labeled);
+      node.classList.toggle("tour-pick", inTour && !labeled);
       node.classList.toggle("tour-dim", tourActive && !tourIds.has(o.ncr_id));
     });
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
-      if (!o._vis) return;
+      if (!o._vis || !hitChanged) return;
       const visualRadius = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
       const minHitRadius = (compact ? 16 : 10) * unitPerPx;
       node.setAttribute("r", String(Math.max(visualRadius, minHitRadius) / k));
@@ -486,7 +506,7 @@ export function mountNercOrgMap(): void {
       node.setAttribute("font-size", String(state.font));
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
-      node.classList.toggle("tour-flash", tourActive && tourIds.has(o.ncr_id));
+      node.classList.toggle("tour-flash", tourActive && !!state);
     });
   }
 
@@ -694,37 +714,17 @@ export function mountNercOrgMap(): void {
       redraw();
       return;
     }
+    // Cancel any in-flight transition so repeated calls (or taps) never stack.
+    svg.interrupt();
+    if (duration <= 0) {
+      svg.call(zoomBehavior.transform as never, next);
+      return;
+    }
     svg.transition().duration(duration).call(zoomBehavior.transform as never, next);
   }
 
   function homeView(duration = 350): void {
     animateTransform(zoomIdentity, duration);
-  }
-
-  function fitTo(list: Org[], duration = 450): void {
-    const pts = list.filter((o) => o._x != null && o._y != null);
-    if (!pts.length) {
-      homeView(duration);
-      return;
-    }
-    if (pts.length === 1) {
-      centerOnOrg(pts[0], duration);
-      return;
-    }
-
-    const xs = pts.map((o) => o._x as number);
-    const ys = pts.map((o) => o._y as number);
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
-    const minY = Math.min(...ys);
-    const maxY = Math.max(...ys);
-    const dx = Math.max(30, maxX - minX);
-    const dy = Math.max(30, maxY - minY);
-    const scale = Math.min(12, Math.max(0.78, 0.74 / Math.max(dx / W, dy / H)));
-    const cx = (minX + maxX) / 2;
-    const cy = (minY + maxY) / 2;
-    const next = zoomIdentity.translate(W / 2, H / 2).scale(scale).translate(-cx, -cy);
-    animateTransform(next, duration);
   }
 
   function centerOnOrg(o: Org, duration = 450): void {
@@ -800,15 +800,15 @@ export function mountNercOrgMap(): void {
   }
 
   function wireControls(): void {
-    playBtn.addEventListener("click", () => {
-      if (tourTimers.length || tourIds.size) {
-        stopTour();
-        return;
-      }
-      startTour();
-    });
+    const toggleTour = (): void => {
+      if (tourRunning) stopTour();
+      else startTour();
+    };
+    playBtn.addEventListener("click", toggleTour);
+    fabBtn.addEventListener("click", toggleTour);
 
     infoToggle.addEventListener("click", () => {
+      stopTour();
       metricsPanel.hidden = true;
       panel.hidden = true;
       selectedOrg = null;
@@ -816,6 +816,7 @@ export function mountNercOrgMap(): void {
       redraw();
     });
     metricsToggle.addEventListener("click", () => {
+      stopTour();
       infoPanel.hidden = true;
       panel.hidden = true;
       selectedOrg = null;
@@ -883,6 +884,11 @@ export function mountNercOrgMap(): void {
   function setupZoom(): void {
     zoomBehavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.72, 12])
+      // A real user gesture (pinch/pan/tap) immediately hands control back from
+      // the walkthrough. Programmatic transitions have no sourceEvent.
+      .on("start", (ev) => {
+        if (ev.sourceEvent && tourRunning) stopTour();
+      })
       .on("zoom", (ev) => {
         transform = ev.transform;
         scheduleRedraw();
@@ -894,35 +900,51 @@ export function mountNercOrgMap(): void {
     });
   }
 
+  function setPlayState(running: boolean): void {
+    const label = running ? "■ Stop" : "▶ Tour";
+    const aria = running ? "Stop walkthrough" : "Play walkthrough";
+    for (const b of [playBtn, fabBtn]) {
+      b.textContent = label;
+      b.setAttribute("aria-label", aria);
+      b.classList.toggle("is-running", running);
+    }
+  }
+
   function stopTour(): void {
     tourTimers.forEach((timer) => window.clearTimeout(timer));
     tourTimers = [];
+    svg.interrupt(); // cancel any in-flight reset transition so nothing stacks
     tourIds = new Set();
+    tourRunning = false;
     tourStatus.hidden = true;
-    playBtn.textContent = "Play";
-    playBtn.setAttribute("aria-label", "Play walkthrough");
+    setPlayState(false);
     if (placeableOrgs.length) redraw();
     else applyTourClasses();
   }
 
-  function showTourStep(label: string, match: (o: Org) => boolean): void {
+  function showTourStep(label: string, match: (o: Org) => boolean, index: number, total: number): void {
     const matches = placeableOrgs.filter(match);
     tourIds = new Set(matches.map((o) => o.ncr_id));
-    tourStatus.replaceChildren(createEl("strong", "tour-title", label));
+    tourStatus.replaceChildren(
+      createEl("strong", "tour-title", label),
+      createEl("span", "tour-progress", `${index} of ${total}`),
+    );
     tourStatus.hidden = matches.length === 0;
     redraw();
   }
 
   function startTour(): void {
     stopTour();
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     selectedOrg = null;
     panel.hidden = true;
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
-    playBtn.textContent = "Stop";
-    playBtn.setAttribute("aria-label", "Stop walkthrough");
-    fitTo(placeableOrgs, 950);
+    tourRunning = true;
+    setPlayState(true);
+
+    const reduced = prefersReducedMotion();
+    // Return to the full national view before the walkthrough runs.
+    homeView(reduced ? 0 : compact ? 460 : 700);
 
     const steps = [
       { label: "ISOs and RTOs", match: (o: Org) => o.is_iso_rto },
@@ -931,17 +953,22 @@ export function mountNercOrgMap(): void {
         match: (o: Org) => o.roles.includes(role),
       })),
     ].filter((step) => placeableOrgs.some(step.match));
-    if (!steps.length) return;
+    if (!steps.length) {
+      stopTour();
+      return;
+    }
 
-    // Loop the walkthrough so it stays open until the user stops it. Each step
-    // dwells long enough to read and watch the bubbles breathe a couple times.
-    const firstStepMs = 1200;
-    const stepMs = 2800;
+    // Loops until the user stops it. A touch slower on desktop, slightly
+    // quicker on phones, and snappy (but still readable) for reduced motion.
+    const firstStepMs = reduced ? 450 : compact ? 900 : 1200;
+    const stepMs = reduced ? 1800 : compact ? 2100 : 2800;
     let idx = 0;
     const advance = (): void => {
-      const step = steps[idx % steps.length];
+      const total = steps.length;
+      const step = steps[idx % total];
+      const display = (idx % total) + 1;
       idx += 1;
-      showTourStep(step.label, step.match);
+      showTourStep(step.label, step.match, display, total);
       tourTimers.push(window.setTimeout(advance, stepMs));
     };
     tourTimers.push(window.setTimeout(advance, firstStepMs));

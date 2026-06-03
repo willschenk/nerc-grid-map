@@ -41,9 +41,11 @@ const tiers = [1, 2, 3].map((t) => ({
           <div class="nerc-map-actions" aria-label="Map actions">
             <button id="nerc-metrics-toggle" type="button" class="nerc-icon-btn nerc-letter-button" aria-label="Map metrics" title="Map metrics">M</button>
             <button id="nerc-info-toggle" type="button" class="nerc-icon-btn nerc-info-button" aria-label="How to read this map" title="How to read this map">i</button>
-            <button id="nerc-play-tour" type="button" class="nerc-action-btn nerc-play-btn" aria-label="Play walkthrough">Play</button>
+            <button id="nerc-play-tour" type="button" class="nerc-action-btn nerc-play-btn" aria-label="Play walkthrough">&#9654; Tour</button>
           </div>
         </header>
+
+        <button id="nerc-tour-fab" type="button" class="nerc-tour-fab" aria-label="Play walkthrough">&#9654; Tour</button>
 
         <aside id="nerc-metrics-panel" class="nerc-popover nerc-metrics-panel" hidden>
           <button id="nerc-metrics-close" type="button" class="nerc-panel-close" aria-label="Close metrics">&times;</button>

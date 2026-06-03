@@ -89,10 +89,18 @@
   opacity: 0.1;
 }
 
+/* Static highlight for the rest of the focus set (no animation = cheap). */
+#nerc-svg .org.tour-pick {
+  fill-opacity: 1;
+  stroke: #07110e;
+  stroke-width: 1.3;
+}
+
 #nerc-svg .org.tour-flash {
   animation: nerc-tour-pulse 1300ms ease-out infinite;
   fill-opacity: 1;
   stroke: #07110e;
+  stroke-width: 1.6;
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -313,12 +321,39 @@
   white-space: nowrap;
 }
 
-.nerc-icon-btn:hover,
-.nerc-action-btn:hover,
-.nerc-pill:hover {
-  border-color: rgba(31, 47, 42, 0.42);
-  background: #fff;
-  box-shadow: 0 5px 16px rgba(20, 31, 28, 0.1);
+@media (hover: hover) {
+  .nerc-icon-btn:hover,
+  .nerc-action-btn:hover,
+  .nerc-pill:hover {
+    border-color: rgba(31, 47, 42, 0.42);
+    background: #fff;
+    box-shadow: 0 5px 16px rgba(20, 31, 28, 0.1);
+  }
+}
+
+/* Pressed feedback for the play controls (touch-friendly). */
+.nerc-action-btn:active,
+.nerc-tour-fab:active {
+  transform: scale(0.96);
+}
+
+.nerc-action-btn.is-running,
+.nerc-tour-fab.is-running {
+  background: #1d6f62;
+  border-color: #15564b;
+  color: #fff;
+}
+
+@media (hover: hover) {
+  .nerc-action-btn.is-running:hover,
+  .nerc-tour-fab.is-running:hover {
+    background: #1a6256;
+  }
+}
+
+/* Floating mobile tour control (shown only on phone-sized screens). */
+.nerc-tour-fab {
+  display: none;
 }
 
 .nerc-icon-btn:focus-visible,
@@ -431,6 +466,16 @@
   font-weight: 800;
   line-height: 1.1;
   animation: nerc-title-in 420ms ease-out both;
+}
+
+.tour-progress {
+  display: block;
+  margin-top: 0.18rem;
+  color: #5c6b66;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
 }
 
 .nerc-panel,
@@ -701,21 +746,18 @@
   font-size: 0.75rem;
 }
 
-/* Bubbles breathe (scale gently up and down) with a thin, restrained ring. */
+/* Bubbles breathe (transform-only so iOS only composites, never re-strokes). */
 @keyframes nerc-tour-pulse {
   0% {
-    transform: scale(0.98);
-    stroke-width: 1.4;
+    transform: scale(0.97);
   }
 
   50% {
-    transform: scale(1.07);
-    stroke-width: 2.1;
+    transform: scale(1.08);
   }
 
   100% {
-    transform: scale(0.98);
-    stroke-width: 1.4;
+    transform: scale(0.97);
   }
 }
 
@@ -748,7 +790,8 @@
 @media (prefers-reduced-motion: reduce) {
   #nerc-svg .org,
   #nerc-svg .org.tour-flash,
-  #nerc-svg .olabel.tour-flash {
+  #nerc-svg .olabel.tour-flash,
+  .tour-title {
     animation: none;
     transition: none;
   }
@@ -778,15 +821,46 @@
     justify-content: flex-end;
   }
 
-  /* On phones the caption sits up near the top (clear of the home indicator)
-     and reads large. */
+  /* The walkthrough control becomes a floating bottom-right pill on phones. */
+  #nerc-play-tour {
+    display: none;
+  }
+
+  .nerc-tour-fab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    position: absolute;
+    z-index: 16;
+    right: calc(env(safe-area-inset-right, 0px) + 0.9rem);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+    min-height: 2.95rem;
+    min-width: 2.95rem;
+    padding: 0 1.2rem;
+    border: 1px solid rgba(31, 47, 42, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #16231f;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(20, 31, 28, 0.26);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: transform 120ms ease, background 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+
+  /* On phones the caption sits up near the top (clear of the home indicator
+     and the bottom tour control) and reads large. */
   .nerc-tour-status {
     top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.6rem);
     bottom: auto;
   }
 
   .tour-title {
-    font-size: clamp(1.5rem, 6vw, 2.1rem);
+    font-size: clamp(1.4rem, 5.6vw, 2rem);
   }
 
   #nerc-svg .org.tour-flash,
