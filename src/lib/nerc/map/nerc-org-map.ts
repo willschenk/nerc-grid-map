@@ -48,8 +48,10 @@ type OrgsPayload = {
   orgs: Org[];
 };
 
-const W = 960;
-const H = 600;
+// Viewbox dimensions. These are recomputed from the live element size so the
+// viewBox aspect ratio matches the screen (no letterbox bands on tall phones).
+let W = 960;
+let H = 600;
 const RADIUS_SCALE = scaleSqrt().domain([1, 45]).range([4, 48]);
 
 const TYPE_LABELS: Record<string, string> = {
@@ -209,6 +211,11 @@ export function mountNercOrgMap(): void {
   let hoverOrg: Org | null = null;
   let tourIds = new Set<string>();
   let tourTimers: number[] = [];
+  let nationFeature: unknown = null;
+  // User-space units per on-screen pixel (W / element width). Lets us size
+  // labels in real pixels so they read the same on desktop and iOS.
+  let unitPerPx = 1;
+  let zOrderMode = "";
 
   function colorFor(role: string): string {
     const el = document.querySelector(`.nerc-role-def[data-role="${CSS.escape(role)}"] .nerc-dot`) as HTMLElement | null;
@@ -237,10 +244,12 @@ export function mountNercOrgMap(): void {
     return true;
   }
 
-  function labelFont(o: Org, k: number): number {
-    if (k < 1.25) return o.weight >= 35 ? 9.5 : 7.25;
-    if (k < 2.2) return o.weight >= 20 ? 10 : 8.25;
-    return o.weight >= 35 ? 12 : o.weight >= 15 ? 10 : 8.5;
+  // Target on-screen label size in CSS pixels (multiplied by unitPerPx before
+  // it hits the SVG). Grows a little as you zoom in instead of staying flat.
+  function labelFontPx(o: Org, k: number): number {
+    const base = o.weight >= 30 ? 14.5 : o.weight >= 12 ? 13 : 11.5;
+    const growth = Math.min(1.55, 1 + Math.max(0, k - 1) * 0.11);
+    return base * growth;
   }
 
   function labelLimit(k: number): number {
@@ -256,6 +265,81 @@ export function mountNercOrgMap(): void {
     b: { x0: number; x1: number; y0: number; y1: number },
   ): boolean {
     return !(a.x1 < b.x0 || a.x0 > b.x1 || a.y1 < b.y0 || a.y0 > b.y1);
+  }
+
+  // Size the viewBox to match the element's aspect ratio so a tall phone gets a
+  // tall viewBox (no letterboxed top/bottom bands where nothing rendered). The
+  // base dimension stays fixed so the map's physical scale is stable.
+  function measure(): void {
+    const rect = svgNode.getBoundingClientRect();
+    const elW = rect.width || 960;
+    const elH = rect.height || 600;
+    const aspect = elW / elH;
+    const base = 960 / 600;
+    if (aspect >= base) {
+      H = 600;
+      W = Math.round(600 * aspect);
+    } else {
+      W = 960;
+      H = Math.round(960 / aspect);
+    }
+    unitPerPx = W / elW;
+    svg.attr("viewBox", `0 0 ${W} ${H}`);
+  }
+
+  // (Re)fit the projection to the current viewBox and push fresh coordinates to
+  // the map paths and org circles. Safe to call before circles exist (init) or
+  // on every resize.
+  function project(): void {
+    if (!nationFeature) return;
+    projection.fitSize([W, H], nationFeature as never);
+    gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
+    gMap.select<SVGPathElement>("path.nation").attr("d", path(nationFeature as never));
+    for (const o of orgs) {
+      o._rk = undefined;
+      if (o.lng == null || o.lat == null) {
+        o._x = undefined;
+        o._y = undefined;
+        continue;
+      }
+      const p = projection([o.lng, o.lat]);
+      if (!p) {
+        o._x = undefined;
+        o._y = undefined;
+        continue;
+      }
+      o._x = p[0];
+      o._y = p[1];
+    }
+    gOverlay
+      .selectAll<SVGCircleElement, Org>("circle.org")
+      .attr("cx", (o) => o._x as number)
+      .attr("cy", (o) => o._y as number);
+  }
+
+  let resizePending = false;
+  function onResize(): void {
+    if (resizePending) return;
+    resizePending = true;
+    requestAnimationFrame(() => {
+      resizePending = false;
+      measure();
+      project();
+      redraw();
+    });
+  }
+
+  // Paint order = DOM order. Default keeps the larger orgs in front; once you
+  // zoom in, smaller orgs come to the front so they can be seen/clicked even
+  // when they sit on top of a big one's coordinates.
+  function applyZOrder(k: number): void {
+    const mode = k >= 3.5 ? "small-front" : "large-front";
+    if (mode === zOrderMode) return;
+    zOrderMode = mode;
+    const dir = mode === "small-front" ? -1 : 1;
+    gOverlay
+      .selectAll<SVGCircleElement, Org>("circle.org")
+      .sort((a, b) => dir * (a.weight - b.weight || a.role_count - b.role_count));
   }
 
   let rafPending = false;
@@ -275,6 +359,7 @@ export function mountNercOrgMap(): void {
     // (GPU-composited) instead of repositioning every dot in JS each frame.
     gMap.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
+    applyZOrder(k);
 
     const hot = hoverOrg ?? selectedOrg;
     const tourActive = tourIds.size > 0;
@@ -307,25 +392,38 @@ export function mountNercOrgMap(): void {
         a.entity_name.localeCompare(b.entity_name),
     );
 
+    type Box = { x0: number; x1: number; y0: number; y1: number };
     const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
-    const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
-    const centered = k < 1.55;
+    const placed: Box[] = [];
     const maxLabels = labelLimit(k);
     for (const o of candidates) {
       if (placed.length >= maxLabels) break;
       const sx = o._sx as number;
       const sy = o._sy as number;
-      const r = Math.max(2, RADIUS_SCALE(o.weight) / Math.sqrt(k));
+      const r = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
       const text = labelText(o, k);
-      const font = labelFont(o, k);
-      const x = sx;
-      const y = centered ? sy + font * 0.34 : sy - r - 3;
+      const font = labelFontPx(o, k) * unitPerPx;
       const w = Math.max(14, text.length * font * 0.56) + 5;
       const h = font + 5;
-      const box = { x0: x - w / 2, x1: x + w / 2, y0: y - h * 0.7, y1: y + h * 0.3 };
-      if (placed.some((p) => boxesOverlap(box, p))) continue;
-      placed.push(box);
-      labelState.set(o.ncr_id, { x, y, font, text });
+      // Try a handful of spots so a blocked label nudges off its neighbour
+      // instead of disappearing, while staying mostly over its own bubble.
+      const spots = [
+        [sx, sy + font * 0.34],
+        [sx, sy - r - 2],
+        [sx, sy + r + font],
+        [sx + r + 2, sy + font * 0.34],
+        [sx - r - 2, sy + font * 0.34],
+      ];
+      let chosen: { x: number; y: number; box: Box } | null = null;
+      for (const [lx, ly] of spots) {
+        const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
+        if (placed.some((p) => boxesOverlap(box, p))) continue;
+        chosen = { x: lx, y: ly, box };
+        break;
+      }
+      if (!chosen) continue;
+      placed.push(chosen.box);
+      labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text });
     }
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
@@ -335,7 +433,8 @@ export function mountNercOrgMap(): void {
       // Radius is set in transform-space (divided by the group scale) and only
       // when the zoom level actually changed for this dot.
       if (o._rk !== k) {
-        node.setAttribute("r", String(Math.max(2 / k, RADIUS_SCALE(o.weight) / Math.pow(k, 1.5))));
+        // On-screen radius grows gently with zoom (k^0.1) rather than shrinking.
+        node.setAttribute("r", String(Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1)) / k));
         o._rk = k;
       }
       node.classList.toggle("labeled", labelState.has(o.ncr_id));
@@ -668,7 +767,7 @@ export function mountNercOrgMap(): void {
     };
 
     window.setTimeout(run, 480);
-    window.setInterval(run, 15000);
+    window.setInterval(run, 8000);
   }
 
   function setupZoom(): void {
@@ -699,10 +798,7 @@ export function mountNercOrgMap(): void {
   function showTourStep(label: string, match: (o: Org) => boolean): void {
     const matches = placeableOrgs.filter(match);
     tourIds = new Set(matches.map((o) => o.ncr_id));
-    tourStatus.replaceChildren(
-      createEl("span", "tour-kicker", "Role focus"),
-      createEl("strong", "tour-title", label),
-    );
+    tourStatus.replaceChildren(createEl("strong", "tour-title", label));
     tourStatus.hidden = matches.length === 0;
     redraw();
   }
@@ -746,19 +842,13 @@ export function mountNercOrgMap(): void {
 
     const topoAny = topo as { objects: Record<string, unknown> };
     const states = feature(topo as never, topoAny.objects.states as never) as never as { features: unknown[] };
-    const nation = feature(topo as never, topoAny.objects.nation as never) as never;
-    projection.fitSize([W, H], nation as never);
+    nationFeature = feature(topo as never, topoAny.objects.nation as never) as never;
 
-    gMap.selectAll("path.state").data(states.features).join("path").attr("class", "state").attr("d", path as never);
-    gMap.append("path").attr("class", "nation").attr("d", path(nation as never));
+    gMap.selectAll("path.state").data(states.features).join("path").attr("class", "state");
+    gMap.append("path").attr("class", "nation");
 
-    for (const o of orgs) {
-      if (o.lng == null || o.lat == null) continue;
-      const p = projection([o.lng, o.lat]);
-      if (!p) continue;
-      o._x = p[0];
-      o._y = p[1];
-    }
+    measure();
+    project();
     placeableOrgs = orgs.filter((o) => o._x != null && o._y != null);
     const ordered = [...placeableOrgs].sort((a, b) => b.weight - a.weight || b.role_count - a.role_count);
 
@@ -776,6 +866,7 @@ export function mountNercOrgMap(): void {
       .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`)
       .on("mouseenter", (ev, o) => {
         hoverOrg = o;
+        select(ev.currentTarget as SVGCircleElement).raise();
         redraw();
         showTooltip(o, ev as MouseEvent);
       })
@@ -787,6 +878,7 @@ export function mountNercOrgMap(): void {
       })
       .on("focus", function (_ev, o) {
         hoverOrg = o;
+        select(this as SVGCircleElement).raise();
         redraw();
         const rect = (this as SVGCircleElement).getBoundingClientRect();
         showTooltipAt(o, rect.right, rect.top);
@@ -817,6 +909,9 @@ export function mountNercOrgMap(): void {
 
     setupZoom();
     wireControls();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+    window.visualViewport?.addEventListener("resize", onResize);
     loadingEl.style.display = "none";
     updateView();
     revealActionButtons();
