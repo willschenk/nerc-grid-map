@@ -295,22 +295,22 @@ export function mountNercOrgMap(): void {
   // low zoom (only the heaviest entities) and opened up fully once zoomed in,
   // where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
-    if (k < 1.45) return o.weight >= 24;
-    if (k < 2.2) return o.weight >= 11;
+    if (k < 1.45) return o.weight >= 20;
+    if (k < 2.2) return o.weight >= 10;
     if (k < 3.5) return o.weight >= 5;
     if (k < 6) return o.weight >= 3;
     return true;
   }
 
   function labelFont(o: Org, k: number): number {
-    if (k < 1.25) return o.weight >= 35 ? 11 : 8.5;
-    if (k < 2.2) return o.weight >= 20 ? 11 : 9;
+    if (k < 1.25) return o.weight >= 35 ? 9.5 : 7.25;
+    if (k < 2.2) return o.weight >= 20 ? 10 : 8.25;
     return o.weight >= 35 ? 12 : o.weight >= 15 ? 10 : 8.5;
   }
 
   function labelLimit(k: number): number {
-    if (k < 1.45) return 22;
-    if (k < 2.2) return 42;
+    if (k < 1.45) return 30;
+    if (k < 2.2) return 48;
     if (k < 3.5) return 70;
     if (k < 6) return 110;
     return 160;
@@ -881,7 +881,7 @@ export function mountNercOrgMap(): void {
 
   function setupZoom(): void {
     zoomBehavior = zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.8, 12])
+      .scaleExtent([0.72, 12])
       .on("zoom", (ev) => {
         transform = ev.transform;
         scheduleRedraw();
