@@ -696,13 +696,12 @@ export function mountNercOrgMap(): void {
     else applyTourClasses();
   }
 
-  function showTourStep(label: string, description: string, match: (o: Org) => boolean): void {
+  function showTourStep(label: string, match: (o: Org) => boolean): void {
     const matches = placeableOrgs.filter(match);
     tourIds = new Set(matches.map((o) => o.ncr_id));
     tourStatus.replaceChildren(
       createEl("span", "tour-kicker", "Role focus"),
       createEl("strong", "tour-title", label),
-      createEl("span", "tour-sub", description),
     );
     tourStatus.hidden = matches.length === 0;
     redraw();
@@ -720,10 +719,9 @@ export function mountNercOrgMap(): void {
     fitTo(placeableOrgs, 700);
 
     const steps = [
-      { label: "ISOs and RTOs", description: "regional grid and market operators", match: (o: Org) => o.is_iso_rto },
+      { label: "ISOs and RTOs", match: (o: Org) => o.is_iso_rto },
       ...TOUR_ROLE_ORDER.map((role) => ({
         label: ROLE_TOUR_LABELS[role] ?? `${roleFullName(role)} (${role})`,
-        description: roleFullName(role),
         match: (o: Org) => o.roles.includes(role),
       })),
     ].filter((step) => placeableOrgs.some(step.match));
@@ -731,7 +729,7 @@ export function mountNercOrgMap(): void {
     const firstStepMs = 1050;
     const stepMs = 1900;
     steps.forEach((step, idx) => {
-      tourTimers.push(window.setTimeout(() => showTourStep(step.label, step.description, step.match), firstStepMs + idx * stepMs));
+      tourTimers.push(window.setTimeout(() => showTourStep(step.label, step.match), firstStepMs + idx * stepMs));
     });
     tourTimers.push(window.setTimeout(() => stopTour(), firstStepMs + steps.length * stepMs + 900));
   }
