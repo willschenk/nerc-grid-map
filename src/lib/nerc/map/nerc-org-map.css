@@ -607,7 +607,7 @@
 }
 
 .nerc-info-lead {
-  margin: 0.5rem 1.8rem 0.5rem 0;
+  margin: 0.5rem 1.8rem 0.35rem 0;
   color: #3a4744;
   line-height: 1.4;
 }
@@ -617,7 +617,9 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.35rem;
+  padding: 0.42rem 0;
+  border-block: 1px solid rgba(31, 47, 42, 0.13);
   color: #5a6a65;
   font-size: 0.82rem;
 }
@@ -640,13 +642,12 @@
 }
 
 .nerc-role-guide {
-  margin-top: 0.2rem;
-  border-top: 1px solid rgba(31, 47, 42, 0.1);
+  margin-top: 0;
 }
 
 .nerc-role-guide summary {
   cursor: pointer;
-  padding: 0.6rem 0 0.2rem;
+  padding: 0.45rem 0 0.2rem;
   color: #263833;
   font-size: 0.72rem;
   font-weight: 850;
