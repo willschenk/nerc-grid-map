@@ -531,7 +531,6 @@ export function mountNercOrgMap(): void {
     metricsBody.replaceChildren(
       top,
       statSection("By organization type", tally(placeableOrgs.map((o) => o.org_type), "other"), (k) => typeLabel(k)),
-      statSection("By NERC region", tally(placeableOrgs.map((o) => o.region), "Unassigned"), (k) => k),
     );
   }
 
