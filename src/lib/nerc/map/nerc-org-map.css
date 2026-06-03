@@ -79,10 +79,11 @@
 }
 
 #nerc-svg .org.tour-flash {
-  animation: nerc-tour-pulse 1700ms ease-in-out infinite;
+  animation: nerc-tour-pulse 2400ms ease-in-out infinite;
   fill-opacity: 1;
   stroke: #07110e;
-  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 #nerc-svg .olabel {
@@ -107,7 +108,7 @@
 }
 
 #nerc-svg .olabel.tour-flash {
-  animation: nerc-label-pulse 1700ms ease-in-out infinite;
+  animation: nerc-label-pulse 2400ms ease-in-out infinite;
 }
 
 .nerc-topbar,
@@ -156,10 +157,15 @@
   font-variant-numeric: tabular-nums;
 }
 
-.nerc-dashboard {
+.nerc-metrics-body {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.35rem;
+  gap: 0.7rem;
+}
+
+.nerc-metrics-top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
 }
 
 .nerc-kpi {
@@ -167,13 +173,13 @@
   border: 1px solid rgba(31, 47, 42, 0.12);
   background: rgba(246, 248, 246, 0.9);
   border-radius: 7px;
-  padding: 0.4rem 0.45rem;
+  padding: 0.45rem 0.55rem;
 }
 
 .nerc-kpi span {
   display: block;
   color: #62706c;
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -181,11 +187,72 @@
 
 .nerc-kpi strong {
   display: block;
-  margin-top: 0.18rem;
+  margin-top: 0.22rem;
   color: #0d1714;
-  font-size: 1rem;
+  font-size: 1.5rem;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+}
+
+.nerc-metrics-note {
+  margin: -0.1rem 0 0;
+  color: #66736f;
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.nerc-statsec h3 {
+  margin: 0 0 0.4rem;
+  color: #485852;
+  font-size: 0.68rem;
+  font-weight: 820;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.nerc-statlist {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.nerc-statrow {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 9rem) 1fr 2.2rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #243430;
+}
+
+.nerc-statname {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nerc-statbar {
+  position: relative;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(31, 47, 42, 0.1);
+  overflow: hidden;
+}
+
+.nerc-statbar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--p, 0%);
+  border-radius: 999px;
+  background: #1d6f62;
+}
+
+.nerc-statnum {
+  text-align: right;
+  font-weight: 760;
+  font-variant-numeric: tabular-nums;
+  color: #0d1714;
 }
 
 .nerc-map-actions {
@@ -361,8 +428,8 @@
   text-align: center;
   border: 1px solid rgba(31, 47, 42, 0.18);
   background: rgba(255, 255, 255, 0.88);
-  border-radius: 8px;
-  padding: 0.5rem 0.95rem;
+  border-radius: 10px;
+  padding: 0.6rem 1.15rem;
   box-shadow: 0 18px 48px rgba(20, 31, 28, 0.18);
 }
 
@@ -371,9 +438,12 @@
 }
 
 .tour-title {
+  display: block;
   color: #0b1512;
-  font-size: clamp(1rem, 2.3vw, 1.3rem);
-  line-height: 1.12;
+  font-size: clamp(1.35rem, 3.4vw, 2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  animation: nerc-title-in 420ms ease-out both;
 }
 
 .nerc-panel,
@@ -411,7 +481,7 @@
   top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.8rem);
   left: max(0.75rem, env(safe-area-inset-left, 0px));
   z-index: 24;
-  width: min(44rem, calc(100vw - 1.5rem));
+  width: min(27rem, calc(100vw - 1.5rem));
   max-height: calc(100dvh - 7rem);
   overflow-y: auto;
   display: grid;
@@ -643,34 +713,47 @@
   font-size: 0.75rem;
 }
 
+/* Bubbles breathe (scale gently up and down) with a thin, restrained ring. */
 @keyframes nerc-tour-pulse {
   0% {
+    transform: scale(0.94);
     stroke-width: 1.1;
-    filter: drop-shadow(0 0 0 rgba(16, 32, 28, 0));
   }
 
-  42% {
-    stroke-width: 4.5;
-    filter: drop-shadow(0 5px 12px rgba(16, 32, 28, 0.34));
+  50% {
+    transform: scale(1.13);
+    stroke-width: 2.4;
   }
 
   100% {
-    stroke-width: 1.8;
-    filter: drop-shadow(0 0 0 rgba(16, 32, 28, 0));
+    transform: scale(0.94);
+    stroke-width: 1.1;
   }
 }
 
 @keyframes nerc-label-pulse {
   0% {
-    opacity: 0.45;
+    opacity: 0.6;
   }
 
-  42% {
+  50% {
     opacity: 1;
   }
 
   100% {
-    opacity: 0.78;
+    opacity: 0.6;
+  }
+}
+
+@keyframes nerc-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -707,8 +790,15 @@
     justify-content: flex-end;
   }
 
-  .nerc-dashboard {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* On phones the caption sits up near the top (clear of the home indicator)
+     and reads large. */
+  .nerc-tour-status {
+    top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.6rem);
+    bottom: auto;
+  }
+
+  .tour-title {
+    font-size: clamp(1.5rem, 6vw, 2.1rem);
   }
 
   .nerc-panel,

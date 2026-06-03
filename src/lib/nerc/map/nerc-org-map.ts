@@ -157,10 +157,6 @@ function safeHttpUrl(value: string | null | undefined): string | null {
   }
 }
 
-function uniqueCount(values: Array<string | null | undefined>): number {
-  return new Set(values.filter((v): v is string => Boolean(v))).size;
-}
-
 function roleFullName(role: string): string {
   return (ROLE_FULL_NAMES as Record<string, string>)[role] ?? role;
 }
@@ -188,17 +184,11 @@ export function mountNercOrgMap(): void {
   const infoPanel = byId<HTMLElement>("nerc-info-panel");
   const metricsPanel = byId<HTMLElement>("nerc-metrics-panel");
   const playBtn = byId<HTMLButtonElement>("nerc-play-tour");
-  const statEl = byId<HTMLElement>("nerc-stat");
+  const metricsBody = byId<HTMLElement>("nerc-metrics-body");
   const loadingEl = byId<HTMLElement>("nerc-loading");
   const tourStatus = byId<HTMLElement>("nerc-tour-status");
   const infoToggle = byId<HTMLButtonElement>("nerc-info-toggle");
   const metricsToggle = byId<HTMLButtonElement>("nerc-metrics-toggle");
-
-  const statVisible = byId<HTMLElement>("nerc-stat-visible");
-  const statTotal = byId<HTMLElement>("nerc-stat-total");
-  const statIso = byId<HTMLElement>("nerc-stat-iso");
-  const statBa = byId<HTMLElement>("nerc-stat-ba");
-  const statRegion = byId<HTMLElement>("nerc-stat-region");
 
   const projection = geoAlbersUsa();
   const path = geoPath(projection);
@@ -216,6 +206,11 @@ export function mountNercOrgMap(): void {
   // labels in real pixels so they read the same on desktop and iOS.
   let unitPerPx = 1;
   let zOrderMode = "";
+  // Phone-sized screens get fewer labels when zoomed in (less screen real
+  // estate for the same physical-size labels).
+  let compact = false;
+  // Live "shown in view" counter element inside the metrics panel.
+  let shownEl: HTMLElement | null = null;
 
   function colorFor(role: string): string {
     const el = document.querySelector(`.nerc-role-def[data-role="${CSS.escape(role)}"] .nerc-dot`) as HTMLElement | null;
@@ -237,8 +232,8 @@ export function mountNercOrgMap(): void {
   // low zoom (only the heaviest entities) and opened up fully once zoomed in,
   // where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
-    if (k < 1.25) return o.weight >= 20;
-    if (k < 1.8) return o.weight >= 9;
+    if (k < 1.25) return o.weight >= 12;
+    if (k < 1.8) return o.weight >= 7;
     if (k < 2.8) return o.weight >= 4;
     if (k < 4.6) return o.weight >= 2;
     return true;
@@ -253,9 +248,9 @@ export function mountNercOrgMap(): void {
   }
 
   function labelLimit(k: number): number {
-    if (k < 1.25) return 32;
-    if (k < 1.8) return 56;
-    if (k < 2.8) return 92;
+    if (k < 1.25) return 46;
+    if (k < 1.8) return 70;
+    if (k < 2.8) return 96;
     if (k < 4.6) return 140;
     return 220;
   }
@@ -284,6 +279,7 @@ export function mountNercOrgMap(): void {
       H = Math.round(960 / aspect);
     }
     unitPerPx = W / elW;
+    compact = elW < 640;
     svg.attr("viewBox", `0 0 ${W} ${H}`);
   }
 
@@ -367,6 +363,7 @@ export function mountNercOrgMap(): void {
     // Project to screen space once, drop off-screen dots, collect label candidates.
     const margin = 90;
     const candidates: Org[] = [];
+    let shownCount = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
         o._vis = false;
@@ -379,9 +376,16 @@ export function mountNercOrgMap(): void {
       const vis = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
       o._vis = vis;
       if (!vis) continue;
-      const forced = tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id;
-      if (forced || shouldTryLabel(o, k)) candidates.push(o);
+      shownCount++;
+      if (tourActive) {
+        // During the walkthrough only the highlighted set gets labels, which
+        // declutters the map and lets far more of the focused orgs show.
+        if (tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id) candidates.push(o);
+      } else if (hot?.ncr_id === o.ncr_id || shouldTryLabel(o, k)) {
+        candidates.push(o);
+      }
     }
+    if (shownEl && !metricsPanel.hidden) shownEl.textContent = String(shownCount);
 
     candidates.sort(
       (a, b) =>
@@ -395,7 +399,10 @@ export function mountNercOrgMap(): void {
     type Box = { x0: number; x1: number; y0: number; y1: number };
     const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
     const placed: Box[] = [];
-    const maxLabels = labelLimit(k);
+    const maxLabels = tourActive ? 999 : labelLimit(k);
+    // On phones, inflate the collision box as you zoom in so labels spread out
+    // (less information overload). Untouched on desktop and during the tour.
+    const spacing = compact && !tourActive ? (k < 2.2 ? 1 : k < 3.5 ? 1.35 : 1.7) : 1;
     for (const o of candidates) {
       if (placed.length >= maxLabels) break;
       const sx = o._sx as number;
@@ -403,16 +410,16 @@ export function mountNercOrgMap(): void {
       const r = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
-      const w = Math.max(14, text.length * font * 0.56) + 5;
-      const h = font + 5;
+      const w = (Math.max(14, text.length * font * 0.56) + 5) * spacing;
+      const h = (font + 5) * spacing;
       // Try a handful of spots so a blocked label nudges off its neighbour
-      // instead of disappearing, while staying mostly over its own bubble.
+      // instead of disappearing, while hugging its own bubble closely.
       const spots = [
-        [sx, sy + font * 0.34],
-        [sx, sy - r - 2],
-        [sx, sy + r + font],
-        [sx + r + 2, sy + font * 0.34],
-        [sx - r - 2, sy + font * 0.34],
+        [sx, sy + font * 0.32],
+        [sx, sy - r * 0.8 - 1],
+        [sx, sy + r * 0.8 + font * 0.8],
+        [sx + r * 0.8 + 1, sy + font * 0.32],
+        [sx - r * 0.8 - 1, sy + font * 0.32],
       ];
       let chosen: { x: number; y: number; box: Box } | null = null;
       for (const [lx, ly] of spots) {
@@ -459,17 +466,61 @@ export function mountNercOrgMap(): void {
     });
   }
 
+  function tally(values: Array<string | null | undefined>, fallback: string): Map<string, number> {
+    const counts = new Map<string, number>();
+    for (const v of values) {
+      const key = v ?? fallback;
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    return counts;
+  }
+
+  // A titled list of count rows with a proportional bar, sorted by count.
+  function statSection(title: string, counts: Map<string, number>, labelFn: (k: string) => string): HTMLElement {
+    const sec = createEl("section", "nerc-statsec");
+    sec.append(createEl("h3", undefined, title));
+    const list = createEl("div", "nerc-statlist");
+    const entries = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    const max = Math.max(1, ...entries.map((e) => e[1]));
+    for (const [key, n] of entries) {
+      const row = createEl("div", "nerc-statrow");
+      const bar = createEl("span", "nerc-statbar");
+      bar.style.setProperty("--p", `${((n / max) * 100).toFixed(1)}%`);
+      row.append(createEl("span", "nerc-statname", labelFn(key)), bar, createEl("span", "nerc-statnum", String(n)));
+      list.append(row);
+    }
+    sec.append(list);
+    return sec;
+  }
+
   function renderStats(): void {
-    const total = orgs.length;
-    const iso = placeableOrgs.filter((o) => o.is_iso_rto).length;
-    const ba = placeableOrgs.filter((o) => o.roles.includes("BA")).length;
-    const regions = uniqueCount(placeableOrgs.map((o) => o.region));
-    statVisible.textContent = String(placeableOrgs.length);
-    statTotal.textContent = String(total);
-    statIso.textContent = String(iso);
-    statBa.textContent = String(ba);
-    statRegion.textContent = String(regions);
-    statEl.textContent = `${placeableOrgs.length} mapped entities from ${total} registry records`;
+    const mapped = placeableOrgs.length;
+    const shown = placeableOrgs.reduce((n, o) => n + (o._vis ? 1 : 0), 0);
+    const registry = orgs.length;
+
+    const top = createEl("div", "nerc-metrics-top");
+    const kpi = (label: string, value: number): HTMLElement => {
+      const box = createEl("div", "nerc-kpi");
+      const strong = createEl("strong", undefined, String(value));
+      box.append(createEl("span", undefined, label), strong);
+      return box;
+    };
+    const shownKpi = kpi("Shown in view", shown);
+    shownEl = shownKpi.querySelector("strong");
+    top.append(shownKpi, kpi("Mapped", mapped));
+
+    const note = createEl(
+      "p",
+      "nerc-metrics-note",
+      `${mapped.toLocaleString()} of ${registry.toLocaleString()} registry records placed (${registry - mapped} missing coordinates)`,
+    );
+
+    metricsBody.replaceChildren(
+      top,
+      note,
+      statSection("By organization type", tally(placeableOrgs.map((o) => o.org_type), "other"), (k) => typeLabel(k)),
+      statSection("By NERC region", tally(placeableOrgs.map((o) => o.region), "Unassigned"), (k) => k),
+    );
   }
 
   function renderTooltip(o: Org): void {
@@ -658,7 +709,7 @@ export function mountNercOrgMap(): void {
     const maxY = Math.max(...ys);
     const dx = Math.max(30, maxX - minX);
     const dy = Math.max(30, maxY - minY);
-    const scale = Math.min(12, Math.max(0.85, 0.84 / Math.max(dx / W, dy / H)));
+    const scale = Math.min(12, Math.max(0.78, 0.74 / Math.max(dx / W, dy / H)));
     const cx = (minX + maxX) / 2;
     const cy = (minY + maxY) / 2;
     const next = zoomIdentity.translate(W / 2, H / 2).scale(scale).translate(-cx, -cy);
@@ -711,6 +762,7 @@ export function mountNercOrgMap(): void {
       panel.hidden = true;
       selectedOrg = null;
       metricsPanel.hidden = !metricsPanel.hidden;
+      if (!metricsPanel.hidden) renderStats();
       redraw();
     });
     byId<HTMLButtonElement>("nerc-info-close").addEventListener("click", closeInfo);
@@ -763,7 +815,7 @@ export function mountNercOrgMap(): void {
         return;
       }
       reveal(metricsToggle, ["M", "Me", "Met", "Metrics"], "M", 0);
-      reveal(infoToggle, ["I", "In", "Inf", "Info"], "i", 480);
+      reveal(infoToggle, ["I", "In", "Inf", "Info"], "i", 0);
     };
 
     window.setTimeout(run, 480);
@@ -812,7 +864,7 @@ export function mountNercOrgMap(): void {
     metricsPanel.hidden = true;
     playBtn.textContent = "Stop";
     playBtn.setAttribute("aria-label", "Stop walkthrough");
-    fitTo(placeableOrgs, 700);
+    fitTo(placeableOrgs, 950);
 
     const steps = [
       { label: "ISOs and RTOs", match: (o: Org) => o.is_iso_rto },
@@ -821,13 +873,20 @@ export function mountNercOrgMap(): void {
         match: (o: Org) => o.roles.includes(role),
       })),
     ].filter((step) => placeableOrgs.some(step.match));
+    if (!steps.length) return;
 
-    const firstStepMs = 1050;
-    const stepMs = 1900;
-    steps.forEach((step, idx) => {
-      tourTimers.push(window.setTimeout(() => showTourStep(step.label, step.match), firstStepMs + idx * stepMs));
-    });
-    tourTimers.push(window.setTimeout(() => stopTour(), firstStepMs + steps.length * stepMs + 900));
+    // Loop the walkthrough so it stays open until the user stops it. Each step
+    // dwells long enough to read and watch the bubbles breathe a couple times.
+    const firstStepMs = 1200;
+    const stepMs = 2800;
+    let idx = 0;
+    const advance = (): void => {
+      const step = steps[idx % steps.length];
+      idx += 1;
+      showTourStep(step.label, step.match);
+      tourTimers.push(window.setTimeout(advance, stepMs));
+    };
+    tourTimers.push(window.setTimeout(advance, firstStepMs));
   }
 
   async function init(): Promise<void> {

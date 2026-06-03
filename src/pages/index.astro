@@ -48,29 +48,7 @@ const tiers = [1, 2, 3].map((t) => ({
         <aside id="nerc-metrics-panel" class="nerc-popover nerc-metrics-panel" hidden>
           <button id="nerc-metrics-close" type="button" class="nerc-panel-close" aria-label="Close metrics">&times;</button>
           <h2>Metrics</h2>
-          <div class="nerc-stat" id="nerc-stat">Loading registry map...</div>
-          <div class="nerc-dashboard" aria-label="Map summary">
-            <div class="nerc-kpi">
-              <span>Shown</span>
-              <strong id="nerc-stat-visible">0</strong>
-            </div>
-            <div class="nerc-kpi">
-              <span>Total</span>
-              <strong id="nerc-stat-total">0</strong>
-            </div>
-            <div class="nerc-kpi">
-              <span>ISO / RTO</span>
-              <strong id="nerc-stat-iso">0</strong>
-            </div>
-            <div class="nerc-kpi">
-              <span>BA</span>
-              <strong id="nerc-stat-ba">0</strong>
-            </div>
-            <div class="nerc-kpi">
-              <span>Regions</span>
-              <strong id="nerc-stat-region">0</strong>
-            </div>
-          </div>
+          <div class="nerc-metrics-body" id="nerc-metrics-body" aria-label="Map summary"></div>
         </aside>
 
         <aside id="nerc-panel" class="nerc-panel" hidden>
