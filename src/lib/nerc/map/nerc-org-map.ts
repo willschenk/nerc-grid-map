@@ -295,10 +295,10 @@ export function mountNercOrgMap(): void {
   // low zoom (only the heaviest entities) and opened up fully once zoomed in,
   // where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
-    if (k < 1.45) return o.weight >= 20;
-    if (k < 2.2) return o.weight >= 10;
-    if (k < 3.5) return o.weight >= 5;
-    if (k < 6) return o.weight >= 3;
+    if (k < 1.25) return o.weight >= 20;
+    if (k < 1.8) return o.weight >= 9;
+    if (k < 2.8) return o.weight >= 4;
+    if (k < 4.6) return o.weight >= 2;
     return true;
   }
 
@@ -309,11 +309,11 @@ export function mountNercOrgMap(): void {
   }
 
   function labelLimit(k: number): number {
-    if (k < 1.45) return 30;
-    if (k < 2.2) return 48;
-    if (k < 3.5) return 70;
-    if (k < 6) return 110;
-    return 160;
+    if (k < 1.25) return 32;
+    if (k < 1.8) return 56;
+    if (k < 2.8) return 92;
+    if (k < 4.6) return 140;
+    return 220;
   }
 
   function boxesOverlap(
