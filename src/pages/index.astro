@@ -22,23 +22,6 @@ const tiers = [1, 2, 3].map((t) => ({
   name: tierNames[t],
   roles: roleRows.filter((r) => r.tier === t),
 }));
-
-const orgTypes = [
-  { value: "ISO_RTO", label: "ISO / RTO" },
-  { value: "IOU", label: "Investor-owned" },
-  { value: "cooperative", label: "Cooperative" },
-  { value: "municipal", label: "Municipal / public" },
-  { value: "federal", label: "Federal" },
-  { value: "merchant", label: "Merchant" },
-  { value: "other", label: "Other" },
-];
-
-const confidenceLevels = [
-  { value: "HIGH", label: "High" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "LOW", label: "Low" },
-  { value: "ESTIMATED", label: "Estimated" },
-];
 ---
 
 <BaseLayout title="NERC Grid Map" wide>
@@ -57,14 +40,14 @@ const confidenceLevels = [
 
           <div class="nerc-map-actions" aria-label="Map actions">
             <button id="nerc-play-tour" type="button" class="nerc-action-btn nerc-play-btn" aria-label="Play walkthrough">Play</button>
-            <button id="nerc-metrics-toggle" type="button" class="nerc-action-btn" aria-label="Filters and metrics" title="Filters and metrics">Filters</button>
+            <button id="nerc-metrics-toggle" type="button" class="nerc-icon-btn nerc-letter-button" aria-label="Map metrics" title="Map metrics">M</button>
             <button id="nerc-info-toggle" type="button" class="nerc-icon-btn nerc-info-button" aria-label="How to read this map" title="How to read this map">i</button>
           </div>
         </header>
 
         <aside id="nerc-metrics-panel" class="nerc-popover nerc-metrics-panel" hidden>
-          <button id="nerc-metrics-close" type="button" class="nerc-panel-close" aria-label="Close filters">&times;</button>
-          <h2>Filters</h2>
+          <button id="nerc-metrics-close" type="button" class="nerc-panel-close" aria-label="Close metrics">&times;</button>
+          <h2>Metrics</h2>
           <div class="nerc-stat" id="nerc-stat">Loading registry map...</div>
           <div class="nerc-dashboard" aria-label="Map summary">
             <div class="nerc-kpi">
@@ -88,80 +71,6 @@ const confidenceLevels = [
               <strong id="nerc-stat-region">0</strong>
             </div>
           </div>
-
-          <div class="nerc-quick" aria-label="Quick filters">
-            <button type="button" class="nerc-pill nerc-quick-filter" data-quick="iso">ISO / RTO</button>
-            <button type="button" class="nerc-pill nerc-quick-filter" data-quick="ba">BA</button>
-            <button type="button" class="nerc-pill nerc-quick-filter" data-quick="review">Needs review</button>
-          </div>
-
-          <div class="nerc-toolbar" aria-label="Map filters">
-            <div class="nerc-tool nerc-tool-roles">
-              <div class="nerc-tool-head">
-                <span>Roles</span>
-                <button id="nerc-mode" type="button" class="nerc-pill nerc-mode" data-mode="OR" title="Toggle match mode">
-                  match: ANY
-                </button>
-              </div>
-              <div id="nerc-roles" class="nerc-pills">
-                {
-                  roleRows.map((r) => (
-                    <button
-                      type="button"
-                      class="nerc-pill nerc-role"
-                      data-role={r.tag}
-                      style={`--c:${r.color}`}
-                      title={`${r.tag}: ${r.name}`}
-                    >
-                      <span class="nerc-dot" />
-                      {r.tag}
-                    </button>
-                  ))
-                }
-              </div>
-            </div>
-
-            <div class="nerc-tool">
-              <div class="nerc-tool-head"><span>Region</span></div>
-              <div id="nerc-regions" class="nerc-pills"></div>
-            </div>
-
-            <div class="nerc-tool">
-              <div class="nerc-tool-head"><span>Type</span></div>
-              <div id="nerc-types" class="nerc-pills">
-                {
-                  orgTypes.map((t) => (
-                    <button type="button" class="nerc-pill nerc-type" data-type={t.value}>
-                      {t.label}
-                    </button>
-                  ))
-                }
-              </div>
-            </div>
-
-            <div class="nerc-tool">
-              <div class="nerc-tool-head"><span>Confidence</span></div>
-              <div id="nerc-confidence" class="nerc-pills">
-                {
-                  confidenceLevels.map((c) => (
-                    <button type="button" class="nerc-pill nerc-confidence" data-confidence={c.value}>
-                      {c.label}
-                    </button>
-                  ))
-                }
-              </div>
-            </div>
-
-            <div class="nerc-tool nerc-slider">
-              <label for="nerc-mincount">Min roles <span id="nerc-mincount-val">1</span></label>
-              <input id="nerc-mincount" type="range" min="1" max="12" value="1" step="1" />
-              <button id="nerc-fit-filtered" type="button" class="nerc-pill">Fit shown</button>
-              <button id="nerc-zoom-home" type="button" class="nerc-pill">Reset view</button>
-              <button id="nerc-reset" type="button" class="nerc-pill">Reset filters</button>
-            </div>
-          </div>
-
-          <div id="nerc-active-filters" class="nerc-active-filters" aria-live="polite"></div>
         </aside>
 
         <aside id="nerc-panel" class="nerc-panel" hidden>
@@ -182,7 +91,7 @@ const confidenceLevels = [
                     <h2>{t.name}</h2>
                     <div class="nerc-role-defs">
                       {t.roles.map((r) => (
-                        <span class="nerc-role-def" style={`--c:${r.color}`} title={r.name}>
+                        <span class="nerc-role-def" data-role={r.tag} style={`--c:${r.color}`} title={r.name}>
                           <span class="nerc-dot" />
                           <strong>{r.tag}</strong>
                           <span>{r.name}</span>

@@ -216,16 +216,21 @@
   line-height: 1;
 }
 
+.nerc-letter-button,
 .nerc-info-button {
   min-width: 2.05rem;
   width: auto;
   padding-inline: 0.5rem;
+}
+
+.nerc-info-button {
   font-family: ui-serif, Georgia, serif;
   font-style: italic;
   font-size: 1.05rem;
 }
 
-.nerc-info-button.nerc-info-typing {
+.nerc-letter-button.nerc-letter-typing,
+.nerc-info-button.nerc-letter-typing {
   font-weight: 700;
   letter-spacing: 0.01em;
 }
@@ -270,83 +275,6 @@
   outline-offset: 2px;
 }
 
-.nerc-pill.active,
-.nerc-quick-filter.active {
-  background: #10201c;
-  color: #fff;
-  border-color: #10201c;
-}
-
-.nerc-filter-dock {
-  position: absolute;
-  top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 5.55rem);
-  left: max(0.75rem, env(safe-area-inset-left, 0px));
-  z-index: 15;
-  width: min(49rem, calc(100vw - 1.5rem));
-  display: grid;
-  gap: 0.45rem;
-  padding: 0.55rem;
-  border: 1px solid rgba(31, 47, 42, 0.12);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 14px 32px rgba(20, 31, 28, 0.1);
-}
-
-.nerc-quick,
-.nerc-toolbar,
-.nerc-pills,
-.nerc-active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.32rem;
-}
-
-.nerc-toolbar {
-  max-height: 7.2rem;
-  overflow: auto;
-  padding-right: 0.1rem;
-}
-
-.nerc-tool {
-  min-width: min(100%, 10rem);
-}
-
-.nerc-tool-roles {
-  flex: 1 1 24rem;
-}
-
-.nerc-tool-head {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0 0 0.28rem;
-  color: #4c5e58;
-  font-size: 0.62rem;
-  font-weight: 780;
-  text-transform: uppercase;
-  letter-spacing: 0;
-}
-
-.nerc-slider {
-  display: flex;
-  align-items: center;
-  gap: 0.48rem;
-  min-width: min(100%, 18rem);
-}
-
-.nerc-slider label {
-  color: #4c5e58;
-  font-size: 0.72rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.nerc-slider input {
-  width: 7.4rem;
-  accent-color: #1d6f62;
-}
-
-.nerc-role .nerc-dot,
 .nerc-role-def .nerc-dot {
   width: 0.62rem;
   height: 0.62rem;
@@ -354,41 +282,6 @@
   background: var(--c, #888);
   display: inline-block;
   flex: none;
-}
-
-.nerc-role.active .nerc-dot {
-  box-shadow: 0 0 0 2px #fff;
-}
-
-.nerc-count {
-  color: #71807b;
-  font-size: 0.68rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.nerc-role.active .nerc-count {
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.nerc-mode {
-  min-height: 1.45rem;
-  padding: 0.08rem 0.42rem;
-  font-size: 0.66rem;
-}
-
-.nerc-active-filters {
-  min-height: 0;
-}
-
-.nerc-active-filters[hidden] {
-  display: none;
-}
-
-.nerc-filter-chip {
-  border-color: rgba(29, 111, 98, 0.38);
-  background: rgba(231, 246, 242, 0.9);
-  color: #143c35;
-  font-size: 0.7rem;
 }
 
 .nerc-loading {
@@ -527,7 +420,7 @@
   font-size: 0.84rem;
 }
 
-/* Filters / metrics popover, anchored under the top bar. */
+/* Metrics popover, anchored under the top bar. */
 .nerc-metrics-panel {
   position: absolute;
   top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.8rem);
@@ -810,17 +703,8 @@
     grid-template-columns: minmax(12rem, 1fr) auto;
   }
 
-  .nerc-dashboard {
-    grid-column: 1 / -1;
-    order: 3;
-  }
-
   .nerc-map-actions {
     align-self: start;
-  }
-
-  .nerc-filter-dock {
-    top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 8.3rem);
   }
 
   .nerc-panel {
@@ -839,29 +723,22 @@
   }
 
   .nerc-dashboard {
-    display: none;
-  }
-
-  .nerc-filter-dock {
-    top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.75rem);
-    right: max(0.75rem, env(safe-area-inset-right, 0px));
-    width: auto;
-    max-height: 24dvh;
-    overflow: auto;
-  }
-
-  .nerc-toolbar {
-    max-height: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .nerc-panel,
-  .nerc-info-panel {
+  .nerc-info-panel,
+  .nerc-metrics-panel {
     top: auto;
     left: max(0.75rem, env(safe-area-inset-left, 0px));
     right: max(0.75rem, env(safe-area-inset-right, 0px));
     bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
     width: auto;
     max-height: 48dvh;
+  }
+
+  .nerc-metrics-panel {
+    gap: 0.5rem;
   }
 
   .nerc-bottom-dock {
@@ -875,19 +752,28 @@
 
 @media (max-width: 520px) {
   .nerc-topbar {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 0.5rem;
   }
 
   .nerc-map-actions {
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
 
   .nerc-action-btn {
     padding-inline: 0.48rem;
   }
 
-  .nerc-filter-dock {
-    top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 6.9rem);
-    max-height: 22dvh;
+  #nerc-app h1 {
+    font-size: 1rem;
+  }
+
+  .nerc-icon-btn,
+  .nerc-action-btn {
+    min-height: 2.2rem;
+  }
+
+  .nerc-kpi {
+    padding: 0.38rem 0.42rem;
   }
 }
