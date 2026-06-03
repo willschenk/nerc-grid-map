@@ -295,10 +295,10 @@ export function mountNercOrgMap(): void {
   // low zoom (only the heaviest entities) and opened up fully once zoomed in,
   // where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
-    if (k < 1.45) return o.weight >= 20;
-    if (k < 2.2) return o.weight >= 9;
-    if (k < 3.5) return o.weight >= 4;
-    if (k < 6) return o.weight >= 2;
+    if (k < 1.45) return o.weight >= 24;
+    if (k < 2.2) return o.weight >= 11;
+    if (k < 3.5) return o.weight >= 5;
+    if (k < 6) return o.weight >= 3;
     return true;
   }
 
@@ -306,6 +306,14 @@ export function mountNercOrgMap(): void {
     if (k < 1.25) return o.weight >= 35 ? 11 : 8.5;
     if (k < 2.2) return o.weight >= 20 ? 11 : 9;
     return o.weight >= 35 ? 12 : o.weight >= 15 ? 10 : 8.5;
+  }
+
+  function labelLimit(k: number): number {
+    if (k < 1.45) return 22;
+    if (k < 2.2) return 42;
+    if (k < 3.5) return 70;
+    if (k < 6) return 110;
+    return 160;
   }
 
   function boxesOverlap(
@@ -368,7 +376,9 @@ export function mountNercOrgMap(): void {
     const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
     const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
     const centered = k < 1.55;
+    const maxLabels = labelLimit(k);
     for (const o of candidates) {
+      if (placed.length >= maxLabels) break;
       const sx = o._sx as number;
       const sy = o._sy as number;
       const r = Math.max(2, RADIUS_SCALE(o.weight) / Math.sqrt(k));
@@ -397,7 +407,6 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("labeled", labelState.has(o.ncr_id));
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
-      node.classList.toggle("peer-dim", !!hoverOrg && hoverOrg.ncr_id !== o.ncr_id);
       node.classList.toggle("tour-flash", tourActive && tourIds.has(o.ncr_id));
       node.classList.toggle("tour-dim", tourActive && !tourIds.has(o.ncr_id));
     });
@@ -414,7 +423,6 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
       node.classList.toggle("tour-flash", tourActive && tourIds.has(o.ncr_id));
-      node.classList.toggle("peer-dim", !!hoverOrg && hoverOrg.ncr_id !== o.ncr_id);
     });
   }
 
@@ -477,14 +485,12 @@ export function mountNercOrgMap(): void {
     gOverlay
       .selectAll<SVGCircleElement, Org>("circle.org")
       .classed("hot", (d) => hot?.ncr_id === d.ncr_id)
-      .classed("selected", (d) => selectedOrg?.ncr_id === d.ncr_id)
-      .classed("peer-dim", (d) => !!hoverOrg && hoverOrg.ncr_id !== d.ncr_id && passes(d));
+      .classed("selected", (d) => selectedOrg?.ncr_id === d.ncr_id);
 
     gLabels
       .selectAll<SVGTextElement, Org>("text.olabel")
       .classed("hot-label", (d) => hot?.ncr_id === d.ncr_id)
-      .classed("selected-label", (d) => selectedOrg?.ncr_id === d.ncr_id)
-      .classed("peer-dim", (d) => !!hoverOrg && hoverOrg.ncr_id !== d.ncr_id);
+      .classed("selected-label", (d) => selectedOrg?.ncr_id === d.ncr_id);
   }
 
   function applyTourClasses(): void {
@@ -980,24 +986,24 @@ export function mountNercOrgMap(): void {
       .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`)
       .on("mouseenter", (ev, o) => {
         hoverOrg = o;
-        applyHighlights();
+        redraw();
         showTooltip(o, ev as MouseEvent);
       })
-      .on("mousemove", (ev, o) => showTooltip(o, ev as MouseEvent))
+      .on("mousemove", (ev) => placeTooltip((ev as MouseEvent).clientX, (ev as MouseEvent).clientY))
       .on("mouseleave", () => {
         hoverOrg = null;
-        applyHighlights();
+        redraw();
         hideTooltip();
       })
       .on("focus", function (_ev, o) {
         hoverOrg = o;
-        applyHighlights();
+        redraw();
         const rect = (this as SVGCircleElement).getBoundingClientRect();
         showTooltipAt(o, rect.right, rect.top);
       })
       .on("blur", () => {
         hoverOrg = null;
-        applyHighlights();
+        redraw();
         hideTooltip();
       })
       .on("keydown", (ev, o) => {
