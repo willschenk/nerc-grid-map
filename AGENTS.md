@@ -13,7 +13,8 @@ Every dot is one entity from the NERC Compliance Registry, placed at its headqua
 - Map styles: `src/lib/nerc/map/nerc-org-map.css` (scoped under `#nerc-app`)
 - Role tables (weights, color anchors, names, tiers): `src/lib/nerc/roles.mjs`
 - Build-time enrichment: `src/lib/nerc/enrich.mjs`
-- Pipeline scripts: `scripts/nerc/{ingest,build-orgs,qa}.mjs`
+- Pipeline scripts: `scripts/nerc/{ingest,build-orgs,qa,build-research-queue}.mjs`
+- Manual research hand-off: `scripts/nerc/cursor-research-queue.md` + `src/data/nerc/research-queue.{jsonl,csv}`
 - Source data: `src/data/nerc/*`, raw CSV in `data/`
 
 ## Data pipeline
@@ -24,6 +25,16 @@ Every dot is one entity from the NERC Compliance Registry, placed at its headqua
 4. `npm run nerc:qa` validates the output. Fix warnings, rebuild.
 
 `build-orgs.mjs` prefers `geocoded-orgs.json` and falls back to `seed-orgs.json`, so the site always builds.
+
+### Research queue and seed retirement
+
+Only MRO and NPCC are geocoded so far. `build-research-queue.mjs` diffs the ingest
+against the geocoded set and writes the remaining work to `research-queue.{jsonl,csv}`
+(WECC, Texas RE, SERC, and the rest of RF). See `cursor-research-queue.md` for the
+hand-off. The ~60 `NCR-SEED-xxx` records are placeholder duplicates of real registry
+rows; `seed-twins.json` maps each to its authoritative twin id, and `build-orgs.mjs`
+auto-drops a seed once any twin is geocoded — so geocode real rows normally and never
+hand-delete a seed.
 
 ## Geocoding and entity search
 

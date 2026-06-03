@@ -16,6 +16,9 @@ const SEED = resolve(root, "src/data/nerc/seed-orgs.json");
 // A geocoding-agent output file (JSON array or {orgs:[...]}) overrides the seed
 // when present, so the real registry can drop in without touching this script.
 const GEOCODED = resolve(root, "src/data/nerc/geocoded-orgs.json");
+// Maps placeholder seeds to their authoritative registry twin(s). A seed is
+// dropped once any twin is geocoded, so seeds auto-retire without leaving a gap.
+const SEED_TWINS = resolve(root, "src/data/nerc/seed-twins.json");
 
 const OUT_DIR = resolve(root, "public/nerc");
 const OUT_ORGS = resolve(OUT_DIR, "orgs.json");
@@ -32,6 +35,19 @@ function loadRecords() {
   return { file, records };
 }
 
+// Drop placeholder seeds whose authoritative registry twin is already present,
+// so the map shows exactly one dot per organization. Seeds with no geocoded twin
+// stay, keeping major entities visible until the real row lands.
+function dropRetiredSeeds(records) {
+  if (!existsSync(SEED_TWINS)) return records;
+  const twins = JSON.parse(readFileSync(SEED_TWINS, "utf8")).twins ?? {};
+  const present = new Set(records.map((r) => r.ncr_id));
+  return records.filter((r) => {
+    const ids = twins[r.ncr_id];
+    return !(ids && ids.some((id) => present.has(id)));
+  });
+}
+
 function tally(orgs, key) {
   const counts = {};
   for (const o of orgs) {
@@ -43,7 +59,7 @@ function tally(orgs, key) {
 
 function main() {
   const { file, records } = loadRecords();
-  const orgs = records
+  const orgs = dropRetiredSeeds(records)
     .filter((r) => r.skip !== true)
     .map(enrichOrg)
     .filter((o) => o.lat != null && o.lng != null);
