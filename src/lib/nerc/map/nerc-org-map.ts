@@ -37,6 +37,10 @@ type Org = {
   seed?: boolean;
   _x?: number;
   _y?: number;
+  _sx?: number;
+  _sy?: number;
+  _vis?: boolean;
+  _rk?: number;
 };
 
 type OrgsPayload = {
@@ -101,6 +105,7 @@ const ROLE_TOUR_LABELS: Record<string, string> = {
   PSE: "Purchasing-Selling Entities (PSE)",
 };
 
+const TOUR_ROLE_ORDER = ["BA", "RC", "PC", "TOP", "TSP", "TP", "LSE"];
 const REGION_ORDER = ["WECC", "MRO", "SPP", "SERC", "RFC", "RF", "NPCC", "TRE", "FRCC"];
 
 function byId<T extends Element>(id: string): T {
@@ -168,11 +173,6 @@ function safeHttpUrl(value: string | null | undefined): string | null {
   }
 }
 
-function roleOrder(): string[] {
-  const roles = Object.keys(ROLE_FULL_NAMES);
-  return ["BA", ...roles.filter((r) => r !== "BA")];
-}
-
 function uniqueCount(values: Array<string | null | undefined>): number {
   return new Set(values.filter((v): v is string => Boolean(v))).size;
 }
@@ -207,6 +207,8 @@ export function mountNercOrgMap(): void {
   const panel = byId<HTMLElement>("nerc-panel");
   const panelBody = byId<HTMLElement>("nerc-panel-body");
   const infoPanel = byId<HTMLElement>("nerc-info-panel");
+  const metricsPanel = byId<HTMLElement>("nerc-metrics-panel");
+  const playBtn = byId<HTMLButtonElement>("nerc-play-tour");
   const statEl = byId<HTMLElement>("nerc-stat");
   const loadingEl = byId<HTMLElement>("nerc-loading");
   const tourStatus = byId<HTMLElement>("nerc-tour-status");
@@ -285,14 +287,18 @@ export function mountNercOrgMap(): void {
   }
 
   function labelText(o: Org, k: number): string {
-    if (k < 2.2) return orgAcronym(o);
+    if (k < 3.2) return orgAcronym(o);
     return shortName(o.entity_name);
   }
 
+  // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
+  // low zoom (only the heaviest entities) and opened up fully once zoomed in,
+  // where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
-    if (k < 1.25) return true;
-    if (k < 2.0) return o.weight >= 4;
-    if (k < 3.4) return o.weight >= 2;
+    if (k < 1.45) return o.weight >= 20;
+    if (k < 2.2) return o.weight >= 9;
+    if (k < 3.5) return o.weight >= 4;
+    if (k < 6) return o.weight >= 2;
     return true;
   }
 
@@ -309,75 +315,107 @@ export function mountNercOrgMap(): void {
     return !(a.x1 < b.x0 || a.x0 > b.x1 || a.y1 < b.y0 || a.y0 > b.y1);
   }
 
+  let rafPending = false;
+  function scheduleRedraw(): void {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      rafPending = false;
+      redraw();
+    });
+  }
+
   function redraw(): void {
     const k = transform.k;
+    const tStr = transform.toString();
+    // Circles ride the zoom transform, so panning is a single group attribute
+    // (GPU-composited) instead of repositioning every dot in JS each frame.
+    gMap.attr("transform", tStr);
+    gOverlay.attr("transform", tStr);
+
+    const hot = hoverOrg ?? selectedOrg;
+    const tourActive = tourIds.size > 0;
+
+    // Project to screen space once, drop off-screen dots, collect label candidates.
+    const margin = 90;
+    const candidates: Org[] = [];
+    for (const o of placeableOrgs) {
+      if (o._x == null || o._y == null) {
+        o._vis = false;
+        continue;
+      }
+      const sx = transform.applyX(o._x);
+      const sy = transform.applyY(o._y);
+      o._sx = sx;
+      o._sy = sy;
+      const vis =
+        sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin && passes(o);
+      o._vis = vis;
+      if (!vis) continue;
+      const forced = tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id;
+      if (forced || shouldTryLabel(o, k)) candidates.push(o);
+    }
+
+    candidates.sort(
+      (a, b) =>
+        Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
+        Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
+        b.weight - a.weight ||
+        b.role_count - a.role_count ||
+        a.entity_name.localeCompare(b.entity_name),
+    );
+
     const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
     const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
-
-    const labelCandidates = placeableOrgs
-      .filter((o) => {
-        if (!passes(o)) return false;
-        return tourIds.has(o.ncr_id) || selectedOrg?.ncr_id === o.ncr_id || hoverOrg?.ncr_id === o.ncr_id || shouldTryLabel(o, k);
-      })
-      .sort(
-        (a, b) =>
-          Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
-          Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
-          b.weight - a.weight ||
-          b.role_count - a.role_count ||
-          a.entity_name.localeCompare(b.entity_name),
-      );
-
-    for (const o of labelCandidates) {
-      if (o._x == null || o._y == null) continue;
-      const cx = transform.applyX(o._x);
-      const cy = transform.applyY(o._y);
+    const centered = k < 1.55;
+    for (const o of candidates) {
+      const sx = o._sx as number;
+      const sy = o._sy as number;
       const r = Math.max(2, RADIUS_SCALE(o.weight) / Math.sqrt(k));
       const text = labelText(o, k);
       const font = labelFont(o, k);
-      const centered = k < 1.55;
-      const x = cx;
-      const y = centered ? cy + font * 0.35 : cy - r - 3;
-      const w = Math.max(16, text.length * font * 0.62) + 7;
-      const h = font + 6;
-      const box = { x0: x - w / 2, x1: x + w / 2, y0: y - h * 0.75, y1: y + h * 0.35 };
+      const x = sx;
+      const y = centered ? sy + font * 0.34 : sy - r - 3;
+      const w = Math.max(14, text.length * font * 0.56) + 5;
+      const h = font + 5;
+      const box = { x0: x - w / 2, x1: x + w / 2, y0: y - h * 0.7, y1: y + h * 0.3 };
       if (placed.some((p) => boxesOverlap(box, p))) continue;
       placed.push(box);
       labelState.set(o.ncr_id, { x, y, font, text });
     }
 
-    gOverlay
-      .selectAll<SVGCircleElement, Org>("circle.org")
-      .each(function (o) {
-        const node = this as SVGCircleElement;
-        const pass = passes(o);
-        node.classList.toggle("hide", !pass);
-        if (!pass || o._x == null || o._y == null) return;
-        node.classList.toggle("labeled", labelState.has(o.ncr_id));
-        const cx = transform.applyX(o._x);
-        const cy = transform.applyY(o._y);
-        const r = Math.max(2, RADIUS_SCALE(o.weight) / Math.sqrt(k));
-        node.setAttribute("cx", String(cx));
-        node.setAttribute("cy", String(cy));
-        node.setAttribute("r", String(r));
-      });
+    gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
+      const node = this as SVGCircleElement;
+      node.classList.toggle("hide", !o._vis);
+      if (!o._vis) return;
+      // Radius is set in transform-space (divided by the group scale) and only
+      // when the zoom level actually changed for this dot.
+      if (o._rk !== k) {
+        node.setAttribute("r", String(Math.max(2 / k, RADIUS_SCALE(o.weight) / Math.pow(k, 1.5))));
+        o._rk = k;
+      }
+      node.classList.toggle("labeled", labelState.has(o.ncr_id));
+      node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
+      node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
+      node.classList.toggle("peer-dim", !!hoverOrg && hoverOrg.ncr_id !== o.ncr_id);
+      node.classList.toggle("tour-flash", tourActive && tourIds.has(o.ncr_id));
+      node.classList.toggle("tour-dim", tourActive && !tourIds.has(o.ncr_id));
+    });
 
-    gLabels
-      .selectAll<SVGTextElement, Org>("text.olabel")
-      .each(function (o) {
-        const node = this as SVGTextElement;
-        const state = labelState.get(o.ncr_id);
-        node.classList.toggle("dim", !state);
-        if (!state) return;
-        node.textContent = state.text;
-        node.setAttribute("x", String(state.x));
-        node.setAttribute("y", String(state.y));
-        node.setAttribute("font-size", String(state.font));
-      });
-
-    applyHighlights();
-    applyTourClasses();
-    renderStats();
+    gLabels.selectAll<SVGTextElement, Org>("text.olabel").each(function (o) {
+      const node = this as SVGTextElement;
+      const state = labelState.get(o.ncr_id);
+      node.classList.toggle("dim", !state);
+      if (!state) return;
+      node.textContent = state.text;
+      node.setAttribute("x", String(state.x));
+      node.setAttribute("y", String(state.y));
+      node.setAttribute("font-size", String(state.font));
+      node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
+      node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
+      node.classList.toggle("tour-flash", tourActive && tourIds.has(o.ncr_id));
+      node.classList.toggle("peer-dim", !!hoverOrg && hoverOrg.ncr_id !== o.ncr_id);
+    });
   }
 
   function renderStats(): void {
@@ -391,8 +429,7 @@ export function mountNercOrgMap(): void {
     statIso.textContent = String(iso);
     statBa.textContent = String(ba);
     statRegion.textContent = String(regions);
-    statEl.textContent =
-      `${shown.length} of ${total} entities shown` + (transform.k > 1.05 ? ` | zoom ${transform.k.toFixed(1)}x` : "");
+    statEl.textContent = `${shown.length} of ${total} entities shown`;
   }
 
   function renderTooltip(o: Org): void {
@@ -472,6 +509,14 @@ export function mountNercOrgMap(): void {
 
   function renderPanel(o: Org): void {
     panelBody.replaceChildren();
+    const close = createEl("button", "nerc-panel-close", "×");
+    close.type = "button";
+    close.setAttribute("aria-label", "Close");
+    close.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      closePanel();
+    });
+    panelBody.append(close);
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
     title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, o.entity_name));
@@ -532,10 +577,20 @@ export function mountNercOrgMap(): void {
     infoPanel.hidden = true;
   }
 
+  function closeMetrics(): void {
+    metricsPanel.hidden = true;
+  }
+
+  function closePopovers(): void {
+    closePanel();
+    closeInfo();
+    closeMetrics();
+    hideTooltip();
+  }
+
   function animateTransform(next: ZoomTransform, duration = 350): void {
     if (!zoomBehavior) {
       transform = next;
-      gMap.attr("transform", transform.toString());
       redraw();
       return;
     }
@@ -583,6 +638,7 @@ export function mountNercOrgMap(): void {
     stopTour();
     selectedOrg = o;
     infoPanel.hidden = true;
+    metricsPanel.hidden = true;
     renderPanel(o);
     hideTooltip();
     if (opts.center) centerOnOrg(o);
@@ -620,15 +676,6 @@ export function mountNercOrgMap(): void {
     activeFiltersEl.append(frag);
   }
 
-  function updateRoleCounts(): void {
-    document.querySelectorAll<HTMLElement>("[data-count-for]").forEach((el) => {
-      const role = el.dataset.countFor;
-      if (!role) return;
-      const n = filteredOrgs({ ignoreRoles: true }).filter((o) => o.roles.includes(role)).length;
-      el.textContent = n ? String(n) : "";
-    });
-  }
-
   function syncControls(): void {
     document.querySelectorAll<HTMLButtonElement>(".nerc-role").forEach((btn) => {
       btn.classList.toggle("active", !!btn.dataset.role && selRoles.has(btn.dataset.role));
@@ -653,8 +700,8 @@ export function mountNercOrgMap(): void {
     if (opts.stopTourFirst) stopTour();
     syncControls();
     redraw();
+    renderStats();
     renderActiveFilters();
-    updateRoleCounts();
   }
 
   function renderRegionPills(): void {
@@ -667,7 +714,7 @@ export function mountNercOrgMap(): void {
     const regions = [...counts.keys()].sort((a, b) => regionRank(a) - regionRank(b) || a.localeCompare(b));
     container.replaceChildren();
     for (const region of regions) {
-      const btn = createEl("button", "nerc-pill nerc-region", `${region} ${counts.get(region) ?? ""}`);
+      const btn = createEl("button", "nerc-pill nerc-region", region);
       btn.type = "button";
       btn.dataset.region = region;
       container.append(btn);
@@ -753,11 +800,30 @@ export function mountNercOrgMap(): void {
       updateView({ stopTourFirst: true });
     });
 
-    byId<HTMLButtonElement>("nerc-panel-close").addEventListener("click", closePanel);
+    playBtn.addEventListener("click", () => {
+      if (tourTimers.length || tourIds.size) {
+        stopTour();
+        return;
+      }
+      startTour();
+    });
+
     byId<HTMLButtonElement>("nerc-info-toggle").addEventListener("click", () => {
+      metricsPanel.hidden = true;
+      panel.hidden = true;
+      selectedOrg = null;
       infoPanel.hidden = !infoPanel.hidden;
+      redraw();
+    });
+    byId<HTMLButtonElement>("nerc-metrics-toggle").addEventListener("click", () => {
+      infoPanel.hidden = true;
+      panel.hidden = true;
+      selectedOrg = null;
+      metricsPanel.hidden = !metricsPanel.hidden;
+      redraw();
     });
     byId<HTMLButtonElement>("nerc-info-close").addEventListener("click", closeInfo);
+    byId<HTMLButtonElement>("nerc-metrics-close").addEventListener("click", closeMetrics);
     byId<HTMLButtonElement>("nerc-fit-filtered").addEventListener("click", () => {
       stopTour();
       fitTo(filteredOrgs());
@@ -766,24 +832,45 @@ export function mountNercOrgMap(): void {
       stopTour();
       homeView();
     });
-    byId<HTMLButtonElement>("nerc-zoom-in").addEventListener("click", () => {
-      stopTour();
-      if (zoomBehavior) svg.transition().duration(220).call(zoomBehavior.scaleBy as never, 1.35);
-    });
-    byId<HTMLButtonElement>("nerc-zoom-out").addEventListener("click", () => {
-      stopTour();
-      if (zoomBehavior) svg.transition().duration(220).call(zoomBehavior.scaleBy as never, 0.74);
-    });
-    byId<HTMLButtonElement>("nerc-replay-tour").addEventListener("click", () => startTour());
 
     document.addEventListener("keydown", (ev) => {
       if (ev.key === "Escape") {
         stopTour();
-        closePanel();
-        closeInfo();
-        hideTooltip();
+        closePopovers();
+        return;
+      }
+      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(ev.key)) {
+        const step = ev.shiftKey ? 80 : 36;
+        const dx = ev.key === "ArrowLeft" ? step : ev.key === "ArrowRight" ? -step : 0;
+        const dy = ev.key === "ArrowUp" ? step : ev.key === "ArrowDown" ? -step : 0;
+        ev.preventDefault();
+        stopTour();
+        animateTransform(zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k), 160);
       }
     });
+  }
+
+  function revealInfoButton(): void {
+    const btn = byId<HTMLButtonElement>("nerc-info-toggle");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      btn.textContent = "i";
+      return;
+    }
+    const frames = ["I", "In", "Inf", "Info"];
+    btn.classList.add("nerc-info-typing");
+    let i = 0;
+    const tick = (): void => {
+      if (i < frames.length) {
+        btn.textContent = frames[i++];
+        window.setTimeout(tick, 120);
+      } else {
+        window.setTimeout(() => {
+          btn.textContent = "i";
+          btn.classList.remove("nerc-info-typing");
+        }, 620);
+      }
+    };
+    window.setTimeout(tick, 480);
   }
 
   function setupZoom(): void {
@@ -791,14 +878,12 @@ export function mountNercOrgMap(): void {
       .scaleExtent([0.8, 12])
       .on("zoom", (ev) => {
         transform = ev.transform;
-        gMap.attr("transform", transform.toString());
-        redraw();
+        scheduleRedraw();
       });
     svg.call(zoomBehavior);
     svg.on("dblclick.zoom", null);
     svg.on("click", () => {
-      closePanel();
-      hideTooltip();
+      closePopovers();
     });
   }
 
@@ -807,6 +892,8 @@ export function mountNercOrgMap(): void {
     tourTimers = [];
     tourIds = new Set();
     tourStatus.hidden = true;
+    playBtn.textContent = "Play";
+    playBtn.setAttribute("aria-label", "Play walkthrough");
     if (placeableOrgs.length) redraw();
     else applyTourClasses();
   }
@@ -817,7 +904,7 @@ export function mountNercOrgMap(): void {
     tourStatus.replaceChildren(
       createEl("span", "tour-kicker", "Role focus"),
       createEl("strong", "tour-title", label),
-      createEl("span", "tour-sub", `${matches.length} entities highlighted | ${description}`),
+      createEl("span", "tour-sub", description),
     );
     tourStatus.hidden = matches.length === 0;
     redraw();
@@ -826,18 +913,25 @@ export function mountNercOrgMap(): void {
   function startTour(): void {
     stopTour();
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    selectedOrg = null;
+    panel.hidden = true;
+    infoPanel.hidden = true;
+    metricsPanel.hidden = true;
+    playBtn.textContent = "Stop";
+    playBtn.setAttribute("aria-label", "Stop walkthrough");
+    fitTo(filteredOrgs(), 700);
 
     const steps = [
       { label: "ISOs and RTOs", description: "regional grid and market operators", match: (o: Org) => o.is_iso_rto },
-      ...roleOrder().map((role) => ({
+      ...TOUR_ROLE_ORDER.map((role) => ({
         label: ROLE_TOUR_LABELS[role] ?? `${roleFullName(role)} (${role})`,
         description: roleFullName(role),
         match: (o: Org) => o.roles.includes(role),
       })),
     ].filter((step) => filteredOrgs().some(step.match));
 
-    const firstStepMs = 900;
-    const stepMs = 1700;
+    const firstStepMs = 1050;
+    const stepMs = 1900;
     steps.forEach((step, idx) => {
       tourTimers.push(window.setTimeout(() => showTourStep(step.label, step.description, step.match), firstStepMs + idx * stepMs));
     });
@@ -878,6 +972,9 @@ export function mountNercOrgMap(): void {
       .join("circle")
       .attr("class", (o) => "org" + (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : ""))
       .attr("fill", (o) => safeColor(o.color))
+      .attr("cx", (o) => o._x as number)
+      .attr("cy", (o) => o._y as number)
+      .attr("r", (o) => RADIUS_SCALE(o.weight))
       .attr("tabindex", 0)
       .attr("role", "button")
       .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`)
@@ -929,7 +1026,7 @@ export function mountNercOrgMap(): void {
     wireControls();
     loadingEl.style.display = "none";
     updateView();
-    window.setTimeout(() => startTour(), 1200);
+    revealInfoButton();
   }
 
   init().catch((err) => {

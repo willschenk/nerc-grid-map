@@ -53,9 +53,19 @@ const confidenceLevels = [
         <header class="nerc-topbar" aria-label="Map controls and summary">
           <div class="nerc-brand">
             <h1>NERC Grid Map</h1>
-            <div class="nerc-stat" id="nerc-stat">Loading registry map...</div>
           </div>
 
+          <div class="nerc-map-actions" aria-label="Map actions">
+            <button id="nerc-play-tour" type="button" class="nerc-action-btn nerc-play-btn" aria-label="Play walkthrough">Play</button>
+            <button id="nerc-metrics-toggle" type="button" class="nerc-action-btn" aria-label="Filters and metrics" title="Filters and metrics">Filters</button>
+            <button id="nerc-info-toggle" type="button" class="nerc-icon-btn nerc-info-button" aria-label="How to read this map" title="How to read this map">i</button>
+          </div>
+        </header>
+
+        <aside id="nerc-metrics-panel" class="nerc-popover nerc-metrics-panel" hidden>
+          <button id="nerc-metrics-close" type="button" class="nerc-panel-close" aria-label="Close filters">&times;</button>
+          <h2>Filters</h2>
+          <div class="nerc-stat" id="nerc-stat">Loading registry map...</div>
           <div class="nerc-dashboard" aria-label="Map summary">
             <div class="nerc-kpi">
               <span>Shown</span>
@@ -79,17 +89,6 @@ const confidenceLevels = [
             </div>
           </div>
 
-          <div class="nerc-map-actions" aria-label="Map actions">
-            <button id="nerc-info-toggle" type="button" class="nerc-icon-btn nerc-info-button" aria-label="About this map" title="About this map">i</button>
-            <button id="nerc-zoom-in" type="button" class="nerc-icon-btn" aria-label="Zoom in">+</button>
-            <button id="nerc-zoom-out" type="button" class="nerc-icon-btn" aria-label="Zoom out">-</button>
-            <button id="nerc-fit-filtered" type="button" class="nerc-action-btn">Fit shown</button>
-            <button id="nerc-zoom-home" type="button" class="nerc-action-btn">Reset</button>
-            <button id="nerc-replay-tour" type="button" class="nerc-action-btn">Replay</button>
-          </div>
-        </header>
-
-        <div class="nerc-filter-dock">
           <div class="nerc-quick" aria-label="Quick filters">
             <button type="button" class="nerc-pill nerc-quick-filter" data-quick="iso">ISO / RTO</button>
             <button type="button" class="nerc-pill nerc-quick-filter" data-quick="ba">BA</button>
@@ -116,7 +115,6 @@ const confidenceLevels = [
                     >
                       <span class="nerc-dot" />
                       {r.tag}
-                      <span class="nerc-count" data-count-for={r.tag} />
                     </button>
                   ))
                 }
@@ -157,33 +155,26 @@ const confidenceLevels = [
             <div class="nerc-tool nerc-slider">
               <label for="nerc-mincount">Min roles <span id="nerc-mincount-val">1</span></label>
               <input id="nerc-mincount" type="range" min="1" max="12" value="1" step="1" />
+              <button id="nerc-fit-filtered" type="button" class="nerc-pill">Fit shown</button>
+              <button id="nerc-zoom-home" type="button" class="nerc-pill">Reset view</button>
               <button id="nerc-reset" type="button" class="nerc-pill">Reset filters</button>
             </div>
           </div>
 
           <div id="nerc-active-filters" class="nerc-active-filters" aria-live="polite"></div>
-        </div>
+        </aside>
 
         <aside id="nerc-panel" class="nerc-panel" hidden>
-          <button id="nerc-panel-close" type="button" class="nerc-panel-close" aria-label="Close">x</button>
           <div id="nerc-panel-body"></div>
         </aside>
 
-        <aside id="nerc-info-panel" class="nerc-info-panel" hidden>
-          <button id="nerc-info-close" type="button" class="nerc-panel-close" aria-label="Close">x</button>
+        <aside id="nerc-info-panel" class="nerc-popover nerc-info-panel" hidden>
+          <button id="nerc-info-close" type="button" class="nerc-panel-close" aria-label="Close">&times;</button>
           <h2>How to read it</h2>
-          <p>Each dot is one NERC-registered organization placed at its headquarters.</p>
-          <ul>
-            <li>Color shows the mix of registered functions.</li>
-            <li>Size shows how much grid authority those functions carry.</li>
-            <li>Dashed outlines mark low-confidence or estimated locations.</li>
-            <li>Click any dot to keep its details on screen.</li>
-          </ul>
-        </aside>
-
-        <div class="nerc-bottom-dock" aria-label="Role guide">
+          <p class="nerc-info-lead">Each dot is one organization, at its headquarters.</p>
+          <p class="nerc-info-legend"><b>Color</b> role mix <span aria-hidden="true">&middot;</span> <b>Size</b> role weight</p>
           <details class="nerc-role-guide" open>
-            <summary>Role guide</summary>
+            <summary>Role abbreviations</summary>
             <div class="nerc-role-guide-grid">
               {
                 tiers.map((t) => (
@@ -203,7 +194,7 @@ const confidenceLevels = [
               }
             </div>
           </details>
-        </div>
+        </aside>
       </section>
     </div>
   </div>
