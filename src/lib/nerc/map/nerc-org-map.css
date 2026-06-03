@@ -66,6 +66,17 @@
   display: none;
 }
 
+#nerc-svg .org-hit {
+  fill: transparent;
+  stroke: transparent;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+#nerc-svg .org-hit.hide {
+  display: none;
+}
+
 #nerc-svg .org.hot,
 #nerc-svg .org.selected {
   fill-opacity: 1;
@@ -192,13 +203,6 @@
   font-size: 1.5rem;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-}
-
-.nerc-metrics-note {
-  margin: -0.1rem 0 0;
-  color: #66736f;
-  font-size: 0.72rem;
-  line-height: 1.3;
 }
 
 .nerc-statsec h3 {

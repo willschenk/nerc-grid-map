@@ -176,6 +176,7 @@ export function mountNercOrgMap(): void {
   const svg = select(svgNode);
   const gMap = svg.append("g").attr("class", "map");
   const gOverlay = svg.append("g").attr("class", "overlay");
+  const gHit = svg.append("g").attr("class", "hit");
   const gLabels = svg.append("g").attr("class", "labels");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
@@ -205,7 +206,6 @@ export function mountNercOrgMap(): void {
   // User-space units per on-screen pixel (W / element width). Lets us size
   // labels in real pixels so they read the same on desktop and iOS.
   let unitPerPx = 1;
-  let zOrderMode = "";
   // Phone-sized screens get fewer labels when zoomed in (less screen real
   // estate for the same physical-size labels).
   let compact = false;
@@ -234,25 +234,35 @@ export function mountNercOrgMap(): void {
   function shouldTryLabel(o: Org, k: number): boolean {
     if (k < 1.25) return o.weight >= 12;
     if (k < 1.8) return o.weight >= 7;
-    if (k < 2.8) return o.weight >= 4;
-    if (k < 4.6) return o.weight >= 2;
-    return true;
+    if (k < 2.6) return o.weight >= 5;
+    if (k < 3.4) return o.weight >= 4;
+    if (k < 4.8) return o.weight >= 3;
+    if (k < 6.8) return o.weight >= 2;
+    return o.weight >= 1;
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before
   // it hits the SVG). Grows a little as you zoom in instead of staying flat.
   function labelFontPx(o: Org, k: number): number {
-    const base = o.weight >= 30 ? 14.5 : o.weight >= 12 ? 13 : 11.5;
-    const growth = Math.min(1.55, 1 + Math.max(0, k - 1) * 0.11);
+    const base = compact
+      ? o.weight >= 30 ? 12 : o.weight >= 12 ? 10.75 : 9.25
+      : o.weight >= 30 ? 14.5 : o.weight >= 12 ? 13 : 11.5;
+    const growth = compact
+      ? Math.min(1.28, 1 + Math.max(0, k - 1) * 0.055)
+      : Math.min(1.55, 1 + Math.max(0, k - 1) * 0.11);
     return base * growth;
   }
 
   function labelLimit(k: number): number {
-    if (k < 1.25) return 46;
-    if (k < 1.8) return 70;
-    if (k < 2.8) return 96;
-    if (k < 4.6) return 140;
-    return 220;
+    const cap =
+      k < 1.25 ? 46 :
+      k < 1.8 ? 70 :
+      k < 2.6 ? 88 :
+      k < 3.4 ? 110 :
+      k < 4.8 ? 132 :
+      k < 6.8 ? 162 :
+      190;
+    return compact ? Math.round(cap * 0.68) : cap;
   }
 
   function boxesOverlap(
@@ -311,6 +321,10 @@ export function mountNercOrgMap(): void {
       .selectAll<SVGCircleElement, Org>("circle.org")
       .attr("cx", (o) => o._x as number)
       .attr("cy", (o) => o._y as number);
+    gHit
+      .selectAll<SVGCircleElement, Org>("circle.org-hit")
+      .attr("cx", (o) => o._x as number)
+      .attr("cy", (o) => o._y as number);
   }
 
   let resizePending = false;
@@ -323,19 +337,6 @@ export function mountNercOrgMap(): void {
       project();
       redraw();
     });
-  }
-
-  // Paint order = DOM order. Default keeps the larger orgs in front; once you
-  // zoom in, smaller orgs come to the front so they can be seen/clicked even
-  // when they sit on top of a big one's coordinates.
-  function applyZOrder(k: number): void {
-    const mode = k >= 3.5 ? "small-front" : "large-front";
-    if (mode === zOrderMode) return;
-    zOrderMode = mode;
-    const dir = mode === "small-front" ? -1 : 1;
-    gOverlay
-      .selectAll<SVGCircleElement, Org>("circle.org")
-      .sort((a, b) => dir * (a.weight - b.weight || a.role_count - b.role_count));
   }
 
   let rafPending = false;
@@ -355,7 +356,7 @@ export function mountNercOrgMap(): void {
     // (GPU-composited) instead of repositioning every dot in JS each frame.
     gMap.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
-    applyZOrder(k);
+    gHit.attr("transform", tStr);
 
     const hot = hoverOrg ?? selectedOrg;
     const tourActive = tourIds.size > 0;
@@ -400,9 +401,11 @@ export function mountNercOrgMap(): void {
     const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
     const placed: Box[] = [];
     const maxLabels = tourActive ? 999 : labelLimit(k);
+    const topSafe = compact && !tourActive ? 72 * unitPerPx : 0;
+    const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
     // On phones, inflate the collision box as you zoom in so labels spread out
     // (less information overload). Untouched on desktop and during the tour.
-    const spacing = compact && !tourActive ? (k < 2.2 ? 1 : k < 3.5 ? 1.35 : 1.7) : 1;
+    const spacing = compact && !tourActive ? Math.min(2.05, 1 + Math.max(0, k - 1.8) * 0.24) : 1;
     for (const o of candidates) {
       if (placed.length >= maxLabels) break;
       const sx = o._sx as number;
@@ -424,6 +427,7 @@ export function mountNercOrgMap(): void {
       let chosen: { x: number; y: number; box: Box } | null = null;
       for (const [lx, ly] of spots) {
         const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
+        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
         if (placed.some((p) => boxesOverlap(box, p))) continue;
         chosen = { x: lx, y: ly, box };
         break;
@@ -449,6 +453,15 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
       node.classList.toggle("tour-flash", tourActive && tourIds.has(o.ncr_id));
       node.classList.toggle("tour-dim", tourActive && !tourIds.has(o.ncr_id));
+    });
+
+    gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
+      const node = this as SVGCircleElement;
+      node.classList.toggle("hide", !o._vis);
+      if (!o._vis) return;
+      const visualRadius = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
+      const minHitRadius = (compact ? 16 : 10) * unitPerPx;
+      node.setAttribute("r", String(Math.max(visualRadius, minHitRadius) / k));
     });
 
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").each(function (o) {
@@ -496,8 +509,6 @@ export function mountNercOrgMap(): void {
   function renderStats(): void {
     const mapped = placeableOrgs.length;
     const shown = placeableOrgs.reduce((n, o) => n + (o._vis ? 1 : 0), 0);
-    const registry = orgs.length;
-
     const top = createEl("div", "nerc-metrics-top");
     const kpi = (label: string, value: number): HTMLElement => {
       const box = createEl("div", "nerc-kpi");
@@ -509,15 +520,8 @@ export function mountNercOrgMap(): void {
     shownEl = shownKpi.querySelector("strong");
     top.append(shownKpi, kpi("Mapped", mapped));
 
-    const note = createEl(
-      "p",
-      "nerc-metrics-note",
-      `${mapped.toLocaleString()} of ${registry.toLocaleString()} registry records placed (${registry - mapped} missing coordinates)`,
-    );
-
     metricsBody.replaceChildren(
       top,
-      note,
       statSection("By organization type", tally(placeableOrgs.map((o) => o.org_type), "other"), (k) => typeLabel(k)),
       statSection("By NERC region", tally(placeableOrgs.map((o) => o.region), "Unassigned"), (k) => k),
     );
@@ -735,6 +739,53 @@ export function mountNercOrgMap(): void {
     applyHighlights();
   }
 
+  function raiseVisibleOrg(o: Org): void {
+    gOverlay
+      .selectAll<SVGCircleElement, Org>("circle.org")
+      .filter((d) => d.ncr_id === o.ncr_id)
+      .raise();
+  }
+
+  function wireOrgPointer(selection: ReturnType<typeof gOverlay.selectAll<SVGCircleElement, Org>>): void {
+    selection
+      .on("mouseenter", (ev, o) => {
+        hoverOrg = o;
+        raiseVisibleOrg(o);
+        redraw();
+        showTooltip(o, ev as MouseEvent);
+      })
+      .on("mousemove", (ev) => placeTooltip((ev as MouseEvent).clientX, (ev as MouseEvent).clientY))
+      .on("mouseleave", () => {
+        hoverOrg = null;
+        redraw();
+        hideTooltip();
+      })
+      .on("focus", function (_ev, o) {
+        hoverOrg = o;
+        raiseVisibleOrg(o);
+        redraw();
+        const rect = (this as SVGCircleElement).getBoundingClientRect();
+        showTooltipAt(o, rect.right, rect.top);
+      })
+      .on("blur", () => {
+        hoverOrg = null;
+        redraw();
+        hideTooltip();
+      })
+      .on("keydown", (ev, o) => {
+        const key = (ev as KeyboardEvent).key;
+        if (key === "Enter" || key === " ") {
+          ev.preventDefault();
+          selectOrg(o);
+        }
+      })
+      .on("click", (ev, o) => {
+        (ev as MouseEvent).stopPropagation();
+        raiseVisibleOrg(o);
+        selectOrg(o);
+      });
+  }
+
   function updateView(opts: { stopTourFirst?: boolean } = {}): void {
     if (opts.stopTourFirst) stopTour();
     redraw();
@@ -909,11 +960,12 @@ export function mountNercOrgMap(): void {
     measure();
     project();
     placeableOrgs = orgs.filter((o) => o._x != null && o._y != null);
-    const ordered = [...placeableOrgs].sort((a, b) => b.weight - a.weight || b.role_count - a.role_count);
+    const visibleOrder = [...placeableOrgs].sort((a, b) => a.weight - b.weight || a.role_count - b.role_count);
+    const hitOrder = [...placeableOrgs].sort((a, b) => b.weight - a.weight || b.role_count - a.role_count);
 
-    gOverlay
+    const visibleCircles = gOverlay
       .selectAll("circle.org")
-      .data(ordered, (o: unknown) => (o as Org).ncr_id)
+      .data(visibleOrder, (o: unknown) => (o as Org).ncr_id)
       .join("circle")
       .attr("class", (o) => "org" + (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : ""))
       .attr("fill", (o) => safeColor(o.color))
@@ -922,46 +974,25 @@ export function mountNercOrgMap(): void {
       .attr("r", (o) => RADIUS_SCALE(o.weight))
       .attr("tabindex", 0)
       .attr("role", "button")
-      .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`)
-      .on("mouseenter", (ev, o) => {
-        hoverOrg = o;
-        select(ev.currentTarget as SVGCircleElement).raise();
-        redraw();
-        showTooltip(o, ev as MouseEvent);
-      })
-      .on("mousemove", (ev) => placeTooltip((ev as MouseEvent).clientX, (ev as MouseEvent).clientY))
-      .on("mouseleave", () => {
-        hoverOrg = null;
-        redraw();
-        hideTooltip();
-      })
-      .on("focus", function (_ev, o) {
-        hoverOrg = o;
-        select(this as SVGCircleElement).raise();
-        redraw();
-        const rect = (this as SVGCircleElement).getBoundingClientRect();
-        showTooltipAt(o, rect.right, rect.top);
-      })
-      .on("blur", () => {
-        hoverOrg = null;
-        redraw();
-        hideTooltip();
-      })
-      .on("keydown", (ev, o) => {
-        const key = (ev as KeyboardEvent).key;
-        if (key === "Enter" || key === " ") {
-          ev.preventDefault();
-          selectOrg(o);
-        }
-      })
-      .on("click", (ev, o) => {
-        (ev as MouseEvent).stopPropagation();
-        selectOrg(o);
-      });
+      .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`);
+
+    wireOrgPointer(visibleCircles as never);
+
+    const hitCircles = gHit
+      .selectAll("circle.org-hit")
+      .data(hitOrder, (o: unknown) => (o as Org).ncr_id)
+      .join("circle")
+      .attr("class", "org-hit")
+      .attr("cx", (o) => o._x as number)
+      .attr("cy", (o) => o._y as number)
+      .attr("r", (o) => Math.max(10, RADIUS_SCALE(o.weight)))
+      .attr("aria-hidden", "true");
+
+    wireOrgPointer(hitCircles as never);
 
     gLabels
       .selectAll("text.olabel")
-      .data(ordered, (o: unknown) => (o as Org).ncr_id)
+      .data(visibleOrder, (o: unknown) => (o as Org).ncr_id)
       .join("text")
       .attr("class", "olabel")
       .text((o) => orgAcronym(o));
