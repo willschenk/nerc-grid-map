@@ -224,8 +224,9 @@ export function mountNercOrgMap(): void {
   }
 
   function labelText(o: Org, k: number): string {
-    if (k < 3.2) return orgAcronym(o);
-    return shortName(o.entity_name);
+    const full = shortName(o.entity_name);
+    if (k < 3.2 || full.length > (compact ? 22 : 32)) return orgAcronym(o);
+    return full;
   }
 
   // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
@@ -403,6 +404,8 @@ export function mountNercOrgMap(): void {
     const maxLabels = tourActive ? 999 : labelLimit(k);
     const topSafe = compact && !tourActive ? 72 * unitPerPx : 0;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
+    const clusterRadius = (compact ? 24 : 18) * unitPerPx;
+    const labeledClusters: Array<{ x: number; y: number }> = [];
     // On phones, inflate the collision box as you zoom in so labels spread out
     // (less information overload). Untouched on desktop and during the tour.
     const spacing = compact && !tourActive ? Math.min(2.05, 1 + Math.max(0, k - 1.8) * 0.24) : 1;
@@ -410,6 +413,13 @@ export function mountNercOrgMap(): void {
       if (placed.length >= maxLabels) break;
       const sx = o._sx as number;
       const sy = o._sy as number;
+      const forceLabel = hot?.ncr_id === o.ncr_id;
+      if (
+        !forceLabel &&
+        labeledClusters.some((p) => (p.x - sx) ** 2 + (p.y - sy) ** 2 <= clusterRadius ** 2)
+      ) {
+        continue;
+      }
       const r = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
@@ -434,6 +444,7 @@ export function mountNercOrgMap(): void {
       }
       if (!chosen) continue;
       placed.push(chosen.box);
+      if (!forceLabel) labeledClusters.push({ x: sx, y: sy });
       labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text });
     }
 
