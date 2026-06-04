@@ -187,10 +187,10 @@ export function mountNercOrgMap(): void {
   const svgNode = byId<SVGSVGElement>("nerc-svg");
   const svg = select(svgNode);
   const gMap = svg.append("g").attr("class", "map");
+  // Geographic context stays below every NERC mark and label.
+  const gPlaces = svg.append("g").attr("class", "places");
   const gOverlay = svg.append("g").attr("class", "overlay");
   const gHit = svg.append("g").attr("class", "hit");
-  // City labels live below the org labels so NERC names always paint on top.
-  const gPlaces = svg.append("g").attr("class", "places");
   const gLabels = svg.append("g").attr("class", "labels");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
@@ -290,6 +290,31 @@ export function mountNercOrgMap(): void {
       k < 6.8 ? 162 :
       190;
     return compact ? Math.round(cap * 0.68) : cap;
+  }
+
+  function placeLabelLimit(k: number): number {
+    if (compact) return 16;
+    if (k < 1.8) return 14;
+    if (k < 4.8) return 34;
+    return 58;
+  }
+
+  function placeDotMinK(tier: number): number {
+    return tier === 1 ? 0.72 : tier === 2 ? 1.8 : 3.6;
+  }
+
+  function placeLabelMinK(tier: number): number {
+    return tier === 1 ? 0.72 : tier === 2 ? 2.4 : 4.8;
+  }
+
+  function placeDotRadius(p: Place): number {
+    return (p.tier === 1 ? 2.4 : p.tier === 2 ? 2 : 1.7) * unitPerPx;
+  }
+
+  function visualRadius(o: Org, k: number): number {
+    const base = Math.max(2, RADIUS_SCALE(o.weight));
+    const grown = base * Math.pow(k, 0.1);
+    return compact ? grown : Math.min(grown, base + 4 * unitPerPx);
   }
 
   function boxesOverlap(
@@ -541,7 +566,7 @@ export function mountNercOrgMap(): void {
       ) {
         continue;
       }
-      const r = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
+      const r = visualRadius(o, k);
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
       const w = (Math.max(14, text.length * font * 0.56) + 5) * spacing;
@@ -576,8 +601,7 @@ export function mountNercOrgMap(): void {
       // Radius is set in transform-space (divided by the group scale) and only
       // when the zoom level actually changed for this dot.
       if (o._rk !== k) {
-        // On-screen radius grows gently with zoom (k^0.1) rather than shrinking.
-        node.setAttribute("r", String(Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1)) / k));
+        node.setAttribute("r", String(visualRadius(o, k) / k));
         o._rk = k;
       }
       const labeled = labelState.has(o.ncr_id);
@@ -597,9 +621,11 @@ export function mountNercOrgMap(): void {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
       if (!o._vis || !hitChanged) return;
-      const visualRadius = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
+      // Keep hit targets on the old growth curve so smaller visual bubbles do
+      // not become harder to click.
+      const hitRadius = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
       const minHitRadius = (compact ? 16 : 10) * unitPerPx;
-      node.setAttribute("r", String(Math.max(visualRadius, minHitRadius) / k));
+      node.setAttribute("r", String(Math.max(hitRadius, minHitRadius) / k));
     });
 
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").each(function (o) {
@@ -616,18 +642,33 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("tour-flash", tourActive && !!state);
     });
 
-    // City context labels. Placed only into the space the NERC labels left
-    // free (placed[] already holds every org label box, so NERC always wins),
-    // gated by zoom tier, and suppressed entirely during the tour.
+    const placeBlockers = [...placed];
+    for (const o of placeableOrgs) {
+      if (!o._vis || o._sx == null || o._sy == null) continue;
+      const r = visualRadius(o, k) + 2 * unitPerPx;
+      placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
+    }
+
+    // City context. Dots can appear before labels, but every city mark stays
+    // visually below NERC data and city labels only fit into leftover space.
+    const placeDotState = new Map<string, { x: number; y: number; r: number }>();
     const placeState = new Map<string, { x: number; y: number; font: number }>();
     if (!tourRunning) {
+      for (const p of places) {
+        if (p._x == null || p._y == null) continue;
+        if (k < placeDotMinK(p.tier)) continue;
+        const sx = transform.applyX(p._x);
+        const sy = transform.applyY(p._y);
+        if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
+        placeDotState.set(p.name, { x: sx, y: sy, r: placeDotRadius(p) });
+      }
+
       let placedPlaces = 0;
-      const placeCap = compact ? 16 : 30;
+      const placeCap = placeLabelLimit(k);
       for (const p of places) {
         if (placedPlaces >= placeCap) break;
         if (p._x == null || p._y == null) continue;
-        const minK = p.tier === 1 ? 0.72 : p.tier === 2 ? 2.4 : 4.8;
-        if (k < minK) continue;
+        if (k < placeLabelMinK(p.tier)) continue;
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
@@ -636,12 +677,22 @@ export function mountNercOrgMap(): void {
         const h = px + 4;
         const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
         if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
-        if (placed.some((q) => boxesOverlap(box, q))) continue;
-        placed.push(box);
+        if (placeBlockers.some((q) => boxesOverlap(box, q))) continue;
+        placeBlockers.push(box);
         placedPlaces++;
         placeState.set(p.name, { x: sx, y: sy + px * 0.34, font: px });
       }
     }
+
+    gPlaces.selectAll<SVGCircleElement, Place>("circle.place-dot").each(function (p) {
+      const node = this as SVGCircleElement;
+      const state = placeDotState.get(p.name);
+      node.classList.toggle("dim", !state);
+      if (!state) return;
+      node.setAttribute("cx", String(state.x));
+      node.setAttribute("cy", String(state.y));
+      node.setAttribute("r", String(state.r));
+    });
 
     gPlaces.selectAll<SVGTextElement, Place>("text.place").each(function (p) {
       const node = this as SVGTextElement;
@@ -1187,7 +1238,7 @@ export function mountNercOrgMap(): void {
       .attr("fill", (o) => safeColor(o.color))
       .attr("cx", (o) => orgRenderX(o))
       .attr("cy", (o) => orgRenderY(o))
-      .attr("r", (o) => RADIUS_SCALE(o.weight))
+      .attr("r", (o) => visualRadius(o, transform.k))
       .attr("tabindex", 0)
       .attr("role", "button")
       .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`);
@@ -1205,6 +1256,12 @@ export function mountNercOrgMap(): void {
       .attr("aria-hidden", "true");
 
     wireOrgPointer(hitCircles as never);
+
+    gPlaces
+      .selectAll("circle.place-dot")
+      .data(places, (p: unknown) => (p as Place).name)
+      .join("circle")
+      .attr("class", "place-dot");
 
     gLabels
       .selectAll("text.olabel")

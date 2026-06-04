@@ -49,7 +49,7 @@
   stroke-width: 0.8;
   vector-effect: non-scaling-stroke;
   cursor: pointer;
-  transition: fill-opacity 120ms ease, stroke-width 120ms ease, filter 120ms ease;
+  transition: fill-opacity 120ms ease, stroke-width 120ms ease;
 }
 
 #nerc-svg .org.estimated {
@@ -77,12 +77,16 @@
   display: none;
 }
 
-#nerc-svg .org.hot,
+#nerc-svg .org.hot {
+  fill-opacity: 1;
+  stroke: #07110e;
+  stroke-width: 1.4;
+}
+
 #nerc-svg .org.selected {
   fill-opacity: 1;
   stroke: #07110e;
-  stroke-width: 2.4;
-  filter: drop-shadow(0 3px 7px rgba(0, 0, 0, 0.24));
+  stroke-width: 1.8;
 }
 
 #nerc-svg .org.tour-dim {
@@ -131,6 +135,17 @@
 }
 
 /* Secondary geographic context — quiet, so NERC labels read as primary. */
+#nerc-svg .place-dot {
+  fill: rgba(80, 101, 94, 0.46);
+  stroke: rgba(248, 251, 249, 0.82);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+#nerc-svg .place-dot.dim {
+  display: none;
+}
+
 #nerc-svg .place {
   fill: #66736e;
   font-weight: 600;
