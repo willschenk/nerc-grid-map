@@ -40,8 +40,8 @@ type Org = {
   out_of_footprint?: boolean;
   _x?: number;
   _y?: number;
-  // Declutter offset (screen-space target at k=1): nudges overlapping bubbles
-  // apart at low zoom, faded out once zoomed in.
+  // Declutter offset in current screen-space layout units. Rendering divides
+  // it by zoom so the projected _x/_y coordinate remains the true location.
   _dx?: number;
   _dy?: number;
   _rx?: number;
@@ -74,13 +74,12 @@ const SPIDER_CLUSTER_EPSILON = 0.35;
 const SPIDER_START_K = 4;
 const SPIDER_FULL_K = 10;
 const SPIDER_RING_STEP_PX = 28;
-// Declutter: at low zoom, push overlapping bubbles apart so a big org never
-// fully buries (and steals taps from) a small neighbour. Fades to nothing by the
-// time real separation + spiderfy take over, so dots settle on true positions
-// when zoomed in.
-const DECLUTTER_FADE_START = 2.2;
-const DECLUTTER_FADE_END = 5;
+// Declutter: visible bubbles move in render space only. Lat/lng and projected
+// _x/_y stay true; _dx/_dy are screen-space nudges divided by zoom at render.
 const MAX_RADIUS = 48;
+const AUTHORITY_ROLES = new Set(["RC", "BA", "PC", "TOP", "TO", "TSP", "TP", "RSG", "FRSG", "RRSG", "RP"]);
+const PUBLIC_ROLES = new Set(["DP", "LSE", "PSE"]);
+const GENERATION_ROLES = new Set(["GO", "GOP"]);
 
 // Out-of-footprint U.S. territories, shown as labelled insets (no mainland
 // coordinates to project). Order = how they stack into the bottom-right corner.
@@ -304,6 +303,12 @@ export function mountNercOrgMap(): void {
   // Live "shown in view" counter element inside the metrics panel.
   let shownEl: HTMLElement | null = null;
   let orgMarkK = NaN;
+  let orgLayoutBucket = NaN;
+
+  function invalidateOrgLayout(): void {
+    orgMarkK = NaN;
+    orgLayoutBucket = NaN;
+  }
 
   function colorFor(role: string): string {
     const el = document.querySelector(`.nerc-role-def[data-role="${CSS.escape(role)}"] .nerc-dot`) as HTMLElement | null;
@@ -322,16 +327,66 @@ export function mountNercOrgMap(): void {
     return full;
   }
 
+  function nonGenerationRoleCount(o: Org): number {
+    return o.roles.filter((r) => !GENERATION_ROLES.has(r)).length;
+  }
+
+  function isGenerationOnly(o: Org): boolean {
+    return o.roles.length > 0 && o.roles.every((r) => GENERATION_ROLES.has(r));
+  }
+
+  function orgPriority(o: Org): number {
+    const nonGen = nonGenerationRoleCount(o);
+    let score = o.weight * 0.9 + Math.min(o.role_count, 8) * 1.4;
+    if (o.is_iso_rto) score += 34;
+    if (nonGen > 0) score += 10 + nonGen * 4;
+    if (o.roles.some((r) => AUTHORITY_ROLES.has(r))) score += 12;
+    if (o.roles.some((r) => PUBLIC_ROLES.has(r))) score += 5;
+    if (o.roles.includes("TO") && o.roles.includes("DP")) score += 8;
+    if (o.roles.includes("TOP")) score += 7;
+    if (o.roles.includes("TP")) score += 5;
+    if (o.org_type === "federal") score += 20;
+    if (o.org_type === "municipal") score += 13;
+    if (o.org_type === "cooperative") score += 7;
+    if (o.org_type === "cca") score += 3;
+    if (o.nerc_registered === false) score -= 6;
+    if (isGenerationOnly(o)) score -= 14;
+    if (o.roles.length === 0) score -= 8;
+    if (/department of energy/i.test(o.entity_name)) score += 56;
+    else if (/cleveland public power/i.test(o.entity_name)) score += 46;
+    else if (/firstenergy/i.test(o.entity_name)) score += 38;
+    return score;
+  }
+
+  function orgMinZoom(o: Org): number {
+    if (o._frame === "terr") return 0.72;
+    const priority = orgPriority(o);
+    const nonGen = nonGenerationRoleCount(o);
+    if (priority >= 54 || o.weight >= 30 || o.is_iso_rto) return 0.72;
+    if (priority >= 42 || o.weight >= 18 || nonGen >= 4) return 1.05;
+    if (priority >= 32 || nonGen >= 2) return 1.45;
+    if (priority >= 24 || nonGen >= 1) return 2.1;
+    if (priority >= 16) return 3.2;
+    if (!isGenerationOnly(o)) return 4.2;
+    return 5.8;
+  }
+
+  function shouldShowDot(o: Org, k: number): boolean {
+    return k >= orgMinZoom(o);
+  }
+
   // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
   // low zoom (only the heaviest entities) and opened up fully once zoomed in,
   // where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
-    if (k < 1.25) return o.weight >= 12;
-    if (k < 1.8) return o.weight >= 7;
-    if (k < 2.6) return o.weight >= 5;
-    if (k < 3.4) return o.weight >= 4;
-    if (k < 4.8) return o.weight >= 3;
-    if (k < 6.8) return o.weight >= 2;
+    const priority = orgPriority(o);
+    const nonGen = nonGenerationRoleCount(o);
+    if (k < 1.25) return priority >= 54 || o.weight >= 30 || o.is_iso_rto;
+    if (k < 1.8) return priority >= 42 || o.weight >= 18 || nonGen >= 4;
+    if (k < 2.6) return priority >= 32 || o.weight >= 12 || nonGen >= 2;
+    if (k < 3.4) return priority >= 24 || o.weight >= 8 || nonGen >= 1;
+    if (k < 4.8) return priority >= 16 || o.weight >= 5 || nonGen >= 1;
+    if (k < 6.8) return priority >= 10 || o.weight >= 3 || !isGenerationOnly(o);
     return o.weight >= 1;
   }
 
@@ -349,14 +404,14 @@ export function mountNercOrgMap(): void {
 
   function labelLimit(k: number): number {
     const cap =
-      k < 1.25 ? 46 :
-      k < 1.8 ? 70 :
-      k < 2.6 ? 88 :
-      k < 3.4 ? 110 :
-      k < 4.8 ? 132 :
-      k < 6.8 ? 162 :
-      190;
-    return compact ? Math.round(cap * 0.68) : cap;
+      k < 1.25 ? 145 :
+      k < 1.8 ? 170 :
+      k < 2.6 ? 200 :
+      k < 3.4 ? 230 :
+      k < 4.8 ? 260 :
+      k < 6.8 ? 290 :
+      320;
+    return compact ? Math.round(cap * 0.44) : cap;
   }
 
   function placeLabelLimit(k: number): number {
@@ -380,14 +435,25 @@ export function mountNercOrgMap(): void {
 
   function visualRadius(o: Org, k: number): number {
     const base = Math.max(2, RADIUS_SCALE(o.weight));
-    const grown = base * Math.pow(k, 0.1);
-    return compact ? grown : Math.min(grown, base + 4 * unitPerPx);
+    const overviewScale = compact
+      ? 0.48 + 0.38 * smoothStep((k - 0.72) / 4.3)
+      : 0.56 + 0.44 * smoothStep((k - 0.72) / 4.3);
+    const grown = base * overviewScale * Math.pow(k, 0.08);
+    return Math.max((compact ? 2.4 : 3) * unitPerPx, compact ? grown : Math.min(grown, base + 4 * unitPerPx));
   }
 
   // Territory-inset dots are schematic (small, uniform) rather than weight-sized
   // so they fit their grid cells; everything else uses the normal visual radius.
   function renderedRadius(o: Org, k: number): number {
     return o._frame === "terr" ? (compact ? 5 : 4) * unitPerPx : visualRadius(o, k);
+  }
+
+  function hitTargetRadius(o: Org, k: number): number {
+    if (o._frame === "terr") return (compact ? 8.5 : 7) * unitPerPx;
+    const visual = renderedRadius(o, k);
+    const floorPx = compact ? (o.weight <= 4 ? 11 : 13) : o.weight <= 4 ? 5 : o.weight <= 8 ? 6 : 8;
+    const padPx = compact ? (o.weight <= 4 ? 3 : 4) : o.weight <= 4 ? 1.5 : o.weight <= 8 ? 2 : 3;
+    return Math.max(visual + padPx * unitPerPx, floorPx * unitPerPx);
   }
 
   function boxesOverlap(
@@ -408,12 +474,23 @@ export function mountNercOrgMap(): void {
     return smoothStep((k - SPIDER_START_K) / (SPIDER_FULL_K - SPIDER_START_K)) / Math.max(k, 0.001);
   }
 
-  // Declutter weight: full at low zoom, faded to 0 by DECLUTTER_FADE_END. Divided
-  // by k (like spiderfy) so the on-screen nudge stays roughly constant while the
-  // underlying geographic error shrinks as you zoom in.
+  function declutterBucket(k: number): number {
+    if (k < 2) return Math.round(k * 8) / 8;
+    if (k < 6) return Math.round(k * 4) / 4;
+    return Math.round(k * 2) / 2;
+  }
+
+  function maxDeclutterOffset(k: number): number {
+    const px = compact
+      ? k < 1.25 ? 92 : k < 2.2 ? 74 : k < 4 ? 58 : k < 7 ? 42 : 30
+      : k < 1.25 ? 175 : k < 2.2 ? 140 : k < 4 ? 105 : k < 7 ? 76 : 52;
+    return px * unitPerPx;
+  }
+
+  // _dx/_dy are solved in screen-space SVG units. Dividing by k keeps the
+  // visible nudge stable inside the zoomed group without mutating _x/_y.
   function declutterScale(k: number): number {
-    const fade = 1 - smoothStep((k - DECLUTTER_FADE_START) / (DECLUTTER_FADE_END - DECLUTTER_FADE_START));
-    return fade / Math.max(k, 0.001);
+    return 1 / Math.max(k, 0.001);
   }
 
   function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
@@ -469,6 +546,7 @@ export function mountNercOrgMap(): void {
   }
 
   function positionOrgMarks(k = transform.k, force = false): void {
+    relaxDeclutter(k, force);
     // Render positions only depend on k (panning is handled by the group
     // transform), so skip the per-dot rewrite while k is unchanged.
     if (!force && k === orgMarkK) return;
@@ -512,7 +590,7 @@ export function mountNercOrgMap(): void {
   function project(): void {
     if (!nationFeature) return;
     hitK = NaN;
-    orgMarkK = NaN;
+    invalidateOrgLayout();
     projection.fitSize([W, H], nationFeature as never);
     // Lock the Canada conic onto the composite's lower-48 scale/translate.
     canadaProj.scale(projection.scale()).translate(projection.translate() as [number, number]);
@@ -547,7 +625,6 @@ export function mountNercOrgMap(): void {
 
     layoutTerritories();
     drawTerritoryFrames();
-    relaxDeclutter();
     assignSpiderOffsets();
     positionOrgMarks(transform.k, true);
     computeLandLabels();
@@ -558,24 +635,69 @@ export function mountNercOrgMap(): void {
     }
   }
 
-  // Resolve heavy bubble overlaps (at k=1 radii) so no dot is fully buried. Grid
-  // bucketed to stay ~linear over ~2k dots; only pushes apart pairs overlapping
-  // by more than ~28%, so most dots never move.
-  function relaxDeclutter(): void {
-    const items: Array<{ o: Org; x: number; y: number; r: number }> = [];
+  // Resolve overlaps among dots currently eligible at this zoom. This is a
+  // render-space layout only: _x/_y remain the true projected coordinates used
+  // by links and projection math, while _dx/_dy are the temporary screen nudge.
+  function relaxDeclutter(k = transform.k, force = false): void {
+    const bucket = declutterBucket(k);
+    if (!force && bucket === orgLayoutBucket) return;
+    orgLayoutBucket = bucket;
+
+    const spiderScreenScale = smoothStep((bucket - SPIDER_START_K) / (SPIDER_FULL_K - SPIDER_START_K));
+    type LayoutItem = {
+      o: Org;
+      baseX: number;
+      baseY: number;
+      x: number;
+      y: number;
+      r: number;
+      mass: number;
+      fixed: boolean;
+    };
+    const items: LayoutItem[] = [];
     for (const o of orgs) {
-      if (o._x == null || o._y == null || o._frame === "terr") continue;
-      items.push({ o, x: o._x, y: o._y, r: Math.max(2, RADIUS_SCALE(o.weight)) });
+      o._dx = 0;
+      o._dy = 0;
+      if (o._x == null || o._y == null) continue;
+      const forceVisible = selectedOrg?.ncr_id === o.ncr_id || hoverOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
+      if (!forceVisible && !shouldShowDot(o, bucket)) continue;
+      const baseX = o._x * bucket + (o._rx ?? 0) * spiderScreenScale;
+      const baseY = o._y * bucket + (o._ry ?? 0) * spiderScreenScale;
+      const r = renderedRadius(o, bucket);
+      const priority = Math.max(0, orgPriority(o));
+      const fixed = o._frame === "terr";
+      items.push({
+        o,
+        baseX,
+        baseY,
+        x: baseX,
+        y: baseY,
+        r,
+        mass: fixed ? 1000 : 1 + priority / 18 + r / 14,
+        fixed,
+      });
     }
     if (items.length < 2) return;
-    const cell = MAX_RADIUS * 2; // catch any overlap within neighbouring buckets
-    const allow = 0.72; // permit some overlap; only separate heavy stacks
-    for (let pass = 0; pass < 14; pass++) {
+
+    items.sort(
+      (a, b) =>
+        orgPriority(b.o) - orgPriority(a.o) ||
+        b.o.weight - a.o.weight ||
+        b.o.role_count - a.o.role_count ||
+        a.o.ncr_id.localeCompare(b.o.ncr_id),
+    );
+
+    const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
+    const cell = Math.max(MAX_RADIUS * unitPerPx, maxR * 2 + 8 * unitPerPx);
+    const passes = compact ? 24 : bucket < 2.2 ? 60 : bucket < 4 ? 44 : 30;
+    const gap = 1.15 * unitPerPx;
+
+    for (let pass = 0; pass < passes; pass++) {
       const grid = new Map<string, number[]>();
       for (let i = 0; i < items.length; i++) {
         const key = Math.floor(items[i].x / cell) + ":" + Math.floor(items[i].y / cell);
-        const b = grid.get(key);
-        if (b) b.push(i);
+        const bucketItems = grid.get(key);
+        if (bucketItems) bucketItems.push(i);
         else grid.set(key, [i]);
       }
       let moved = false;
@@ -585,29 +707,30 @@ export function mountNercOrgMap(): void {
         const gy = Math.floor(a.y / cell);
         for (let ox = -1; ox <= 1; ox++) {
           for (let oy = -1; oy <= 1; oy++) {
-            const bucket = grid.get(gx + ox + ":" + (gy + oy));
-            if (!bucket) continue;
-            for (const j of bucket) {
+            const bucketItems = grid.get(gx + ox + ":" + (gy + oy));
+            if (!bucketItems) continue;
+            for (const j of bucketItems) {
               if (j <= i) continue;
               const b = items[j];
               let dx = b.x - a.x;
               let dy = b.y - a.y;
               let d = Math.hypot(dx, dy);
-              const min = (a.r + b.r) * allow;
+              const min = a.r + b.r + gap;
               if (d >= min) continue;
               if (d < 1e-4) {
-                const ang = i * 2.399963; // golden angle: deterministic spread
-                dx = Math.cos(ang);
-                dy = Math.sin(ang);
+                const angle = ((i + 1) * 2.399963229728653 + (j + 1) * 0.618033988749895) % (Math.PI * 2);
+                dx = Math.cos(angle);
+                dy = Math.sin(angle);
                 d = 1;
               }
-              const push = ((min - d) * 0.5) / d;
-              const wa = b.r / (a.r + b.r);
-              const wb = a.r / (a.r + b.r);
-              a.x -= dx * push * wa;
-              a.y -= dy * push * wa;
-              b.x += dx * push * wb;
-              b.y += dy * push * wb;
+              const overlap = min - d;
+              const totalMass = a.mass + b.mass;
+              const moveA = a.fixed ? 0 : (overlap * (b.fixed ? 1 : b.mass / totalMass)) / d;
+              const moveB = b.fixed ? 0 : (overlap * (a.fixed ? 1 : a.mass / totalMass)) / d;
+              a.x -= dx * moveA;
+              a.y -= dy * moveA;
+              b.x += dx * moveB;
+              b.y += dy * moveB;
               moved = true;
             }
           }
@@ -615,10 +738,12 @@ export function mountNercOrgMap(): void {
       }
       if (!moved) break;
     }
-    const cap = 34;
+
+    const cap = maxDeclutterOffset(bucket);
     for (const it of items) {
-      let dx = it.x - (it.o._x as number);
-      let dy = it.y - (it.o._y as number);
+      if (it.fixed) continue;
+      let dx = it.x - it.baseX;
+      let dy = it.y - it.baseY;
       const m = Math.hypot(dx, dy);
       if (m > cap) {
         dx = (dx / m) * cap;
@@ -762,6 +887,11 @@ export function mountNercOrgMap(): void {
         o._vis = false;
         continue;
       }
+      const forceVisible = hot?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
+      if (!forceVisible && !shouldShowDot(o, k)) {
+        o._vis = false;
+        continue;
+      }
       const sx = transform.applyX(orgRenderX(o, fanScale, declScale));
       const sy = transform.applyY(orgRenderY(o, fanScale, declScale));
       o._sx = sx;
@@ -788,6 +918,7 @@ export function mountNercOrgMap(): void {
       (a, b) =>
         Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
         Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
+        orgPriority(b) - orgPriority(a) ||
         b.weight - a.weight ||
         b.role_count - a.role_count ||
         a.entity_name.localeCompare(b.entity_name),
@@ -807,7 +938,7 @@ export function mountNercOrgMap(): void {
     const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
     const topSafe = compact && !tourActive ? 72 * unitPerPx : 0;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
-    const clusterRadius = (compact ? 24 : 18) * unitPerPx;
+    const clusterRadius = (compact ? 22 : k < 1.25 ? 10 : 8) * unitPerPx;
     const labeledClusters: Array<{ x: number; y: number }> = [];
     // On phones, inflate the collision box as you zoom in so labels spread out
     // (less information overload). Untouched on desktop and during the tour.
@@ -823,19 +954,24 @@ export function mountNercOrgMap(): void {
       ) {
         continue;
       }
-      const r = visualRadius(o, k);
+      const r = renderedRadius(o, k);
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
       const w = (Math.max(14, text.length * font * 0.56) + 5) * spacing;
       const h = (font + 5) * spacing;
+      const nudge = r + font * 0.82 + 2 * unitPerPx;
       // Try a handful of spots so a blocked label nudges off its neighbour
       // instead of disappearing, while hugging its own bubble closely.
       const spots = [
         [sx, sy + font * 0.32],
-        [sx, sy - r * 0.8 - 1],
-        [sx, sy + r * 0.8 + font * 0.8],
-        [sx + r * 0.8 + 1, sy + font * 0.32],
-        [sx - r * 0.8 - 1, sy + font * 0.32],
+        [sx, sy - nudge],
+        [sx, sy + nudge],
+        [sx + nudge, sy + font * 0.32],
+        [sx - nudge, sy + font * 0.32],
+        [sx + nudge * 0.78, sy - nudge * 0.58],
+        [sx - nudge * 0.78, sy - nudge * 0.58],
+        [sx + nudge * 0.78, sy + nudge * 0.72],
+        [sx - nudge * 0.78, sy + nudge * 0.72],
       ];
       let chosen: { x: number; y: number; box: Box } | null = null;
       for (const [lx, ly] of spots) {
@@ -878,17 +1014,7 @@ export function mountNercOrgMap(): void {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
       if (!o._vis || !hitChanged) return;
-      if (o._frame === "terr") {
-        // Inset dots sit ~one cell apart; keep the hit radius under that spacing
-        // so each stays individually tappable.
-        node.setAttribute("r", String(((compact ? 8.5 : 7) * unitPerPx) / k));
-        return;
-      }
-      // Keep hit targets on the old growth curve so smaller visual bubbles do
-      // not become harder to click.
-      const hitRadius = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
-      const minHitRadius = (compact ? 16 : 10) * unitPerPx;
-      node.setAttribute("r", String(Math.max(hitRadius, minHitRadius) / k));
+      node.setAttribute("r", String(hitTargetRadius(o, k) / k));
     });
 
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").each(function (o) {
@@ -1228,6 +1354,7 @@ export function mountNercOrgMap(): void {
   function closePanel(): void {
     panel.hidden = true;
     selectedOrg = null;
+    invalidateOrgLayout();
     redraw();
   }
 
@@ -1288,6 +1415,7 @@ export function mountNercOrgMap(): void {
   function selectOrg(o: Org, opts: { center?: boolean } = {}): void {
     stopTour();
     selectedOrg = o;
+    invalidateOrgLayout();
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
     renderPanel(o);
@@ -1485,6 +1613,7 @@ export function mountNercOrgMap(): void {
     svg.interrupt(); // cancel any in-flight reset transition so nothing stacks
     tourIds = new Set();
     tourRunning = false;
+    invalidateOrgLayout();
     tourStatus.hidden = true;
     setPlayState(false);
     if (placeableOrgs.length) redraw();
@@ -1494,6 +1623,7 @@ export function mountNercOrgMap(): void {
   function showTourStep(label: string, match: (o: Org) => boolean, index: number, total: number): void {
     const matches = placeableOrgs.filter(match);
     tourIds = new Set(matches.map((o) => o.ncr_id));
+    invalidateOrgLayout();
     tourStatus.replaceChildren(
       createEl("strong", "tour-title", label),
       createEl("span", "tour-progress", `${index} of ${total}`),
@@ -1542,6 +1672,7 @@ export function mountNercOrgMap(): void {
     const cycle = (): void => {
       // Blank beat.
       tourIds = new Set();
+      invalidateOrgLayout();
       tourStatus.hidden = true;
       redraw();
       tourTimers.push(window.setTimeout(showStep, gapMs));
@@ -1586,7 +1717,13 @@ export function mountNercOrgMap(): void {
     // Both layers paint small → large so the biggest org sits on top — visually
     // AND for hit-testing. (Previously the hit layer was reversed, so a small
     // org's inflated tap target covered a big neighbour and stole its clicks.)
-    const visibleOrder = [...placeableOrgs].sort((a, b) => a.weight - b.weight || a.role_count - b.role_count);
+    const visibleOrder = [...placeableOrgs].sort(
+      (a, b) =>
+        a.weight - b.weight ||
+        orgPriority(a) - orgPriority(b) ||
+        a.role_count - b.role_count ||
+        a.entity_name.localeCompare(b.entity_name),
+    );
     const hitOrder = visibleOrder;
 
     const visibleCircles = gOverlay
@@ -1603,7 +1740,7 @@ export function mountNercOrgMap(): void {
       .attr("fill", (o) => safeColor(o.color))
       .attr("cx", (o) => orgRenderX(o))
       .attr("cy", (o) => orgRenderY(o))
-      .attr("r", (o) => visualRadius(o, transform.k))
+      .attr("r", (o) => renderedRadius(o, transform.k) / Math.max(transform.k, 0.001))
       .attr("tabindex", 0)
       .attr("role", "button")
       .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`);
@@ -1617,7 +1754,7 @@ export function mountNercOrgMap(): void {
       .attr("class", "org-hit")
       .attr("cx", (o) => orgRenderX(o))
       .attr("cy", (o) => orgRenderY(o))
-      .attr("r", (o) => Math.max(10, RADIUS_SCALE(o.weight)))
+      .attr("r", (o) => hitTargetRadius(o, transform.k) / Math.max(transform.k, 0.001))
       .attr("aria-hidden", "true");
 
     wireOrgPointer(hitCircles as never);
