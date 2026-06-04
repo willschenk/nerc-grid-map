@@ -36,6 +36,7 @@ type Org = {
   parent_org?: string | null;
   eia_utility_id?: string | number | null;
   seed?: boolean;
+  nerc_registered?: boolean;
   _x?: number;
   _y?: number;
   _rx?: number;
@@ -70,6 +71,8 @@ const TYPE_LABELS: Record<string, string> = {
   municipal: "Municipal / public power",
   federal: "Federal power authority",
   merchant: "Merchant / IPP",
+  cca: "Community choice (CCA)",
+  marketer: "Power marketer / trader",
   other: "Other",
 };
 
@@ -743,8 +746,16 @@ export function mountNercOrgMap(): void {
     shownEl = shownKpi.querySelector("strong");
     top.append(shownKpi, kpi("Mapped", mapped));
 
+    const supplemental = placeableOrgs.reduce((n, o) => n + (o.nerc_registered === false ? 1 : 0), 0);
+    const note = createEl(
+      "p",
+      "nerc-metrics-note",
+      `${mapped - supplemental} NERC-registered · ${supplemental} supplemental (no NERC ID)`,
+    );
+
     metricsBody.replaceChildren(
       top,
+      note,
       statSection("By organization type", tally(placeableOrgs.map((o) => o.org_type), "other"), (k) => typeLabel(k)),
     );
   }
@@ -835,7 +846,8 @@ export function mountNercOrgMap(): void {
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
     title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, o.entity_name));
-    panelBody.append(title, createEl("p", "p-sub", `${o.ncr_id}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`));
+    const idLabel = o.nerc_registered === false ? "No NERC ID" : o.ncr_id;
+    panelBody.append(title, createEl("p", "p-sub", `${idLabel}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`));
 
     const dl = createEl("dl");
     const roles = createEl("div", "p-roles");
@@ -876,6 +888,14 @@ export function mountNercOrgMap(): void {
           "div",
           "p-seed",
           "Seed record. The NCR ID is a placeholder and role assignments are illustrative, pending ingest of the official NERC Compliance Registry.",
+        ),
+      );
+    } else if (o.nerc_registered === false) {
+      panelBody.append(
+        createEl(
+          "div",
+          "p-seed",
+          "Not in the NERC Compliance Registry, so it has no NERC ID. Any roles shown are a best-effort functional guess, not an official NERC registration.",
         ),
       );
     }
@@ -1234,7 +1254,13 @@ export function mountNercOrgMap(): void {
       .selectAll("circle.org")
       .data(visibleOrder, (o: unknown) => (o as Org).ncr_id)
       .join("circle")
-      .attr("class", (o) => "org" + (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : ""))
+      .attr(
+        "class",
+        (o) =>
+          "org" +
+          (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : "") +
+          (o.nerc_registered === false ? " unregistered" : ""),
+      )
       .attr("fill", (o) => safeColor(o.color))
       .attr("cx", (o) => orgRenderX(o))
       .attr("cy", (o) => orgRenderY(o))

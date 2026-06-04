@@ -288,5 +288,8 @@ export function enrichOrg(rec) {
 
     // Provenance: seed records carry placeholder NCR IDs until official ingest.
     seed: rec.seed === true,
+    // Supplemental (non-NERC) orgs set this false; they have no NERC ID and
+    // their roles are a best-effort guess, not an official registration.
+    nerc_registered: rec.nerc_registered !== false,
   };
 }

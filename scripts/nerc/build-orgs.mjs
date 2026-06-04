@@ -13,6 +13,59 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "../..");
 
 const SEED = resolve(root, "src/data/nerc/seed-orgs.json");
+// Non-NERC / NERC-missing orgs (Alaska/Hawaii utilities, CCAs, small munis &
+// co-ops, marketers). Merged in after the registry records. See
+// scripts/nerc/build-supplemental.mjs and SUPPLEMENTAL_GUIDE.md.
+const SUPPLEMENTAL = resolve(root, "src/data/nerc/supplemental-orgs.json");
+
+// Fallback size/color for supplemental orgs that have no functional role, keyed
+// by org_type (role-based orgs use the normal weight/color from enrichOrg).
+const SUP_TYPE_WEIGHT = { ISO_RTO: 24, IOU: 16, federal: 14, cooperative: 9, municipal: 9, cca: 8, merchant: 6, marketer: 5, other: 5 };
+const SUP_TYPE_COLOR = {
+  cooperative: "hsl(45, 62%, 50%)",
+  municipal: "hsl(265, 42%, 56%)",
+  cca: "hsl(168, 45%, 44%)",
+  merchant: "hsl(20, 58%, 52%)",
+  marketer: "hsl(210, 12%, 52%)",
+  federal: "hsl(208, 48%, 50%)",
+  IOU: "hsl(140, 55%, 43%)",
+  ISO_RTO: "hsl(280, 55%, 50%)",
+  other: "hsl(0, 0%, 55%)",
+};
+
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 48);
+const normName = (s) =>
+  String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(/\b(inc|llc|lp|co|company|corporation|the|of|and)\b/g, " ").replace(/\s+/g, " ").trim();
+
+// Read supplemental-orgs.json, enrich, and drop ones that lack coordinates or
+// duplicate an existing (NERC) org by normalized name.
+function loadSupplemental(existingNames) {
+  if (!existsSync(SUPPLEMENTAL)) return [];
+  const list = JSON.parse(readFileSync(SUPPLEMENTAL, "utf8"));
+  const out = [];
+  let dupes = 0;
+  let ungeocoded = 0;
+  for (const s of list) {
+    if (s.lat == null || s.lng == null) { ungeocoded++; continue; }
+    if (existingNames.has(normName(s.entity_name))) { dupes++; continue; }
+    const org = enrichOrg({
+      ...s,
+      ncr_id: s.ncr_id || `SUP-${slug(s.entity_name)}`,
+      nerc_registered: false,
+      seed: false,
+    });
+    // Size by org_type (the NERC role weights are meaningless for non-registered
+    // entities, and DP-only weight is tiny). Color by role mix when we have a
+    // best-effort role, else by type.
+    org.weight = SUP_TYPE_WEIGHT[org.org_type] ?? 5;
+    if (org.roles.length === 0) org.color = SUP_TYPE_COLOR[org.org_type] ?? "hsl(0, 0%, 55%)";
+    org.is_iso_rto = false; // supplemental orgs are never counted as real ISO/RTOs
+    existingNames.add(normName(s.entity_name));
+    out.push(org);
+  }
+  console.log(`nerc: +${out.length} supplemental orgs (${dupes} name-dupes, ${ungeocoded} ungeocoded skipped)`);
+  return out;
+}
 // A geocoding-agent output file (JSON array or {orgs:[...]}) overrides the seed
 // when present, so the real registry can drop in without touching this script.
 const GEOCODED = resolve(root, "src/data/nerc/geocoded-orgs.json");
@@ -59,10 +112,14 @@ function tally(orgs, key) {
 
 function main() {
   const { file, records } = loadRecords();
-  const orgs = dropRetiredSeeds(records)
+  const nercOrgs = dropRetiredSeeds(records)
     .filter((r) => r.skip !== true)
     .map(enrichOrg)
     .filter((o) => o.lat != null && o.lng != null);
+
+  const existingNames = new Set(nercOrgs.map((o) => normName(o.entity_name)));
+  const supplemental = loadSupplemental(existingNames);
+  const orgs = [...nercOrgs, ...supplemental];
 
   mkdirSync(OUT_DIR, { recursive: true });
 

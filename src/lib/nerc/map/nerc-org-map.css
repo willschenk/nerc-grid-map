@@ -58,6 +58,14 @@
   stroke-dasharray: 2 1.5;
 }
 
+/* Not in the NERC registry (no NERC ID): a quiet dotted outline. Active states
+   (hover/selected/tour) below override this. */
+#nerc-svg .org.unregistered {
+  stroke: rgba(13, 23, 20, 0.5);
+  stroke-width: 1;
+  stroke-dasharray: 1 2.2;
+}
+
 #nerc-svg .org.labeled {
   fill-opacity: 0.92;
 }
@@ -243,6 +251,13 @@
   font-size: 1.5rem;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+}
+
+.nerc-metrics-note {
+  margin: 0;
+  color: #66736f;
+  font-size: 0.72rem;
+  line-height: 1.35;
 }
 
 .nerc-statsec h3 {
