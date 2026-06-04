@@ -188,8 +188,94 @@ function fallbackAcronym(name: string): string {
   return words.map((w) => w[0]).join("").toUpperCase().slice(0, 8);
 }
 
+// Three-tier names. tiny = super-short (zoomed out / tight spots), mid =
+// shortened (zoomed in), and the full legal entity_name is reserved for the
+// detail panel. Curated rules cover recognizable brands and the awkward
+// "… as agent for …" registry names; everything else is derived algorithmically.
+const NAME_RULES: Array<[RegExp, { tiny: string; mid: string }]> = [
+  [/^consolidated edison/i, { tiny: "ConEd", mid: "Con Edison" }],
+  [/^american electric power/i, { tiny: "AEP", mid: "American Electric Power" }],
+  [/^firstenergy/i, { tiny: "FirstEnergy", mid: "FirstEnergy" }],
+  [/^(public service enterprise group|pseg|p\.?s\.?e\.?&?g)/i, { tiny: "PSEG", mid: "PSEG" }],
+  [/^northern states power|\bxcel energy\b/i, { tiny: "Xcel", mid: "Xcel Energy" }],
+  [/^pacificorp/i, { tiny: "PacifiCorp", mid: "PacifiCorp" }],
+  [/^next\s?era/i, { tiny: "NextEra", mid: "NextEra Energy" }],
+  [/^duke energy/i, { tiny: "Duke", mid: "Duke Energy" }],
+  [/^dominion/i, { tiny: "Dominion", mid: "Dominion Energy" }],
+  [/^southern (company|co\b)/i, { tiny: "Southern", mid: "Southern Company" }],
+  [/^entergy/i, { tiny: "Entergy", mid: "Entergy" }],
+  [/^ameren/i, { tiny: "Ameren", mid: "Ameren" }],
+  [/^exelon/i, { tiny: "Exelon", mid: "Exelon" }],
+  [/^berkshire hathaway energy|^midamerican/i, { tiny: "MidAmerican", mid: "MidAmerican" }],
+  [/^national grid/i, { tiny: "Nat. Grid", mid: "National Grid" }],
+  [/^tennessee valley/i, { tiny: "TVA", mid: "TVA" }],
+  [/^bonneville power/i, { tiny: "BPA", mid: "Bonneville (BPA)" }],
+  [/^los angeles department of water/i, { tiny: "LADWP", mid: "LADWP" }],
+  [/^salt river project/i, { tiny: "SRP", mid: "Salt River Project" }],
+  [/^arizona public service/i, { tiny: "APS", mid: "Arizona Public Svc" }],
+  [/^public service company of colorado/i, { tiny: "PSCo", mid: "PSCo (Xcel)" }],
+  [/^puget sound energy/i, { tiny: "PSE", mid: "Puget Sound" }],
+  [/^portland general electric/i, { tiny: "PGE", mid: "Portland General" }],
+  [/^pacific gas and electric/i, { tiny: "PG&E", mid: "PG&E" }],
+  [/^southern california edison/i, { tiny: "SCE", mid: "SoCal Edison" }],
+  [/^san diego gas/i, { tiny: "SDG&E", mid: "SDG&E" }],
+  [/^commonwealth edison/i, { tiny: "ComEd", mid: "ComEd" }],
+  [/^baltimore gas/i, { tiny: "BGE", mid: "BGE" }],
+  [/^georgia power/i, { tiny: "GA Power", mid: "Georgia Power" }],
+  [/^florida power & light/i, { tiny: "FPL", mid: "FP&L" }],
+  [/^tampa electric/i, { tiny: "TECO", mid: "Tampa Electric" }],
+  [/^idaho power/i, { tiny: "Idaho Pwr", mid: "Idaho Power" }],
+  [/^nevada power|^sierra pacific power/i, { tiny: "NV Energy", mid: "NV Energy" }],
+  [/^oncor/i, { tiny: "Oncor", mid: "Oncor" }],
+  [/^centerpoint|d\/b\/a centerpoint/i, { tiny: "CenterPoint", mid: "CenterPoint" }],
+  [/^hydro[- ]?qu[eé]bec/i, { tiny: "Hydro-Québec", mid: "Hydro-Québec" }],
+  [/^hydro one/i, { tiny: "Hydro One", mid: "Hydro One" }],
+  [/ontario.*ieso|^ieso\b/i, { tiny: "IESO", mid: "Ontario IESO" }],
+  [/^new brunswick power/i, { tiny: "NB Power", mid: "NB Power" }],
+  [/^nova scotia power/i, { tiny: "NS Power", mid: "Nova Scotia Power" }],
+  [/^manitoba hydro/i, { tiny: "MB Hydro", mid: "Manitoba Hydro" }],
+  [/^saskatchewan power|^saskpower/i, { tiny: "SaskPower", mid: "SaskPower" }],
+];
+
+function curate(name: string): { tiny: string; mid: string } | null {
+  for (const [re, v] of NAME_RULES) if (re.test(name)) return v;
+  return null;
+}
+
+// Strip trailing corporate filler from a short token: "AEP Service Corp" -> "AEP".
+function coreFromAcronym(acr: string): string {
+  let s = acr.trim();
+  for (let i = 0; i < 2; i++) {
+    s = s.replace(/[\s,]+(service\s+corp\w*|corp\w*|holdings?|utilities|company|co|inc|llc|l\.?p\.?)\.?$/i, "").trim();
+  }
+  return s || acr.trim();
+}
+
+function tinyName(o: Org): string {
+  const c = curate(o.entity_name);
+  if (c) return c.tiny;
+  if (o.acronym) {
+    const core = coreFromAcronym(o.acronym);
+    if (core.length <= 7) return core;
+    if (o.acronym.length <= 9) return o.acronym;
+    return core.length <= o.acronym.length ? core : o.acronym;
+  }
+  return fallbackAcronym(o.entity_name);
+}
+
+// A shortened-but-readable brand: cut "… as agent for …", "d/b/a", trailing
+// lists/clauses, and legal suffixes; fall back to the tiny token if still long.
+function midName(o: Org): string {
+  const c = curate(o.entity_name);
+  if (c) return c.mid;
+  let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
+  s = shortName(s).replace(/,.*$/, "").trim();
+  return s.length >= 3 && s.length <= 30 ? s : tinyName(o);
+}
+
+// "Acronym"-style token used in chips / tooltips / aria: the super-short name.
 function orgAcronym(o: Org): string {
-  return o.acronym || fallbackAcronym(o.entity_name);
+  return tinyName(o);
 }
 
 function typeLabel(value: string | null): string {
@@ -322,9 +408,13 @@ export function mountNercOrgMap(): void {
   }
 
   function labelText(o: Org, k: number): string {
-    const full = shortName(o.entity_name);
-    if (k < 3.2 || full.length > (compact ? 22 : 32)) return orgAcronym(o);
-    return full;
+    // Super-short token when zoomed out / tight, the shortened brand once zoomed
+    // in. The full legal name only ever appears in the detail panel.
+    const priority = orgPriority(o);
+    const midAt = priority >= 54 ? 5.8 : priority >= 32 ? 8.2 : 11.5;
+    if (k < midAt) return tinyName(o);
+    const mid = midName(o);
+    return mid.length > (compact ? 20 : 28) ? tinyName(o) : mid;
   }
 
   function nonGenerationRoleCount(o: Org): number {
@@ -342,6 +432,9 @@ export function mountNercOrgMap(): void {
     if (nonGen > 0) score += 10 + nonGen * 4;
     if (o.roles.some((r) => AUTHORITY_ROLES.has(r))) score += 12;
     if (o.roles.some((r) => PUBLIC_ROLES.has(r))) score += 5;
+    if (o.roles.includes("DP")) score += 18;
+    if (o.roles.includes("LSE")) score += 8;
+    if (o.roles.includes("PSE")) score += 4;
     if (o.roles.includes("TO") && o.roles.includes("DP")) score += 8;
     if (o.roles.includes("TOP")) score += 7;
     if (o.roles.includes("TP")) score += 5;
@@ -350,11 +443,15 @@ export function mountNercOrgMap(): void {
     if (o.org_type === "cooperative") score += 7;
     if (o.org_type === "cca") score += 3;
     if (o.nerc_registered === false) score -= 6;
-    if (isGenerationOnly(o)) score -= 14;
+    if (isGenerationOnly(o)) score -= 18;
     if (o.roles.length === 0) score -= 8;
     if (/department of energy/i.test(o.entity_name)) score += 56;
     else if (/cleveland public power/i.test(o.entity_name)) score += 46;
     else if (/firstenergy/i.test(o.entity_name)) score += 38;
+    if (/new york power authority/i.test(o.entity_name)) score += 70;
+    else if (/pjm interconnection|long island power authority|consolidated edison|con edison/i.test(o.entity_name)) {
+      score += 36;
+    }
     return score;
   }
 
@@ -364,15 +461,29 @@ export function mountNercOrgMap(): void {
     const nonGen = nonGenerationRoleCount(o);
     if (priority >= 54 || o.weight >= 30 || o.is_iso_rto) return 0.72;
     if (priority >= 42 || o.weight >= 18 || nonGen >= 4) return 1.05;
-    if (priority >= 32 || nonGen >= 2) return 1.45;
-    if (priority >= 24 || nonGen >= 1) return 2.1;
-    if (priority >= 16) return 3.2;
-    if (!isGenerationOnly(o)) return 4.2;
-    return 5.8;
+    if (priority >= 32 || nonGen >= 2) return 1.55;
+    if (priority >= 24 || nonGen >= 1) return 2.3;
+    if (priority >= 16) return 3.8;
+    if (!isGenerationOnly(o)) return 4.8;
+    return 6.8;
   }
 
-  function shouldShowDot(o: Org, k: number): boolean {
-    return k >= orgMinZoom(o);
+  function dotStrength(o: Org, k: number): number {
+    if (o._frame === "terr") return 1;
+    const fullAt = orgMinZoom(o);
+    if (fullAt <= 0.72) return 1;
+    const lead = compact ? 1.25 : 1.55;
+    return Math.max(0.14, smoothStep((k - (fullAt - lead)) / lead));
+  }
+
+  function orgOpacity(o: Org, k: number, labeled: boolean): number {
+    if (o._frame === "terr") return 1;
+    const strength = dotStrength(o, k);
+    return Math.min(1, (labeled ? 0.82 : 0.26) + strength * (labeled ? 0.18 : 0.54));
+  }
+
+  function drawPriority(o: Org, k: number): number {
+    return dotStrength(o, k) * 90 + orgPriority(o) + o.weight * 0.9 + o.role_count;
   }
 
   // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
@@ -385,8 +496,10 @@ export function mountNercOrgMap(): void {
     if (k < 1.8) return priority >= 42 || o.weight >= 18 || nonGen >= 4;
     if (k < 2.6) return priority >= 32 || o.weight >= 12 || nonGen >= 2;
     if (k < 3.4) return priority >= 24 || o.weight >= 8 || nonGen >= 1;
-    if (k < 4.8) return priority >= 16 || o.weight >= 5 || nonGen >= 1;
-    if (k < 6.8) return priority >= 10 || o.weight >= 3 || !isGenerationOnly(o);
+    if (k < 4.8) return priority >= 18 || o.weight >= 8 || nonGen >= 1;
+    if (k < 6.8) return priority >= 16 || o.weight >= 6 || nonGen >= 1;
+    if (k < 9.5) return priority >= 18 || o.weight >= 5 || nonGen >= 1;
+    if (k < 12.5) return priority >= 10 || o.weight >= 3 || !isGenerationOnly(o);
     return o.weight >= 1;
   }
 
@@ -438,8 +551,9 @@ export function mountNercOrgMap(): void {
     const overviewScale = compact
       ? 0.48 + 0.38 * smoothStep((k - 0.72) / 4.3)
       : 0.56 + 0.44 * smoothStep((k - 0.72) / 4.3);
-    const grown = base * overviewScale * Math.pow(k, 0.08);
-    return Math.max((compact ? 2.4 : 3) * unitPerPx, compact ? grown : Math.min(grown, base + 4 * unitPerPx));
+    const strengthScale = 0.34 + dotStrength(o, k) * 0.66;
+    const grown = base * overviewScale * Math.pow(k, 0.08) * strengthScale;
+    return Math.max((compact ? 1.9 : 1.6) * unitPerPx, compact ? grown : Math.min(grown, base + 4 * unitPerPx));
   }
 
   // Territory-inset dots are schematic (small, uniform) rather than weight-sized
@@ -451,8 +565,11 @@ export function mountNercOrgMap(): void {
   function hitTargetRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 8.5 : 7) * unitPerPx;
     const visual = renderedRadius(o, k);
-    const floorPx = compact ? (o.weight <= 4 ? 11 : 13) : o.weight <= 4 ? 5 : o.weight <= 8 ? 6 : 8;
-    const padPx = compact ? (o.weight <= 4 ? 3 : 4) : o.weight <= 4 ? 1.5 : o.weight <= 8 ? 2 : 3;
+    const strength = dotStrength(o, k);
+    const floorPx = compact
+      ? o.weight <= 4 ? 9 : 12
+      : strength < 0.35 ? 3.2 : o.weight <= 4 ? 4.2 : o.weight <= 8 ? 5.2 : 7;
+    const padPx = (compact ? (o.weight <= 4 ? 2.4 : 3.4) : o.weight <= 4 ? 1 : o.weight <= 8 ? 1.5 : 2.4) * (0.5 + strength * 0.5);
     return Math.max(visual + padPx * unitPerPx, floorPx * unitPerPx);
   }
 
@@ -482,8 +599,8 @@ export function mountNercOrgMap(): void {
 
   function maxDeclutterOffset(k: number): number {
     const px = compact
-      ? k < 1.25 ? 92 : k < 2.2 ? 74 : k < 4 ? 58 : k < 7 ? 42 : 30
-      : k < 1.25 ? 175 : k < 2.2 ? 140 : k < 4 ? 105 : k < 7 ? 76 : 52;
+      ? k < 1.25 ? 120 : k < 2.2 ? 94 : k < 4 ? 68 : k < 7 ? 46 : 32
+      : k < 1.25 ? 220 : k < 2.2 ? 170 : k < 4 ? 120 : k < 7 ? 82 : 56;
     return px * unitPerPx;
   }
 
@@ -659,21 +776,21 @@ export function mountNercOrgMap(): void {
       o._dx = 0;
       o._dy = 0;
       if (o._x == null || o._y == null) continue;
-      const forceVisible = selectedOrg?.ncr_id === o.ncr_id || hoverOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
-      if (!forceVisible && !shouldShowDot(o, bucket)) continue;
       const baseX = o._x * bucket + (o._rx ?? 0) * spiderScreenScale;
       const baseY = o._y * bucket + (o._ry ?? 0) * spiderScreenScale;
-      const r = renderedRadius(o, bucket);
       const priority = Math.max(0, orgPriority(o));
       const fixed = o._frame === "terr";
+      const strength = dotStrength(o, bucket);
+      const protectedDot = fixed || strength >= 0.68 || priority >= 32 || o.weight >= 18 || o.is_iso_rto;
+      const visualR = renderedRadius(o, bucket);
       items.push({
         o,
         baseX,
         baseY,
         x: baseX,
         y: baseY,
-        r,
-        mass: fixed ? 1000 : 1 + priority / 18 + r / 14,
+        r: protectedDot ? visualR : visualR * (0.42 + strength * 0.42),
+        mass: fixed ? 1000 : protectedDot ? 1 + priority / 18 + visualR / 14 : 0.55 + priority / 42 + strength,
         fixed,
       });
     }
@@ -681,7 +798,7 @@ export function mountNercOrgMap(): void {
 
     items.sort(
       (a, b) =>
-        orgPriority(b.o) - orgPriority(a.o) ||
+        drawPriority(b.o, bucket) - drawPriority(a.o, bucket) ||
         b.o.weight - a.o.weight ||
         b.o.role_count - a.o.role_count ||
         a.o.ncr_id.localeCompare(b.o.ncr_id),
@@ -689,8 +806,8 @@ export function mountNercOrgMap(): void {
 
     const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
     const cell = Math.max(MAX_RADIUS * unitPerPx, maxR * 2 + 8 * unitPerPx);
-    const passes = compact ? 24 : bucket < 2.2 ? 60 : bucket < 4 ? 44 : 30;
-    const gap = 1.15 * unitPerPx;
+    const passes = compact ? 32 : bucket < 2.2 ? 80 : bucket < 4 ? 54 : 34;
+    const gap = 1.8 * unitPerPx;
 
     for (let pass = 0; pass < passes; pass++) {
       const grid = new Map<string, number[]>();
@@ -779,9 +896,11 @@ export function mountNercOrgMap(): void {
     const pad = 6 * unitPerPx;
     const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
     const margin = 6 * unitPerPx;
+    // Lift the row on phones so it clears the bottom-right Tour FAB.
+    const bottomMargin = (compact ? 64 : 8) * unitPerPx;
     const gap = 7 * unitPerPx;
     let curX = W - margin; // place right-to-left
-    let rowBottom = H - margin;
+    let rowBottom = H - bottomMargin;
     let rowH = 0;
 
     for (const t of groups) {
@@ -881,14 +1000,10 @@ export function mountNercOrgMap(): void {
     // Project to screen space once, drop off-screen dots, collect label candidates.
     const margin = 90;
     const candidates: Org[] = [];
+    const visibleOrgs: Org[] = [];
     let shownCount = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
-        o._vis = false;
-        continue;
-      }
-      const forceVisible = hot?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
-      if (!forceVisible && !shouldShowDot(o, k)) {
         o._vis = false;
         continue;
       }
@@ -900,6 +1015,7 @@ export function mountNercOrgMap(): void {
       o._vis = vis;
       if (!vis) continue;
       shownCount++;
+      visibleOrgs.push(o);
       // Territory-inset dots are identified by their labelled box, so they only
       // get an individual label when hovered/selected (never in the normal flow).
       const isTerr = o._frame === "terr";
@@ -910,6 +1026,14 @@ export function mountNercOrgMap(): void {
         // Normal map. (During a blank beat — tourRunning && !tourActive — we
         // deliberately collect no candidates so nothing is labelled.)
         candidates.push(o);
+      }
+    }
+    if (!tourActive && !tourRunning && shownCount <= (compact ? 12 : 28)) {
+      const candidateIds = new Set(candidates.map((o) => o.ncr_id));
+      for (const o of visibleOrgs) {
+        if (o._frame === "terr" || candidateIds.has(o.ncr_id)) continue;
+        candidates.push(o);
+        candidateIds.add(o.ncr_id);
       }
     }
     if (shownEl && !metricsPanel.hidden) shownEl.textContent = String(shownCount);
@@ -1008,6 +1132,10 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("tour-flash", inTour && labeled);
       node.classList.toggle("tour-pick", inTour && !labeled);
       node.classList.toggle("tour-dim", tourRunning && !inTour);
+      node.style.setProperty(
+        "--org-opacity",
+        String(hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || inTour ? 1 : orgOpacity(o, k, labeled)),
+      );
     });
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
@@ -1037,7 +1165,6 @@ export function mountNercOrgMap(): void {
       const r = renderedRadius(o, k) + 2 * unitPerPx;
       placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
     }
-
     // City context. Dots can appear before labels, but every city mark stays
     // visually below NERC data and city labels only fit into leftover space.
     const placeDotState = new Map<string, { x: number; y: number; r: number }>();
@@ -1093,11 +1220,18 @@ export function mountNercOrgMap(): void {
       node.setAttribute("font-size", String(state.font));
     });
 
-    // Land labels (state / province names) — faint background context. Placed
-    // last, into space NERC dots/labels and city labels have not claimed, so
-    // NERC information always takes precedence.
+    // Land labels (state / province names): faint context that floats over the
+    // dot field but yields to NERC org labels and city labels, so NERC always
+    // reads on top. It tracks a text-only blocker set (NERC + city labels), not
+    // the dot bodies — otherwise the packed national view would hide every name.
     const landState = new Map<string, { x: number; y: number; font: number }>();
     if (!tourRunning) {
+      const landBlockers: Box[] = [...placed];
+      placeState.forEach((s, name) => {
+        const cw = name.length * s.font * 0.62 + 4;
+        const ch = s.font + 4;
+        landBlockers.push({ x0: s.x - cw / 2, x1: s.x + cw / 2, y0: s.y - ch * 0.9, y1: s.y + ch * 0.1 });
+      });
       let placedLand = 0;
       const landCap = compact ? 12 : 28;
       for (const L of landLabels) {
@@ -1112,8 +1246,8 @@ export function mountNercOrgMap(): void {
         const h = font + 4;
         const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
         if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
-        if (placeBlockers.some((q) => boxesOverlap(box, q))) continue;
-        placeBlockers.push(box);
+        if (landBlockers.some((q) => boxesOverlap(box, q))) continue;
+        landBlockers.push(box);
         placedLand++;
         landState.set(L.name, { x: sx, y: sy, font });
       }
@@ -1714,13 +1848,12 @@ export function mountNercOrgMap(): void {
       .join("text")
       .attr("class", "land-label")
       .text((d) => d.name);
-    // Both layers paint small → large so the biggest org sits on top — visually
-    // AND for hit-testing. (Previously the hit layer was reversed, so a small
-    // org's inflated tap target covered a big neighbour and stole its clicks.)
+    // Paint weak/low-priority dots first so regulated and high-authority orgs
+    // stay on top visually and for hit-testing.
     const visibleOrder = [...placeableOrgs].sort(
       (a, b) =>
+        drawPriority(a, transform.k) - drawPriority(b, transform.k) ||
         a.weight - b.weight ||
-        orgPriority(a) - orgPriority(b) ||
         a.role_count - b.role_count ||
         a.entity_name.localeCompare(b.entity_name),
     );

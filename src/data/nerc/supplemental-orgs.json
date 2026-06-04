@@ -1957,11 +1957,11 @@
   },
   {
     "entity_name": "VI Electron, LLC",
-    "acronym": null,
+    "acronym": "VIElectron",
     "state": "VI",
-    "city": null,
-    "lat": null,
-    "lng": null,
+    "city": "St. Croix",
+    "lat": 17.7163,
+    "lng": -64.7572,
     "roles": [
       "GO"
     ],
@@ -1970,17 +1970,17 @@
     "geo_confidence": "ESTIMATED",
     "out_of_footprint": true,
     "priority": "Add now",
-    "geo_source": "EIA-861 / public utility records",
-    "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Territorial electric utility or power-business candidate; the uploaded dataset contains no U.S. territory rows"
+    "geo_source": "WAPA press release / estimated site midpoint",
+    "geo_source_url": "https://www.viwapa.vi/news-information/press-releases/press-release-details/2024/07/15/the-authority-announces-agreement-with-vi-electron",
+    "geo_notes": "Estimated midpoint on St. Croix between WAPA-announced VI Electron battery sites at Petronella and Hogensborg; retained in territory inset."
   },
   {
     "entity_name": "Virgin Islands Water and Power Authority",
-    "acronym": null,
+    "acronym": "WAPA",
     "state": "VI",
-    "city": null,
-    "lat": null,
-    "lng": null,
+    "city": "Christiansted",
+    "lat": 17.7466,
+    "lng": -64.7049,
     "roles": [
       "DP"
     ],
@@ -1989,17 +1989,17 @@
     "geo_confidence": "ESTIMATED",
     "out_of_footprint": true,
     "priority": "Add now",
-    "geo_source": "EIA-861 / public utility records",
-    "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Territorial electric utility or power-business candidate; the uploaded dataset contains no U.S. territory rows"
+    "geo_source": "WAPA contact page / estimated Christiansted anchor",
+    "geo_source_url": "https://www.viwapa.vi/customer-service/contact-us",
+    "geo_notes": "Territory-wide utility; estimated to Christiansted/St. Croix mailing and service-office anchor. Retained in territory inset."
   },
   {
     "entity_name": "Wartsila Virgin Islands Project Entity",
-    "acronym": null,
+    "acronym": "Wartsila VI",
     "state": "VI",
-    "city": null,
-    "lat": null,
-    "lng": null,
+    "city": "St. Thomas",
+    "lat": 18.3311,
+    "lng": -64.9558,
     "roles": [
       "DP"
     ],
@@ -2008,9 +2008,9 @@
     "geo_confidence": "ESTIMATED",
     "out_of_footprint": true,
     "priority": "Add now",
-    "geo_source": "EIA-861 / public utility records",
-    "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Territorial electric utility or power-business candidate; the uploaded dataset contains no U.S. territory rows"
+    "geo_source": "Wartsila press release / EPA WAPA St. Thomas coordinate",
+    "geo_source_url": "https://www.wartsila.com/media/news/04-04-2017-wartsila-to-supply-21-mw-propane-power-plant-to-us-virgin-islands",
+    "geo_notes": "Estimated to WAPA's St. Thomas power-plant area; Wartsila describes the project as a St. Thomas WAPA power plant. Retained in territory inset."
   },
   {
     "entity_name": "Seattle City Light",

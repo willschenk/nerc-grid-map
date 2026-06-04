@@ -55,11 +55,12 @@
 
 #nerc-svg .org {
   fill-opacity: 0.72;
+  opacity: var(--org-opacity, 1);
   stroke: rgba(255, 255, 255, 0.95);
   stroke-width: 0.8;
   vector-effect: non-scaling-stroke;
   cursor: pointer;
-  transition: fill-opacity 120ms ease, stroke-width 120ms ease;
+  transition: fill-opacity 120ms ease, opacity 120ms ease, stroke-width 120ms ease;
 }
 
 #nerc-svg .org.estimated {
