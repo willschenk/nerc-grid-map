@@ -803,7 +803,9 @@ export function mountNercOrgMap(): void {
 
   function centerOnOrg(o: Org, duration = 450): void {
     if (o._x == null || o._y == null) return;
-    const scale = Math.min(8, Math.max(transform.k, o.is_iso_rto ? 3.2 : 4.2));
+    // Ensure a readable zoom, but never zoom the user back out if they've
+    // already zoomed in deeper.
+    const scale = Math.min(500, Math.max(transform.k, o.is_iso_rto ? 3.2 : 4.2));
     const next = zoomIdentity.translate(W / 2, H / 2).scale(scale).translate(-o._x, -o._y);
     animateTransform(next, duration);
   }
@@ -957,7 +959,7 @@ export function mountNercOrgMap(): void {
 
   function setupZoom(): void {
     zoomBehavior = zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.72, 32])
+      .scaleExtent([0.72, 500])
       // The walkthrough keeps playing while the user pans/zooms (programmatic
       // transitions have no sourceEvent). A real gesture just nudges the Stop
       // control so they know they can take over.
