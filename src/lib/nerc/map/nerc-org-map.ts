@@ -38,6 +38,8 @@ type Org = {
   seed?: boolean;
   _x?: number;
   _y?: number;
+  _rx?: number;
+  _ry?: number;
   _sx?: number;
   _sy?: number;
   _vis?: boolean;
@@ -56,6 +58,10 @@ type OrgsPayload = {
 let W = 960;
 let H = 600;
 const RADIUS_SCALE = scaleSqrt().domain([1, 45]).range([4, 48]);
+const SPIDER_CLUSTER_EPSILON = 0.35;
+const SPIDER_START_K = 4;
+const SPIDER_FULL_K = 10;
+const SPIDER_RING_STEP_PX = 28;
 
 const TYPE_LABELS: Record<string, string> = {
   ISO_RTO: "ISO / RTO",
@@ -230,6 +236,7 @@ export function mountNercOrgMap(): void {
   let compact = false;
   // Live "shown in view" counter element inside the metrics panel.
   let shownEl: HTMLElement | null = null;
+  let orgMarkFanScale = NaN;
 
   function colorFor(role: string): string {
     const el = document.querySelector(`.nerc-role-def[data-role="${CSS.escape(role)}"] .nerc-dot`) as HTMLElement | null;
@@ -292,6 +299,83 @@ export function mountNercOrgMap(): void {
     return !(a.x1 < b.x0 || a.x0 > b.x1 || a.y1 < b.y0 || a.y0 > b.y1);
   }
 
+  function smoothStep(t: number): number {
+    const clamped = Math.max(0, Math.min(1, t));
+    return clamped * clamped * (3 - 2 * clamped);
+  }
+
+  function spiderFanScale(k: number): number {
+    // Offsets are target screen-space SVG units; divide by k because circles
+    // live inside the zoomed group.
+    return smoothStep((k - SPIDER_START_K) / (SPIDER_FULL_K - SPIDER_START_K)) / Math.max(k, 0.001);
+  }
+
+  function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k)): number {
+    return (o._x as number) + (o._rx ?? 0) * fanScale;
+  }
+
+  function orgRenderY(o: Org, fanScale = spiderFanScale(transform.k)): number {
+    return (o._y as number) + (o._ry ?? 0) * fanScale;
+  }
+
+  function spiderOffset(index: number, total: number, step: number): [number, number] {
+    let ringStart = 0;
+    let remaining = total;
+    let ring = 1;
+    while (true) {
+      const ringCapacity = ring === 1 ? 6 : ring * 8;
+      const ringCount = Math.min(remaining, ringCapacity);
+      if (index < ringStart + ringCount) {
+        const slot = index - ringStart;
+        const angleStep = (Math.PI * 2) / ringCount;
+        const angle = -Math.PI / 2 + slot * angleStep + (ring % 2 === 0 ? angleStep / 2 : 0);
+        const radius = step * ring;
+        return [Math.cos(angle) * radius, Math.sin(angle) * radius];
+      }
+      ringStart += ringCount;
+      remaining -= ringCount;
+      ring += 1;
+    }
+  }
+
+  function assignSpiderOffsets(): void {
+    const clusters = new Map<string, Org[]>();
+    for (const o of orgs) {
+      o._rx = 0;
+      o._ry = 0;
+      if (o._x == null || o._y == null) continue;
+      const key = `${Math.round(o._x / SPIDER_CLUSTER_EPSILON)}:${Math.round(o._y / SPIDER_CLUSTER_EPSILON)}`;
+      const cluster = clusters.get(key);
+      if (cluster) cluster.push(o);
+      else clusters.set(key, [o]);
+    }
+
+    const step = SPIDER_RING_STEP_PX * unitPerPx;
+    for (const cluster of clusters.values()) {
+      if (cluster.length < 2) continue;
+      cluster.sort((a, b) => a.ncr_id.localeCompare(b.ncr_id));
+      cluster.forEach((o, i) => {
+        const [rx, ry] = spiderOffset(i, cluster.length, step);
+        o._rx = rx;
+        o._ry = ry;
+      });
+    }
+  }
+
+  function positionOrgMarks(k = transform.k, force = false): void {
+    const fanScale = spiderFanScale(k);
+    if (!force && fanScale === orgMarkFanScale) return;
+    orgMarkFanScale = fanScale;
+    gOverlay
+      .selectAll<SVGCircleElement, Org>("circle.org")
+      .attr("cx", (o) => orgRenderX(o, fanScale))
+      .attr("cy", (o) => orgRenderY(o, fanScale));
+    gHit
+      .selectAll<SVGCircleElement, Org>("circle.org-hit")
+      .attr("cx", (o) => orgRenderX(o, fanScale))
+      .attr("cy", (o) => orgRenderY(o, fanScale));
+  }
+
   // Size the viewBox to match the element's aspect ratio so a tall phone gets a
   // tall viewBox (no letterboxed top/bottom bands where nothing rendered). The
   // base dimension stays fixed so the map's physical scale is stable.
@@ -319,6 +403,7 @@ export function mountNercOrgMap(): void {
   function project(): void {
     if (!nationFeature) return;
     hitK = NaN;
+    orgMarkFanScale = NaN;
     projection.fitSize([W, H], nationFeature as never);
     gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
     gMap.select<SVGPathElement>("path.nation").attr("d", path(nationFeature as never));
@@ -338,14 +423,8 @@ export function mountNercOrgMap(): void {
       o._x = p[0];
       o._y = p[1];
     }
-    gOverlay
-      .selectAll<SVGCircleElement, Org>("circle.org")
-      .attr("cx", (o) => o._x as number)
-      .attr("cy", (o) => o._y as number);
-    gHit
-      .selectAll<SVGCircleElement, Org>("circle.org-hit")
-      .attr("cx", (o) => o._x as number)
-      .attr("cy", (o) => o._y as number);
+    assignSpiderOffsets();
+    positionOrgMarks(transform.k, true);
     for (const p of places) {
       const xy = projection([p.lng, p.lat]);
       p._x = xy ? xy[0] : undefined;
@@ -383,6 +462,8 @@ export function mountNercOrgMap(): void {
     gMap.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
     gHit.attr("transform", tStr);
+    const fanScale = spiderFanScale(k);
+    positionOrgMarks(k);
 
     const hot = hoverOrg ?? selectedOrg;
     const tourActive = tourIds.size > 0;
@@ -402,8 +483,8 @@ export function mountNercOrgMap(): void {
         o._vis = false;
         continue;
       }
-      const sx = transform.applyX(o._x);
-      const sy = transform.applyY(o._y);
+      const sx = transform.applyX(orgRenderX(o, fanScale));
+      const sy = transform.applyY(orgRenderY(o, fanScale));
       o._sx = sx;
       o._sy = sy;
       const vis = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
@@ -1104,8 +1185,8 @@ export function mountNercOrgMap(): void {
       .join("circle")
       .attr("class", (o) => "org" + (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : ""))
       .attr("fill", (o) => safeColor(o.color))
-      .attr("cx", (o) => o._x as number)
-      .attr("cy", (o) => o._y as number)
+      .attr("cx", (o) => orgRenderX(o))
+      .attr("cy", (o) => orgRenderY(o))
       .attr("r", (o) => RADIUS_SCALE(o.weight))
       .attr("tabindex", 0)
       .attr("role", "button")
@@ -1118,8 +1199,8 @@ export function mountNercOrgMap(): void {
       .data(hitOrder, (o: unknown) => (o as Org).ncr_id)
       .join("circle")
       .attr("class", "org-hit")
-      .attr("cx", (o) => o._x as number)
-      .attr("cy", (o) => o._y as number)
+      .attr("cx", (o) => orgRenderX(o))
+      .attr("cy", (o) => orgRenderY(o))
       .attr("r", (o) => Math.max(10, RADIUS_SCALE(o.weight)))
       .attr("aria-hidden", "true");
 
