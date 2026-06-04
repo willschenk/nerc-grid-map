@@ -43,6 +43,16 @@
   stroke-width: 1;
 }
 
+/* Canada: faint background context north of the border, quieter than the U.S.
+   states so the U.S. footprint stays the focus. */
+#nerc-svg .canada {
+  fill: #e2e8e3;
+  stroke: rgba(120, 134, 128, 0.45);
+  stroke-width: 0.7;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
 #nerc-svg .org {
   fill-opacity: 0.72;
   stroke: rgba(255, 255, 255, 0.95);
@@ -168,6 +178,47 @@
 
 #nerc-svg .place.dim {
   display: none;
+}
+
+/* Land labels: state / province names sitting faintly on the map. Below NERC
+   marks and labels in the stacking order, so NERC information reads on top. */
+#nerc-svg .land-label {
+  fill: rgba(95, 109, 103, 0.62);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  paint-order: stroke;
+  stroke: rgba(248, 251, 249, 0.68);
+  stroke-width: 2.6;
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+#nerc-svg .land-label.dim {
+  display: none;
+}
+
+/* U.S. territory insets: a dashed frame with the territory name; the org dots
+   inside ride the normal overlay layer. */
+#nerc-svg .terr-frame {
+  fill: rgba(216, 226, 220, 0.55);
+  stroke: rgba(99, 120, 114, 0.5);
+  stroke-width: 0.8;
+  stroke-dasharray: 2.5 2;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+#nerc-svg .terr-label {
+  fill: #5a6661;
+  font-weight: 760;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  paint-order: stroke;
+  stroke: rgba(248, 251, 249, 0.92);
+  stroke-width: 2.4;
+  pointer-events: none;
+  text-anchor: middle;
 }
 
 .nerc-topbar,

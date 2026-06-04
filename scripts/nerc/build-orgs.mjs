@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { feature } from "topojson-client";
 import { enrichOrg } from "../../src/lib/nerc/enrich.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -45,9 +46,15 @@ function loadSupplemental(existingNames) {
   const out = [];
   let dupes = 0;
   let ungeocoded = 0;
+  let territories = 0;
   for (const s of list) {
-    if (s.lat == null || s.lng == null) { ungeocoded++; continue; }
+    // Territory orgs (PR/VI/GU/MP/AS) have no mainland-projectable coordinates
+    // but still belong on the map — the renderer places them in insets. Every
+    // other supplemental org needs real coordinates to be plotted.
+    const isTerritory = s.out_of_footprint === true;
+    if ((s.lat == null || s.lng == null) && !isTerritory) { ungeocoded++; continue; }
     if (existingNames.has(normName(s.entity_name))) { dupes++; continue; }
+    if (isTerritory) territories++;
     const org = enrichOrg({
       ...s,
       ncr_id: s.ncr_id || `SUP-${slug(s.entity_name)}`,
@@ -63,8 +70,26 @@ function loadSupplemental(existingNames) {
     existingNames.add(normName(s.entity_name));
     out.push(org);
   }
-  console.log(`nerc: +${out.length} supplemental orgs (${dupes} name-dupes, ${ungeocoded} ungeocoded skipped)`);
+  console.log(`nerc: +${out.length} supplemental orgs (${territories} territory-inset, ${dupes} name-dupes, ${ungeocoded} ungeocoded skipped)`);
   return out;
+}
+
+// Stage the Canada landmass (TopoJSON country 124 -> GeoJSON feature) so the map
+// can draw it as background context. Best-effort: skipped if world-atlas absent.
+function stageCanada() {
+  if (!existsSync(WORLD_SRC)) {
+    console.warn(`WARN: world-atlas not found at ${WORLD_SRC}; Canada context will be missing.`);
+    return;
+  }
+  const world = JSON.parse(readFileSync(WORLD_SRC, "utf8"));
+  const countries = feature(world, world.objects.countries);
+  const canada = countries.features.find((f) => String(f.id) === "124");
+  if (!canada) {
+    console.warn("WARN: Canada (id 124) not found in world-atlas; context will be missing.");
+    return;
+  }
+  writeFileSync(CANADA_OUT, JSON.stringify(canada));
+  console.log(`nerc: wrote ${CANADA_OUT.replace(root + "/", "")} (Canada context)`);
 }
 // A geocoding-agent output file (JSON array or {orgs:[...]}) overrides the seed
 // when present, so the real registry can drop in without touching this script.
@@ -77,6 +102,11 @@ const OUT_DIR = resolve(root, "public/nerc");
 const OUT_ORGS = resolve(OUT_DIR, "orgs.json");
 const BASEMAP_SRC = resolve(root, "node_modules/us-atlas/states-10m.json");
 const BASEMAP_OUT = resolve(OUT_DIR, "states-10m.json");
+// Canada landmass, drawn as faint context north of the border (Canadian NERC
+// entities — Hydro-Québec, IESO, NB Power, Nova Scotia Power, etc. — plot onto
+// it via a conic that mirrors the Albers lower-48 piece). Country id 124.
+const WORLD_SRC = resolve(root, "node_modules/world-atlas/countries-50m.json");
+const CANADA_OUT = resolve(OUT_DIR, "canada-land.json");
 
 function loadRecords() {
   const file = existsSync(GEOCODED) ? GEOCODED : SEED;
@@ -136,6 +166,8 @@ function main() {
   } else {
     console.warn(`WARN: basemap not found at ${BASEMAP_SRC}. Run "npm install" first.`);
   }
+
+  stageCanada();
 
   const isoCount = orgs.filter((o) => o.is_iso_rto).length;
   console.log(`nerc: enriched ${orgs.length} orgs from ${payload.source_file}`);

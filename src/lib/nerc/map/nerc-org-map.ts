@@ -1,4 +1,4 @@
-import { geoAlbersUsa, geoPath } from "d3-geo";
+import { geoAlbersUsa, geoConicEqualArea, geoPath } from "d3-geo";
 import { scaleSqrt } from "d3-scale";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zoom";
@@ -37,15 +37,26 @@ type Org = {
   eia_utility_id?: string | number | null;
   seed?: boolean;
   nerc_registered?: boolean;
+  out_of_footprint?: boolean;
   _x?: number;
   _y?: number;
+  // Declutter offset (screen-space target at k=1): nudges overlapping bubbles
+  // apart at low zoom, faded out once zoomed in.
+  _dx?: number;
+  _dy?: number;
   _rx?: number;
   _ry?: number;
   _sx?: number;
   _sy?: number;
   _vis?: boolean;
   _rk?: number;
+  // Which projection placed this org: mainland Albers ("us"), the Canada conic
+  // ("ca"), or a territory inset ("terr").
+  _frame?: "us" | "ca" | "terr";
 };
+
+type LandLabel = { name: string; x: number; y: number; small: boolean; _node?: SVGTextElement };
+type TerritoryBox = { code: string; label: string; x: number; y: number; w: number; h: number };
 
 type OrgsPayload = {
   generated_at?: string;
@@ -63,6 +74,44 @@ const SPIDER_CLUSTER_EPSILON = 0.35;
 const SPIDER_START_K = 4;
 const SPIDER_FULL_K = 10;
 const SPIDER_RING_STEP_PX = 28;
+// Declutter: at low zoom, push overlapping bubbles apart so a big org never
+// fully buries (and steals taps from) a small neighbour. Fades to nothing by the
+// time real separation + spiderfy take over, so dots settle on true positions
+// when zoomed in.
+const DECLUTTER_FADE_START = 2.2;
+const DECLUTTER_FADE_END = 5;
+const MAX_RADIUS = 48;
+
+// Out-of-footprint U.S. territories, shown as labelled insets (no mainland
+// coordinates to project). Order = how they stack into the bottom-right corner.
+const TERRITORIES: Array<{ code: string; label: string }> = [
+  { code: "PR", label: "Puerto Rico" },
+  { code: "VI", label: "U.S. Virgin Is." },
+  { code: "GU", label: "Guam" },
+  { code: "MP", label: "N. Mariana Is." },
+  { code: "AS", label: "American Samoa" },
+];
+
+// Canadian province label anchors (rough interior points), drawn faintly on the
+// land like the U.S. state labels.
+const PROVINCE_LABELS: Array<{ name: string; lat: number; lng: number }> = [
+  { name: "British Columbia", lat: 53.9, lng: -124.5 },
+  { name: "Alberta", lat: 54.4, lng: -114.4 },
+  { name: "Saskatchewan", lat: 53.6, lng: -105.8 },
+  { name: "Manitoba", lat: 53.4, lng: -97.5 },
+  { name: "Ontario", lat: 49.3, lng: -85.5 },
+  { name: "Québec", lat: 51.5, lng: -70.5 },
+  { name: "New Brunswick", lat: 46.7, lng: -66.4 },
+  { name: "Nova Scotia", lat: 45.1, lng: -62.9 },
+  { name: "Newfoundland & Labrador", lat: 48.7, lng: -56.2 },
+];
+
+// Tiny states whose centroid label would clutter the eastern seaboard; held
+// back until the map is zoomed in.
+const SMALL_STATES = new Set([
+  "Rhode Island", "Delaware", "Connecticut", "New Jersey", "New Hampshire",
+  "Vermont", "Massachusetts", "Maryland", "District of Columbia", "Hawaii",
+]);
 
 const TYPE_LABELS: Record<string, string> = {
   ISO_RTO: "ISO / RTO",
@@ -190,10 +239,16 @@ export function mountNercOrgMap(): void {
   const svgNode = byId<SVGSVGElement>("nerc-svg");
   const svg = select(svgNode);
   const gMap = svg.append("g").attr("class", "map");
-  // Geographic context stays below every NERC mark and label.
+  // Territory inset frames ride the zoom transform (like the Alaska/Hawaii
+  // insets) so their dots stay inside as you zoom.
+  const gInsets = svg.append("g").attr("class", "insets");
+  // City context stays below every NERC mark and label.
   const gPlaces = svg.append("g").attr("class", "places");
   const gOverlay = svg.append("g").attr("class", "overlay");
   const gHit = svg.append("g").attr("class", "hit");
+  // State / province names float faintly over the dot field but below NERC org
+  // labels, so geography reads without ever hiding NERC information.
+  const gLand = svg.append("g").attr("class", "land");
   const gLabels = svg.append("g").attr("class", "labels");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
@@ -211,6 +266,11 @@ export function mountNercOrgMap(): void {
 
   const projection = geoAlbersUsa();
   const path = geoPath(projection);
+  // Canada is drawn with a conic that mirrors the Albers lower-48 piece (same
+  // rotate/center/parallels), then locked to the composite's scale/translate
+  // after fitSize — so Canadian land and entities line up north of the border.
+  const canadaProj = geoConicEqualArea().rotate([96, 0]).center([-0.6, 38.7]).parallels([29.5, 45.5]);
+  const canadaPath = geoPath(canadaProj);
 
   let transform: ZoomTransform = zoomIdentity;
   let zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> | null = null;
@@ -229,6 +289,10 @@ export function mountNercOrgMap(): void {
   // per-redraw setAttribute storm during a tour (transform is static).
   let hitK = NaN;
   let nationFeature: unknown = null;
+  let canadaFeature: unknown = null;
+  let stateFeatures: unknown[] = [];
+  let landLabels: LandLabel[] = [];
+  let territoryBoxes: TerritoryBox[] = [];
   const prefersReducedMotion = (): boolean =>
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   // User-space units per on-screen pixel (W / element width). Lets us size
@@ -239,7 +303,7 @@ export function mountNercOrgMap(): void {
   let compact = false;
   // Live "shown in view" counter element inside the metrics panel.
   let shownEl: HTMLElement | null = null;
-  let orgMarkFanScale = NaN;
+  let orgMarkK = NaN;
 
   function colorFor(role: string): string {
     const el = document.querySelector(`.nerc-role-def[data-role="${CSS.escape(role)}"] .nerc-dot`) as HTMLElement | null;
@@ -320,6 +384,12 @@ export function mountNercOrgMap(): void {
     return compact ? grown : Math.min(grown, base + 4 * unitPerPx);
   }
 
+  // Territory-inset dots are schematic (small, uniform) rather than weight-sized
+  // so they fit their grid cells; everything else uses the normal visual radius.
+  function renderedRadius(o: Org, k: number): number {
+    return o._frame === "terr" ? (compact ? 5 : 4) * unitPerPx : visualRadius(o, k);
+  }
+
   function boxesOverlap(
     a: { x0: number; x1: number; y0: number; y1: number },
     b: { x0: number; x1: number; y0: number; y1: number },
@@ -338,12 +408,20 @@ export function mountNercOrgMap(): void {
     return smoothStep((k - SPIDER_START_K) / (SPIDER_FULL_K - SPIDER_START_K)) / Math.max(k, 0.001);
   }
 
-  function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k)): number {
-    return (o._x as number) + (o._rx ?? 0) * fanScale;
+  // Declutter weight: full at low zoom, faded to 0 by DECLUTTER_FADE_END. Divided
+  // by k (like spiderfy) so the on-screen nudge stays roughly constant while the
+  // underlying geographic error shrinks as you zoom in.
+  function declutterScale(k: number): number {
+    const fade = 1 - smoothStep((k - DECLUTTER_FADE_START) / (DECLUTTER_FADE_END - DECLUTTER_FADE_START));
+    return fade / Math.max(k, 0.001);
   }
 
-  function orgRenderY(o: Org, fanScale = spiderFanScale(transform.k)): number {
-    return (o._y as number) + (o._ry ?? 0) * fanScale;
+  function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
+    return (o._x as number) + (o._dx ?? 0) * declScale + (o._rx ?? 0) * fanScale;
+  }
+
+  function orgRenderY(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
+    return (o._y as number) + (o._dy ?? 0) * declScale + (o._ry ?? 0) * fanScale;
   }
 
   function spiderOffset(index: number, total: number, step: number): [number, number] {
@@ -391,17 +469,20 @@ export function mountNercOrgMap(): void {
   }
 
   function positionOrgMarks(k = transform.k, force = false): void {
+    // Render positions only depend on k (panning is handled by the group
+    // transform), so skip the per-dot rewrite while k is unchanged.
+    if (!force && k === orgMarkK) return;
+    orgMarkK = k;
     const fanScale = spiderFanScale(k);
-    if (!force && fanScale === orgMarkFanScale) return;
-    orgMarkFanScale = fanScale;
+    const declScale = declutterScale(k);
     gOverlay
       .selectAll<SVGCircleElement, Org>("circle.org")
-      .attr("cx", (o) => orgRenderX(o, fanScale))
-      .attr("cy", (o) => orgRenderY(o, fanScale));
+      .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
+      .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
     gHit
       .selectAll<SVGCircleElement, Org>("circle.org-hit")
-      .attr("cx", (o) => orgRenderX(o, fanScale))
-      .attr("cy", (o) => orgRenderY(o, fanScale));
+      .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
+      .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
   }
 
   // Size the viewBox to match the element's aspect ratio so a tall phone gets a
@@ -431,32 +512,200 @@ export function mountNercOrgMap(): void {
   function project(): void {
     if (!nationFeature) return;
     hitK = NaN;
-    orgMarkFanScale = NaN;
+    orgMarkK = NaN;
     projection.fitSize([W, H], nationFeature as never);
+    // Lock the Canada conic onto the composite's lower-48 scale/translate.
+    canadaProj.scale(projection.scale()).translate(projection.translate() as [number, number]);
+    if (canadaFeature) gMap.select<SVGPathElement>("path.canada").attr("d", canadaPath(canadaFeature as never));
     gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
     gMap.select<SVGPathElement>("path.nation").attr("d", path(nationFeature as never));
+
     for (const o of orgs) {
       o._rk = undefined;
+      o._dx = 0;
+      o._dy = 0;
+      if (o.out_of_footprint) {
+        o._frame = "terr"; // positioned by layoutTerritories()
+        continue;
+      }
       if (o.lng == null || o.lat == null) {
         o._x = undefined;
         o._y = undefined;
         continue;
       }
-      const p = projection([o.lng, o.lat]);
+      const proj = o.country === "CA" ? canadaProj : projection;
+      const p = proj([o.lng, o.lat]);
       if (!p) {
         o._x = undefined;
         o._y = undefined;
         continue;
       }
+      o._frame = o.country === "CA" ? "ca" : "us";
       o._x = p[0];
       o._y = p[1];
     }
+
+    layoutTerritories();
+    drawTerritoryFrames();
+    relaxDeclutter();
     assignSpiderOffsets();
     positionOrgMarks(transform.k, true);
+    computeLandLabels();
     for (const p of places) {
       const xy = projection([p.lng, p.lat]);
       p._x = xy ? xy[0] : undefined;
       p._y = xy ? xy[1] : undefined;
+    }
+  }
+
+  // Resolve heavy bubble overlaps (at k=1 radii) so no dot is fully buried. Grid
+  // bucketed to stay ~linear over ~2k dots; only pushes apart pairs overlapping
+  // by more than ~28%, so most dots never move.
+  function relaxDeclutter(): void {
+    const items: Array<{ o: Org; x: number; y: number; r: number }> = [];
+    for (const o of orgs) {
+      if (o._x == null || o._y == null || o._frame === "terr") continue;
+      items.push({ o, x: o._x, y: o._y, r: Math.max(2, RADIUS_SCALE(o.weight)) });
+    }
+    if (items.length < 2) return;
+    const cell = MAX_RADIUS * 2; // catch any overlap within neighbouring buckets
+    const allow = 0.72; // permit some overlap; only separate heavy stacks
+    for (let pass = 0; pass < 14; pass++) {
+      const grid = new Map<string, number[]>();
+      for (let i = 0; i < items.length; i++) {
+        const key = Math.floor(items[i].x / cell) + ":" + Math.floor(items[i].y / cell);
+        const b = grid.get(key);
+        if (b) b.push(i);
+        else grid.set(key, [i]);
+      }
+      let moved = false;
+      for (let i = 0; i < items.length; i++) {
+        const a = items[i];
+        const gx = Math.floor(a.x / cell);
+        const gy = Math.floor(a.y / cell);
+        for (let ox = -1; ox <= 1; ox++) {
+          for (let oy = -1; oy <= 1; oy++) {
+            const bucket = grid.get(gx + ox + ":" + (gy + oy));
+            if (!bucket) continue;
+            for (const j of bucket) {
+              if (j <= i) continue;
+              const b = items[j];
+              let dx = b.x - a.x;
+              let dy = b.y - a.y;
+              let d = Math.hypot(dx, dy);
+              const min = (a.r + b.r) * allow;
+              if (d >= min) continue;
+              if (d < 1e-4) {
+                const ang = i * 2.399963; // golden angle: deterministic spread
+                dx = Math.cos(ang);
+                dy = Math.sin(ang);
+                d = 1;
+              }
+              const push = ((min - d) * 0.5) / d;
+              const wa = b.r / (a.r + b.r);
+              const wb = a.r / (a.r + b.r);
+              a.x -= dx * push * wa;
+              a.y -= dy * push * wa;
+              b.x += dx * push * wb;
+              b.y += dy * push * wb;
+              moved = true;
+            }
+          }
+        }
+      }
+      if (!moved) break;
+    }
+    const cap = 34;
+    for (const it of items) {
+      let dx = it.x - (it.o._x as number);
+      let dy = it.y - (it.o._y as number);
+      const m = Math.hypot(dx, dy);
+      if (m > cap) {
+        dx = (dx / m) * cap;
+        dy = (dy / m) * cap;
+      }
+      it.o._dx = dx;
+      it.o._dy = dy;
+    }
+  }
+
+  // Lay each present territory's orgs into a small grid inside a labelled box,
+  // stacking the boxes into the bottom-right corner (base coordinates; the inset
+  // group rides the zoom transform like the Alaska/Hawaii insets).
+  function layoutTerritories(): void {
+    territoryBoxes = [];
+    const present = new Map<string, Org[]>();
+    for (const o of orgs) {
+      if (!o.out_of_footprint || !o.state) {
+        if (o.out_of_footprint) {
+          o._x = undefined;
+          o._y = undefined;
+        }
+        continue;
+      }
+      const arr = present.get(o.state);
+      if (arr) arr.push(o);
+      else present.set(o.state, [o]);
+    }
+    const groups = TERRITORIES.filter((t) => present.has(t.code));
+    if (!groups.length) return;
+
+    const cell = (compact ? 17 : 15) * unitPerPx;
+    const pad = 6 * unitPerPx;
+    const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
+    const margin = 6 * unitPerPx;
+    const gap = 7 * unitPerPx;
+    let curX = W - margin; // place right-to-left
+    let rowBottom = H - margin;
+    let rowH = 0;
+
+    for (const t of groups) {
+      const list = present.get(t.code)!;
+      const cols = Math.max(2, Math.round(Math.sqrt(list.length * 1.7)));
+      const rows = Math.ceil(list.length / cols);
+      const w = cols * cell + pad * 2;
+      const h = rows * cell + pad * 2 + labelH;
+      if (curX - w < margin) {
+        // wrap to a new row stacked above the previous one
+        curX = W - margin;
+        rowBottom -= rowH + gap;
+        rowH = 0;
+      }
+      const x = curX - w;
+      const y = rowBottom - h;
+      territoryBoxes.push({ code: t.code, label: t.label, x, y, w, h });
+
+      list.sort((a, b) => a.ncr_id.localeCompare(b.ncr_id));
+      list.forEach((o, i) => {
+        const c = i % cols;
+        const r = Math.floor(i / cols);
+        o._x = x + pad + cell * (c + 0.5);
+        o._y = y + labelH + pad + cell * (r + 0.5);
+        o._dx = 0;
+        o._dy = 0;
+        o._rx = 0;
+        o._ry = 0;
+      });
+      curX = x - gap;
+      rowH = Math.max(rowH, h);
+    }
+  }
+
+  // U.S. state + Canadian province name anchors (base coordinates), drawn faintly
+  // as background context with NERC labels always taking precedence.
+  function computeLandLabels(): void {
+    landLabels = [];
+    for (const f of stateFeatures) {
+      const name = (f as { properties?: { name?: string } }).properties?.name;
+      if (!name) continue;
+      const c = path.centroid(f as never);
+      if (!c || Number.isNaN(c[0]) || Number.isNaN(c[1])) continue;
+      landLabels.push({ name, x: c[0], y: c[1], small: SMALL_STATES.has(name) });
+    }
+    for (const p of PROVINCE_LABELS) {
+      const xy = canadaProj([p.lng, p.lat]);
+      if (!xy) continue;
+      landLabels.push({ name: p.name, x: xy[0], y: xy[1], small: false });
     }
   }
 
@@ -488,9 +737,11 @@ export function mountNercOrgMap(): void {
     // Circles ride the zoom transform, so panning is a single group attribute
     // (GPU-composited) instead of repositioning every dot in JS each frame.
     gMap.attr("transform", tStr);
+    gInsets.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
     gHit.attr("transform", tStr);
     const fanScale = spiderFanScale(k);
+    const declScale = declutterScale(k);
     positionOrgMarks(k);
 
     const hot = hoverOrg ?? selectedOrg;
@@ -511,18 +762,21 @@ export function mountNercOrgMap(): void {
         o._vis = false;
         continue;
       }
-      const sx = transform.applyX(orgRenderX(o, fanScale));
-      const sy = transform.applyY(orgRenderY(o, fanScale));
+      const sx = transform.applyX(orgRenderX(o, fanScale, declScale));
+      const sy = transform.applyY(orgRenderY(o, fanScale, declScale));
       o._sx = sx;
       o._sy = sy;
       const vis = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
       o._vis = vis;
       if (!vis) continue;
       shownCount++;
+      // Territory-inset dots are identified by their labelled box, so they only
+      // get an individual label when hovered/selected (never in the normal flow).
+      const isTerr = o._frame === "terr";
       if (tourActive) {
         // During a walkthrough step only the highlighted set gets labels.
-        if (tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id) candidates.push(o);
-      } else if (!tourRunning && (hot?.ncr_id === o.ncr_id || shouldTryLabel(o, k))) {
+        if ((tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id) && (!isTerr || hot?.ncr_id === o.ncr_id)) candidates.push(o);
+      } else if (!tourRunning && (hot?.ncr_id === o.ncr_id || (!isTerr && shouldTryLabel(o, k)))) {
         // Normal map. (During a blank beat — tourRunning && !tourActive — we
         // deliberately collect no candidates so nothing is labelled.)
         candidates.push(o);
@@ -604,7 +858,7 @@ export function mountNercOrgMap(): void {
       // Radius is set in transform-space (divided by the group scale) and only
       // when the zoom level actually changed for this dot.
       if (o._rk !== k) {
-        node.setAttribute("r", String(visualRadius(o, k) / k));
+        node.setAttribute("r", String(renderedRadius(o, k) / k));
         o._rk = k;
       }
       const labeled = labelState.has(o.ncr_id);
@@ -624,6 +878,12 @@ export function mountNercOrgMap(): void {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
       if (!o._vis || !hitChanged) return;
+      if (o._frame === "terr") {
+        // Inset dots sit ~one cell apart; keep the hit radius under that spacing
+        // so each stays individually tappable.
+        node.setAttribute("r", String(((compact ? 8.5 : 7) * unitPerPx) / k));
+        return;
+      }
       // Keep hit targets on the old growth curve so smaller visual bubbles do
       // not become harder to click.
       const hitRadius = Math.max(2, RADIUS_SCALE(o.weight) * Math.pow(k, 0.1));
@@ -648,7 +908,7 @@ export function mountNercOrgMap(): void {
     const placeBlockers = [...placed];
     for (const o of placeableOrgs) {
       if (!o._vis || o._sx == null || o._sy == null) continue;
-      const r = visualRadius(o, k) + 2 * unitPerPx;
+      const r = renderedRadius(o, k) + 2 * unitPerPx;
       placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
     }
 
@@ -706,6 +966,69 @@ export function mountNercOrgMap(): void {
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
     });
+
+    // Land labels (state / province names) — faint background context. Placed
+    // last, into space NERC dots/labels and city labels have not claimed, so
+    // NERC information always takes precedence.
+    const landState = new Map<string, { x: number; y: number; font: number }>();
+    if (!tourRunning) {
+      let placedLand = 0;
+      const landCap = compact ? 12 : 28;
+      for (const L of landLabels) {
+        if (placedLand >= landCap) break;
+        if (L.small && k < 3.2) continue; // tiny states only once zoomed in
+        const sx = transform.applyX(L.x);
+        const sy = transform.applyY(L.y);
+        if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
+        const grow = Math.max(0.85, 1.28 - Math.max(0, k - 1) * 0.06);
+        const font = (L.small ? 9 : 12) * grow * unitPerPx;
+        const w = L.name.length * font * 0.6 + 4;
+        const h = font + 4;
+        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
+        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
+        if (placeBlockers.some((q) => boxesOverlap(box, q))) continue;
+        placeBlockers.push(box);
+        placedLand++;
+        landState.set(L.name, { x: sx, y: sy, font });
+      }
+    }
+
+    gLand.selectAll<SVGTextElement, LandLabel>("text.land-label").each(function (L) {
+      const node = this as SVGTextElement;
+      const state = landState.get(L.name);
+      node.classList.toggle("dim", !state);
+      if (!state) return;
+      node.setAttribute("x", String(state.x));
+      node.setAttribute("y", String(state.y));
+      node.setAttribute("font-size", String(state.font));
+    });
+  }
+
+  // Territory inset frames + labels (base coordinates; ride the inset group's
+  // zoom transform). Geometry only changes on resize, so this runs from project()
+  // rather than every redraw frame.
+  function drawTerritoryFrames(): void {
+    const sel = gInsets
+      .selectAll<SVGGElement, TerritoryBox>("g.terr")
+      .data(territoryBoxes, (d) => (d as TerritoryBox).code);
+    sel.exit().remove();
+    const enter = sel.enter().append("g").attr("class", "terr");
+    enter.append("rect").attr("class", "terr-frame");
+    enter.append("text").attr("class", "terr-label");
+    const merged = enter.merge(sel as never);
+    merged
+      .select<SVGRectElement>("rect.terr-frame")
+      .attr("x", (d) => d.x)
+      .attr("y", (d) => d.y)
+      .attr("width", (d) => d.w)
+      .attr("height", (d) => d.h)
+      .attr("rx", 3 * unitPerPx);
+    merged
+      .select<SVGTextElement>("text.terr-label")
+      .attr("x", (d) => d.x + d.w / 2)
+      .attr("y", (d) => d.y + (compact ? 12 : 11) * unitPerPx)
+      .attr("font-size", (compact ? 10 : 9) * unitPerPx)
+      .text((d) => d.label);
   }
 
   function tally(values: Array<string | null | undefined>, fallback: string): Map<string, number> {
@@ -1237,18 +1560,34 @@ export function mountNercOrgMap(): void {
     if (!Array.isArray(orgsPayload.orgs)) throw new Error("No orgs array found in NERC payload");
     orgs = orgsPayload.orgs;
 
+    // Canada landmass (context). Non-fatal if the file is missing.
+    canadaFeature = await loadJson<unknown>(`${base}nerc/canada-land.json`).catch(() => null);
+
     const topoAny = topo as { objects: Record<string, unknown> };
     const states = feature(topo as never, topoAny.objects.states as never) as never as { features: unknown[] };
     nationFeature = feature(topo as never, topoAny.objects.nation as never) as never;
+    stateFeatures = states.features;
 
+    // Draw order inside the basemap group: Canada (context) → states → nation.
+    if (canadaFeature) gMap.append("path").attr("class", "canada");
     gMap.selectAll("path.state").data(states.features).join("path").attr("class", "state");
     gMap.append("path").attr("class", "nation");
 
     measure();
     project();
     placeableOrgs = orgs.filter((o) => o._x != null && o._y != null);
+
+    gLand
+      .selectAll("text.land-label")
+      .data(landLabels, (d: unknown) => (d as LandLabel).name)
+      .join("text")
+      .attr("class", "land-label")
+      .text((d) => d.name);
+    // Both layers paint small → large so the biggest org sits on top — visually
+    // AND for hit-testing. (Previously the hit layer was reversed, so a small
+    // org's inflated tap target covered a big neighbour and stole its clicks.)
     const visibleOrder = [...placeableOrgs].sort((a, b) => a.weight - b.weight || a.role_count - b.role_count);
-    const hitOrder = [...placeableOrgs].sort((a, b) => b.weight - a.weight || b.role_count - a.role_count);
+    const hitOrder = visibleOrder;
 
     const visibleCircles = gOverlay
       .selectAll("circle.org")

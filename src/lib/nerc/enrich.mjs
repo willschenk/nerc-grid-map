@@ -291,5 +291,8 @@ export function enrichOrg(rec) {
     // Supplemental (non-NERC) orgs set this false; they have no NERC ID and
     // their roles are a best-effort guess, not an official registration.
     nerc_registered: rec.nerc_registered !== false,
+    // Out-of-footprint U.S. territories (PR/VI/GU/MP/AS) can't be placed on the
+    // mainland Albers projection; the map shows them in labelled insets instead.
+    out_of_footprint: rec.out_of_footprint === true,
   };
 }

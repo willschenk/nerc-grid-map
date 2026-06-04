@@ -16,9 +16,12 @@ const orgs = Array.isArray(data) ? data : data.orgs;
 const errors = [];
 const warnings = [];
 const COLOR_RE = /^hsl\(\d{1,3}, \d{1,3}%, \d{1,3}%\)$/;
+const isSupplemental = (o) => o.nerc_registered === false;
+const isTerritoryInset = (o) => o.out_of_footprint === true;
 
-// 1. Every record has non-null coordinates.
-const nullCoords = orgs.filter((o) => o.lat == null || o.lng == null);
+// 1. Every projected record has non-null coordinates. Territory inset records
+// are placed schematically by the renderer instead of by lat/lng.
+const nullCoords = orgs.filter((o) => (o.lat == null || o.lng == null) && !isTerritoryInset(o));
 if (nullCoords.length) errors.push(`${nullCoords.length} records with null lat/lng`);
 
 // 2. Coordinates inside the North America bounding box.
@@ -63,10 +66,13 @@ for (const o of orgs) {
   if (o.is_private !== isPrivate(o.roles)) errors.push(`is_private mismatch: ${o.ncr_id} ${o.entity_name}`);
 }
 
-// 8. weight > 0 and recomputes; color matches pattern and recomputes.
+// 8. weight > 0 and recomputes for NERC records; supplemental records use
+// explicit type-based display weight/color because their roles are approximate.
 for (const o of orgs) {
   if (!(o.weight > 0)) errors.push(`weight not > 0: ${o.ncr_id}`);
-  if (o.weight !== orgWeight(o.roles)) errors.push(`weight mismatch: ${o.ncr_id} (${o.weight} vs ${orgWeight(o.roles)})`);
+  if (!isSupplemental(o) && o.weight !== orgWeight(o.roles)) {
+    errors.push(`weight mismatch: ${o.ncr_id} (${o.weight} vs ${orgWeight(o.roles)})`);
+  }
   if (!COLOR_RE.test(o.color || "")) errors.push(`bad color string: ${o.ncr_id} "${o.color}"`);
 }
 
@@ -78,6 +84,7 @@ for (const o of orgs) {
 // 10. Color uniqueness: identical sorted role sets must share one color.
 const byRoleSet = {};
 for (const o of orgs) {
+  if (isSupplemental(o)) continue;
   const key = [...o.roles].sort().join("+") || "(none)";
   (byRoleSet[key] ||= new Set()).add(o.color);
 }
