@@ -256,6 +256,12 @@ export function enrichOrg(rec) {
     entity_name: rec.entity_name,
     acronym,
     acronym_source: acronymSource,
+    // Researched three-tier display names (Cursor fills src/data/nerc/org-names.json).
+    // null until researched; the map falls back to its algorithmic shortening.
+    name_shortest: rec.name_shortest ?? null,
+    name_short: rec.name_short ?? null,
+    name_normal: rec.name_normal ?? null,
+    name_major: rec.name_major === true,
 
     // Classification
     region: rec.region ?? null,

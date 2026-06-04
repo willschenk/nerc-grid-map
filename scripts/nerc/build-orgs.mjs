@@ -97,6 +97,9 @@ const GEOCODED = resolve(root, "src/data/nerc/geocoded-orgs.json");
 // Maps placeholder seeds to their authoritative registry twin(s). A seed is
 // dropped once any twin is geocoded, so seeds auto-retire without leaving a gap.
 const SEED_TWINS = resolve(root, "src/data/nerc/seed-twins.json");
+// Researched three-tier display names, keyed by ncr_id (Cursor fills this in
+// one entity at a time). Merged onto records before enrichOrg().
+const ORG_NAMES = resolve(root, "src/data/nerc/org-names.json");
 
 const OUT_DIR = resolve(root, "public/nerc");
 const OUT_ORGS = resolve(OUT_DIR, "orgs.json");
@@ -131,6 +134,33 @@ function dropRetiredSeeds(records) {
   });
 }
 
+// Load the researched-names table into a Map keyed by ncr_id. Each entry carries
+// shortest / short / normal display names plus a "major" flag (forced to shortest
+// on the map at every zoom). Missing file or fields just fall back to algorithmic
+// shortening, so the map keeps working while research is in flight.
+function loadNameTable() {
+  if (!existsSync(ORG_NAMES)) return new Map();
+  const raw = JSON.parse(readFileSync(ORG_NAMES, "utf8"));
+  const list = Array.isArray(raw) ? raw : raw.names ?? [];
+  const map = new Map();
+  for (const n of list) {
+    if (!n || !n.ncr_id) continue;
+    map.set(n.ncr_id, {
+      name_shortest: n.shortest ?? null,
+      name_short: n.short ?? null,
+      name_normal: n.normal ?? null,
+      name_major: n.tier === "major",
+    });
+  }
+  return map;
+}
+
+// Fold researched names onto a record by ncr_id (no-op when unresearched).
+function applyNames(rec, names) {
+  const n = names.get(rec.ncr_id);
+  return n ? { ...rec, ...n } : rec;
+}
+
 function tally(orgs, key) {
   const counts = {};
   for (const o of orgs) {
@@ -142,9 +172,10 @@ function tally(orgs, key) {
 
 function main() {
   const { file, records } = loadRecords();
+  const names = loadNameTable();
   const nercOrgs = dropRetiredSeeds(records)
     .filter((r) => r.skip !== true)
-    .map(enrichOrg)
+    .map((r) => enrichOrg(applyNames(r, names)))
     .filter((o) => o.lat != null && o.lng != null);
 
   const existingNames = new Set(nercOrgs.map((o) => normName(o.entity_name)));

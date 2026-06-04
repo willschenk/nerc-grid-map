@@ -1,0 +1,20 @@
+{
+  "names": [
+    {
+      "ncr_id": "NCR00879",
+      "entity_name": "PJM Interconnection, LLC",
+      "shortest": "PJM",
+      "short": "PJM Interconnection",
+      "normal": "PJM Interconnection, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-004",
+      "entity_name": "Southwest Power Pool, Inc.",
+      "shortest": "SPP",
+      "short": "Southwest Power Pool",
+      "normal": "Southwest Power Pool, Inc.",
+      "tier": "major"
+    }
+  ]
+}

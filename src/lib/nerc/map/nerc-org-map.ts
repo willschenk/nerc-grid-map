@@ -14,6 +14,12 @@ type Org = {
   entity_name: string;
   acronym: string;
   acronym_source: string | null;
+  // Researched three-tier display names; null until Cursor fills org-names.json.
+  // name_major entities are pinned to name_shortest at every zoom.
+  name_shortest?: string | null;
+  name_short?: string | null;
+  name_normal?: string | null;
+  name_major?: boolean;
   region: string | null;
   roles: string[];
   role_count: number;
@@ -252,6 +258,9 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
+  // Researched shortest acronym wins (e.g. "PJM", "CE"); else curated rule; else
+  // the algorithmic fallback.
+  if (o.name_shortest) return o.name_shortest;
   const c = curate(o.entity_name);
   if (c) return c.tiny;
   if (o.acronym) {
@@ -266,6 +275,8 @@ function tinyName(o: Org): string {
 // A shortened-but-readable brand: cut "… as agent for …", "d/b/a", trailing
 // lists/clauses, and legal suffixes; fall back to the tiny token if still long.
 function midName(o: Org): string {
+  // Researched "short" name wins (e.g. "Consumers", "PJM Interconnection").
+  if (o.name_short) return o.name_short;
   const c = curate(o.entity_name);
   if (c) return c.mid;
   let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
@@ -410,6 +421,9 @@ export function mountNercOrgMap(): void {
   function labelText(o: Org, k: number): string {
     // Super-short token when zoomed out / tight, the shortened brand once zoomed
     // in. The full legal name only ever appears in the detail panel.
+    // The biggest entities are pinned to their shortest acronym at every zoom —
+    // "PJM" never grows into "PJM Interconnection" on the map.
+    if (o.name_major) return tinyName(o);
     const priority = orgPriority(o);
     const midAt = priority >= 54 ? 5.8 : priority >= 32 ? 8.2 : 11.5;
     if (k < midAt) return tinyName(o);
@@ -1056,7 +1070,10 @@ export function mountNercOrgMap(): void {
     }
 
     type Box = { x0: number; x1: number; y0: number; y1: number };
-    const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
+    const labelState = new Map<
+      string,
+      { x: number; y: number; font: number; text: string; inside: boolean }
+    >();
     const placed: Box[] = [];
     // Bound the animated/highlighted set so it stays cheap on iOS.
     const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
@@ -1081,6 +1098,21 @@ export function mountNercOrgMap(): void {
       const r = renderedRadius(o, k);
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
+
+      // Prefer a super-short token tucked *inside* the bubble when the dot is big
+      // enough to hold it legibly — cleaner than a label floating above the dot.
+      // The inside token uses tinyName regardless of zoom and a font shrunk to
+      // fit the diameter; it lives entirely within its own bubble, so it never
+      // joins the collision set or crowds neighbours.
+      const inside = tinyName(o);
+      const insideFont = Math.min(font, (r * 1.62) / Math.max(1, inside.length) / 0.56);
+      if (insideFont >= 7 * unitPerPx && insideFont * 0.56 * inside.length <= r * 1.7) {
+        labeledClusters.push({ x: sx, y: sy });
+        labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: inside, inside: true });
+        placed.push({ x0: sx - r, x1: sx + r, y0: sy - r, y1: sy + r });
+        continue;
+      }
+
       const w = (Math.max(14, text.length * font * 0.56) + 5) * spacing;
       const h = (font + 5) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
@@ -1108,7 +1140,7 @@ export function mountNercOrgMap(): void {
       if (!chosen) continue;
       placed.push(chosen.box);
       if (!forceLabel) labeledClusters.push({ x: sx, y: sy });
-      labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text });
+      labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text, inside: false });
     }
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
@@ -1154,6 +1186,7 @@ export function mountNercOrgMap(): void {
       node.setAttribute("x", String(state.x));
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
+      node.classList.toggle("inside", state.inside);
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
       node.classList.toggle("tour-flash", tourActive && !!state);
