@@ -778,6 +778,13 @@
   font-size: 0.75rem;
 }
 
+.nerc-info-source {
+  margin: 0.7rem 0 0;
+  color: #77837f;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
 /* Bubbles breathe (transform-only so iOS only composites, never re-strokes). */
 @keyframes nerc-tour-pulse {
   0% {
