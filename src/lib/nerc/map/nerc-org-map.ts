@@ -5,6 +5,9 @@ import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zo
 import "d3-transition";
 import { feature } from "topojson-client";
 import { ROLE_FULL_NAMES } from "../roles.mjs";
+import { PLACES } from "../places.mjs";
+
+type Place = { name: string; lat: number; lng: number; tier: number; _x?: number; _y?: number };
 
 type Org = {
   ncr_id: string;
@@ -90,7 +93,10 @@ const ROLE_TOUR_LABELS: Record<string, string> = {
   PSE: "Purchasing-Selling Entities (PSE)",
 };
 
-const TOUR_ROLE_ORDER = ["BA", "RC", "PC", "TOP", "TSP", "TP", "LSE"];
+// Walkthrough order: grid authorities -> planners -> the many smaller dots
+// (transmission/distribution/generation owners & operators). TOP, TSP and LSE
+// are intentionally omitted; PSE/LSE are no longer NERC-registered functions.
+const TOUR_ROLE_ORDER = ["RC", "BA", "PC", "TP", "TO", "DP", "GO", "GOP"];
 
 function byId<T extends Element>(id: string): T {
   const el = document.getElementById(id);
@@ -177,6 +183,8 @@ export function mountNercOrgMap(): void {
   const gMap = svg.append("g").attr("class", "map");
   const gOverlay = svg.append("g").attr("class", "overlay");
   const gHit = svg.append("g").attr("class", "hit");
+  // City labels live below the org labels so NERC names always paint on top.
+  const gPlaces = svg.append("g").attr("class", "places");
   const gLabels = svg.append("g").attr("class", "labels");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
@@ -199,12 +207,15 @@ export function mountNercOrgMap(): void {
   let zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> | null = null;
   let orgs: Org[] = [];
   let placeableOrgs: Org[] = [];
+  const places = PLACES as Place[];
   let selectedOrg: Org | null = null;
   let hoverOrg: Org | null = null;
   let tourIds = new Set<string>();
   let tourTimers: number[] = [];
   // Tour mode is on (button shows Stop) even between steps / during the reset.
   let tourRunning = false;
+  // Timer that clears the Stop-button "attention" pulse after a gesture.
+  let attentionTimer: number | undefined;
   // Cache for hit-circle radii: they only change with zoom, so skip the
   // per-redraw setAttribute storm during a tour (transform is static).
   let hitK = NaN;
@@ -335,12 +346,15 @@ export function mountNercOrgMap(): void {
       .selectAll<SVGCircleElement, Org>("circle.org-hit")
       .attr("cx", (o) => o._x as number)
       .attr("cy", (o) => o._y as number);
+    for (const p of places) {
+      const xy = projection([p.lng, p.lat]);
+      p._x = xy ? xy[0] : undefined;
+      p._y = xy ? xy[1] : undefined;
+    }
   }
 
   let resizePending = false;
   function onResize(): void {
-    // Orientation/viewport changes hand control back to the user.
-    if (tourRunning) stopTour();
     if (resizePending) return;
     resizePending = true;
     requestAnimationFrame(() => {
@@ -372,6 +386,9 @@ export function mountNercOrgMap(): void {
 
     const hot = hoverOrg ?? selectedOrg;
     const tourActive = tourIds.size > 0;
+    // While a tour runs but no step is showing (tourRunning && !tourActive) the
+    // map "blanks": everything dims, nothing is labelled. That makes each role
+    // reveal read clearly and idles the breathing animation (cheaper on iOS).
     // Hit radii only depend on zoom, so only rewrite them when k changes.
     const hitChanged = hitK !== k;
     hitK = k;
@@ -394,10 +411,11 @@ export function mountNercOrgMap(): void {
       if (!vis) continue;
       shownCount++;
       if (tourActive) {
-        // During the walkthrough only the highlighted set gets labels, which
-        // declutters the map and lets far more of the focused orgs show.
+        // During a walkthrough step only the highlighted set gets labels.
         if (tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id) candidates.push(o);
-      } else if (hot?.ncr_id === o.ncr_id || shouldTryLabel(o, k)) {
+      } else if (!tourRunning && (hot?.ncr_id === o.ncr_id || shouldTryLabel(o, k))) {
+        // Normal map. (During a blank beat — tourRunning && !tourActive — we
+        // deliberately collect no candidates so nothing is labelled.)
         candidates.push(o);
       }
     }
@@ -411,12 +429,19 @@ export function mountNercOrgMap(): void {
         b.role_count - a.role_count ||
         a.entity_name.localeCompare(b.entity_name),
     );
+    // Cap how many candidates we even try during a tour step. Big roles (GO has
+    // ~1,500) would otherwise run the placement loop thousands of times each
+    // frame while panning — the main walkthrough lag on iOS.
+    if (tourActive) {
+      const maxConsider = compact ? 110 : 240;
+      if (candidates.length > maxConsider) candidates.length = maxConsider;
+    }
 
     type Box = { x0: number; x1: number; y0: number; y1: number };
     const labelState = new Map<string, { x: number; y: number; font: number; text: string }>();
     const placed: Box[] = [];
-    // Bound tour labels so the animated/highlighted set stays cheap on iOS.
-    const maxLabels = tourActive ? (compact ? 60 : 140) : labelLimit(k);
+    // Bound the animated/highlighted set so it stays cheap on iOS.
+    const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
     const topSafe = compact && !tourActive ? 72 * unitPerPx : 0;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
     const clusterRadius = (compact ? 24 : 18) * unitPerPx;
@@ -480,10 +505,11 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
       // Only the labeled subset breathes (bounded count = cheap on iOS); the
-      // rest of the focus set gets a static highlight, others dim.
+      // rest of the focus set gets a static highlight. During a step everything
+      // else dims; during a blank beat (tourRunning, no step) everything dims.
       node.classList.toggle("tour-flash", inTour && labeled);
       node.classList.toggle("tour-pick", inTour && !labeled);
-      node.classList.toggle("tour-dim", tourActive && !tourIds.has(o.ncr_id));
+      node.classList.toggle("tour-dim", tourRunning && !inTour);
     });
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
@@ -507,6 +533,43 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
       node.classList.toggle("tour-flash", tourActive && !!state);
+    });
+
+    // City context labels. Placed only into the space the NERC labels left
+    // free (placed[] already holds every org label box, so NERC always wins),
+    // gated by zoom tier, and suppressed entirely during the tour.
+    const placeState = new Map<string, { x: number; y: number; font: number }>();
+    if (!tourRunning) {
+      let placedPlaces = 0;
+      const placeCap = compact ? 16 : 30;
+      for (const p of places) {
+        if (placedPlaces >= placeCap) break;
+        if (p._x == null || p._y == null) continue;
+        const minK = p.tier === 1 ? 0.72 : p.tier === 2 ? 2.4 : 4.8;
+        if (k < minK) continue;
+        const sx = transform.applyX(p._x);
+        const sy = transform.applyY(p._y);
+        if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
+        const px = (p.tier === 1 ? 11.5 : p.tier === 2 ? 10.5 : 9.5) * unitPerPx;
+        const w = p.name.length * px * 0.62 + 4;
+        const h = px + 4;
+        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
+        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
+        if (placed.some((q) => boxesOverlap(box, q))) continue;
+        placed.push(box);
+        placedPlaces++;
+        placeState.set(p.name, { x: sx, y: sy + px * 0.34, font: px });
+      }
+    }
+
+    gPlaces.selectAll<SVGTextElement, Place>("text.place").each(function (p) {
+      const node = this as SVGTextElement;
+      const state = placeState.get(p.name);
+      node.classList.toggle("dim", !state);
+      if (!state) return;
+      node.setAttribute("x", String(state.x));
+      node.setAttribute("y", String(state.y));
+      node.setAttribute("font-size", String(state.font));
     });
   }
 
@@ -727,6 +790,17 @@ export function mountNercOrgMap(): void {
     animateTransform(zoomIdentity, duration);
   }
 
+  // Where the walkthrough opens. On phones it starts a bit further out (a calm
+  // overview with margin) so the first reveals read before you zoom in.
+  function tourStartView(duration: number): void {
+    if (!compact) {
+      homeView(duration);
+      return;
+    }
+    const s = 0.8;
+    animateTransform(zoomIdentity.translate(W / 2, H / 2).scale(s).translate(-W / 2, -H / 2), duration);
+  }
+
   function centerOnOrg(o: Org, duration = 450): void {
     if (o._x == null || o._y == null) return;
     const scale = Math.min(8, Math.max(transform.k, o.is_iso_rto ? 3.2 : 4.2));
@@ -863,7 +937,7 @@ export function mountNercOrgMap(): void {
         window.setTimeout(() => {
           btn.textContent = reset;
           btn.classList.remove("nerc-letter-typing");
-        }, 620);
+        }, 2800);
       };
       window.setTimeout(tick, delay);
     };
@@ -883,11 +957,12 @@ export function mountNercOrgMap(): void {
 
   function setupZoom(): void {
     zoomBehavior = zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.72, 12])
-      // A real user gesture (pinch/pan/tap) immediately hands control back from
-      // the walkthrough. Programmatic transitions have no sourceEvent.
+      .scaleExtent([0.72, 32])
+      // The walkthrough keeps playing while the user pans/zooms (programmatic
+      // transitions have no sourceEvent). A real gesture just nudges the Stop
+      // control so they know they can take over.
       .on("start", (ev) => {
-        if (ev.sourceEvent && tourRunning) stopTour();
+        if (ev.sourceEvent && tourRunning) nudgeStopAttention();
       })
       .on("zoom", (ev) => {
         transform = ev.transform;
@@ -907,7 +982,24 @@ export function mountNercOrgMap(): void {
       b.textContent = label;
       b.setAttribute("aria-label", aria);
       b.classList.toggle("is-running", running);
+      if (!running) b.classList.remove("attention");
     }
+    if (!running && attentionTimer) {
+      window.clearTimeout(attentionTimer);
+      attentionTimer = undefined;
+    }
+  }
+
+  // The tour keeps playing while the user pans/zooms; this makes the Stop
+  // control pulse for a few seconds so they know they can take over fully.
+  function nudgeStopAttention(): void {
+    if (!tourRunning) return;
+    for (const b of [playBtn, fabBtn]) b.classList.add("attention");
+    if (attentionTimer) window.clearTimeout(attentionTimer);
+    attentionTimer = window.setTimeout(() => {
+      for (const b of [playBtn, fabBtn]) b.classList.remove("attention");
+      attentionTimer = undefined;
+    }, 3200);
   }
 
   function stopTour(): void {
@@ -943,8 +1035,8 @@ export function mountNercOrgMap(): void {
     setPlayState(true);
 
     const reduced = prefersReducedMotion();
-    // Return to the full national view before the walkthrough runs.
-    homeView(reduced ? 0 : compact ? 460 : 700);
+    // Open on the overview (further out on phones) before the walkthrough runs.
+    tourStartView(reduced ? 0 : compact ? 520 : 760);
 
     const steps = [
       { label: "ISOs and RTOs", match: (o: Org) => o.is_iso_rto },
@@ -958,20 +1050,27 @@ export function mountNercOrgMap(): void {
       return;
     }
 
-    // Loops until the user stops it. A touch slower on desktop, slightly
-    // quicker on phones, and snappy (but still readable) for reduced motion.
-    const firstStepMs = reduced ? 450 : compact ? 900 : 1200;
-    const stepMs = reduced ? 1800 : compact ? 2100 : 2800;
+    // Each cycle is a short blank beat (everything dims, nothing selected) then
+    // the next role reveals and dwells. Loops until the user stops it.
+    const leadMs = reduced ? 250 : compact ? 650 : 850;
+    const gapMs = reduced ? 200 : compact ? 460 : 560;
+    const dwellMs = reduced ? 1400 : compact ? 1950 : 2500;
     let idx = 0;
-    const advance = (): void => {
+    const showStep = (): void => {
       const total = steps.length;
       const step = steps[idx % total];
-      const display = (idx % total) + 1;
+      showTourStep(step.label, step.match, (idx % total) + 1, total);
       idx += 1;
-      showTourStep(step.label, step.match, display, total);
-      tourTimers.push(window.setTimeout(advance, stepMs));
     };
-    tourTimers.push(window.setTimeout(advance, firstStepMs));
+    const cycle = (): void => {
+      // Blank beat.
+      tourIds = new Set();
+      tourStatus.hidden = true;
+      redraw();
+      tourTimers.push(window.setTimeout(showStep, gapMs));
+      tourTimers.push(window.setTimeout(cycle, gapMs + dwellMs));
+    };
+    tourTimers.push(window.setTimeout(cycle, leadMs));
   }
 
   async function init(): Promise<void> {
@@ -1030,6 +1129,13 @@ export function mountNercOrgMap(): void {
       .join("text")
       .attr("class", "olabel")
       .text((o) => orgAcronym(o));
+
+    gPlaces
+      .selectAll("text.place")
+      .data(places, (p: unknown) => (p as Place).name)
+      .join("text")
+      .attr("class", "place")
+      .text((p) => p.name);
 
     setupZoom();
     wireControls();

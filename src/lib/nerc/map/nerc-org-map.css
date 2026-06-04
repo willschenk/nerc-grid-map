@@ -130,6 +130,23 @@
   animation: nerc-label-pulse 1300ms ease-out infinite;
 }
 
+/* Secondary geographic context — quiet, so NERC labels read as primary. */
+#nerc-svg .place {
+  fill: #66736e;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  paint-order: stroke;
+  stroke: rgba(248, 251, 249, 0.82);
+  stroke-width: 2.4;
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+#nerc-svg .place.dim {
+  display: none;
+}
+
 .nerc-topbar,
 .nerc-panel,
 .nerc-info-panel,
@@ -787,11 +804,32 @@
   }
 }
 
+/* Stop control draws attention once you start moving during a walkthrough. */
+@keyframes nerc-stop-attention {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 6px 18px rgba(20, 31, 28, 0.22);
+  }
+
+  50% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 6px rgba(29, 111, 98, 0.26), 0 10px 24px rgba(20, 31, 28, 0.32);
+  }
+}
+
+.nerc-action-btn.attention,
+.nerc-tour-fab.attention {
+  animation: nerc-stop-attention 850ms ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #nerc-svg .org,
   #nerc-svg .org.tour-flash,
   #nerc-svg .olabel.tour-flash,
-  .tour-title {
+  .tour-title,
+  .nerc-action-btn.attention,
+  .nerc-tour-fab.attention {
     animation: none;
     transition: none;
   }
@@ -815,6 +853,9 @@
   .nerc-topbar {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.48rem;
+    /* Sit a touch higher on phones. */
+    top: max(0.4rem, env(safe-area-inset-top, 0px));
+    padding-block: 0.48rem;
   }
 
   .nerc-map-actions {
