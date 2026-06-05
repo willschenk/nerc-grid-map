@@ -347,11 +347,11 @@ export function mountNercOrgMap(): void {
   const gInsets = svg.append("g").attr("class", "insets");
   // City context stays below every NERC mark and label.
   const gPlaces = svg.append("g").attr("class", "places");
+  // Area context is even quieter than city context and must paint below the
+  // NERC overlay, not over it.
+  const gLand = svg.append("g").attr("class", "land");
   const gOverlay = svg.append("g").attr("class", "overlay");
   const gHit = svg.append("g").attr("class", "hit");
-  // State / province names float faintly over the dot field but below NERC org
-  // labels, so geography reads without ever hiding NERC information.
-  const gLand = svg.append("g").attr("class", "land");
   const gLabels = svg.append("g").attr("class", "labels");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
@@ -382,6 +382,10 @@ export function mountNercOrgMap(): void {
   const places = PLACES as Place[];
   let selectedOrg: Org | null = null;
   let hoverOrg: Org | null = null;
+  let recentOrg: Org | null = null;
+  let recentOrgAt = 0;
+  let lastUserZoomAt = 0;
+  let focusPanPending = false;
   let tourIds = new Set<string>();
   let tourTimers: number[] = [];
   // Tour mode is on (button shows Stop) even between steps / during the reset.
@@ -417,6 +421,41 @@ export function mountNercOrgMap(): void {
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
     orgLayoutBucket = NaN;
+  }
+
+  function rememberOrg(o: Org): void {
+    recentOrg = o;
+    recentOrgAt = performance.now();
+  }
+
+  function pointerViewPoint(ev: MouseEvent): { x: number; y: number } | null {
+    if (!Number.isFinite(ev.clientX) || !Number.isFinite(ev.clientY)) return null;
+    const rect = svgNode.getBoundingClientRect();
+    return {
+      x: (ev.clientX - rect.left) * unitPerPx,
+      y: (ev.clientY - rect.top) * unitPerPx,
+    };
+  }
+
+  function nearestOrgAtPointer(ev: MouseEvent, fallback: Org): Org {
+    const point = pointerViewPoint(ev);
+    if (!point) return fallback;
+    const k = transform.k;
+    let best = fallback;
+    let bestD2 = Number.POSITIVE_INFINITY;
+    for (const o of placeableOrgs) {
+      if (!o._vis || o._sx == null || o._sy == null) continue;
+      const dx = o._sx - point.x;
+      const dy = o._sy - point.y;
+      const d2 = dx * dx + dy * dy;
+      const hit = hitTargetRadius(o, k) + unitPerPx;
+      if (d2 > hit * hit) continue;
+      if (d2 < bestD2 || (Math.abs(d2 - bestD2) < 0.001 && drawPriority(o, k) > drawPriority(best, k))) {
+        best = o;
+        bestD2 = d2;
+      }
+    }
+    return best;
   }
 
   function colorFor(role: string): string {
@@ -735,9 +774,9 @@ export function mountNercOrgMap(): void {
     // dense clusters spread enough to tap and inspect individual entities.
     // (Land clamping separately bounds water drift.)
     const basePx = compact
-      ? k < 1.25 ? 40 : k < 2.2 ? 52 : k < 4 ? 56 : k < 7 ? 42 : 30
+      ? k < 1.25 ? 40 : k < 2.2 ? 52 : k < 4 ? 56 : k < 7 ? 42 : k < 18 ? 30 : 22
       : k < 1.25 ? 54 : k < 2.2 ? 78 : k < 4 ? 96 : k < 7 ? 78 : 58;
-    const deepPx = compact ? 88 : 176;
+    const deepPx = compact ? 54 : 176;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -823,6 +862,58 @@ export function mountNercOrgMap(): void {
     zoomBehavior.extent([[0, 0], [W, H]]).translateExtent([[-pad, -pad], [W + pad, H + pad]]);
   }
 
+  function keepFocusedOrgInView(k: number): void {
+    if (!zoomBehavior || focusPanPending || tourRunning || k < 8) return;
+    const now = performance.now();
+    const focused = selectedOrg ?? hoverOrg ?? (now - recentOrgAt < 2400 ? recentOrg : null);
+    if (!focused || focused._sx == null || focused._sy == null) return;
+    // During an active zoom gesture, keep the inspected org from slipping beyond
+    // the edge as decluttering offsets change. This is especially important on
+    // iOS where the East Coast starts close to the right side of the viewport.
+    if (!selectedOrg && now - lastUserZoomAt > 320) return;
+    const r = renderedRadius(focused, k);
+    const sideSafe = (compact ? 52 : 44) * unitPerPx + r;
+    const topSafe = (compact ? 92 : 48) * unitPerPx + r;
+    const bottomSafe = (compact ? 84 : 48) * unitPerPx + r;
+    let dx = 0;
+    let dy = 0;
+    if (focused._sx < sideSafe) dx = sideSafe - focused._sx;
+    else if (focused._sx > W - sideSafe) dx = W - sideSafe - focused._sx;
+    if (focused._sy < topSafe) dy = topSafe - focused._sy;
+    else if (focused._sy > H - bottomSafe) dy = H - bottomSafe - focused._sy;
+    if (selectedOrg && !panel.hidden) {
+      const svgRect = svgNode.getBoundingClientRect();
+      const panelRect = panel.getBoundingClientRect();
+      const gap = (compact ? 18 : 20) * unitPerPx;
+      const panelBox = {
+        x0: (panelRect.left - svgRect.left) * unitPerPx - gap,
+        x1: (panelRect.right - svgRect.left) * unitPerPx + gap,
+        y0: (panelRect.top - svgRect.top) * unitPerPx - gap,
+        y1: (panelRect.bottom - svgRect.top) * unitPerPx + gap,
+      };
+      const overlapsPanel =
+        focused._sx + r > panelBox.x0 &&
+        focused._sx - r < panelBox.x1 &&
+        focused._sy + r > panelBox.y0 &&
+        focused._sy - r < panelBox.y1;
+      if (overlapsPanel) {
+        if (compact) {
+          const targetY = Math.max(topSafe, panelBox.y0 - r);
+          dy = Math.min(dy, targetY - focused._sy);
+        } else {
+          const targetX = Math.max(sideSafe, panelBox.x0 - r);
+          dx = Math.min(dx, targetX - focused._sx);
+        }
+      }
+    }
+    if (Math.abs(dx) < 0.5 * unitPerPx && Math.abs(dy) < 0.5 * unitPerPx) return;
+    focusPanPending = true;
+    requestAnimationFrame(() => {
+      focusPanPending = false;
+      animateTransform(zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k), 0);
+    });
+  }
+
   // Size the viewBox to match the element's aspect ratio so a tall phone gets a
   // tall viewBox (no letterboxed top/bottom bands where nothing rendered). The
   // base dimension stays fixed so the map's physical scale is stable.
@@ -852,7 +943,15 @@ export function mountNercOrgMap(): void {
     if (!nationFeature) return;
     hitK = NaN;
     invalidateOrgLayout();
-    projection.fitSize([W, H], nationFeature as never);
+    const fitPadX = (compact ? 30 : 18) * unitPerPx;
+    const fitPadY = (compact ? 12 : 8) * unitPerPx;
+    projection.fitExtent(
+      [
+        [fitPadX, fitPadY],
+        [W - fitPadX, H - fitPadY],
+      ],
+      nationFeature as never,
+    );
     // Lock the Canada conic onto the composite's lower-48 scale/translate.
     canadaProj.scale(projection.scale()).translate(projection.translate() as [number, number]);
     if (canadaFeature) gMap.select<SVGPathElement>("path.canada").attr("d", canadaPath(canadaFeature as never));
@@ -1301,12 +1400,14 @@ export function mountNercOrgMap(): void {
     // bubble never blocks its own label), seeded up front so the rule holds no
     // matter which labels land first.
     const protectR = (compact ? 6.5 : 5) * unitPerPx;
+    const bubblePad = (compact ? 3.5 : 4) * unitPerPx;
     const bubbleBlockers: Array<{ id: string; box: Box }> = [];
     for (const o of visibleOrgs) {
       if (o._frame === "terr" || o._sx == null || o._sy == null) continue;
       const r = renderedRadius(o, k);
       if (r < protectR) continue;
-      bubbleBlockers.push({ id: o.ncr_id, box: { x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r } });
+      const rb = r + bubblePad;
+      bubbleBlockers.push({ id: o.ncr_id, box: { x0: o._sx - rb, x1: o._sx + rb, y0: o._sy - rb, y1: o._sy + rb } });
     }
     const clearsBubbles = (box: Box, id: string): boolean =>
       !bubbleBlockers.some((b) => b.id !== id && boxesOverlap(box, b.box));
@@ -1333,7 +1434,10 @@ export function mountNercOrgMap(): void {
         if (forceLabel || !usedLabels.has(brand)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
           if (!forceLabel) usedLabels.add(brand);
-          if (r < protectR) bubbleBlockers.push({ id: o.ncr_id, box: { x0: sx - r, x1: sx + r, y0: sy - r, y1: sy + r } });
+          if (r < protectR) {
+            const rb = r + bubblePad;
+            bubbleBlockers.push({ id: o.ncr_id, box: { x0: sx - rb, x1: sx + rb, y0: sy - rb, y1: sy + rb } });
+          }
           placedCount++;
         }
         continue;
@@ -1349,12 +1453,15 @@ export function mountNercOrgMap(): void {
       }
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
-      const w = (Math.max(14, text.length * font * 0.56) + 5) * spacing;
-      const h = (font + 5) * spacing;
+      const labelPadX = (compact ? 7 : 8) * unitPerPx;
+      const labelPadY = (compact ? 6 : 7) * unitPerPx;
+      const w = (Math.max(14, text.length * font * 0.62) + labelPadX * 2) * spacing;
+      const h = (font + labelPadY * 2) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
       // Sit on the dot, then to the sides, then below, then the below-diagonals.
-      // Above-the-bubble labels are held back on compact screens; they visually
-      // detach from the mark and too often read as labels for a neighbouring dot.
+      // Above-the-bubble labels visually detach from the mark and too often read
+      // as labels for a neighbouring dot, so they are only allowed for a focused
+      // hover/selection label when there is no better placement.
       const spots = [
         [sx, sy + font * 0.32],
         [sx + nudge, sy + font * 0.32],
@@ -1363,7 +1470,7 @@ export function mountNercOrgMap(): void {
         [sx + nudge * 0.78, sy + nudge * 0.72],
         [sx - nudge * 0.78, sy + nudge * 0.72],
       ];
-      if (forceLabel || (!compact && k >= 3.4)) {
+      if (forceLabel) {
         spots.push(
           [sx, sy - nudge],
           [sx + nudge * 0.78, sy - nudge * 0.58],
@@ -1448,7 +1555,7 @@ export function mountNercOrgMap(): void {
     const placeBlockers = [...placed];
     for (const o of placeableOrgs) {
       if (!o._vis || o._sx == null || o._sy == null) continue;
-      const r = renderedRadius(o, k) + 2 * unitPerPx;
+      const r = renderedRadius(o, k) + (compact ? 4 : 4.5) * unitPerPx;
       placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
     }
     // City context. Dots can appear before labels, but every city mark stays
@@ -1475,8 +1582,8 @@ export function mountNercOrgMap(): void {
         const sy = transform.applyY(p._y);
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
         const px = (p.tier === 1 ? 11.5 : p.tier === 2 ? 10.5 : 9.5) * unitPerPx;
-        const w = p.name.length * px * 0.62 + 4;
-        const h = px + 4;
+        const w = p.name.length * px * 0.66 + (compact ? 10 : 9) * unitPerPx;
+        const h = px + (compact ? 8 : 7) * unitPerPx;
         const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
         if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
         if (placeBlockers.some((q) => boxesOverlap(box, q))) continue;
@@ -1513,15 +1620,15 @@ export function mountNercOrgMap(): void {
     if (!tourRunning) {
       const landBlockers: Box[] = [...placed];
       placeState.forEach((s, name) => {
-        const cw = name.length * s.font * 0.62 + 4;
-        const ch = s.font + 4;
+        const cw = name.length * s.font * 0.66 + (compact ? 10 : 9) * unitPerPx;
+        const ch = s.font + (compact ? 8 : 7) * unitPerPx;
         landBlockers.push({ x0: s.x - cw / 2, x1: s.x + cw / 2, y0: s.y - ch * 0.9, y1: s.y + ch * 0.1 });
       });
       for (const o of visibleOrgs) {
         if (!o._vis || o._sx == null || o._sy == null) continue;
         const r = renderedRadius(o, k);
-        if (r < (compact ? 9 : 11) * unitPerPx) continue;
-        const pad = (compact ? 3 : 2.5) * unitPerPx;
+        if (r < (compact ? 7 : 9) * unitPerPx) continue;
+        const pad = (compact ? 5 : 4.5) * unitPerPx;
         landBlockers.push({ x0: o._sx - r - pad, x1: o._sx + r + pad, y0: o._sy - r - pad, y1: o._sy + r + pad });
       }
       let placedLand = 0;
@@ -1534,8 +1641,8 @@ export function mountNercOrgMap(): void {
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
         const grow = Math.max(0.85, 1.28 - Math.max(0, k - 1) * 0.06);
         const font = (L.small ? 9 : 12) * grow * unitPerPx;
-        const w = L.name.length * font * 0.6 + 4;
-        const h = font + 4;
+        const w = L.name.length * font * 0.64 + (compact ? 10 : 9) * unitPerPx;
+        const h = font + (compact ? 8 : 7) * unitPerPx;
         const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
         if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
         if (landBlockers.some((q) => boxesOverlap(box, q))) continue;
@@ -1563,6 +1670,7 @@ export function mountNercOrgMap(): void {
       .selectAll<SVGTextElement, TerritoryBox>("text.terr-label")
       .attr("font-size", ((compact ? 11 : 10.5) * unitPerPx) / Math.max(k, 0.001))
       .classed("dim", tourRunning);
+    keepFocusedOrgInView(k);
   }
 
   // Lay Puerto Rico's offshore orgs out as a labelled cluster of dots — no
@@ -2007,6 +2115,7 @@ export function mountNercOrgMap(): void {
   function selectOrg(o: Org, opts: { center?: boolean } = {}): void {
     stopTour();
     selectedOrg = o;
+    rememberOrg(o);
     invalidateOrgLayout();
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
@@ -2032,6 +2141,7 @@ export function mountNercOrgMap(): void {
     selection
       .on("mouseenter", (ev, o) => {
         hoverOrg = o;
+        rememberOrg(o);
         raiseVisibleOrg(o);
         redraw();
         showTooltip(o, ev as MouseEvent);
@@ -2044,6 +2154,7 @@ export function mountNercOrgMap(): void {
       })
       .on("focus", function (_ev, o) {
         hoverOrg = o;
+        rememberOrg(o);
         raiseVisibleOrg(o);
         redraw();
         const rect = (this as SVGCircleElement).getBoundingClientRect();
@@ -2063,8 +2174,10 @@ export function mountNercOrgMap(): void {
       })
       .on("click", (ev, o) => {
         (ev as MouseEvent).stopPropagation();
-        raiseVisibleOrg(o);
-        selectOrg(o);
+        const picked = nearestOrgAtPointer(ev as MouseEvent, o);
+        rememberOrg(picked);
+        raiseVisibleOrg(picked);
+        selectOrg(picked);
       });
   }
 
@@ -2166,6 +2279,7 @@ export function mountNercOrgMap(): void {
         if (ev.sourceEvent && tourRunning) nudgeStopAttention();
       })
       .on("zoom", (ev) => {
+        if (ev.sourceEvent) lastUserZoomAt = performance.now();
         transform = ev.transform;
         scheduleRedraw();
       });
