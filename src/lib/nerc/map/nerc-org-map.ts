@@ -588,7 +588,7 @@ export function mountNercOrgMap(): void {
     // single zoom term scales everything; weight sets the relative size.
     const base = Math.max(2, RADIUS_SCALE(o.weight));
     const zoomT = smoothStep((k - 0.72) / 5);
-    const scale = compact ? 0.31 + 0.36 * zoomT : 0.33 + 0.34 * zoomT;
+    const scale = compact ? 0.32 + 0.42 * zoomT : 0.33 + 0.34 * zoomT;
     // Quieter dots (low strength = not yet "due" at this zoom) shrink a bit so
     // the important orgs read first; they fill back in as you zoom toward them.
     const strengthScale = 0.46 + dotStrength(o, k) * 0.54;
@@ -597,10 +597,10 @@ export function mountNercOrgMap(): void {
     // weight (for example PSE&G: DP + TO). Once zoomed in, lift those above the
     // small-dot floor so they are easier to see and tap without changing the
     // national overview sizing.
-    const closeT = smoothStep((k - 2.8) / 8.2);
+    const closeT = smoothStep((k - (compact ? 2.25 : 2.8)) / (compact ? 7.2 : 8.2));
     const priorityT = smoothStep((orgPriority(o) - 32) / 42);
     const lowWeightT = smoothStep((14 - Math.min(o.weight, 14)) / 14);
-    const liftPx = (compact ? 10 : 10.5) * priorityT * (0.4 + lowWeightT * 0.6) * closeT;
+    const liftPx = (compact ? 15.5 : 10.5) * priorityT * (0.4 + lowWeightT * 0.6) * closeT;
     const lifted = grown + liftPx * unitPerPx;
     return Math.max((compact ? 1.8 : 1.5) * unitPerPx, lifted);
   }
@@ -735,9 +735,9 @@ export function mountNercOrgMap(): void {
     // dense clusters spread enough to tap and inspect individual entities.
     // (Land clamping separately bounds water drift.)
     const basePx = compact
-      ? k < 1.25 ? 40 : k < 2.2 ? 52 : k < 4 ? 56 : k < 7 ? 46 : 34
+      ? k < 1.25 ? 40 : k < 2.2 ? 52 : k < 4 ? 56 : k < 7 ? 42 : 30
       : k < 1.25 ? 54 : k < 2.2 ? 78 : k < 4 ? 96 : k < 7 ? 78 : 58;
-    const deepPx = compact ? 116 : 176;
+    const deepPx = compact ? 88 : 176;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -817,6 +817,12 @@ export function mountNercOrgMap(): void {
       .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
   }
 
+  function updateZoomBounds(): void {
+    if (!zoomBehavior) return;
+    const pad = (compact ? 180 : 220) * unitPerPx;
+    zoomBehavior.extent([[0, 0], [W, H]]).translateExtent([[-pad, -pad], [W + pad, H + pad]]);
+  }
+
   // Size the viewBox to match the element's aspect ratio so a tall phone gets a
   // tall viewBox (no letterboxed top/bottom bands where nothing rendered). The
   // base dimension stays fixed so the map's physical scale is stable.
@@ -836,6 +842,7 @@ export function mountNercOrgMap(): void {
     unitPerPx = W / elW;
     compact = elW < 640;
     svg.attr("viewBox", `0 0 ${W} ${H}`);
+    updateZoomBounds();
   }
 
   // (Re)fit the projection to the current viewBox and push fresh coordinates to
@@ -1345,9 +1352,9 @@ export function mountNercOrgMap(): void {
       const w = (Math.max(14, text.length * font * 0.56) + 5) * spacing;
       const h = (font + 5) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
-      // Sit on the dot, then to the sides, then below, then the below-diagonals —
-      // and only *above* the bubble as a last resort (labels riding high above
-      // their dot read worse).
+      // Sit on the dot, then to the sides, then below, then the below-diagonals.
+      // Above-the-bubble labels are held back on compact screens; they visually
+      // detach from the mark and too often read as labels for a neighbouring dot.
       const spots = [
         [sx, sy + font * 0.32],
         [sx + nudge, sy + font * 0.32],
@@ -1355,10 +1362,14 @@ export function mountNercOrgMap(): void {
         [sx, sy + nudge],
         [sx + nudge * 0.78, sy + nudge * 0.72],
         [sx - nudge * 0.78, sy + nudge * 0.72],
-        [sx, sy - nudge],
-        [sx + nudge * 0.78, sy - nudge * 0.58],
-        [sx - nudge * 0.78, sy - nudge * 0.58],
       ];
+      if (forceLabel || (!compact && k >= 3.4)) {
+        spots.push(
+          [sx, sy - nudge],
+          [sx + nudge * 0.78, sy - nudge * 0.58],
+          [sx - nudge * 0.78, sy - nudge * 0.58],
+        );
+      }
       let chosen: { x: number; y: number; box: Box } | null = null;
       for (const [lx, ly] of spots) {
         const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
@@ -1509,8 +1520,8 @@ export function mountNercOrgMap(): void {
       for (const o of visibleOrgs) {
         if (!o._vis || o._sx == null || o._sy == null) continue;
         const r = renderedRadius(o, k);
-        if (r < (compact ? 12 : 14) * unitPerPx) continue;
-        const pad = 2 * unitPerPx;
+        if (r < (compact ? 9 : 11) * unitPerPx) continue;
+        const pad = (compact ? 3 : 2.5) * unitPerPx;
         landBlockers.push({ x0: o._sx - r - pad, x1: o._sx + r + pad, y0: o._sy - r - pad, y1: o._sy + r + pad });
       }
       let placedLand = 0;
@@ -2158,6 +2169,7 @@ export function mountNercOrgMap(): void {
         transform = ev.transform;
         scheduleRedraw();
       });
+    updateZoomBounds();
     svg.call(zoomBehavior);
     svg.on("dblclick.zoom", null);
     svg.on("click", () => {
