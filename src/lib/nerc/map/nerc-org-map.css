@@ -216,27 +216,24 @@
   display: none;
 }
 
-/* U.S. territory insets: a dashed frame with the territory name; the org dots
-   inside ride the normal overlay layer. */
-#nerc-svg .terr-frame {
-  fill: rgba(216, 226, 220, 0.55);
-  stroke: rgba(99, 120, 114, 0.5);
-  stroke-width: 0.8;
-  stroke-dasharray: 2.5 2;
+/* Offshore U.S. territories read as labelled clusters of dots (no framed box).
+   The region name sits above its cluster like a place label, with a strong
+   non-scaling halo so it stays legible over the sea at any zoom. */
+#nerc-svg .terr-label {
+  fill: #45524d;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  paint-order: stroke;
+  stroke: rgba(248, 251, 249, 0.96);
+  stroke-width: 3;
   vector-effect: non-scaling-stroke;
   pointer-events: none;
+  text-anchor: middle;
 }
 
-#nerc-svg .terr-label {
-  fill: #5a6661;
-  font-weight: 760;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.92);
-  stroke-width: 2.4;
-  pointer-events: none;
-  text-anchor: middle;
+#nerc-svg .terr-label.dim {
+  display: none;
 }
 
 .nerc-topbar,

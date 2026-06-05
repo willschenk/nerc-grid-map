@@ -72,7 +72,9 @@ type Org = {
 };
 
 type LandLabel = { name: string; x: number; y: number; small: boolean; _node?: SVGTextElement };
-type TerritoryBox = { code: string; label: string; x: number; y: number; w: number; h: number };
+// An offshore territory's layout region. x/y/w/h bound where its cluster of dots
+// is laid out; lx/ly is the anchor for the region name, centred above the dots.
+type TerritoryBox = { code: string; label: string; x: number; y: number; w: number; h: number; lx: number; ly: number };
 
 type OrgsPayload = {
   generated_at?: string;
@@ -672,12 +674,20 @@ export function mountNercOrgMap(): void {
     return (compact ? 4.6 + 1.2 * closeT : 4.8 + 1.6 * closeT) * unitPerPx;
   }
 
+  function nonGenerationRadiusFloor(o: Org, k: number): number {
+    if (nonGenerationRoleCount(o) <= 0) return 0;
+    const closeT = smoothStep((k - 1.8) / 6.2);
+    const marginPx = compact ? 0.75 + 1.05 * closeT : 0.9 + 1.45 * closeT;
+    return generationOnlyRadiusCap(k) + marginPx * unitPerPx;
+  }
+
   // Territory-inset dots are schematic (small, uniform) rather than weight-sized
   // so they fit their grid cells; everything else uses the normal visual radius.
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 5 : 4) * unitPerPx;
     const radius = visualRadius(o, k) * isolationBoost(o, k);
-    return isGenerationOnly(o) ? Math.min(radius, generationOnlyRadiusCap(k)) : radius;
+    if (isGenerationOnly(o)) return Math.min(radius, generationOnlyRadiusCap(k));
+    return Math.max(radius, nonGenerationRadiusFloor(o, k));
   }
 
   function hitTargetRadius(o: Org, k: number): number {
@@ -1505,11 +1515,22 @@ export function mountNercOrgMap(): void {
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
     });
+
+    // Territory region names ride the inset group's transform (so each label
+    // tracks its offshore cluster) but keep a constant on-screen size like every
+    // other label: the group already scales by k, so divide the base font by k.
+    // Hidden during the walkthrough like the other ambient labels.
+    gInsets
+      .selectAll<SVGTextElement, TerritoryBox>("text.terr-label")
+      .attr("font-size", ((compact ? 11 : 10.5) * unitPerPx) / Math.max(k, 0.001))
+      .classed("dim", tourRunning);
   }
 
-  // Lay each territory's orgs into a labelled inset box using geoMercator
-  // fitExtent when coordinates exist (preserves relative geography); grid
-  // fallback only for rows still missing lat/lng.
+  // Lay each offshore territory's orgs out as a labelled cluster of dots — no
+  // framed box. Geocoded orgs (the Virgin Islands) keep their true relative
+  // geography via geoMercator fitExtent; ungeocoded orgs fall into a centred
+  // grid (a positional cluster where the territory belongs). The region name is
+  // drawn by drawTerritoryFrames; positions are base coords that ride the zoom.
   function layoutTerritoryInsets(): void {
     territoryBoxes = [];
     const terrProj = geoMercator();
@@ -1563,7 +1584,6 @@ export function mountNercOrgMap(): void {
       boxH: number,
       list: Org[],
     ): void {
-      territoryBoxes.push({ code, label, x, y, w: boxW, h: boxH });
       const geocoded = list.filter((o) => o.lat != null && o.lng != null);
       const ungeocoded = list.filter((o) => o.lat == null || o.lng == null);
 
@@ -1591,11 +1611,14 @@ export function mountNercOrgMap(): void {
         const cols = Math.max(2, Math.round(Math.sqrt(ungeocoded.length * 1.7)));
         const cell = (compact ? 17 : 15) * unitPerPx;
         const pad = 6 * unitPerPx;
+        // Centre the grid in the region so the cluster (and its label) sit where
+        // the territory belongs rather than hugging a now-invisible left edge.
+        const startX = x + Math.max(pad, (boxW - cols * cell) / 2) + cell * 0.5;
         ungeocoded.forEach((o, i) => {
           const c = i % cols;
           const r = Math.floor(i / cols);
           o._frame = "terr";
-          o._x = x + pad + cell * (c + 0.5);
+          o._x = startX + cell * c;
           o._y = y + labelH + pad + cell * (r + 0.5);
           o._dx = 0;
           o._dy = 0;
@@ -1603,24 +1626,27 @@ export function mountNercOrgMap(): void {
           o._ry = 0;
         });
       }
+
+      // Anchor the region name centred above the cluster's real extent (no frame
+      // to follow now), so "Puerto Rico" etc. sits right over its bubbles.
+      let minX = Infinity;
+      let maxX = -Infinity;
+      let minY = Infinity;
+      for (const o of list) {
+        if (o._x == null || o._y == null) continue;
+        if (o._x < minX) minX = o._x;
+        if (o._x > maxX) maxX = o._x;
+        if (o._y < minY) minY = o._y;
+      }
+      const hasDots = Number.isFinite(minX);
+      const lx = hasDots ? (minX + maxX) / 2 : x + boxW / 2;
+      const ly = hasDots ? minY - (compact ? 11 : 10) * unitPerPx : y + labelH;
+      territoryBoxes.push({ code, label, x, y, w: boxW, h: boxH, lx, ly });
     }
 
-    // U.S. Virgin Islands: Caribbean inset off the SE corner (St. Croix vs St. Thomas).
-    const viList = present.get(VI_CODE);
-    if (viList?.length) {
-      const [viW, viH] = boxSize(VI_CODE);
-      placeInBox(
-        VI_CODE,
-        "U.S. Virgin Is.",
-        W - margin - viW,
-        H * (compact ? 0.56 : 0.64),
-        viW,
-        viH,
-        sortTerritory(viList),
-      );
-    }
-
-    // Pacific territories: bottom-right row (AS → MP → GU).
+    // Far-Pacific territories (Guam, N. Marianas, American Samoa): a row docked
+    // along the bottom-right. There's no nearby mainland geography to anchor to,
+    // so they read as small labelled clusters in the corner (rightmost first).
     let curX = W - margin;
     let rowBottom = H - bottomMargin;
     let rowH = 0;
@@ -1642,39 +1668,39 @@ export function mountNercOrgMap(): void {
       rowH = Math.max(rowH, boxH);
     }
 
-    // Puerto Rico: wide inset above the Pacific row (12 orgs, island-wide spread).
+    // Caribbean (south-east of the mainland): Puerto Rico and the U.S. Virgin
+    // Islands sit together just above the Pacific row, with VI to the east
+    // (right) of PR to match real geography. VI keeps its true inter-island
+    // layout (St. Thomas north of St. Croix); PR is a positional cluster.
+    const caribBottom = rowBottom - rowH - gap;
+    let caribX = W - margin;
+    const viList = present.get(VI_CODE);
+    if (viList?.length) {
+      const [viW, viH] = boxSize(VI_CODE);
+      placeInBox(VI_CODE, "U.S. Virgin Islands", caribX - viW, caribBottom - viH, viW, viH, sortTerritory(viList));
+      caribX -= viW + gap;
+    }
     const prList = present.get("PR");
     if (prList?.length) {
       const [prW, prH] = boxSize("PR");
-      const y = rowBottom - rowH - gap - prH;
-      placeInBox("PR", "Puerto Rico", W - margin - prW, y, prW, prH, sortTerritory(prList));
+      placeInBox("PR", "Puerto Rico", caribX - prW, caribBottom - prH, prW, prH, sortTerritory(prList));
     }
   }
 
-  // Territory inset frames + labels (base coordinates; ride the inset group's
-  // zoom transform). Geometry only changes on resize, so this runs from project()
-  // rather than every redraw frame.
+  // Territory region names (base coordinates; ride the inset group's zoom
+  // transform so each name tracks its offshore cluster). The framed boxes are
+  // gone — territories read as labelled clusters of dots now — so this just
+  // places the region name above each cluster. Font size is finalised per frame
+  // in redraw (kept constant on-screen). Geometry changes only on resize, so
+  // this runs from project().
   function drawTerritoryFrames(): void {
-    const sel = gInsets
-      .selectAll<SVGGElement, TerritoryBox>("g.terr")
-      .data(territoryBoxes, (d) => (d as TerritoryBox).code);
-    sel.exit().remove();
-    const enter = sel.enter().append("g").attr("class", "terr");
-    enter.append("rect").attr("class", "terr-frame");
-    enter.append("text").attr("class", "terr-label");
-    const merged = enter.merge(sel as never);
-    merged
-      .select<SVGRectElement>("rect.terr-frame")
-      .attr("x", (d) => d.x)
-      .attr("y", (d) => d.y)
-      .attr("width", (d) => d.w)
-      .attr("height", (d) => d.h)
-      .attr("rx", 3 * unitPerPx);
-    merged
-      .select<SVGTextElement>("text.terr-label")
-      .attr("x", (d) => d.x + d.w / 2)
-      .attr("y", (d) => d.y + (compact ? 12 : 11) * unitPerPx)
-      .attr("font-size", (compact ? 10 : 9) * unitPerPx)
+    gInsets
+      .selectAll<SVGTextElement, TerritoryBox>("text.terr-label")
+      .data(territoryBoxes, (d) => (d as TerritoryBox).code)
+      .join("text")
+      .attr("class", "terr-label")
+      .attr("x", (d) => d.lx)
+      .attr("y", (d) => d.ly)
       .text((d) => d.label);
   }
 
