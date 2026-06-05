@@ -578,14 +578,6 @@ export function mountNercOrgMap(): void {
     return smoothStep((k - (fullAt - lead)) / lead);
   }
 
-  function orgOpacity(o: Org, k: number, labeled: boolean): number {
-    if (o._frame === "terr") return 1;
-    const strength = dotStrength(o, k);
-    // Fade in from near-transparent as a dot is first disclosed so the reveal
-    // reads as "filling in" rather than a hard pop.
-    return Math.min(1, (labeled ? 0.62 : 0.16) + strength * (labeled ? 0.38 : 0.6));
-  }
-
   function drawPriority(o: Org, k: number): number {
     return dotStrength(o, k) * 90 + orgPriority(o) + o.weight * 0.9 + o.role_count;
   }
@@ -596,18 +588,13 @@ export function mountNercOrgMap(): void {
   function shouldTryLabel(o: Org, k: number): boolean {
     const priority = orgPriority(o);
     const nonGen = nonGenerationRoleCount(o);
+    if (k >= 2.6) return true;
     // A dot alone in empty space costs nothing to label and looks better with
     // one, so once zoomed in past the overview let isolated dots always try —
     // this is what fills the sparse Mountain-West / Plains with names.
-    if (k >= 1.8 && (o._iso ?? 0) >= 0.7) return true;
+    if (k >= 1.7 && (o._iso ?? 0) >= 0.35) return true;
     if (k < 1.25) return priority >= 54 || o.weight >= 30 || o.is_iso_rto;
-    if (k < 1.8) return priority >= 42 || o.weight >= 18 || nonGen >= 4;
-    if (k < 2.6) return priority >= 32 || o.weight >= 12 || nonGen >= 2;
-    if (k < 3.4) return priority >= 24 || o.weight >= 8 || nonGen >= 1;
-    if (k < 4.8) return priority >= 18 || o.weight >= 8 || nonGen >= 1;
-    if (k < 6.8) return priority >= 16 || o.weight >= 6 || nonGen >= 1;
-    if (k < 9.5) return priority >= 18 || o.weight >= 5 || nonGen >= 1;
-    if (k < 12.5) return priority >= 10 || o.weight >= 3 || !isGenerationOnly(o);
+    if (k < 1.8) return priority >= 34 || o.weight >= 12 || nonGen >= 2;
     return o.weight >= 1;
   }
 
@@ -615,30 +602,35 @@ export function mountNercOrgMap(): void {
   // it hits the SVG). Grows a little as you zoom in instead of staying flat.
   function labelFontPx(o: Org, k: number): number {
     const base = compact
-      ? o.weight >= 30 ? 12 : o.weight >= 12 ? 10.75 : 9.25
-      : o.weight >= 30 ? 14.5 : o.weight >= 12 ? 13 : 11.5;
+      ? o.weight >= 30 ? 11.5 : o.weight >= 12 ? 9.8 : 7.2
+      : o.weight >= 30 ? 13.25 : o.weight >= 12 ? 11.1 : 8.4;
     const growth = compact
-      ? Math.min(1.28, 1 + Math.max(0, k - 1) * 0.055)
-      : Math.min(1.55, 1 + Math.max(0, k - 1) * 0.11);
+      ? Math.min(1.18, 1 + Math.max(0, k - 1) * 0.04)
+      : Math.min(1.32, 1 + Math.max(0, k - 1) * 0.075);
     return base * growth;
   }
 
   function labelLimit(k: number): number {
     const cap =
-      k < 1.25 ? 160 :
-      k < 1.8 ? 195 :
-      k < 2.6 ? 235 :
-      k < 3.4 ? 280 :
-      k < 4.8 ? 330 :
-      k < 6.8 ? 385 :
-      440;
+      k < 1.25 ? 180 :
+      k < 1.8 ? 260 :
+      k < 2.6 ? 380 :
+      k < 3.4 ? 520 :
+      k < 4.8 ? 680 :
+      k < 6.8 ? 860 :
+      k < 9.5 ? 1080 :
+      1300;
     // On phones, keep the overview sparse (small screen) but open up as you zoom
     // in — there's screen space to fill, and the user wants iOS to feel as dynamic
     // as desktop. Now that the compact overview discloses fewer (bigger) dots, it
     // can carry a few more labels. Multiplier ramps 0.56 -> 1.0 across the range.
     if (!compact) return cap;
-    const mult = 0.56 + 0.44 * smoothStep((k - 1.6) / 4.5);
+    const mult = 0.65 + 0.31 * smoothStep((k - 1.6) / 4.5);
     return Math.round(cap * mult);
+  }
+
+  function visibleBubbleTarget(k: number): number {
+    return Math.round(labelLimit(k) * (compact ? 0.95 : 1));
   }
 
   function placeLabelLimit(k: number): number {
@@ -667,11 +659,8 @@ export function mountNercOrgMap(): void {
     // single zoom term scales everything; weight sets the relative size.
     const base = Math.max(2, RADIUS_SCALE(o.weight));
     const zoomT = smoothStep((k - 0.72) / 5);
-    const scale = compact ? 0.32 + 0.42 * zoomT : 0.33 + 0.34 * zoomT;
-    // Quieter dots (low strength = not yet "due" at this zoom) shrink a bit so
-    // the important orgs read first; they fill back in as you zoom toward them.
-    const strengthScale = 0.46 + dotStrength(o, k) * 0.54;
-    const grown = base * scale * strengthScale;
+    const scale = compact ? 0.38 + 0.58 * zoomT : 0.38 + 0.56 * zoomT;
+    const grown = base * scale;
     // Some high-priority regulated entities have few roles and therefore low
     // weight (for example PSE&G: DP + TO). Once zoomed in, lift those above the
     // small-dot floor so they are easier to see and tap without changing the
@@ -688,7 +677,7 @@ export function mountNercOrgMap(): void {
   // own little island of empty map. Scales with the on-screen dot size so the
   // notion of "alone" tracks how big things currently look.
   function isolationRange(): number {
-    return (compact ? 34 : 46) * unitPerPx;
+    return (compact ? 52 : 72) * unitPerPx;
   }
 
   // Fill each visible org's _iso (0 = crowded, 1 = no neighbour within range)
@@ -735,14 +724,19 @@ export function mountNercOrgMap(): void {
   function isolationBoost(o: Org, k: number): number {
     const iso = o._iso ?? 0;
     if (iso <= 0) return 1;
-    const zoomGain = smoothStep((k - 1.4) / 3.2); // ramps in as you zoom past ~1.4
-    const ceiling = (isGenerationOnly(o) ? 0.18 : 0.9) * (0.35 + zoomGain * 0.65);
+    const zoomGain = smoothStep((k - 1.15) / 2.6);
+    const openGain = smoothStep((k - 2.2) / 5.2);
+    const ceiling = (isGenerationOnly(o) ? 1.05 : 1.75) * (0.25 + zoomGain * 0.45 + openGain * 0.3);
     return 1 + iso * ceiling;
   }
 
-  function generationOnlyRadiusCap(k: number): number {
+  function generationOnlyRadiusCap(k: number, o?: Org): number {
     const closeT = smoothStep((k - 1.8) / 6.2);
-    return (compact ? 4.6 + 1.2 * closeT : 4.8 + 1.6 * closeT) * unitPerPx;
+    const base = compact ? 5.4 + 2.4 * closeT : 5.8 + 2.8 * closeT;
+    const fillT = smoothStep((k - 2.2) / 4.8);
+    const iso = o ? o._iso ?? 0 : 0;
+    const bonus = (compact ? 10 : 15) * iso * fillT;
+    return (base + bonus) * unitPerPx;
   }
 
   function nonGenerationRadiusFloor(o: Org, k: number): number {
@@ -757,7 +751,7 @@ export function mountNercOrgMap(): void {
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 5 : 4) * unitPerPx;
     const radius = visualRadius(o, k) * isolationBoost(o, k);
-    if (isGenerationOnly(o)) return Math.min(radius, generationOnlyRadiusCap(k));
+    if (isGenerationOnly(o)) return Math.min(radius, generationOnlyRadiusCap(k, o));
     return Math.max(radius, nonGenerationRadiusFloor(o, k));
   }
 
@@ -1337,6 +1331,7 @@ export function mountNercOrgMap(): void {
     const margin = 90;
     const candidates: Org[] = [];
     const visibleOrgs: Org[] = [];
+    const onScreenOrgs: Org[] = [];
     let shownCount = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
@@ -1355,9 +1350,31 @@ export function mountNercOrgMap(): void {
       const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
       const vis = onScreen && (due || forced);
       o._vis = vis;
+      if (onScreen) onScreenOrgs.push(o);
       if (!vis) continue;
       shownCount++;
       visibleOrgs.push(o);
+    }
+
+    if (!tourActive && !tourRunning && visibleOrgs.length < Math.min(onScreenOrgs.length, visibleBubbleTarget(k))) {
+      const target = Math.min(onScreenOrgs.length, visibleBubbleTarget(k));
+      const visibleIds = new Set(visibleOrgs.map((o) => o.ncr_id));
+      const extras = onScreenOrgs
+        .filter((o) => !visibleIds.has(o.ncr_id) && o._frame !== "terr")
+        .sort(
+          (a, b) =>
+            orgPriority(b) - orgPriority(a) ||
+            b.weight - a.weight ||
+            b.role_count - a.role_count ||
+            a.entity_name.localeCompare(b.entity_name),
+        );
+      for (const o of extras) {
+        if (visibleOrgs.length >= target) break;
+        o._vis = true;
+        visibleOrgs.push(o);
+        visibleIds.add(o.ncr_id);
+      }
+      shownCount = visibleOrgs.length;
     }
 
     // Local-density / isolation pass (needs every visible dot's screen position).
@@ -1411,11 +1428,8 @@ export function mountNercOrgMap(): void {
       { x: number; y: number; font: number; text: string; inside: boolean }
     >();
     const placed: Box[] = [];
-    // De-dupe identical on-screen tokens: when several orgs share a brand (MEAN,
-    // Evergy, USACE, AEP…) only the first — highest priority, since candidates
-    // are pre-sorted — gets the name, so the map never repeats a label. Nearby
-    // duplicates of the same brand read as one entity anyway. (Hover/select still
-    // forces its own label regardless.)
+    // De-dupe identical on-screen tokens only in the broad overview. Once zoomed
+    // in, duplicate brands can each carry text because unlabeled dots are hidden.
     const usedLabels = new Set<string>();
     // Bound the animated/highlighted set so it stays cheap on iOS.
     const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
@@ -1445,19 +1459,18 @@ export function mountNercOrgMap(): void {
     //      bubble.
     //   3. THIN: identical tokens are de-duped and tight floating clusters are
     //      thinned — floating only; inside labels are exempt.
-    // Every visible bubble at/above protectR is a blocker (tagged by id so a
-    // bubble never blocks its own label), seeded up front so the rule holds no
-    // matter which labels land first.
+    // Bubble blockers are added only after a bubble earns a label. Lower-priority
+    // candidates that fail placement are hidden, so they should not reserve space
+    // or cause blank dots.
     const protectR = (compact ? 6.5 : 5) * unitPerPx;
     const bubblePad = (compact ? 3.5 : 4) * unitPerPx;
     const bubbleBlockers: Array<{ id: string; box: Box }> = [];
-    for (const o of visibleOrgs) {
-      if (o._frame === "terr" || o._sx == null || o._sy == null) continue;
-      const r = renderedRadius(o, k);
-      if (r < protectR) continue;
+    const addBubbleBlocker = (o: Org): void => {
+      if (o._frame === "terr" || o._sx == null || o._sy == null) return;
+      const r = Math.max(renderedRadius(o, k), protectR * 0.85);
       const rb = r + bubblePad;
       bubbleBlockers.push({ id: o.ncr_id, box: { x0: o._sx - rb, x1: o._sx + rb, y0: o._sy - rb, y1: o._sy + rb } });
-    }
+    };
     const clearsBubbles = (box: Box, id: string): boolean =>
       !bubbleBlockers.some((b) => b.id !== id && boxesOverlap(box, b.box));
 
@@ -1467,7 +1480,7 @@ export function mountNercOrgMap(): void {
       const sx = o._sx as number;
       const sy = o._sy as number;
       const r = renderedRadius(o, k);
-      const forceLabel = hot?.ncr_id === o.ncr_id;
+      const forceLabel = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
       const brand = tinyName(o);
 
       // 1. INSIDE — preferred, collision-free, never suppressed by neighbours.
@@ -1480,13 +1493,10 @@ export function mountNercOrgMap(): void {
       );
       const insideMin = (compact ? 5.2 : 5.6) * unitPerPx;
       if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * 1.86) {
-        if (forceLabel || !usedLabels.has(brand)) {
+        if (forceLabel || k >= 2.2 || !usedLabels.has(brand)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
           if (!forceLabel) usedLabels.add(brand);
-          if (r < protectR) {
-            const rb = r + bubblePad;
-            bubbleBlockers.push({ id: o.ncr_id, box: { x0: sx - rb, x1: sx + rb, y0: sy - rb, y1: sy + rb } });
-          }
+          addBubbleBlocker(o);
           placedCount++;
         }
         continue;
@@ -1495,7 +1505,7 @@ export function mountNercOrgMap(): void {
       // 2/3. FLOAT — de-dupe + thin tight clusters (floating labels only).
       if (
         !forceLabel &&
-        (usedLabels.has(brand) ||
+        ((k < 2.2 && usedLabels.has(brand)) ||
           labeledClusters.some((p) => (p.x - sx) ** 2 + (p.y - sy) ** 2 <= clusterRadius ** 2))
       ) {
         continue;
@@ -1535,6 +1545,11 @@ export function mountNercOrgMap(): void {
         chosen = { x: lx, y: ly, box };
         break;
       }
+      if (!chosen && forceLabel) {
+        const lx = Math.min(W - edgeSafe - w / 2, Math.max(edgeSafe + w / 2, sx));
+        const ly = Math.min(H - edgeSafe - h * 0.3, Math.max(topSafe + h * 0.7, sy - nudge));
+        chosen = { x: lx, y: ly, box: { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 } };
+      }
       if (!chosen) continue;
       placed.push(chosen.box);
       if (!forceLabel) {
@@ -1542,8 +1557,15 @@ export function mountNercOrgMap(): void {
         usedLabels.add(brand);
       }
       labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text, inside: false });
+      addBubbleBlocker(o);
       placedCount++;
     }
+
+    const finalVisibleOrgs = visibleOrgs.filter((o) => {
+      const keep = labelState.has(o.ncr_id);
+      o._vis = keep;
+      return keep;
+    });
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
       const node = this as SVGCircleElement;
@@ -1571,7 +1593,7 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("tour-dim", tourRunning && !inTour);
       node.style.setProperty(
         "--org-opacity",
-        String(hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || inTour ? 1 : orgOpacity(o, k, labeled)),
+        "1",
       );
     });
 
@@ -1602,8 +1624,8 @@ export function mountNercOrgMap(): void {
     });
 
     const placeBlockers = [...placed];
-    for (const o of placeableOrgs) {
-      if (!o._vis || o._sx == null || o._sy == null) continue;
+    for (const o of finalVisibleOrgs) {
+      if (o._sx == null || o._sy == null) continue;
       const r = renderedRadius(o, k) + (compact ? 4 : 4.5) * unitPerPx;
       placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
     }
@@ -1673,8 +1695,8 @@ export function mountNercOrgMap(): void {
         const ch = s.font + (compact ? 8 : 7) * unitPerPx;
         landBlockers.push({ x0: s.x - cw / 2, x1: s.x + cw / 2, y0: s.y - ch * 0.9, y1: s.y + ch * 0.1 });
       });
-      for (const o of visibleOrgs) {
-        if (!o._vis || o._sx == null || o._sy == null) continue;
+      for (const o of finalVisibleOrgs) {
+        if (o._sx == null || o._sy == null) continue;
         const r = renderedRadius(o, k);
         if (r < (compact ? 7 : 9) * unitPerPx) continue;
         const pad = (compact ? 5 : 4.5) * unitPerPx;

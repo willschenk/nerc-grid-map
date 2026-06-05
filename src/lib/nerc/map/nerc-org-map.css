@@ -54,7 +54,7 @@
 }
 
 #nerc-svg .org {
-  fill-opacity: 0.72;
+  fill-opacity: 1;
   opacity: var(--org-opacity, 1);
   stroke: rgba(255, 255, 255, 0.95);
   stroke-width: 0.8;
@@ -78,7 +78,7 @@
 }
 
 #nerc-svg .org.labeled {
-  fill-opacity: 0.92;
+  fill-opacity: 1;
 }
 
 #nerc-svg .org.hide {

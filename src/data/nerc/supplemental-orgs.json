@@ -5142,5 +5142,125 @@
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
     "geo_notes": "Tennessee public-power utility listed by APPA at Johnson City; city-level utility location.",
     "verify": false
+  },
+  {
+    "entity_name": "Appalachian Power Company",
+    "acronym": "APCo",
+    "state": "WV",
+    "city": "Charleston",
+    "lat": 38.3498,
+    "lng": -81.6326,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "West Virginia Public Service Commission",
+    "geo_source_url": "https://www.psc.state.wv.us/annualstatrpts/anstatrpt2024.pdf",
+    "geo_notes": "West Virginia regulated electric utility named in PSC annual statistical reporting; placed at Charleston, WV for the West Virginia operating footprint.",
+    "verify": false
+  },
+  {
+    "entity_name": "Black Diamond Power Company",
+    "acronym": "Black Diamond",
+    "state": "WV",
+    "city": "Mullens",
+    "lat": 37.5832,
+    "lng": -81.3804,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "ESTIMATED",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "West Virginia Public Service Commission",
+    "geo_source_url": "https://www.psc.state.wv.us/press/2025/Press_20250912101118.pdf",
+    "geo_notes": "Small West Virginia regulated electric utility under PSC review; city-level placement near the Mullens service territory.",
+    "verify": false
+  },
+  {
+    "entity_name": "Harrison Rural Electrification Association, Inc.",
+    "acronym": "HREA",
+    "state": "WV",
+    "city": "Clarksburg",
+    "lat": 39.2806,
+    "lng": -80.3445,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "HIGH",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "official_website",
+    "geo_source_url": "https://harrisonrea.com/",
+    "geo_notes": "Rural electric cooperative serving north-central West Virginia; official site lists Clarksburg and Bridgeport offices.",
+    "verify": false
+  },
+  {
+    "entity_name": "Monongahela Power Company",
+    "acronym": "Mon Power",
+    "state": "WV",
+    "city": "Fairmont",
+    "lat": 39.4851,
+    "lng": -80.1426,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "West Virginia Public Service Commission",
+    "geo_source_url": "https://www.psc.state.wv.us/annualstatrpts/anstatrpt2024.pdf",
+    "geo_notes": "West Virginia regulated electric utility named in PSC annual statistical reporting; city-level placement at Fairmont / north-central West Virginia operating area.",
+    "verify": false
+  },
+  {
+    "entity_name": "The Potomac Edison Company",
+    "acronym": "Potomac Edison",
+    "state": "WV",
+    "city": "Martinsburg",
+    "lat": 39.4562,
+    "lng": -77.9639,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "West Virginia Public Service Commission",
+    "geo_source_url": "https://www.psc.state.wv.us/annualstatrpts/anstatrpt2024.pdf",
+    "geo_notes": "West Virginia regulated electric utility named in PSC annual statistical reporting; city-level placement in the Eastern Panhandle service area.",
+    "verify": false
+  },
+  {
+    "entity_name": "Wheeling Power Company",
+    "acronym": "WPCo",
+    "state": "WV",
+    "city": "Wheeling",
+    "lat": 40.0639,
+    "lng": -80.7201,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "West Virginia Public Service Commission",
+    "geo_source_url": "https://www.psc.state.wv.us/annualstatrpts/anstatrpt2024.pdf",
+    "geo_notes": "West Virginia regulated electric utility named in PSC annual statistical reporting; city-level placement in Wheeling / Northern Panhandle service area.",
+    "verify": false
   }
 ]
