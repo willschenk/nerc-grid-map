@@ -599,7 +599,16 @@ export function mountNercOrgMap(): void {
     // the important orgs read first; they fill back in as you zoom toward them.
     const strengthScale = 0.46 + dotStrength(o, k) * 0.54;
     const grown = base * scale * strengthScale;
-    return Math.max((compact ? 1.8 : 1.5) * unitPerPx, grown);
+    // Some high-priority regulated entities have few roles and therefore low
+    // weight (for example PSE&G: DP + TO). Once zoomed in, lift those above the
+    // small-dot floor so they are easier to see and tap without changing the
+    // national overview sizing.
+    const closeT = smoothStep((k - 2.8) / 8.2);
+    const priorityT = smoothStep((orgPriority(o) - 32) / 42);
+    const lowWeightT = smoothStep((14 - Math.min(o.weight, 14)) / 14);
+    const liftPx = (compact ? 7.5 : 10.5) * priorityT * (0.4 + lowWeightT * 0.6) * closeT;
+    const lifted = grown + liftPx * unitPerPx;
+    return Math.max((compact ? 1.8 : 1.5) * unitPerPx, lifted);
   }
 
   // Distance (in viewBox units) at which a dot counts as fully "isolated" — its
