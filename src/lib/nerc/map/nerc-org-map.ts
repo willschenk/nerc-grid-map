@@ -1,4 +1,4 @@
-import { geoAlbersUsa, geoConicEqualArea, geoPath } from "d3-geo";
+import { geoAlbersUsa, geoConicEqualArea, geoMercator, geoPath } from "d3-geo";
 import { scaleSqrt } from "d3-scale";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zoom";
@@ -96,13 +96,18 @@ const GENERATION_ROLES = new Set(["GO", "GOP"]);
 
 // Out-of-footprint U.S. territories, shown as labelled insets (no mainland
 // coordinates to project). Order = how they stack into the bottom-right corner.
+// Schematic grid-box insets for the far-Pacific territories with no nearby
+// mainland geography (Guam, Marianas, Samoa) plus Puerto Rico. The U.S. Virgin
+// Islands are handled separately (geoVirginIslands) — projected to their true
+// Caribbean position off the SE corner rather than a grid box.
 const TERRITORIES: Array<{ code: string; label: string }> = [
   { code: "PR", label: "Puerto Rico" },
-  { code: "VI", label: "U.S. Virgin Is." },
   { code: "GU", label: "Guam" },
   { code: "MP", label: "N. Mariana Is." },
   { code: "AS", label: "American Samoa" },
 ];
+// State code for the Virgin Islands, projected into its own Caribbean inset.
+const VI_CODE = "VI";
 
 // Canadian province label anchors (rough interior points), drawn faintly on the
 // land like the U.S. state labels.
@@ -375,6 +380,12 @@ export function mountNercOrgMap(): void {
   // after fitSize — so Canadian land and entities line up north of the border.
   const canadaProj = geoConicEqualArea().rotate([96, 0]).center([-0.6, 38.7]).parallels([29.5, 45.5]);
   const canadaPath = geoPath(canadaProj);
+  // U.S. Virgin Islands sit in the Caribbean (~17.7N, 64.8W) — off the bottom of
+  // the Albers-USA footprint, like Alaska/Hawaii in a standard composite. We give
+  // them their own little Mercator inset and translate it to a sensible spot off
+  // the SE corner (below Florida), so they read in roughly correct geography
+  // instead of a schematic grid box. Scale/translate are set per project().
+  const viProj = geoMercator();
 
   let transform: ZoomTransform = zoomIdentity;
   let zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> | null = null;
@@ -412,8 +423,6 @@ export function mountNercOrgMap(): void {
   // Phone-sized screens get fewer labels when zoomed in (less screen real
   // estate for the same physical-size labels).
   let compact = false;
-  // Live "shown in view" counter element inside the metrics panel.
-  let shownEl: HTMLElement | null = null;
   let orgMarkK = NaN;
   let orgLayoutBucket = NaN;
 
@@ -557,7 +566,12 @@ export function mountNercOrgMap(): void {
       k < 4.8 ? 260 :
       k < 6.8 ? 290 :
       320;
-    return compact ? Math.round(cap * 0.44) : cap;
+    // On phones, keep the overview sparse (small screen) but open up a lot as you
+    // zoom in — there's screen space to fill, and the user wants iOS to feel as
+    // dynamic as desktop. Multiplier ramps 0.42 -> 0.82 across the zoom range.
+    if (!compact) return cap;
+    const mult = 0.42 + 0.4 * smoothStep((k - 1.6) / 4.5);
+    return Math.round(cap * mult);
   }
 
   function placeLabelLimit(k: number): number {
@@ -694,8 +708,8 @@ export function mountNercOrgMap(): void {
     // map spreads across more screen, opening room for orgs to claim space.
     // (Land clamping separately bounds water drift.)
     const px = compact
-      ? k < 1.25 ? 22 : k < 2.2 ? 38 : k < 4 ? 48 : k < 7 ? 42 : 32
-      : k < 1.25 ? 30 : k < 2.2 ? 60 : k < 4 ? 92 : k < 7 ? 76 : 56;
+      ? k < 1.25 ? 40 : k < 2.2 ? 52 : k < 4 ? 56 : k < 7 ? 46 : 34
+      : k < 1.25 ? 54 : k < 2.2 ? 78 : k < 4 ? 96 : k < 7 ? 78 : 58;
     return px * unitPerPx;
   }
 
@@ -837,6 +851,7 @@ export function mountNercOrgMap(): void {
     }
 
     layoutTerritories();
+    layoutVirginIslands();
     drawTerritoryFrames();
     assignSpiderOffsets();
     positionOrgMarks(transform.k, true);
@@ -1079,6 +1094,8 @@ export function mountNercOrgMap(): void {
     territoryBoxes = [];
     const present = new Map<string, Org[]>();
     for (const o of orgs) {
+      // VI is projected to its true Caribbean position by layoutVirginIslands().
+      if (o.state === VI_CODE && o.out_of_footprint) continue;
       if (!o.out_of_footprint || !o.state) {
         if (o.out_of_footprint) {
           o._x = undefined;
@@ -1133,6 +1150,45 @@ export function mountNercOrgMap(): void {
       });
       curX = x - gap;
       rowH = Math.max(rowH, h);
+    }
+  }
+
+  // Project the U.S. Virgin Islands into a small labelled inset off the SE corner
+  // (below Florida), preserving their true relative geography via geoMercator —
+  // not a schematic grid. Fixed dots (like the other insets): they ride the zoom
+  // group, stay put under declutter, and skip the land-mask clamp.
+  function layoutVirginIslands(): void {
+    const list = orgs.filter((o) => o.state === VI_CODE && o.out_of_footprint && o.lat != null && o.lng != null);
+    if (!list.length) return;
+    // A small box anchored low-right, above the schematic territory row. Sized so
+    // the three USVI utilities read without crowding.
+    const boxW = (compact ? 92 : 104) * unitPerPx;
+    const boxH = (compact ? 70 : 76) * unitPerPx;
+    const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
+    const margin = 6 * unitPerPx;
+    // Sit it off the SE, below Florida (the USVI are ~17.7N, south of FL's 25N):
+    // low and to the right, clear of the bottom-right schematic territory row.
+    const x = W - margin - boxW;
+    const y = H * (compact ? 0.64 : 0.72);
+    territoryBoxes.push({ code: VI_CODE, label: "U.S. Virgin Is.", x, y, w: boxW, h: boxH });
+
+    const innerPad = 9 * unitPerPx;
+    viProj.fitExtent(
+      [
+        [x + innerPad, y + labelH + innerPad * 0.5],
+        [x + boxW - innerPad, y + boxH - innerPad],
+      ],
+      { type: "MultiPoint", coordinates: list.map((o) => [o.lng as number, o.lat as number]) } as never,
+    );
+    for (const o of list) {
+      const p = viProj([o.lng as number, o.lat as number]);
+      o._frame = "terr"; // fixed inset dot
+      o._x = p ? p[0] : x + boxW / 2;
+      o._y = p ? p[1] : y + boxH / 2;
+      o._dx = 0;
+      o._dy = 0;
+      o._rx = 0;
+      o._ry = 0;
     }
   }
 
@@ -1246,7 +1302,6 @@ export function mountNercOrgMap(): void {
         candidateIds.add(o.ncr_id);
       }
     }
-    if (shownEl && !metricsPanel.hidden) shownEl.textContent = String(shownCount);
 
     candidates.sort(
       (a, b) =>
@@ -1284,11 +1339,14 @@ export function mountNercOrgMap(): void {
     // one so top-row org labels don't hide behind the title chip.
     const topSafe = (compact && !tourActive ? 72 : tourActive ? 0 : 44) * unitPerPx;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
-    const clusterRadius = (compact ? 22 : k < 1.25 ? 10 : 8) * unitPerPx;
+    // Phones start with a wide label-suppression radius (sparse overview) but
+    // tighten it as you zoom in so more labels fill the screen — matching the
+    // desktop feel. Desktop is already tight.
+    const clusterRadius = (compact ? Math.max(9, 22 - Math.max(0, k - 1.6) * 4) : k < 1.25 ? 10 : 8) * unitPerPx;
     const labeledClusters: Array<{ x: number; y: number }> = [];
-    // On phones, inflate the collision box as you zoom in so labels spread out
-    // (less information overload). Untouched on desktop and during the tour.
-    const spacing = compact && !tourActive ? Math.min(2.05, 1 + Math.max(0, k - 1.8) * 0.24) : 1;
+    // Phones spread labels a little at first; the inflation now fades back out as
+    // you zoom in (was growing), so zoomed-in iOS fills space instead of thinning.
+    const spacing = compact && !tourActive ? Math.max(1, 1.5 - Math.max(0, k - 2) * 0.16) : 1;
     for (const o of candidates) {
       if (placed.length >= maxLabels) break;
       const sx = o._sx as number;
@@ -1570,31 +1628,69 @@ export function mountNercOrgMap(): void {
     return sec;
   }
 
-  function renderStats(): void {
-    const mapped = placeableOrgs.length;
-    const shown = placeableOrgs.reduce((n, o) => n + (o._vis ? 1 : 0), 0);
-    const top = createEl("div", "nerc-metrics-top");
-    const kpi = (label: string, value: number): HTMLElement => {
-      const box = createEl("div", "nerc-kpi");
-      const strong = createEl("strong", undefined, String(value));
-      box.append(createEl("span", undefined, label), strong);
-      return box;
-    };
-    const shownKpi = kpi("Shown in view", shown);
-    shownEl = shownKpi.querySelector("strong");
-    top.append(shownKpi, kpi("Mapped", mapped));
+  function tallyRoles(orgList: Org[]): Map<string, number> {
+    const counts = new Map<string, number>();
+    for (const o of orgList) {
+      for (const role of o.roles) {
+        counts.set(role, (counts.get(role) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }
 
-    const supplemental = placeableOrgs.reduce((n, o) => n + (o.nerc_registered === false ? 1 : 0), 0);
-    const note = createEl(
-      "p",
-      "nerc-metrics-note",
-      `${mapped - supplemental} NERC-registered · ${supplemental} supplemental (no NERC ID)`,
+  function renderStats(): void {
+    const onMap = placeableOrgs.length;
+    const total = orgs.length;
+    const nercRegistered = orgs.filter((o) => o.nerc_registered !== false).length;
+    const supplemental = orgs.filter((o) => o.nerc_registered === false).length;
+    const notPlotted = total - onMap;
+
+    const top = createEl("div", "nerc-metrics-top");
+    const kpiBox = createEl("div", "nerc-kpi");
+    kpiBox.append(
+      createEl("span", undefined, "Organizations plotted on map"),
+      createEl("strong", undefined, String(onMap)),
     );
+    top.append(kpiBox);
+
+    const noteParts = [`${total.toLocaleString()} organizations in dataset`];
+    if (nercRegistered) noteParts.push(`${nercRegistered.toLocaleString()} NERC registry`);
+    if (supplemental) noteParts.push(`${supplemental.toLocaleString()} supplemental (no NERC ID)`);
+    if (notPlotted) noteParts.push(`${notPlotted.toLocaleString()} not plotted (missing coordinates)`);
+    const note = createEl("p", "nerc-metrics-note", noteParts.join(" · "));
 
     metricsBody.replaceChildren(
       top,
       note,
-      statSection("By organization type", tally(placeableOrgs.map((o) => o.org_type), "other"), (k) => typeLabel(k)),
+      statSection(
+        "Reliability region",
+        tally(
+          orgs.map((o) => o.region),
+          "No Reliability Entity",
+        ),
+        (k) => k,
+      ),
+      statSection(
+        "Ownership and market type",
+        tally(
+          orgs.map((o) => o.org_type),
+          "other",
+        ),
+        (k) => typeLabel(k),
+      ),
+      statSection(
+        "Geolocation confidence",
+        tally(
+          orgs.map((o) => o.geo_confidence),
+          "Unknown",
+        ),
+        (k) => CONFIDENCE_LABELS[k] ?? k,
+      ),
+      statSection(
+        "Reliability functions (organizations per role)",
+        tallyRoles(orgs),
+        (k) => `${k} — ${roleFullName(k)}`,
+      ),
     );
   }
 
@@ -1738,7 +1834,7 @@ export function mountNercOrgMap(): void {
         createEl(
           "div",
           "p-seed",
-          "Not in the NERC Compliance Registry, so it has no NERC ID. Any roles shown are a best-effort functional guess, not an official NERC registration.",
+          "Not in the NERC registry (no NERC ID). Roles are estimated.",
         ),
       );
     }
