@@ -60,7 +60,7 @@
   stroke-width: 0.8;
   vector-effect: non-scaling-stroke;
   cursor: pointer;
-  transition: fill-opacity 120ms ease, opacity 120ms ease, stroke-width 120ms ease;
+  transition: fill-opacity 120ms ease, opacity 120ms ease, stroke-width 120ms ease, transform 120ms ease;
 }
 
 #nerc-svg .org.estimated {
@@ -100,12 +100,20 @@
   fill-opacity: 1;
   stroke: #07110e;
   stroke-width: 1.4;
+  /* A small grow makes the focused dot read above its neighbours in a dense
+     cluster without reordering the DOM (auto-reverts on un-hover). */
+  transform: scale(1.18);
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 #nerc-svg .org.selected {
   fill-opacity: 1;
   stroke: #07110e;
   stroke-width: 1.8;
+  transform: scale(1.18);
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 #nerc-svg .org.tour-dim {
@@ -201,12 +209,12 @@
 /* Land labels: state / province names sitting faintly on the map. Below NERC
    marks and labels in the stacking order, so NERC information reads on top. */
 #nerc-svg .land-label {
-  fill: rgba(95, 109, 103, 0.62);
+  fill: rgba(99, 113, 107, 0.46);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.68);
+  stroke: rgba(248, 251, 249, 0.6);
   stroke-width: 2.6;
   pointer-events: none;
   text-anchor: middle;

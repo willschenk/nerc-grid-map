@@ -1193,7 +1193,10 @@ export function mountNercOrgMap(): void {
     const placed: Box[] = [];
     // Bound the animated/highlighted set so it stays cheap on iOS.
     const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
-    const topSafe = compact && !tourActive ? 72 * unitPerPx : 0;
+    // Keep labels from tucking under the floating topbar. Phones reserve a tall
+    // band (the bar is bigger relative to the screen); desktop reserves a slim
+    // one so top-row org labels don't hide behind the title chip.
+    const topSafe = (compact && !tourActive ? 72 : tourActive ? 0 : 44) * unitPerPx;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
     const clusterRadius = (compact ? 22 : k < 1.25 ? 10 : 8) * unitPerPx;
     const labeledClusters: Array<{ x: number; y: number }> = [];
@@ -1542,7 +1545,12 @@ export function mountNercOrgMap(): void {
     gLabels
       .selectAll<SVGTextElement, Org>("text.olabel")
       .classed("hot-label", (d) => hot?.ncr_id === d.ncr_id)
-      .classed("selected-label", (d) => selectedOrg?.ncr_id === d.ncr_id);
+      .classed("selected-label", (d) => selectedOrg?.ncr_id === d.ncr_id)
+      // Lift the focused label to the top of the label layer so it's never
+      // hidden under a neighbour in a dense cluster. (Labels are few and only
+      // the shown subset is visible, so a sticky reorder is harmless.)
+      .filter((d) => hot?.ncr_id === d.ncr_id)
+      .raise();
   }
 
   function applyTourClasses(): void {
