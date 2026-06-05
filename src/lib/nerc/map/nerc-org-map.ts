@@ -63,6 +63,9 @@ type Org = {
   // Last viewBox radius actually written to the circle, so the isolation boost
   // (which changes on pan at constant zoom) can update without a per-frame storm.
   _rr?: number;
+  // Last viewBox hit radius written to the invisible target. It follows the
+  // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
+  _hr?: number;
   // Which projection placed this org: mainland Albers ("us"), the Canada conic
   // ("ca"), or a territory inset ("terr").
   _frame?: "us" | "ca" | "terr";
@@ -670,10 +673,17 @@ export function mountNercOrgMap(): void {
     if (o._frame === "terr") return (compact ? 8.5 : 7) * unitPerPx;
     const visual = renderedRadius(o, k);
     const strength = dotStrength(o, k);
-    const floorPx = compact
+    const overviewFloorPx = compact
       ? o.weight <= 4 ? 9 : 12
       : strength < 0.35 ? 3.2 : o.weight <= 4 ? 4.2 : o.weight <= 8 ? 5.2 : 7;
-    const padPx = (compact ? (o.weight <= 4 ? 2.4 : 3.4) : o.weight <= 4 ? 1 : o.weight <= 8 ? 1.5 : 2.4) * (0.5 + strength * 0.5);
+    const deepFloorPx = compact
+      ? o.weight <= 4 ? 5.5 : 6.5
+      : strength < 0.35 ? 2.2 : o.weight <= 4 ? 2.6 : o.weight <= 8 ? 3.2 : 4.4;
+    const deepT = smoothStep((k - 10) / 18);
+    const floorPx = overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT;
+    const overviewPadPx = compact ? (o.weight <= 4 ? 2.4 : 3.4) : o.weight <= 4 ? 1 : o.weight <= 8 ? 1.5 : 2.4;
+    const deepPadPx = compact ? (o.weight <= 4 ? 0.8 : 1.2) : o.weight <= 4 ? 0.35 : o.weight <= 8 ? 0.55 : 0.8;
+    const padPx = (overviewPadPx + (deepPadPx - overviewPadPx) * deepT) * (0.5 + strength * 0.5);
     return Math.max(visual + padPx * unitPerPx, floorPx * unitPerPx);
   }
 
@@ -1250,7 +1260,8 @@ export function mountNercOrgMap(): void {
     // While a tour runs but no step is showing (tourRunning && !tourActive) the
     // map "blanks": everything dims, nothing is labelled. That makes each role
     // reveal read clearly and idles the breathing animation (cheaper on iOS).
-    // Hit radii only depend on zoom, so only rewrite them when k changes.
+    // Hit radii mostly track zoom, but also follow the resolved visual radius
+    // after the isolation pass so deep-zoom panning doesn't leave stale targets.
     const hitChanged = hitK !== k;
     hitK = k;
 
@@ -1453,8 +1464,12 @@ export function mountNercOrgMap(): void {
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
-      if (!o._vis || !hitChanged) return;
-      node.setAttribute("r", String(hitTargetRadius(o, k) / k));
+      if (!o._vis) return;
+      const hr = hitTargetRadius(o, k);
+      if (hitChanged || o._hr !== hr) {
+        node.setAttribute("r", String(hr / k));
+        o._hr = hr;
+      }
     });
 
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").each(function (o) {
@@ -1918,6 +1933,10 @@ export function mountNercOrgMap(): void {
   function raiseVisibleOrg(o: Org): void {
     gOverlay
       .selectAll<SVGCircleElement, Org>("circle.org")
+      .filter((d) => d.ncr_id === o.ncr_id)
+      .raise();
+    gHit
+      .selectAll<SVGCircleElement, Org>("circle.org-hit")
       .filter((d) => d.ncr_id === o.ncr_id)
       .raise();
   }

@@ -60,7 +60,7 @@
   stroke-width: 0.8;
   vector-effect: non-scaling-stroke;
   cursor: pointer;
-  transition: fill-opacity 120ms ease, opacity 120ms ease, stroke-width 120ms ease, transform 120ms ease;
+  transition: fill-opacity 120ms ease, opacity 120ms ease, stroke-width 120ms ease;
 }
 
 #nerc-svg .org.estimated {
@@ -100,20 +100,12 @@
   fill-opacity: 1;
   stroke: #07110e;
   stroke-width: 1.4;
-  /* A small grow makes the focused dot read above its neighbours in a dense
-     cluster without reordering the DOM (auto-reverts on un-hover). */
-  transform: scale(1.18);
-  transform-box: fill-box;
-  transform-origin: center;
 }
 
 #nerc-svg .org.selected {
   fill-opacity: 1;
   stroke: #07110e;
   stroke-width: 1.8;
-  transform: scale(1.18);
-  transform-box: fill-box;
-  transform-origin: center;
 }
 
 #nerc-svg .org.tour-dim {
