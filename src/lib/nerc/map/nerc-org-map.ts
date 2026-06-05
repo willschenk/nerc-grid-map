@@ -387,6 +387,13 @@ export function mountNercOrgMap(): void {
   let nationFeature: unknown = null;
   let canadaFeature: unknown = null;
   let stateFeatures: unknown[] = [];
+  // Low-res land mask (US + Canada silhouette) in viewBox space, rebuilt on every
+  // project(). Lets the declutter solver tell land from water in O(1) so dots
+  // never drift far out to sea. mask[my*maskW+mx] is 1 on land, 0 on water.
+  let landMask: Uint8Array | null = null;
+  let maskW = 0;
+  let maskH = 0;
+  let maskScale = 1; // viewBox units per mask cell
   let landLabels: LandLabel[] = [];
   let territoryBoxes: TerritoryBox[] = [];
   const prefersReducedMotion = (): boolean =>
@@ -612,9 +619,12 @@ export function mountNercOrgMap(): void {
   }
 
   function maxDeclutterOffset(k: number): number {
+    // Tighter when zoomed out so dots stay near their true location; loosens as
+    // you zoom in and the coastline spreads across more screen, opening room for
+    // smaller orgs to claim space. (Land clamping separately bounds water drift.)
     const px = compact
-      ? k < 1.25 ? 120 : k < 2.2 ? 94 : k < 4 ? 68 : k < 7 ? 46 : 32
-      : k < 1.25 ? 220 : k < 2.2 ? 170 : k < 4 ? 120 : k < 7 ? 82 : 56;
+      ? k < 1.25 ? 64 : k < 2.2 ? 60 : k < 4 ? 52 : k < 7 ? 42 : 32
+      : k < 1.25 ? 96 : k < 2.2 ? 104 : k < 4 ? 100 : k < 7 ? 76 : 56;
     return px * unitPerPx;
   }
 
@@ -728,6 +738,7 @@ export function mountNercOrgMap(): void {
     if (canadaFeature) gMap.select<SVGPathElement>("path.canada").attr("d", canadaPath(canadaFeature as never));
     gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
     gMap.select<SVGPathElement>("path.nation").attr("d", path(nationFeature as never));
+    buildLandMask();
 
     for (const o of orgs) {
       o._rk = undefined;
@@ -764,6 +775,100 @@ export function mountNercOrgMap(): void {
       p._x = xy ? xy[0] : undefined;
       p._y = xy ? xy[1] : undefined;
     }
+  }
+
+  // Rasterize the US + Canada silhouette into a coarse land mask in viewBox
+  // coordinates. Cheap to build (~once per project/resize) and O(1) to query, so
+  // the declutter solver can keep dots from drifting far out to sea. Best-effort:
+  // if no 2D canvas is available the mask stays null and clamping is skipped.
+  function buildLandMask(): void {
+    landMask = null;
+    if (!nationFeature) return;
+    // ~6 viewBox units per cell: fine enough to trace the coastline, coarse
+    // enough to stay tiny (a few thousand cells) and fast on iOS.
+    maskScale = 6;
+    maskW = Math.max(1, Math.ceil(W / maskScale));
+    maskH = Math.max(1, Math.ceil(H / maskScale));
+    let canvas: HTMLCanvasElement | OffscreenCanvas;
+    try {
+      canvas =
+        typeof OffscreenCanvas !== "undefined"
+          ? new OffscreenCanvas(maskW, maskH)
+          : Object.assign(document.createElement("canvas"), { width: maskW, height: maskH });
+    } catch {
+      return;
+    }
+    const ctx = canvas.getContext("2d") as
+      | CanvasRenderingContext2D
+      | OffscreenCanvasRenderingContext2D
+      | null;
+    if (!ctx) return;
+    ctx.save();
+    ctx.scale(1 / maskScale, 1 / maskScale);
+    ctx.fillStyle = "#fff";
+    const maskPath = geoPath(projection, ctx as CanvasRenderingContext2D);
+    ctx.beginPath();
+    maskPath(nationFeature as never);
+    ctx.fill();
+    if (canadaFeature) {
+      const cPath = geoPath(canadaProj, ctx as CanvasRenderingContext2D);
+      ctx.beginPath();
+      cPath(canadaFeature as never);
+      ctx.fill();
+    }
+    ctx.restore();
+    let data: Uint8ClampedArray;
+    try {
+      data = ctx.getImageData(0, 0, maskW, maskH).data;
+    } catch {
+      return;
+    }
+    const mask = new Uint8Array(maskW * maskH);
+    for (let i = 0; i < mask.length; i++) mask[i] = data[i * 4 + 3] > 40 ? 1 : 0;
+    landMask = mask;
+  }
+
+  // True when (x, y) in viewBox space sits on land (or just off any edge, so
+  // dots near the viewport border aren't yanked inward). Null mask => treat all
+  // as land (no clamping).
+  function onLand(x: number, y: number): boolean {
+    if (!landMask) return true;
+    const mx = Math.floor(x / maskScale);
+    const my = Math.floor(y / maskScale);
+    if (mx < 0 || my < 0 || mx >= maskW || my >= maskH) return true;
+    return landMask[my * maskW + mx] === 1;
+  }
+
+  // Pull a displaced point back toward its base so it ends no more than `water`
+  // viewBox units past the coastline. The dot may still sit slightly offshore
+  // (so coastal clusters can breathe) but never far out to sea. Returns the
+  // accepted [x, y]. Walks the base→displaced segment and keeps the furthest
+  // point still on land, then allows a short hop into the water beyond it.
+  function clampToLand(
+    baseX: number,
+    baseY: number,
+    x: number,
+    y: number,
+    water: number,
+  ): [number, number] {
+    if (!landMask) return [x, y];
+    if (onLand(x, y)) return [x, y];
+    const dx = x - baseX;
+    const dy = y - baseY;
+    const dist = Math.hypot(dx, dy);
+    if (dist < 1e-3) return [baseX, baseY];
+    const ux = dx / dist;
+    const uy = dy / dist;
+    // March outward from the base, tracking the last on-land sample.
+    const stepLen = maskScale * 0.75;
+    let lastLand = 0;
+    for (let t = 0; t <= dist; t += stepLen) {
+      if (onLand(baseX + ux * t, baseY + uy * t)) lastLand = t;
+    }
+    // Permit a short hop into the water past the coast (the "80% into the water"
+    // allowance), but never the full requested distance.
+    const allowed = Math.min(dist, lastLand + water);
+    return [baseX + ux * allowed, baseY + uy * allowed];
   }
 
   // Resolve overlaps among dots currently eligible at this zoom. This is a
@@ -871,6 +976,11 @@ export function mountNercOrgMap(): void {
     }
 
     const cap = maxDeclutterOffset(bucket);
+    // How far a dot may end up past the coastline, in viewBox units. Tight when
+    // zoomed out (no 1000-mile-offshore dots), looser as you zoom in and the
+    // coast itself spreads across more screen. ("80% into the water" — coastal
+    // dots can sit just offshore, never far out to sea.)
+    const waterBudget = (compact ? 7 : 10) + Math.max(0, bucket - 1) * 4;
     for (const it of items) {
       if (it.fixed) continue;
       let dx = it.x - it.baseX;
@@ -880,8 +990,14 @@ export function mountNercOrgMap(): void {
         dx = (dx / m) * cap;
         dy = (dy / m) * cap;
       }
-      it.o._dx = dx;
-      it.o._dy = dy;
+      // Clamp against the land silhouette in viewBox space. The anchor is the
+      // dot's true projected location (always on/near land); the displaced point
+      // adds the solved offset (positions in the solver are scaled by `bucket`).
+      const anchorX = it.o._x as number;
+      const anchorY = it.o._y as number;
+      const [vx, vy] = clampToLand(anchorX, anchorY, anchorX + dx / bucket, anchorY + dy / bucket, waterBudget);
+      it.o._dx = (vx - anchorX) * bucket;
+      it.o._dy = (vy - anchorY) * bucket;
     }
   }
 

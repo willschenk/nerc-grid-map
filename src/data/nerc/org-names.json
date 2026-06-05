@@ -15,6 +15,2358 @@
       "short": "Southwest Power Pool",
       "normal": "Southwest Power Pool, Inc.",
       "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-002",
+      "entity_name": "Midcontinent Independent System Operator, Inc.",
+      "shortest": "MISO",
+      "short": "Midcontinent ISO",
+      "normal": "Midcontinent Independent System Operator, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-001",
+      "entity_name": "PJM Interconnection, LLC",
+      "shortest": "PJM",
+      "short": "PJM Interconnection",
+      "normal": "PJM Interconnection, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-024",
+      "entity_name": "Southern Company Services, Inc.",
+      "shortest": "SoCo",
+      "short": "Southern Company",
+      "normal": "Southern Company Services, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-003",
+      "entity_name": "California Independent System Operator",
+      "shortest": "CAISO",
+      "short": "California ISO",
+      "normal": "California Independent System Operator",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-007",
+      "entity_name": "Electric Reliability Council of Texas, Inc.",
+      "shortest": "ERCOT",
+      "short": "Electric Reliability Council of Texas",
+      "normal": "Electric Reliability Council of Texas, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-005",
+      "entity_name": "ISO New England Inc.",
+      "shortest": "ISO-NE",
+      "short": "ISO New England",
+      "normal": "ISO New England Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-006",
+      "entity_name": "New York Independent System Operator",
+      "shortest": "NYISO",
+      "short": "New York ISO",
+      "normal": "New York Independent System Operator",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-020",
+      "entity_name": "Duke Energy Carolinas, LLC",
+      "shortest": "Duke",
+      "short": "Duke Energy Carolinas",
+      "normal": "Duke Energy Carolinas, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-027",
+      "entity_name": "Florida Power & Light Company",
+      "shortest": "FPL",
+      "short": "Florida Power & Light",
+      "normal": "Florida Power & Light Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-054",
+      "entity_name": "Bonneville Power Administration",
+      "shortest": "BPA",
+      "short": "Bonneville Power Administration",
+      "normal": "Bonneville Power Administration",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-025",
+      "entity_name": "Tennessee Valley Authority",
+      "shortest": "TVA",
+      "short": "Tennessee Valley Authority",
+      "normal": "Tennessee Valley Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-015",
+      "entity_name": "PacifiCorp",
+      "shortest": "PacifiCorp",
+      "short": "PacifiCorp",
+      "normal": "PacifiCorp",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-034",
+      "entity_name": "DTE Electric Company",
+      "shortest": "DTE",
+      "short": "DTE Electric",
+      "normal": "DTE Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-028",
+      "entity_name": "Duke Energy Florida, LLC",
+      "shortest": "Duke",
+      "short": "Duke Energy Florida",
+      "normal": "Duke Energy Florida, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-021",
+      "entity_name": "Duke Energy Progress, LLC",
+      "shortest": "Duke",
+      "short": "Duke Energy Progress",
+      "normal": "Duke Energy Progress, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-014",
+      "entity_name": "Idaho Power Company",
+      "shortest": "Idaho",
+      "short": "Idaho Power",
+      "normal": "Idaho Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-013",
+      "entity_name": "Nevada Power Company",
+      "shortest": "Nevada",
+      "short": "Nevada Power",
+      "normal": "Nevada Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-018",
+      "entity_name": "Public Service Company of New Mexico",
+      "shortest": "PNM",
+      "short": "Public Service of New Mexico",
+      "normal": "Public Service Company of New Mexico",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-016",
+      "entity_name": "Puget Sound Energy, Inc.",
+      "shortest": "PSE",
+      "short": "Puget Sound Energy",
+      "normal": "Puget Sound Energy, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-046",
+      "entity_name": "Southwestern Public Service Company",
+      "shortest": "SPS",
+      "short": "Southwestern Public Service",
+      "normal": "Southwestern Public Service Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-048",
+      "entity_name": "Evergy Kansas Central, Inc.",
+      "shortest": "Evergy",
+      "short": "Evergy Kansas Central",
+      "normal": "Evergy Kansas Central, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-030",
+      "entity_name": "JEA",
+      "shortest": "JEA",
+      "short": "JEA",
+      "normal": "JEA",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-045",
+      "entity_name": "Omaha Public Power District",
+      "shortest": "OPPD",
+      "short": "Omaha Public Power District",
+      "normal": "Omaha Public Power District",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-029",
+      "entity_name": "Tampa Electric Company",
+      "shortest": "TECO",
+      "short": "Tampa Electric",
+      "normal": "Tampa Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-049",
+      "entity_name": "Nebraska Public Power District",
+      "shortest": "NPPD",
+      "short": "Nebraska Public Power District",
+      "normal": "Nebraska Public Power District",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-026",
+      "entity_name": "Associated Electric Cooperative, Inc.",
+      "shortest": "AECI",
+      "short": "Associated Electric Cooperative",
+      "normal": "Associated Electric Cooperative, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-059",
+      "entity_name": "Sunflower Electric Power Corporation",
+      "shortest": "Sunflower",
+      "short": "Sunflower Electric",
+      "normal": "Sunflower Electric Power Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-036",
+      "entity_name": "American Electric Power Service Corporation",
+      "shortest": "AEP",
+      "short": "American Electric Power",
+      "normal": "American Electric Power Service Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-011",
+      "entity_name": "Arizona Public Service Company",
+      "shortest": "APS",
+      "short": "Arizona Public Service",
+      "normal": "Arizona Public Service Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-035",
+      "entity_name": "Consumers Energy Company",
+      "shortest": "CE",
+      "short": "Consumers",
+      "normal": "Consumers Energy Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-042",
+      "entity_name": "Northern States Power Company - Minnesota",
+      "shortest": "NSP",
+      "short": "Northern States Power",
+      "normal": "Northern States Power Company - Minnesota",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-008",
+      "entity_name": "Pacific Gas and Electric Company",
+      "shortest": "PG&E",
+      "short": "Pacific Gas and Electric",
+      "normal": "Pacific Gas and Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-017",
+      "entity_name": "Portland General Electric Company",
+      "shortest": "PGE",
+      "short": "Portland General Electric",
+      "normal": "Portland General Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-012",
+      "entity_name": "Public Service Company of Colorado",
+      "shortest": "PSCo",
+      "short": "Public Service of Colorado",
+      "normal": "Public Service Company of Colorado",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-010",
+      "entity_name": "San Diego Gas & Electric Company",
+      "shortest": "SDG&E",
+      "short": "San Diego Gas & Electric",
+      "normal": "San Diego Gas & Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-031",
+      "entity_name": "Virginia Electric and Power Company",
+      "shortest": "Dominion",
+      "short": "Dominion Energy",
+      "normal": "Virginia Electric and Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-009",
+      "entity_name": "Southern California Edison Company",
+      "shortest": "SCE",
+      "short": "Southern California Edison",
+      "normal": "Southern California Edison Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-056",
+      "entity_name": "Tri-State Generation and Transmission Association, Inc.",
+      "shortest": "Tri-State",
+      "short": "Tri-State G&T",
+      "normal": "Tri-State Generation and Transmission Association, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-052",
+      "entity_name": "Lower Colorado River Authority",
+      "shortest": "LCRA",
+      "short": "Lower Colorado River Authority",
+      "normal": "Lower Colorado River Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-041",
+      "entity_name": "New York Power Authority",
+      "shortest": "NYPA",
+      "short": "New York Power Authority",
+      "normal": "New York Power Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-023",
+      "entity_name": "Alabama Power Company",
+      "shortest": "Alabama",
+      "short": "Alabama Power",
+      "normal": "Alabama Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-019",
+      "entity_name": "El Paso Electric Company",
+      "shortest": "EPE",
+      "short": "El Paso Electric",
+      "normal": "El Paso Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-022",
+      "entity_name": "Georgia Power Company",
+      "shortest": "Georgia",
+      "short": "Georgia Power",
+      "normal": "Georgia Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-037",
+      "entity_name": "Indiana Michigan Power Company",
+      "shortest": "I&M",
+      "short": "Indiana Michigan Power",
+      "normal": "Indiana Michigan Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-047",
+      "entity_name": "Oklahoma Gas and Electric Company",
+      "shortest": "OG&E",
+      "short": "Oklahoma Gas and Electric",
+      "normal": "Oklahoma Gas and Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-055",
+      "entity_name": "Western Area Power Administration",
+      "shortest": "WAPA",
+      "short": "Western Area Power Administration",
+      "normal": "Western Area Power Administration",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-044",
+      "entity_name": "Great River Energy",
+      "shortest": "GRE",
+      "short": "Great River Energy",
+      "normal": "Great River Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-043",
+      "entity_name": "Basin Electric Power Cooperative",
+      "shortest": "Basin",
+      "short": "Basin Electric",
+      "normal": "Basin Electric Power Cooperative",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-060",
+      "entity_name": "Deseret Generation & Transmission Co-operative",
+      "shortest": "Deseret",
+      "short": "Deseret G&T",
+      "normal": "Deseret Generation & Transmission",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-038",
+      "entity_name": "Ohio Edison Company",
+      "shortest": "Ohio Ed",
+      "short": "Ohio Edison",
+      "normal": "Ohio Edison Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-039",
+      "entity_name": "The Connecticut Light and Power Company",
+      "shortest": "CL&P",
+      "short": "Connecticut Light and Power",
+      "normal": "Connecticut Light and Power",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-053",
+      "entity_name": "AEP Texas Inc.",
+      "shortest": "AEP",
+      "short": "AEP Texas",
+      "normal": "AEP Texas Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-050",
+      "entity_name": "Oncor Electric Delivery Company LLC",
+      "shortest": "Oncor",
+      "short": "Oncor Electric Delivery",
+      "normal": "Oncor Electric Delivery",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-051",
+      "entity_name": "CPS Energy",
+      "shortest": "CPS",
+      "short": "CPS Energy",
+      "normal": "CPS Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-033",
+      "entity_name": "Commonwealth Edison Company",
+      "shortest": "ComEd",
+      "short": "Commonwealth Edison",
+      "normal": "Commonwealth Edison Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-040",
+      "entity_name": "Niagara Mohawk Power Corporation",
+      "shortest": "NiMo",
+      "short": "Niagara Mohawk",
+      "normal": "Niagara Mohawk Power Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-032",
+      "entity_name": "Public Service Electric and Gas Company",
+      "shortest": "PSE&G",
+      "short": "Public Service Electric and Gas",
+      "normal": "Public Service Electric and Gas Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-058",
+      "entity_name": "Calpine Corporation",
+      "shortest": "Calpine",
+      "short": "Calpine",
+      "normal": "Calpine Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-057",
+      "entity_name": "Luminant Generation Company LLC",
+      "shortest": "Luminant",
+      "short": "Luminant Generation",
+      "normal": "Luminant Generation Company LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00024",
+      "entity_name": "Florida Power & Light Co.",
+      "shortest": "FPL",
+      "short": "Florida Power & Light",
+      "normal": "Florida Power & Light Co.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01029",
+      "entity_name": "Saskatchewan Power Corporation",
+      "shortest": "SaskPower",
+      "short": "Saskatchewan Power",
+      "normal": "Saskatchewan Power Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07155",
+      "entity_name": "New Brunswick Power Corporation",
+      "shortest": "NB Power",
+      "short": "New Brunswick Power",
+      "normal": "New Brunswick Power Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07124",
+      "entity_name": "ISO-NE",
+      "shortest": "ISO-NE",
+      "short": "ISO New England",
+      "normal": "ISO-NE",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07184",
+      "entity_name": "Ontario IESO",
+      "shortest": "IESO",
+      "short": "Ontario IESO",
+      "normal": "Ontario IESO",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01320",
+      "entity_name": "Southern Company Services, Inc. - Trans",
+      "shortest": "SCS",
+      "short": "Southern Company Services - Trans",
+      "normal": "Southern Company Services - Trans",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05020",
+      "entity_name": "Avista Corporation",
+      "shortest": "Avista",
+      "short": "Avista",
+      "normal": "Avista Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05030",
+      "entity_name": "Black Hills Corporation",
+      "shortest": "BKH",
+      "short": "Black Hills",
+      "normal": "Black Hills Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05097",
+      "entity_name": "City of Tacoma, Department of Public Utilities, Light Division",
+      "shortest": "TPU",
+      "short": "Tacoma Power",
+      "normal": "Tacoma Public Utilities",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00915",
+      "entity_name": "Dominion Energy South Carolina, Inc.",
+      "shortest": "DESC",
+      "short": "Dominion Energy South Carolina",
+      "normal": "Dominion Energy South Carolina, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05195",
+      "entity_name": "Imperial Irrigation District",
+      "shortest": "IID",
+      "short": "Imperial Irrigation District",
+      "normal": "Imperial Irrigation District",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01223",
+      "entity_name": "LG&E and KU Services Company as agent for Louisville Gas and Electric Company and Kentucky Utilities Company",
+      "shortest": "LG&E-KU",
+      "short": "LG&E and KU",
+      "normal": "LG&E and KU",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05223",
+      "entity_name": "Los Angeles Department of Water and Power",
+      "shortest": "LADWP",
+      "short": "Los Angeles DWP",
+      "normal": "Los Angeles Department of Water and Power",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01003",
+      "entity_name": "Manitoba Hydro",
+      "shortest": "MB Hydro",
+      "short": "Manitoba Hydro",
+      "normal": "Manitoba Hydro",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05282",
+      "entity_name": "NorthWestern Corporation",
+      "shortest": "NWE",
+      "short": "NorthWestern Energy",
+      "normal": "NorthWestern Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05261",
+      "entity_name": "NV Energy",
+      "shortest": "NV Energy",
+      "short": "NV Energy",
+      "normal": "NV Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00068",
+      "entity_name": "Seminole Electric Cooperative",
+      "shortest": "Seminole",
+      "short": "Seminole Electric",
+      "normal": "Seminole Electric Cooperative",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01312",
+      "entity_name": "South Carolina Public Service Authority",
+      "shortest": "Santee",
+      "short": "Santee Cooper",
+      "normal": "Santee Cooper",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00073",
+      "entity_name": "Tallahassee, City of",
+      "shortest": "TLH",
+      "short": "City of Tallahassee",
+      "normal": "City of Tallahassee",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01143",
+      "entity_name": "Southwest Power Pool, Inc.",
+      "shortest": "SPP",
+      "short": "Southwest Power Pool",
+      "normal": "Southwest Power Pool",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01169",
+      "entity_name": "Cube Hydro Carolinas, LLC",
+      "shortest": "Cube",
+      "short": "Cube Hydro Carolinas",
+      "normal": "Cube Hydro Carolinas",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00032",
+      "entity_name": "Gainesville Regional Utilities",
+      "shortest": "GRU",
+      "short": "Gainesville Regional Utilities",
+      "normal": "Gainesville Regional Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00037",
+      "entity_name": "Homestead, City of",
+      "shortest": "HPS",
+      "short": "City of Homestead",
+      "normal": "City of Homestead",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05106",
+      "entity_name": "Colorado Springs Utilities",
+      "shortest": "CSU",
+      "short": "Colorado Springs Utilities",
+      "normal": "Colorado Springs Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00044",
+      "entity_name": "Lakeland Electric",
+      "shortest": "Lakeland",
+      "short": "Lakeland Electric",
+      "normal": "Lakeland Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00057",
+      "entity_name": "Orlando Utilities Commission",
+      "shortest": "OUC",
+      "short": "Orlando Utilities Commission",
+      "normal": "Orlando Utilities Commission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07178",
+      "entity_name": "Nova Scotia Power Inc.",
+      "shortest": "NSPI",
+      "short": "Nova Scotia Power",
+      "normal": "Nova Scotia Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07112",
+      "entity_name": "Hydro-Québec Reliability Coordinator for Québec (HQCF)",
+      "shortest": "HQCF",
+      "short": "Hydro-Québec RC",
+      "normal": "Hydro-Québec Reliability Coordinator",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01180",
+      "entity_name": "Big Rivers Electric Corporation",
+      "shortest": "Big Rivers",
+      "short": "Big Rivers Electric",
+      "normal": "Big Rivers Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01328",
+      "entity_name": "City of Springfield, IL - CWLP",
+      "shortest": "CWLP",
+      "short": "City Water, Light & Power",
+      "normal": "City Water, Light & Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01083",
+      "entity_name": "Cleco Corporate Holdings LLC",
+      "shortest": "Cleco",
+      "short": "Cleco",
+      "normal": "Cleco",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01315",
+      "entity_name": "Cooperative Energy",
+      "shortest": "Cooperative",
+      "short": "Cooperative Energy",
+      "normal": "Cooperative Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00979",
+      "entity_name": "Dairyland Power Cooperative",
+      "shortest": "Dairyland",
+      "short": "Dairyland Power",
+      "normal": "Dairyland Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00761",
+      "entity_name": "Duke Energy Corporation",
+      "shortest": "Duke",
+      "short": "Duke Energy",
+      "normal": "Duke Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00794",
+      "entity_name": "Hoosier Energy REC, Inc.",
+      "shortest": "Hoosier",
+      "short": "Hoosier Energy",
+      "normal": "Hoosier Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00798",
+      "entity_name": "Indianapolis Power & Light Company d/b/a AES Indiana",
+      "shortest": "AES",
+      "short": "AES Indiana",
+      "normal": "AES Indiana",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00824",
+      "entity_name": "MidAmerican Energy Company",
+      "shortest": "MidAm",
+      "short": "MidAmerican Energy",
+      "normal": "MidAmerican Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00674",
+      "entity_name": "Minnesota Power (Allete, Inc.)",
+      "shortest": "MN Power",
+      "short": "Minnesota Power",
+      "normal": "Minnesota Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01015",
+      "entity_name": "Montana-Dakota Utilities Company",
+      "shortest": "MDU",
+      "short": "Montana-Dakota Utilities",
+      "normal": "Montana-Dakota Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00967",
+      "entity_name": "Muscatine Power & Water (Board Of Water, Electric & Communications)",
+      "shortest": "MPW",
+      "short": "Muscatine Power & Water",
+      "normal": "Muscatine Power & Water",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR02611",
+      "entity_name": "Northern Indiana Public Service Company LLC",
+      "shortest": "NIPSCO",
+      "short": "NIPSCO",
+      "normal": "NIPSCO",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01020",
+      "entity_name": "Northern States Power (Xcel Energy)",
+      "shortest": "NSP",
+      "short": "Xcel Energy",
+      "normal": "Xcel Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01023",
+      "entity_name": "Otter Tail Power Company",
+      "shortest": "Otter Tail",
+      "short": "Otter Tail Power",
+      "normal": "Otter Tail Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01321",
+      "entity_name": "Southern Illinois Power Cooperative",
+      "shortest": "SIPC",
+      "short": "Southern Illinois Power",
+      "normal": "Southern Illinois Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00917",
+      "entity_name": "Southern Indiana Gas & Electric Company d/b/a CenterPoint Energy Indiana South",
+      "shortest": "SIGECO",
+      "short": "CenterPoint Indiana South",
+      "normal": "CenterPoint Energy Indiana South",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05155",
+      "entity_name": "Farmington Electric Utility System",
+      "shortest": "FEUS",
+      "short": "Farmington Electric",
+      "normal": "Farmington Electric Utility System",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10203",
+      "entity_name": "PowerSouth Energy Cooperative",
+      "shortest": "PowerSouth",
+      "short": "PowerSouth Energy",
+      "normal": "PowerSouth Energy Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01114",
+      "entity_name": "Lafayette Utilities System",
+      "shortest": "LUS",
+      "short": "Lafayette Utilities System",
+      "normal": "Lafayette Utilities System",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01175",
+      "entity_name": "Ameren Services Company",
+      "shortest": "Ameren",
+      "short": "Ameren",
+      "normal": "Ameren",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01196",
+      "entity_name": "City of Columbia, MO",
+      "shortest": "Columbia",
+      "short": "Columbia Water & Light",
+      "normal": "Columbia Water & Light",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01234",
+      "entity_name": "Entergy",
+      "shortest": "Entergy",
+      "short": "Entergy",
+      "normal": "Entergy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07111",
+      "entity_name": "Hydro-Quebec (HQ)",
+      "shortest": "HQ",
+      "short": "Hydro-Quebec",
+      "normal": "Hydro-Quebec",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01144",
+      "entity_name": "Southwestern Power Administration",
+      "shortest": "SWPA",
+      "short": "Southwestern Power Administration",
+      "normal": "Southwestern Power Administration",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01013",
+      "entity_name": "Minnkota Power Cooperative, Inc.",
+      "shortest": "Minnkota",
+      "short": "Minnkota Power",
+      "normal": "Minnkota Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01027",
+      "entity_name": "Rochester Public Utilities",
+      "shortest": "RPU",
+      "short": "Rochester Public Utilities",
+      "normal": "Rochester Public Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01290",
+      "entity_name": "Owensboro, KY Municipal Utilities",
+      "shortest": "OMU",
+      "short": "Owensboro Municipal Utilities",
+      "normal": "Owensboro Municipal Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05015",
+      "entity_name": "Arizona Electric Power Cooperative, Inc.",
+      "shortest": "AEPCO",
+      "short": "Arizona Electric Power Cooperative",
+      "normal": "Arizona Electric Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01278",
+      "entity_name": "Municipal Electric Authority of Georgia",
+      "shortest": "MEAG",
+      "short": "MEAG Power",
+      "normal": "MEAG Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00026",
+      "entity_name": "Florida Reliability Coordinating Council, Inc.",
+      "shortest": "FRCC",
+      "short": "Florida Reliability Coordinating Council",
+      "normal": "Florida Reliability Coordinating Council",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01249",
+      "entity_name": "Georgia Transmission Corporation",
+      "shortest": "GTC",
+      "short": "Georgia Transmission",
+      "normal": "Georgia Transmission Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01056",
+      "entity_name": "AEP as Agent for AEP OK Transco., PSCO, and SWEPCO",
+      "shortest": "AEPW",
+      "short": "AEP Agent",
+      "normal": "AEP Agent Services",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00682",
+      "entity_name": "American Electric Power Service Corporation as agent for Appalachian Power Company, Indiana Michigan Power Company, Kentucky Power Company, Kingsport Power Company, Ohio Power Company, Wheeling Power Company, AEP Ohio Transmission Company, AEP Appalachian Transmission Company, AEP West Virginia Transmission Company, AEP Indiana Michigan Transmission Company and AEP Kentucky Transmission Company, Inc.",
+      "shortest": "AEP",
+      "short": "AEP Service Corp",
+      "normal": "AEP Service Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01061",
+      "entity_name": "Board Of Public Utilities (Kansas City KS)",
+      "shortest": "BPU",
+      "short": "Kansas City BPU",
+      "normal": "Board of Public Utilities (Kansas City)",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00718",
+      "entity_name": "City of Lansing by its Board of Water and Light",
+      "shortest": "BWL",
+      "short": "Lansing BWL",
+      "normal": "Lansing Board of Water & Light",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05091",
+      "entity_name": "City of Redding",
+      "shortest": "REU",
+      "short": "Redding Electric Utility",
+      "normal": "Redding Electric Utility",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01081",
+      "entity_name": "City Utilities Of Springfield, MO",
+      "shortest": "CU",
+      "short": "City Utilities of Springfield",
+      "normal": "City Utilities of Springfield",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00658",
+      "entity_name": "Evergy, Inc.",
+      "shortest": "Evergy",
+      "short": "Evergy",
+      "normal": "Evergy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01101",
+      "entity_name": "Grand River Dam Authority",
+      "shortest": "GRDA",
+      "short": "Grand River Dam Authority",
+      "normal": "Grand River Dam Authority",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01072",
+      "entity_name": "Independence Power & Light (Independence,Missouri)",
+      "shortest": "IPL",
+      "short": "Independence Power & Light",
+      "normal": "Independence Power & Light",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01001",
+      "entity_name": "Lincoln Electric System",
+      "shortest": "LES",
+      "short": "Lincoln Electric System",
+      "normal": "Lincoln Electric System",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05244",
+      "entity_name": "Modesto Irrigation District",
+      "shortest": "MID",
+      "short": "Modesto Irrigation District",
+      "normal": "Modesto Irrigation District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01130",
+      "entity_name": "Oklahoma Gas And Electric Co.",
+      "shortest": "OG&E",
+      "short": "Oklahoma Gas and Electric",
+      "normal": "Oklahoma Gas & Electric",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01145",
+      "entity_name": "Southwestern Public Service Co. (Xcel Energy)",
+      "shortest": "SPS",
+      "short": "Xcel Energy",
+      "normal": "Xcel Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01155",
+      "entity_name": "The Empire District Electric Company",
+      "shortest": "Empire",
+      "short": "Empire District Electric",
+      "normal": "Empire District Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01160",
+      "entity_name": "Western Farmers Electric Cooperative",
+      "shortest": "WFEC",
+      "short": "Western Farmers Electric",
+      "normal": "Western Farmers Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07176",
+      "entity_name": "Eversource Energy Service Company",
+      "shortest": "Eversource",
+      "short": "Eversource Energy",
+      "normal": "Eversource Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR12248",
+      "entity_name": "The Narragansett Electric Company d/b/a Rhode Island Energy",
+      "shortest": "RI Energy",
+      "short": "Rhode Island Energy",
+      "normal": "Rhode Island Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01030",
+      "entity_name": "Southern Minnesota Municipal Power Agency",
+      "shortest": "SMMPA",
+      "short": "Southern Minnesota Municipal Power Agency",
+      "normal": "Southern Minnesota Municipal Power Agency",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11118",
+      "entity_name": "Balancing Authority of Northern California",
+      "shortest": "BANC",
+      "short": "Balancing Authority of Northern California",
+      "normal": "Balancing Authority of Northern California",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00961",
+      "entity_name": "Alliant Energy - East",
+      "shortest": "Alliant",
+      "short": "Alliant Energy East",
+      "normal": "Alliant Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00962",
+      "entity_name": "Alliant Energy - West",
+      "shortest": "WPL",
+      "short": "Alliant Energy West",
+      "normal": "Alliant Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00022",
+      "entity_name": "Florida Municipal Power Agency",
+      "shortest": "FMPA",
+      "short": "Florida Municipal Power Agency",
+      "normal": "Florida Municipal Power Agency",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00818",
+      "entity_name": "Madison Gas And Electric Company",
+      "shortest": "MGE",
+      "short": "Madison Gas and Electric",
+      "normal": "Madison Gas and Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12543",
+      "entity_name": "1803 Electric Cooperative, Inc.",
+      "shortest": "1803",
+      "short": "1803 Electric Cooperative",
+      "normal": "1803 Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11360",
+      "entity_name": "MATL LLP",
+      "shortest": "MATL",
+      "short": "MATL",
+      "normal": "MATL",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10102",
+      "entity_name": "Tri-State Generation And Transmission Association Inc. - Transmission",
+      "shortest": "Tri-State",
+      "short": "Tri-State Transmission",
+      "normal": "Tri-State Generation and Transmission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07228",
+      "entity_name": "Vermont Transco, LLC",
+      "shortest": "VT Transco",
+      "short": "Vermont Transco",
+      "normal": "Vermont Transco",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11076",
+      "entity_name": "Lone Star Transmission, LLC",
+      "shortest": "LST",
+      "short": "Lone Star Transmission",
+      "normal": "Lone Star Transmission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00070",
+      "entity_name": "Southeastern Power Administration",
+      "shortest": "SEPA",
+      "short": "Southeastern Power Administration",
+      "normal": "Southeastern Power Administration",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07046",
+      "entity_name": "Consolidated Edison Co of NY, Inc",
+      "shortest": "ConEd",
+      "short": "Con Edison",
+      "normal": "Con Edison",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04049",
+      "entity_name": "Denton Municipal Electric",
+      "shortest": "DME",
+      "short": "Denton Municipal Electric",
+      "normal": "Denton Municipal Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04124",
+      "entity_name": "South Texas Electric Cooperative, Inc.",
+      "shortest": "STEC",
+      "short": "South Texas Electric Cooperative",
+      "normal": "South Texas Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00954",
+      "entity_name": "Wolverine Power Supply Cooperative, Inc.",
+      "shortest": "Wolverine",
+      "short": "Wolverine Power",
+      "normal": "Wolverine Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11226",
+      "entity_name": "CORE Electric Cooperative",
+      "shortest": "CORE",
+      "short": "CORE Electric Cooperative",
+      "normal": "CORE Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00977",
+      "entity_name": "Corn Belt Power Cooperative",
+      "shortest": "Corn Belt",
+      "short": "Corn Belt Power",
+      "normal": "Corn Belt Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00043",
+      "entity_name": "City of Lake Worth Beach",
+      "shortest": "LWB",
+      "short": "Lake Worth Beach Electric",
+      "normal": "Lake Worth Beach Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00970",
+      "entity_name": "Central Iowa Power Cooperative",
+      "shortest": "CIPCO",
+      "short": "Central Iowa Power Cooperative",
+      "normal": "Central Iowa Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05182",
+      "entity_name": "Hetch Hetchy Water and Power",
+      "shortest": "HHWP",
+      "short": "Hetch Hetchy Water and Power",
+      "normal": "Hetch Hetchy Water and Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01036",
+      "entity_name": "Western Area Power Administration - Upper Great Plains East",
+      "shortest": "WAPA",
+      "short": "WAPA Upper Great Plains East",
+      "normal": "Western Area Power Administration",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR13409",
+      "entity_name": "Nova Scotia Independent Energy System Operator",
+      "shortest": "IESO-NS",
+      "short": "Nova Scotia IESO",
+      "normal": "Nova Scotia Independent Energy System Operator",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01033",
+      "entity_name": "Upper Peninsula Power Company",
+      "shortest": "UPPCO",
+      "short": "Upper Peninsula Power",
+      "normal": "Upper Peninsula Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04006",
+      "entity_name": "American Electric Power Service Corp as agent for AEP Texas Inc. and Public Service Company of Oklahoma",
+      "shortest": "AEP",
+      "short": "AEP Texas/PSO Agent",
+      "normal": "AEP Service Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04015",
+      "entity_name": "Brazos Electric Power Co Op, Inc.",
+      "shortest": "Brazos",
+      "short": "Brazos Electric",
+      "normal": "Brazos Electric Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04018",
+      "entity_name": "Brownsville Public Utilities Board",
+      "shortest": "BPUB",
+      "short": "Brownsville Public Utilities",
+      "normal": "Brownsville Public Utilities Board",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04022",
+      "entity_name": "Bryan Texas Utilities",
+      "shortest": "BTU",
+      "short": "Bryan Texas Utilities",
+      "normal": "Bryan Texas Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04028",
+      "entity_name": "CenterPoint Energy Houston Electric, LLC",
+      "shortest": "CNP",
+      "short": "CenterPoint Houston",
+      "normal": "CenterPoint Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07028",
+      "entity_name": "Central Hudson Gas & Electric Corporation",
+      "shortest": "CHGE",
+      "short": "Central Hudson",
+      "normal": "Central Hudson Gas & Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04029",
+      "entity_name": "City of Austin dba Austin Energy",
+      "shortest": "Austin",
+      "short": "Austin Energy",
+      "normal": "Austin Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04032",
+      "entity_name": "City of College Station",
+      "shortest": "CSU",
+      "short": "College Station Utilities",
+      "normal": "College Station Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04033",
+      "entity_name": "City of Garland",
+      "shortest": "GP&L",
+      "short": "Garland Power & Light",
+      "normal": "Garland Power & Light",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12106",
+      "entity_name": "City of Lubbock, acting through Lubbock Power and Light",
+      "shortest": "LP&L",
+      "short": "Lubbock Power & Light",
+      "normal": "Lubbock Power & Light",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07109",
+      "entity_name": "HYDRO ONE NETWORKS INC.",
+      "shortest": "Hydro One",
+      "short": "Hydro One",
+      "normal": "Hydro One",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07133",
+      "entity_name": "Long Island Power Authority",
+      "shortest": "LIPA",
+      "short": "Long Island Power Authority",
+      "normal": "Long Island Power Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11066",
+      "entity_name": "Memphis Light, Gas and Water Division",
+      "shortest": "MLGW",
+      "short": "Memphis Light, Gas and Water",
+      "normal": "Memphis Light, Gas and Water",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01118",
+      "entity_name": "Midwest Energy, Inc.",
+      "shortest": "Midwest",
+      "short": "Midwest Energy",
+      "normal": "Midwest Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07186",
+      "entity_name": "Orange and Rockland Utilities, Inc.",
+      "shortest": "O&R",
+      "short": "Orange and Rockland",
+      "normal": "Orange and Rockland Utilities",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04111",
+      "entity_name": "Pedernales Elec Co Op Inc.",
+      "shortest": "PEC",
+      "short": "Pedernales Electric Cooperative",
+      "normal": "Pedernales Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04113",
+      "entity_name": "Rayburn Country Electric Cooperative, Inc.",
+      "shortest": "Rayburn",
+      "short": "Rayburn Country Electric Cooperative",
+      "normal": "Rayburn Country Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04143",
+      "entity_name": "Texas-New Mexico Power Co",
+      "shortest": "TNMP",
+      "short": "Texas-New Mexico Power",
+      "normal": "Texas-New Mexico Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01116",
+      "entity_name": "Louisiana Energy & Power Authority",
+      "shortest": "LEPA",
+      "short": "Louisiana Energy & Power Authority",
+      "normal": "Louisiana Energy & Power Authority",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01365",
+      "entity_name": "VACAR South",
+      "shortest": "VACAR",
+      "short": "VACAR South",
+      "normal": "VACAR South",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00974",
+      "entity_name": "City Of Grand Island, NE",
+      "shortest": "GIUD",
+      "short": "Grand Island Utilities",
+      "normal": "Grand Island Utilities Department",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00993",
+      "entity_name": "Hastings Utilities",
+      "shortest": "Hastings",
+      "short": "Hastings Utilities",
+      "normal": "Hastings Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01021",
+      "entity_name": "NorthWestern Energy Public Service",
+      "shortest": "NWE",
+      "short": "NorthWestern Energy",
+      "normal": "NorthWestern Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR09035",
+      "entity_name": "Prairie Power, Inc.",
+      "shortest": "PPI",
+      "short": "Prairie Power",
+      "normal": "Prairie Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13145",
+      "entity_name": "Avangrid Service Company",
+      "shortest": "Avangrid",
+      "short": "Avangrid Service Company",
+      "normal": "Avangrid",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11171",
+      "entity_name": "National Grid USA",
+      "shortest": "NatGrid",
+      "short": "National Grid USA",
+      "normal": "National Grid",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00052",
+      "entity_name": "New Smyrna Beach, Utilities Commission of",
+      "shortest": "NSBU",
+      "short": "New Smyrna Beach Utilities",
+      "normal": "New Smyrna Beach Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00685",
+      "entity_name": "American Transmission Co. LLC",
+      "shortest": "ATC",
+      "short": "American Transmission Co.",
+      "normal": "American Transmission Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11114",
+      "entity_name": "Cross Texas Transmission, LLC",
+      "shortest": "CTT",
+      "short": "Cross Texas Transmission",
+      "normal": "Cross Texas Transmission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10400",
+      "entity_name": "ITC Great Plains, LLC",
+      "shortest": "ITC",
+      "short": "ITC Great Plains",
+      "normal": "ITC Great Plains",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10192",
+      "entity_name": "ITC Midwest",
+      "shortest": "ITC",
+      "short": "ITC Midwest",
+      "normal": "ITC Midwest",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00803",
+      "entity_name": "ITC Transmission",
+      "shortest": "ITC",
+      "short": "ITC Transmission",
+      "normal": "ITC Transmission",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04091",
+      "entity_name": "LCRA Transmission Services Corporation",
+      "shortest": "LCRA",
+      "short": "LCRA Transmission",
+      "normal": "LCRA Transmission Services",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13015",
+      "entity_name": "LS Power Grid California",
+      "shortest": "LS Power",
+      "short": "LS Power Grid California",
+      "normal": "LS Power Grid California",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00820",
+      "entity_name": "METC",
+      "shortest": "METC",
+      "short": "Michigan Electric Transmission",
+      "normal": "Michigan Electric Transmission Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05464",
+      "entity_name": "Western Area Power Administration - Rocky Mountain Region",
+      "shortest": "WAPA",
+      "short": "WAPA Rocky Mountain",
+      "normal": "Western Area Power Administration",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11074",
+      "entity_name": "Wind Energy Transmission Texas, LLC",
+      "shortest": "WETT",
+      "short": "Wind Energy Transmission Texas",
+      "normal": "Wind Energy Transmission Texas",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05047",
+      "entity_name": "California Department of Water Resources",
+      "shortest": "DWR",
+      "short": "California DWR",
+      "normal": "California Department of Water Resources",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01014",
+      "entity_name": "Missouri Basin Municipal Power Agency (MRES)",
+      "shortest": "MRES",
+      "short": "Missouri Basin Municipal Power Agency",
+      "normal": "Missouri Basin Municipal Power Agency",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01142",
+      "entity_name": "Sikeston Board Of Municipal Utilities",
+      "shortest": "Sikeston",
+      "short": "Sikeston Municipal Utilities",
+      "normal": "Sikeston Board of Municipal Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01359",
+      "entity_name": "USACE - Mobile District",
+      "shortest": "USACE",
+      "short": "USACE Mobile District",
+      "normal": "U.S. Army Corps of Engineers - Mobile District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01361",
+      "entity_name": "USACE - Savannah District",
+      "shortest": "USACE",
+      "short": "USACE Savannah District",
+      "normal": "U.S. Army Corps of Engineers - Savannah District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR03049",
+      "entity_name": "Arlington Valley, LLC - AVBA",
+      "shortest": "AVBA",
+      "short": "Arlington Valley",
+      "normal": "Arlington Valley",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10395",
+      "entity_name": "BHE Power Watch, LLC",
+      "shortest": "PowerWatch",
+      "short": "BHE Power Watch",
+      "normal": "BHE Power Watch",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11382",
+      "entity_name": "BHE Wind Watch, LLC",
+      "shortest": "WindWatch",
+      "short": "BHE Wind Watch",
+      "normal": "BHE Wind Watch",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11916",
+      "entity_name": "City of Henderson, KY, Utility Commission, DBA Henderson Municipal Power & Light",
+      "shortest": "HMP&L",
+      "short": "Henderson Municipal Power & Light",
+      "normal": "Henderson Municipal Power & Light",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13044",
+      "entity_name": "First LightEnergy, LLC",
+      "shortest": "BNBA",
+      "short": "First LightEnergy",
+      "normal": "First LightEnergy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00023",
+      "entity_name": "Florida Municipal Power Pool",
+      "shortest": "FMPP",
+      "short": "Florida Municipal Power Pool",
+      "normal": "Florida Municipal Power Pool",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR08023",
+      "entity_name": "Michigan Electric Coordinated Systems",
+      "shortest": "MECS",
+      "short": "Michigan Electric Coordinated Systems",
+      "normal": "Michigan Electric Coordinated Systems",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR02552",
+      "entity_name": "New Harquahala Generating Company, LLC - HGBA",
+      "shortest": "HGBA",
+      "short": "Harquahala Generating",
+      "normal": "New Harquahala Generating Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11498",
+      "entity_name": "Wisconsin Electric Power - MIUP",
+      "shortest": "WEPCO",
+      "short": "Wisconsin Electric Power",
+      "normal": "We Energies",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05153",
+      "entity_name": "Eugene Water & Electric Board",
+      "shortest": "EWEB",
+      "short": "Eugene Water & Electric Board",
+      "normal": "Eugene Water & Electric Board",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00969",
+      "entity_name": "Cedar Falls Utilities",
+      "shortest": "CFU",
+      "short": "Cedar Falls Utilities",
+      "normal": "Cedar Falls Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05090",
+      "entity_name": "City of Pasadena Water and Power",
+      "shortest": "PWP",
+      "short": "Pasadena Water and Power",
+      "normal": "Pasadena Water and Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01227",
+      "entity_name": "East Texas Electric Cooperative Inc.",
+      "shortest": "ETEC",
+      "short": "East Texas Electric Cooperative",
+      "normal": "East Texas Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00004",
+      "entity_name": "Beaches Energy Services of Jacksonville Beach",
+      "shortest": "Beaches",
+      "short": "Beaches Energy Services",
+      "normal": "Beaches Energy Services",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07029",
+      "entity_name": "Central Maine Power Company",
+      "shortest": "CMP",
+      "short": "Central Maine Power",
+      "normal": "Central Maine Power",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00042",
+      "entity_name": "Kissimmee Utility Authority",
+      "shortest": "KUA",
+      "short": "Kissimmee Utility Authority",
+      "normal": "Kissimmee Utility Authority",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07181",
+      "entity_name": "NYSEG",
+      "shortest": "NYSEG",
+      "short": "NYSEG",
+      "normal": "NYSEG",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01060",
+      "entity_name": "Arkansas Electric Cooperative Corporation",
+      "shortest": "AECC",
+      "short": "Arkansas Electric Cooperative",
+      "normal": "Arkansas Electric Cooperative Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01068",
+      "entity_name": "City Of Alexandria",
+      "shortest": "Alexandria",
+      "short": "Alexandria Utilities",
+      "normal": "Alexandria Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05123",
+      "entity_name": "Cowlitz County PUD No. 1",
+      "shortest": "Cowlitz",
+      "short": "Cowlitz County PUD",
+      "normal": "Cowlitz County PUD",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05236",
+      "entity_name": "Metropolitan Water District of Southern California",
+      "shortest": "MWD",
+      "short": "Metropolitan Water District",
+      "normal": "Metropolitan Water District of Southern California",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11791",
+      "entity_name": "Alcoa Power Generating Inc. -Long Sault Division",
+      "shortest": "Alcoa",
+      "short": "Alcoa Power Generating - Long Sault",
+      "normal": "Alcoa Power Generating - Long Sault",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05220",
+      "entity_name": "Lincoln County Power District No. 1",
+      "shortest": "LCPD1",
+      "short": "Lincoln County Power District",
+      "normal": "Lincoln County Power District No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04167",
+      "entity_name": "U.S. Department of Energy",
+      "shortest": "DOE",
+      "short": "U.S. Department of Energy",
+      "normal": "U.S. Department of Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01279",
+      "entity_name": "North Carolina Electric Membership Corporation",
+      "shortest": "NCEMC",
+      "short": "NC Electric Membership Corporation",
+      "normal": "North Carolina Electric Membership Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04108",
+      "entity_name": "Oklahoma Municipal Power Authority",
+      "shortest": "OMPA",
+      "short": "Oklahoma Municipal Power Authority",
+      "normal": "Oklahoma Municipal Power Authority",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11716",
+      "entity_name": "Upper Michigan Energy Resources Corporation",
+      "shortest": "UMERC",
+      "short": "Upper Michigan Energy Resources",
+      "normal": "Upper Michigan Energy Resources",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04008",
+      "entity_name": "Bandera Electric Cooperative, Inc.",
+      "shortest": "BEC",
+      "short": "Bandera Electric Cooperative",
+      "normal": "Bandera Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04013",
+      "entity_name": "Bluebonnet Electric Co Op, Inc.",
+      "shortest": "Bluebonnet",
+      "short": "Bluebonnet Electric Cooperative",
+      "normal": "Bluebonnet Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01192",
+      "entity_name": "Citizens Electric Corporation",
+      "shortest": "Citizens",
+      "short": "Citizens Electric",
+      "normal": "Citizens Electric",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00972",
+      "entity_name": "City Of Ames Electric Services",
+      "shortest": "Ames",
+      "short": "Ames Electric Services",
+      "normal": "Ames Electric Services",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05172",
+      "entity_name": "Grays Harbor County PUD",
+      "shortest": "GHPUD",
+      "short": "Grays Harbor PUD",
+      "normal": "Grays Harbor County PUD",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04079",
+      "entity_name": "Guadalupe Valley Electric Co Op Inc.",
+      "shortest": "GVEC",
+      "short": "Guadalupe Valley Electric Cooperative",
+      "normal": "Guadalupe Valley Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01254",
+      "entity_name": "Henderson Municipal Power & Light",
+      "shortest": "HMP&L",
+      "short": "Henderson Municipal Power & Light",
+      "normal": "Henderson Municipal Power & Light",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05206",
+      "entity_name": "Klickitat County PUD",
+      "shortest": "Klickitat",
+      "short": "Klickitat County PUD",
+      "normal": "Klickitat County PUD",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05225",
+      "entity_name": "Lower Valley Energy",
+      "shortest": "LVE",
+      "short": "Lower Valley Energy",
+      "normal": "Lower Valley Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11077",
+      "entity_name": "Nashville Electric Service",
+      "shortest": "NES",
+      "short": "Nashville Electric Service",
+      "normal": "Nashville Electric Service",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04101",
+      "entity_name": "New Braunfels Utilities",
+      "shortest": "NBU",
+      "short": "New Braunfels Utilities",
+      "normal": "New Braunfels Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05280",
+      "entity_name": "Northern Wasco County People's Utility District",
+      "shortest": "NWCPUD",
+      "short": "Northern Wasco County PUD",
+      "normal": "Northern Wasco County PUD",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13373",
+      "entity_name": "Sam Houston Electric Cooperative Inc.",
+      "shortest": "SHECO",
+      "short": "Sam Houston Electric Cooperative",
+      "normal": "Sam Houston Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10328",
+      "entity_name": "Southwest Louisiana Electric Membership Corporation",
+      "shortest": "SLEMCO",
+      "short": "Southwest Louisiana Electric Membership Corporation",
+      "normal": "Southwest Louisiana Electric Membership Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07013",
+      "entity_name": "Versant Power",
+      "shortest": "Versant",
+      "short": "Versant Power",
+      "normal": "Versant Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07055",
+      "entity_name": "Cross Sound Cable Company, LLC.",
+      "shortest": "CSC",
+      "short": "Cross Sound Cable",
+      "normal": "Cross Sound Cable Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07091",
+      "entity_name": "New Hampshire Transmission, LLC",
+      "shortest": "NHT",
+      "short": "New Hampshire Transmission",
+      "normal": "New Hampshire Transmission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13143",
+      "entity_name": "Everline Tech Ops, LLC",
+      "shortest": "Everline",
+      "short": "Everline Tech Ops",
+      "normal": "Everline Tech Ops",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01248",
+      "entity_name": "Georgia System Operations Corporation",
+      "shortest": "GSOC",
+      "short": "Georgia System Operations",
+      "normal": "Georgia System Operations Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11393",
+      "entity_name": "Gridforce Energy Management, LLC",
+      "shortest": "Gridforce",
+      "short": "Gridforce Energy Management",
+      "normal": "Gridforce Energy Management",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07159",
+      "entity_name": "New England Power Company",
+      "shortest": "NEP",
+      "short": "New England Power Company",
+      "normal": "New England Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10319",
+      "entity_name": "Board Of Public Utilities, City Of McPherson, Kansas",
+      "shortest": "McPherson",
+      "short": "McPherson Board of Public Utilities",
+      "normal": "McPherson Board of Public Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07022",
+      "entity_name": "Braintree Electric Light Department",
+      "shortest": "BELD",
+      "short": "Braintree Electric Light Department",
+      "normal": "Braintree Electric Light Department",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01071",
+      "entity_name": "City Of Clarksdale, Mississippi",
+      "shortest": "CPU",
+      "short": "Clarksdale Public Utilities",
+      "normal": "Clarksdale Public Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11091",
+      "entity_name": "City of North Little Rock Electric Department",
+      "shortest": "NLR",
+      "short": "North Little Rock Electric",
+      "normal": "North Little Rock Electric Department",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01225",
+      "entity_name": "East Kentucky Power Cooperative",
+      "shortest": "EKPC",
+      "short": "East Kentucky Power Cooperative",
+      "normal": "East Kentucky Power Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11315",
+      "entity_name": "FirstEnergy Utilities as agent for American Transmission Systems, Incorporated; The Cleveland Electric Illuminating Company; FirstEnergy Pennsylvania Electric Company; Jersey Central Power & Light Company; Keystone Appalachian Transmission Company; Mid-Atlantic Interstate Transmission; Monongahela Power Company; Ohio Edison Company; The Potomac Edison Company; The Toledo Edison Company; and Trans-Allegheny Interstate Line Company",
+      "shortest": "FE",
+      "short": "FirstEnergy Utilities",
+      "normal": "FirstEnergy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07214",
+      "entity_name": "Taunton Municipal Lighting Plant",
+      "shortest": "TMLP",
+      "short": "Taunton Municipal Lighting Plant",
+      "normal": "Taunton Municipal Lighting Plant",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00683",
+      "entity_name": "American Municipal Power Inc.",
+      "shortest": "AMP",
+      "short": "American Municipal Power",
+      "normal": "American Municipal Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00997",
+      "entity_name": "Hutchinson Utilities Commission",
+      "shortest": "HUC",
+      "short": "Hutchinson Utilities Commission",
+      "normal": "Hutchinson Utilities Commission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00796",
+      "entity_name": "Indiana Municipal Power Agency",
+      "shortest": "IMPA",
+      "short": "Indiana Municipal Power Agency",
+      "normal": "Indiana Municipal Power Agency",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13552",
+      "entity_name": "CHPE LLC",
+      "shortest": "CHPE",
+      "short": "Champlain Hudson Power Express",
+      "normal": "Champlain Hudson Power Express",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13072",
+      "entity_name": "Concordia Electric Cooperative, Inc.",
+      "shortest": "Concordia",
+      "short": "Concordia Electric Cooperative",
+      "normal": "Concordia Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13009",
+      "entity_name": "DCR Transmission, L.L.C.",
+      "shortest": "DCR",
+      "short": "DCR Transmission",
+      "normal": "DCR Transmission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12025",
+      "entity_name": "DesertLink, LLC",
+      "shortest": "DesertLink",
+      "short": "DesertLink",
+      "normal": "DesertLink",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11444",
+      "entity_name": "Glencoe Light and Power Commission",
+      "shortest": "GLPC",
+      "short": "Glencoe Light and Power Commission",
+      "normal": "Glencoe Light and Power Commission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11783",
+      "entity_name": "GridLiance Holdco, LLC",
+      "shortest": "GridLiance",
+      "short": "GridLiance",
+      "normal": "GridLiance",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12006",
+      "entity_name": "Horizon West Transmission, LLC",
+      "shortest": "HWT",
+      "short": "Horizon West Transmission",
+      "normal": "Horizon West Transmission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13037",
+      "entity_name": "Jefferson Davis Electric Cooperative, Inc.",
+      "shortest": "JDEC",
+      "short": "Jefferson Davis Electric Cooperative",
+      "normal": "Jefferson Davis Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12486",
+      "entity_name": "Jicarilla Apache Nation Power Authority",
+      "shortest": "JANPA",
+      "short": "Jicarilla Power Authority",
+      "normal": "Jicarilla Apache Nation Power Authority",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12138",
+      "entity_name": "LS Power Grid New York Corporation I",
+      "shortest": "LSPG",
+      "short": "LS Power Grid New York",
+      "normal": "LS Power Grid New York",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07134",
+      "entity_name": "Maine Electric Power Company",
+      "shortest": "MEPCO",
+      "short": "Maine Electric Power",
+      "normal": "Maine Electric Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11639",
+      "entity_name": "New York Transco LLC",
+      "shortest": "NYTransco",
+      "short": "New York Transco",
+      "normal": "New York Transco",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12183",
+      "entity_name": "NextEra Energy Transmission New York",
+      "shortest": "NEETNY",
+      "short": "NextEra Energy Transmission New York",
+      "normal": "NextEra Energy Transmission New York",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12556",
+      "entity_name": "NextEra Energy Transmission Southwest, LLC",
+      "shortest": "NEET",
+      "short": "NextEra Energy Transmission Southwest",
+      "normal": "NextEra Energy Transmission Southwest",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12027",
+      "entity_name": "Republic Transmission, LLC",
+      "shortest": "Republic",
+      "short": "Republic Transmission",
+      "normal": "Republic Transmission",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04119",
+      "entity_name": "Sharyland Utilities, L.L.C.",
+      "shortest": "Sharyland",
+      "short": "Sharyland Utilities",
+      "normal": "Sharyland Utilities",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11439",
+      "entity_name": "CalPECo",
+      "shortest": "CalPECo",
+      "short": "CalPECo",
+      "normal": "CalPECo",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11163",
+      "entity_name": "Central Nebraska Public Power and Irrigation District, The",
+      "shortest": "CNPPID",
+      "short": "Central Nebraska Public Power and Irrigation District",
+      "normal": "Central Nebraska Public Power and Irrigation District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05084",
+      "entity_name": "City of Idaho Falls Electric Light Division",
+      "shortest": "IFPower",
+      "short": "Idaho Falls Power",
+      "normal": "Idaho Falls Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05096",
+      "entity_name": "City of St George",
+      "shortest": "SGES",
+      "short": "St. George Energy Services",
+      "normal": "St. George Energy Services",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00251",
+      "entity_name": "Essential Power Rock Springs, LLC",
+      "shortest": "Essential",
+      "short": "Essential Power Rock Springs",
+      "normal": "Essential Power Rock Springs",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10362",
+      "entity_name": "Indeck - Oswego, LP",
+      "shortest": "Oswego",
+      "short": "Indeck Oswego",
+      "normal": "Indeck Oswego",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07136",
+      "entity_name": "Mass. Municipal Wholesale Electric Company",
+      "shortest": "MMWEC",
+      "short": "Massachusetts Municipal Wholesale Electric Company",
+      "normal": "Massachusetts Municipal Wholesale Electric Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05234",
+      "entity_name": "Merced Irrigation District",
+      "shortest": "MID",
+      "short": "Merced Irrigation District",
+      "normal": "Merced Irrigation District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01273",
+      "entity_name": "Mississippi Power Company",
+      "shortest": "MPC",
+      "short": "Mississippi Power",
+      "normal": "Mississippi Power",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00377",
+      "entity_name": "Nevada Gold Energy LLC",
+      "shortest": "NGE",
+      "short": "Nevada Gold Energy",
+      "normal": "Nevada Gold Energy",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00857",
+      "entity_name": "Ohio Valley Electric Corporation",
+      "shortest": "OVEC",
+      "short": "Ohio Valley Electric Corporation",
+      "normal": "Ohio Valley Electric Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00859",
+      "entity_name": "Old Dominion Electric Cooperative",
+      "shortest": "ODEC",
+      "short": "Old Dominion Electric Cooperative",
+      "normal": "Old Dominion Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR07191",
+      "entity_name": "Peabody Municipal Light Plant",
+      "shortest": "PMLP",
+      "short": "Peabody Municipal Light Plant",
+      "normal": "Peabody Municipal Light Plant",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01356",
+      "entity_name": "USACE - Charleston District",
+      "shortest": "USACE",
+      "short": "USACE Charleston District",
+      "normal": "U.S. Army Corps of Engineers - Charleston District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11109",
+      "entity_name": "USACE - Fort Worth District",
+      "shortest": "USACE",
+      "short": "USACE Fort Worth District",
+      "normal": "U.S. Army Corps of Engineers - Fort Worth District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01357",
+      "entity_name": "USACE - Kansas City District",
+      "shortest": "USACE",
+      "short": "USACE Kansas City District",
+      "normal": "U.S. Army Corps of Engineers - Kansas City District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR06037",
+      "entity_name": "USACE - Little Rock District",
+      "shortest": "USACE",
+      "short": "USACE Little Rock District",
+      "normal": "U.S. Army Corps of Engineers - Little Rock District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01360",
+      "entity_name": "USACE - Nashville District",
+      "shortest": "USACE",
+      "short": "USACE Nashville District",
+      "normal": "U.S. Army Corps of Engineers - Nashville District",
+      "tier": "normal"
     }
   ]
 }
