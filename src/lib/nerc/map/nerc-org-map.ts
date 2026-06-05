@@ -1,5 +1,4 @@
 import { geoAlbersUsa, geoConicEqualArea, geoMercator, geoPath } from "d3-geo";
-import { scaleSqrt } from "d3-scale";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zoom";
 import "d3-transition";
@@ -56,16 +55,9 @@ type Org = {
   _sy?: number;
   _vis?: boolean;
   _rk?: number;
-  // Isolation factor 0..1 (1 = no neighbours nearby), recomputed each redraw
-  // from screen positions. Drives a size boost so lonely dots in sparse regions
-  // read better and earn a label.
-  _iso?: number;
-  // Last viewBox radius actually written to the circle, so the isolation boost
-  // (which changes on pan at constant zoom) can update without a per-frame storm.
+  // Last viewBox radius actually written to the circle, so zoom-only sizing can
+  // update without a per-frame attribute storm.
   _rr?: number;
-  // Cached continuous reveal zoom (desktop base, before the compact multiplier).
-  // Computed once from priority/weight/jitter so disclosure is smooth, not tiered.
-  _mz?: number;
   // Last viewBox hit radius written to the invisible target. It follows the
   // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
   _hr?: number;
@@ -90,7 +82,6 @@ type OrgsPayload = {
 // viewBox aspect ratio matches the screen (no letterbox bands on tall phones).
 let W = 960;
 let H = 600;
-const RADIUS_SCALE = scaleSqrt().domain([1, 45]).range([4, 48]);
 const SPIDER_CLUSTER_EPSILON = 0.35;
 const SPIDER_START_K = 4;
 const SPIDER_FULL_K = 10;
@@ -103,9 +94,17 @@ const MAX_ZOOM = 1200;
 // passes this, so the overview shows only the high-priority set and lower
 // entities appear progressively as you zoom in.
 const RENDER_EPS = 0.02;
-const AUTHORITY_ROLES = new Set(["RC", "BA", "PC", "TOP", "TO", "TSP", "TP", "RSG", "FRSG", "RRSG", "RP"]);
-const PUBLIC_ROLES = new Set(["DP", "LSE", "PSE"]);
+const AUTHORITY_ROLES = new Set(["BA", "RC", "TOP", "PC"]);
+const BA_RC_ROLES = new Set(["BA", "RC"]);
+const MAJOR_OPERATOR_PARTNER_ROLES = new Set(["TOP", "PC", "TSP"]);
+const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
+const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
+const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "PSE"]);
+const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
+const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
+const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
+const PUBLIC_UTILITY_NAME = /\b(Public Power|Public Utility|Utility District|PUD|Municipal|City of|Town of|Electric Department|Light Department|Cooperative|Electric Membership)\b/i;
 
 // Out-of-footprint U.S. territories: only Puerto Rico is drawn as a labelled
 // inset. Other territory rows stay in the data but are intentionally hidden.
@@ -485,87 +484,97 @@ export function mountNercOrgMap(): void {
     // The biggest entities are pinned to their shortest acronym at every zoom —
     // "PJM" never grows into "PJM Interconnection" on the map.
     if (o.name_major) return tinyName(o);
-    const priority = orgPriority(o);
+    const priority = visualPriority(o);
     const midAt = compact
-      ? priority >= 54 ? 10.5 : priority >= 32 ? 16 : 28
-      : priority >= 54 ? 8.5 : priority >= 32 ? 12.5 : 18;
+      ? priority >= 80 ? 10.5 : priority >= 50 ? 16 : 28
+      : priority >= 80 ? 8.5 : priority >= 50 ? 12.5 : 18;
     if (k < midAt) return tinyName(o);
     const mid = midName(o);
     return mid.length > (compact ? 20 : 28) ? tinyName(o) : mid;
   }
 
-  function nonGenerationRoleCount(o: Org): number {
-    return o.roles.filter((r) => !GENERATION_ROLES.has(r)).length;
+  function hasAnyRole(o: Org, roles: Set<string>): boolean {
+    return o.roles.some((r) => roles.has(r));
+  }
+
+  function meaningfulRoleCount(o: Org): number {
+    return o.roles.filter((r) => !ZERO_VISUAL_PRIORITY_ROLES.has(r)).length;
   }
 
   function isGenerationOnly(o: Org): boolean {
     return o.roles.length > 0 && o.roles.every((r) => GENERATION_ROLES.has(r));
   }
 
-  function orgPriority(o: Org): number {
-    const nonGen = nonGenerationRoleCount(o);
-    let score = o.weight * 0.9 + Math.min(o.role_count, 8) * 1.4;
-    if (o.is_iso_rto) score += 34;
-    if (nonGen > 0) score += 10 + nonGen * 4;
-    if (o.roles.some((r) => AUTHORITY_ROLES.has(r))) score += 12;
-    if (o.roles.some((r) => PUBLIC_ROLES.has(r))) score += 5;
-    if (o.roles.includes("DP")) score += 18;
-    if (o.roles.includes("LSE")) score += 8;
-    if (o.roles.includes("PSE")) score += 4;
-    if (o.roles.includes("TO") && o.roles.includes("DP")) score += 8;
-    if (o.roles.includes("TOP")) score += 7;
-    if (o.roles.includes("TP")) score += 5;
-    if (o.org_type === "federal") score += 20;
-    if (o.org_type === "municipal") score += 13;
-    if (o.org_type === "cooperative") score += 7;
-    if (o.org_type === "cca") score += 3;
-    if (o.nerc_registered === false) score -= 6;
-    if (isGenerationOnly(o)) score -= 18;
-    if (o.roles.length === 0) score -= 8;
-    if (/department of energy/i.test(o.entity_name)) score += 56;
-    else if (/cleveland public power/i.test(o.entity_name)) score += 46;
-    else if (/firstenergy/i.test(o.entity_name)) score += 38;
-    if (/new york power authority/i.test(o.entity_name)) score += 70;
-    else if (/pjm interconnection|long island power authority|consolidated edison|con edison/i.test(o.entity_name)) {
-      score += 36;
-    }
-    return score;
+  function isMajorSystemOperator(o: Org): boolean {
+    if (SYSTEM_OPERATOR_NAME.test(o.entity_name)) return true;
+    return hasAnyRole(o, BA_RC_ROLES) && hasAnyRole(o, MAJOR_OPERATOR_PARTNER_ROLES) && meaningfulRoleCount(o) >= 4;
   }
 
-  // Deterministic 0..1 from an id, so identical-looking dots get a stable spread.
-  function hash01(id: string): number {
-    let h = 2166136261;
-    for (let i = 0; i < id.length; i++) {
-      h ^= id.charCodeAt(i);
-      h = Math.imul(h, 16777619);
-    }
-    return ((h >>> 0) % 100000) / 100000;
+  function rolePriority(o: Org): number {
+    const hasTo = o.roles.includes("TO");
+    const hasDp = o.roles.includes("DP");
+    const hasLse = o.roles.includes("LSE");
+    if (hasAnyRole(o, AUTHORITY_ROLES)) return 82;
+    if ((hasTo && (hasDp || hasLse)) || (hasDp && hasLse)) return 62;
+    if (hasAnyRole(o, GRID_ROLES)) return 50;
+    if (hasAnyRole(o, SUPPORT_ROLES)) return 42;
+    if (isGenerationOnly(o)) return 24;
+    return 14;
   }
 
-  // Static importance score, cached per org. The per-id jitter separates the
-  // ~800 near-identical low-weight generators so they never cross the reveal
-  // threshold all at once.
-  function orgScore(o: Org): number {
-    if (o._mz == null) o._mz = orgPriority(o) + o.weight * 0.4 + (hash01(o.ncr_id) - 0.5) * 14;
-    return o._mz;
+  function typePriority(o: Org): number {
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return 70;
+    if (o.org_type === "federal") return 70;
+    if (o.org_type === "IOU") return 66;
+    if (o.org_type === "ISO_RTO") return 66;
+    if (o.org_type === "cca") return 38;
+    if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return 66;
+    if (o.org_type === "municipal" || o.org_type === "cooperative") return 42;
+    if (o.org_type === "merchant") return 24;
+    if (PUBLIC_UTILITY_NAME.test(o.entity_name)) return 42;
+    return 14;
   }
 
-  // Continuous reveal zoom: monotonic in the importance score so dots trickle in
-  // across the whole zoom range instead of a whole tier flooding at one zoom
-  // (which crashed dot size and re-introduced overlap). Phones draw dots larger
-  // (sized in CSS px) inside the same US footprint, so the overview holds
-  // proportionally bigger bubbles and crowds fast — there the "major" cutoff is
-  // raised so the overview shows only the genuine majors and lower entities fill
-  // in progressively as you zoom. Desktop keeps its (good) fuller overview.
+  function multiRoleBonus(o: Org): number {
+    const count = meaningfulRoleCount(o);
+    if (count >= 4) return 6;
+    if (count >= 2) return 3;
+    return 0;
+  }
+
+  function visualPriority(o: Org): number {
+    if (isMajorSystemOperator(o)) return 100;
+    const score = Math.max(rolePriority(o), typePriority(o)) + multiRoleBonus(o);
+    return Math.max(10, Math.min(100, score));
+  }
+
+  function visualPrioritySort(a: Org, b: Org): number {
+    return (
+      visualPriority(b) - visualPriority(a) ||
+      rolePriority(b) - rolePriority(a) ||
+      typePriority(b) - typePriority(a) ||
+      meaningfulRoleCount(b) - meaningfulRoleCount(a) ||
+      a.ncr_id.localeCompare(b.ncr_id)
+    );
+  }
+
+  function visualPrioritySortAsc(a: Org, b: Org): number {
+    return (
+      visualPriority(a) - visualPriority(b) ||
+      rolePriority(a) - rolePriority(b) ||
+      typePriority(a) - typePriority(b) ||
+      meaningfulRoleCount(a) - meaningfulRoleCount(b) ||
+      a.ncr_id.localeCompare(b.ncr_id)
+    );
+  }
+
+  // Map the one visual-priority score to a reveal zoom. No per-id jitter and no
+  // company-name exceptions: ties stay deterministic through the sort helpers.
   function orgMinZoom(o: Org): number {
     if (o._frame === "terr") return 0.72;
-    if (o.is_iso_rto) return 0.72;
-    const anchor = compact ? 82 : 55;
-    // anchor → 0.72; each ~17 below anchor roughly doubles the reveal zoom. The
-    // cap is generous (and slightly higher on compact) so the long low-weight
-    // tail still spreads near the top of the range instead of collapsing to one
-    // reveal zoom and flooding in together.
-    return Math.min(compact ? 13.5 : 11.5, 0.72 * Math.exp(0.04 * Math.max(0, anchor - orgScore(o))));
+    if (isMajorSystemOperator(o)) return 0.72;
+    const anchor = compact ? 80 : 64;
+    return Math.min(compact ? 13.5 : 11.5, 0.72 * Math.exp(0.045 * Math.max(0, anchor - visualPriority(o))));
   }
 
   // Disclosure ramp 0..1: a dot fades in over [minZoom - lead, minZoom] and is
@@ -581,31 +590,27 @@ export function mountNercOrgMap(): void {
   }
 
   function drawPriority(o: Org, k: number): number {
-    return dotStrength(o, k) * 90 + orgPriority(o) + o.weight * 0.9 + o.role_count;
+    return dotStrength(o, k) * 90 + visualPriority(o) + meaningfulRoleCount(o) * 2;
   }
 
   // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
-  // low zoom (only the heaviest entities) and opened up fully once zoomed in,
-  // where viewport culling keeps the on-screen candidate count small.
+  // low zoom (only the highest-priority entities) and opened up fully once
+  // zoomed in, where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
-    const priority = orgPriority(o);
-    const nonGen = nonGenerationRoleCount(o);
+    const priority = visualPriority(o);
     if (k >= 2.6) return true;
-    // A dot alone in empty space costs nothing to label and looks better with
-    // one, so once zoomed in past the overview let isolated dots always try —
-    // this is what fills the sparse Mountain-West / Plains with names.
-    if (k >= 1.7 && (o._iso ?? 0) >= 0.35) return true;
-    if (k < 1.25) return priority >= 54 || o.weight >= 30 || o.is_iso_rto;
-    if (k < 1.8) return priority >= 34 || o.weight >= 12 || nonGen >= 2;
-    return o.weight >= 1;
+    if (k < 1.25) return priority >= 80;
+    if (k < 1.8) return priority >= 50;
+    return priority >= 24;
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before
   // it hits the SVG). Grows a little as you zoom in instead of staying flat.
   function labelFontPx(o: Org, k: number): number {
+    const priority = visualPriority(o);
     const base = compact
-      ? o.weight >= 30 ? 11.1 : o.weight >= 12 ? 9.2 : 6.7
-      : o.weight >= 30 ? 12.7 : o.weight >= 12 ? 10.3 : 7.7;
+      ? priority >= 80 ? 11.1 : priority >= 50 ? 9.2 : 6.7
+      : priority >= 80 ? 12.7 : priority >= 50 ? 10.3 : 7.7;
     const growth = compact
       ? Math.min(1.12, 1 + Math.max(0, k - 1) * 0.03)
       : Math.min(1.22, 1 + Math.max(0, k - 1) * 0.055);
@@ -664,122 +669,41 @@ export function mountNercOrgMap(): void {
   }
 
   function visualRadius(o: Org, k: number): number {
-    // Size principle: keep the whole field compact at the overview (so big orgs
-    // are prominent but don't swamp neighbours or collide), then let dots grow
-    // toward their full weight-based size as you zoom in and there's room. A
-    // single zoom term scales everything; weight sets the relative size.
-    const base = Math.max(2, RADIUS_SCALE(o.weight));
+    // Simple visual-priority sizing: low-priority entities stay small but visible,
+    // while authority, regulated, public, and reliability organizations get more
+    // area. Radius is in CSS pixels, then converted to SVG units for the viewBox.
+    const priority = visualPriority(o) / 100;
+    const minPx = compact ? 2.1 : 1.8;
+    const maxPx = compact ? 25 : 34;
+    const fullPx = minPx + (maxPx - minPx) * priority;
     const zoomT = smoothStep((k - 0.72) / 5);
-    const scale = compact ? 0.38 + 0.58 * zoomT : 0.38 + 0.56 * zoomT;
-    const grown = base * scale;
-    // Some high-priority regulated entities have few roles and therefore low
-    // weight (for example PSE&G: DP + TO). Once zoomed in, lift those above the
-    // small-dot floor so they are easier to see and tap without changing the
-    // national overview sizing.
-    const closeT = smoothStep((k - (compact ? 2.25 : 2.8)) / (compact ? 7.2 : 8.2));
-    const priorityT = smoothStep((orgPriority(o) - 32) / 42);
-    const lowWeightT = smoothStep((14 - Math.min(o.weight, 14)) / 14);
-    const liftPx = (compact ? 15.5 : 10.5) * priorityT * (0.4 + lowWeightT * 0.6) * closeT;
-    const lifted = grown + liftPx * unitPerPx;
-    return Math.max((compact ? 1.8 : 1.5) * unitPerPx, lifted);
+    const overviewScale = compact ? 0.52 : 0.46;
+    const px = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
+    return Math.max(minPx, Math.min(maxPx, px)) * unitPerPx;
   }
 
-  // Distance (in viewBox units) at which a dot counts as fully "isolated" — its
-  // own little island of empty map. Scales with the on-screen dot size so the
-  // notion of "alone" tracks how big things currently look.
-  function isolationRange(): number {
-    return (compact ? 52 : 72) * unitPerPx;
-  }
-
-  // Fill each visible org's _iso (0 = crowded, 1 = no neighbour within range)
-  // from nearest-neighbour distance, computed once per redraw over a coarse grid.
-  function computeIsolation(visible: Org[]): void {
-    const range = isolationRange();
-    const cell = range;
-    const grid = new Map<string, Org[]>();
-    for (const o of visible) {
-      if (o._frame === "terr") { o._iso = 0; continue; }
-      const key = Math.floor((o._sx as number) / cell) + ":" + Math.floor((o._sy as number) / cell);
-      const arr = grid.get(key);
-      if (arr) arr.push(o);
-      else grid.set(key, [o]);
-    }
-    const range2 = range * range;
-    for (const o of visible) {
-      if (o._frame === "terr") continue;
-      const sx = o._sx as number;
-      const sy = o._sy as number;
-      const gx = Math.floor(sx / cell);
-      const gy = Math.floor(sy / cell);
-      let nearest2 = range2;
-      for (let ox = -1; ox <= 1; ox++) {
-        for (let oy = -1; oy <= 1; oy++) {
-          const arr = grid.get(gx + ox + ":" + (gy + oy));
-          if (!arr) continue;
-          for (const b of arr) {
-            if (b === o) continue;
-            const d2 = (b._sx! - sx) ** 2 + (b._sy! - sy) ** 2;
-            if (d2 < nearest2) nearest2 = d2;
-          }
-        }
-      }
-      // 0 when a neighbour sits right on top, ramping to 1 at the isolation range.
-      o._iso = smoothStep(Math.sqrt(nearest2) / range);
-    }
-  }
-
-  // Extra radius multiplier for a lonely dot. Strongest when zoomed in on an
-  // empty region (room to grow, nothing to collide with); gentle at overview so
-  // the national picture stays calm. Generation-only dots get a smaller bump so
-  // the sea of small plants doesn't balloon, but they still become clickable.
-  function isolationBoost(o: Org, k: number): number {
-    const iso = o._iso ?? 0;
-    if (iso <= 0) return 1;
-    const zoomGain = smoothStep((k - 1.15) / 2.6);
-    const openGain = smoothStep((k - 2.2) / 5.2);
-    const ceiling = (isGenerationOnly(o) ? 1.05 : 1.75) * (0.25 + zoomGain * 0.45 + openGain * 0.3);
-    return 1 + iso * ceiling;
-  }
-
-  function generationOnlyRadiusCap(k: number, o?: Org): number {
-    const closeT = smoothStep((k - 1.8) / 6.2);
-    const base = compact ? 5.4 + 2.4 * closeT : 5.8 + 2.8 * closeT;
-    const fillT = smoothStep((k - 2.2) / 4.8);
-    const iso = o ? o._iso ?? 0 : 0;
-    const bonus = (compact ? 10 : 15) * iso * fillT;
-    return (base + bonus) * unitPerPx;
-  }
-
-  function nonGenerationRadiusFloor(o: Org, k: number): number {
-    if (nonGenerationRoleCount(o) <= 0) return 0;
-    const closeT = smoothStep((k - 1.8) / 6.2);
-    const marginPx = compact ? 1.05 + 1.65 * closeT : 0.9 + 1.45 * closeT;
-    return generationOnlyRadiusCap(k) + marginPx * unitPerPx;
-  }
-
-  // Puerto Rico inset dots are schematic (small, uniform) rather than
-  // weight-sized so they fit the cluster; everything else uses normal sizing.
+  // Puerto Rico inset dots are schematic (small, uniform) so they fit the
+  // cluster; everything else uses priority-based sizing.
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 5 : 4) * unitPerPx;
-    const radius = visualRadius(o, k) * isolationBoost(o, k);
-    if (isGenerationOnly(o)) return Math.min(radius, generationOnlyRadiusCap(k, o));
-    return Math.max(radius, nonGenerationRadiusFloor(o, k));
+    return visualRadius(o, k);
   }
 
   function hitTargetRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 8.5 : 7) * unitPerPx;
     const visual = renderedRadius(o, k);
     const strength = dotStrength(o, k);
+    const priority = visualPriority(o);
     const overviewFloorPx = compact
-      ? o.weight <= 4 ? 9 : 12
-      : strength < 0.35 ? 3.2 : o.weight <= 4 ? 4.2 : o.weight <= 8 ? 5.2 : 7;
+      ? priority < 30 ? 9 : 12
+      : strength < 0.35 ? 3.2 : priority < 30 ? 4.2 : priority < 55 ? 5.2 : 7;
     const deepFloorPx = compact
-      ? o.weight <= 4 ? 5.5 : 6.5
-      : strength < 0.35 ? 2.2 : o.weight <= 4 ? 2.6 : o.weight <= 8 ? 3.2 : 4.4;
+      ? priority < 30 ? 5.5 : 6.5
+      : strength < 0.35 ? 2.2 : priority < 30 ? 2.6 : priority < 55 ? 3.2 : 4.4;
     const deepT = smoothStep((k - 10) / 18);
     const floorPx = overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT;
-    const overviewPadPx = compact ? (o.weight <= 4 ? 2.4 : 3.4) : o.weight <= 4 ? 1 : o.weight <= 8 ? 1.5 : 2.4;
-    const deepPadPx = compact ? (o.weight <= 4 ? 0.8 : 1.2) : o.weight <= 4 ? 0.35 : o.weight <= 8 ? 0.55 : 0.8;
+    const overviewPadPx = compact ? (priority < 30 ? 2.4 : 3.4) : priority < 30 ? 1 : priority < 55 ? 1.5 : 2.4;
+    const deepPadPx = compact ? (priority < 30 ? 0.8 : 1.2) : priority < 30 ? 0.35 : priority < 55 ? 0.55 : 0.8;
     const padPx = (overviewPadPx + (deepPadPx - overviewPadPx) * deepT) * (0.5 + strength * 0.5);
     return Math.max(visual + padPx * unitPerPx, floorPx * unitPerPx);
   }
@@ -1171,7 +1095,7 @@ export function mountNercOrgMap(): void {
       const baseY = o._y * bucket + (o._ry ?? 0) * spiderScreenScale;
       const fixed = o._frame === "terr";
       const strength = dotStrength(o, bucket);
-      const priority = Math.max(0, orgPriority(o));
+      const priority = Math.max(0, visualPriority(o));
       const visualR = renderedRadius(o, bucket);
       items.push({
         o,
@@ -1189,9 +1113,7 @@ export function mountNercOrgMap(): void {
     items.sort(
       (a, b) =>
         drawPriority(b.o, bucket) - drawPriority(a.o, bucket) ||
-        b.o.weight - a.o.weight ||
-        b.o.role_count - a.o.role_count ||
-        a.o.ncr_id.localeCompare(b.o.ncr_id),
+        visualPrioritySort(a.o, b.o),
     );
     const itemLimit = declutterItemLimit(bucket);
     if (items.length > itemLimit) {
@@ -1340,8 +1262,8 @@ export function mountNercOrgMap(): void {
     // While a tour runs but no step is showing (tourRunning && !tourActive) the
     // map "blanks": everything dims, nothing is labelled. That makes each role
     // reveal read clearly and idles the breathing animation (cheaper on iOS).
-    // Hit radii mostly track zoom, but also follow the resolved visual radius
-    // after the isolation pass so deep-zoom panning doesn't leave stale targets.
+    // Hit radii mostly track zoom, but also follow the resolved visual radius so
+    // deep-zoom panning doesn't leave stale targets.
     const hitChanged = hitK !== k;
     hitK = k;
 
@@ -1381,9 +1303,7 @@ export function mountNercOrgMap(): void {
         .filter((o) => !visibleIds.has(o.ncr_id) && o._frame !== "terr")
         .sort(
           (a, b) =>
-            orgPriority(b) - orgPriority(a) ||
-            b.weight - a.weight ||
-            b.role_count - a.role_count ||
+            visualPrioritySort(a, b) ||
             a.entity_name.localeCompare(b.entity_name),
         );
       for (const o of extras) {
@@ -1394,12 +1314,6 @@ export function mountNercOrgMap(): void {
       }
       shownCount = visibleOrgs.length;
     }
-
-    // Local-density / isolation pass (needs every visible dot's screen position).
-    // For each, the nearest visible neighbour maps to an isolation factor 0..1.
-    // Lonely dots (1) get a size boost and a better shot at a label; crowded dots
-    // (0) are left as-is so clusters don't bloat.
-    computeIsolation(visibleOrgs);
 
     for (const o of visibleOrgs) {
       // Puerto Rico inset dots are identified by the territory label, so they only
@@ -1427,9 +1341,7 @@ export function mountNercOrgMap(): void {
       (a, b) =>
         Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
         Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
-        orgPriority(b) - orgPriority(a) ||
-        b.weight - a.weight ||
-        b.role_count - a.role_count ||
+        visualPrioritySort(a, b) ||
         a.entity_name.localeCompare(b.entity_name),
     );
     // Cap how many candidates we even try during a tour step. Big roles (GO has
@@ -1608,8 +1520,8 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
       // Radius is set in transform-space (divided by the group scale). It changes
-      // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
-      // so write only when the resolved radius actually moved — cheap, no storm.
+      // only with zoom and visual priority, so write only when the resolved radius
+      // actually moved — cheap, no storm.
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
         node.setAttribute("r", String(rr / k));
@@ -2538,8 +2450,7 @@ export function mountNercOrgMap(): void {
     const visibleOrder = [...placeableOrgs].sort(
       (a, b) =>
         drawPriority(a, transform.k) - drawPriority(b, transform.k) ||
-        a.weight - b.weight ||
-        a.role_count - b.role_count ||
+        visualPrioritySortAsc(a, b) ||
         a.entity_name.localeCompare(b.entity_name),
     );
     const hitOrder = visibleOrder;
@@ -2657,7 +2568,7 @@ export function mountNercOrgMap(): void {
             id: o.ncr_id,
             name: tinyName(o),
             frame: o._frame ?? "",
-            pr: Math.round(orgPriority(o)),
+            pr: Math.round(visualPriority(o)),
             w: o.weight,
             rcss: +(rScreen / unitPerPx).toFixed(1),
             sx: +o._sx.toFixed(1),

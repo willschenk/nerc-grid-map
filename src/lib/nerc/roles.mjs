@@ -2,7 +2,9 @@
 // and normalization. Imported by build scripts (Node ESM) and the map page (Vite).
 // Spec: nerc-map-instructions.md Parts 2 and 3.
 
-// Role weight: grid-authority roles dominate dot size over asset/commercial roles.
+// Data role weight: used for the role-weight field, color centroid weighting,
+// and legacy ISO/RTO scale checks. Visual priority and bubble sizing live in the
+// map renderer so GO/GOP/PSE can be kept visually low without breaking color/QA.
 // (Spec Part 3.2. The source spec listed GOP twice; deduplicated here.)
 /** @type {Record<string, number>} */
 export const ROLE_WEIGHTS = {
