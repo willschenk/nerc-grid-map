@@ -93,6 +93,7 @@ const SPIDER_RING_STEP_PX = 28;
 // Declutter: visible bubbles move in render space only. Lat/lng and projected
 // _x/_y stay true; _dx/_dy are screen-space nudges divided by zoom at render.
 const MAX_RADIUS = 48;
+const MAX_ZOOM = 1200;
 const AUTHORITY_ROLES = new Set(["RC", "BA", "PC", "TOP", "TO", "TSP", "TP", "RSG", "FRSG", "RRSG", "RP"]);
 const PUBLIC_ROLES = new Set(["DP", "LSE", "PSE"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
@@ -1912,7 +1913,7 @@ export function mountNercOrgMap(): void {
     if (o._x == null || o._y == null) return;
     // Ensure a readable zoom, but never zoom the user back out if they've
     // already zoomed in deeper.
-    const scale = Math.min(500, Math.max(transform.k, o.is_iso_rto ? 3.2 : 4.2));
+    const scale = Math.min(MAX_ZOOM, Math.max(transform.k, o.is_iso_rto ? 3.2 : 4.2));
     const next = zoomIdentity.translate(W / 2, H / 2).scale(scale).translate(-o._x, -o._y);
     animateTransform(next, duration);
   }
@@ -2071,7 +2072,7 @@ export function mountNercOrgMap(): void {
 
   function setupZoom(): void {
     zoomBehavior = zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.72, 500])
+      .scaleExtent([0.72, MAX_ZOOM])
       // The walkthrough keeps playing while the user pans/zooms (programmatic
       // transitions have no sourceEvent). A real gesture just nudges the Stop
       // control so they know they can take over.
