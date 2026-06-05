@@ -56,6 +56,13 @@ type Org = {
   _sy?: number;
   _vis?: boolean;
   _rk?: number;
+  // Isolation factor 0..1 (1 = no neighbours nearby), recomputed each redraw
+  // from screen positions. Drives a size boost so lonely dots in sparse regions
+  // read better and earn a label.
+  _iso?: number;
+  // Last viewBox radius actually written to the circle, so the isolation boost
+  // (which changes on pan at constant zoom) can update without a per-frame storm.
+  _rr?: number;
   // Which projection placed this org: mainland Albers ("us"), the Canada conic
   // ("ca"), or a territory inset ("terr").
   _frame?: "us" | "ca" | "terr";
@@ -513,6 +520,10 @@ export function mountNercOrgMap(): void {
   function shouldTryLabel(o: Org, k: number): boolean {
     const priority = orgPriority(o);
     const nonGen = nonGenerationRoleCount(o);
+    // A dot alone in empty space costs nothing to label and looks better with
+    // one, so once zoomed in past the overview let isolated dots always try —
+    // this is what fills the sparse Mountain-West / Plains with names.
+    if (k >= 1.8 && (o._iso ?? 0) >= 0.7) return true;
     if (k < 1.25) return priority >= 54 || o.weight >= 30 || o.is_iso_rto;
     if (k < 1.8) return priority >= 42 || o.weight >= 18 || nonGen >= 4;
     if (k < 2.6) return priority >= 32 || o.weight >= 12 || nonGen >= 2;
@@ -577,10 +588,67 @@ export function mountNercOrgMap(): void {
     return Math.max((compact ? 1.9 : 1.6) * unitPerPx, compact ? grown : Math.min(grown, base + 4 * unitPerPx));
   }
 
+  // Distance (in viewBox units) at which a dot counts as fully "isolated" — its
+  // own little island of empty map. Scales with the on-screen dot size so the
+  // notion of "alone" tracks how big things currently look.
+  function isolationRange(): number {
+    return (compact ? 34 : 46) * unitPerPx;
+  }
+
+  // Fill each visible org's _iso (0 = crowded, 1 = no neighbour within range)
+  // from nearest-neighbour distance, computed once per redraw over a coarse grid.
+  function computeIsolation(visible: Org[]): void {
+    const range = isolationRange();
+    const cell = range;
+    const grid = new Map<string, Org[]>();
+    for (const o of visible) {
+      if (o._frame === "terr") { o._iso = 0; continue; }
+      const key = Math.floor((o._sx as number) / cell) + ":" + Math.floor((o._sy as number) / cell);
+      const arr = grid.get(key);
+      if (arr) arr.push(o);
+      else grid.set(key, [o]);
+    }
+    const range2 = range * range;
+    for (const o of visible) {
+      if (o._frame === "terr") continue;
+      const sx = o._sx as number;
+      const sy = o._sy as number;
+      const gx = Math.floor(sx / cell);
+      const gy = Math.floor(sy / cell);
+      let nearest2 = range2;
+      for (let ox = -1; ox <= 1; ox++) {
+        for (let oy = -1; oy <= 1; oy++) {
+          const arr = grid.get(gx + ox + ":" + (gy + oy));
+          if (!arr) continue;
+          for (const b of arr) {
+            if (b === o) continue;
+            const d2 = (b._sx! - sx) ** 2 + (b._sy! - sy) ** 2;
+            if (d2 < nearest2) nearest2 = d2;
+          }
+        }
+      }
+      // 0 when a neighbour sits right on top, ramping to 1 at the isolation range.
+      o._iso = smoothStep(Math.sqrt(nearest2) / range);
+    }
+  }
+
+  // Extra radius multiplier for a lonely dot. Strongest when zoomed in on an
+  // empty region (room to grow, nothing to collide with); gentle at overview so
+  // the national picture stays calm. Generation-only dots get a smaller bump so
+  // the sea of small plants doesn't balloon, but they still become clickable.
+  function isolationBoost(o: Org, k: number): number {
+    const iso = o._iso ?? 0;
+    if (iso <= 0) return 1;
+    const zoomGain = smoothStep((k - 1.4) / 3.2); // ramps in as you zoom past ~1.4
+    const ceiling = (isGenerationOnly(o) ? 0.5 : 0.9) * (0.35 + zoomGain * 0.65);
+    return 1 + iso * ceiling;
+  }
+
   // Territory-inset dots are schematic (small, uniform) rather than weight-sized
   // so they fit their grid cells; everything else uses the normal visual radius.
   function renderedRadius(o: Org, k: number): number {
-    return o._frame === "terr" ? (compact ? 5 : 4) * unitPerPx : visualRadius(o, k);
+    if (o._frame === "terr") return (compact ? 5 : 4) * unitPerPx;
+    return visualRadius(o, k) * isolationBoost(o, k);
   }
 
   function hitTargetRadius(o: Org, k: number): number {
@@ -1146,6 +1214,15 @@ export function mountNercOrgMap(): void {
       if (!vis) continue;
       shownCount++;
       visibleOrgs.push(o);
+    }
+
+    // Local-density / isolation pass (needs every visible dot's screen position).
+    // For each, the nearest visible neighbour maps to an isolation factor 0..1.
+    // Lonely dots (1) get a size boost and a better shot at a label; crowded dots
+    // (0) are left as-is so clusters don't bloat.
+    computeIsolation(visibleOrgs);
+
+    for (const o of visibleOrgs) {
       // Territory-inset dots are identified by their labelled box, so they only
       // get an individual label when hovered/selected (never in the normal flow).
       const isTerr = o._frame === "terr";
@@ -1191,6 +1268,12 @@ export function mountNercOrgMap(): void {
       { x: number; y: number; font: number; text: string; inside: boolean }
     >();
     const placed: Box[] = [];
+    // De-dupe identical on-screen tokens: when several orgs share a brand (MEAN,
+    // Evergy, USACE, AEP…) only the first — highest priority, since candidates
+    // are pre-sorted — gets the name, so the map never repeats a label. Nearby
+    // duplicates of the same brand read as one entity anyway. (Hover/select still
+    // forces its own label regardless.)
+    const usedLabels = new Set<string>();
     // Bound the animated/highlighted set so it stays cheap on iOS.
     const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
     // Keep labels from tucking under the floating topbar. Phones reserve a tall
@@ -1208,9 +1291,11 @@ export function mountNercOrgMap(): void {
       const sx = o._sx as number;
       const sy = o._sy as number;
       const forceLabel = hot?.ncr_id === o.ncr_id;
+      const brand = tinyName(o);
       if (
         !forceLabel &&
-        labeledClusters.some((p) => (p.x - sx) ** 2 + (p.y - sy) ** 2 <= clusterRadius ** 2)
+        (usedLabels.has(brand) ||
+          labeledClusters.some((p) => (p.x - sx) ** 2 + (p.y - sy) ** 2 <= clusterRadius ** 2))
       ) {
         continue;
       }
@@ -1223,12 +1308,18 @@ export function mountNercOrgMap(): void {
       // The inside token uses tinyName regardless of zoom and a font shrunk to
       // fit the diameter; it lives entirely within its own bubble, so it never
       // joins the collision set or crowds neighbours.
+      // Tuck the super-short token *inside* the bubble whenever it fits at a
+      // legible size — the preferred style. The font shrinks to span the chord
+      // (up to the normal label size), so smaller bubbles still get a label
+      // instead of floating one above. Min size is small but still readable.
       const inside = tinyName(o);
-      const insideFont = Math.min(font, (r * 1.62) / Math.max(1, inside.length) / 0.56);
-      if (insideFont >= 7 * unitPerPx && insideFont * 0.56 * inside.length <= r * 1.7) {
+      const insideFont = Math.min(font, (r * 1.74) / Math.max(1, inside.length) / 0.56);
+      const insideMin = (compact ? 5.4 : 5.8) * unitPerPx;
+      if (insideFont >= insideMin && insideFont * 0.56 * inside.length <= r * 1.82) {
         labeledClusters.push({ x: sx, y: sy });
         labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: inside, inside: true });
         placed.push({ x0: sx - r, x1: sx + r, y0: sy - r, y1: sy + r });
+        if (!forceLabel) usedLabels.add(brand);
         continue;
       }
 
@@ -1236,17 +1327,20 @@ export function mountNercOrgMap(): void {
       const h = (font + 5) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
       // Try a handful of spots so a blocked label nudges off its neighbour
-      // instead of disappearing, while hugging its own bubble closely.
+      // instead of disappearing, while hugging its own bubble closely. Order is
+      // deliberate: sit on the dot, then to the sides, then below, then the
+      // below-diagonals — and only *above* the bubble as a last resort (the user
+      // dislikes labels riding high above their dot).
       const spots = [
         [sx, sy + font * 0.32],
-        [sx, sy - nudge],
-        [sx, sy + nudge],
         [sx + nudge, sy + font * 0.32],
         [sx - nudge, sy + font * 0.32],
-        [sx + nudge * 0.78, sy - nudge * 0.58],
-        [sx - nudge * 0.78, sy - nudge * 0.58],
+        [sx, sy + nudge],
         [sx + nudge * 0.78, sy + nudge * 0.72],
         [sx - nudge * 0.78, sy + nudge * 0.72],
+        [sx, sy - nudge],
+        [sx + nudge * 0.78, sy - nudge * 0.58],
+        [sx - nudge * 0.78, sy - nudge * 0.58],
       ];
       let chosen: { x: number; y: number; box: Box } | null = null;
       for (const [lx, ly] of spots) {
@@ -1258,7 +1352,10 @@ export function mountNercOrgMap(): void {
       }
       if (!chosen) continue;
       placed.push(chosen.box);
-      if (!forceLabel) labeledClusters.push({ x: sx, y: sy });
+      if (!forceLabel) {
+        labeledClusters.push({ x: sx, y: sy });
+        usedLabels.add(brand);
+      }
       labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text, inside: false });
     }
 
@@ -1266,11 +1363,14 @@ export function mountNercOrgMap(): void {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
-      // Radius is set in transform-space (divided by the group scale) and only
-      // when the zoom level actually changed for this dot.
-      if (o._rk !== k) {
-        node.setAttribute("r", String(renderedRadius(o, k) / k));
+      // Radius is set in transform-space (divided by the group scale). It changes
+      // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
+      // so write only when the resolved radius actually moved — cheap, no storm.
+      const rr = renderedRadius(o, k);
+      if (o._rk !== k || o._rr !== rr) {
+        node.setAttribute("r", String(rr / k));
         o._rk = k;
+        o._rr = rr;
       }
       const labeled = labelState.has(o.ncr_id);
       const inTour = tourActive && tourIds.has(o.ncr_id);
