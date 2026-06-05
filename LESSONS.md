@@ -73,6 +73,12 @@ Most of the iteration is the map. Principles that have repeatedly proven right:
   so near‑identical dots (the ~800 generators) trickle in instead of a whole tier
   flooding at one zoom — a flood crashes dot size and re‑spikes overlap. See
   `orgScore`/`orgMinZoom` and the `nerc-map-disclosure-model` memory.
+- **Do not reserve margin around visible bubbles.** The user wants bubbles to pack
+  edge-to-edge if needed: no bubble padding and no solver gap. The non-overlap rule
+  is about actual drawn bubble bodies, not decorative whitespace. Hidden/future
+  bubbles should not push visible ones around; at low zoom the declutter solver is
+  capped to plausible visible candidates, and final label placement remains the
+  authority on what is actually drawn.
 - **Labels are an ordered decision tree, evaluated most‑important first:**
   1. **INSIDE** — if the short token fits in the bubble at a legible size, draw it
      there. Inside labels are collision‑free and run *before* dedupe/thinning, so a
@@ -101,6 +107,10 @@ own tuning at nearly every knob:
   don't touch it to fix iOS; gate the change on `compact`.**
 - Spreading an over‑full container does **not** reduce overlap — it just pushes
   dots to the cap. The only real levers for crowding are *fewer* or *smaller* dots.
+- At the all-the-way-out iOS overview, excessive declutter displacement reads as
+  organizations floating away from their geography. Keep compact low-zoom movement
+  tightly capped and let bubbles hide until they can fit; do not use large margins
+  or hidden candidates to force more spacing.
 - Mobile chrome: floating bottom‑right tour FAB (≥44px, safe‑area aware), top‑safe
   bands so labels clear the floating topbar, pressed (not hover) feedback.
 - iOS performance is real: bound the animated/labeled set, transform‑only pulses

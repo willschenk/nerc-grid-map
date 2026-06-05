@@ -637,6 +637,13 @@ export function mountNercOrgMap(): void {
     return Math.round(labelLimit(k) * (compact ? 0.95 : 1));
   }
 
+  function declutterItemLimit(k: number): number {
+    if (k >= 2.6) return Number.POSITIVE_INFINITY;
+    const target = visibleBubbleTarget(k);
+    const mult = compact ? (k < 1.25 ? 0.95 : 1.1) : (k < 1.25 ? 1.2 : 1.35);
+    return Math.max(compact ? 44 : 90, Math.round(target * mult));
+  }
+
   function placeLabelLimit(k: number): number {
     if (compact) return 16;
     if (k < 1.8) return 14;
@@ -796,8 +803,8 @@ export function mountNercOrgMap(): void {
   }
 
   function declutterBucket(k: number): number {
-    if (k < 2) return Math.round(k * 4) / 4;
-    if (k < 8) return Math.round(k * 2) / 2;
+    if (k < 2.6) return Math.round(k * 2) / 2;
+    if (k < 8) return Math.round(k);
     return Math.round(k);
   }
 
@@ -812,7 +819,7 @@ export function mountNercOrgMap(): void {
     // dense clusters spread enough to tap and inspect individual entities.
     // (Land clamping separately bounds water drift.)
     const basePx = compact
-      ? k < 1.25 ? 46 : k < 2.2 ? 64 : k < 4 ? 78 : k < 7 ? 86 : k < 18 ? 96 : 108
+      ? k < 1.25 ? 22 : k < 2.2 ? 36 : k < 4 ? 58 : k < 7 ? 76 : k < 18 ? 92 : 108
       : k < 1.25 ? 68 : k < 2.2 ? 108 : k < 4 ? 148 : k < 7 ? 166 : k < 18 ? 190 : 216;
     const deepPx = compact ? 126 : 260;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
@@ -1156,8 +1163,9 @@ export function mountNercOrgMap(): void {
       o._dy = 0;
       if (o._x == null || o._y == null) continue;
       // Undisclosed dots are hidden this frame, so they neither move nor push
-      // anyone. At deep zoom every org's reveal threshold has passed, so all
-      // local dots participate and can spread before the non-overlap label gate.
+      // anyone. The low-zoom item cap below also keeps future/hidden candidates
+      // from pushing visible bubbles far away just to reserve space they will not
+      // actually occupy.
       if (o._frame !== "terr" && dotStrength(o, bucket) < RENDER_EPS) continue;
       const baseX = o._x * bucket + (o._rx ?? 0) * spiderScreenScale;
       const baseY = o._y * bucket + (o._ry ?? 0) * spiderScreenScale;
@@ -1185,13 +1193,21 @@ export function mountNercOrgMap(): void {
         b.o.role_count - a.o.role_count ||
         a.o.ncr_id.localeCompare(b.o.ncr_id),
     );
+    const itemLimit = declutterItemLimit(bucket);
+    if (items.length > itemLimit) {
+      const fixedItems = items.filter((it) => it.fixed);
+      const movableLimit = Math.max(0, itemLimit - fixedItems.length);
+      const movableItems = items.filter((it) => !it.fixed).slice(0, movableLimit);
+      items.length = 0;
+      items.push(...fixedItems, ...movableItems);
+    }
 
     const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
     const cell = Math.max(MAX_RADIUS * unitPerPx, maxR * 2 + 8 * unitPerPx);
     const looseT = deepDeclutterT(bucket);
     const basePasses = compact ? bucket < 2.2 ? 48 : 42 : bucket < 2.2 ? 104 : bucket < 4 ? 86 : 64;
     const passes = Math.round(basePasses + looseT * (compact ? 34 : 54));
-    const gap = (0.9 + looseT * 1.2) * unitPerPx;
+    const gap = 0;
 
     for (let pass = 0; pass < passes; pass++) {
       const grid = new Map<string, number[]>();
@@ -1465,7 +1481,7 @@ export function mountNercOrgMap(): void {
     // Bubble blockers are added only after a bubble earns a label. Lower-priority
     // candidates that fail placement are hidden, so they should not reserve space
     // or cause blank dots.
-    const bubblePad = (compact ? 0.8 : 0.75) * unitPerPx;
+    const bubblePad = 0;
     const bubbleBlockers: Array<{ id: string; x: number; y: number; r: number }> = [];
     const bubbleCircle = (o: Org): { x: number; y: number; r: number } | null => {
       if (o._sx == null || o._sy == null) return null;
