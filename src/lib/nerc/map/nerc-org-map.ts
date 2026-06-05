@@ -588,7 +588,7 @@ export function mountNercOrgMap(): void {
     // single zoom term scales everything; weight sets the relative size.
     const base = Math.max(2, RADIUS_SCALE(o.weight));
     const zoomT = smoothStep((k - 0.72) / 5);
-    const scale = compact ? 0.3 + 0.32 * zoomT : 0.33 + 0.34 * zoomT;
+    const scale = compact ? 0.31 + 0.36 * zoomT : 0.33 + 0.34 * zoomT;
     // Quieter dots (low strength = not yet "due" at this zoom) shrink a bit so
     // the important orgs read first; they fill back in as you zoom toward them.
     const strengthScale = 0.46 + dotStrength(o, k) * 0.54;
@@ -600,7 +600,7 @@ export function mountNercOrgMap(): void {
     const closeT = smoothStep((k - 2.8) / 8.2);
     const priorityT = smoothStep((orgPriority(o) - 32) / 42);
     const lowWeightT = smoothStep((14 - Math.min(o.weight, 14)) / 14);
-    const liftPx = (compact ? 7.5 : 10.5) * priorityT * (0.4 + lowWeightT * 0.6) * closeT;
+    const liftPx = (compact ? 10 : 10.5) * priorityT * (0.4 + lowWeightT * 0.6) * closeT;
     const lifted = grown + liftPx * unitPerPx;
     return Math.max((compact ? 1.8 : 1.5) * unitPerPx, lifted);
   }
@@ -669,7 +669,7 @@ export function mountNercOrgMap(): void {
   function nonGenerationRadiusFloor(o: Org, k: number): number {
     if (nonGenerationRoleCount(o) <= 0) return 0;
     const closeT = smoothStep((k - 1.8) / 6.2);
-    const marginPx = compact ? 0.75 + 1.05 * closeT : 0.9 + 1.45 * closeT;
+    const marginPx = compact ? 1.05 + 1.65 * closeT : 0.9 + 1.45 * closeT;
     return generationOnlyRadiusCap(k) + marginPx * unitPerPx;
   }
 
@@ -1673,7 +1673,8 @@ export function mountNercOrgMap(): void {
     const prList = present.get(PUERTO_RICO_STATE);
     if (prList?.length) {
       const [prW, prH] = boxSize("PR");
-      placeInBox("PR", "Puerto Rico", W - margin - prW, H - bottomMargin - prH, prW, prH, sortTerritory(prList));
+      const y = compact ? Math.min(H - bottomMargin - prH, H * 0.7) : H - bottomMargin - prH;
+      placeInBox("PR", "Puerto Rico", W - margin - prW, y, prW, prH, sortTerritory(prList));
     }
   }
 
