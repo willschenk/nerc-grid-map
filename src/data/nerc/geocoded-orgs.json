@@ -3,7 +3,7 @@
     {
       "ncr_id": "NCR-SEED-001",
       "entity_name": "PJM Interconnection, LLC",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "RC",
         "BA",
@@ -29,7 +29,7 @@
     {
       "ncr_id": "NCR-SEED-002",
       "entity_name": "Midcontinent Independent System Operator, Inc.",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "RC",
         "BA",
@@ -80,7 +80,7 @@
     {
       "ncr_id": "NCR-SEED-004",
       "entity_name": "Southwest Power Pool, Inc.",
-      "region": "SPP",
+      "region": "MRO",
       "roles": [
         "RC",
         "BA",
@@ -157,7 +157,7 @@
     {
       "ncr_id": "NCR-SEED-007",
       "entity_name": "Electric Reliability Council of Texas, Inc.",
-      "region": "TRE",
+      "region": "Texas RE",
       "roles": [
         "RC",
         "BA",
@@ -699,7 +699,7 @@
     {
       "ncr_id": "NCR-SEED-027",
       "entity_name": "Florida Power & Light Company",
-      "region": "FRCC",
+      "region": "SERC",
       "roles": [
         "BA",
         "TO",
@@ -729,7 +729,7 @@
     {
       "ncr_id": "NCR-SEED-028",
       "entity_name": "Duke Energy Florida, LLC",
-      "region": "FRCC",
+      "region": "SERC",
       "roles": [
         "BA",
         "TO",
@@ -757,7 +757,7 @@
     {
       "ncr_id": "NCR-SEED-029",
       "entity_name": "Tampa Electric Company",
-      "region": "FRCC",
+      "region": "SERC",
       "roles": [
         "BA",
         "TO",
@@ -784,7 +784,7 @@
     {
       "ncr_id": "NCR-SEED-030",
       "entity_name": "JEA",
-      "region": "FRCC",
+      "region": "SERC",
       "roles": [
         "BA",
         "TO",
@@ -811,7 +811,7 @@
     {
       "ncr_id": "NCR-SEED-031",
       "entity_name": "Virginia Electric and Power Company",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "TO",
         "TOP",
@@ -838,7 +838,7 @@
     {
       "ncr_id": "NCR-SEED-032",
       "entity_name": "Public Service Electric and Gas Company",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "TO",
         "TOP",
@@ -861,7 +861,7 @@
     {
       "ncr_id": "NCR-SEED-033",
       "entity_name": "Commonwealth Edison Company",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "TO",
         "TOP",
@@ -884,7 +884,7 @@
     {
       "ncr_id": "NCR-SEED-034",
       "entity_name": "DTE Electric Company",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "BA",
         "TO",
@@ -912,7 +912,7 @@
     {
       "ncr_id": "NCR-SEED-035",
       "entity_name": "Consumers Energy Company",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "TO",
         "TOP",
@@ -939,7 +939,7 @@
     {
       "ncr_id": "NCR-SEED-036",
       "entity_name": "American Electric Power Service Corporation",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "TOP",
         "TP",
@@ -963,7 +963,7 @@
     {
       "ncr_id": "NCR-SEED-037",
       "entity_name": "Indiana Michigan Power Company",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "TO",
         "TOP",
@@ -989,7 +989,7 @@
     {
       "ncr_id": "NCR-SEED-038",
       "entity_name": "Ohio Edison Company",
-      "region": "RFC",
+      "region": "RF",
       "roles": [
         "TO",
         "TOP",
@@ -1188,7 +1188,7 @@
     {
       "ncr_id": "NCR-SEED-046",
       "entity_name": "Southwestern Public Service Company",
-      "region": "SPP",
+      "region": "MRO",
       "roles": [
         "BA",
         "TO",
@@ -1215,7 +1215,7 @@
     {
       "ncr_id": "NCR-SEED-047",
       "entity_name": "Oklahoma Gas and Electric Company",
-      "region": "SPP",
+      "region": "MRO",
       "roles": [
         "TO",
         "TOP",
@@ -1241,7 +1241,7 @@
     {
       "ncr_id": "NCR-SEED-048",
       "entity_name": "Evergy Kansas Central, Inc.",
-      "region": "SPP",
+      "region": "MRO",
       "roles": [
         "BA",
         "TO",
@@ -1268,7 +1268,7 @@
     {
       "ncr_id": "NCR-SEED-049",
       "entity_name": "Nebraska Public Power District",
-      "region": "SPP",
+      "region": "MRO",
       "roles": [
         "BA",
         "GO",
@@ -1294,7 +1294,7 @@
     {
       "ncr_id": "NCR-SEED-050",
       "entity_name": "Oncor Electric Delivery Company LLC",
-      "region": "TRE",
+      "region": "Texas RE",
       "roles": [
         "TO",
         "TOP",
@@ -1317,7 +1317,7 @@
     {
       "ncr_id": "NCR-SEED-051",
       "entity_name": "CPS Energy",
-      "region": "TRE",
+      "region": "Texas RE",
       "roles": [
         "GO",
         "GOP",
@@ -1342,7 +1342,7 @@
     {
       "ncr_id": "NCR-SEED-052",
       "entity_name": "Lower Colorado River Authority",
-      "region": "TRE",
+      "region": "Texas RE",
       "roles": [
         "GO",
         "GOP",
@@ -1367,7 +1367,7 @@
     {
       "ncr_id": "NCR-SEED-053",
       "entity_name": "AEP Texas Inc.",
-      "region": "TRE",
+      "region": "Texas RE",
       "roles": [
         "TO",
         "TOP",
@@ -1468,7 +1468,7 @@
     {
       "ncr_id": "NCR-SEED-057",
       "entity_name": "Luminant Generation Company LLC",
-      "region": "TRE",
+      "region": "Texas RE",
       "roles": [
         "GO",
         "GOP"
@@ -1489,7 +1489,7 @@
     {
       "ncr_id": "NCR-SEED-058",
       "entity_name": "Calpine Corporation",
-      "region": "TRE",
+      "region": "Texas RE",
       "roles": [
         "GO",
         "GOP",
@@ -1511,7 +1511,7 @@
     {
       "ncr_id": "NCR-SEED-059",
       "entity_name": "Sunflower Electric Power Corporation",
-      "region": "SPP",
+      "region": "MRO",
       "roles": [
         "BA",
         "GO",

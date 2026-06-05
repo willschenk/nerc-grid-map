@@ -1639,8 +1639,18 @@ export function mountNercOrgMap(): void {
         if (o._y < minY) minY = o._y;
       }
       const hasDots = Number.isFinite(minX);
-      const lx = hasDots ? (minX + maxX) / 2 : x + boxW / 2;
       const ly = hasDots ? minY - (compact ? 11 : 10) * unitPerPx : y + labelH;
+      // Keep the centred region name inside the viewBox at the overview (base
+      // scale): a far-corner cluster like the Virgin Islands would otherwise run
+      // its long label off the right edge. Deeper in, territories pan off-screen
+      // and the SVG clips them, so clamping the base position is enough.
+      const rawLx = hasDots ? (minX + maxX) / 2 : x + boxW / 2;
+      const labelHalf = (label.length * (compact ? 11 : 10.5) * unitPerPx * 0.55) / 2;
+      const edge = 4 * unitPerPx;
+      const lx =
+        labelHalf * 2 >= W - edge * 2
+          ? W / 2
+          : Math.min(W - edge - labelHalf, Math.max(edge + labelHalf, rawLx));
       territoryBoxes.push({ code, label, x, y, w: boxW, h: boxH, lx, ly });
     }
 
@@ -1763,10 +1773,10 @@ export function mountNercOrgMap(): void {
       top,
       note,
       statSection(
-        "Reliability region",
+        "Regional Entity",
         tally(
           orgs.map((o) => o.region),
-          "No Reliability Entity",
+          "No Regional Entity",
         ),
         (k) => k,
       ),
@@ -1799,7 +1809,7 @@ export function mountNercOrgMap(): void {
     tooltip.append(
       createEl("div", "tt-acronym", orgAcronym(o)),
       createEl("div", "tt-name", o.entity_name),
-      createEl("div", "tt-sub", `${o.region ?? "No Reliability Entity"} | ${typeLabel(o.org_type)} | ${o.role_count} roles | weight ${o.weight}`),
+      createEl("div", "tt-sub", `${o.region ?? "No Regional Entity"} | ${typeLabel(o.org_type)} | ${o.role_count} roles | weight ${o.weight}`),
     );
 
     const chips = createEl("div", "nerc-tt-pills");
@@ -1897,7 +1907,7 @@ export function mountNercOrgMap(): void {
     });
     addDlRow(dl, `Roles (${o.role_count})`, roles);
     addDlRow(dl, "Role weight", `${o.weight}${o.is_iso_rto ? " | ISO/RTO scale" : ""}`);
-    addDlRow(dl, "NERC region", o.region ?? "No Reliability Entity");
+    addDlRow(dl, "Regional Entity", o.region ?? "No Regional Entity");
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     if (o.geo_notes) addDlRow(dl, "Notes", o.geo_notes);

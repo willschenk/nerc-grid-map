@@ -51,5 +51,5 @@ mid-transition. If you discover a new seed↔twin pair, add it to `seed-twins.js
 - EIA-861 / plant-name rows (lots of wind/solar LLCs) are fine to place at the plant
   if no corporate HQ exists — note it and mark MEDIUM. Guessing from the name + region
   is explicitly acceptable; never leave lat/lng null.
-- NERC region is the strongest geographic constraint. A found address that contradicts
-  the region should downgrade confidence, not override the region.
+- Regional Entity is the strongest geographic constraint. A found address that
+  contradicts the region should downgrade confidence, not override the region.

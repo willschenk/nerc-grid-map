@@ -8,6 +8,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { orgWeight, roleSetColor, isPrivate } from "../../src/lib/nerc/enrich.mjs";
+import { CURRENT_REGIONAL_ENTITIES } from "../../src/lib/nerc/roles.mjs";
 
 const file = resolve(process.argv[2] || "public/nerc/orgs.json");
 const data = JSON.parse(readFileSync(file, "utf8"));
@@ -18,6 +19,7 @@ const warnings = [];
 const COLOR_RE = /^hsl\(\d{1,3}, \d{1,3}%, \d{1,3}%\)$/;
 const isSupplemental = (o) => o.nerc_registered === false;
 const isTerritoryInset = (o) => o.out_of_footprint === true;
+const validRegions = new Set(CURRENT_REGIONAL_ENTITIES);
 
 // 1. Every projected record has non-null coordinates. Territory inset records
 // are placed schematically by the renderer instead of by lat/lng.
@@ -105,6 +107,13 @@ const conf = {};
 for (const o of orgs) conf[o.geo_confidence] = (conf[o.geo_confidence] ?? 0) + 1;
 const estPct = ((conf.ESTIMATED ?? 0) / orgs.length) * 100;
 if (estPct >= 30) warnings.push(`ESTIMATED is ${estPct.toFixed(1)}% (>= 30%); agent may be under-searching`);
+
+// 12. Regional Entity assignment must use current NERC Regional Entities.
+for (const o of orgs) {
+  if (o.region != null && !validRegions.has(o.region)) {
+    errors.push(`invalid Regional Entity: ${o.ncr_id} ${o.entity_name} region="${o.region}"`);
+  }
+}
 
 // Acceptance: >= 60% HIGH or MEDIUM.
 const hiMed = ((conf.HIGH ?? 0) + (conf.MEDIUM ?? 0)) / orgs.length * 100;

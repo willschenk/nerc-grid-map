@@ -1,7 +1,7 @@
 // NERC org data model. (Spec Part 2.2.) The runtime data lives in public/orgs.json,
 // produced by scripts/nerc/build-orgs.mjs via enrichOrg().
 
-export type NERCRegion = "MRO" | "WECC" | "SERC" | "RFC" | "NPCC" | "TRE" | "FRCC" | "SPP";
+export type NERCRegion = "MRO" | "WECC" | "SERC" | "RF" | "NPCC" | "Texas RE";
 
 export type RoleTag =
   | "RC" | "BA" | "PC" | "TOP" | "TSP" | "TP"

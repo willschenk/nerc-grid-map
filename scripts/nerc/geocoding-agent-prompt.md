@@ -80,8 +80,8 @@ SEARCH ORDER (stop at first HIGH/MEDIUM):
    - accept only type office/utility/industrial AND state matches region.
 9. ESTIMATE from clues: state/abbr in name -> state centroid; city in name -> that city;
    geographic word (Pacific/Gulf/Mountain) -> implied area; known parent -> parent metro;
-   else NERC region centroid: WECC 40.5,-114.0 | MRO 44.5,-96.5 | SPP 37.5,-97.5 |
-   SERC 34.5,-86.5 | RFC 40.5,-79.5 | NPCC 43.5,-73.5 | TRE 31.5,-97.5 | FRCC 28.0,-82.5.
+   else current Regional Entity centroid: WECC 40.5,-114.0 | MRO 44.5,-96.5 |
+   SERC 34.5,-86.5 | RF 40.5,-79.5 | NPCC 43.5,-73.5 | Texas RE 31.5,-97.5.
 
 HARD RULES:
 1. Every record gets coordinates. Never null. Estimate before giving up.
@@ -89,8 +89,9 @@ HARD RULES:
 3. Never use a PO Box as the location. Keep searching or estimate.
 4. Never place a dot in the ocean or outside North America (unless CA/MX). Discard bad
    geocodes and fall back to estimation.
-5. NERC region is the strongest constraint. If a found address contradicts the region,
-   downgrade confidence, note the conflict, and use the region-consistent option.
+5. Regional Entity is the strongest constraint. If a found address contradicts the
+   Regional Entity, downgrade confidence, note the conflict, and use the
+   region-consistent option.
 6. Name inference is fine for ESTIMATED. Document the reasoning in notes.
 7. Subsidiaries use their own geography, not the parent's ("Duke Energy Indiana" -> Indiana).
 8. Round lat/lng to exactly 4 decimals.
@@ -98,7 +99,7 @@ HARD RULES:
 
 SELF-CHECK BEFORE OUTPUT:
 - lat in [24,72], lng in [-180,-50] (North America).
-- state is consistent with the NERC region.
+- state is consistent with the Regional Entity.
 - not a PO Box; not null.
 - confidence=HIGH implies source_url is set.
 - acronym is non-empty and readable at map zoom.

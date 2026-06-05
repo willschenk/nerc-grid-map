@@ -107,15 +107,49 @@ export const RAW_ROLE_MAP = {
 // Every valid normalized tag.
 export const KNOWN_ROLES = Object.keys(ROLE_WEIGHTS);
 
-// NERC region centroids for last-resort geocoding estimation. (Spec Part 1.5 step 8.)
+// Current NERC Regional Entities. FRCC, TRE, and RFC are historical or alternate
+// labels in older records; normalize them before rendering/QA. SPP RE dissolved
+// into both MRO and SERC, so it must be corrected per entity instead of aliased.
+export const CURRENT_REGIONAL_ENTITIES = ["MRO", "NPCC", "RF", "SERC", "Texas RE", "WECC"];
+
+/** @type {Record<string, string>} */
+export const REGION_ALIASES = {
+  MRO: "MRO",
+  "MIDWEST RELIABILITY ORGANIZATION": "MRO",
+  NPCC: "NPCC",
+  "NORTHEAST POWER COORDINATING COUNCIL": "NPCC",
+  RF: "RF",
+  RFC: "RF",
+  RELIABILITYFIRST: "RF",
+  "RELIABILITY FIRST": "RF",
+  "RELIABILITYFIRST CORPORATION": "RF",
+  SERC: "SERC",
+  "SERC RELIABILITY CORPORATION": "SERC",
+  FRCC: "SERC",
+  "FLORIDA RELIABILITY COORDINATING COUNCIL": "SERC",
+  "TEXAS RE": "Texas RE",
+  TRE: "Texas RE",
+  "TEXAS RELIABILITY ENTITY": "Texas RE",
+  "TEXAS RELIABILITY ENTITY, INC.": "Texas RE",
+  WECC: "WECC",
+  "WESTERN ELECTRICITY COORDINATING COUNCIL": "WECC",
+};
+
+export function normalizeRegion(region) {
+  const raw = String(region ?? "").trim();
+  if (!raw) return null;
+  const key = raw.toUpperCase().replace(/\s+/g, " ");
+  return REGION_ALIASES[key] ?? raw;
+}
+
+// Current NERC Regional Entity centroids for last-resort geocoding estimation.
+// (Spec Part 1.5 step 8.)
 /** @type {Record<string, number[]>} */
 export const REGION_CENTROIDS = {
   WECC: [40.5, -114.0],
   MRO: [44.5, -96.5],
-  SPP: [37.5, -97.5],
   SERC: [34.5, -86.5],
-  RFC: [40.5, -79.5],
+  RF: [40.5, -79.5],
   NPCC: [43.5, -73.5],
-  TRE: [31.5, -97.5],
-  FRCC: [28.0, -82.5],
+  "Texas RE": [31.5, -97.5],
 };

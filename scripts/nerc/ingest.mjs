@@ -10,6 +10,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { normalizeRoles } from "../../src/lib/nerc/enrich.mjs";
+import { normalizeRegion } from "../../src/lib/nerc/roles.mjs";
 
 const argPath = process.argv[2];
 const outPath = process.argv[3] || "src/data/nerc/ingested-records.json";
@@ -127,7 +128,7 @@ for (let r = 1; r < rows.length; r++) {
   records.push({
     ncr_id,
     entity_name,
-    region: norm(row[regionCol]) || null,
+    region: normalizeRegion(row[regionCol]),
     roles: normalizeRoles(rawRoles),
   });
 }

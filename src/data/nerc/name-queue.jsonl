@@ -1,62 +1,62 @@
-{"ncr_id":"NCR-SEED-002","entity_name":"Midcontinent Independent System Operator, Inc.","acronym":null,"region":"RFC","roles":["RC","BA","TOP","TP","PC","TSP","RP"],"weight":38,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-001","entity_name":"PJM Interconnection, LLC","acronym":null,"region":"RFC","roles":["RC","BA","TOP","TP","PC","TSP","RP"],"weight":38,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-002","entity_name":"Midcontinent Independent System Operator, Inc.","acronym":null,"region":"RF","roles":["RC","BA","TOP","TP","PC","TSP","RP"],"weight":38,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-001","entity_name":"PJM Interconnection, LLC","acronym":null,"region":"RF","roles":["RC","BA","TOP","TP","PC","TSP","RP"],"weight":38,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-024","entity_name":"Southern Company Services, Inc.","acronym":null,"region":"SERC","roles":["RC","BA","TOP","TP","PC","TSP","RP"],"weight":38,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-003","entity_name":"California Independent System Operator","acronym":null,"region":"WECC","roles":["RC","BA","TOP","TP","PC","TSP"],"weight":36,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-007","entity_name":"Electric Reliability Council of Texas, Inc.","acronym":null,"region":"TRE","roles":["RC","BA","TOP","TP","PC","TSP"],"weight":36,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-007","entity_name":"Electric Reliability Council of Texas, Inc.","acronym":null,"region":"Texas RE","roles":["RC","BA","TOP","TP","PC","TSP"],"weight":36,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-005","entity_name":"ISO New England Inc.","acronym":null,"region":"NPCC","roles":["RC","BA","TOP","TP","PC","TSP"],"weight":36,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-006","entity_name":"New York Independent System Operator","acronym":null,"region":"NPCC","roles":["RC","BA","TOP","TP","PC","TSP"],"weight":36,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-020","entity_name":"Duke Energy Carolinas, LLC","acronym":null,"region":"SERC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP","PC","RP"],"weight":33,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-027","entity_name":"Florida Power & Light Company","acronym":null,"region":"FRCC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP","PC","RP"],"weight":33,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-027","entity_name":"Florida Power & Light Company","acronym":null,"region":"SERC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP","PC","RP"],"weight":33,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-054","entity_name":"Bonneville Power Administration","acronym":null,"region":"WECC","roles":["BA","TO","TOP","DP","GOP","TSP","TP","PC","RP"],"weight":31,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-025","entity_name":"Tennessee Valley Authority","acronym":null,"region":"SERC","roles":["BA","TO","TOP","GO","GOP","TSP","TP","PC","RP"],"weight":31,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-015","entity_name":"PacifiCorp","acronym":null,"region":"WECC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP","RP"],"weight":27,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-034","entity_name":"DTE Electric Company","acronym":null,"region":"RFC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-028","entity_name":"Duke Energy Florida, LLC","acronym":null,"region":"FRCC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-034","entity_name":"DTE Electric Company","acronym":null,"region":"RF","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-028","entity_name":"Duke Energy Florida, LLC","acronym":null,"region":"SERC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-021","entity_name":"Duke Energy Progress, LLC","acronym":null,"region":"SERC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-014","entity_name":"Idaho Power Company","acronym":null,"region":"WECC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-013","entity_name":"Nevada Power Company","acronym":null,"region":"WECC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-018","entity_name":"Public Service Company of New Mexico","acronym":null,"region":"WECC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-016","entity_name":"Puget Sound Energy, Inc.","acronym":null,"region":"WECC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":25,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-046","entity_name":"Southwestern Public Service Company","acronym":null,"region":"SPP","roles":["BA","TO","TOP","GO","GOP","LSE","TSP","TP"],"weight":24,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-048","entity_name":"Evergy Kansas Central, Inc.","acronym":null,"region":"SPP","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":22,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-030","entity_name":"JEA","acronym":null,"region":"FRCC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":22,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-046","entity_name":"Southwestern Public Service Company","acronym":null,"region":"MRO","roles":["BA","TO","TOP","GO","GOP","LSE","TSP","TP"],"weight":24,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-048","entity_name":"Evergy Kansas Central, Inc.","acronym":null,"region":"MRO","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":22,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-030","entity_name":"JEA","acronym":null,"region":"SERC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":22,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-045","entity_name":"Omaha Public Power District","acronym":null,"region":"MRO","roles":["BA","GO","GOP","TO","TOP","DP","LSE","TSP"],"weight":22,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-029","entity_name":"Tampa Electric Company","acronym":null,"region":"FRCC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":22,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-049","entity_name":"Nebraska Public Power District","acronym":null,"region":"SPP","roles":["BA","GO","GOP","TO","TOP","TSP","LSE"],"weight":21,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-029","entity_name":"Tampa Electric Company","acronym":null,"region":"SERC","roles":["BA","TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":22,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-049","entity_name":"Nebraska Public Power District","acronym":null,"region":"MRO","roles":["BA","GO","GOP","TO","TOP","TSP","LSE"],"weight":21,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-026","entity_name":"Associated Electric Cooperative, Inc.","acronym":null,"region":"SERC","roles":["BA","GO","GOP","TO","TOP","TSP"],"weight":20,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-059","entity_name":"Sunflower Electric Power Corporation","acronym":null,"region":"SPP","roles":["BA","GO","GOP","TO","TOP","TSP"],"weight":20,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-036","entity_name":"American Electric Power Service Corporation","acronym":null,"region":"RFC","roles":["TOP","TP","TSP","PC","RP"],"weight":20,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-059","entity_name":"Sunflower Electric Power Corporation","acronym":null,"region":"MRO","roles":["BA","GO","GOP","TO","TOP","TSP"],"weight":20,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-036","entity_name":"American Electric Power Service Corporation","acronym":null,"region":"RF","roles":["TOP","TP","TSP","PC","RP"],"weight":20,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-011","entity_name":"Arizona Public Service Company","acronym":null,"region":"WECC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-035","entity_name":"Consumers Energy Company","acronym":null,"region":"RFC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-035","entity_name":"Consumers Energy Company","acronym":null,"region":"RF","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-042","entity_name":"Northern States Power Company - Minnesota","acronym":null,"region":"MRO","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-008","entity_name":"Pacific Gas and Electric Company","acronym":null,"region":"WECC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-017","entity_name":"Portland General Electric Company","acronym":null,"region":"WECC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-012","entity_name":"Public Service Company of Colorado","acronym":null,"region":"WECC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-010","entity_name":"San Diego Gas & Electric Company","acronym":null,"region":"WECC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-031","entity_name":"Virginia Electric and Power Company","acronym":null,"region":"RFC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-031","entity_name":"Virginia Electric and Power Company","acronym":null,"region":"RF","roles":["TO","TOP","DP","GO","GOP","LSE","TSP","TP"],"weight":17,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-009","entity_name":"Southern California Edison Company","acronym":null,"region":"WECC","roles":["TO","TOP","DP","GOP","LSE","TSP","TP"],"weight":16,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-056","entity_name":"Tri-State Generation and Transmission Association, Inc.","acronym":null,"region":"WECC","roles":["GO","GOP","TO","TOP","TSP","TP","PSE"],"weight":16,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-052","entity_name":"Lower Colorado River Authority","acronym":null,"region":"TRE","roles":["GO","GOP","TO","TOP","TSP","TP"],"weight":15,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-052","entity_name":"Lower Colorado River Authority","acronym":null,"region":"Texas RE","roles":["GO","GOP","TO","TOP","TSP","TP"],"weight":15,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-041","entity_name":"New York Power Authority","acronym":null,"region":"NPCC","roles":["GO","GOP","TO","TOP","TSP","TP"],"weight":15,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-023","entity_name":"Alabama Power Company","acronym":null,"region":"SERC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":14,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-019","entity_name":"El Paso Electric Company","acronym":null,"region":"WECC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":14,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-022","entity_name":"Georgia Power Company","acronym":null,"region":"SERC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":14,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-037","entity_name":"Indiana Michigan Power Company","acronym":null,"region":"RFC","roles":["TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":14,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-047","entity_name":"Oklahoma Gas and Electric Company","acronym":null,"region":"SPP","roles":["TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":14,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-037","entity_name":"Indiana Michigan Power Company","acronym":null,"region":"RF","roles":["TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":14,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-047","entity_name":"Oklahoma Gas and Electric Company","acronym":null,"region":"MRO","roles":["TO","TOP","DP","GO","GOP","LSE","TSP"],"weight":14,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-055","entity_name":"Western Area Power Administration","acronym":null,"region":"WECC","roles":["TO","TOP","TSP","TP","GOP"],"weight":14,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-044","entity_name":"Great River Energy","acronym":null,"region":"MRO","roles":["GO","GOP","TO","TOP","TSP","LSE"],"weight":13,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-043","entity_name":"Basin Electric Power Cooperative","acronym":null,"region":"MRO","roles":["GO","GOP","TO","TOP","TSP"],"weight":12,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-060","entity_name":"Deseret Generation & Transmission Co-operative","acronym":null,"region":"WECC","roles":["GO","GOP","TO","TOP","TSP"],"weight":12,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-038","entity_name":"Ohio Edison Company","acronym":null,"region":"RFC","roles":["TO","TOP","DP","LSE","TSP"],"weight":12,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-038","entity_name":"Ohio Edison Company","acronym":null,"region":"RF","roles":["TO","TOP","DP","LSE","TSP"],"weight":12,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-039","entity_name":"The Connecticut Light and Power Company","acronym":null,"region":"NPCC","roles":["TO","TOP","DP","LSE","TSP"],"weight":12,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-053","entity_name":"AEP Texas Inc.","acronym":null,"region":"TRE","roles":["TO","TOP","DP","TSP"],"weight":11,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-050","entity_name":"Oncor Electric Delivery Company LLC","acronym":null,"region":"TRE","roles":["TO","TOP","DP","TSP"],"weight":11,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-051","entity_name":"CPS Energy","acronym":null,"region":"TRE","roles":["GO","GOP","TO","TOP","DP","LSE"],"weight":10,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-033","entity_name":"Commonwealth Edison Company","acronym":null,"region":"RFC","roles":["TO","TOP","DP","LSE"],"weight":8,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-053","entity_name":"AEP Texas Inc.","acronym":null,"region":"Texas RE","roles":["TO","TOP","DP","TSP"],"weight":11,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-050","entity_name":"Oncor Electric Delivery Company LLC","acronym":null,"region":"Texas RE","roles":["TO","TOP","DP","TSP"],"weight":11,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-051","entity_name":"CPS Energy","acronym":null,"region":"Texas RE","roles":["GO","GOP","TO","TOP","DP","LSE"],"weight":10,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-033","entity_name":"Commonwealth Edison Company","acronym":null,"region":"RF","roles":["TO","TOP","DP","LSE"],"weight":8,"is_iso_rto":true}
 {"ncr_id":"NCR-SEED-040","entity_name":"Niagara Mohawk Power Corporation","acronym":null,"region":"NPCC","roles":["TO","TOP","DP","LSE"],"weight":8,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-032","entity_name":"Public Service Electric and Gas Company","acronym":null,"region":"RFC","roles":["TO","TOP","DP","LSE"],"weight":8,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-058","entity_name":"Calpine Corporation","acronym":null,"region":"TRE","roles":["GO","GOP","PSE"],"weight":3,"is_iso_rto":true}
-{"ncr_id":"NCR-SEED-057","entity_name":"Luminant Generation Company LLC","acronym":null,"region":"TRE","roles":["GO","GOP"],"weight":2,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-032","entity_name":"Public Service Electric and Gas Company","acronym":null,"region":"RF","roles":["TO","TOP","DP","LSE"],"weight":8,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-058","entity_name":"Calpine Corporation","acronym":null,"region":"Texas RE","roles":["GO","GOP","PSE"],"weight":3,"is_iso_rto":true}
+{"ncr_id":"NCR-SEED-057","entity_name":"Luminant Generation Company LLC","acronym":null,"region":"Texas RE","roles":["GO","GOP"],"weight":2,"is_iso_rto":true}
 {"ncr_id":"NCR00024","entity_name":"Florida Power & Light Co.","acronym":"FPL","region":"SERC","roles":["BA","DP","GO","GOP","PC","RC","RP","TO","TOP","TP","TSP"],"weight":42,"is_iso_rto":true}
 {"ncr_id":"NCR01029","entity_name":"Saskatchewan Power Corporation","acronym":"SaskPower","region":"MRO","roles":["BA","DP","GO","GOP","PC","RC","RP","TO","TOP","TP","TSP"],"weight":42,"is_iso_rto":true}
 {"ncr_id":"NCR07155","entity_name":"New Brunswick Power Corporation","acronym":"NB Power","region":"NPCC","roles":["BA","GO","GOP","PC","RC","RP","RSG","TO","TOP","TSP"],"weight":40,"is_iso_rto":true}

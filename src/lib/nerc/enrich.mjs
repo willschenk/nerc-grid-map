@@ -8,6 +8,7 @@ import {
   RAW_ROLE_MAP,
   KNOWN_ROLES,
   PUBLIC_ROLES,
+  normalizeRegion,
 } from "./roles.mjs";
 
 const KNOWN = new Set(KNOWN_ROLES);
@@ -264,7 +265,7 @@ export function enrichOrg(rec) {
     name_major: rec.name_major === true,
 
     // Classification
-    region: rec.region ?? null,
+    region: normalizeRegion(rec.region),
     roles,
     role_count: roles.length,
     is_private: isPrivate(roles),
