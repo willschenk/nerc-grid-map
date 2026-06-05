@@ -1,33 +1,3 @@
-{"ncr_id":"NCR13175","entity_name":"Sierra Pinta Energy Storage, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13263","entity_name":"Siete Solar, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR12173","entity_name":"Sigurd Solar LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR05392","entity_name":"Silicon Valley Power","region":"WECC","roles":["DP","GO","GOP","TO","TOP","TP"]}
-{"ncr_id":"NCR13070","entity_name":"Silver Peak Solar, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13104","entity_name":"Silver Sage Windpower, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13163","entity_name":"Silver State Solar Power North LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR12522","entity_name":"SJS 1 Storage, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13377","entity_name":"Skysol, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13203","entity_name":"SloughHouse Solar, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13361","entity_name":"Sol Orchard Imperial 1, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13250","entity_name":"Solar Alpine LLC","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR13481","entity_name":"Solar of Alamosa LLC","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR12480","entity_name":"Solar Partners XI, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR11549","entity_name":"Solar Star California XIII, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR11424","entity_name":"Solar Star California XIX, LLC","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR11704","entity_name":"Solar Star California XLI, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR11432","entity_name":"Solar Star California XX, LLC","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR13351","entity_name":"Solar Star Colorado III, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR13251","entity_name":"Solar Star Lost Hills LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR12324","entity_name":"Sonoran West Solar Holdings, LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR11054","entity_name":"South Feather Power Project","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR05398","entity_name":"Southern California Edison Company","region":"WECC","roles":["DP","GO","GOP","RP","TO","TOP","TP"]}
-{"ncr_id":"NCR11396","entity_name":"Southern Power Company","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR13021","entity_name":"Spanish Peaks Solar LLC","region":"WECC","roles":["GO"]}
-{"ncr_id":"NCR11557","entity_name":"SPI Anderson 2","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR05529","entity_name":"Spindle Hill Energy LLC","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR12252","entity_name":"Spring Canyon Energy II LLC","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR12253","entity_name":"Spring Canyon Energy III LLC","region":"WECC","roles":["GO","GOP"]}
-{"ncr_id":"NCR11529","entity_name":"Spring Canyon Energy LLC","region":"WECC","roles":["GO","GOP"]}
 {"ncr_id":"NCR13252","entity_name":"SR McNeal, LLC","region":"WECC","roles":["GO"]}
 {"ncr_id":"NCR13253","entity_name":"SR Rattlesnake, LLC","region":"WECC","roles":["GO"]}
 {"ncr_id":"NCR13514","entity_name":"SSI O&M, LLC","region":"WECC","roles":["GOP"]}
