@@ -98,19 +98,15 @@ const AUTHORITY_ROLES = new Set(["RC", "BA", "PC", "TOP", "TO", "TSP", "TP", "RS
 const PUBLIC_ROLES = new Set(["DP", "LSE", "PSE"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 
-// Out-of-footprint U.S. territories, shown as labelled insets (no mainland
-// coordinates to project). Order = how they stack into the bottom-right corner.
-// Schematic grid-box insets for the far-Pacific territories with no nearby
-// mainland geography (Guam, Marianas, Samoa) plus Puerto Rico. The U.S. Virgin
-// Islands are handled separately (geoVirginIslands) — projected to their true
-// Caribbean position off the SE corner rather than a grid box.
-const TERRITORIES: Array<{ code: string; label: string }> = [
-  { code: "PR", label: "Puerto Rico" },
-  { code: "GU", label: "Guam" },
-  { code: "MP", label: "N. Mariana Is." },
-  { code: "AS", label: "American Samoa" },
+// Out-of-footprint U.S. territories: labelled Mercator insets (base coordinates;
+// the inset group rides the zoom transform). VI sits off the SE corner; PR and
+// the Pacific territories stack in the bottom-right.
+const TERRITORY_INSETS: Array<{ code: string; label: string; states: string[] }> = [
+  { code: "PR", label: "Puerto Rico", states: ["PR"] },
+  { code: "GU", label: "Guam", states: ["GU"] },
+  { code: "MP", label: "N. Mariana Is.", states: ["MP"] },
+  { code: "AS", label: "American Samoa", states: ["AS"] },
 ];
-// State code for the Virgin Islands, projected into its own Caribbean inset.
 const VI_CODE = "VI";
 
 // Canadian province label anchors (rough interior points), drawn faintly on the
@@ -384,12 +380,6 @@ export function mountNercOrgMap(): void {
   // after fitSize — so Canadian land and entities line up north of the border.
   const canadaProj = geoConicEqualArea().rotate([96, 0]).center([-0.6, 38.7]).parallels([29.5, 45.5]);
   const canadaPath = geoPath(canadaProj);
-  // U.S. Virgin Islands sit in the Caribbean (~17.7N, 64.8W) — off the bottom of
-  // the Albers-USA footprint, like Alaska/Hawaii in a standard composite. We give
-  // them their own little Mercator inset and translate it to a sensible spot off
-  // the SE corner (below Florida), so they read in roughly correct geography
-  // instead of a schematic grid box. Scale/translate are set per project().
-  const viProj = geoMercator();
 
   let transform: ZoomTransform = zoomIdentity;
   let zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> | null = null;
@@ -598,13 +588,18 @@ export function mountNercOrgMap(): void {
   }
 
   function visualRadius(o: Org, k: number): number {
+    // Size principle: keep the whole field compact at the overview (so big orgs
+    // are prominent but don't swamp neighbours or collide), then let dots grow
+    // toward their full weight-based size as you zoom in and there's room. A
+    // single zoom term scales everything; weight sets the relative size.
     const base = Math.max(2, RADIUS_SCALE(o.weight));
-    const overviewScale = compact
-      ? 0.48 + 0.38 * smoothStep((k - 0.72) / 4.3)
-      : 0.56 + 0.44 * smoothStep((k - 0.72) / 4.3);
-    const strengthScale = 0.34 + dotStrength(o, k) * 0.66;
-    const grown = base * overviewScale * Math.pow(k, 0.08) * strengthScale;
-    return Math.max((compact ? 1.9 : 1.6) * unitPerPx, compact ? grown : Math.min(grown, base + 4 * unitPerPx));
+    const zoomT = smoothStep((k - 0.72) / 5);
+    const scale = compact ? 0.3 + 0.32 * zoomT : 0.33 + 0.34 * zoomT;
+    // Quieter dots (low strength = not yet "due" at this zoom) shrink a bit so
+    // the important orgs read first; they fill back in as you zoom toward them.
+    const strengthScale = 0.46 + dotStrength(o, k) * 0.54;
+    const grown = base * scale * strengthScale;
+    return Math.max((compact ? 1.8 : 1.5) * unitPerPx, grown);
   }
 
   // Distance (in viewBox units) at which a dot counts as fully "isolated" — its
@@ -712,16 +707,21 @@ export function mountNercOrgMap(): void {
     return Math.round(k * 2) / 2;
   }
 
+  function deepDeclutterT(k: number): number {
+    return smoothStep((k - 8) / 28);
+  }
+
   function maxDeclutterOffset(k: number): number {
     // Tight when zoomed out so dots sit close to their true location — accept
     // more overlap/obfuscation of small orgs at the overview rather than letting
-    // them drift far from where they actually are. Loosens as you zoom in and the
-    // map spreads across more screen, opening room for orgs to claim space.
+    // them drift far from where they actually are. Loosens once deeply zoomed so
+    // dense clusters spread enough to tap and inspect individual entities.
     // (Land clamping separately bounds water drift.)
-    const px = compact
+    const basePx = compact
       ? k < 1.25 ? 40 : k < 2.2 ? 52 : k < 4 ? 56 : k < 7 ? 46 : 34
       : k < 1.25 ? 54 : k < 2.2 ? 78 : k < 4 ? 96 : k < 7 ? 78 : 58;
-    return px * unitPerPx;
+    const deepPx = compact ? 116 : 176;
+    return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
   // _dx/_dy are solved in screen-space SVG units. Dividing by k keeps the
@@ -841,7 +841,7 @@ export function mountNercOrgMap(): void {
       o._dx = 0;
       o._dy = 0;
       if (o.out_of_footprint) {
-        o._frame = "terr"; // positioned by layoutTerritories()
+        o._frame = "terr"; // positioned by layoutTerritoryInsets()
         continue;
       }
       if (o.lng == null || o.lat == null) {
@@ -861,9 +861,9 @@ export function mountNercOrgMap(): void {
       o._y = p[1];
     }
 
-    layoutTerritories();
-    layoutVirginIslands();
+    layoutTerritoryInsets();
     drawTerritoryFrames();
+    placeableOrgs = orgs.filter((o) => o._x != null && o._y != null);
     assignSpiderOffsets();
     positionOrgMarks(transform.k, true);
     computeLandLabels();
@@ -999,13 +999,15 @@ export function mountNercOrgMap(): void {
       const strength = dotStrength(o, bucket);
       const protectedDot = fixed || strength >= 0.68 || priority >= 32 || o.weight >= 18 || o.is_iso_rto;
       const visualR = renderedRadius(o, bucket);
+      const looseT = deepDeclutterT(bucket);
+      const softCollision = visualR * (0.42 + strength * 0.42);
       items.push({
         o,
         baseX,
         baseY,
         x: baseX,
         y: baseY,
-        r: protectedDot ? visualR : visualR * (0.42 + strength * 0.42),
+        r: protectedDot ? visualR : softCollision + (visualR - softCollision) * looseT,
         mass: fixed ? 1000 : protectedDot ? 1 + priority / 18 + visualR / 14 : 0.55 + priority / 42 + strength,
         fixed,
       });
@@ -1022,8 +1024,10 @@ export function mountNercOrgMap(): void {
 
     const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
     const cell = Math.max(MAX_RADIUS * unitPerPx, maxR * 2 + 8 * unitPerPx);
-    const passes = compact ? 32 : bucket < 2.2 ? 80 : bucket < 4 ? 54 : 34;
-    const gap = 1.8 * unitPerPx;
+    const looseT = deepDeclutterT(bucket);
+    const basePasses = compact ? 32 : bucket < 2.2 ? 80 : bucket < 4 ? 54 : 34;
+    const passes = Math.round(basePasses + looseT * (compact ? 22 : 34));
+    const gap = (1.8 + looseT * 2.2) * unitPerPx;
 
     for (let pass = 0; pass < passes; pass++) {
       const grid = new Map<string, number[]>();
@@ -1077,7 +1081,7 @@ export function mountNercOrgMap(): void {
     // zoomed out (no 1000-mile-offshore dots), looser as you zoom in and the
     // coast itself spreads across more screen. ("80% into the water" — coastal
     // dots can sit just offshore, never far out to sea.)
-    const waterBudget = (compact ? 7 : 10) + Math.max(0, bucket - 1) * 4;
+    const waterBudget = (compact ? 7 : 10) + Math.max(0, bucket - 1) * 4 + looseT * (compact ? 18 : 28);
     for (const it of items) {
       if (it.fixed) continue;
       let dx = it.x - it.baseX;
@@ -1095,111 +1099,6 @@ export function mountNercOrgMap(): void {
       const [vx, vy] = clampToLand(anchorX, anchorY, anchorX + dx / bucket, anchorY + dy / bucket, waterBudget);
       it.o._dx = (vx - anchorX) * bucket;
       it.o._dy = (vy - anchorY) * bucket;
-    }
-  }
-
-  // Lay each present territory's orgs into a small grid inside a labelled box,
-  // stacking the boxes into the bottom-right corner (base coordinates; the inset
-  // group rides the zoom transform like the Alaska/Hawaii insets).
-  function layoutTerritories(): void {
-    territoryBoxes = [];
-    const present = new Map<string, Org[]>();
-    for (const o of orgs) {
-      // VI is projected to its true Caribbean position by layoutVirginIslands().
-      if (o.state === VI_CODE && o.out_of_footprint) continue;
-      if (!o.out_of_footprint || !o.state) {
-        if (o.out_of_footprint) {
-          o._x = undefined;
-          o._y = undefined;
-        }
-        continue;
-      }
-      const arr = present.get(o.state);
-      if (arr) arr.push(o);
-      else present.set(o.state, [o]);
-    }
-    const groups = TERRITORIES.filter((t) => present.has(t.code));
-    if (!groups.length) return;
-
-    const cell = (compact ? 17 : 15) * unitPerPx;
-    const pad = 6 * unitPerPx;
-    const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
-    const margin = 6 * unitPerPx;
-    // Lift the row on phones so it clears the bottom-right Tour FAB.
-    const bottomMargin = (compact ? 64 : 8) * unitPerPx;
-    const gap = 7 * unitPerPx;
-    let curX = W - margin; // place right-to-left
-    let rowBottom = H - bottomMargin;
-    let rowH = 0;
-
-    for (const t of groups) {
-      const list = present.get(t.code)!;
-      const cols = Math.max(2, Math.round(Math.sqrt(list.length * 1.7)));
-      const rows = Math.ceil(list.length / cols);
-      const w = cols * cell + pad * 2;
-      const h = rows * cell + pad * 2 + labelH;
-      if (curX - w < margin) {
-        // wrap to a new row stacked above the previous one
-        curX = W - margin;
-        rowBottom -= rowH + gap;
-        rowH = 0;
-      }
-      const x = curX - w;
-      const y = rowBottom - h;
-      territoryBoxes.push({ code: t.code, label: t.label, x, y, w, h });
-
-      list.sort((a, b) => a.ncr_id.localeCompare(b.ncr_id));
-      list.forEach((o, i) => {
-        const c = i % cols;
-        const r = Math.floor(i / cols);
-        o._x = x + pad + cell * (c + 0.5);
-        o._y = y + labelH + pad + cell * (r + 0.5);
-        o._dx = 0;
-        o._dy = 0;
-        o._rx = 0;
-        o._ry = 0;
-      });
-      curX = x - gap;
-      rowH = Math.max(rowH, h);
-    }
-  }
-
-  // Project the U.S. Virgin Islands into a small labelled inset off the SE corner
-  // (below Florida), preserving their true relative geography via geoMercator —
-  // not a schematic grid. Fixed dots (like the other insets): they ride the zoom
-  // group, stay put under declutter, and skip the land-mask clamp.
-  function layoutVirginIslands(): void {
-    const list = orgs.filter((o) => o.state === VI_CODE && o.out_of_footprint && o.lat != null && o.lng != null);
-    if (!list.length) return;
-    // A small box anchored low-right, above the schematic territory row. Sized so
-    // the three USVI utilities read without crowding.
-    const boxW = (compact ? 92 : 104) * unitPerPx;
-    const boxH = (compact ? 70 : 76) * unitPerPx;
-    const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
-    const margin = 6 * unitPerPx;
-    // Sit it off the SE, below Florida (the USVI are ~17.7N, south of FL's 25N):
-    // low and to the right, clear of the bottom-right schematic territory row.
-    const x = W - margin - boxW;
-    const y = H * (compact ? 0.64 : 0.72);
-    territoryBoxes.push({ code: VI_CODE, label: "U.S. Virgin Is.", x, y, w: boxW, h: boxH });
-
-    const innerPad = 9 * unitPerPx;
-    viProj.fitExtent(
-      [
-        [x + innerPad, y + labelH + innerPad * 0.5],
-        [x + boxW - innerPad, y + boxH - innerPad],
-      ],
-      { type: "MultiPoint", coordinates: list.map((o) => [o.lng as number, o.lat as number]) } as never,
-    );
-    for (const o of list) {
-      const p = viProj([o.lng as number, o.lat as number]);
-      o._frame = "terr"; // fixed inset dot
-      o._x = p ? p[0] : x + boxW / 2;
-      o._y = p ? p[1] : y + boxH / 2;
-      o._dx = 0;
-      o._dy = 0;
-      o._rx = 0;
-      o._ry = 0;
     }
   }
 
@@ -1591,6 +1490,150 @@ export function mountNercOrgMap(): void {
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
     });
+  }
+
+  // Lay each territory's orgs into a labelled inset box using geoMercator
+  // fitExtent when coordinates exist (preserves relative geography); grid
+  // fallback only for rows still missing lat/lng.
+  function layoutTerritoryInsets(): void {
+    territoryBoxes = [];
+    const terrProj = geoMercator();
+    const margin = 6 * unitPerPx;
+    const bottomMargin = (compact ? 64 : 8) * unitPerPx;
+    const gap = 7 * unitPerPx;
+    const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
+    const innerPad = 9 * unitPerPx;
+
+    const present = new Map<string, Org[]>();
+    for (const o of orgs) {
+      if (!o.out_of_footprint || !o.state) continue;
+      const arr = present.get(o.state);
+      if (arr) arr.push(o);
+      else present.set(o.state, [o]);
+    }
+
+    function boxSize(code: string): [number, number] {
+      const u = unitPerPx;
+      switch (code) {
+        case "PR":
+          return [(compact ? 140 : 162) * u, (compact ? 104 : 118) * u];
+        case "VI":
+          return [(compact ? 92 : 104) * u, (compact ? 72 : 78) * u];
+        case "GU":
+          return [(compact ? 86 : 98) * u, (compact ? 74 : 80) * u];
+        case "MP":
+          return [(compact ? 76 : 86) * u, (compact ? 66 : 72) * u];
+        case "AS":
+          return [(compact ? 66 : 74) * u, (compact ? 60 : 66) * u];
+        default:
+          return [(compact ? 74 : 84) * u, (compact ? 64 : 70) * u];
+      }
+    }
+
+    function sortTerritory(list: Org[]): Org[] {
+      return [...list].sort(
+        (a, b) =>
+          b.weight - a.weight ||
+          Number(b.roles.includes("DP")) - Number(a.roles.includes("DP")) ||
+          a.entity_name.localeCompare(b.entity_name),
+      );
+    }
+
+    function placeInBox(
+      code: string,
+      label: string,
+      x: number,
+      y: number,
+      boxW: number,
+      boxH: number,
+      list: Org[],
+    ): void {
+      territoryBoxes.push({ code, label, x, y, w: boxW, h: boxH });
+      const geocoded = list.filter((o) => o.lat != null && o.lng != null);
+      const ungeocoded = list.filter((o) => o.lat == null || o.lng == null);
+
+      if (geocoded.length) {
+        terrProj.fitExtent(
+          [
+            [x + innerPad, y + labelH + innerPad * 0.5],
+            [x + boxW - innerPad, y + boxH - innerPad],
+          ],
+          { type: "MultiPoint", coordinates: geocoded.map((o) => [o.lng as number, o.lat as number]) } as never,
+        );
+        for (const o of geocoded) {
+          const p = terrProj([o.lng as number, o.lat as number]);
+          o._frame = "terr";
+          o._x = p ? p[0] : x + boxW / 2;
+          o._y = p ? p[1] : y + boxH / 2;
+          o._dx = 0;
+          o._dy = 0;
+          o._rx = 0;
+          o._ry = 0;
+        }
+      }
+
+      if (ungeocoded.length) {
+        const cols = Math.max(2, Math.round(Math.sqrt(ungeocoded.length * 1.7)));
+        const cell = (compact ? 17 : 15) * unitPerPx;
+        const pad = 6 * unitPerPx;
+        ungeocoded.forEach((o, i) => {
+          const c = i % cols;
+          const r = Math.floor(i / cols);
+          o._frame = "terr";
+          o._x = x + pad + cell * (c + 0.5);
+          o._y = y + labelH + pad + cell * (r + 0.5);
+          o._dx = 0;
+          o._dy = 0;
+          o._rx = 0;
+          o._ry = 0;
+        });
+      }
+    }
+
+    // U.S. Virgin Islands: Caribbean inset off the SE corner (St. Croix vs St. Thomas).
+    const viList = present.get(VI_CODE);
+    if (viList?.length) {
+      const [viW, viH] = boxSize(VI_CODE);
+      placeInBox(
+        VI_CODE,
+        "U.S. Virgin Is.",
+        W - margin - viW,
+        H * (compact ? 0.56 : 0.64),
+        viW,
+        viH,
+        sortTerritory(viList),
+      );
+    }
+
+    // Pacific territories: bottom-right row (AS → MP → GU).
+    let curX = W - margin;
+    let rowBottom = H - bottomMargin;
+    let rowH = 0;
+    for (const t of TERRITORY_INSETS.filter((g) => g.code !== "PR")) {
+      const list: Org[] = [];
+      for (const s of t.states) list.push(...(present.get(s) ?? []));
+      if (!list.length) continue;
+
+      const [boxW, boxH] = boxSize(t.code);
+      if (curX - boxW < margin) {
+        curX = W - margin;
+        rowBottom -= rowH + gap;
+        rowH = 0;
+      }
+      const x = curX - boxW;
+      const y = rowBottom - boxH;
+      placeInBox(t.code, t.label, x, y, boxW, boxH, sortTerritory(list));
+      curX = x - gap;
+      rowH = Math.max(rowH, boxH);
+    }
+
+    // Puerto Rico: wide inset above the Pacific row (12 orgs, island-wide spread).
+    const prList = present.get("PR");
+    if (prList?.length) {
+      const [prW, prH] = boxSize("PR");
+      const y = rowBottom - rowH - gap - prH;
+      placeInBox("PR", "Puerto Rico", W - margin - prW, y, prW, prH, sortTerritory(prList));
+    }
   }
 
   // Territory inset frames + labels (base coordinates; ride the inset group's
