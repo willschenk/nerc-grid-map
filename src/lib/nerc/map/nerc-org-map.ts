@@ -301,7 +301,8 @@ function typeLabel(value: string | null): string {
 }
 
 function confidenceLabel(value: string | null): string {
-  return CONFIDENCE_LABELS[value ?? ""] ?? value ?? "Unknown";
+  const label = CONFIDENCE_LABELS[value ?? ""] ?? value ?? "Unknown";
+  return `Confidence: ${label}`;
 }
 
 function locationLabel(o: Org): string {
@@ -687,12 +688,14 @@ export function mountNercOrgMap(): void {
   }
 
   function maxDeclutterOffset(k: number): number {
-    // Tighter when zoomed out so dots stay near their true location; loosens as
-    // you zoom in and the coastline spreads across more screen, opening room for
-    // smaller orgs to claim space. (Land clamping separately bounds water drift.)
+    // Tight when zoomed out so dots sit close to their true location — accept
+    // more overlap/obfuscation of small orgs at the overview rather than letting
+    // them drift far from where they actually are. Loosens as you zoom in and the
+    // map spreads across more screen, opening room for orgs to claim space.
+    // (Land clamping separately bounds water drift.)
     const px = compact
-      ? k < 1.25 ? 64 : k < 2.2 ? 60 : k < 4 ? 52 : k < 7 ? 42 : 32
-      : k < 1.25 ? 96 : k < 2.2 ? 104 : k < 4 ? 100 : k < 7 ? 76 : 56;
+      ? k < 1.25 ? 22 : k < 2.2 ? 38 : k < 4 ? 48 : k < 7 ? 42 : 32
+      : k < 1.25 ? 30 : k < 2.2 ? 60 : k < 4 ? 92 : k < 7 ? 76 : 56;
     return px * unitPerPx;
   }
 
@@ -1600,7 +1603,7 @@ export function mountNercOrgMap(): void {
     tooltip.append(
       createEl("div", "tt-acronym", orgAcronym(o)),
       createEl("div", "tt-name", o.entity_name),
-      createEl("div", "tt-sub", `${o.region ?? "No region"} | ${typeLabel(o.org_type)} | ${o.role_count} roles | weight ${o.weight}`),
+      createEl("div", "tt-sub", `${o.region ?? "No Reliability Entity"} | ${typeLabel(o.org_type)} | ${o.role_count} roles | weight ${o.weight}`),
     );
 
     const chips = createEl("div", "nerc-tt-pills");
@@ -1698,7 +1701,7 @@ export function mountNercOrgMap(): void {
     });
     addDlRow(dl, `Roles (${o.role_count})`, roles);
     addDlRow(dl, "Role weight", `${o.weight}${o.is_iso_rto ? " | ISO/RTO scale" : ""}`);
-    addDlRow(dl, "NERC region", o.region ?? "-");
+    addDlRow(dl, "NERC region", o.region ?? "No Reliability Entity");
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     if (o.geo_notes) addDlRow(dl, "Notes", o.geo_notes);
