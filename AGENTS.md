@@ -2,6 +2,8 @@
 
 This is an interactive data-visualization site: one Astro page that renders NERC-registered grid organizations with vanilla D3. Unlike a static text archive, client JavaScript is the whole point. There are no "keep it plain / no JS" constraints here. Make the map more useful: better readability, filtering, hover behavior, search, and reviewability.
 
+> **New here? Read [LESSONS.md](LESSONS.md) first** — distilled, hard-won lessons from this project's history (display-vs-data rule, the shared working tree, renderer/iOS/coordinate-space gotchas, and the `?audit` tuning harness). This file (AGENTS.md) is the structure/commands; LESSONS.md is the why-and-how-not-to-break-things.
+
 ## What the project is
 
 Every dot is one entity from the NERC Compliance Registry, placed at its headquarters. An entity's roles (BA, TOP, TO, TP, RC, TSP, GO, GOP, LSE, DP, PSE, ...) come from NERC's functional model. Color encodes the role mix; size encodes total role weight. The data is baked to `public/nerc/orgs.json` at build time and fetched at runtime.
