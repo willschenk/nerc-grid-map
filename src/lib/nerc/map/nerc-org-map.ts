@@ -63,6 +63,9 @@ type Org = {
   // Last viewBox radius actually written to the circle, so the isolation boost
   // (which changes on pan at constant zoom) can update without a per-frame storm.
   _rr?: number;
+  // Cached continuous reveal zoom (desktop base, before the compact multiplier).
+  // Computed once from priority/weight/jitter so disclosure is smooth, not tiered.
+  _mz?: number;
   // Last viewBox hit radius written to the invisible target. It follows the
   // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
   _hr?: number;
@@ -96,6 +99,10 @@ const SPIDER_RING_STEP_PX = 28;
 // _x/_y stay true; _dx/_dy are screen-space nudges divided by zoom at render.
 const MAX_RADIUS = 48;
 const MAX_ZOOM = 1200;
+// Reveal threshold: a dot is not drawn until its disclosure ramp (dotStrength)
+// passes this, so the overview shows only the high-priority set and lower
+// entities appear progressively as you zoom in.
+const RENDER_EPS = 0.02;
 const AUTHORITY_ROLES = new Set(["RC", "BA", "PC", "TOP", "TO", "TSP", "TP", "RSG", "FRSG", "RRSG", "RP"]);
 const PUBLIC_ROLES = new Set(["DP", "LSE", "PSE"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
@@ -417,6 +424,9 @@ export function mountNercOrgMap(): void {
   let compact = false;
   let orgMarkK = NaN;
   let orgLayoutBucket = NaN;
+  // Last computed label placement, stashed for the optional ?audit UX harness so
+  // it can report which dots got an inside vs floating label without recomputing.
+  let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
 
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
@@ -520,31 +530,60 @@ export function mountNercOrgMap(): void {
     return score;
   }
 
-  function orgMinZoom(o: Org): number {
-    if (o._frame === "terr") return 0.72;
-    const priority = orgPriority(o);
-    const nonGen = nonGenerationRoleCount(o);
-    if (priority >= 54 || o.weight >= 30 || o.is_iso_rto) return 0.72;
-    if (priority >= 42 || o.weight >= 18 || nonGen >= 4) return 1.05;
-    if (priority >= 32 || nonGen >= 2) return 1.55;
-    if (priority >= 24 || nonGen >= 1) return 2.3;
-    if (priority >= 16) return 3.8;
-    if (!isGenerationOnly(o)) return 4.8;
-    return 6.8;
+  // Deterministic 0..1 from an id, so identical-looking dots get a stable spread.
+  function hash01(id: string): number {
+    let h = 2166136261;
+    for (let i = 0; i < id.length; i++) {
+      h ^= id.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return ((h >>> 0) % 100000) / 100000;
   }
 
+  // Static importance score, cached per org. The per-id jitter separates the
+  // ~800 near-identical low-weight generators so they never cross the reveal
+  // threshold all at once.
+  function orgScore(o: Org): number {
+    if (o._mz == null) o._mz = orgPriority(o) + o.weight * 0.4 + (hash01(o.ncr_id) - 0.5) * 14;
+    return o._mz;
+  }
+
+  // Continuous reveal zoom: monotonic in the importance score so dots trickle in
+  // across the whole zoom range instead of a whole tier flooding at one zoom
+  // (which crashed dot size and re-introduced overlap). Phones draw dots larger
+  // (sized in CSS px) inside the same US footprint, so the overview holds
+  // proportionally bigger bubbles and crowds fast — there the "major" cutoff is
+  // raised so the overview shows only the genuine majors and lower entities fill
+  // in progressively as you zoom. Desktop keeps its (good) fuller overview.
+  function orgMinZoom(o: Org): number {
+    if (o._frame === "terr") return 0.72;
+    if (o.is_iso_rto) return 0.72;
+    const anchor = compact ? 82 : 55;
+    // anchor → 0.72; each ~17 below anchor roughly doubles the reveal zoom. The
+    // cap is generous (and slightly higher on compact) so the long low-weight
+    // tail still spreads near the top of the range instead of collapsing to one
+    // reveal zoom and flooding in together.
+    return Math.min(compact ? 19 : 16, 0.72 * Math.exp(0.04 * Math.max(0, anchor - orgScore(o))));
+  }
+
+  // Disclosure ramp 0..1: a dot fades in over [minZoom - lead, minZoom] and is
+  // not rendered at all below that window (RENDER_EPS gate in redraw and the
+  // declutter solver), so the overview shows only the high-priority set and
+  // lower-priority entities appear progressively as you zoom in and make room.
   function dotStrength(o: Org, k: number): number {
     if (o._frame === "terr") return 1;
     const fullAt = orgMinZoom(o);
     if (fullAt <= 0.72) return 1;
-    const lead = compact ? 1.25 : 1.55;
-    return Math.max(0.14, smoothStep((k - (fullAt - lead)) / lead));
+    const lead = compact ? 0.85 : 1.0;
+    return smoothStep((k - (fullAt - lead)) / lead);
   }
 
   function orgOpacity(o: Org, k: number, labeled: boolean): number {
     if (o._frame === "terr") return 1;
     const strength = dotStrength(o, k);
-    return Math.min(1, (labeled ? 0.82 : 0.26) + strength * (labeled ? 0.18 : 0.54));
+    // Fade in from near-transparent as a dot is first disclosed so the reveal
+    // reads as "filling in" rather than a hard pop.
+    return Math.min(1, (labeled ? 0.62 : 0.16) + strength * (labeled ? 0.38 : 0.6));
   }
 
   function drawPriority(o: Org, k: number): number {
@@ -593,11 +632,12 @@ export function mountNercOrgMap(): void {
       k < 4.8 ? 330 :
       k < 6.8 ? 385 :
       440;
-    // On phones, keep the overview sparse (small screen) but open up a lot as you
-    // zoom in — there's screen space to fill, and the user wants iOS to feel as
-    // dynamic as desktop. Multiplier ramps 0.48 -> 0.92 across the zoom range.
+    // On phones, keep the overview sparse (small screen) but open up as you zoom
+    // in — there's screen space to fill, and the user wants iOS to feel as dynamic
+    // as desktop. Now that the compact overview discloses fewer (bigger) dots, it
+    // can carry a few more labels. Multiplier ramps 0.56 -> 1.0 across the range.
     if (!compact) return cap;
-    const mult = 0.48 + 0.44 * smoothStep((k - 1.6) / 4.5);
+    const mult = 0.56 + 0.44 * smoothStep((k - 1.6) / 4.5);
     return Math.round(cap * mult);
   }
 
@@ -1117,6 +1157,9 @@ export function mountNercOrgMap(): void {
       o._dx = 0;
       o._dy = 0;
       if (o._x == null || o._y == null) continue;
+      // Undisclosed dots are hidden this frame, so they neither move nor push
+      // anyone — this also keeps the disclosed majors close to their true spot.
+      if (o._frame !== "terr" && dotStrength(o, bucket) < RENDER_EPS) continue;
       const baseX = o._x * bucket + (o._rx ?? 0) * spiderScreenScale;
       const baseY = o._y * bucket + (o._ry ?? 0) * spiderScreenScale;
       const priority = Math.max(0, orgPriority(o));
@@ -1304,7 +1347,13 @@ export function mountNercOrgMap(): void {
       const sy = transform.applyY(orgRenderY(o, fanScale, declScale));
       o._sx = sx;
       o._sy = sy;
-      const vis = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
+      const onScreen = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
+      // Progressive disclosure: a dot below its reveal window is not drawn at all
+      // (not merely faded), so the overview stays high-priority and lower entities
+      // appear as you zoom in. Hover/selected/tour and territory dots always show.
+      const due = o._frame === "terr" || dotStrength(o, k) >= RENDER_EPS;
+      const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
+      const vis = onScreen && (due || forced);
       o._vis = vis;
       if (!vis) continue;
       shownCount++;
@@ -1670,6 +1719,7 @@ export function mountNercOrgMap(): void {
       .selectAll<SVGTextElement, TerritoryBox>("text.terr-label")
       .attr("font-size", ((compact ? 11 : 10.5) * unitPerPx) / Math.max(k, 0.001))
       .classed("dim", tourRunning);
+    lastLabelState = labelState;
     keepFocusedOrgInView(k);
   }
 
@@ -2497,6 +2547,115 @@ export function mountNercOrgMap(): void {
     loadingEl.style.display = "none";
     updateView();
     revealActionButtons();
+    if (new URLSearchParams(location.search).has("audit")) setupAudit();
+  }
+
+  // Optional UX-audit harness (only when the page is loaded with ?audit=1). It
+  // drives the *real* renderer and reads out per-bubble stats using the same
+  // land mask / sizing / label functions the map uses, so the audit reflects
+  // exactly what ships. No effect on the normal map. Removable; ships inert.
+  function setupAudit(): void {
+    const sampleWater = (bx: number, by: number, rBase: number): number => {
+      if (rBase <= 0) return onLand(bx, by) ? 0 : 1;
+      const step = Math.max(0.6, rBase / 4);
+      let inDisc = 0;
+      let water = 0;
+      for (let yy = -rBase; yy <= rBase; yy += step) {
+        for (let xx = -rBase; xx <= rBase; xx += step) {
+          if (xx * xx + yy * yy > rBase * rBase) continue;
+          inDisc++;
+          if (!onLand(bx + xx, by + yy)) water++;
+        }
+      }
+      return inDisc ? water / inDisc : 0;
+    };
+    const setZoom = (k: number, cx = W / 2, cy = H / 2): void => {
+      transform = zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-cx, -cy);
+      redraw();
+    };
+    (window as unknown as { __nercAudit: unknown }).__nercAudit = {
+      info: () => ({ W, H, compact, unitPerPx, count: placeableOrgs.length }),
+      project: (lng: number, lat: number) => projection([lng, lat]),
+      setZoom,
+      setZoomAt: (k: number, lng: number, lat: number) => {
+        const p = projection([lng, lat]);
+        setZoom(k, p ? p[0] : W / 2, p ? p[1] : H / 2);
+      },
+      audit: () => {
+        const k = transform.k;
+        const fanScale = spiderFanScale(k);
+        const declScale = declutterScale(k);
+        const vis: Array<Record<string, number | string | boolean>> = [];
+        for (const o of placeableOrgs) {
+          if (!o._vis || o._sx == null || o._sy == null) continue;
+          const bx = orgRenderX(o, fanScale, declScale);
+          const by = orgRenderY(o, fanScale, declScale);
+          const rScreen = renderedRadius(o, k); // screen viewBox units
+          const rBase = rScreen / k; // base-space radius (mask is base space)
+          const waterFrac = o._frame === "terr" ? 0 : sampleWater(bx, by, rBase);
+          const baseOffset = Math.hypot(bx - (o._x as number), by - (o._y as number));
+          const st = lastLabelState?.get(o.ncr_id);
+          vis.push({
+            id: o.ncr_id,
+            name: tinyName(o),
+            frame: o._frame ?? "",
+            pr: Math.round(orgPriority(o)),
+            w: o.weight,
+            rcss: +(rScreen / unitPerPx).toFixed(1),
+            sx: +o._sx.toFixed(1),
+            sy: +o._sy.toFixed(1),
+            waterFrac: +waterFrac.toFixed(2),
+            centerWater: !onLand(bx, by),
+            baseOff: +baseOffset.toFixed(1),
+            labeled: !!st,
+            inside: !!st?.inside,
+          });
+        }
+        // Severe-overlap pairs among visible dots (screen space).
+        let severe = 0;
+        for (let i = 0; i < vis.length; i++) {
+          for (let j = i + 1; j < vis.length; j++) {
+            const a = vis[i];
+            const b = vis[j];
+            const dx = (a.sx as number) - (b.sx as number);
+            const dy = (a.sy as number) - (b.sy as number);
+            const d = Math.hypot(dx, dy);
+            const ra = (a.rcss as number) * unitPerPx;
+            const rb = (b.rcss as number) * unitPerPx;
+            if (d < (ra + rb) * 0.62) severe++;
+          }
+        }
+        const labeled = vis.filter((v) => v.labeled);
+        // Highest-priority visible dots and whether each earned a label — used to
+        // confirm high-priority entities are disclosed/labeled before low ones.
+        const topByPriority = [...vis]
+          .sort((a, b) => (b.pr as number) - (a.pr as number))
+          .slice(0, 22)
+          .map((v) => `${v.name}${v.labeled ? (v.inside ? "·in" : "·fl") : "·NO"}`);
+        return {
+          k: +k.toFixed(2),
+          W,
+          H,
+          compact,
+          unitPerPx: +unitPerPx.toFixed(3),
+          visible: vis.length,
+          labels: labeled.length,
+          inside: labeled.filter((v) => v.inside).length,
+          float: labeled.filter((v) => !v.inside).length,
+          severeOverlaps: severe,
+          stranded: vis.filter((v) => v.frame !== "terr" && (v.waterFrac as number) >= 0.85).length,
+          centerInWater: vis.filter((v) => v.frame !== "terr" && v.centerWater).length,
+          minRcss: vis.length ? Math.min(...vis.map((v) => v.rcss as number)) : 0,
+          medRcss: vis.length
+            ? vis.map((v) => v.rcss as number).sort((a, b) => a - b)[Math.floor(vis.length / 2)]
+            : 0,
+          maxBaseOff: vis.length ? Math.max(...vis.map((v) => v.baseOff as number)) : 0,
+          topByPriority,
+          dots: vis,
+        };
+      },
+    };
+    (window as unknown as { __nercAuditReady: boolean }).__nercAuditReady = true;
   }
 
   init().catch((err) => {
