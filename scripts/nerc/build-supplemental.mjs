@@ -4,7 +4,7 @@
 // Supplemental orgs are utilities/businesses that are NOT in the NERC Compliance
 // Registry (or are missing from our NERC extract) -- Alaska/Hawaii utilities,
 // community choice aggregators, municipals/co-ops below the NERC threshold,
-// power marketers, etc. They render as normal dots but carry no NERC ID and get
+// merchant/IPPs, etc. They render as normal dots but carry no NERC ID and get
 // best-effort (not official) functional roles.
 //
 // This script is IDEMPOTENT and MERGE-ONLY: it never overwrites an entry that
@@ -118,7 +118,7 @@ function classify(name, entityType, layer) {
   // CCAs first (their type also contains the word "aggregator").
   if (/community choice/.test(e)) return { org_type: "cca", roles: [] };
   if (/broader power-market|power marketer|der aggregator|developer|storage business|trading|commodities|energy management/.test(e)) {
-    return { org_type: "marketer", roles: [] };
+    return { org_type: "merchant", roles: [] };
   }
   // Rural electric co-ops are commonly named "... Electric Association".
   if (/cooperative|co-op|electric membership|\bemc\b|electric association|rural electric/i.test(name)) {

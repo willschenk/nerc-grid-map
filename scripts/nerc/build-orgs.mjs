@@ -15,19 +15,18 @@ const root = resolve(__dirname, "../..");
 
 const SEED = resolve(root, "src/data/nerc/seed-orgs.json");
 // Non-NERC / NERC-missing orgs (Alaska/Hawaii utilities, CCAs, small munis &
-// co-ops, marketers). Merged in after the registry records. See
+// co-ops, merchant/IPPs). Merged in after the registry records. See
 // scripts/nerc/build-supplemental.mjs and SUPPLEMENTAL_GUIDE.md.
 const SUPPLEMENTAL = resolve(root, "src/data/nerc/supplemental-orgs.json");
 
 // Fallback size/color for supplemental orgs that have no functional role, keyed
 // by org_type (role-based orgs use the normal weight/color from enrichOrg).
-const SUP_TYPE_WEIGHT = { ISO_RTO: 24, IOU: 16, federal: 14, cooperative: 9, municipal: 9, cca: 8, merchant: 6, marketer: 5, other: 5 };
+const SUP_TYPE_WEIGHT = { ISO_RTO: 24, IOU: 16, federal: 14, cooperative: 9, municipal: 9, cca: 8, merchant: 6, other: 5 };
 const SUP_TYPE_COLOR = {
   cooperative: "hsl(45, 62%, 50%)",
   municipal: "hsl(265, 42%, 56%)",
   cca: "hsl(168, 45%, 44%)",
   merchant: "hsl(20, 58%, 52%)",
-  marketer: "hsl(210, 12%, 52%)",
   federal: "hsl(208, 48%, 50%)",
   IOU: "hsl(140, 55%, 43%)",
   ISO_RTO: "hsl(280, 55%, 50%)",

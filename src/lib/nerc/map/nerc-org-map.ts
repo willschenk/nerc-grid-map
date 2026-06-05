@@ -140,7 +140,6 @@ const TYPE_LABELS: Record<string, string> = {
   federal: "Federal power authority",
   merchant: "Merchant / IPP",
   cca: "Community choice (CCA)",
-  marketer: "Power marketer / trader",
   other: "Other",
 };
 

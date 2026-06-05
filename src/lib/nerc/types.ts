@@ -14,7 +14,7 @@ export type GeoConfidence = "HIGH" | "MEDIUM" | "LOW" | "ESTIMATED";
 
 export type OrgType =
   | "IOU" | "cooperative" | "municipal" | "federal"
-  | "merchant" | "ISO_RTO" | "other" | null;
+  | "merchant" | "ISO_RTO" | "cca" | "other" | null;
 
 export type NERCOrg = {
   // Identity

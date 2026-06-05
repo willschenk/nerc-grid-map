@@ -3,7 +3,7 @@
 This is the playbook for filling in utilities/businesses that are **not in the
 NERC Compliance Registry** (or are missing from our NERC extract): Alaska &
 Hawaii utilities, community choice aggregators (CCAs), small municipals and
-co-ops below the NERC threshold, power marketers, etc. It's designed so an AI
+co-ops below the NERC threshold, merchant/IPPs, etc. It's designed so an AI
 agent (e.g. Cursor) can do the repetitive geocoding/labeling work safely.
 
 ## The pieces
@@ -62,16 +62,16 @@ Round to ~4 decimals. Longitude is **negative** in the US.
 `ISO_RTO` (don't use — real ones are already NERC), `IOU` (investor-owned, e.g.
 "... Electric Company, Inc."), `cooperative` (co-op / "Electric Association" /
 EMC), `municipal` (city utility, public utility district, public power agency,
-joint-action), `federal`, `merchant` (independent generator: wind/solar/storage/
-geothermal LLC or LP), `cca` (community choice aggregator), `marketer` (power
-marketer / trader / DER aggregator), `other`. Dot size is driven by this.
+joint-action), `federal`, `merchant` (independent generator, IPP, power
+marketer, trader, DER aggregator, wind/solar/storage/geothermal LLC or LP),
+`cca` (community choice aggregator), `other`. Dot size is driven by this.
 
 ### `roles` (best-effort, optional)
 These entities are **not** NERC-registered, so there is no official role. Give a
 reasonable functional guess if obvious, else leave `[]`:
 - distribution utility / co-op / muni → `["DP"]`
 - independent generator (a plant/farm) → `["GO"]`
-- CCA / marketer / pure retail → `[]`
+- CCA / merchant / pure retail → `[]`
 Valid tags: `BA RC PC TP TO TOP TSP RP DP GO GOP`. (`LSE`/`PSE` are retired NERC
 functions — don't use them.) If `roles` is `[]`, the dot is colored by
 `org_type`; if it has roles, it's colored like a NERC org with those roles.
