@@ -100,16 +100,9 @@ const AUTHORITY_ROLES = new Set(["RC", "BA", "PC", "TOP", "TO", "TSP", "TP", "RS
 const PUBLIC_ROLES = new Set(["DP", "LSE", "PSE"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 
-// Out-of-footprint U.S. territories: labelled Mercator insets (base coordinates;
-// the inset group rides the zoom transform). VI sits off the SE corner; PR and
-// the Pacific territories stack in the bottom-right.
-const TERRITORY_INSETS: Array<{ code: string; label: string; states: string[] }> = [
-  { code: "PR", label: "Puerto Rico", states: ["PR"] },
-  { code: "GU", label: "Guam", states: ["GU"] },
-  { code: "MP", label: "N. Mariana Is.", states: ["MP"] },
-  { code: "AS", label: "American Samoa", states: ["AS"] },
-];
-const VI_CODE = "VI";
+// Out-of-footprint U.S. territories: only Puerto Rico is drawn as a labelled
+// inset. Other territory rows stay in the data but are intentionally hidden.
+const PUERTO_RICO_STATE = "PR";
 
 // Canadian province label anchors (rough interior points), drawn faintly on the
 // land like the U.S. state labels.
@@ -554,18 +547,18 @@ export function mountNercOrgMap(): void {
 
   function labelLimit(k: number): number {
     const cap =
-      k < 1.25 ? 145 :
-      k < 1.8 ? 170 :
-      k < 2.6 ? 200 :
-      k < 3.4 ? 230 :
-      k < 4.8 ? 260 :
-      k < 6.8 ? 290 :
-      320;
+      k < 1.25 ? 160 :
+      k < 1.8 ? 195 :
+      k < 2.6 ? 235 :
+      k < 3.4 ? 280 :
+      k < 4.8 ? 330 :
+      k < 6.8 ? 385 :
+      440;
     // On phones, keep the overview sparse (small screen) but open up a lot as you
     // zoom in — there's screen space to fill, and the user wants iOS to feel as
-    // dynamic as desktop. Multiplier ramps 0.42 -> 0.82 across the zoom range.
+    // dynamic as desktop. Multiplier ramps 0.48 -> 0.92 across the zoom range.
     if (!compact) return cap;
-    const mult = 0.42 + 0.4 * smoothStep((k - 1.6) / 4.5);
+    const mult = 0.48 + 0.44 * smoothStep((k - 1.6) / 4.5);
     return Math.round(cap * mult);
   }
 
@@ -680,8 +673,8 @@ export function mountNercOrgMap(): void {
     return generationOnlyRadiusCap(k) + marginPx * unitPerPx;
   }
 
-  // Territory-inset dots are schematic (small, uniform) rather than weight-sized
-  // so they fit their grid cells; everything else uses the normal visual radius.
+  // Puerto Rico inset dots are schematic (small, uniform) rather than
+  // weight-sized so they fit the cluster; everything else uses normal sizing.
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 5 : 4) * unitPerPx;
     const radius = visualRadius(o, k) * isolationBoost(o, k);
@@ -865,7 +858,9 @@ export function mountNercOrgMap(): void {
       o._dx = 0;
       o._dy = 0;
       if (o.out_of_footprint) {
-        o._frame = "terr"; // positioned by layoutTerritoryInsets()
+        o._x = undefined;
+        o._y = undefined;
+        o._frame = o.state === PUERTO_RICO_STATE ? "terr" : undefined;
         continue;
       }
       if (o.lng == null || o.lat == null) {
@@ -1217,7 +1212,7 @@ export function mountNercOrgMap(): void {
     computeIsolation(visibleOrgs);
 
     for (const o of visibleOrgs) {
-      // Territory-inset dots are identified by their labelled box, so they only
+      // Puerto Rico inset dots are identified by the territory label, so they only
       // get an individual label when hovered/selected (never in the normal flow).
       const isTerr = o._frame === "terr";
       if (tourActive) {
@@ -1282,12 +1277,62 @@ export function mountNercOrgMap(): void {
     // Phones spread labels a little at first; the inflation now fades back out as
     // you zoom in (was growing), so zoomed-in iOS fills space instead of thinning.
     const spacing = compact && !tourActive ? Math.max(1, 1.5 - Math.max(0, k - 2) * 0.16) : 1;
+    // ── Label decision tree (candidates are pre-sorted most-important first) ──
+    // For each org, in importance order:
+    //   1. INSIDE: if its short token fits inside the bubble at a legible size,
+    //      draw it there. Inside labels live within their own bubble, so they
+    //      never collide and are never thinned by a neighbour — that is why a
+    //      bubble big enough to hold its name always shows it.
+    //   2. FLOAT: otherwise place a floating label in preferred spots (on /
+    //      beside / below; above only as a last resort). A floating label may
+    //      not overlap an already-placed label, nor any *other* protected
+    //      bubble — so a smaller org's label can never sit on a bigger org's
+    //      bubble.
+    //   3. THIN: identical tokens are de-duped and tight floating clusters are
+    //      thinned — floating only; inside labels are exempt.
+    // Every visible bubble at/above protectR is a blocker (tagged by id so a
+    // bubble never blocks its own label), seeded up front so the rule holds no
+    // matter which labels land first.
+    const protectR = (compact ? 6.5 : 5) * unitPerPx;
+    const bubbleBlockers: Array<{ id: string; box: Box }> = [];
+    for (const o of visibleOrgs) {
+      if (o._frame === "terr" || o._sx == null || o._sy == null) continue;
+      const r = renderedRadius(o, k);
+      if (r < protectR) continue;
+      bubbleBlockers.push({ id: o.ncr_id, box: { x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r } });
+    }
+    const clearsBubbles = (box: Box, id: string): boolean =>
+      !bubbleBlockers.some((b) => b.id !== id && boxesOverlap(box, b.box));
+
+    let placedCount = 0;
     for (const o of candidates) {
-      if (placed.length >= maxLabels) break;
+      if (placedCount >= maxLabels) break;
       const sx = o._sx as number;
       const sy = o._sy as number;
+      const r = renderedRadius(o, k);
       const forceLabel = hot?.ncr_id === o.ncr_id;
       const brand = tinyName(o);
+
+      // 1. INSIDE — preferred, collision-free, never suppressed by neighbours.
+      // The font shrinks to span the chord (up to the normal label size); the
+      // floor keeps it readable. This runs before any de-dupe/thinning so a big
+      // bubble next to a labelled one still gets its own name.
+      const insideFont = Math.min(
+        labelFontPx(o, k) * unitPerPx,
+        (r * 1.74) / Math.max(1, brand.length) / 0.56,
+      );
+      const insideMin = (compact ? 5.2 : 5.6) * unitPerPx;
+      if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * 1.86) {
+        if (forceLabel || !usedLabels.has(brand)) {
+          labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
+          if (!forceLabel) usedLabels.add(brand);
+          if (r < protectR) bubbleBlockers.push({ id: o.ncr_id, box: { x0: sx - r, x1: sx + r, y0: sy - r, y1: sy + r } });
+          placedCount++;
+        }
+        continue;
+      }
+
+      // 2/3. FLOAT — de-dupe + thin tight clusters (floating labels only).
       if (
         !forceLabel &&
         (usedLabels.has(brand) ||
@@ -1295,38 +1340,14 @@ export function mountNercOrgMap(): void {
       ) {
         continue;
       }
-      const r = renderedRadius(o, k);
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
-
-      // Prefer a super-short token tucked *inside* the bubble when the dot is big
-      // enough to hold it legibly — cleaner than a label floating above the dot.
-      // The inside token uses tinyName regardless of zoom and a font shrunk to
-      // fit the diameter; it lives entirely within its own bubble, so it never
-      // joins the collision set or crowds neighbours.
-      // Tuck the super-short token *inside* the bubble whenever it fits at a
-      // legible size — the preferred style. The font shrinks to span the chord
-      // (up to the normal label size), so smaller bubbles still get a label
-      // instead of floating one above. Min size is small but still readable.
-      const inside = tinyName(o);
-      const insideFont = Math.min(font, (r * 1.74) / Math.max(1, inside.length) / 0.56);
-      const insideMin = (compact ? 5.4 : 5.8) * unitPerPx;
-      if (insideFont >= insideMin && insideFont * 0.56 * inside.length <= r * 1.82) {
-        labeledClusters.push({ x: sx, y: sy });
-        labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: inside, inside: true });
-        placed.push({ x0: sx - r, x1: sx + r, y0: sy - r, y1: sy + r });
-        if (!forceLabel) usedLabels.add(brand);
-        continue;
-      }
-
       const w = (Math.max(14, text.length * font * 0.56) + 5) * spacing;
       const h = (font + 5) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
-      // Try a handful of spots so a blocked label nudges off its neighbour
-      // instead of disappearing, while hugging its own bubble closely. Order is
-      // deliberate: sit on the dot, then to the sides, then below, then the
-      // below-diagonals — and only *above* the bubble as a last resort (the user
-      // dislikes labels riding high above their dot).
+      // Sit on the dot, then to the sides, then below, then the below-diagonals —
+      // and only *above* the bubble as a last resort (labels riding high above
+      // their dot read worse).
       const spots = [
         [sx, sy + font * 0.32],
         [sx + nudge, sy + font * 0.32],
@@ -1343,6 +1364,7 @@ export function mountNercOrgMap(): void {
         const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
         if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
         if (placed.some((p) => boxesOverlap(box, p))) continue;
+        if (!clearsBubbles(box, o.ncr_id)) continue;
         chosen = { x: lx, y: ly, box };
         break;
       }
@@ -1353,6 +1375,7 @@ export function mountNercOrgMap(): void {
         usedLabels.add(brand);
       }
       labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text, inside: false });
+      placedCount++;
     }
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
@@ -1472,10 +1495,9 @@ export function mountNercOrgMap(): void {
       node.setAttribute("font-size", String(state.font));
     });
 
-    // Land labels (state / province names): faint context that floats over the
-    // dot field but yields to NERC org labels and city labels, so NERC always
-    // reads on top. It tracks a text-only blocker set (NERC + city labels), not
-    // the dot bodies — otherwise the packed national view would hide every name.
+    // Land labels (state / province names): faint context that yields to NERC
+    // org labels, city labels, and large NERC bubbles. Small dot bodies are not
+    // blockers; otherwise the packed national view would hide every name.
     const landState = new Map<string, { x: number; y: number; font: number }>();
     if (!tourRunning) {
       const landBlockers: Box[] = [...placed];
@@ -1484,6 +1506,13 @@ export function mountNercOrgMap(): void {
         const ch = s.font + 4;
         landBlockers.push({ x0: s.x - cw / 2, x1: s.x + cw / 2, y0: s.y - ch * 0.9, y1: s.y + ch * 0.1 });
       });
+      for (const o of visibleOrgs) {
+        if (!o._vis || o._sx == null || o._sy == null) continue;
+        const r = renderedRadius(o, k);
+        if (r < (compact ? 12 : 14) * unitPerPx) continue;
+        const pad = 2 * unitPerPx;
+        landBlockers.push({ x0: o._sx - r - pad, x1: o._sx + r + pad, y0: o._sy - r - pad, y1: o._sy + r + pad });
+      }
       let placedLand = 0;
       const landCap = compact ? 12 : 28;
       for (const L of landLabels) {
@@ -1525,23 +1554,21 @@ export function mountNercOrgMap(): void {
       .classed("dim", tourRunning);
   }
 
-  // Lay each offshore territory's orgs out as a labelled cluster of dots — no
-  // framed box. Geocoded orgs (the Virgin Islands) keep their true relative
-  // geography via geoMercator fitExtent; ungeocoded orgs fall into a centred
-  // grid (a positional cluster where the territory belongs). The region name is
-  // drawn by drawTerritoryFrames; positions are base coords that ride the zoom.
+  // Lay Puerto Rico's offshore orgs out as a labelled cluster of dots — no
+  // framed box. Geocoded orgs keep relative geography via geoMercator fitExtent;
+  // ungeocoded orgs fall into a centred grid. Other out-of-footprint territories
+  // are intentionally hidden from the map.
   function layoutTerritoryInsets(): void {
     territoryBoxes = [];
     const terrProj = geoMercator();
     const margin = 6 * unitPerPx;
     const bottomMargin = (compact ? 64 : 8) * unitPerPx;
-    const gap = 7 * unitPerPx;
     const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
     const innerPad = 9 * unitPerPx;
 
     const present = new Map<string, Org[]>();
     for (const o of orgs) {
-      if (!o.out_of_footprint || !o.state) continue;
+      if (!o.out_of_footprint || o.state !== PUERTO_RICO_STATE) continue;
       const arr = present.get(o.state);
       if (arr) arr.push(o);
       else present.set(o.state, [o]);
@@ -1552,14 +1579,6 @@ export function mountNercOrgMap(): void {
       switch (code) {
         case "PR":
           return [(compact ? 140 : 162) * u, (compact ? 104 : 118) * u];
-        case "VI":
-          return [(compact ? 92 : 104) * u, (compact ? 72 : 78) * u];
-        case "GU":
-          return [(compact ? 86 : 98) * u, (compact ? 74 : 80) * u];
-        case "MP":
-          return [(compact ? 76 : 86) * u, (compact ? 66 : 72) * u];
-        case "AS":
-          return [(compact ? 66 : 74) * u, (compact ? 60 : 66) * u];
         default:
           return [(compact ? 74 : 84) * u, (compact ? 64 : 70) * u];
       }
@@ -1640,9 +1659,7 @@ export function mountNercOrgMap(): void {
       const hasDots = Number.isFinite(minX);
       const ly = hasDots ? minY - (compact ? 11 : 10) * unitPerPx : y + labelH;
       // Keep the centred region name inside the viewBox at the overview (base
-      // scale): a far-corner cluster like the Virgin Islands would otherwise run
-      // its long label off the right edge. Deeper in, territories pan off-screen
-      // and the SVG clips them, so clamping the base position is enough.
+      // scale), where the inset is docked near the lower-right edge.
       const rawLx = hasDots ? (minX + maxX) / 2 : x + boxW / 2;
       const labelHalf = (label.length * (compact ? 11 : 10.5) * unitPerPx * 0.55) / 2;
       const edge = 4 * unitPerPx;
@@ -1653,46 +1670,10 @@ export function mountNercOrgMap(): void {
       territoryBoxes.push({ code, label, x, y, w: boxW, h: boxH, lx, ly });
     }
 
-    // Far-Pacific territories (Guam, N. Marianas, American Samoa): a row docked
-    // along the bottom-right. There's no nearby mainland geography to anchor to,
-    // so they read as small labelled clusters in the corner (rightmost first).
-    let curX = W - margin;
-    let rowBottom = H - bottomMargin;
-    let rowH = 0;
-    for (const t of TERRITORY_INSETS.filter((g) => g.code !== "PR")) {
-      const list: Org[] = [];
-      for (const s of t.states) list.push(...(present.get(s) ?? []));
-      if (!list.length) continue;
-
-      const [boxW, boxH] = boxSize(t.code);
-      if (curX - boxW < margin) {
-        curX = W - margin;
-        rowBottom -= rowH + gap;
-        rowH = 0;
-      }
-      const x = curX - boxW;
-      const y = rowBottom - boxH;
-      placeInBox(t.code, t.label, x, y, boxW, boxH, sortTerritory(list));
-      curX = x - gap;
-      rowH = Math.max(rowH, boxH);
-    }
-
-    // Caribbean (south-east of the mainland): Puerto Rico and the U.S. Virgin
-    // Islands sit together just above the Pacific row, with VI to the east
-    // (right) of PR to match real geography. VI keeps its true inter-island
-    // layout (St. Thomas north of St. Croix); PR is a positional cluster.
-    const caribBottom = rowBottom - rowH - gap;
-    let caribX = W - margin;
-    const viList = present.get(VI_CODE);
-    if (viList?.length) {
-      const [viW, viH] = boxSize(VI_CODE);
-      placeInBox(VI_CODE, "U.S. Virgin Islands", caribX - viW, caribBottom - viH, viW, viH, sortTerritory(viList));
-      caribX -= viW + gap;
-    }
-    const prList = present.get("PR");
+    const prList = present.get(PUERTO_RICO_STATE);
     if (prList?.length) {
       const [prW, prH] = boxSize("PR");
-      placeInBox("PR", "Puerto Rico", caribX - prW, caribBottom - prH, prW, prH, sortTerritory(prList));
+      placeInBox("PR", "Puerto Rico", W - margin - prW, H - bottomMargin - prH, prW, prH, sortTerritory(prList));
     }
   }
 
