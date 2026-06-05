@@ -486,7 +486,9 @@ export function mountNercOrgMap(): void {
     // "PJM" never grows into "PJM Interconnection" on the map.
     if (o.name_major) return tinyName(o);
     const priority = orgPriority(o);
-    const midAt = priority >= 54 ? 5.8 : priority >= 32 ? 8.2 : 11.5;
+    const midAt = compact
+      ? priority >= 54 ? 10.5 : priority >= 32 ? 16 : 28
+      : priority >= 54 ? 8.5 : priority >= 32 ? 12.5 : 18;
     if (k < midAt) return tinyName(o);
     const mid = midName(o);
     return mid.length > (compact ? 20 : 28) ? tinyName(o) : mid;
@@ -602,11 +604,11 @@ export function mountNercOrgMap(): void {
   // it hits the SVG). Grows a little as you zoom in instead of staying flat.
   function labelFontPx(o: Org, k: number): number {
     const base = compact
-      ? o.weight >= 30 ? 11.5 : o.weight >= 12 ? 9.8 : 7.2
-      : o.weight >= 30 ? 13.25 : o.weight >= 12 ? 11.1 : 8.4;
+      ? o.weight >= 30 ? 11.1 : o.weight >= 12 ? 9.2 : 6.7
+      : o.weight >= 30 ? 12.7 : o.weight >= 12 ? 10.3 : 7.7;
     const growth = compact
-      ? Math.min(1.18, 1 + Math.max(0, k - 1) * 0.04)
-      : Math.min(1.32, 1 + Math.max(0, k - 1) * 0.075);
+      ? Math.min(1.12, 1 + Math.max(0, k - 1) * 0.03)
+      : Math.min(1.22, 1 + Math.max(0, k - 1) * 0.055);
     return base * growth;
   }
 
@@ -794,9 +796,9 @@ export function mountNercOrgMap(): void {
   }
 
   function declutterBucket(k: number): number {
-    if (k < 2) return Math.round(k * 8) / 8;
-    if (k < 6) return Math.round(k * 4) / 4;
-    return Math.round(k * 2) / 2;
+    if (k < 2) return Math.round(k * 4) / 4;
+    if (k < 8) return Math.round(k * 2) / 2;
+    return Math.round(k);
   }
 
   function deepDeclutterT(k: number): number {
@@ -1189,7 +1191,7 @@ export function mountNercOrgMap(): void {
     const looseT = deepDeclutterT(bucket);
     const basePasses = compact ? bucket < 2.2 ? 48 : 42 : bucket < 2.2 ? 104 : bucket < 4 ? 86 : 64;
     const passes = Math.round(basePasses + looseT * (compact ? 34 : 54));
-    const gap = (2.2 + looseT * 2.4) * unitPerPx;
+    const gap = (0.9 + looseT * 1.2) * unitPerPx;
 
     for (let pass = 0; pass < passes; pass++) {
       const grid = new Map<string, number[]>();
@@ -1446,7 +1448,7 @@ export function mountNercOrgMap(): void {
     const labeledClusters: Array<{ x: number; y: number }> = [];
     // Phones spread labels a little at first; the inflation now fades back out as
     // you zoom in (was growing), so zoomed-in iOS fills space instead of thinning.
-    const spacing = compact && !tourActive ? Math.max(1, 1.5 - Math.max(0, k - 2) * 0.16) : 1;
+    const spacing = compact && !tourActive ? Math.max(1, 1.25 - Math.max(0, k - 2) * 0.12) : 1;
     // ── Label decision tree (candidates are pre-sorted most-important first) ──
     // For each org, in importance order:
     //   1. INSIDE: if its short token fits inside the bubble at a legible size,
@@ -1463,27 +1465,33 @@ export function mountNercOrgMap(): void {
     // Bubble blockers are added only after a bubble earns a label. Lower-priority
     // candidates that fail placement are hidden, so they should not reserve space
     // or cause blank dots.
-    const protectR = (compact ? 6.5 : 5) * unitPerPx;
-    const bubblePad = (compact ? 3.2 : 3.6) * unitPerPx;
-    const bubbleBlockers: Array<{ id: string; box: Box }> = [];
-    const bubbleBox = (o: Org): Box | null => {
+    const bubblePad = (compact ? 0.8 : 0.75) * unitPerPx;
+    const bubbleBlockers: Array<{ id: string; x: number; y: number; r: number }> = [];
+    const bubbleCircle = (o: Org): { x: number; y: number; r: number } | null => {
       if (o._sx == null || o._sy == null) return null;
-      const r = Math.max(renderedRadius(o, k), protectR * 0.85);
-      const rb = r + bubblePad;
-      return { x0: o._sx - rb, x1: o._sx + rb, y0: o._sy - rb, y1: o._sy + rb };
+      return { x: o._sx, y: o._sy, r: renderedRadius(o, k) + bubblePad };
+    };
+    const circlesOverlap = (
+      a: { x: number; y: number; r: number },
+      b: { x: number; y: number; r: number },
+    ): boolean => Math.hypot(a.x - b.x, a.y - b.y) < a.r + b.r;
+    const boxOverlapsCircle = (box: Box, circle: { x: number; y: number; r: number }): boolean => {
+      const cx = Math.max(box.x0, Math.min(circle.x, box.x1));
+      const cy = Math.max(box.y0, Math.min(circle.y, box.y1));
+      return (circle.x - cx) ** 2 + (circle.y - cy) ** 2 < circle.r ** 2;
     };
     const bubbleClears = (o: Org): boolean => {
       if (o._frame === "terr") return true;
-      const box = bubbleBox(o);
-      return !!box && !bubbleBlockers.some((b) => b.id !== o.ncr_id && boxesOverlap(box, b.box));
+      const circle = bubbleCircle(o);
+      return !!circle && !bubbleBlockers.some((b) => b.id !== o.ncr_id && circlesOverlap(circle, b));
     };
     const addBubbleBlocker = (o: Org): void => {
       if (o._frame === "terr") return;
-      const box = bubbleBox(o);
-      if (box) bubbleBlockers.push({ id: o.ncr_id, box });
+      const circle = bubbleCircle(o);
+      if (circle) bubbleBlockers.push({ id: o.ncr_id, ...circle });
     };
     const clearsBubbles = (box: Box, id: string): boolean =>
-      !bubbleBlockers.some((b) => b.id !== id && boxesOverlap(box, b.box));
+      !bubbleBlockers.some((b) => b.id !== id && boxOverlapsCircle(box, b));
 
     let placedCount = 0;
     for (const o of candidates) {
@@ -1502,7 +1510,7 @@ export function mountNercOrgMap(): void {
         labelFontPx(o, k) * unitPerPx,
         (r * 1.74) / Math.max(1, brand.length) / 0.56,
       );
-      const insideMin = (compact ? 5.2 : 5.6) * unitPerPx;
+      const insideMin = (compact ? 4.6 : 4.8) * unitPerPx;
       if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * 1.86) {
         if ((forceLabel || k >= 2.2 || !usedLabels.has(brand)) && bubbleClears(o)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
@@ -1524,9 +1532,9 @@ export function mountNercOrgMap(): void {
       }
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
-      const labelPadX = (compact ? 7 : 8) * unitPerPx;
-      const labelPadY = (compact ? 6 : 7) * unitPerPx;
-      const w = (Math.max(14, text.length * font * 0.62) + labelPadX * 2) * spacing;
+      const labelPadX = (compact ? 4.5 : 5) * unitPerPx;
+      const labelPadY = (compact ? 4 : 4.5) * unitPerPx;
+      const w = (Math.max(10, text.length * font * 0.58) + labelPadX * 2) * spacing;
       const h = (font + labelPadY * 2) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
       // Sit on the dot, then to the sides, then below, then the below-diagonals.
