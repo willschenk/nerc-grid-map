@@ -663,15 +663,21 @@ export function mountNercOrgMap(): void {
     const iso = o._iso ?? 0;
     if (iso <= 0) return 1;
     const zoomGain = smoothStep((k - 1.4) / 3.2); // ramps in as you zoom past ~1.4
-    const ceiling = (isGenerationOnly(o) ? 0.5 : 0.9) * (0.35 + zoomGain * 0.65);
+    const ceiling = (isGenerationOnly(o) ? 0.18 : 0.9) * (0.35 + zoomGain * 0.65);
     return 1 + iso * ceiling;
+  }
+
+  function generationOnlyRadiusCap(k: number): number {
+    const closeT = smoothStep((k - 1.8) / 6.2);
+    return (compact ? 4.6 + 1.2 * closeT : 4.8 + 1.6 * closeT) * unitPerPx;
   }
 
   // Territory-inset dots are schematic (small, uniform) rather than weight-sized
   // so they fit their grid cells; everything else uses the normal visual radius.
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 5 : 4) * unitPerPx;
-    return visualRadius(o, k) * isolationBoost(o, k);
+    const radius = visualRadius(o, k) * isolationBoost(o, k);
+    return isGenerationOnly(o) ? Math.min(radius, generationOnlyRadiusCap(k)) : radius;
   }
 
   function hitTargetRadius(o: Org, k: number): number {
