@@ -563,7 +563,7 @@ export function mountNercOrgMap(): void {
     // cap is generous (and slightly higher on compact) so the long low-weight
     // tail still spreads near the top of the range instead of collapsing to one
     // reveal zoom and flooding in together.
-    return Math.min(compact ? 19 : 16, 0.72 * Math.exp(0.04 * Math.max(0, anchor - orgScore(o))));
+    return Math.min(compact ? 13.5 : 11.5, 0.72 * Math.exp(0.04 * Math.max(0, anchor - orgScore(o))));
   }
 
   // Disclosure ramp 0..1: a dot fades in over [minZoom - lead, minZoom] and is
@@ -574,7 +574,7 @@ export function mountNercOrgMap(): void {
     if (o._frame === "terr") return 1;
     const fullAt = orgMinZoom(o);
     if (fullAt <= 0.72) return 1;
-    const lead = compact ? 0.85 : 1.0;
+    const lead = compact ? 1.05 : 1.25;
     return smoothStep((k - (fullAt - lead)) / lead);
   }
 
@@ -619,7 +619,9 @@ export function mountNercOrgMap(): void {
       k < 4.8 ? 680 :
       k < 6.8 ? 860 :
       k < 9.5 ? 1080 :
-      1300;
+      k < 12.5 ? 1500 :
+      k < 18 ? 2200 :
+      10000;
     // On phones, keep the overview sparse (small screen) but open up as you zoom
     // in — there's screen space to fill, and the user wants iOS to feel as dynamic
     // as desktop. Now that the compact overview discloses fewer (bigger) dots, it
@@ -808,9 +810,9 @@ export function mountNercOrgMap(): void {
     // dense clusters spread enough to tap and inspect individual entities.
     // (Land clamping separately bounds water drift.)
     const basePx = compact
-      ? k < 1.25 ? 40 : k < 2.2 ? 52 : k < 4 ? 56 : k < 7 ? 42 : k < 18 ? 30 : 22
-      : k < 1.25 ? 54 : k < 2.2 ? 78 : k < 4 ? 96 : k < 7 ? 78 : 58;
-    const deepPx = compact ? 54 : 176;
+      ? k < 1.25 ? 46 : k < 2.2 ? 64 : k < 4 ? 78 : k < 7 ? 86 : k < 18 ? 96 : 108
+      : k < 1.25 ? 68 : k < 2.2 ? 108 : k < 4 ? 148 : k < 7 ? 166 : k < 18 ? 190 : 216;
+    const deepPx = compact ? 126 : 260;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -1152,25 +1154,23 @@ export function mountNercOrgMap(): void {
       o._dy = 0;
       if (o._x == null || o._y == null) continue;
       // Undisclosed dots are hidden this frame, so they neither move nor push
-      // anyone — this also keeps the disclosed majors close to their true spot.
+      // anyone. At deep zoom every org's reveal threshold has passed, so all
+      // local dots participate and can spread before the non-overlap label gate.
       if (o._frame !== "terr" && dotStrength(o, bucket) < RENDER_EPS) continue;
       const baseX = o._x * bucket + (o._rx ?? 0) * spiderScreenScale;
       const baseY = o._y * bucket + (o._ry ?? 0) * spiderScreenScale;
-      const priority = Math.max(0, orgPriority(o));
       const fixed = o._frame === "terr";
       const strength = dotStrength(o, bucket);
-      const protectedDot = fixed || strength >= 0.68 || priority >= 32 || o.weight >= 18 || o.is_iso_rto;
+      const priority = Math.max(0, orgPriority(o));
       const visualR = renderedRadius(o, bucket);
-      const looseT = deepDeclutterT(bucket);
-      const softCollision = visualR * (0.42 + strength * 0.42);
       items.push({
         o,
         baseX,
         baseY,
         x: baseX,
         y: baseY,
-        r: protectedDot ? visualR : softCollision + (visualR - softCollision) * looseT,
-        mass: fixed ? 1000 : protectedDot ? 1 + priority / 18 + visualR / 14 : 0.55 + priority / 42 + strength,
+        r: visualR,
+        mass: fixed ? 1000 : 1 + priority / 24 + visualR / 16 + strength,
         fixed,
       });
     }
@@ -1187,9 +1187,9 @@ export function mountNercOrgMap(): void {
     const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
     const cell = Math.max(MAX_RADIUS * unitPerPx, maxR * 2 + 8 * unitPerPx);
     const looseT = deepDeclutterT(bucket);
-    const basePasses = compact ? 32 : bucket < 2.2 ? 80 : bucket < 4 ? 54 : 34;
-    const passes = Math.round(basePasses + looseT * (compact ? 22 : 34));
-    const gap = (1.8 + looseT * 2.2) * unitPerPx;
+    const basePasses = compact ? bucket < 2.2 ? 48 : 42 : bucket < 2.2 ? 104 : bucket < 4 ? 86 : 64;
+    const passes = Math.round(basePasses + looseT * (compact ? 34 : 54));
+    const gap = (2.2 + looseT * 2.4) * unitPerPx;
 
     for (let pass = 0; pass < passes; pass++) {
       const grid = new Map<string, number[]>();
@@ -1438,10 +1438,11 @@ export function mountNercOrgMap(): void {
     // one so top-row org labels don't hide behind the title chip.
     const topSafe = (compact && !tourActive ? 72 : tourActive ? 0 : 44) * unitPerPx;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
-    // Phones start with a wide label-suppression radius (sparse overview) but
-    // tighten it as you zoom in so more labels fill the screen — matching the
-    // desktop feel. Desktop is already tight.
-    const clusterRadius = (compact ? Math.max(9, 22 - Math.max(0, k - 1.6) * 4) : k < 1.25 ? 10 : 8) * unitPerPx;
+    // Low zoom still thins tight same-token clusters. Once the user zooms in,
+    // physical non-overlap becomes the only suppression rule.
+    const clusterRadius = k < 2.6
+      ? (compact ? Math.max(9, 22 - Math.max(0, k - 1.6) * 4) : k < 1.25 ? 10 : 8) * unitPerPx
+      : 0;
     const labeledClusters: Array<{ x: number; y: number }> = [];
     // Phones spread labels a little at first; the inflation now fades back out as
     // you zoom in (was growing), so zoomed-in iOS fills space instead of thinning.
@@ -1463,13 +1464,23 @@ export function mountNercOrgMap(): void {
     // candidates that fail placement are hidden, so they should not reserve space
     // or cause blank dots.
     const protectR = (compact ? 6.5 : 5) * unitPerPx;
-    const bubblePad = (compact ? 3.5 : 4) * unitPerPx;
+    const bubblePad = (compact ? 3.2 : 3.6) * unitPerPx;
     const bubbleBlockers: Array<{ id: string; box: Box }> = [];
-    const addBubbleBlocker = (o: Org): void => {
-      if (o._frame === "terr" || o._sx == null || o._sy == null) return;
+    const bubbleBox = (o: Org): Box | null => {
+      if (o._sx == null || o._sy == null) return null;
       const r = Math.max(renderedRadius(o, k), protectR * 0.85);
       const rb = r + bubblePad;
-      bubbleBlockers.push({ id: o.ncr_id, box: { x0: o._sx - rb, x1: o._sx + rb, y0: o._sy - rb, y1: o._sy + rb } });
+      return { x0: o._sx - rb, x1: o._sx + rb, y0: o._sy - rb, y1: o._sy + rb };
+    };
+    const bubbleClears = (o: Org): boolean => {
+      if (o._frame === "terr") return true;
+      const box = bubbleBox(o);
+      return !!box && !bubbleBlockers.some((b) => b.id !== o.ncr_id && boxesOverlap(box, b.box));
+    };
+    const addBubbleBlocker = (o: Org): void => {
+      if (o._frame === "terr") return;
+      const box = bubbleBox(o);
+      if (box) bubbleBlockers.push({ id: o.ncr_id, box });
     };
     const clearsBubbles = (box: Box, id: string): boolean =>
       !bubbleBlockers.some((b) => b.id !== id && boxesOverlap(box, b.box));
@@ -1493,7 +1504,7 @@ export function mountNercOrgMap(): void {
       );
       const insideMin = (compact ? 5.2 : 5.6) * unitPerPx;
       if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * 1.86) {
-        if (forceLabel || k >= 2.2 || !usedLabels.has(brand)) {
+        if ((forceLabel || k >= 2.2 || !usedLabels.has(brand)) && bubbleClears(o)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
           if (!forceLabel) usedLabels.add(brand);
           addBubbleBlocker(o);
@@ -1506,7 +1517,8 @@ export function mountNercOrgMap(): void {
       if (
         !forceLabel &&
         ((k < 2.2 && usedLabels.has(brand)) ||
-          labeledClusters.some((p) => (p.x - sx) ** 2 + (p.y - sy) ** 2 <= clusterRadius ** 2))
+          (clusterRadius > 0 && labeledClusters.some((p) => (p.x - sx) ** 2 + (p.y - sy) ** 2 <= clusterRadius ** 2)) ||
+          !bubbleClears(o))
       ) {
         continue;
       }
@@ -1550,7 +1562,7 @@ export function mountNercOrgMap(): void {
         const ly = Math.min(H - edgeSafe - h * 0.3, Math.max(topSafe + h * 0.7, sy - nudge));
         chosen = { x: lx, y: ly, box: { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 } };
       }
-      if (!chosen) continue;
+      if (!chosen || !bubbleClears(o)) continue;
       placed.push(chosen.box);
       if (!forceLabel) {
         labeledClusters.push({ x: sx, y: sy });
