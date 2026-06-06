@@ -872,8 +872,9 @@ export function mountNercOrgMap(): void {
     const hasDp = o.roles.includes("DP");
     const hasLse = o.roles.includes("LSE");
     if (isTransmissionOwnerOnly(o)) return 8;
-    // Authority tier: RC outranks BA outranks PC. Checked in precedence order so
-    // multi-role orgs inherit their highest authority. RC at 89 clears BA+multiRoleBonus (88).
+    // Authority tier: RC outranks BA outranks PC (matches roles.mjs weights).
+    // Checked in precedence order so multi-role orgs inherit their highest authority.
+    // RC at 89 clears BA+multiRoleBonus (88).
     if (o.roles.includes("RC")) return 89;
     if (o.roles.includes("BA")) return 82;
     if (o.roles.includes("PC")) return 78;
