@@ -220,6 +220,10 @@
   dominant-baseline: central;
 }
 
+#nerc-svg .olabel.hover-on-dot {
+  dominant-baseline: central;
+}
+
 #nerc-svg .olabel.inside.hot-label {
   fill: #ffffff;
   stroke: rgba(3, 8, 7, 0.7);

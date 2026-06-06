@@ -1777,10 +1777,8 @@ export function mountNercOrgMap(): void {
     }
 
     type Box = { x0: number; x1: number; y0: number; y1: number };
-    const labelState = new Map<
-      string,
-      { x: number; y: number; font: number; text: string; inside: boolean }
-    >();
+    type LabelPlacement = { x: number; y: number; font: number; text: string; inside: boolean; centered?: boolean };
+    const labelState = new Map<string, LabelPlacement>();
     const placed: Box[] = [];
     // De-dupe identical on-screen tokens only in the broad overview. Once zoomed
     // in, duplicate brands can each carry text because unlabeled dots are hidden.
@@ -1840,9 +1838,63 @@ export function mountNercOrgMap(): void {
     const clearsBubbles = (box: Box, id: string): boolean =>
       !bubbleBlockers.some((b) => b.id !== id && boxOverlapsCircle(box, b));
 
+    const isHoverLabelTarget = (o: Org): boolean =>
+      hot?.ncr_id === o.ncr_id && selectedOrg?.ncr_id !== o.ncr_id && !tourActive;
+
+    // Hover-only labels for visible dots that did not earn persistent text. Prefer
+    // inside the bubble, then centred across it; below-the-dot is a last resort.
+    const tryHoverUnlabeledLabel = (o: Org): LabelPlacement | null => {
+      if (o._sx == null || o._sy == null) return null;
+      const sx = o._sx;
+      const sy = o._sy;
+      const r = renderedRadius(o, k);
+      const textOptions = labelTextOptions(o, k);
+      const insideChord = isMidwestOrg(o) ? 1.94 : 1.86;
+      const hoverInsideMin = (compact ? 5.2 : 5.8) * unitPerPx;
+      const hoverAcrossMin = (compact ? 6 : 6.5) * unitPerPx;
+      const baseFont = Math.min(labelFontPx(o, k), compact ? 20 : 24) * unitPerPx;
+      const labelPadX = (compact ? 4.5 : 5) * unitPerPx;
+      const labelPadY = (compact ? 4 : 4.5) * unitPerPx;
+
+      for (const text of textOptions) {
+        const insideFont = Math.min(
+          baseFont,
+          (r * 1.74) / Math.max(1, text.length) / 0.56,
+        );
+        if (insideFont >= hoverInsideMin && insideFont * 0.56 * text.length <= r * insideChord) {
+          return { x: sx, y: sy, font: insideFont, text, inside: true };
+        }
+      }
+
+      for (const text of textOptions) {
+        const acrossFont = Math.min(baseFont, (r * 2.05) / Math.max(1, text.length) / 0.58);
+        if (acrossFont < hoverAcrossMin) continue;
+        const w = text.length * acrossFont * 0.58;
+        const h = acrossFont * 1.15;
+        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.55, y1: sy + h * 0.45 };
+        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
+        return { x: sx, y: sy, font: acrossFont, text, inside: false, centered: true };
+      }
+
+      const fallbackFont = hoverAcrossMin;
+      for (const text of textOptions) {
+        const w = Math.max(10, text.length * fallbackFont * 0.58) + labelPadX * 2;
+        const h = fallbackFont + labelPadY * 2;
+        const nudge = r + fallbackFont * 0.82 + 2 * unitPerPx;
+        const lx = Math.min(W - edgeSafe - w / 2, Math.max(edgeSafe + w / 2, sx));
+        const ly = sy + nudge;
+        const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
+        if (box.y1 <= H - edgeSafe && box.y0 >= topSafe) {
+          return { x: lx, y: ly, font: fallbackFont, text, inside: false };
+        }
+      }
+      return { x: sx, y: sy, font: fallbackFont, text: textOptions[0], inside: false, centered: true };
+    };
+
     let placedCount = 0;
     for (const o of candidates) {
       if (placedCount >= maxLabels) break;
+      if (isHoverLabelTarget(o)) continue;
       const sx = o._sx as number;
       const sy = o._sy as number;
       const r = renderedRadius(o, k);
@@ -1949,6 +2001,11 @@ export function mountNercOrgMap(): void {
       placedCount++;
     }
 
+    if (hot?._vis && hot._sx != null && hot._sy != null && isHoverLabelTarget(hot) && !labelState.has(hot.ncr_id)) {
+      const hoverLabel = tryHoverUnlabeledLabel(hot);
+      if (hoverLabel) labelState.set(hot.ncr_id, hoverLabel);
+    }
+
     // Every disclosed bubble renders (labels are a separate layer placed on top of
     // a subset), so the map stays dense — "show as much as you can" — rather than
     // only showing bubbles that happened to win a label.
@@ -2007,6 +2064,7 @@ export function mountNercOrgMap(): void {
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
       node.classList.toggle("inside", state.inside);
+      node.classList.toggle("hover-on-dot", !!state.centered);
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
       node.classList.toggle("tour-flash", tourActive && !!state);
