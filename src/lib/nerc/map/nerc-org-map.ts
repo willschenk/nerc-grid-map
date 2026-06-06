@@ -72,6 +72,12 @@ type Org = {
   // Last viewBox radius actually written to the circle, so zoom-only sizing can
   // update without a per-frame attribute storm.
   _rr?: number;
+  // Memoized renderedRadius and the (zoom, size-generation) it was computed for.
+  // visualRadius is heavy and gets called many times per org per frame; caching
+  // it keeps panning (constant k) cheap.
+  _vr?: number;
+  _vrk?: number;
+  _vrGen?: number;
   // Last viewBox hit radius written to the invisible target. It follows the
   // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
   _hr?: number;
@@ -541,6 +547,9 @@ export function mountNercOrgMap(): void {
   // User-space units per on-screen pixel (W / element width). Lets us size
   // labels in real pixels so they read the same on desktop and iOS.
   let unitPerPx = 1;
+  // Bumped whenever sizing inputs that aren't zoom change (unitPerPx / compact on
+  // resize), to invalidate the per-org renderedRadius memo.
+  let radiusGen = 0;
   // Phone-sized screens get fewer labels when zoomed in (less screen real
   // estate for the same physical-size labels).
   let compact = false;
@@ -999,7 +1008,15 @@ export function mountNercOrgMap(): void {
   // cluster; everything else uses priority-based sizing.
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 5.4 : 4.6) * unitPerPx;
-    return visualRadius(o, k);
+    // Memoize: visualRadius is heavy and called many times per org per frame.
+    // The result only depends on (o, k, unitPerPx, compact); radiusGen folds in
+    // the latter two, so panning (constant k) reuses the cached value.
+    if (o._vrk === k && o._vrGen === radiusGen && o._vr != null) return o._vr;
+    const v = visualRadius(o, k);
+    o._vr = v;
+    o._vrk = k;
+    o._vrGen = radiusGen;
+    return v;
   }
 
   function hitTargetRadius(o: Org, k: number): number {
@@ -1357,6 +1374,7 @@ export function mountNercOrgMap(): void {
     }
     unitPerPx = W / elW;
     compact = elW < 640;
+    radiusGen++; // unitPerPx/compact may have changed — invalidate radius memo
     svg.attr("viewBox", `0 0 ${W} ${H}`);
     updateZoomBounds();
   }
