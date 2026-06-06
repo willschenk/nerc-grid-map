@@ -907,7 +907,7 @@
     {
       "ncr_id": "NCR01072",
       "entity_name": "Independence Power & Light (Independence,Missouri)",
-      "shortest": "IPL",
+      "shortest": "Independence",
       "short": "Independence Power & Light",
       "normal": "Independence Power & Light",
       "tier": "normal"
@@ -12587,7 +12587,7 @@
     {
       "ncr_id": "NCR00124",
       "entity_name": "Ipswich Municipal Light Department",
-      "shortest": "IPL",
+      "shortest": "Ipswich",
       "short": "Ipswich Municipal Light",
       "normal": "Ipswich Municipal Light Department",
       "tier": "normal"

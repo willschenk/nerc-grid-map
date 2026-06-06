@@ -4324,7 +4324,7 @@
     {
       "ncr_id": "NCR01072",
       "entity_name": "Independence Power & Light (Independence,Missouri)",
-      "acronym": "IPL",
+      "acronym": "Independence",
       "acronym_source": "official_website",
       "region": "MRO",
       "roles": [
@@ -10746,7 +10746,7 @@
     {
       "ncr_id": "NCR00124",
       "entity_name": "Ipswich Municipal Light Department",
-      "acronym": "IPL",
+      "acronym": "Ipswich",
       "acronym_source": "official_website",
       "region": "NPCC",
       "roles": [

@@ -34,6 +34,31 @@
       "code": "DAY",
       "ncr_id": "NCR00748",
       "meaning": "Dayton Power & Light / AES Ohio"
+    },
+    {
+      "code": "SIGE",
+      "ncr_id": "NCR00917",
+      "meaning": "Southern Indiana Gas & Electric / CenterPoint Indiana South"
+    },
+    {
+      "code": "DEOK",
+      "ncr_id": "SUP-duke-energy-ohio-kentucky",
+      "meaning": "Duke Energy Ohio-Kentucky"
+    },
+    {
+      "code": "DUQ",
+      "ncr_id": "NCR00762",
+      "meaning": "Duquesne Light Company"
+    },
+    {
+      "code": "IPL",
+      "ncr_id": "NCR00798",
+      "meaning": "Indianapolis Power & Light / AES Indiana"
+    },
+    {
+      "code": "NIPS",
+      "ncr_id": "NCR02611",
+      "meaning": "Northern Indiana Public Service Company"
     }
   ]
 }
