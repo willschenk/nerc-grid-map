@@ -608,7 +608,11 @@ export function mountNercOrgMap(): void {
     if (!point) return fallback;
     const k = transform.k;
     let best = fallback;
-    let bestD2 = Number.POSITIVE_INFINITY;
+    // Rank by how deep the pointer is INSIDE each bubble relative to that bubble's
+    // own size (normalized distance), not raw distance to centre. In a dense
+    // cluster this picks the dot you actually clicked into rather than a larger
+    // neighbour whose centre happens to be nearer.
+    let bestNorm = Number.POSITIVE_INFINITY;
     for (const o of placeableOrgs) {
       if (!o._vis || o._sx == null || o._sy == null) continue;
       const dx = o._sx - point.x;
@@ -616,9 +620,10 @@ export function mountNercOrgMap(): void {
       const d2 = dx * dx + dy * dy;
       const hit = hitTargetRadius(o, k) + unitPerPx;
       if (d2 > hit * hit) continue;
-      if (d2 < bestD2 || (Math.abs(d2 - bestD2) < 0.001 && drawPriority(o, k) > drawPriority(best, k))) {
+      const norm = d2 / (hit * hit);
+      if (norm < bestNorm - 0.02 || (Math.abs(norm - bestNorm) <= 0.02 && drawPriority(o, k) > drawPriority(best, k))) {
         best = o;
-        bestD2 = d2;
+        bestNorm = norm;
       }
     }
     return best;
@@ -889,12 +894,15 @@ export function mountNercOrgMap(): void {
     // plus a small pad and a floor — no per-dot reveal strength to fold in.
     const visual = renderedRadius(o, k);
     const priority = visualPriority(o);
+    // Floors keep even modest mid-priority utilities (e.g. western irrigation /
+    // municipal districts like TID, IID, LADWP) comfortably clickable when their
+    // bubble is small at the overview.
     const overviewFloorPx = compact
-      ? priority < 30 ? 9 : 12
-      : priority < 30 ? 4.2 : priority < 55 ? 5.2 : 7;
+      ? priority < 30 ? 9.5 : 12.5
+      : priority < 30 ? 5 : priority < 55 ? 6.2 : 7.5;
     const deepFloorPx = compact
       ? priority < 30 ? 5.5 : 6.5
-      : priority < 30 ? 2.6 : priority < 55 ? 3.2 : 4.4;
+      : priority < 30 ? 2.8 : priority < 55 ? 3.4 : 4.4;
     const deepT = smoothStep((k - 10) / 18);
     const floorPx = overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT;
     const overviewPadPx = compact ? (priority < 30 ? 2.4 : 3.4) : priority < 30 ? 1 : priority < 55 ? 1.5 : 2.4;
