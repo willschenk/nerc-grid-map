@@ -691,30 +691,45 @@
 
 .nerc-panel-close {
   position: absolute;
-  top: 0.45rem;
-  right: 0.55rem;
-  width: 1.8rem;
-  height: 1.8rem;
-  border: 1px solid transparent;
-  border-radius: 7px;
-  background: transparent;
-  color: #5e6b67;
+  top: 0.4rem;
+  right: 0.45rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  border: 1px solid rgba(31, 47, 42, 0.22);
+  border-radius: 8px;
+  background: rgba(248, 251, 250, 0.96);
+  color: #24302c;
   cursor: pointer;
   font: inherit;
-  font-size: 1.15rem;
+  font-size: 1.35rem;
+  font-weight: 500;
   line-height: 1;
+  box-shadow: 0 1px 4px rgba(20, 31, 28, 0.12);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nerc-panel-close:hover {
-  background: rgba(16, 32, 28, 0.06);
+  background: #fff;
+  border-color: rgba(31, 47, 42, 0.32);
   color: #0f1916;
+  box-shadow: 0 2px 7px rgba(20, 31, 28, 0.16);
+}
+
+.nerc-panel-close:active {
+  background: rgba(16, 32, 28, 0.08);
+  transform: scale(0.96);
 }
 
 /* Collapse toggle sits just left of the close button. */
 .nerc-panel-collapse {
   position: absolute;
   top: 0.45rem;
-  right: 2.45rem;
+  right: calc(0.45rem + 2.25rem + 0.35rem);
   width: 1.8rem;
   height: 1.8rem;
   border: 1px solid transparent;
@@ -746,7 +761,7 @@
 }
 
 .nerc-panel.collapsed .p-title {
-  padding-right: 3.6rem;
+  padding-right: 4.8rem;
 }
 
 .p-title {
@@ -754,7 +769,7 @@
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.62rem;
   align-items: center;
-  padding-right: 1.7rem;
+  padding-right: 4.8rem;
 }
 
 .p-title h2,
@@ -1163,6 +1178,27 @@
     bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
     width: auto;
     max-height: 48dvh;
+  }
+
+  /* 44px close target on phones — easier to spot and tap without changing behavior. */
+  .nerc-panel-close {
+    top: 0.35rem;
+    right: 0.4rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    font-size: 1.5rem;
+    border-radius: 10px;
+  }
+
+  .nerc-panel-collapse {
+    right: calc(0.4rem + 2.75rem + 0.4rem);
+  }
+
+  .p-title,
+  .nerc-panel.collapsed .p-title {
+    padding-right: 5.6rem;
   }
 
   .nerc-metrics-panel {
