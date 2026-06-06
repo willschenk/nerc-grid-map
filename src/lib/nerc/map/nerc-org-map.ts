@@ -136,11 +136,15 @@ const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 50;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
-// Display anchor (desktop only): generation-only orgs become eligible to render
-// this early, so they start appearing at NYC-area deep zoom (~k18+) — but their
-// size ramp still waits for GENERATION_ONLY_REVEAL_K, so they stay small and never
-// overpower important orgs. Mobile keeps the higher reveal-K for display.
-const GENERATION_ONLY_DISPLAY_K = 20;
+// Display anchor: GO/GOP-only orgs become eligible to render this early, so they
+// start appearing at mid/deep zoom — but their size ramp still waits for
+// GENERATION_ONLY_REVEAL_K, so they stay small and never overpower important
+// orgs. Lowered so generation companies show up noticeably earlier as you zoom.
+const GENERATION_ONLY_DISPLAY_K = 10;
+const GENERATION_ONLY_DISPLAY_K_COMPACT = 13;
+// PSE-market entities stay the deepest tier (they appear later than GO/GOP).
+const PSE_MARKET_DISPLAY_K = 20;
+const PSE_MARKET_DISPLAY_K_COMPACT = 48;
 const TO_ONLY_REVEAL_K = 12;
 const TO_ONLY_REVEAL_K_COMPACT = 14;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
@@ -827,7 +831,11 @@ export function mountNercOrgMap(): void {
   // earlier than its growth anchor (so it appears at deep zoom while still drawn
   // small); mobile keeps the conservative reveal-K to leave the overview clean.
   function generationOnlyDisplayK(): number {
-    return compact ? GENERATION_ONLY_REVEAL_K_COMPACT : GENERATION_ONLY_DISPLAY_K;
+    return compact ? GENERATION_ONLY_DISPLAY_K_COMPACT : GENERATION_ONLY_DISPLAY_K;
+  }
+
+  function pseMarketDisplayK(): number {
+    return compact ? PSE_MARKET_DISPLAY_K_COMPACT : PSE_MARKET_DISPLAY_K;
   }
 
   // Progressive zoom tiers. Lower-priority / lower-weight entities reveal as the
@@ -853,8 +861,11 @@ export function mountNercOrgMap(): void {
     // computePlacements via _placed, so only those with room actually draw.)
     if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 28) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
-    // GO/GOP-only and PSE-market entities stay deferred to deep zoom.
-    if (isDeferredMarketOrg(o)) return k >= generationOnlyDisplayK();
+    // GO/GOP-only and PSE-market entities stay deferred to deep zoom; GO/GOP now
+    // appear earlier than PSE-market.
+    if (isDeferredMarketOrg(o)) {
+      return k >= (isPseMarketOnly(o) ? pseMarketDisplayK() : generationOnlyDisplayK());
+    }
     return k >= overviewRevealK(o);
   }
 

@@ -43,7 +43,7 @@
     {
       "ncr_id": "NCR-SEED-020",
       "entity_name": "Duke Energy Carolinas, LLC",
-      "shortest": "Duke",
+      "shortest": "DEC",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
       "tier": "major"
@@ -91,7 +91,7 @@
     {
       "ncr_id": "NCR-SEED-021",
       "entity_name": "Duke Energy Progress, LLC",
-      "shortest": "Duke",
+      "shortest": "DEP",
       "short": "Duke Energy Progress",
       "normal": "Duke Energy Progress, LLC",
       "tier": "major"
@@ -16067,7 +16067,7 @@
     {
       "ncr_id": "NCR01219",
       "entity_name": "Duke Energy Carolinas, LLC",
-      "shortest": "Duke",
+      "shortest": "DEC",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
       "tier": "major"
@@ -16075,7 +16075,7 @@
     {
       "ncr_id": "NCR01298",
       "entity_name": "Duke Energy Progress, LLC",
-      "shortest": "Duke",
+      "shortest": "DEP",
       "short": "Duke Energy Progress",
       "normal": "Duke Energy Progress, LLC",
       "tier": "major"
