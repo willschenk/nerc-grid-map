@@ -195,7 +195,7 @@
     {
       "ncr_id": "NCR-SEED-035",
       "entity_name": "Consumers Energy Company",
-      "shortest": "CE",
+      "shortest": "Consumers",
       "short": "Consumers",
       "normal": "Consumers Energy Company",
       "tier": "major"
@@ -16155,7 +16155,7 @@
     {
       "ncr_id": "NCR00740",
       "entity_name": "Consumers Energy Company",
-      "shortest": "CE",
+      "shortest": "Consumers",
       "short": "Consumers",
       "normal": "Consumers Energy Company",
       "tier": "major"

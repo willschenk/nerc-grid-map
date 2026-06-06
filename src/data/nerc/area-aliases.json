@@ -59,6 +59,26 @@
       "code": "NIPS",
       "ncr_id": "NCR02611",
       "meaning": "Northern Indiana Public Service Company"
+    },
+    {
+      "code": "CONS",
+      "ncr_id": "NCR00740",
+      "meaning": "Consumers Energy"
+    },
+    {
+      "code": "DECO",
+      "ncr_id": "NCR00753",
+      "meaning": "Detroit Edison / DTE Electric"
+    },
+    {
+      "code": "CE",
+      "ncr_id": "NCR08013",
+      "meaning": "Commonwealth Edison"
+    },
+    {
+      "code": "WEC",
+      "ncr_id": "NCR00951",
+      "meaning": "Wisconsin Electric / We Energies"
     }
   ]
 }
