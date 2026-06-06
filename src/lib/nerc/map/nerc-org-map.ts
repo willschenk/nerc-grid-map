@@ -152,6 +152,14 @@ function isUsInsetOrg(o: { state?: string | null }): boolean {
   return US_INSET_STATES.has(o.state ?? "");
 }
 
+// Dense upper-Midwest utility belt (NE/IA/MN/WI): extra declutter spread and
+// slightly earlier label tries without changing the placement algorithm.
+const MIDWEST_STATES = new Set(["NE", "IA", "MN", "WI"]);
+
+function isMidwestOrg(o: { state?: string | null }): boolean {
+  return MIDWEST_STATES.has(o.state ?? "");
+}
+
 function territoryLayoutMetrics(compact: boolean, u: number, viewW: number, viewH: number) {
   const padX = (compact ? 30 : 18) * u;
   const padY = (compact ? 12 : 8) * u;
@@ -668,7 +676,13 @@ export function mountNercOrgMap(): void {
     const priority = visualPriority(o);
     const shortAt = compact
       ? priority >= 80 ? 2.8 : priority >= 50 ? 3.6 : 4.8
-      : priority >= 80 ? 2.2 : priority >= 50 ? 2.9 : 3.8;
+      : priority >= 80
+        ? 2.2
+        : priority >= 50
+          ? isMidwestOrg(o)
+            ? 2.6
+            : 2.9
+          : 3.8;
     if (k < shortAt) return [tiny];
     const mid = midName(o);
     if (mid === tiny || mid.length > (compact ? 22 : 34)) return [tiny];
@@ -839,10 +853,11 @@ export function mountNercOrgMap(): void {
   // zoomed in, where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
     const priority = visualPriority(o);
+    const midwest = isMidwestOrg(o);
     if (k >= 2.2) return true;
-    if (k < 1.25) return priority >= 42;
-    if (k < 1.8) return priority >= 28;
-    return priority >= 18;
+    if (k < 1.25) return priority >= (midwest ? 38 : 42);
+    if (k < 1.8) return priority >= (midwest ? 24 : 28);
+    return priority >= (midwest ? 16 : 18);
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
@@ -1083,6 +1098,12 @@ export function mountNercOrgMap(): void {
       const spreadT = smoothStep((4 - bucket) / 3.2);
       return radius * (1 + (compact ? 1.15 : 1.45) * spreadT);
     }
+    // NE/IA/MN/WI clusters pack many co-ops and munis together — modest extra
+    // spread at mid zoom opens gaps for labels without mainland drift.
+    if (isMidwestOrg(o)) {
+      const spreadT = smoothStep((6 - bucket) / 4.5);
+      return radius * (1 + (compact ? 0.48 : 0.68) * spreadT);
+    }
     return radius;
   }
 
@@ -1148,7 +1169,8 @@ export function mountNercOrgMap(): void {
       if (cluster.length < 2) continue;
       cluster.sort((a, b) => a.ncr_id.localeCompare(b.ncr_id));
       const insetCluster = cluster.some(isUsInsetOrg);
-      const ringStep = insetCluster ? step * 1.42 : step;
+      const midwestCluster = cluster.some(isMidwestOrg);
+      const ringStep = insetCluster ? step * 1.42 : midwestCluster ? step * 1.22 : step;
       cluster.forEach((o, i) => {
         const [rx, ry] = spiderOffset(i, cluster.length, ringStep);
         o._rx = rx;
@@ -1781,9 +1803,15 @@ export function mountNercOrgMap(): void {
       // so by max zoom every visible (now-large) bubble takes its name inside —
       // any circle on screen ends up labeled when fully zoomed in.
       const deepLabelT = smoothStep((k - 9) / 13);
-      const insideMin = (compact ? 5.8 : 6.4) * (1 - 0.9 * deepLabelT) * unitPerPx;
-      if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * 1.86) {
-        if ((forceLabel || k >= 2.2 || !usedLabels.has(brand)) && bubbleClears(o)) {
+      const insideMin =
+        (compact ? 5.8 : 6.4) *
+        (1 - 0.9 * deepLabelT) *
+        (isMidwestOrg(o) ? 0.9 : 1) *
+        unitPerPx;
+      const insideChord = isMidwestOrg(o) ? 1.94 : 1.86;
+      if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * insideChord) {
+        const insideDedupK = isMidwestOrg(o) ? 2.0 : 2.2;
+        if ((forceLabel || k >= insideDedupK || !usedLabels.has(brand)) && bubbleClears(o)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
           if (!forceLabel) usedLabels.add(brand);
           addBubbleBlocker(o);
@@ -1796,21 +1824,23 @@ export function mountNercOrgMap(): void {
       // token cannot fit inside the bubble. Once zoomed in, any visible org can
       // try for this overflow label; collision checks decide if there is room.
       const priority = visualPriority(o);
+      const midwest = isMidwestOrg(o);
       const allowFloat =
         forceLabel ||
         (priority >= 82 && k >= 1.2) ||
-        (priority >= 66 && k >= 1.55) ||
-        (priority >= 50 && k >= 2.05) ||
-        k >= 2.6;
+        (priority >= 66 && k >= (midwest ? 1.45 : 1.55)) ||
+        (priority >= 50 && k >= (midwest ? 1.85 : 2.05)) ||
+        k >= (midwest ? 2.45 : 2.6);
       if (!allowFloat) continue;
       const font = labelFontPx(o, k) * unitPerPx;
-      const labelPadX = (compact ? 4.5 : 5) * unitPerPx;
-      const labelPadY = (compact ? 4 : 4.5) * unitPerPx;
+      const padScale = midwest ? 0.92 : 1;
+      const labelPadX = (compact ? 4.5 : 5) * unitPerPx * padScale;
+      const labelPadY = (compact ? 4 : 4.5) * unitPerPx * padScale;
       const h = (font + labelPadY * 2) * spacing;
-      const nudge = r + font * 0.82 + 2 * unitPerPx;
+      const nudge = (r + font * 0.82 + 2 * unitPerPx) * (midwest ? 1.14 : 1);
       // Sit on the dot, then to the sides, then below, then the below-diagonals.
       // Labels never go above the organization.
-      const spots = [
+      const spots: Array<[number, number]> = [
         [sx, sy + font * 0.32],
         [sx + nudge, sy + font * 0.32],
         [sx - nudge, sy + font * 0.32],
@@ -1818,6 +1848,9 @@ export function mountNercOrgMap(): void {
         [sx + nudge * 0.78, sy + nudge * 0.72],
         [sx - nudge * 0.78, sy + nudge * 0.72],
       ];
+      if (midwest) {
+        spots.push([sx, sy + nudge * 1.22], [sx + nudge * 0.55, sy + nudge * 1.05]);
+      }
       const tryFloatingText = (text: string): { x: number; y: number; box: Box; text: string } | null => {
         const w = (Math.max(10, text.length * font * 0.58) + labelPadX * 2) * spacing;
         for (const [lx, ly] of spots) {
