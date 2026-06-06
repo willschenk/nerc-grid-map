@@ -611,8 +611,11 @@ export function mountNercOrgMap(): void {
     // Rank by how deep the pointer is INSIDE each bubble relative to that bubble's
     // own size (normalized distance), not raw distance to centre. In a dense
     // cluster this picks the dot you actually clicked into rather than a larger
-    // neighbour whose centre happens to be nearer.
+    // neighbour whose centre happens to be nearer. A pointer inside a bubble's
+    // *drawn* circle always beats one only inside the padded hit ring, so the
+    // selection matches the circle you clicked.
     let bestNorm = Number.POSITIVE_INFINITY;
+    let bestInVisual = false;
     for (const o of placeableOrgs) {
       if (!o._vis || o._sx == null || o._sy == null) continue;
       const dx = o._sx - point.x;
@@ -620,10 +623,18 @@ export function mountNercOrgMap(): void {
       const d2 = dx * dx + dy * dy;
       const hit = hitTargetRadius(o, k) + unitPerPx;
       if (d2 > hit * hit) continue;
+      const visual = renderedRadius(o, k);
+      const inVisual = d2 <= visual * visual;
       const norm = d2 / (hit * hit);
-      if (norm < bestNorm - 0.02 || (Math.abs(norm - bestNorm) <= 0.02 && drawPriority(o, k) > drawPriority(best, k))) {
+      const better =
+        (inVisual && !bestInVisual) ||
+        (inVisual === bestInVisual &&
+          (norm < bestNorm - 0.02 ||
+            (Math.abs(norm - bestNorm) <= 0.02 && drawPriority(o, k) > drawPriority(best, k))));
+      if (better) {
         best = o;
         bestNorm = norm;
+        bestInVisual = inVisual;
       }
     }
     return best;
