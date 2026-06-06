@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { feature } from "topojson-client";
 import { enrichOrg } from "../../src/lib/nerc/enrich.mjs";
+import { applyMapCombines } from "../../src/lib/nerc/map-combines.mjs";
 import { isExcludedTerritoryCode, isExcludedTerritoryFips } from "../../src/lib/nerc/excluded-territories.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -104,6 +105,7 @@ const SEED_TWINS = resolve(root, "src/data/nerc/seed-twins.json");
 // Researched three-tier display names, keyed by ncr_id (Cursor fills this in
 // one entity at a time). Merged onto records before enrichOrg().
 const ORG_NAMES = resolve(root, "src/data/nerc/org-names.json");
+const MAP_COMBINES = resolve(root, "src/data/nerc/map-combines.json");
 
 const OUT_DIR = resolve(root, "public/nerc");
 const OUT_ORGS = resolve(OUT_DIR, "orgs.json");
@@ -193,10 +195,17 @@ function stageBasemap() {
 function main() {
   const { file, records } = loadRecords();
   const names = loadNameTable();
-  const nercOrgs = dropRetiredSeeds(records)
+  let nercOrgs = dropRetiredSeeds(records)
     .filter((r) => r.skip !== true)
     .map((r) => enrichOrg(applyNames(r, names)))
     .filter((o) => o.lat != null && o.lng != null);
+
+  if (existsSync(MAP_COMBINES)) {
+    const combineConfig = JSON.parse(readFileSync(MAP_COMBINES, "utf8"));
+    const { orgs: combinedOrgs, folded: foldedCount } = applyMapCombines(nercOrgs, combineConfig);
+    nercOrgs = combinedOrgs;
+    if (foldedCount) console.log(`nerc: map-combined ${foldedCount} co-located registration(s)`);
+  }
 
   const existingNames = new Set(nercOrgs.map((o) => normName(o.entity_name)));
   const supplemental = loadSupplemental(existingNames);

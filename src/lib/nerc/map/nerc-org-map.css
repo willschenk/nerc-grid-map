@@ -743,6 +743,60 @@
   gap: 0.42rem;
 }
 
+.nerc-panel .p-combined-note {
+  margin: 0.35rem 1.8rem 0.65rem 0;
+  color: #485852;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.nerc-panel .p-combined {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.nerc-panel .p-combined-row {
+  display: grid;
+  gap: 0.14rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.nerc-panel .p-combined-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nerc-panel .p-combined-id {
+  font-weight: 700;
+  color: #123c36;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+.nerc-panel .p-combined-region {
+  border: 1px solid rgba(31, 47, 42, 0.14);
+  border-radius: 999px;
+  padding: 0.05rem 0.38rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #485852;
+  letter-spacing: 0.03em;
+}
+
+.nerc-panel .p-combined-name {
+  color: #33433e;
+}
+
+#nerc-tooltip .tt-combined {
+  margin-top: 0.28rem;
+  color: #485852;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
 .nerc-panel .p-links {
   display: flex;
   flex-wrap: wrap;

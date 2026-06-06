@@ -1,0 +1,18 @@
+{
+  "_comment": "Fold multiple NERC registrations that share one HQ into a single map dot. Source rows stay in geocoded-orgs.json; build-orgs.mjs merges roles onto the canonical id and drops the satellites from public/nerc/orgs.json.",
+  "combines": [
+    {
+      "canonical": "NCR00682",
+      "members": [
+        "NCR01056",
+        "NCR04006",
+        "NCR11401",
+        "NCR12527",
+        "NCR13230"
+      ],
+      "label": "AEP Columbus HQ",
+      "summary": "Six separate NERC registrations share AEP's Columbus headquarters and appear here as one map location.",
+      "display_name": "American Electric Power"
+    }
+  ]
+}

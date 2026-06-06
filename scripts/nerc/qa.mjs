@@ -115,6 +115,28 @@ for (const o of orgs) {
   }
 }
 
+// 9. Map combines: absorbed member ids must not appear as standalone dots.
+try {
+  const combinePath = resolve(process.cwd(), "src/data/nerc/map-combines.json");
+  const combineRaw = JSON.parse(readFileSync(combinePath, "utf8"));
+  const present = new Set(orgs.map((o) => o.ncr_id));
+  for (const group of combineRaw.combines ?? []) {
+    if (!present.has(group.canonical)) {
+      warnings.push(`map combine canonical missing from output: ${group.canonical}`);
+      continue;
+    }
+    for (const id of group.members ?? []) {
+      if (present.has(id)) errors.push(`map combine member still published separately: ${id}`);
+    }
+    const canonical = orgs.find((o) => o.ncr_id === group.canonical);
+    if (canonical && !canonical.combined_members?.length) {
+      errors.push(`map combine canonical missing combined_members: ${group.canonical}`);
+    }
+  }
+} catch {
+  // map-combines.json optional
+}
+
 // Acceptance: >= 60% HIGH or MEDIUM.
 const hiMed = ((conf.HIGH ?? 0) + (conf.MEDIUM ?? 0)) / orgs.length * 100;
 

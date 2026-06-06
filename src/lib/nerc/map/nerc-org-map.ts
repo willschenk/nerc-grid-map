@@ -44,6 +44,14 @@ type Org = {
   seed?: boolean;
   nerc_registered?: boolean;
   out_of_footprint?: boolean;
+  combined_members?: Array<{
+    ncr_id: string;
+    entity_name: string;
+    region: string | null;
+    roles: string[];
+  }>;
+  map_combine_summary?: string;
+  map_combine_label?: string;
   _x?: number;
   _y?: number;
   // Declutter offset in current screen-space layout units. Rendering divides
@@ -119,29 +127,21 @@ const TERRITORY_LAYOUT_ORDER = ["PR", "VI"] as const;
 // FIPS ids of the territory land outlines carried in the states topojson, so the
 // inset can draw the real island shape (geoAlbersUsa can't project them).
 const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
-// Nudge territory insets toward the lower-right corner, clamped so org dots stay
-// on screen (a large uncapped offset pushed Puerto Rico entirely off the canvas).
-function territoryInsetPos(
-  code: string,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  compact: boolean,
-  u: number,
-  viewW: number,
-  viewH: number,
-): { x: number; y: number } {
-  let dx = 0;
-  let dy = 0;
-  if (code === "PR") {
-    dx = (compact ? 28 : 40) * u;
-    dy = (compact ? 36 : 28) * u;
-  }
-  const pad = 4 * u;
+
+function territoryLayoutMetrics(compact: boolean, u: number, viewW: number, viewH: number) {
+  const padX = (compact ? 30 : 18) * u;
+  const padY = (compact ? 12 : 8) * u;
+  // Dedicated Atlantic lane east of the lower-48 footprint so PR/VI never sit on Florida.
+  const laneW = (compact ? 136 : 224) * u;
   return {
-    x: Math.min(Math.max(pad, x + dx), viewW - w - pad),
-    y: Math.min(Math.max(pad, y + dy), viewH - h - pad),
+    padX,
+    padY,
+    laneW,
+    laneLeft: viewW - padX - laneW,
+    laneRight: viewW - padX,
+    laneBottom: viewH - padY,
+    insetPad: 8 * u,
+    stackGap: (compact ? 8 : 12) * u,
   };
 }
 
@@ -334,6 +334,48 @@ function midName(o: Org): string {
 // "Acronym"-style token used in chips / tooltips / aria: the super-short name.
 function orgAcronym(o: Org): string {
   return tinyName(o);
+}
+
+function memberDisplayName(name: string): string {
+  let s = name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0].replace(/,.*$/, "").trim();
+  if (s.length > 72) s = `${s.slice(0, 69)}…`;
+  return s;
+}
+
+function combinedRegions(o: Org): string | null {
+  if (!o.combined_members?.length) return null;
+  const regions = new Set<string>();
+  if (o.region) regions.add(o.region);
+  for (const m of o.combined_members) {
+    if (m.region) regions.add(m.region);
+  }
+  const list = [...regions].sort();
+  return list.length ? list.join(", ") : null;
+}
+
+// Human-facing title: combined orgs use a short brand, not the full agent string.
+function displayName(o: Org): string {
+  if (o.map_combine_label) return o.map_combine_label;
+  if (o.combined_members?.length) {
+    const c = curate(o.entity_name);
+    if (c) return c.mid;
+    return o.name_normal ?? midName(o);
+  }
+  if (o.entity_name.length > 96) return midName(o);
+  return o.entity_name;
+}
+
+function idLabel(o: Org): string {
+  if (o.nerc_registered === false) return "No NERC ID";
+  if (o.combined_members?.length) {
+    const n = o.combined_members.length;
+    return `${o.ncr_id} + ${n} co-located registration${n === 1 ? "" : "s"}`;
+  }
+  return o.ncr_id;
+}
+
+function regionLabel(o: Org): string {
+  return combinedRegions(o) ?? o.region ?? "No Regional Entity";
 }
 
 function typeLabel(value: string | null): string {
@@ -951,10 +993,11 @@ export function mountNercOrgMap(): void {
     invalidateOrgLayout();
     const fitPadX = (compact ? 30 : 18) * unitPerPx;
     const fitPadY = (compact ? 12 : 8) * unitPerPx;
+    const territoryLane = territoryLayoutMetrics(compact, unitPerPx, W, H).laneW;
     projection.fitExtent(
       [
         [fitPadX, fitPadY],
-        [W - fitPadX, H - fitPadY],
+        [W - fitPadX - territoryLane, H - fitPadY],
       ],
       nationFeature as never,
     );
@@ -1444,8 +1487,8 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
       // Radius is set in transform-space (divided by the group scale). It changes
-      // only with zoom and visual priority, so write only when the resolved radius
-      // actually moved — cheap, no storm.
+      // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
+      // so write only when the resolved radius actually moved — cheap, no storm.
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
         node.setAttribute("r", String(rr / k));
@@ -1627,8 +1670,6 @@ export function mountNercOrgMap(): void {
     // The real island outline (PR/VI) from the states topojson, found by FIPS id.
     const featureFor = (code: string): unknown =>
       stateFeatures.find((f) => String((f as { id?: string | number }).id ?? "") === TERRITORY_FIPS[code]);
-    const margin = 6 * unitPerPx;
-    const bottomMargin = (compact ? 64 : 8) * unitPerPx;
     const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
     const innerPad = 9 * unitPerPx;
 
@@ -1757,7 +1798,7 @@ export function mountNercOrgMap(): void {
       const hasDots = Number.isFinite(minX);
       const ly = hasDots ? minY - (compact ? 11 : 10) * unitPerPx : y + labelH;
       // Keep the centred region name inside the viewBox at the overview (base
-      // scale), where the inset is docked near the lower-right edge.
+      // scale), in the reserved Atlantic lane east of the mainland footprint.
       const rawLx = hasDots ? (minX + maxX) / 2 : x + boxW / 2;
       const labelHalf = (label.length * (compact ? 11 : 10.5) * unitPerPx * 0.55) / 2;
       const edge = 4 * unitPerPx;
@@ -1778,44 +1819,15 @@ export function mountNercOrgMap(): void {
     }
     if (!entries.length) return;
 
-    const gap = (compact ? 6 : 8) * unitPerPx;
-    if (compact) {
-      let yBottom = H - bottomMargin;
-      for (const e of entries) {
-        yBottom -= e.h;
-        const { x: tx, y: ty } = territoryInsetPos(
-          e.code,
-          W - margin - e.w,
-          yBottom,
-          e.w,
-          e.h,
-          compact,
-          unitPerPx,
-          W,
-          H,
-        );
-        placeInBox(e.code, e.label, tx, ty, e.w, e.h, e.list, featureFor(e.code));
-        yBottom -= gap;
-      }
-    } else {
-      let xRight = W - margin;
-      for (const e of entries) {
-        xRight -= e.w;
-        const y = H - bottomMargin - e.h;
-        const { x: tx, y: ty } = territoryInsetPos(
-          e.code,
-          xRight,
-          y,
-          e.w,
-          e.h,
-          compact,
-          unitPerPx,
-          W,
-          H,
-        );
-        placeInBox(e.code, e.label, tx, ty, e.w, e.h, e.list, featureFor(e.code));
-        xRight -= gap;
-      }
+    // Stack in the reserved Atlantic lane (east of CONUS). VI anchors the bottom
+    // (farthest from Florida); Puerto Rico sits above it in the same lane.
+    const lane = territoryLayoutMetrics(compact, unitPerPx, W, H);
+    let yBottom = lane.laneBottom - lane.insetPad;
+    for (const e of [...entries].reverse()) {
+      yBottom -= e.h;
+      const x = lane.laneLeft + Math.max(lane.insetPad, (lane.laneW - lane.insetPad * 2 - e.w) / 2);
+      placeInBox(e.code, e.label, x, yBottom, e.w, e.h, e.list, featureFor(e.code));
+      yBottom -= lane.stackGap;
     }
   }
 
@@ -1938,9 +1950,22 @@ export function mountNercOrgMap(): void {
     tooltip.replaceChildren();
     tooltip.append(
       createEl("div", "tt-acronym", orgAcronym(o)),
-      createEl("div", "tt-name", o.entity_name),
-      createEl("div", "tt-sub", `${o.region ?? "No Regional Entity"} | ${typeLabel(o.org_type)} | ${o.role_count} roles | weight ${o.weight}`),
+      createEl("div", "tt-name", displayName(o)),
+      createEl(
+        "div",
+        "tt-sub",
+        `${regionLabel(o)} | ${typeLabel(o.org_type)} | ${o.role_count} roles | weight ${o.weight}`,
+      ),
     );
+    if (o.combined_members?.length) {
+      tooltip.append(
+        createEl(
+          "div",
+          "tt-combined",
+          `${o.combined_members.length + 1} NERC registrations at this location`,
+        ),
+      );
+    }
 
     const chips = createEl("div", "nerc-tt-pills");
     o.roles.forEach((role) => chips.append(createRolePill(role)));
@@ -2024,9 +2049,11 @@ export function mountNercOrgMap(): void {
     panelBody.append(close);
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
-    title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, o.entity_name));
-    const idLabel = o.nerc_registered === false ? "No NERC ID" : o.ncr_id;
-    panelBody.append(title, createEl("p", "p-sub", `${idLabel}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`));
+    title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, displayName(o)));
+    panelBody.append(
+      title,
+      createEl("p", "p-sub", `${idLabel(o)}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`),
+    );
 
     const dl = createEl("dl");
     const roles = createEl("div", "p-roles");
@@ -2037,10 +2064,29 @@ export function mountNercOrgMap(): void {
     });
     addDlRow(dl, `Roles (${o.role_count})`, roles);
     addDlRow(dl, "Role weight", `${o.weight}${o.is_iso_rto ? " | ISO/RTO scale" : ""}`);
-    addDlRow(dl, "Regional Entity", o.region ?? "No Regional Entity");
+    addDlRow(dl, "Regional Entity", regionLabel(o));
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     if (o.geo_notes) addDlRow(dl, "Notes", o.geo_notes);
+
+    if (o.combined_members?.length) {
+      if (o.map_combine_summary) {
+        panelBody.append(createEl("p", "p-combined-note", o.map_combine_summary));
+      }
+      const list = createEl("div", "p-combined");
+      for (const m of o.combined_members) {
+        const row = createEl("div", "p-combined-row");
+        const meta = createEl("div", "p-combined-meta");
+        meta.append(createEl("span", "p-combined-id", m.ncr_id));
+        if (m.region) meta.append(createEl("span", "p-combined-region", m.region));
+        row.append(meta, createEl("span", "p-combined-name", memberDisplayName(m.entity_name)));
+        list.append(row);
+      }
+      addDlRow(dl, `Also registered here (${o.combined_members.length})`, list);
+      if (o.entity_name !== displayName(o)) {
+        addDlRow(dl, "Primary registration", o.entity_name);
+      }
+    }
 
     const links = createEl("div", "p-links");
     if (o.lat != null && o.lng != null) {
@@ -2485,7 +2531,7 @@ export function mountNercOrgMap(): void {
       .attr("r", (o) => renderedRadius(o, transform.k) / Math.max(transform.k, 0.001))
       .attr("tabindex", 0)
       .attr("role", "button")
-      .attr("aria-label", (o) => `${orgAcronym(o)} ${o.entity_name}`);
+      .attr("aria-label", (o) => `${orgAcronym(o)} ${displayName(o)}`);
 
     wireOrgPointer(visibleCircles as never);
 
