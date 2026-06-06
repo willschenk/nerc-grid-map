@@ -1175,9 +1175,58 @@
     top: auto;
     left: max(0.75rem, env(safe-area-inset-left, 0px));
     right: max(0.75rem, env(safe-area-inset-right, 0px));
-    bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
     width: auto;
+  }
+
+  .nerc-info-panel,
+  .nerc-metrics-panel {
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
     max-height: 48dvh;
+  }
+
+  /* Detail panel: shorter bottom sheet above the tour fab so the map stays usable. */
+  .nerc-panel {
+    bottom: calc(max(0.55rem, env(safe-area-inset-bottom, 0px)) + 3.85rem);
+    max-height: min(36dvh, 17.5rem);
+    padding: 0.85rem 0.95rem 1rem;
+    font-size: 0.88rem;
+    border-radius: 14px 14px 12px 12px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    box-shadow:
+      0 -6px 24px rgba(20, 31, 28, 0.1),
+      0 18px 44px rgba(20, 31, 28, 0.14);
+  }
+
+  .nerc-panel.collapsed {
+    padding-bottom: 0.55rem;
+  }
+
+  .nerc-panel .p-sub {
+    font-size: 0.78rem;
+    line-height: 1.42;
+    margin-bottom: 0.65rem;
+  }
+
+  .nerc-panel dt {
+    font-size: 0.72rem;
+    margin-top: 0.72rem;
+  }
+
+  .nerc-panel dd {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .nerc-panel .p-title h2 {
+    font-size: 1.08rem;
+    line-height: 1.22;
+  }
+
+  .nerc-panel .p-combined-note,
+  .nerc-panel .p-combined-row {
+    font-size: 0.84rem;
+    line-height: 1.42;
   }
 
   /* 44px close target on phones — easier to spot and tap without changing behavior. */
@@ -1194,6 +1243,17 @@
 
   .nerc-panel-collapse {
     right: calc(0.4rem + 2.75rem + 0.4rem);
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    border: 1px solid rgba(31, 47, 42, 0.2);
+    border-radius: 10px;
+    background: rgba(248, 251, 250, 0.96);
+    color: #24302c;
+    font-size: 1.35rem;
+    font-weight: 500;
+    box-shadow: 0 1px 4px rgba(20, 31, 28, 0.1);
   }
 
   .p-title,
