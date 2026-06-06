@@ -99,6 +99,31 @@
       "code": "EMBA",
       "ncr_id": "NCR01234",
       "meaning": "Entergy Mississippi Balancing Authority"
+    },
+    {
+      "code": "EAI",
+      "ncr_id": "NCR01234",
+      "meaning": "Entergy Arkansas, Inc."
+    },
+    {
+      "code": "LAGT",
+      "ncr_id": "SUP-louisiana-generating",
+      "meaning": "Louisiana Generating / LaGen legacy area"
+    },
+    {
+      "code": "LEGN",
+      "ncr_id": "SUP-louisiana-generating",
+      "meaning": "Louisiana Generating / LaGen legacy area"
+    },
+    {
+      "code": "CWLD",
+      "ncr_id": "NCR01196",
+      "meaning": "Columbia Water & Light"
+    },
+    {
+      "code": "CPLE",
+      "ncr_id": "NCR01298",
+      "meaning": "Carolina Power & Light East / Duke Energy Progress"
     }
   ]
 }

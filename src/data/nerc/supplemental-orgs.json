@@ -5281,5 +5281,31 @@
     "geo_source": "EIA balancing authority / Duke Energy Ohio HQ",
     "geo_source_url": "https://www.duke-energy.com/home/products/ohio",
     "geo_notes": "Legacy Cinergy / CIN balancing authority area; Duke Energy Ohio and Kentucky operations. Not in the uploaded NERC extract as a standalone row."
+  },
+  {
+    "ncr_id": "SUP-louisiana-generating",
+    "entity_name": "Louisiana Generating",
+    "acronym": "LaGen",
+    "name_shortest": "LaGen",
+    "name_short": "Louisiana Generating",
+    "name_normal": "Louisiana Generating",
+    "state": "LA",
+    "city": "New Roads",
+    "lat": 30.6739,
+    "lng": -91.3556,
+    "headquarters_address": "112 Telly Street, New Roads, LA 70760",
+    "roles": [
+      "GO",
+      "GOP"
+    ],
+    "org_type": "merchant",
+    "region": "SERC",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "EIA plant records / legacy LaGen BA area",
+    "geo_source_url": "https://www.gridinfo.com/plant/big-cajun-1",
+    "geo_notes": "Legacy Louisiana Generating (LaGen) merchant portfolio at Big Cajun; LAGT/LEGN balancing authority aliases."
   }
 ]
