@@ -957,8 +957,9 @@ export function mountNercOrgMap(): void {
     const deepT = smoothStep((k - (compact ? 6 : 7)) / (compact ? 22 : 26));
     const smallOrgT = smoothStep((72 - rawPriority) / 62);
     const dominance = growthDominanceFactor(o, k);
+    const deepBoostMaxPx = 13;
     const deepBoostPx = canGrowAtZoom(o)
-      ? (compact ? 13 : 13) * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1) * dominance
+      ? deepBoostMaxPx * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1) * dominance
       : 0;
     // Continuous growth applied to every bubble across the whole zoom range, so
     // that going one step deeper always yields visibly larger circles instead of
@@ -969,7 +970,7 @@ export function mountNercOrgMap(): void {
     const zoomMaxPx =
       maxPx +
       (canGrowAtZoom(o) ? (compact ? 6 : 10) : 0) +
-      (canGrowAtZoom(o) ? (compact ? 13 : 13) : 0) +
+      (canGrowAtZoom(o) ? deepBoostMaxPx : 0) +
       (compact ? 12 : 18);
     // Deep-zoom minimum: once you are zoomed right in, no visible org should stay
     // tiny when there is clearly room — every bubble reaches a readable floor so
