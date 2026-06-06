@@ -1250,16 +1250,16 @@ export function mountNercOrgMap(): void {
   }
 
   function wheelDelta(event: WheelEvent): number {
-    const unit = event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002;
+    const unit = event.deltaMode === 1 ? 0.068 : event.deltaMode ? 1 : 0.0028;
     const pinch = event.ctrlKey ? 4.5 : 1;
     let dy = -event.deltaY * unit * pinch;
     // Cap each wheel frame so trackpad momentum cannot jump several "steps" at once.
-    const stepCap = compact ? 0.065 : 0.055;
+    const stepCap = compact ? 0.085 : 0.075;
     dy = Math.sign(dy) * Math.min(Math.abs(dy), stepCap);
     // Same scroll gesture feels similar from overview through deep zoom.
     const k = Math.max(transform.k, 0.72);
     dy /= Math.pow(Math.log10(k + 9), 0.5);
-    return dy / (compact ? 1.04 : 1);
+    return dy / (compact ? 0.98 : 0.92);
   }
 
   function syncZoomGroups(): void {
@@ -2840,7 +2840,7 @@ export function mountNercOrgMap(): void {
         return;
       }
       if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(ev.key)) {
-        const step = ev.shiftKey ? 80 : 36;
+        const step = ev.shiftKey ? 115 : 52;
         const dx = ev.key === "ArrowLeft" ? step : ev.key === "ArrowRight" ? -step : 0;
         const dy = ev.key === "ArrowUp" ? step : ev.key === "ArrowDown" ? -step : 0;
         ev.preventDefault();
