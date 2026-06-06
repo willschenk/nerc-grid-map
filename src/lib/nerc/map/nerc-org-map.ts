@@ -874,12 +874,12 @@ export function mountNercOrgMap(): void {
   // Puerto Rico inset dots are schematic (small, uniform) so they fit the
   // cluster; everything else uses priority-based sizing.
   function renderedRadius(o: Org, k: number): number {
-    if (o._frame === "terr") return (compact ? 5 : 4) * unitPerPx;
+    if (o._frame === "terr") return (compact ? 5.4 : 4.6) * unitPerPx;
     return visualRadius(o, k);
   }
 
   function hitTargetRadius(o: Org, k: number): number {
-    if (o._frame === "terr") return (compact ? 8.5 : 7) * unitPerPx;
+    if (o._frame === "terr") return (compact ? 10 : 8.6) * unitPerPx;
     // Every shown bubble is fully placed, so tap targets track the visible radius
     // plus a small pad and a floor — no per-dot reveal strength to fold in.
     const visual = renderedRadius(o, k);
@@ -1879,9 +1879,11 @@ export function mountNercOrgMap(): void {
       const u = unitPerPx;
       switch (code) {
         case "PR":
-          return [(compact ? 148 : 176) * u, (compact ? 110 : 128) * u];
+          // Roomier inset so Puerto Rico's many coastal entities spread out and
+          // stay individually readable/clickable instead of clumping together.
+          return [(compact ? 162 : 198) * u, (compact ? 122 : 144) * u];
         case "VI":
-          return [(compact ? 88 : 96) * u, (compact ? 72 : 78) * u];
+          return [(compact ? 96 : 108) * u, (compact ? 80 : 88) * u];
         default:
           return [(compact ? 74 : 84) * u, (compact ? 64 : 70) * u];
       }
