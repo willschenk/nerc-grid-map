@@ -110,7 +110,7 @@ const SPIDER_RING_STEP_PX = 28;
 // _x/_y stay true; _dx/_dy are screen-space nudges divided by zoom at render.
 const MAX_RADIUS = 48;
 const MAX_ZOOM = 1200;
-const AUTHORITY_ROLES = new Set(["BA", "RC", "TOP", "PC"]);
+const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
 const BA_RC_ROLES = new Set(["BA", "RC"]);
 const MAJOR_OPERATOR_PARTNER_ROLES = new Set(["TOP", "PC", "TSP"]);
 const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
@@ -119,6 +119,8 @@ const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 const GENERATION_ONLY_REVEAL_K = 18;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 20;
+const TO_ONLY_REVEAL_K = 12;
+const TO_ONLY_REVEAL_K_COMPACT = 14;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
@@ -646,15 +648,29 @@ export function mountNercOrgMap(): void {
     return o.roles.filter((r) => !ZERO_VISUAL_PRIORITY_ROLES.has(r)).length;
   }
 
+  function isOnlyMeaningfulRole(o: Org, role: string): boolean {
+    const roles = o.roles.filter((r) => !ZERO_VISUAL_PRIORITY_ROLES.has(r));
+    return roles.length === 1 && roles[0] === role;
+  }
+
   function isGenerationOnly(o: Org): boolean {
     return o.roles.length > 0 && o.roles.every((r) => GENERATION_ROLES.has(r));
+  }
+
+  function isTransmissionOwnerOnly(o: Org): boolean {
+    return isOnlyMeaningfulRole(o, "TO");
   }
 
   function generationOnlyRevealK(): number {
     return compact ? GENERATION_ONLY_REVEAL_K_COMPACT : GENERATION_ONLY_REVEAL_K;
   }
 
+  function transmissionOwnerOnlyRevealK(): number {
+    return compact ? TO_ONLY_REVEAL_K_COMPACT : TO_ONLY_REVEAL_K;
+  }
+
   function canDisplayOrg(o: Org, k: number): boolean {
+    if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     return !isGenerationOnly(o) || k >= generationOnlyRevealK();
   }
 
@@ -667,8 +683,10 @@ export function mountNercOrgMap(): void {
     const hasTo = o.roles.includes("TO");
     const hasDp = o.roles.includes("DP");
     const hasLse = o.roles.includes("LSE");
+    if (isTransmissionOwnerOnly(o)) return 8;
     if (hasAnyRole(o, AUTHORITY_ROLES)) return 82;
     if ((hasTo && (hasDp || hasLse)) || (hasDp && hasLse)) return 62;
+    if (o.roles.includes("TOP")) return 46;
     if (hasAnyRole(o, GRID_ROLES)) return 50;
     if (hasAnyRole(o, SUPPORT_ROLES)) return 42;
     if (isGenerationOnly(o)) return 6;
@@ -697,6 +715,7 @@ export function mountNercOrgMap(): void {
 
   function visualPriority(o: Org): number {
     if (isGenerationOnly(o)) return 6;
+    if (isTransmissionOwnerOnly(o)) return 8;
     if (isMajorSystemOperator(o)) return 100;
     const score = Math.max(rolePriority(o), typePriority(o)) + multiRoleBonus(o);
     return Math.max(10, Math.min(100, score));
