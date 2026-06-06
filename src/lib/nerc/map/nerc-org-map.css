@@ -60,7 +60,16 @@
   stroke-width: 0.8;
   vector-effect: non-scaling-stroke;
   cursor: pointer;
-  transition: fill-opacity 120ms ease, opacity 120ms ease, stroke-width 120ms ease;
+  transition: fill-opacity 80ms ease, opacity 80ms ease, stroke-width 80ms ease;
+}
+
+#nerc-svg .org:focus {
+  outline: none;
+}
+
+#nerc-svg .org:focus-visible {
+  outline: 2px solid #1d6f62;
+  outline-offset: 2px;
 }
 
 #nerc-svg .org.estimated {

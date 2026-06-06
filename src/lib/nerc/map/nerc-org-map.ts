@@ -574,6 +574,13 @@ export function mountNercOrgMap(): void {
     else window.setTimeout(load, 250);
   }
 
+  function clearOrgPointerFocus(): void {
+    const active = document.activeElement;
+    if (active instanceof Element && svgNode.contains(active)) {
+      (active as HTMLElement).blur();
+    }
+  }
+
   function pointerViewPoint(ev: MouseEvent): { x: number; y: number } | null {
     if (!Number.isFinite(ev.clientX) || !Number.isFinite(ev.clientY)) return null;
     const rect = svgNode.getBoundingClientRect();
@@ -1319,7 +1326,7 @@ export function mountNercOrgMap(): void {
     const declScale = declutterScale(k);
     positionOrgMarks(k);
 
-    const hot = hoverOrg ?? selectedOrg;
+    const hot = hoverOrg;
     const tourActive = tourIds.size > 0;
     // While a tour runs but no step is showing (tourRunning && !tourActive) the
     // map "blanks": everything dims, nothing is labelled. That makes each role
@@ -1363,7 +1370,10 @@ export function mountNercOrgMap(): void {
       if (tourActive) {
         // During a walkthrough step only the highlighted set gets labels.
         if ((tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id) && (!isTerr || hot?.ncr_id === o.ncr_id)) candidates.push(o);
-      } else if (!tourRunning && (hot?.ncr_id === o.ncr_id || (!isTerr && shouldTryLabel(o, k)))) {
+      } else if (
+        !tourRunning &&
+        (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || (!isTerr && shouldTryLabel(o, k)))
+      ) {
         // Normal map. (During a blank beat — tourRunning && !tourActive — we
         // deliberately collect no candidates so nothing is labelled.)
         candidates.push(o);
@@ -2082,7 +2092,7 @@ export function mountNercOrgMap(): void {
   }
 
   function applyHighlights(): void {
-    const hot = hoverOrg ?? selectedOrg;
+    const hot = hoverOrg;
     gOverlay
       .selectAll<SVGCircleElement, Org>("circle.org")
       .classed("hot", (d) => hot?.ncr_id === d.ncr_id)
@@ -2213,8 +2223,11 @@ export function mountNercOrgMap(): void {
   function closePanel(): void {
     panel.hidden = true;
     selectedOrg = null;
+    hoverOrg = null;
+    clearOrgPointerFocus();
     invalidateOrgLayout();
     redraw();
+    applyHighlights();
   }
 
   function closeInfo(): void {
@@ -2273,6 +2286,7 @@ export function mountNercOrgMap(): void {
 
   function selectOrg(o: Org, opts: { center?: boolean } = {}): void {
     stopTour();
+    hoverOrg = null;
     selectedOrg = o;
     rememberOrg(o);
     invalidateOrgLayout();
@@ -2291,6 +2305,7 @@ export function mountNercOrgMap(): void {
         .catch(() => {});
     }
     hideTooltip();
+    clearOrgPointerFocus();
     if (opts.center) centerOnOrg(o);
     else redraw();
     applyHighlights();
@@ -2321,8 +2336,10 @@ export function mountNercOrgMap(): void {
         hoverOrg = null;
         redraw();
         hideTooltip();
+        applyHighlights();
       })
       .on("focus", function (_ev, o) {
+        if (selectedOrg?.ncr_id === o.ncr_id) return;
         hoverOrg = o;
         rememberOrg(o);
         raiseVisibleOrg(o);
@@ -2334,6 +2351,7 @@ export function mountNercOrgMap(): void {
         hoverOrg = null;
         redraw();
         hideTooltip();
+        applyHighlights();
       })
       .on("keydown", (ev, o) => {
         const key = (ev as KeyboardEvent).key;
