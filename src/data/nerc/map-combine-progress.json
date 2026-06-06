@@ -2,8 +2,9 @@
   "_comment": "Duplicate-entity review for map-combines.json. Walk geocoded-orgs.json in file order, batch_size rows at a time. Criteria: same or clearly matching name AND headquarters within ~8 km (co-located NERC registrations). Seeds that auto-retire via seed-twins.json are skipped. Existing combines live in map-combines.json.",
   "source_file": "src/data/nerc/geocoded-orgs.json",
   "batch_size": 100,
-  "last_completed_batch": 18,
-  "last_completed_index_exclusive": 1800,
+  "last_completed_batch": 23,
+  "last_completed_index_exclusive": 2279,
+  "pause_note": "COMPLETE: Full geocoded-orgs.json review finished. Batch 23 (indices 2200–2278) had no scanner hits; final audit added 10 combine groups and expanded Southern Power, Assembly Solar, and Hickory Run.",
   "batches": [
     {
       "batch": 1,
@@ -1230,7 +1231,294 @@
         }
       ],
       "notes": "Twelve new combine groups; batch 18 enters WECC with AES plant folds, Panoche complex, and multi-region Basin Electric HQ."
+    },
+    {
+      "batch": 19,
+      "index_range": [1800, 1899],
+      "first_ncr_id": "NCR05067",
+      "last_ncr_id": "NCR05172",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR05119",
+          "members": ["NCR05120", "NCR05122"],
+          "reason": "Coso Energy Developers, Finance Partners, and Power Developers at Gill Station Rd geothermal site."
+        },
+        {
+          "canonical": "NCR11290",
+          "members": ["NCR12121"],
+          "reason": "Copper Mountain Solar 2 + 5 at Eldorado Valley Drive NV."
+        },
+        {
+          "canonical": "NCR13189",
+          "members": ["NCR13193"],
+          "reason": "Cuyama Solar GO + Invenergy GOP at Kirschenmann Rd CA (member at index 1931)."
+        },
+        {
+          "canonical": "NCR12081",
+          "members": ["NCR12085"],
+          "reason": "Desert Harvest I + II at Kaiser Road Desert Center CA."
+        },
+        {
+          "canonical": "NCR05107",
+          "members": ["NCR05367"],
+          "reason": "Colstrip Energy GO + Rosebud Operating Services GOP at Colstrip MT plant (member at index 2151)."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR13209", "NCR13214"],
+          "reason": "Columbia II vs RE Camelot — identical Mojave CA coords but separate Kern County solar projects."
+        },
+        {
+          "ids": ["NCR11703", "NCR11704"],
+          "reason": "Golden Fields Solar I vs Solar Star California XLI — identical Rosamond coords, different legal names and operators."
+        },
+        {
+          "ids": ["NCR13018", "NCR12318"],
+          "reason": "Franklin Solar vs Jackpot Holdings — ~2 km apart on US-93 Twin Falls ID, separate projects."
+        },
+        {
+          "ids": ["NCR11149", "NCR00006", "NCR10090"],
+          "reason": "GenOn vs Calpine/NRG — downtown Houston coincidence (~310–570 m)."
+        }
+      ],
+      "notes": "Five new combine groups; batch 19 continues WECC geothermal/solar plant and GO+GOP operator folds."
+    },
+    {
+      "batch": 20,
+      "index_range": [1900, 1999],
+      "first_ncr_id": "NCR02551",
+      "last_ncr_id": "NCR13046",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR13192",
+          "members": ["NCR13194"],
+          "reason": "Huntington Wind GO + Invenergy GOP at Highway 30 OR."
+        },
+        {
+          "canonical": "NCR12120",
+          "members": ["NCR12468"],
+          "reason": "Rancho Seco Solar II GO + Invenergy GOP at Twin Cities Rd CA (canonical at index 2130)."
+        },
+        {
+          "canonical": "NCR13203",
+          "members": ["NCR13204"],
+          "reason": "SloughHouse Solar GO + Invenergy GOP Sacramento County CA (GO at index 2186)."
+        },
+        {
+          "canonical": "NCR12470",
+          "members": ["NCR13120"],
+          "reason": "Jicarilla Energy Center GO + Jicarilla 2 GOP at Dulce NM."
+        },
+        {
+          "canonical": "NCR12124",
+          "members": ["NCR12125"],
+          "reason": "Little Bear Solar 1 + 3 at California Avenue Mendota CA."
+        },
+        {
+          "canonical": "NCR12079",
+          "members": ["NCR12080", "NCR12198", "NCR12199"],
+          "reason": "Maverick Solar phases 1/4/6/7 at Corn Springs Road Desert Center CA."
+        },
+        {
+          "canonical": "NCR13045",
+          "members": ["NCR13046"],
+          "reason": "Mordor 1 + 2 BESS at Gill Station Road Little Lake CA (~70 m)."
+        },
+        {
+          "canonical": "NCR13257",
+          "members": ["NCR13256"],
+          "reason": "Power County Wind Parks GO + Invenergy GOP American Falls ID (GO at index 2104)."
+        },
+        {
+          "canonical": "NCR12346",
+          "members": ["NCR12347"],
+          "reason": "Lockhart Solar PV I + II Harper Lake Road Hinkley CA (~1.6 km)."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR12187", "NCR05184"],
+          "reason": "HDSI solar vs High Desert Power gas plant — same Perimeter Road Victorville (~590 m) but separate assets."
+        },
+        {
+          "ids": ["NCR05223", "NCR00125"],
+          "reason": "LADWP vs DGC Operations — ~780 m apart in downtown Los Angeles, separate entities."
+        },
+        {
+          "ids": ["NCR13135", "NCR13136"],
+          "reason": "Millican vs Prineville Solar — ~1.3 km apart in Oregon, separate projects."
+        }
+      ],
+      "notes": "Nine new combine groups; batch 20 continues WECC Invenergy/Lighthouse plant pairs and multi-phase solar merges."
+    },
+    {
+      "batch": 21,
+      "index_range": [2000, 2099],
+      "first_ncr_id": "NCR11328",
+      "last_ncr_id": "NCR13066",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR05320",
+          "members": ["NCR11589", "NCR00082"],
+          "reason": "Plains End I/II GO + NAES GOP at Highway 93 Arvada CO plant."
+        },
+        {
+          "canonical": "NCR05349",
+          "members": ["NCR11590"],
+          "reason": "Rathdrum Power GO + NAES GOP at Lancaster Road ID (GO at index 2131)."
+        },
+        {
+          "canonical": "NCR05263",
+          "members": ["NCR02552"],
+          "reason": "New Harquahala Generating + HGBA at Tonopah AZ plant site."
+        },
+        {
+          "canonical": "NCR11521",
+          "members": ["NCR11881"],
+          "reason": "ORNI 39 + ORNI 41 McGinness Hills geothermal phases (~250 m)."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR10396", "NCR11652"],
+          "reason": "Otay Mesa vs Pio Pico Energy Center — ~880 m apart in San Diego County, separate gas plants."
+        },
+        {
+          "ids": ["NCR11825", "NCR05445"],
+          "reason": "Western FRSSG vs UAMPS — same Salt Lake City building, unrelated organizations."
+        },
+        {
+          "ids": ["NCR11708", "NCR11808"],
+          "reason": "Western Interconnect vs Pattern Operators — Houston office coincidence (~680 m), separate entities."
+        },
+        {
+          "ids": ["NCR11306", "NCR11104", "NCR11929", "NCR11928", "NCR00418"],
+          "reason": "NAES Ferndale/Harvest/Kern River/Sycamore/White Creek — no co-located GO partner within 2 km in geocoded set."
+        }
+      ],
+      "notes": "Four new combine groups; batch 21 is NAES plant pairs, Harquahala BA fold, and geothermal phases."
+    },
+    {
+      "batch": 22,
+      "index_range": [2100, 2199],
+      "first_ncr_id": "NCR13081",
+      "last_ncr_id": "NCR05398",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR13390",
+          "members": ["NCR13391"],
+          "reason": "Roadrunner Solar + BESS at Cochise Stronghold Rd AZ hybrid site."
+        },
+        {
+          "canonical": "NCR11605",
+          "members": ["NCR12482"],
+          "reason": "RWE Clean Energy Asset Holdings WECC + RWE Americas MRO at Austin 6th St HQ (member at index 280)."
+        },
+        {
+          "canonical": "NCR12267",
+          "members": ["NCR12200"],
+          "reason": "SE Athos I/II at Rice Road Desert Center CA."
+        },
+        {
+          "canonical": "NCR13327",
+          "members": ["NCR13328"],
+          "reason": "Pomona Energy Storage 1/2 at Mount Vernon Ave (~130 m)."
+        },
+        {
+          "canonical": "NCR11232",
+          "members": ["NCR10292"],
+          "reason": "Shiloh III + Shiloh II at Montezuma Hills Rd (~200 m)."
+        },
+        {
+          "canonical": "NCR13248",
+          "members": ["NCR13249"],
+          "reason": "Rosamond One/Two Favorito Ave Kern County CA (~780 m)."
+        },
+        {
+          "canonical": "NCR11951",
+          "members": ["NCR12063"],
+          "reason": "RE Mustang Holdings + RE Mustang Two Kings County CA (~800 m)."
+        },
+        {
+          "canonical": "NCR12540",
+          "members": ["NCR13175"],
+          "reason": "White Wing Ranch North + Sierra Pinta BESS Yuma County AZ (~350 m; WWR at index 2095)."
+        },
+        {
+          "canonical": "NCR11653",
+          "members": ["NCR12350"],
+          "reason": "Mojave 3/4/5 wind + Sagebrush ESS Terra-Gen complex (~600 m; Mojave at index 1997)."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR11951", "NCR12224", "NCR13482"],
+          "reason": "RE Mustang/Mustang Two vs RE Slate 1 vs Westlands Almond — Kings County solar park cluster (~1–1.4 km), separate projects; Mustang pair merged."
+        },
+        {
+          "ids": ["NCR11703", "NCR11704"],
+          "reason": "Golden Fields Solar I vs Solar Star California XLI — identical Rosamond coords, separate projects (noted batch 19)."
+        }
+      ],
+      "notes": "Nine new combine groups; batch 22 continues WECC hybrid sites, multi-phase solar/wind, and RWE Austin HQ fold."
+    },
+    {
+      "batch": 23,
+      "index_range": [2200, 2278],
+      "first_ncr_id": "NCR11396",
+      "last_ncr_id": "NCR11989",
+      "reviewed": 79,
+      "combines_added": [],
+      "already_handled": [
+        {
+          "ids": ["NCR11396", "NCR12021", "NCR11695"],
+          "reason": "Southern Power WECC/RF/MRO/NPCC HQ fold; expanded NCR11695 group in final audit."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR11463", "NCR11989"],
+          "reason": "Mojave 16/17/18 GOP vs Voyager Wind I — ~40 m apart in Mojave CA but Texas RE vs WECC and unrelated assets."
+        },
+        {
+          "ids": ["NCR11703", "NCR11704"],
+          "reason": "Golden Fields Solar I vs Solar Star California XLI — identical Rosamond coords, separate projects."
+        }
+      ],
+      "notes": "Final file batch; no scanner hits. Full-dataset audit afterward added 10 groups + 3 expansions."
+    },
+    {
+      "batch": "final-audit",
+      "combines_added": [
+        {"canonical": "NCR00978", "members": ["NCR05537"], "reason": "USACE Omaha MRO+WECC HQ"},
+        {"canonical": "NCR10102", "members": ["NCR10030"], "reason": "Tri-State transmission + reliability HQ"},
+        {"canonical": "NCR12301", "members": ["NCR12300"], "reason": "Great Pathfinder GO+AWAM GOP"},
+        {"canonical": "NCR11548", "members": ["NCR12280"], "reason": "Balko GO+Invenergy GOP"},
+        {"canonical": "NCR10382", "members": ["NCR11705"], "reason": "Castleton GO+NAES GOP"},
+        {"canonical": "NCR11910", "members": ["NCR11911"], "reason": "Birdsboro GO+NAES GOP"},
+        {"canonical": "NCR12493", "members": ["NCR12497"], "reason": "Crossett GO+RES GOP"},
+        {"canonical": "NCR12252", "members": ["NCR12253"], "reason": "Spring Canyon II/III phases"},
+        {"canonical": "NCR11107", "members": ["NCR00936"], "reason": "University Park GO/GOP pair"},
+        {"canonical": "NCR12420", "members": ["NCR11715"], "reason": "Chalk Point GO+NRG East"},
+        {"canonical": "NCR13447", "members": ["NCR13421"], "reason": "Elwood Dairyland+MPH"},
+        {"canonical": "NCR13098", "members": ["NCR11724"], "reason": "Gavin+Lightstone Cheshire OH"}
+      ],
+      "expansions": [
+        {"canonical": "NCR11695", "added": ["NCR11396", "NCR12021"]},
+        {"canonical": "NCR12188", "added": ["NCR12448"]},
+        {"canonical": "NCR11969", "added": ["NCR13334"]},
+        {"canonical": "NCR11061", "added": ["NCR10371"]}
+      ],
+      "notes": "Full-dataset scan after batch 23; 17 fewer published dots (202 folded total)."
     }
-  ],
-  "pause_note": "PAUSE: Batch 18 complete (indices 1700–1799). Next review starts at geocoded-orgs.json index 1800 (NCR05067). Run: node scripts/nerc/review-map-combine-batch.mjs 19"
+  ]
 }

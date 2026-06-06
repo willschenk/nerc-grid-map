@@ -1,12 +1,17 @@
 {
-  "ingested_at": "2026-06-02T01:38:01.429Z",
-  "source": "nerc-active-compliance-matrix-functions-2026-05-26.csv",
+  "ingested_at": "2026-06-06T02:33:20.521Z",
+  "source": "data/nerc-active-compliance-matrix-functions-2026-05-26.csv",
   "count": 2219,
   "records": [
     {
       "ncr_id": "NCR11516",
       "entity_name": "ACE O&M, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -16,6 +21,11 @@
       "ncr_id": "NCR11645",
       "entity_name": "AE Power Services LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -55,6 +65,13 @@
       "ncr_id": "NCR11679",
       "entity_name": "AES US Renewables",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -81,6 +98,11 @@
       "ncr_id": "NCR12062",
       "entity_name": "Alliance for Cooperative Energy Services Power Marketing LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "Texas RE"
+      ],
       "roles": [
         "GOP"
       ]
@@ -113,6 +135,10 @@
       "ncr_id": "NCR10248",
       "entity_name": "Ameren Missouri",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "SERC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -122,6 +148,10 @@
       "ncr_id": "NCR00685",
       "entity_name": "American Transmission Co. LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF"
+      ],
       "roles": [
         "TO",
         "TOP",
@@ -141,6 +171,10 @@
       "ncr_id": "NCR01060",
       "entity_name": "Arkansas Electric Cooperative Corporation",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "SERC"
+      ],
       "roles": [
         "DP",
         "GO",
@@ -153,6 +187,10 @@
       "ncr_id": "NCR13417",
       "entity_name": "Aspenall Energies (Delaware), LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -170,7 +208,16 @@
       "ncr_id": "NCR10259",
       "entity_name": "Avangrid Power, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
+        "BA",
         "GO",
         "GOP"
       ]
@@ -224,6 +271,13 @@
       "ncr_id": "NCR12170",
       "entity_name": "BayWa r.e. Operation Services LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -258,6 +312,12 @@
       "ncr_id": "NCR12018",
       "entity_name": "BHER Market Operations, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC",
+        "Texas RE"
+      ],
       "roles": [
         "GOP"
       ]
@@ -429,8 +489,8 @@
       "entity_name": "Central Power Electric Cooperative, Inc.",
       "region": "MRO",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -445,6 +505,13 @@
       "ncr_id": "NCR10316",
       "entity_name": "CHI Power, Inc.",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -532,6 +599,13 @@
       "ncr_id": "NCR11785",
       "entity_name": "Clearlight Energy (America) LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -541,6 +615,14 @@
       "ncr_id": "NCR11926",
       "entity_name": "Clearway Renewable Operation & Maintenance LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -681,6 +763,12 @@
       "ncr_id": "NCR12524",
       "entity_name": "Deriva Energy Solar Holdings, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -713,6 +801,10 @@
       "ncr_id": "NCR13057",
       "entity_name": "DS Cornerstone LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "Texas RE"
+      ],
       "roles": [
         "GOP"
       ]
@@ -731,14 +823,19 @@
       "entity_name": "East River Electric Power Cooperative, Inc",
       "region": "MRO",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
       "ncr_id": "NCR01227",
       "entity_name": "East Texas Electric Cooperative Inc.",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "SERC",
+        "Texas RE"
+      ],
       "roles": [
         "DP",
         "RP",
@@ -759,6 +856,13 @@
       "ncr_id": "NCR11441",
       "entity_name": "EDF Renewable Service",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -767,6 +871,14 @@
       "ncr_id": "NCR11662",
       "entity_name": "EDP Renewables North America LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -895,6 +1007,10 @@
       "ncr_id": "NCR10020",
       "entity_name": "Golden Spread Electric Cooperative, Inc.",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "Texas RE"
+      ],
       "roles": [
         "GO",
         "RP"
@@ -921,8 +1037,8 @@
       "entity_name": "Grand Electric Cooperative",
       "region": "MRO",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -983,6 +1099,11 @@
       "ncr_id": "NCR11783",
       "entity_name": "GridLiance Holdco, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "TO",
         "TP"
@@ -1316,6 +1437,13 @@
       "ncr_id": "NCR12499",
       "entity_name": "LRE Operations Control Center",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -1456,6 +1584,11 @@
       "ncr_id": "NCR00826",
       "entity_name": "Midcontinent Independent System Operator, Inc.",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "BA",
         "PC",
@@ -1480,6 +1613,13 @@
       "ncr_id": "NCR11990",
       "entity_name": "Miller Bros. Solar, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -1544,6 +1684,11 @@
       "ncr_id": "NCR03044",
       "entity_name": "MISO-MBHydro Contingency Reserve Sharing Group",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "RSG"
       ]
@@ -1564,6 +1709,10 @@
       "ncr_id": "NCR01015",
       "entity_name": "Montana-Dakota Utilities Company",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "WECC"
+      ],
       "roles": [
         "BA",
         "DP",
@@ -1651,6 +1800,14 @@
       "ncr_id": "NCR10019",
       "entity_name": "NextEra Energy Resources, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -1774,6 +1931,10 @@
       "ncr_id": "NCR11642",
       "entity_name": "NRG Energy Services - Golden Spread",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "Texas RE"
+      ],
       "roles": [
         "GO"
       ]
@@ -1854,6 +2015,13 @@
       "ncr_id": "NCR12355",
       "entity_name": "Onward Energy ROC LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -1870,6 +2038,10 @@
       "ncr_id": "NCR13337",
       "entity_name": "Orsted Wind Power North America, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -1910,6 +2082,13 @@
       "ncr_id": "NCR11808",
       "entity_name": "Pattern Operators LP",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -1989,6 +2168,11 @@
       "ncr_id": "NCR13095",
       "entity_name": "Primoris Renewable Energy, Inc",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -2006,6 +2190,13 @@
       "ncr_id": "NCR12223",
       "entity_name": "Recurrent Energy Power Services (USA) LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -2066,6 +2257,11 @@
       "ncr_id": "NCR12501",
       "entity_name": "RNWBL, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -2131,6 +2327,14 @@
       "ncr_id": "NCR12482",
       "entity_name": "RWE Americas, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -2192,6 +2396,14 @@
       "ncr_id": "NCR11685",
       "entity_name": "SOLV Energy, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -2220,6 +2432,10 @@
       "ncr_id": "NCR01143",
       "entity_name": "Southwest Power Pool, Inc.",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "WECC"
+      ],
       "roles": [
         "BA",
         "PC",
@@ -2349,6 +2565,12 @@
       "ncr_id": "NCR13022",
       "entity_name": "Symphony Breeze, LLC",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -2432,6 +2654,10 @@
       "ncr_id": "NCR12419",
       "entity_name": "TransAlta Holdings U.S. Inc.",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "NPCC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -2478,8 +2704,8 @@
       "entity_name": "Upper Missouri Power Cooperative",
       "region": "MRO",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -2569,10 +2795,16 @@
       "ncr_id": "NCR05464",
       "entity_name": "Western Area Power Administration - Rocky Mountain Region",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "WECC"
+      ],
       "roles": [
+        "BA",
         "TO",
         "TOP",
-        "TP"
+        "TP",
+        "TSP"
       ]
     },
     {
@@ -2590,6 +2822,10 @@
       "ncr_id": "NCR01160",
       "entity_name": "Western Farmers Electric Cooperative",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "Texas RE"
+      ],
       "roles": [
         "DP",
         "GO",
@@ -2630,18 +2866,32 @@
       "ncr_id": "NCR00951",
       "entity_name": "Wisconsin Electric Power Company",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF"
+      ],
       "roles": [
+        "BA",
+        "DP",
         "GO",
-        "GOP"
+        "GOP",
+        "RP"
       ]
     },
     {
       "ncr_id": "NCR00952",
       "entity_name": "Wisconsin Public Service Corporation",
       "region": "MRO",
+      "regions": [
+        "MRO",
+        "RF"
+      ],
       "roles": [
+        "BA",
+        "DP",
         "GO",
-        "GOP"
+        "GOP",
+        "RP"
       ]
     },
     {
@@ -2673,6 +2923,13 @@
       "ncr_id": "NCR12082",
       "entity_name": "ACT Power Services, LLC",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -2816,6 +3073,10 @@
       "ncr_id": "NCR13509",
       "entity_name": "Bloom Energy Corporation",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF"
+      ],
       "roles": [
         "GOP"
       ]
@@ -2859,8 +3120,8 @@
       "entity_name": "Bozrah Light and Power Company",
       "region": "NPCC",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -2904,8 +3165,15 @@
       "ncr_id": "NCR11647",
       "entity_name": "Brookfield Power US Asset Management LLC",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "WECC"
+      ],
       "roles": [
-        "GOP"
+        "GOP",
+        "TOP"
       ]
     },
     {
@@ -2954,6 +3222,13 @@
       "ncr_id": "NCR00006",
       "entity_name": "Calpine Corporation",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -3067,6 +3342,11 @@
       "ncr_id": "NCR00778",
       "entity_name": "Constellation Energy Generation, LLC - Constellation Nuclear",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -3076,6 +3356,11 @@
       "ncr_id": "NCR04057",
       "entity_name": "Constellation Energy Generation, LLC - Constellation Power",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "Texas RE"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -3397,8 +3682,8 @@
       "entity_name": "Groton Utilities",
       "region": "NPCC",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -3483,8 +3768,8 @@
       "entity_name": "Hudson Light and Power Department",
       "region": "NPCC",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -3656,6 +3941,12 @@
       "ncr_id": "NCR12569",
       "entity_name": "Longroad Energy Services",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -3673,6 +3964,13 @@
       "ncr_id": "NCR10133",
       "entity_name": "Luminant Energy Company, LLC",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -3741,8 +4039,8 @@
       "entity_name": "Middleborough Gas and Electric Department",
       "region": "NPCC",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -3758,6 +4056,12 @@
       "ncr_id": "NCR13107",
       "entity_name": "MN8 Solutions",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -3912,6 +4216,10 @@
       "ncr_id": "NCR00130",
       "entity_name": "Neptune Regional Transmission System, LLC",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF"
+      ],
       "roles": [
         "TO"
       ]
@@ -4049,8 +4357,8 @@
       "entity_name": "Norwich Public Utilities",
       "region": "NPCC",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -4091,6 +4399,13 @@
       "ncr_id": "NCR12096",
       "entity_name": "NovaSource Power Services",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -4214,6 +4529,13 @@
       "ncr_id": "NCR12507",
       "entity_name": "QE Solar, LLC",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -4374,8 +4696,8 @@
       "entity_name": "Shrewsbury Electric and Cable Operations",
       "region": "NPCC",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -4398,8 +4720,13 @@
       "ncr_id": "NCR01322",
       "entity_name": "Southern Power Company",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "SERC"
+      ],
       "roles": [
-        "GO"
+        "GO",
+        "RP"
       ]
     },
     {
@@ -4435,6 +4762,10 @@
       "ncr_id": "NCR13428",
       "entity_name": "TerraForm Power Operating, LLC",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -4587,6 +4918,12 @@
       "ncr_id": "NCR00200",
       "entity_name": "Vistra Corp.",
       "region": "NPCC",
+      "regions": [
+        "NPCC",
+        "RF",
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "GO"
       ]
@@ -4818,6 +5155,10 @@
       "ncr_id": "NCR00683",
       "entity_name": "American Municipal Power Inc.",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "GO",
         "GOP",
@@ -5259,6 +5600,11 @@
       "ncr_id": "NCR12566",
       "entity_name": "Clean Energy Services CES, LLC",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC",
+        "Texas RE"
+      ],
       "roles": [
         "GOP"
       ]
@@ -5581,6 +5927,10 @@
       "ncr_id": "NCR11878",
       "entity_name": "Dominion Energy Generation Marketing, Inc.",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -5589,6 +5939,10 @@
       "ncr_id": "NCR13435",
       "entity_name": "Dominion IBR-3",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -5598,6 +5952,11 @@
       "ncr_id": "NCR13105",
       "entity_name": "Dominion IBR-4",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "GO",
         "GOP"
@@ -6171,6 +6530,10 @@
       "ncr_id": "NCR00794",
       "entity_name": "Hoosier Energy REC, Inc.",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "BA",
         "DP",
@@ -6988,6 +7351,10 @@
       "ncr_id": "NCR00859",
       "entity_name": "Old Dominion Electric Cooperative",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "DP",
         "GO",
@@ -7007,6 +7374,12 @@
       "ncr_id": "NCR12161",
       "entity_name": "Origis Services, LLC",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -7040,6 +7413,10 @@
       "ncr_id": "NCR00879",
       "entity_name": "PJM Interconnection, LLC",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "BA",
         "PC",
@@ -7577,6 +7954,10 @@
       "ncr_id": "NCR00940",
       "entity_name": "Wabash Valley Power Association, Inc.",
       "region": "RF",
+      "regions": [
+        "RF",
+        "SERC"
+      ],
       "roles": [
         "DP",
         "GO",
@@ -7864,6 +8245,10 @@
       "ncr_id": "NCR13296",
       "entity_name": "Arevon Energy, Inc.",
       "region": "SERC",
+      "regions": [
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -8334,10 +8719,10 @@
       "entity_name": "City Of Clarksdale, Mississippi",
       "region": "SERC",
       "roles": [
+        "DP",
         "GO",
         "GOP",
-        "TO",
-        "DP"
+        "TO"
       ]
     },
     {
@@ -8601,6 +8986,11 @@
       "ncr_id": "NCR11867",
       "entity_name": "Cypress Creek O&M, LLC",
       "region": "SERC",
+      "regions": [
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -8626,6 +9016,11 @@
       "ncr_id": "NCR11915",
       "entity_name": "DEPCOM Power",
       "region": "SERC",
+      "regions": [
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -9215,7 +9610,12 @@
       "ncr_id": "NCR11393",
       "entity_name": "Gridforce Energy Management, LLC",
       "region": "SERC",
+      "regions": [
+        "SERC",
+        "WECC"
+      ],
       "roles": [
+        "BA",
         "TOP"
       ]
     },
@@ -9648,9 +10048,16 @@
       "ncr_id": "NCR11076",
       "entity_name": "Lone Star Transmission, LLC",
       "region": "SERC",
+      "regions": [
+        "SERC",
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "BA",
-        "TOP"
+        "TO",
+        "TOP",
+        "TP"
       ]
     },
     {
@@ -10625,6 +11032,10 @@
       "ncr_id": "NCR13305",
       "entity_name": "SR EPC, LLC",
       "region": "SERC",
+      "regions": [
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -10729,6 +11140,10 @@
       "ncr_id": "NCR13474",
       "entity_name": "Strata Solar Services",
       "region": "SERC",
+      "regions": [
+        "SERC",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -12352,6 +12767,10 @@
       "ncr_id": "NCR13036",
       "entity_name": "esVolta Management, LLC",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GO"
       ]
@@ -12405,8 +12824,8 @@
       "entity_name": "Floresville Electric Light & Power System",
       "region": "Texas RE",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {
@@ -12508,8 +12927,8 @@
       "entity_name": "GEUS",
       "region": "Texas RE",
       "roles": [
-        "GO",
-        "DP"
+        "DP",
+        "GO"
       ]
     },
     {
@@ -12645,6 +13064,10 @@
       "ncr_id": "NCR12433",
       "entity_name": "Hanwha Convergence USA Corp.",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -13309,7 +13732,12 @@
       "ncr_id": "NCR11463",
       "entity_name": "Mojave 16/17/18, LLC",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
+        "GO",
         "GOP"
       ]
     },
@@ -13570,6 +13998,10 @@
       "ncr_id": "NCR12412",
       "entity_name": "Pearce Renewables",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -13706,6 +14138,10 @@
       "ncr_id": "NCR13464",
       "entity_name": "QE Solar ROC",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -13809,6 +14245,10 @@
       "ncr_id": "NCR13538",
       "entity_name": "RES Energy Services Inc.",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -14250,6 +14690,10 @@
       "ncr_id": "NCR12344",
       "entity_name": "Strategic Services Operating",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -14580,6 +15024,10 @@
       "ncr_id": "NCR13109",
       "entity_name": "Viridity Energy Solutions Inc.",
       "region": "Texas RE",
+      "regions": [
+        "Texas RE",
+        "WECC"
+      ],
       "roles": [
         "GOP"
       ]
@@ -15697,8 +16145,8 @@
       "entity_name": "City of Riverside Public Utilities",
       "region": "WECC",
       "roles": [
-        "RP",
-        "DP"
+        "DP",
+        "RP"
       ]
     },
     {
@@ -16586,8 +17034,8 @@
       "entity_name": "Hill County Electric Cooperative, Inc.",
       "region": "WECC",
       "roles": [
-        "TO",
-        "DP"
+        "DP",
+        "TO"
       ]
     },
     {

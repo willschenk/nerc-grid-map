@@ -24,7 +24,8 @@ export type NERCOrg = {
   acronym_source: string | null;
 
   // Classification
-  region: NERCRegion | null;
+  region: NERCRegion | null; // primary RE (first alphabetically when multi-RE)
+  regions?: NERCRegion[]; // all REs from the compliance matrix (when >1)
   roles: RoleTag[]; // deduplicated, normalized
   role_count: number;
   is_private: boolean;

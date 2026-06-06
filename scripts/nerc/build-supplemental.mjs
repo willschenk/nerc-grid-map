@@ -117,9 +117,9 @@ const nameKey = (s) => String(s).toLowerCase().replace(/\s+/g, " ").trim();
 function classify(name, entityType, layer) {
   const e = `${entityType} ${layer}`.toLowerCase();
   // CCAs first (their type also contains the word "aggregator").
-  if (/community choice/.test(e)) return { org_type: "cca", roles: [] };
+  if (/community choice/.test(e)) return { org_type: "cca", roles: ["LSE"] };
   if (/broader power-market|power marketer|der aggregator|developer|storage business|trading|commodities|energy management/.test(e)) {
-    return { org_type: "merchant", roles: [] };
+    return { org_type: "merchant", roles: ["PSE"] };
   }
   // Rural electric co-ops are commonly named "... Electric Association".
   if (/cooperative|co-op|electric membership|\bemc\b|electric association|rural electric/i.test(name)) {

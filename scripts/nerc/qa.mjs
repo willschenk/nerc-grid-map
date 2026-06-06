@@ -113,6 +113,11 @@ for (const o of orgs) {
   if (o.region != null && !validRegions.has(o.region)) {
     errors.push(`invalid Regional Entity: ${o.ncr_id} ${o.entity_name} region="${o.region}"`);
   }
+  for (const r of o.regions ?? []) {
+    if (!validRegions.has(r)) {
+      errors.push(`invalid Regional Entity: ${o.ncr_id} ${o.entity_name} regions includes "${r}"`);
+    }
+  }
 }
 
 // 9. Map combines: absorbed member ids must not appear as standalone dots.

@@ -108,16 +108,16 @@ if (roleCols.length === 0 && funcCol < 0) {
   process.exit(1);
 }
 
-const records = [];
-const seen = new Set();
+// The compliance matrix lists one row per (entity, Regional Entity). Same NCR ID
+// can appear in multiple REs (e.g. PJM is RF + SERC). Merge those rows here.
+/** @type {Map<string, { ncr_id: string, entity_name: string, regions: Set<string>, roleSet: Set<string> }>} */
+const byId = new Map();
 let dupes = 0;
 for (let r = 1; r < rows.length; r++) {
   const row = rows[r];
   const ncr_id = norm(row[idCol]);
   const entity_name = norm(row[nameCol]);
   if (!ncr_id && !entity_name) continue;
-  if (seen.has(ncr_id)) { dupes++; continue; }
-  seen.add(ncr_id);
 
   let rawRoles;
   if (roleCols.length) {
@@ -125,13 +125,32 @@ for (let r = 1; r < rows.length; r++) {
   } else {
     rawRoles = norm(row[funcCol]).split(/[;,/|]+/);
   }
-  records.push({
+  const region = normalizeRegion(row[regionCol]);
+  const roles = normalizeRoles(rawRoles);
+
+  const existing = byId.get(ncr_id);
+  if (existing) {
+    dupes++;
+    if (region) existing.regions.add(region);
+    for (const role of roles) existing.roleSet.add(role);
+    continue;
+  }
+
+  const regions = new Set(region ? [region] : []);
+  const roleSet = new Set(roles);
+  byId.set(ncr_id, { ncr_id, entity_name, regions, roleSet });
+}
+
+const records = [...byId.values()].map(({ ncr_id, entity_name, regions, roleSet }) => {
+  const sortedRegions = [...regions].sort();
+  return {
     ncr_id,
     entity_name,
-    region: normalizeRegion(row[regionCol]),
-    roles: normalizeRoles(rawRoles),
-  });
-}
+    region: sortedRegions[0] ?? null,
+    ...(sortedRegions.length > 1 ? { regions: sortedRegions } : {}),
+    roles: [...roleSet].sort(),
+  };
+});
 
 // Dashboard stats (ingested data only).
 function tally(items, fn) {
@@ -146,7 +165,7 @@ writeFileSync(resolve(outPath), JSON.stringify({ ingested_at: new Date().toISOSt
 
 console.log(`ingest: read ${rows.length - 1} rows from ${argPath}`);
 console.log(`ingest: shape = ${roleCols.length ? `wide (${roleCols.length} role columns)` : "functions list column"}`);
-console.log(`ingest: ${records.length} unique records, ${dupes} duplicate NCR IDs skipped`);
+console.log(`ingest: ${records.length} unique records, ${dupes} duplicate NCR IDs merged (multi-RE rows)`);
 console.log(`ingest: ${noRoles} records with no recognized role (review these)`);
 console.log(`ingest: by region:`, tally(records, (r) => r.region ?? "(none)"));
 console.log(`ingest: by role:`, tally(records, (r) => r.roles));

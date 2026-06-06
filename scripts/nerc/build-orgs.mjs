@@ -99,6 +99,7 @@ function stageCanada() {
 // A geocoding-agent output file (JSON array or {orgs:[...]}) overrides the seed
 // when present, so the real registry can drop in without touching this script.
 const GEOCODED = resolve(root, "src/data/nerc/geocoded-orgs.json");
+const INGESTED = resolve(root, "src/data/nerc/ingested-records.json");
 // Maps placeholder seeds to their authoritative registry twin(s). A seed is
 // dropped once any twin is geocoded, so seeds auto-retire without leaving a gap.
 const SEED_TWINS = resolve(root, "src/data/nerc/seed-twins.json");
@@ -118,6 +119,29 @@ const BASEMAP_OUT = resolve(OUT_DIR, "states-10m.json");
 // it via a conic that mirrors the Albers lower-48 piece). Country id 124.
 const WORLD_SRC = resolve(root, "node_modules/world-atlas/countries-50m.json");
 const CANADA_OUT = resolve(OUT_DIR, "canada-land.json");
+
+function loadIngestedRegions() {
+  if (!existsSync(INGESTED)) return new Map();
+  const raw = JSON.parse(readFileSync(INGESTED, "utf8"));
+  /** @type {Map<string, string[]>} */
+  const map = new Map();
+  for (const r of raw.records ?? []) {
+    const regions = r.regions?.length ? r.regions : r.region ? [r.region] : [];
+    if (regions.length) map.set(r.ncr_id, regions);
+  }
+  return map;
+}
+
+// Registry rows can list the same NCR ID under multiple Regional Entities.
+function applyRegistryRegions(rec, regionMap) {
+  const regions = regionMap.get(rec.ncr_id);
+  if (!regions?.length) return rec;
+  return {
+    ...rec,
+    region: rec.region ?? regions[0],
+    ...(regions.length > 1 ? { regions } : {}),
+  };
+}
 
 function loadRecords() {
   const file = existsSync(GEOCODED) ? GEOCODED : SEED;
@@ -204,6 +228,7 @@ const RENDER_ORG_FIELDS = [
   "name_normal",
   "name_major",
   "region",
+  "regions",
   "roles",
   "role_count",
   "is_private",
@@ -267,9 +292,10 @@ function buildSplitPayloads(payload) {
 function main() {
   const { file, records } = loadRecords();
   const names = loadNameTable();
+  const registryRegions = loadIngestedRegions();
   let nercOrgs = dropRetiredSeeds(records)
     .filter((r) => r.skip !== true)
-    .map((r) => enrichOrg(applyNames(r, names)))
+    .map((r) => enrichOrg(applyNames(applyRegistryRegions(r, registryRegions), names)))
     .filter((o) => o.lat != null && o.lng != null);
 
   if (existsSync(MAP_COMBINES)) {

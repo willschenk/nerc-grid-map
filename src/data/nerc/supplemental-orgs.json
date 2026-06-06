@@ -44,7 +44,9 @@
     "city": "Anchorage",
     "lat": 61.1956,
     "lng": -149.9012,
-    "roles": [],
+    "roles": [
+      "DP"
+    ],
     "org_type": "other",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1050,7 +1052,9 @@
     "city": "Apple Valley",
     "lat": 34.4867,
     "lng": -117.2412,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1067,7 +1071,9 @@
     "city": null,
     "lat": 37.8,
     "lng": -122.27,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1084,7 +1090,9 @@
     "city": "Lancaster",
     "lat": 34.6868,
     "lng": -118.1541,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1101,7 +1109,9 @@
     "city": null,
     "lat": 36.68,
     "lng": -121.65,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1118,7 +1128,9 @@
     "city": "Carlsbad",
     "lat": 33.1581,
     "lng": -117.3505,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1135,7 +1147,9 @@
     "city": null,
     "lat": 34.05,
     "lng": -118.25,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1152,7 +1166,9 @@
     "city": null,
     "lat": 37.77,
     "lng": -122.42,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1169,7 +1185,9 @@
     "city": "Palm Desert",
     "lat": 33.7228,
     "lng": -116.3742,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1186,7 +1204,9 @@
     "city": "Lancaster",
     "lat": 34.6868,
     "lng": -118.1541,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1203,7 +1223,9 @@
     "city": null,
     "lat": 37.97,
     "lng": -122.53,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1220,7 +1242,9 @@
     "city": "Irvine",
     "lat": 33.6775,
     "lng": -117.8512,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1237,7 +1261,9 @@
     "city": null,
     "lat": 37.56,
     "lng": -122.32,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1254,7 +1280,9 @@
     "city": "Pico Rivera",
     "lat": 33.9831,
     "lng": -118.0897,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1271,7 +1299,9 @@
     "city": "Pomona",
     "lat": 34.0551,
     "lng": -117.7494,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1288,7 +1318,9 @@
     "city": "Rancho Mirage",
     "lat": 33.7397,
     "lng": -116.4132,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1305,7 +1337,9 @@
     "city": "Eureka",
     "lat": 40.8021,
     "lng": -124.1637,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1341,7 +1375,9 @@
     "city": null,
     "lat": 32.72,
     "lng": -117.16,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1358,7 +1394,9 @@
     "city": "San Jacinto",
     "lat": 33.7834,
     "lng": -116.9597,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1375,7 +1413,9 @@
     "city": "San Jose",
     "lat": 37.3382,
     "lng": -121.8863,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1392,7 +1432,9 @@
     "city": "Santa Barbara",
     "lat": 34.4208,
     "lng": -119.6986,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1409,7 +1451,9 @@
     "city": null,
     "lat": 37.39,
     "lng": -122.08,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1426,7 +1470,9 @@
     "city": null,
     "lat": 38.44,
     "lng": -122.71,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -1462,7 +1508,9 @@
     "city": "Davis",
     "lat": 38.5449,
     "lng": -121.7407,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -1479,7 +1527,9 @@
     "city": "Riverside",
     "lat": 33.9826,
     "lng": -117.3754,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "cca",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -2210,7 +2260,9 @@
     "city": "Honolulu",
     "lat": 21.3069,
     "lng": -157.8583,
-    "roles": [],
+    "roles": [
+      "RP"
+    ],
     "org_type": "other",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -2474,7 +2526,9 @@
     "city": "Honolulu",
     "lat": 21.3099,
     "lng": -157.8598,
-    "roles": [],
+    "roles": [
+      "LSE"
+    ],
     "org_type": "other",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -2829,7 +2883,10 @@
     "city": "Louisville",
     "lat": 38.2527,
     "lng": -85.7585,
-    "roles": [],
+    "roles": [
+      "LSE",
+      "PSE"
+    ],
     "org_type": "other",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -2847,7 +2904,10 @@
     "city": "Paducah",
     "lat": 37.0834,
     "lng": -88.6,
-    "roles": [],
+    "roles": [
+      "LSE",
+      "PSE"
+    ],
     "org_type": "other",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -3185,7 +3245,9 @@
     "city": "Vinton",
     "lat": 30.1908,
     "lng": -93.5813,
-    "roles": [],
+    "roles": [
+      "DP"
+    ],
     "org_type": "other",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
@@ -3203,7 +3265,9 @@
     "city": "Baltimore",
     "lat": 39.286,
     "lng": -76.605,
-    "roles": [],
+    "roles": [
+      "PSE"
+    ],
     "org_type": "merchant",
     "nerc_registered": false,
     "geo_confidence": "HIGH",
@@ -4643,7 +4707,9 @@
     "city": "Houston",
     "lat": 29.7604,
     "lng": -95.3698,
-    "roles": [],
+    "roles": [
+      "PSE"
+    ],
     "org_type": "merchant",
     "nerc_registered": false,
     "geo_confidence": "HIGH",

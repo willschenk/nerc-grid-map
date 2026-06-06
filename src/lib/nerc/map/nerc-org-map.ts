@@ -21,6 +21,7 @@ type Org = {
   name_normal?: string | null;
   name_major?: boolean;
   region: string | null;
+  regions?: string[];
   roles: string[];
   role_count: number;
   is_private: boolean;
@@ -108,7 +109,9 @@ const SPIDER_FULL_K = 10;
 const SPIDER_RING_STEP_PX = 28;
 // Declutter: visible bubbles move in render space only. Lat/lng and projected
 // _x/_y stay true; _dx/_dy are screen-space nudges divided by zoom at render.
-const MAX_RADIUS = 48;
+// Full-size (priority-100, fully-zoomed) bubble radius in CSS px on desktop.
+// Drives visualRadius's desktop maxPx, so raising it enlarges every bubble.
+const MAX_RADIUS = 60;
 const MAX_ZOOM = 1200;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
 const BA_RC_ROLES = new Set(["BA", "RC"]);
@@ -354,14 +357,15 @@ function memberDisplayName(name: string): string {
 }
 
 function combinedRegions(o: Org): string | null {
-  if (!o.combined_members?.length) return null;
   const regions = new Set<string>();
-  if (o.region) regions.add(o.region);
-  for (const m of o.combined_members) {
+  if (o.regions?.length) for (const r of o.regions) regions.add(r);
+  else if (o.region) regions.add(o.region);
+  for (const m of o.combined_members ?? []) {
     if (m.region) regions.add(m.region);
   }
   const list = [...regions].sort();
-  return list.length ? list.join(", ") : null;
+  if (list.length <= 1) return list[0] ?? null;
+  return list.join(", ");
 }
 
 // Human-facing title: combined orgs use a short brand, not the full agent string.
@@ -824,7 +828,7 @@ export function mountNercOrgMap(): void {
     const rawPriority = visualPriority(o);
     const priority = rawPriority / 100;
     const minPx = compact ? 2.1 : 2.2;
-    const maxPx = compact ? 25 : 36;
+    const maxPx = compact ? 25 : MAX_RADIUS;
     const fullPx = minPx + (maxPx - minPx) * priority;
     // Bubbles start large at the overview (desktop now matches the iOS feel) and
     // grow quickly toward full size as you begin to zoom in.
@@ -2066,7 +2070,7 @@ export function mountNercOrgMap(): void {
       statSection(
         "Regional Entity",
         tally(
-          orgs.map((o) => o.region),
+          orgs.flatMap((o) => (o.regions?.length ? o.regions : o.region ? [o.region] : [])),
           "No Regional Entity",
         ),
         (k) => k,

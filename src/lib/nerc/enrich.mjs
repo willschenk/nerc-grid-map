@@ -265,7 +265,18 @@ export function enrichOrg(rec) {
     name_major: rec.name_major === true,
 
     // Classification
-    region: normalizeRegion(rec.region),
+    ...(() => {
+      const primary = normalizeRegion(rec.region);
+      const fromList = Array.isArray(rec.regions)
+        ? rec.regions.map(normalizeRegion).filter(Boolean)
+        : [];
+      const regions = [...new Set([...(primary ? [primary] : []), ...fromList])].sort();
+      const region = primary ?? regions[0] ?? null;
+      return {
+        region,
+        ...(regions.length > 1 ? { regions } : {}),
+      };
+    })(),
     roles,
     role_count: roles.length,
     is_private: isPrivate(roles),

@@ -41,9 +41,20 @@ export function applyMapCombines(orgs, config) {
 
     const mergedRoles = [...roleSet].sort();
 
+    const regionSet = new Set();
+    for (const r of canonical.regions ?? []) if (r) regionSet.add(r);
+    if (canonical.region) regionSet.add(canonical.region);
+    for (const m of members) {
+      for (const r of m.regions ?? []) if (r) regionSet.add(r);
+      if (m.region) regionSet.add(m.region);
+    }
+    const mergedRegions = [...regionSet].sort();
+
     const merged = enrichOrg({
       ...canonical,
       roles: mergedRoles,
+      region: canonical.region ?? mergedRegions[0] ?? null,
+      ...(mergedRegions.length > 1 ? { regions: mergedRegions } : {}),
     });
     merged.combined_members = combinedMembers;
     if (group.summary) merged.map_combine_summary = group.summary;
