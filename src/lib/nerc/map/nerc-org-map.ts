@@ -117,6 +117,8 @@ const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
 const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
+const GENERATION_ONLY_REVEAL_K = 18;
+const GENERATION_ONLY_REVEAL_K_COMPACT = 20;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
@@ -648,6 +650,14 @@ export function mountNercOrgMap(): void {
     return o.roles.length > 0 && o.roles.every((r) => GENERATION_ROLES.has(r));
   }
 
+  function generationOnlyRevealK(): number {
+    return compact ? GENERATION_ONLY_REVEAL_K_COMPACT : GENERATION_ONLY_REVEAL_K;
+  }
+
+  function canDisplayOrg(o: Org, k: number): boolean {
+    return !isGenerationOnly(o) || k >= generationOnlyRevealK();
+  }
+
   function isMajorSystemOperator(o: Org): boolean {
     if (SYSTEM_OPERATOR_NAME.test(o.entity_name)) return true;
     return hasAnyRole(o, BA_RC_ROLES) && hasAnyRole(o, MAJOR_OPERATOR_PARTNER_ROLES) && meaningfulRoleCount(o) >= 4;
@@ -661,7 +671,7 @@ export function mountNercOrgMap(): void {
     if ((hasTo && (hasDp || hasLse)) || (hasDp && hasLse)) return 62;
     if (hasAnyRole(o, GRID_ROLES)) return 50;
     if (hasAnyRole(o, SUPPORT_ROLES)) return 42;
-    if (isGenerationOnly(o)) return 24;
+    if (isGenerationOnly(o)) return 6;
     return 14;
   }
 
@@ -686,13 +696,14 @@ export function mountNercOrgMap(): void {
   }
 
   function visualPriority(o: Org): number {
+    if (isGenerationOnly(o)) return 6;
     if (isMajorSystemOperator(o)) return 100;
     const score = Math.max(rolePriority(o), typePriority(o)) + multiRoleBonus(o);
     return Math.max(10, Math.min(100, score));
   }
 
   function canGrowAtZoom(o: Org): boolean {
-    return meaningfulRoleCount(o) > 0;
+    return meaningfulRoleCount(o) > 0 || isGenerationOnly(o);
   }
 
   function visualPrioritySort(a: Org, b: Org): number {
@@ -798,8 +809,16 @@ export function mountNercOrgMap(): void {
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
     const priorityT = smoothStep((rawPriority - 42) / 58);
     const boostPx = canGrowAtZoom(o) ? (compact ? 5.5 : 8.5) * priorityT * closeT : 0;
-    const zoomMaxPx = maxPx + (canGrowAtZoom(o) ? (compact ? 5.5 : 8.5) : 0);
-    return Math.max(minPx, Math.min(zoomMaxPx, basePx + boostPx)) * unitPerPx;
+    const deepT = smoothStep((k - (compact ? 8 : 9)) / (compact ? 24 : 28));
+    const smallOrgT = smoothStep((72 - rawPriority) / 62);
+    const deepBoostPx = canGrowAtZoom(o)
+      ? (compact ? 10 : 8) * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1)
+      : 0;
+    const zoomMaxPx =
+      maxPx +
+      (canGrowAtZoom(o) ? (compact ? 5.5 : 8.5) : 0) +
+      (canGrowAtZoom(o) ? (compact ? 10 : 8) : 0);
+    return Math.max(minPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx)) * unitPerPx;
   }
 
   // Puerto Rico inset dots are schematic (small, uniform) so they fit the
@@ -1200,6 +1219,10 @@ export function mountNercOrgMap(): void {
         o._placed = false;
         continue;
       }
+      if (!canDisplayOrg(o, bucket)) {
+        o._placed = false;
+        continue;
+      }
       // Territory inset dots are positioned by layoutTerritoryInsets and always
       // shown — they don't take part in the mainland packing.
       if (o._frame === "terr") {
@@ -1353,8 +1376,9 @@ export function mountNercOrgMap(): void {
       // Disclosure is zoom-only: a dot shows once it found a non-overlapping spot
       // at this zoom bucket (computePlacements sets _placed), so panning never
       // changes the set. Hover/selected/tour and territory dots always show.
-      const due = o._frame === "terr" || o._placed === true;
-      const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
+      const displayable = canDisplayOrg(o, k);
+      const due = displayable && (o._frame === "terr" || o._placed === true);
+      const forced = displayable && (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id));
       const vis = onScreen && (due || forced);
       o._vis = vis;
       if (!vis) continue;
