@@ -143,22 +143,21 @@
 #nerc-svg .org.selected {
   fill-opacity: 1;
   stroke: #061610;
-  /* Bold non-scaling ring (constant on screen, so it reads the same on tiny and
-     large dots) plus a slow pulse and white halo so selection clearly beats hover. */
-  stroke-width: 3.2;
+  /* Tight non-scaling ring on the bubble itself — no oversized hit-target halo. */
+  stroke-width: 2.2;
   paint-order: stroke fill;
-  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+  filter: drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.88));
   animation: nerc-selected-glow 1700ms ease-in-out infinite;
 }
 
 @keyframes nerc-selected-glow {
   0%,
   100% {
-    stroke-width: 3;
+    stroke-width: 2;
     stroke: #07110e;
   }
   50% {
-    stroke-width: 4.1;
+    stroke-width: 2.6;
     stroke: #0d4a3f;
   }
 }
@@ -166,16 +165,15 @@
 @media (prefers-reduced-motion: reduce) {
   #nerc-svg .org.selected {
     animation: none;
-    stroke-width: 3.4;
+    stroke-width: 2.3;
     stroke: #07110e;
   }
 }
 
 #nerc-svg .org-hit.selected:not(.hide) {
-  fill: rgba(29, 111, 98, 0.12);
-  stroke: rgba(7, 17, 14, 0.72);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
+  /* Keep hit target size for clicks; selection ring lives on .org only. */
+  fill: transparent;
+  stroke: transparent;
 }
 
 #nerc-svg .org.tour-dim {
