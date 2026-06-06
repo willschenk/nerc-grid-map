@@ -1,48 +1,52 @@
-# nerc-grid-map
+# NERC Grid Map
 
-★ Website: https://willschenk.github.io/nerc-grid-map/
+## [Open the live map →](https://willschenk.github.io/nerc-grid-map/)
 
-A small interactive map of organizations in the NERC Compliance Registry. NERC publishes the registry as a spreadsheet of entities and reliability functions, but it does not include map-ready coordinates.
+A browser-based map of electric grid organizations in and around the NERC Compliance Registry.
 
-This project normalizes the registry, adds researched locations, and builds a static JSON file for an Astro + D3 map. Each dot is one registered entity. Color shows its function mix; size shows a simple role weight.
+The project turns registry rows into a visual reference: organizations are placed on a map, sized by role weight, colored by reliability-function mix, and labeled for quick scanning. It is meant to make the grid landscape easier to understand than a spreadsheet.
 
-AI was used to help research locations and short labels from public sources: organization websites, NERC/CORES references, FERC filings, EIA data, SEC filings, state records, market-operator material, and search/map results. The output includes confidence levels and notes. Low-confidence and estimated points are marked for review.
+This is not an official NERC product and should not be used as a compliance source of truth.
 
-This is not an official NERC product or a compliance source of truth.
+## What it does
 
-## Run
+- Ingests public NERC registry data.
+- Normalizes entities, reliability functions, labels, aliases, and role weights.
+- Adds researched locations from public sources, with confidence notes for review.
+- Builds static JSON for an Astro + D3 map hosted on GitHub Pages.
+
+## Run locally
+
+Requires Node.js `>=20.3.0`.
 
 ```bash
 npm install
-npm run dev      # build data, then serve locally
-npm run build    # build data and static site
-npm run check    # Astro + TypeScript
+npm run dev
 ```
 
-## Data
+Other useful commands:
+
+```bash
+npm run build      # build the static site
+npm run check      # Astro + TypeScript checks
+npm run nerc:qa    # data QA checks
+npm run deploy     # deploy to GitHub Pages
+```
+
+## Data flow
 
 ```text
 data/*.csv
   -> scripts/nerc/ingest.mjs
 src/data/nerc/ingested-records.json
-  -> AI-assisted location research
+  -> researched location and label data
 src/data/nerc/geocoded-orgs.json
   -> scripts/nerc/build-orgs.mjs
 public/nerc/orgs.json
   -> browser map
 ```
 
-Useful commands:
-
-```bash
-npm run nerc:ingest data/nerc-active-compliance-matrix-functions-2026-05-26.csv
-npm run nerc:build
-npm run nerc:qa
-```
-
-The research prompt is `scripts/nerc/geocoding-agent-prompt.md`.
-
-## Files
+## Key files
 
 ```text
 src/pages/index.astro              page markup
@@ -53,12 +57,4 @@ src/lib/nerc/enrich.mjs            build-time enrichment
 scripts/nerc/                      ingest, build, QA, research prompt
 src/data/nerc/                     source and researched records
 public/nerc/                       generated map JSON and basemap
-```
-
-## Deploy
-
-GitHub Pages serves the `gh-pages` branch.
-
-```bash
-npm run deploy
 ```
