@@ -844,7 +844,7 @@ export function mountNercOrgMap(): void {
     if (isGridLeadershipOrg(o) || pri >= 62) return 0;
     if (pri >= 50) return 0.95; // grid roles (TO+DP, TOP/TSP, support groups)
     if (pri >= 42) return w >= 12 ? 1.2 : 1.6;
-    if (pri >= 28) return w >= 8 ? 1.9 : 2.3;
+    if (pri >= 28) return w >= 8 ? 1.8 : 2.6;
     if (pri >= 18) return 2.9;
     return 3.6; // very low priority / low weight — reveal only once zoomed in
   }
