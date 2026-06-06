@@ -974,7 +974,7 @@ export function mountNercOrgMap(): void {
     // (e.g. "Sunflower", "LPEA") read without squinting on a 1440×900 monitor.
     const base = compact
       ? priority >= 80 ? 11.1 : priority >= 50 ? 9.2 : 6.7
-      : priority >= 80 ? 14 : priority >= 50 ? 11.8 : 9.2;
+      : priority >= 80 ? 16 : priority >= 50 ? 13.5 : 10.5;
     // Mid/high-zoom readability: an extra ramp that kicks in past the overview so
     // labels keep getting bigger (and more legible) the further you zoom in. The
     // inside-label path still clamps to the bubble chord and long names fall back
