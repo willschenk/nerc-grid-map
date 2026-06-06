@@ -622,19 +622,18 @@ export function mountNercOrgMap(): void {
     return pill;
   }
 
-  function labelText(o: Org, k: number): string {
-    // Super-short token when zoomed out / tight, the shortened brand once zoomed
-    // in. The full legal name only ever appears in the detail panel.
-    // The biggest entities are pinned to their shortest acronym at every zoom —
-    // "PJM" never grows into "PJM Interconnection" on the map.
-    if (o.name_major) return tinyName(o);
+  function labelTextOptions(o: Org, k: number): string[] {
+    // Super-short token first; once zoomed in, try the short brand too. The full
+    // legal name only ever appears in the detail panel.
+    const tiny = tinyName(o);
     const priority = visualPriority(o);
-    const midAt = compact
-      ? priority >= 80 ? 10.5 : priority >= 50 ? 16 : 28
-      : priority >= 80 ? 8.5 : priority >= 50 ? 12.5 : 18;
-    if (k < midAt) return tinyName(o);
+    const shortAt = compact
+      ? priority >= 80 ? 2.8 : priority >= 50 ? 3.6 : 4.8
+      : priority >= 80 ? 2.2 : priority >= 50 ? 2.9 : 3.8;
+    if (k < shortAt) return [tiny];
     const mid = midName(o);
-    return mid.length > (compact ? 20 : 28) ? tinyName(o) : mid;
+    if (mid === tiny || mid.length > (compact ? 22 : 34)) return [tiny];
+    return [tiny, mid];
   }
 
   function hasAnyRole(o: Org, roles: Set<string>): boolean {
@@ -1477,14 +1476,14 @@ export function mountNercOrgMap(): void {
       const brand = tinyName(o);
 
       // 1. INSIDE — preferred, collision-free, never suppressed by neighbours.
-      // The font shrinks to span the chord (up to the normal label size); the
-      // floor keeps it readable. This runs before any de-dupe/thinning so a big
-      // bubble next to a labelled one still gets its own name.
+      // The font may shrink to span the chord, but only to a readable floor. If
+      // it would need to shrink past that point, the label can overflow/float
+      // outside its own bubble instead.
       const insideFont = Math.min(
         labelFontPx(o, k) * unitPerPx,
         (r * 1.74) / Math.max(1, brand.length) / 0.56,
       );
-      const insideMin = (compact ? 4.6 : 4.8) * unitPerPx;
+      const insideMin = (compact ? 5.8 : 6.4) * unitPerPx;
       if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * 1.86) {
         if ((forceLabel || k >= 2.2 || !usedLabels.has(brand)) && bubbleClears(o)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
@@ -1496,16 +1495,19 @@ export function mountNercOrgMap(): void {
       }
 
       // Bigger organizations can try a side/below floating label when their
-      // token cannot fit inside the bubble. Smaller non-forced dots wait until
-      // zoom makes an inside label possible.
+      // token cannot fit inside the bubble. Once zoomed in, any visible org can
+      // try for this overflow label; collision checks decide if there is room.
       const priority = visualPriority(o);
-      const allowFloat = forceLabel || (priority >= 82 && k >= 1.25) || (priority >= 66 && k >= 1.8);
+      const allowFloat =
+        forceLabel ||
+        (priority >= 82 && k >= 1.2) ||
+        (priority >= 66 && k >= 1.55) ||
+        (priority >= 50 && k >= 2.05) ||
+        k >= 2.6;
       if (!allowFloat) continue;
-      const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
       const labelPadX = (compact ? 4.5 : 5) * unitPerPx;
       const labelPadY = (compact ? 4 : 4.5) * unitPerPx;
-      const w = (Math.max(10, text.length * font * 0.58) + labelPadX * 2) * spacing;
       const h = (font + labelPadY * 2) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
       // Sit on the dot, then to the sides, then below, then the below-diagonals.
@@ -1518,30 +1520,39 @@ export function mountNercOrgMap(): void {
         [sx + nudge * 0.78, sy + nudge * 0.72],
         [sx - nudge * 0.78, sy + nudge * 0.72],
       ];
-      let chosen: { x: number; y: number; box: Box } | null = null;
-      for (const [lx, ly] of spots) {
-        const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
-        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
-        if (placed.some((p) => boxesOverlap(box, p))) continue;
-        if (!clearsBubbles(box, o.ncr_id)) continue;
-        chosen = { x: lx, y: ly, box };
-        break;
-      }
-      if (!chosen && forceLabel) {
+      const tryFloatingText = (text: string): { x: number; y: number; box: Box; text: string } | null => {
+        const w = (Math.max(10, text.length * font * 0.58) + labelPadX * 2) * spacing;
+        for (const [lx, ly] of spots) {
+          const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
+          if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
+          if (placed.some((p) => boxesOverlap(box, p))) continue;
+          if (!clearsBubbles(box, o.ncr_id)) continue;
+          return { x: lx, y: ly, box, text };
+        }
+        if (!forceLabel) return null;
         const lx = Math.min(W - edgeSafe - w / 2, Math.max(edgeSafe + w / 2, sx));
         const ly = sy + nudge;
         const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
         if (box.x0 >= edgeSafe && box.x1 <= W - edgeSafe && box.y0 >= topSafe && box.y1 <= H - edgeSafe) {
-          chosen = { x: lx, y: ly, box };
+          return { x: lx, y: ly, box, text };
         }
+        return null;
+      };
+      const textOptions = labelTextOptions(o, k);
+      let chosen = tryFloatingText(textOptions[0]);
+      if (chosen && textOptions[1]) {
+        const upgraded = tryFloatingText(textOptions[1]);
+        if (upgraded) chosen = upgraded;
+      } else if (!chosen && textOptions[1]) {
+        chosen = tryFloatingText(textOptions[1]);
       }
       if (!chosen || !bubbleClears(o)) continue;
       placed.push(chosen.box);
       if (!forceLabel) {
         labeledClusters.push({ x: sx, y: sy });
-        usedLabels.add(brand);
+        usedLabels.add(chosen.text);
       }
-      labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text, inside: false });
+      labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text: chosen.text, inside: false });
       addBubbleBlocker(o);
       placedCount++;
     }
