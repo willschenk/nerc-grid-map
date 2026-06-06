@@ -120,7 +120,7 @@ const SPIDER_RING_STEP_PX = 28;
 // Drives visualRadius's desktop maxPx, so raising it enlarges every bubble.
 // Bubbles only ever move in render space (_dx/_dy nudges); the true projected
 // _x/_y are never mutated, so geography stays exact.
-const MAX_RADIUS = 60;
+const MAX_RADIUS = 75;
 const MAX_ZOOM = 1200;
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
