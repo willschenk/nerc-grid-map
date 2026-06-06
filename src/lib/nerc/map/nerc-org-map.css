@@ -254,9 +254,9 @@
 
 /* Secondary geographic context — quiet, so NERC labels read as primary. */
 #nerc-svg .place-dot {
-  fill: rgba(80, 101, 94, 0.46);
-  stroke: rgba(248, 251, 249, 0.82);
-  stroke-width: 1;
+  fill: rgba(74, 94, 87, 0.62);
+  stroke: rgba(248, 251, 249, 0.9);
+  stroke-width: 1.1;
   pointer-events: none;
 }
 
@@ -265,13 +265,13 @@
 }
 
 #nerc-svg .place {
-  fill: #66736e;
-  font-weight: 600;
+  fill: #545f5a;
+  font-weight: 650;
   text-transform: uppercase;
   letter-spacing: 0.07em;
   paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.82);
-  stroke-width: 2.4;
+  stroke: rgba(248, 251, 249, 0.9);
+  stroke-width: 2.8;
   pointer-events: none;
   text-anchor: middle;
 }
@@ -283,13 +283,13 @@
 /* Land labels: state / province names sitting faintly on the map. Below NERC
    marks and labels in the stacking order, so NERC information reads on top. */
 #nerc-svg .land-label {
-  fill: rgba(99, 113, 107, 0.46);
-  font-weight: 700;
+  fill: rgba(86, 100, 94, 0.66);
+  font-weight: 750;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.6);
-  stroke-width: 2.6;
+  stroke: rgba(248, 251, 249, 0.72);
+  stroke-width: 3;
   pointer-events: none;
   text-anchor: middle;
 }

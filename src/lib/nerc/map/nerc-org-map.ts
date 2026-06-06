@@ -131,8 +131,15 @@ const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
 const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
+// Growth anchor for generation-only micro-orgs: how deep before their post-reveal
+// size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 44;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
+// Display anchor (desktop only): generation-only orgs become eligible to render
+// this early, so they start appearing at NYC-area deep zoom (~k18+) — but their
+// size ramp still waits for GENERATION_ONLY_REVEAL_K, so they stay small and never
+// overpower important orgs. Mobile keeps the higher reveal-K for display.
+const GENERATION_ONLY_DISPLAY_K = 16;
 const TO_ONLY_REVEAL_K = 12;
 const TO_ONLY_REVEAL_K_COMPACT = 14;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
@@ -761,9 +768,16 @@ export function mountNercOrgMap(): void {
     return smoothStep((k - microOrgRevealK(o)) / span);
   }
 
+  // Zoom at which a generation-only org may start rendering. On desktop this is
+  // earlier than its growth anchor (so it appears at deep zoom while still drawn
+  // small); mobile keeps the conservative reveal-K to leave the overview clean.
+  function generationOnlyDisplayK(): number {
+    return compact ? GENERATION_ONLY_REVEAL_K_COMPACT : GENERATION_ONLY_DISPLAY_K;
+  }
+
   function canDisplayOrg(o: Org, k: number): boolean {
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
-    return !isGenerationOnly(o) || k >= generationOnlyRevealK();
+    return !isGenerationOnly(o) || k >= generationOnlyDisplayK();
   }
 
   function isMajorSystemOperator(o: Org): boolean {
@@ -946,24 +960,25 @@ export function mountNercOrgMap(): void {
   }
 
   function placeLabelLimit(k: number): number {
-    // Kept modest so city names support orientation without crowding out NERC
-    // org labels in dense regions.
+    // Background city context. Desktop carries more of it for a higher-resolution
+    // backdrop; city names still yield to NERC org labels/bubbles via blockers,
+    // so they never crowd out the data. Mobile stays modest (small screen).
     if (compact) return 10;
-    if (k < 1.8) return 10;
-    if (k < 4.8) return 24;
-    return 42;
+    if (k < 1.8) return 16;
+    if (k < 4.8) return 34;
+    return 60;
   }
 
   function placeDotMinK(tier: number): number {
-    return tier === 1 ? 0.72 : tier === 2 ? 1.8 : 3.6;
+    return tier === 1 ? 0.72 : tier === 2 ? 1.4 : 2.6;
   }
 
   function placeLabelMinK(tier: number): number {
-    return tier === 1 ? 0.72 : tier === 2 ? 2.4 : 4.8;
+    return tier === 1 ? 0.72 : tier === 2 ? 1.6 : 3.4;
   }
 
   function placeDotRadius(p: Place): number {
-    return (p.tier === 1 ? 2.4 : p.tier === 2 ? 2 : 1.7) * unitPerPx;
+    return (p.tier === 1 ? 2.8 : p.tier === 2 ? 2.3 : 1.9) * unitPerPx;
   }
 
   function visualRadius(o: Org, k: number): number {
@@ -975,9 +990,11 @@ export function mountNercOrgMap(): void {
     const minPx = compact ? 2.1 : 2.2;
     const maxPx = compact ? 25 : MAX_RADIUS;
     const fullPx = minPx + (maxPx - minPx) * priority;
-    // Bubbles start large at the overview (desktop now matches the iOS feel) and
-    // grow quickly toward full size as you begin to zoom in.
-    const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 4));
+    // Bubbles start large at the overview (the strong national view) and then
+    // grow toward full size. Desktop uses a gentle ramp so the mid-low zoom range
+    // (around k=5) doesn't balloon — full size is reached deep in, not early.
+    // Mobile keeps its quicker ramp unchanged.
+    const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
     const overviewScale = compact ? 0.52 : 0.62;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
@@ -1932,6 +1949,10 @@ export function mountNercOrgMap(): void {
         (compact ? 5.8 : 6.4) *
         (1 - 0.9 * deepLabelT) *
         (isMidwestOrg(o) ? 0.9 : 1) *
+        // Desktop: a very short acronym (e.g. LES, CWLP, ConEd) that nearly fits
+        // inside its bubble at low-mid zoom is allowed in at a slightly smaller
+        // floor, so easy-to-fit short labels stop falling into a dead zone.
+        (!compact && brand.length <= 5 ? 0.85 : 1) *
         unitPerPx;
       const insideChord = isMidwestOrg(o) ? 1.94 : 1.86;
       if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * insideChord) {
@@ -1950,10 +1971,16 @@ export function mountNercOrgMap(): void {
       // try for this overflow label; collision checks decide if there is room.
       const priority = visualPriority(o);
       const midwest = isMidwestOrg(o);
+      // Desktop: a short, high-value acronym may float a bit earlier at low-mid
+      // zoom so it isn't suppressed when there is obvious room. Collision checks
+      // and labelLimit still gate placement, so dense areas don't flood. Mobile
+      // keeps its existing (sparser) thresholds.
+      const shortHighValue = !compact && priority >= 40 && brand.length <= 7;
       const allowFloat =
         forceLabel ||
         (priority >= 82 && k >= 1.2) ||
         (priority >= 66 && k >= (midwest ? 1.45 : 1.55)) ||
+        (shortHighValue && k >= 1.8) ||
         (priority >= 50 && k >= (midwest ? 1.85 : 2.05)) ||
         k >= (midwest ? 2.45 : 2.6);
       if (!allowFloat) continue;
@@ -2123,7 +2150,7 @@ export function mountNercOrgMap(): void {
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
-        const px = (p.tier === 1 ? 11.5 : p.tier === 2 ? 10.5 : 9.5) * unitPerPx;
+        const px = (p.tier === 1 ? 13.5 : p.tier === 2 ? 12 : 10.5) * unitPerPx;
         const w = p.name.length * px * 0.66 + (compact ? 10 : 9) * unitPerPx;
         const h = px + (compact ? 8 : 7) * unitPerPx;
         const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
@@ -2179,16 +2206,16 @@ export function mountNercOrgMap(): void {
       // Thin out the orientation labels as you zoom in — by deep zoom the state
       // name has done its job and would only clutter the view.
       const deepLandT = smoothStep((k - 5) / 8);
-      const landCap = Math.max(4, Math.round((compact ? 12 : 28) * (1 - 0.6 * deepLandT)));
+      const landCap = Math.max(4, Math.round((compact ? 12 : 34) * (1 - 0.5 * deepLandT)));
       for (const L of landLabels) {
         if (placedLand >= landCap) break;
         if (L.small && k < 3.2) continue; // tiny states only once zoomed in
-        if (!L.small && k >= 11) continue; // large state names drop out at deep zoom
+        if (!L.small && k >= 14) continue; // large state names drop out at deep zoom
         const sx = transform.applyX(L.x);
         const sy = transform.applyY(L.y);
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
         const grow = Math.max(0.85, 1.28 - Math.max(0, k - 1) * 0.06);
-        const font = (L.small ? 9 : 12) * grow * unitPerPx;
+        const font = (L.small ? 11 : 15) * grow * unitPerPx;
         const w = L.name.length * font * 0.64 + (compact ? 10 : 9) * unitPerPx;
         const h = font + (compact ? 8 : 7) * unitPerPx;
         const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
