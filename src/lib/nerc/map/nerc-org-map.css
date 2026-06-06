@@ -121,7 +121,29 @@
 #nerc-svg .org.selected {
   fill-opacity: 1;
   stroke: #07110e;
-  stroke-width: 1.8;
+  /* Bold non-scaling ring (constant on screen, so it reads the same on tiny and
+     large dots) plus a slow, subtle pulse for a glow that never overpowers the
+     map. Avoids filter blur, which would scale with zoom. */
+  stroke-width: 2.8;
+  animation: nerc-selected-glow 1700ms ease-in-out infinite;
+}
+
+@keyframes nerc-selected-glow {
+  0%,
+  100% {
+    stroke-width: 2.4;
+    stroke: #07110e;
+  }
+  50% {
+    stroke-width: 3.6;
+    stroke: #0b3a2c;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nerc-svg .org.selected {
+    animation: none;
+  }
 }
 
 #nerc-svg .org.tour-dim {
@@ -686,6 +708,45 @@
 .nerc-panel-close:hover {
   background: rgba(16, 32, 28, 0.06);
   color: #0f1916;
+}
+
+/* Collapse toggle sits just left of the close button. */
+.nerc-panel-collapse {
+  position: absolute;
+  top: 0.45rem;
+  right: 2.45rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #5e6b67;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.nerc-panel-collapse:hover {
+  background: rgba(16, 32, 28, 0.06);
+  color: #0f1916;
+}
+
+/* Collapsed: shrink the card to just its title bar so it frees map space.
+   Everything below the title row is hidden; the title row keeps its right
+   padding clear of the collapse/close buttons. */
+.nerc-panel.collapsed {
+  max-height: none;
+  overflow: hidden;
+  padding-bottom: 0.6rem;
+}
+
+.nerc-panel.collapsed #nerc-panel-body > *:not(.nerc-panel-close):not(.nerc-panel-collapse):not(.p-title) {
+  display: none;
+}
+
+.nerc-panel.collapsed .p-title {
+  padding-right: 3.6rem;
 }
 
 .p-title {

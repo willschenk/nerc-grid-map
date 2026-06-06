@@ -2256,6 +2256,7 @@ export function mountNercOrgMap(): void {
   function renderPanel(o: Org): void {
     o = applyOrgDetails(o);
     panelBody.replaceChildren();
+    panel.classList.remove("collapsed");
     const close = createEl("button", "nerc-panel-close", "×");
     close.type = "button";
     close.setAttribute("aria-label", "Close");
@@ -2263,7 +2264,20 @@ export function mountNercOrgMap(): void {
       ev.stopPropagation();
       closePanel();
     });
-    panelBody.append(close);
+    // Collapse icon: shrinks the card to its title bar so it stops covering the
+    // map, without losing the selection. Click again to expand.
+    const collapse = createEl("button", "nerc-panel-collapse", "\u2013");
+    collapse.type = "button";
+    collapse.setAttribute("aria-label", "Collapse");
+    collapse.setAttribute("aria-expanded", "true");
+    collapse.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      const collapsed = panel.classList.toggle("collapsed");
+      collapse.textContent = collapsed ? "+" : "\u2013";
+      collapse.setAttribute("aria-label", collapsed ? "Expand" : "Collapse");
+      collapse.setAttribute("aria-expanded", String(!collapsed));
+    });
+    panelBody.append(close, collapse);
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
     title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, displayName(o)));
