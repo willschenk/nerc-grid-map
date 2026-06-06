@@ -754,10 +754,10 @@ export function mountNercOrgMap(): void {
   // zoomed in, where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
     const priority = visualPriority(o);
-    if (k >= 2.6) return true;
-    if (k < 1.25) return priority >= 80;
-    if (k < 1.8) return priority >= 50;
-    return priority >= 24;
+    if (k >= 2.2) return true;
+    if (k < 1.25) return priority >= 42;
+    if (k < 1.8) return priority >= 28;
+    return priority >= 18;
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
@@ -779,15 +779,15 @@ export function mountNercOrgMap(): void {
 
   function labelLimit(k: number): number {
     const cap =
-      k < 1.25 ? 180 :
-      k < 1.8 ? 260 :
-      k < 2.6 ? 380 :
-      k < 3.4 ? 520 :
-      k < 4.8 ? 680 :
-      k < 6.8 ? 860 :
-      k < 9.5 ? 1080 :
-      k < 12.5 ? 1500 :
-      k < 18 ? 2200 :
+      k < 1.25 ? 340 :
+      k < 1.8 ? 480 :
+      k < 2.6 ? 640 :
+      k < 3.4 ? 820 :
+      k < 4.8 ? 1020 :
+      k < 6.8 ? 1240 :
+      k < 9.5 ? 1500 :
+      k < 12.5 ? 1900 :
+      k < 18 ? 2600 :
       10000;
     // On phones, keep the overview sparse (small screen) but open up as you zoom
     // in — there's screen space to fill, and the user wants iOS to feel as dynamic

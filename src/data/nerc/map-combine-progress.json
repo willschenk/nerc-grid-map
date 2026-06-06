@@ -2,8 +2,8 @@
   "_comment": "Duplicate-entity review for map-combines.json. Walk geocoded-orgs.json in file order, batch_size rows at a time. Criteria: same or clearly matching name AND headquarters within ~8 km (co-located NERC registrations). Seeds that auto-retire via seed-twins.json are skipped. Existing combines live in map-combines.json.",
   "source_file": "src/data/nerc/geocoded-orgs.json",
   "batch_size": 100,
-  "last_completed_batch": 14,
-  "last_completed_index_exclusive": 1400,
+  "last_completed_batch": 18,
+  "last_completed_index_exclusive": 1800,
   "batches": [
     {
       "batch": 1,
@@ -924,7 +924,313 @@
         }
       ],
       "notes": "Ten new combine groups; batch 14 is Texas RE-heavy with AWAM/Invenergy plant pairs and municipal utility HQ folds."
+    },
+    {
+      "batch": 15,
+      "index_range": [1400, 1499],
+      "first_ncr_id": "NCR04037",
+      "last_ncr_id": "NCR04088",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR13358",
+          "members": ["NCR13359"],
+          "reason": "Grimes County Solar GO + Invenergy GOP at Anderson TX plant coords."
+        },
+        {
+          "canonical": "NCR13031",
+          "members": ["NCR12458"],
+          "reason": "Five Wells Solar Center + Five Wells Storage at Rogers TX hybrid site."
+        },
+        {
+          "canonical": "NCR04093",
+          "members": ["NCR04092", "NCR04091", "NCR04074"],
+          "reason": "LCRA GO/GOP/transmission + GEN TEX Power at Lake Austin Blvd HQ."
+        },
+        {
+          "canonical": "NCR11885",
+          "members": ["NCR12072"],
+          "reason": "Lamesa II Solar GO + Invenergy GOP at Dawson County TX."
+        },
+        {
+          "canonical": "NCR11206",
+          "members": ["NCR12250"],
+          "reason": "Sherbino II Wind GO + Invenergy GOP at Pecos County TX."
+        },
+        {
+          "canonical": "NCR10235",
+          "members": ["NCR13284"],
+          "reason": "Silver Star I GO + Invenergy GOP at Erath County TX."
+        },
+        {
+          "canonical": "NCR11205",
+          "members": ["NCR12251"],
+          "reason": "Trinity Hills Wind GO + Invenergy GOP at Young County TX."
+        },
+        {
+          "canonical": "NCR13103",
+          "members": ["NCR13074"],
+          "reason": "JP Remote Operations Center I/II at Schaumburg IL (Texas RE + RF)."
+        },
+        {
+          "canonical": "NCR11694",
+          "members": ["NCR11718"],
+          "reason": "Invenergy Services LLC Texas RE + MRO at Chicago HQ."
+        },
+        {
+          "canonical": "NCR04088",
+          "members": ["NCR01113"],
+          "reason": "Kiowa Power Partners Texas RE + MRO at Kiowa OK plant."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR13092", "NCR13031", "NCR12458"],
+          "reason": "Chillingham Storage vs Five Wells hybrid — ~840 m apart in Bell County TX; Five Wells pair merged separately."
+        },
+        {
+          "ids": ["NCR12365", "NCR04082"],
+          "reason": "Gregory Power Holdings vs Ingleside Cogeneration — ~1.7 km apart in San Patricio County TX, separate plants."
+        },
+        {
+          "ids": ["NCR04074", "NCR12223", "NCR12482", "NCR11605"],
+          "reason": "GEN TEX/LCRA vs Recurrent/RWE Austin offices — nearby Lake Austin Blvd area, unrelated companies."
+        },
+        {
+          "ids": ["NCR10211", "NCR04074"],
+          "reason": "Electric Transmission Texas vs GEN TEX Power — ~770 m apart in Austin, separate entities."
+        },
+        {
+          "ids": ["NCR11750", "NCR13345"],
+          "reason": "Dermott Wind vs KCE TX 13 — ~1.8 km apart, separate wind projects."
+        },
+        {
+          "ids": ["NCR11694", "NCR11466"],
+          "reason": "Invenergy Services vs Century Aluminum — same Chicago building, unrelated tenants."
+        }
+      ],
+      "notes": "Ten new combine groups; batch 15 continues Texas RE Invenergy plant pairs, LCRA HQ fold, and multi-region duplicates."
+    },
+    {
+      "batch": 16,
+      "index_range": [1500, 1599],
+      "first_ncr_id": "NCR12060",
+      "last_ncr_id": "NCR11924",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR12467",
+          "members": ["NCR12469"],
+          "reason": "Frye Solar Lighthouse GO + RES GOP at Kress TX."
+        },
+        {
+          "canonical": "NCR13126",
+          "members": ["NCR13127"],
+          "reason": "Outpost Solar Lighthouse GO + RES GOP at Laredo TX."
+        },
+        {
+          "canonical": "NCR11493",
+          "members": ["NCR12367"],
+          "reason": "Major Oak Power GO + NAES GOP at Robertson County TX."
+        },
+        {
+          "canonical": "NCR11182",
+          "members": ["NCR11181"],
+          "reason": "Sandy Creek Services GO + NAES GOP at Riesel TX (member at index 1612)."
+        },
+        {
+          "canonical": "NCR11346",
+          "members": ["NCR12273"],
+          "reason": "Petra Nova Power GO + NRG GOP at Thompsons TX."
+        },
+        {
+          "canonical": "NCR13464",
+          "members": ["NCR12507"],
+          "reason": "QE Solar ROC + QE Solar at Springfield NJ office (NPCC member at index 504)."
+        },
+        {
+          "canonical": "NCR13538",
+          "members": ["NCR12156"],
+          "reason": "RES Energy Services + RES Chisholm asset management at Denver CO office."
+        },
+        {
+          "canonical": "NCR12065",
+          "members": ["NCR13118"],
+          "reason": "Prairie Hill Wind + PP Jaguar BESS at Mart TX project address."
+        },
+        {
+          "canonical": "NCR12442",
+          "members": ["NCR13050"],
+          "reason": "Longbow Solar + Longbow BESS hybrid site Liverpool TX."
+        },
+        {
+          "canonical": "NCR11538",
+          "members": ["NCR11635"],
+          "reason": "Los Vientos Windpower III + IV adjacent Starr County TX phases."
+        },
+        {
+          "canonical": "NCR12031",
+          "members": ["NCR12152"],
+          "reason": "Prospero Energy + Prospero Solar II adjacent Andrews County TX phases."
+        }
+      ],
+      "already_handled": [
+        {
+          "ids": ["NCR04092", "NCR04093", "NCR04091", "NCR04074"],
+          "reason": "LCRA HQ fold; merged batch 15."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR11463", "NCR11989"],
+          "reason": "Mojave 16/17/18 GOP vs Voyager Wind I — ~40 m apart in Mojave CA but Texas RE vs WECC and unrelated names."
+        },
+        {
+          "ids": ["NCR10090", "NCR00006", "NCR12179"],
+          "reason": "NRG Texas Power vs Calpine/Broad Reach — downtown Houston coincidence (~260–780 m)."
+        },
+        {
+          "ids": ["NCR11735", "NCR11736"],
+          "reason": "Cotton Plains Wind I vs Old Settler Wind — identical Floydada coords, separate projects (noted batch 14)."
+        }
+      ],
+      "notes": "Eleven new combine groups; batch 16 is Texas RE plant GO+GOP/NAES/RES pairs and adjacent-phase solar/wind merges."
+    },
+    {
+      "batch": 17,
+      "index_range": [1600, 1699],
+      "first_ncr_id": "NCR03038",
+      "last_ncr_id": "NCR12476",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR11462",
+          "members": ["NCR11872"],
+          "reason": "Temple Generation I/II share Panda Drive plant address in Temple TX."
+        },
+        {
+          "canonical": "NCR04137",
+          "members": ["NCR00633"],
+          "reason": "Tenaska Gateway Partners Texas RE + MRO duplicate at Mount Enterprise TX (member at index 303)."
+        },
+        {
+          "canonical": "NCR12438",
+          "members": ["NCR13147"],
+          "reason": "St. Gall Energy Storage I/II adjacent Pecos County TX BESS phases (~50 m)."
+        },
+        {
+          "canonical": "NCR12443",
+          "members": ["NCR12411"],
+          "reason": "Sun Valley Solar + Storage co-located Hill County TX hybrid (~1.4 km)."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR12019", "NCR12484"],
+          "reason": "Tejas Power Generation vs Callisto I BESS — ~110 m apart on Hiram Clarke Rd Houston, separate gas peaker and BESS assets."
+        },
+        {
+          "ids": ["NCR04119", "NCR04156"],
+          "reason": "Sharyland Utilities vs USACE Tulsa District — ~1.2 km apart in Dallas/Fort Worth, unrelated entities."
+        },
+        {
+          "ids": ["NCR12328", "NCR12407", "NCR12038"],
+          "reason": "VESI Upton County BESS vs Crane 2 BESS / Crane Solar — ~1.4–1.9 km apart in Crane County TX, separate projects."
+        },
+        {
+          "ids": ["NCR10211", "NCR11074"],
+          "reason": "Electric Transmission Texas vs Wind Energy Transmission Texas — ~1.9 km apart in Austin, separate transmission utilities."
+        }
+      ],
+      "notes": "Four new combine groups; batch 17 is lighter with plant-phase and dual-region Tenaska merges."
+    },
+    {
+      "batch": 18,
+      "index_range": [1700, 1799],
+      "first_ncr_id": "NCR12349",
+      "last_ncr_id": "NCR13462",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR11966",
+          "members": ["NCR05002", "NCR12104"],
+          "reason": "AES Alamitos Energy, AES Alamitos, and AES ES BESS at Long Beach CA plant."
+        },
+        {
+          "canonical": "NCR11967",
+          "members": ["NCR05004"],
+          "reason": "AES Huntington Beach Energy + legacy AES Huntington Beach at Newland St."
+        },
+        {
+          "canonical": "NCR10195",
+          "members": ["NCR11528"],
+          "reason": "Brush Power + AltaGas Brush Energy at same Morgan County CO plant."
+        },
+        {
+          "canonical": "NCR13029",
+          "members": ["NCR12159"],
+          "reason": "Aquamarine Westside GO + NAES GOP at Westlands Solar Park (member at index 2009)."
+        },
+        {
+          "canonical": "NCR03051",
+          "members": ["NCR03049"],
+          "reason": "Arlington Valley generation + AVBA at Elliot Road plant."
+        },
+        {
+          "canonical": "NCR13172",
+          "members": ["NCR13171"],
+          "reason": "Atlas VII + Atlas IX BESS colocated La Paz County AZ."
+        },
+        {
+          "canonical": "NCR10395",
+          "members": ["NCR11382"],
+          "reason": "BHE Power Watch + Wind Watch generation-only BAs at Ethridge MT."
+        },
+        {
+          "canonical": "NCR13243",
+          "members": ["NCR13242"],
+          "reason": "American Falls Solar I/II adjacent Power County ID phases."
+        },
+        {
+          "canonical": "NCR10347",
+          "members": ["NCR11518", "NCR11940", "NCR05456", "NCR05457"],
+          "reason": "Panoche Energy Center + NAES, Calpeak Panoche, Wellhead Power/Services on West Panoche Rd (~300 m)."
+        },
+        {
+          "canonical": "NCR05023",
+          "members": ["NCR00102"],
+          "reason": "Basin Electric WECC + MRO duplicate at Bismarck ND HQ (member at index 82)."
+        },
+        {
+          "canonical": "NCR11634",
+          "members": ["NCR11643"],
+          "reason": "Springbok Solar Farm 1/2 (62SK/63SU) adjacent Kern County CA (~2 km)."
+        },
+        {
+          "canonical": "NCR12523",
+          "members": ["NCR13097"],
+          "reason": "Eland Solar phases 1/2 (68SF/69SV) Mojave CA (~780 m)."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR11431", "NCR12293"],
+          "reason": "Centinela Solar vs Drew Solar — ~1.7 km apart near Calexico CA, separate Imperial County projects."
+        },
+        {
+          "ids": ["NCR05023", "NCR01015"],
+          "reason": "Basin Electric vs Montana-Dakota Utilities — ~1.7 km apart in Bismarck, separate entities."
+        },
+        {
+          "ids": ["NCR03051", "NCR11273"],
+          "reason": "Arlington Valley vs Mesquite Solar 1 — ~1.3 km apart in Maricopa County AZ, different plants."
+        }
+      ],
+      "notes": "Twelve new combine groups; batch 18 enters WECC with AES plant folds, Panoche complex, and multi-region Basin Electric HQ."
     }
   ],
-  "pause_note": "PAUSE: Batch 14 complete (indices 1300–1399). Next review starts at geocoded-orgs.json index 1400 (NCR04037). Run: node scripts/nerc/review-map-combine-batch.mjs 15"
+  "pause_note": "PAUSE: Batch 18 complete (indices 1700–1799). Next review starts at geocoded-orgs.json index 1800 (NCR05067). Run: node scripts/nerc/review-map-combine-batch.mjs 19"
 }
