@@ -1059,12 +1059,12 @@ export function mountNercOrgMap(): void {
   function keepFocusedOrgInView(k: number): void {
     if (!zoomBehavior || focusPanPending || tourRunning || k < 8) return;
     const now = performance.now();
-    const focused = selectedOrg ?? hoverOrg ?? (now - recentOrgAt < 2400 ? recentOrg : null);
+    // Only keep an org in view during an ACTIVE zoom gesture (so it doesn't slip
+    // past the edge as you zoom). Selecting a bubble by clicking never recenters
+    // the map — the view stays put so clicking small dots doesn't jump you away.
+    if (now - lastUserZoomAt > 320) return;
+    const focused = hoverOrg ?? (now - recentOrgAt < 2400 ? recentOrg : null);
     if (!focused || focused._sx == null || focused._sy == null) return;
-    // During an active zoom gesture, keep the inspected org from slipping beyond
-    // the edge as decluttering offsets change. This is especially important on
-    // iOS where the East Coast starts close to the right side of the viewport.
-    if (!selectedOrg && now - lastUserZoomAt > 320) return;
     const r = renderedRadius(focused, k);
     const sideSafe = (compact ? 52 : 44) * unitPerPx + r;
     const topSafe = (compact ? 88 : 40) * unitPerPx + r;
@@ -1075,31 +1075,6 @@ export function mountNercOrgMap(): void {
     else if (focused._sx > W - sideSafe) dx = W - sideSafe - focused._sx;
     if (focused._sy < topSafe) dy = topSafe - focused._sy;
     else if (focused._sy > H - bottomSafe) dy = H - bottomSafe - focused._sy;
-    if (selectedOrg && !panel.hidden) {
-      const svgRect = svgNode.getBoundingClientRect();
-      const panelRect = panel.getBoundingClientRect();
-      const gap = (compact ? 18 : 20) * unitPerPx;
-      const panelBox = {
-        x0: (panelRect.left - svgRect.left) * unitPerPx - gap,
-        x1: (panelRect.right - svgRect.left) * unitPerPx + gap,
-        y0: (panelRect.top - svgRect.top) * unitPerPx - gap,
-        y1: (panelRect.bottom - svgRect.top) * unitPerPx + gap,
-      };
-      const overlapsPanel =
-        focused._sx + r > panelBox.x0 &&
-        focused._sx - r < panelBox.x1 &&
-        focused._sy + r > panelBox.y0 &&
-        focused._sy - r < panelBox.y1;
-      if (overlapsPanel) {
-        if (compact) {
-          const targetY = Math.max(topSafe, panelBox.y0 - r);
-          dy = Math.min(dy, targetY - focused._sy);
-        } else {
-          const targetX = Math.max(sideSafe, panelBox.x0 - r);
-          dx = Math.min(dx, targetX - focused._sx);
-        }
-      }
-    }
     if (Math.abs(dx) < 0.5 * unitPerPx && Math.abs(dy) < 0.5 * unitPerPx) return;
     focusPanPending = true;
     requestAnimationFrame(() => {
