@@ -1578,7 +1578,11 @@ export function mountNercOrgMap(): void {
         labelFontPx(o, k) * unitPerPx,
         (r * 1.74) / Math.max(1, brand.length) / 0.56,
       );
-      const insideMin = (compact ? 5.8 : 6.4) * unitPerPx;
+      // The readable floor for an inside label relaxes toward zero as you zoom in,
+      // so by max zoom every visible (now-large) bubble takes its name inside —
+      // any circle on screen ends up labeled when fully zoomed in.
+      const deepLabelT = smoothStep((k - 9) / 13);
+      const insideMin = (compact ? 5.8 : 6.4) * (1 - 0.9 * deepLabelT) * unitPerPx;
       if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * 1.86) {
         if ((forceLabel || k >= 2.2 || !usedLabels.has(brand)) && bubbleClears(o)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
