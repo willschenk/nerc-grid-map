@@ -153,6 +153,11 @@ const TERRITORY_LAYOUT_ORDER = ["PR", "VI"] as const;
 // FIPS ids of the territory land outlines carried in the states topojson, so the
 // inset can draw the real island shape (geoAlbersUsa can't project them).
 const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
+// Out-of-footprint PR/VI inset dots use a fixed schematic radius (not priority-based).
+const TERRITORY_BUBBLE_RADIUS_PX = { desktop: 4.6, compact: 5.4 };
+const TERRITORY_HIT_RADIUS_PX = { desktop: 8.6, compact: 10 };
+// PR/VI have few orgs and ample inset space — enlarge for visibility and tapping.
+const TERRITORY_BUBBLE_SCALE = 4;
 
 // Alaska and Hawaii plot inside geoAlbersUsa's built-in lower-left/right insets.
 // They share the mainland declutter path but need extra spread and tap area at
@@ -1035,10 +1040,20 @@ export function mountNercOrgMap(): void {
     );
   }
 
-  // Puerto Rico inset dots are schematic (small, uniform) so they fit the
-  // cluster; everything else uses priority-based sizing.
+  // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
+  // priority-based) so they fit the offshore cluster; scaled up — few orgs, ample space.
+  function territoryBubbleRadiusPx(): number {
+    return (compact ? TERRITORY_BUBBLE_RADIUS_PX.compact : TERRITORY_BUBBLE_RADIUS_PX.desktop)
+      * TERRITORY_BUBBLE_SCALE;
+  }
+
+  function territoryHitRadiusPx(): number {
+    return (compact ? TERRITORY_HIT_RADIUS_PX.compact : TERRITORY_HIT_RADIUS_PX.desktop)
+      * TERRITORY_BUBBLE_SCALE;
+  }
+
   function renderedRadius(o: Org, k: number): number {
-    if (o._frame === "terr") return (compact ? 5.4 : 4.6) * unitPerPx;
+    if (o._frame === "terr") return territoryBubbleRadiusPx() * unitPerPx;
     // Memoize: visualRadius is heavy and called many times per org per frame.
     // The result only depends on (o, k, unitPerPx, compact); radiusGen folds in
     // the latter two, so panning (constant k) reuses the cached value.
@@ -1051,7 +1066,7 @@ export function mountNercOrgMap(): void {
   }
 
   function hitTargetRadius(o: Org, k: number): number {
-    if (o._frame === "terr") return (compact ? 10 : 8.6) * unitPerPx;
+    if (o._frame === "terr") return territoryHitRadiusPx() * unitPerPx;
     // Every shown bubble is fully placed, so tap targets track the visible radius
     // plus a small pad and a floor — no per-dot reveal strength to fold in.
     const visual = renderedRadius(o, k);
