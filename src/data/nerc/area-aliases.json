@@ -209,6 +209,26 @@
       "code": "GLH",
       "ncr_id": "NCR11783",
       "meaning": "GridLiance Heartland"
+    },
+    {
+      "code": "LGEE",
+      "ncr_id": "NCR01223",
+      "meaning": "Louisville Gas & Electric and Kentucky Utilities"
+    },
+    {
+      "code": "BSMH",
+      "ncr_id": "NCR11286",
+      "meaning": "Brookfield Smoky Mountain Hydropower"
+    },
+    {
+      "code": "SMT",
+      "ncr_id": "NCR11286",
+      "meaning": "Smoky Mountain legacy modeled hydro area"
+    },
+    {
+      "code": "FPC",
+      "ncr_id": "NCR00063",
+      "meaning": "Florida Power Corporation / Duke Energy Florida"
     }
   ]
 }
