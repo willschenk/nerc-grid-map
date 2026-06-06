@@ -15943,6 +15943,2294 @@
       "short": "Zier Solar",
       "normal": "Zier Solar",
       "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00826",
+      "entity_name": "Midcontinent Independent System Operator, Inc.",
+      "shortest": "MISO",
+      "short": "Midcontinent ISO",
+      "normal": "Midcontinent Independent System Operator, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05048",
+      "entity_name": "California Independent System Operator",
+      "shortest": "CAISO",
+      "short": "California ISO",
+      "normal": "California Independent System Operator",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07160",
+      "entity_name": "New York Independent System Operator",
+      "shortest": "NYISO",
+      "short": "New York ISO",
+      "normal": "New York Independent System Operator",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04056",
+      "entity_name": "Electric Reliability Council of Texas, Inc.",
+      "shortest": "ERCOT",
+      "short": "Electric Reliability Council of Texas",
+      "normal": "Electric Reliability Council of Texas, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05299",
+      "entity_name": "Pacific Gas and Electric Company",
+      "shortest": "PG&E",
+      "short": "Pacific Gas and Electric",
+      "normal": "Pacific Gas and Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05398",
+      "entity_name": "Southern California Edison Company",
+      "shortest": "SCE",
+      "short": "Southern California Edison",
+      "normal": "Southern California Edison Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05377",
+      "entity_name": "San Diego Gas & Electric",
+      "shortest": "SDG&E",
+      "short": "San Diego Gas & Electric",
+      "normal": "San Diego Gas & Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05016",
+      "entity_name": "Arizona Public Service Company",
+      "shortest": "APS",
+      "short": "Arizona Public Service",
+      "normal": "Arizona Public Service Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05521",
+      "entity_name": "Public Service Company of Colorado",
+      "shortest": "PSCo",
+      "short": "Public Service of Colorado",
+      "normal": "Public Service Company of Colorado",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05191",
+      "entity_name": "Idaho Power Company",
+      "shortest": "Idaho",
+      "short": "Idaho Power",
+      "normal": "Idaho Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05304",
+      "entity_name": "PacifiCorp",
+      "shortest": "PacifiCorp",
+      "short": "PacifiCorp",
+      "normal": "PacifiCorp",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05344",
+      "entity_name": "Puget Sound Energy, Inc.",
+      "shortest": "PSE",
+      "short": "Puget Sound Energy",
+      "normal": "Puget Sound Energy, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05325",
+      "entity_name": "Portland General Electric Company",
+      "shortest": "PGE",
+      "short": "Portland General Electric",
+      "normal": "Portland General Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05333",
+      "entity_name": "Public Service Company of New Mexico",
+      "shortest": "PNM",
+      "short": "Public Service of New Mexico",
+      "normal": "Public Service Company of New Mexico",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05140",
+      "entity_name": "El Paso Electric Company",
+      "shortest": "EPE",
+      "short": "El Paso Electric",
+      "normal": "El Paso Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01219",
+      "entity_name": "Duke Energy Carolinas, LLC",
+      "shortest": "Duke",
+      "short": "Duke Energy Carolinas",
+      "normal": "Duke Energy Carolinas, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01298",
+      "entity_name": "Duke Energy Progress, LLC",
+      "shortest": "Duke",
+      "short": "Duke Energy Progress",
+      "normal": "Duke Energy Progress, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01247",
+      "entity_name": "Georgia Power Company",
+      "shortest": "Georgia",
+      "short": "Georgia Power",
+      "normal": "Georgia Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01166",
+      "entity_name": "Alabama Power Company",
+      "shortest": "Alabama",
+      "short": "Alabama Power",
+      "normal": "Alabama Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01151",
+      "entity_name": "Tennessee Valley Authority",
+      "shortest": "TVA",
+      "short": "Tennessee Valley Authority",
+      "normal": "Tennessee Valley Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01177",
+      "entity_name": "Associated Electric Cooperative, Inc.",
+      "shortest": "AECI",
+      "short": "Associated Electric Cooperative",
+      "normal": "Associated Electric Cooperative, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00063",
+      "entity_name": "Duke Energy Florida, LLC",
+      "shortest": "Duke",
+      "short": "Duke Energy Florida",
+      "normal": "Duke Energy Florida, LLC",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00074",
+      "entity_name": "Tampa Electric Company",
+      "shortest": "TECO",
+      "short": "Tampa Electric",
+      "normal": "Tampa Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00040",
+      "entity_name": "JEA",
+      "shortest": "JEA",
+      "short": "JEA",
+      "normal": "JEA",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR08013",
+      "entity_name": "Commonwealth Edison Company",
+      "shortest": "ComEd",
+      "short": "Commonwealth Edison",
+      "normal": "Commonwealth Edison Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00753",
+      "entity_name": "DTE Electric Company",
+      "shortest": "DTE",
+      "short": "DTE Electric",
+      "normal": "DTE Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00740",
+      "entity_name": "Consumers Energy Company",
+      "shortest": "CE",
+      "short": "Consumers",
+      "normal": "Consumers Energy Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07163",
+      "entity_name": "Niagara Mohawk Power Corporation",
+      "shortest": "NiMo",
+      "short": "Niagara Mohawk",
+      "normal": "Niagara Mohawk Power Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR07161",
+      "entity_name": "New York Power Authority",
+      "shortest": "NYPA",
+      "short": "New York Power Authority",
+      "normal": "New York Power Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00102",
+      "entity_name": "Basin Electric Power Cooperative",
+      "shortest": "Basin",
+      "short": "Basin Electric",
+      "normal": "Basin Electric Power Cooperative",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00992",
+      "entity_name": "Great River Energy",
+      "shortest": "GRE",
+      "short": "Great River Energy",
+      "normal": "Great River Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00860",
+      "entity_name": "Omaha Public Power District",
+      "shortest": "OPPD",
+      "short": "Omaha Public Power District",
+      "normal": "Omaha Public Power District",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01018",
+      "entity_name": "Nebraska Public Power District",
+      "shortest": "NPPD",
+      "short": "Nebraska Public Power District",
+      "normal": "Nebraska Public Power District",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04109",
+      "entity_name": "Oncor Electric Delivery Company LLC",
+      "shortest": "Oncor",
+      "short": "Oncor Electric Delivery",
+      "normal": "Oncor Electric Delivery",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04037",
+      "entity_name": "CPS Energy",
+      "shortest": "CPS",
+      "short": "CPS Energy",
+      "normal": "CPS Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR04092",
+      "entity_name": "Lower Colorado River Authority",
+      "shortest": "LCRA",
+      "short": "Lower Colorado River Authority",
+      "normal": "Lower Colorado River Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05032",
+      "entity_name": "Bonneville Power Administration",
+      "shortest": "BPA",
+      "short": "Bonneville Power Administration",
+      "normal": "Bonneville Power Administration",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR00006",
+      "entity_name": "Calpine Corporation",
+      "shortest": "Calpine",
+      "short": "Calpine",
+      "normal": "Calpine Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR01148",
+      "entity_name": "Sunflower Electric Power Corporation",
+      "shortest": "Sunflower",
+      "short": "Sunflower Electric",
+      "normal": "Sunflower Electric Power Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05126",
+      "entity_name": "Deseret Generation & Transmission Co-operative",
+      "shortest": "Deseret",
+      "short": "Deseret G&T",
+      "normal": "Deseret Generation & Transmission",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR10030",
+      "entity_name": "Tri-State Generation and Transmission Association, Inc. - Reliability",
+      "shortest": "Tri-State",
+      "short": "Tri-State G&T",
+      "normal": "Tri-State Generation and Transmission",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05372",
+      "entity_name": "Salt River Project Agricultural Improvement and Power District",
+      "shortest": "SRP",
+      "short": "Salt River Project",
+      "normal": "Salt River Project",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05434",
+      "entity_name": "Tucson Electric Power",
+      "shortest": "TEP",
+      "short": "Tucson Electric Power",
+      "normal": "Tucson Electric Power",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05435",
+      "entity_name": "Turlock Irrigation District",
+      "shortest": "TID",
+      "short": "Turlock Irrigation District",
+      "normal": "Turlock Irrigation District",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05338",
+      "entity_name": "Public Utility District No. 1 of Chelan County",
+      "shortest": "Chelan PUD",
+      "short": "Chelan County PUD",
+      "normal": "Chelan County PUD No. 1",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05342",
+      "entity_name": "Public Utility District No. 2 of Grant County, Washington",
+      "shortest": "Grant PUD",
+      "short": "Grant County PUD",
+      "normal": "Grant County PUD No. 2",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05382",
+      "entity_name": "Seattle City Light",
+      "shortest": "SCL",
+      "short": "Seattle City Light",
+      "normal": "Seattle City Light",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05461",
+      "entity_name": "Western Area Power Administration - Desert Southwest Region",
+      "shortest": "WAPA DSW",
+      "short": "WAPA Desert Southwest",
+      "normal": "WAPA Desert Southwest Region",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05343",
+      "entity_name": "PUD No. 1 of Douglas County",
+      "shortest": "Douglas PUD",
+      "short": "Douglas County PUD",
+      "normal": "Douglas County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05465",
+      "entity_name": "Western Area Power Administration - Sierra Nevada Region",
+      "shortest": "WAPA SN",
+      "short": "WAPA Sierra Nevada",
+      "normal": "WAPA Sierra Nevada Region",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05467",
+      "entity_name": "Western Area Power Administration - Upper Great Plains Region",
+      "shortest": "WAPA UGP",
+      "short": "WAPA Upper Great Plains",
+      "normal": "WAPA Upper Great Plains Region",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05368",
+      "entity_name": "Sacramento Municipal Utility District",
+      "shortest": "SMUD",
+      "short": "Sacramento Municipal Utility District",
+      "normal": "SMUD",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR05321",
+      "entity_name": "Platte River Power Authority",
+      "shortest": "PRPA",
+      "short": "Platte River Power Authority",
+      "normal": "Platte River Power Authority",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05335",
+      "entity_name": "Public Utility District No. 1 of Snohomish County",
+      "shortest": "SnoPUD",
+      "short": "Snohomish County PUD",
+      "normal": "Snohomish County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05392",
+      "entity_name": "Silicon Valley Power",
+      "shortest": "SVP",
+      "short": "Silicon Valley Power",
+      "normal": "Silicon Valley Power",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05447",
+      "entity_name": "Valley Electric Association, Inc",
+      "shortest": "VEA",
+      "short": "Valley Electric Association",
+      "normal": "Valley Electric Association",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05436",
+      "entity_name": "Umatilla Electric Cooperative Assoc.",
+      "shortest": "UEC",
+      "short": "Umatilla Electric Cooperative",
+      "normal": "Umatilla Electric Cooperative",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05430",
+      "entity_name": "Transmission Agency of Northern California",
+      "shortest": "TANC",
+      "short": "Transmission Agency of Northern California",
+      "normal": "Transmission Agency of Northern California",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR03036",
+      "entity_name": "Trans Bay Cable LLC",
+      "shortest": "Trans Bay",
+      "short": "Trans Bay Cable",
+      "normal": "Trans Bay Cable LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05315",
+      "entity_name": "Pend Oreille County Public Utility District No. 1",
+      "shortest": "Pend Oreille PUD",
+      "short": "Pend Oreille County PUD",
+      "normal": "Pend Oreille County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05334",
+      "entity_name": "Public Utility District No. 1 of Clark County",
+      "shortest": "Clark PUD",
+      "short": "Clark County PUD",
+      "normal": "Clark County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05340",
+      "entity_name": "Public Utility District #1 of Lewis County",
+      "shortest": "Lewis PUD",
+      "short": "Lewis County PUD",
+      "normal": "Lewis County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05296",
+      "entity_name": "Overton Power District No. 5",
+      "shortest": "Overton",
+      "short": "Overton Power District",
+      "normal": "Overton Power District No. 5",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11708",
+      "entity_name": "Western Interconnect LLC",
+      "shortest": "Western Interconnect",
+      "short": "Western Interconnect",
+      "normal": "Western Interconnect LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05445",
+      "entity_name": "Utah Associated Municipal Power Systems",
+      "shortest": "UAMPS",
+      "short": "Utah Associated Municipal Power Systems",
+      "normal": "Utah Associated Municipal Power Systems",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05522",
+      "entity_name": "Public Utility District No. 1 of Whatcom County",
+      "shortest": "Whatcom PUD",
+      "short": "Whatcom County PUD",
+      "normal": "Whatcom County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13532",
+      "entity_name": "SunZia Transmission, LLC",
+      "shortest": "SunZia",
+      "short": "SunZia Transmission",
+      "normal": "SunZia Transmission, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04030",
+      "entity_name": "City of Austin dba Austin Energy",
+      "shortest": "Austin Energy",
+      "short": "Austin Energy",
+      "normal": "City of Austin dba Austin Energy",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR10337",
+      "entity_name": "Alliant Energy - East",
+      "shortest": "Alliant",
+      "short": "Alliant Energy East",
+      "normal": "Alliant Energy - East",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05023",
+      "entity_name": "Basin Electric Power Cooperative",
+      "shortest": "Basin",
+      "short": "Basin Electric",
+      "normal": "Basin Electric Power Cooperative",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11745",
+      "entity_name": "Powder River Energy Corporation",
+      "shortest": "PRECorp",
+      "short": "Powder River Energy",
+      "normal": "Powder River Energy Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05441",
+      "entity_name": "US Bureau of Reclamation",
+      "shortest": "USBR",
+      "short": "U.S. Bureau of Reclamation",
+      "normal": "US Bureau of Reclamation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11420",
+      "entity_name": "Placer County Water Agency",
+      "shortest": "PCWA",
+      "short": "Placer County Water Agency",
+      "normal": "Placer County Water Agency",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05337",
+      "entity_name": "Public Utility District No. 1 of Benton County",
+      "shortest": "Benton PUD",
+      "short": "Benton County PUD",
+      "normal": "Benton County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05286",
+      "entity_name": "Public Utility District No. 1 of Okanogan County",
+      "shortest": "Okanogan PUD",
+      "short": "Okanogan County PUD",
+      "normal": "Okanogan County PUD No. 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05389",
+      "entity_name": "Sierra Pacific Industries",
+      "shortest": "SPI",
+      "short": "Sierra Pacific Industries",
+      "normal": "Sierra Pacific Industries",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11170",
+      "entity_name": "Shepherds Flat Wind, LLC",
+      "shortest": "Shepherds Flat",
+      "short": "Shepherds Flat Wind",
+      "normal": "Shepherds Flat Wind, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12425",
+      "entity_name": "Strauss Wind, LLC",
+      "shortest": "Strauss",
+      "short": "Strauss Wind",
+      "normal": "Strauss Wind, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11214",
+      "entity_name": "Rockland Wind Farm LLC",
+      "shortest": "Rockland",
+      "short": "Rockland Wind Farm",
+      "normal": "Rockland Wind Farm LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11347",
+      "entity_name": "Pinyon Pines Wind I, LLC",
+      "shortest": "Pinyon I",
+      "short": "Pinyon Pines Wind I",
+      "normal": "Pinyon Pines Wind I, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11350",
+      "entity_name": "Pinyon Pines Wind II, LLC",
+      "shortest": "Pinyon II",
+      "short": "Pinyon Pines Wind II",
+      "normal": "Pinyon Pines Wind II, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11652",
+      "entity_name": "Pio Pico Energy Center, LLC",
+      "shortest": "Pio Pico",
+      "short": "Pio Pico Energy Center",
+      "normal": "Pio Pico Energy Center, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11450",
+      "entity_name": "Shiloh IV Wind Project, LLC",
+      "shortest": "Shiloh IV",
+      "short": "Shiloh IV Wind",
+      "normal": "Shiloh IV Wind Project, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11307",
+      "entity_name": "Sentinel Energy Center, LLC",
+      "shortest": "Sentinel",
+      "short": "Sentinel Energy Center",
+      "normal": "Sentinel Energy Center, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11471",
+      "entity_name": "Sunrise Power Company, LLC",
+      "shortest": "Sunrise",
+      "short": "Sunrise Power",
+      "normal": "Sunrise Power Company, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11054",
+      "entity_name": "South Feather Power Project",
+      "shortest": "South Feather",
+      "short": "South Feather Power",
+      "normal": "South Feather Power Project",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05369",
+      "entity_name": "Saguaro Power Company, A Limited Partnership",
+      "shortest": "Saguaro",
+      "short": "Saguaro Power",
+      "normal": "Saguaro Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11605",
+      "entity_name": "RWE Clean Energy Asset Holdings, Inc.",
+      "shortest": "RWE",
+      "short": "RWE Clean Energy",
+      "normal": "RWE Clean Energy Asset Holdings, Inc.",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11353",
+      "entity_name": "Russell City Energy Company, LLC",
+      "shortest": "Russell City",
+      "short": "Russell City Energy",
+      "normal": "Russell City Energy Company, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11424",
+      "entity_name": "Solar Star California XIX, LLC",
+      "shortest": "Solar Star XIX",
+      "short": "Solar Star California XIX",
+      "normal": "Solar Star California XIX, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11432",
+      "entity_name": "Solar Star California XX, LLC",
+      "shortest": "Solar Star XX",
+      "short": "Solar Star California XX",
+      "normal": "Solar Star California XX, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13136",
+      "entity_name": "Prineville Solar Energy LLC",
+      "shortest": "Prineville",
+      "short": "Prineville Solar",
+      "normal": "Prineville Solar Energy LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12335",
+      "entity_name": "Rabbitbrush Solar, LLC",
+      "shortest": "Rabbitbrush",
+      "short": "Rabbitbrush Solar",
+      "normal": "Rabbitbrush Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12268",
+      "entity_name": "Panorama Wind, LLC",
+      "shortest": "Panorama",
+      "short": "Panorama Wind",
+      "normal": "Panorama Wind, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12028",
+      "entity_name": "Steamboat  Hills, LLC",
+      "shortest": "Steamboat",
+      "short": "Steamboat Hills",
+      "normal": "Steamboat Hills, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05413",
+      "entity_name": "Sunnyside Cogeneration Associates - GO",
+      "shortest": "Sunnyside",
+      "short": "Sunnyside Cogen",
+      "normal": "Sunnyside Cogeneration Associates",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04088",
+      "entity_name": "Kiowa Power Partners, LLC",
+      "shortest": "Kiowa",
+      "short": "Kiowa Power Partners",
+      "normal": "Kiowa Power Partners, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11279",
+      "entity_name": "Pacific-Ultrapower Chinese  Station",
+      "shortest": "PUP",
+      "short": "Pacific-Ultrapower",
+      "normal": "Pacific-Ultrapower Chinese Station",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13117",
+      "entity_name": "TAG",
+      "shortest": "TAG",
+      "short": "TAG",
+      "normal": "TAG",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11296",
+      "entity_name": "Rio Bravo  Rocklin",
+      "shortest": "Rio Bravo Rocklin",
+      "short": "Rio Bravo Rocklin",
+      "normal": "Rio Bravo Rocklin",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13493",
+      "entity_name": "San Jacinto Grid, LLC",
+      "shortest": "San Jacinto Grid",
+      "short": "San Jacinto Grid",
+      "normal": "San Jacinto Grid, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13250",
+      "entity_name": "Solar Alpine LLC",
+      "shortest": "Alpine Solar",
+      "short": "Solar Alpine",
+      "normal": "Solar Alpine LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13481",
+      "entity_name": "Solar of Alamosa LLC",
+      "shortest": "Alamosa Solar",
+      "short": "Solar of Alamosa",
+      "normal": "Solar of Alamosa LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11557",
+      "entity_name": "SPI Anderson 2",
+      "shortest": "SPI Anderson 2",
+      "short": "SPI Anderson 2",
+      "normal": "SPI Anderson 2",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05529",
+      "entity_name": "Spindle Hill Energy LLC",
+      "shortest": "Spindle Hill",
+      "short": "Spindle Hill Energy",
+      "normal": "Spindle Hill Energy LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12252",
+      "entity_name": "Spring Canyon Energy II LLC",
+      "shortest": "Spring Canyon II",
+      "short": "Spring Canyon Energy II",
+      "normal": "Spring Canyon Energy II LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12253",
+      "entity_name": "Spring Canyon Energy III LLC",
+      "shortest": "Spring Canyon III",
+      "short": "Spring Canyon Energy III",
+      "normal": "Spring Canyon Energy III LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11529",
+      "entity_name": "Spring Canyon Energy LLC",
+      "shortest": "Spring Canyon",
+      "short": "Spring Canyon Energy",
+      "normal": "Spring Canyon Energy LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05029",
+      "entity_name": "SWG Arapahoe, LLC",
+      "shortest": "SWG Arapahoe",
+      "short": "SWG Arapahoe",
+      "normal": "SWG Arapahoe, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05329",
+      "entity_name": "Talen Montana, LLC",
+      "shortest": "Talen MT",
+      "short": "Talen Montana",
+      "normal": "Talen Montana, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05420",
+      "entity_name": "Termoelectrica de Mexicali, S. de R.L. de C.V.",
+      "shortest": "TDM",
+      "short": "Termoelectrica de Mexicali",
+      "normal": "Termoelectrica de Mexicali, S. de R.L. de C.V.",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05043",
+      "entity_name": "Terra-Gen Dixie Valley, LLC",
+      "shortest": "Dixie Valley",
+      "short": "Terra-Gen Dixie Valley",
+      "normal": "Terra-Gen Dixie Valley, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12142",
+      "entity_name": "Terra-Gen Operating Company LLC",
+      "shortest": "Terra-Gen O&M",
+      "short": "Terra-Gen Operating Company",
+      "normal": "Terra-Gen Operating Company LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11594",
+      "entity_name": "Tonopah Solar Energy, LLC",
+      "shortest": "Crescent Dunes",
+      "short": "Tonopah Solar Energy",
+      "normal": "Tonopah Solar Energy, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11342",
+      "entity_name": "Topaz Solar Farms LLC",
+      "shortest": "Topaz",
+      "short": "Topaz Solar Farms",
+      "normal": "Topaz Solar Farms LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05533",
+      "entity_name": "TransAlta Centralia Generation, LLC",
+      "shortest": "TransAlta Centralia",
+      "short": "TransAlta Centralia Generation",
+      "normal": "TransAlta Centralia Generation, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11457",
+      "entity_name": "TransAlta Wyoming Wind LLC",
+      "shortest": "TransAlta WY Wind",
+      "short": "TransAlta Wyoming Wind",
+      "normal": "TransAlta Wyoming Wind LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05431",
+      "entity_name": "Tri-Dam Project of the Oakdale and South San Joaquin Irrigation Districts",
+      "shortest": "Tri-Dam",
+      "short": "Tri-Dam",
+      "normal": "Tri-Dam Project of the Oakdale and South San Joaquin Irrigation Districts",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12488",
+      "entity_name": "Tumbleweed Energy Storage, LLC",
+      "shortest": "Tumbleweed",
+      "short": "Tumbleweed Energy Storage",
+      "normal": "Tumbleweed Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05537",
+      "entity_name": "USACE - Omaha District",
+      "shortest": "USACE Omaha",
+      "short": "USACE - Omaha District",
+      "normal": "USACE - Omaha District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05538",
+      "entity_name": "USACE - Portland District",
+      "shortest": "USACE Portland",
+      "short": "USACE - Portland District",
+      "normal": "USACE - Portland District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05539",
+      "entity_name": "USACE - Seattle District",
+      "shortest": "USACE Seattle",
+      "short": "USACE - Seattle District",
+      "normal": "USACE - Seattle District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05540",
+      "entity_name": "USACE - Walla Walla District",
+      "shortest": "USACE Walla Walla",
+      "short": "USACE - Walla Walla District",
+      "normal": "USACE - Walla Walla District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05446",
+      "entity_name": "Utah Municipal Power Agency",
+      "shortest": "UMPA",
+      "short": "Utah Municipal Power Agency",
+      "normal": "Utah Municipal Power Agency",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR10216",
+      "entity_name": "Valencia Power, LLC",
+      "shortest": "Valencia",
+      "short": "Valencia Power",
+      "normal": "Valencia Power, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11078",
+      "entity_name": "Vantage Wind Energy LLC",
+      "shortest": "Vantage",
+      "short": "Vantage Wind Energy",
+      "normal": "Vantage Wind Energy LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11905",
+      "entity_name": "Voyager II",
+      "shortest": "Voyager II",
+      "short": "Voyager II",
+      "normal": "Voyager II",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11989",
+      "entity_name": "Voyager Wind I, LLC",
+      "shortest": "Voyager I",
+      "short": "Voyager Wind I",
+      "normal": "Voyager Wind I, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13066",
+      "entity_name": "Washington Wind LLC",
+      "shortest": "Washington Wind",
+      "short": "Washington Wind",
+      "normal": "Washington Wind LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05454",
+      "entity_name": "Watson Cogeneration Company",
+      "shortest": "Watson Cogen",
+      "short": "Watson Cogeneration Company",
+      "normal": "Watson Cogeneration Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11445",
+      "entity_name": "Western Power and Steam II LLC",
+      "shortest": "WP&S II",
+      "short": "Western Power and Steam II",
+      "normal": "Western Power and Steam II LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12353",
+      "entity_name": "WGP Redwood Holdings, LLC",
+      "shortest": "WGP-RH",
+      "short": "WGP Redwood Holdings",
+      "normal": "WGP Redwood Holdings, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12540",
+      "entity_name": "White Wing Ranch North, LLC",
+      "shortest": "WWR North",
+      "short": "White Wing Ranch North",
+      "normal": "White Wing Ranch North, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13503",
+      "entity_name": "Whitewater Hill Wind Partner, LLC",
+      "shortest": "Whitewater Hill",
+      "short": "Whitewater Hill Wind Partner",
+      "normal": "Whitewater Hill Wind Partner, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12013",
+      "entity_name": "Willow Creek Energy LLC",
+      "shortest": "Willow Creek",
+      "short": "Willow Creek Energy",
+      "normal": "Willow Creek Energy LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12116",
+      "entity_name": "Wind Wall 1 LLC",
+      "shortest": "Wind Wall 1",
+      "short": "Wind Wall 1",
+      "normal": "Wind Wall 1 LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10350",
+      "entity_name": "Windy Flats Partners, LLC",
+      "shortest": "Windy Flats",
+      "short": "Windy Flats Partners",
+      "normal": "Windy Flats Partners, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13138",
+      "entity_name": "Wolverine Creek Energy, LLC",
+      "shortest": "Wolverine Creek",
+      "short": "Wolverine Creek Energy",
+      "normal": "Wolverine Creek Energy, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10047",
+      "entity_name": "Woodland Biomass Power LLC",
+      "shortest": "Woodland Biomass",
+      "short": "Woodland Biomass Power",
+      "normal": "Woodland Biomass Power LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11428",
+      "entity_name": "Yuba County Water Agency",
+      "shortest": "YCWA",
+      "short": "Yuba County Water Agency",
+      "normal": "Yuba County Water Agency",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR13134",
+      "entity_name": "Yuma Solar Energy LLC",
+      "shortest": "Yuma Solar",
+      "short": "Yuma Solar Energy",
+      "normal": "Yuma Solar Energy LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04034",
+      "entity_name": "City of Garland",
+      "shortest": "GP&L",
+      "short": "City of Garland",
+      "normal": "City of Garland",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11694",
+      "entity_name": "Invenergy Services LLC",
+      "shortest": "Invenergy Services",
+      "short": "Invenergy Services",
+      "normal": "Invenergy Services LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04093",
+      "entity_name": "Lower Colorado River Authority",
+      "shortest": "LCRA",
+      "short": "Lower Colorado River Authority",
+      "normal": "Lower Colorado River Authority",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR11442",
+      "entity_name": "Pacific Wind",
+      "shortest": "Pacific Wind",
+      "short": "Pacific Wind",
+      "normal": "Pacific Wind",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13496",
+      "entity_name": "Painted Hills Wind Holdings",
+      "shortest": "Painted Hills",
+      "short": "Painted Hills Wind Holdings",
+      "normal": "Painted Hills Wind Holdings",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13157",
+      "entity_name": "Palmer Solar LLC",
+      "shortest": "Palmer Solar",
+      "short": "Palmer Solar",
+      "normal": "Palmer Solar LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11344",
+      "entity_name": "Palouse Wind, LLC",
+      "shortest": "Palouse Wind",
+      "short": "Palouse Wind",
+      "normal": "Palouse Wind, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10347",
+      "entity_name": "Panoche Energy Center LLC",
+      "shortest": "PEC",
+      "short": "Panoche Energy Center",
+      "normal": "Panoche Energy Center LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13533",
+      "entity_name": "Pediment BESS I LLC",
+      "shortest": "Pediment BESS",
+      "short": "Pediment BESS I",
+      "normal": "Pediment BESS I LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13081",
+      "entity_name": "Peregrine Energy Storage, LLC",
+      "shortest": "Peregrine ES",
+      "short": "Peregrine Energy Storage",
+      "normal": "Peregrine Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13020",
+      "entity_name": "Pike Solar LLC",
+      "shortest": "Pike Solar",
+      "short": "Pike Solar",
+      "normal": "Pike Solar LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12119",
+      "entity_name": "Pioneer Solar (CO), LLC",
+      "shortest": "Pioneer Solar",
+      "short": "Pioneer Solar (CO)",
+      "normal": "Pioneer Solar (CO), LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13371",
+      "entity_name": "Placerita ESS, LLC",
+      "shortest": "Placerita ESS",
+      "short": "Placerita ESS",
+      "normal": "Placerita ESS, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR00082",
+      "entity_name": "Plains End II, LLC",
+      "shortest": "Plains End II",
+      "short": "Plains End II",
+      "normal": "Plains End II, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05320",
+      "entity_name": "Plains End, LLC",
+      "shortest": "Plains End",
+      "short": "Plains End",
+      "normal": "Plains End, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13520",
+      "entity_name": "Pleasant Valley Solar 2, LLC",
+      "shortest": "PVS2",
+      "short": "Pleasant Valley Solar 2",
+      "normal": "Pleasant Valley Solar 2, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12571",
+      "entity_name": "Pleasant Valley Solar, LLC",
+      "shortest": "PVS1",
+      "short": "Pleasant Valley Solar",
+      "normal": "Pleasant Valley Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05322",
+      "entity_name": "Plumas-Sierra Rural Electric Cooperative",
+      "shortest": "PSREC",
+      "short": "PSREC",
+      "normal": "Plumas-Sierra Rural Electric Cooperative",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR13261",
+      "entity_name": "Poblano Energy Storage, LLC",
+      "shortest": "Poblano ES",
+      "short": "Poblano Energy Storage",
+      "normal": "Poblano Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13424",
+      "entity_name": "Point Wind 1",
+      "shortest": "Point Wind",
+      "short": "Point Wind 1",
+      "normal": "Point Wind 1",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13383",
+      "entity_name": "POME BESS LLC",
+      "shortest": "POME BESS",
+      "short": "POME BESS",
+      "normal": "POME BESS LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13327",
+      "entity_name": "Pomona Energy Storage",
+      "shortest": "Pomona ES",
+      "short": "Pomona Energy Storage",
+      "normal": "Pomona Energy Storage",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13328",
+      "entity_name": "Pomona Energy Storage 2",
+      "shortest": "Pomona ES 2",
+      "short": "Pomona Energy Storage 2",
+      "normal": "Pomona Energy Storage 2",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13312",
+      "entity_name": "Portal Ridge B, LLC",
+      "shortest": "Portal Ridge B",
+      "short": "Portal Ridge B",
+      "normal": "Portal Ridge B, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13427",
+      "entity_name": "Poseidon Solar, LLC",
+      "shortest": "Poseidon Solar",
+      "short": "Poseidon Solar",
+      "normal": "Poseidon Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13257",
+      "entity_name": "Power County Wind Parks, LLC",
+      "shortest": "PCWP",
+      "short": "Power County Wind Parks",
+      "normal": "Power County Wind Parks, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05332",
+      "entity_name": "Provo City Corporation",
+      "shortest": "Provo Power",
+      "short": "Provo City Corporation",
+      "normal": "Provo City Corporation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12120",
+      "entity_name": "Rancho Seco Solar II, LLC",
+      "shortest": "Rancho Seco II",
+      "short": "Rancho Seco Solar II",
+      "normal": "Rancho Seco Solar II, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05349",
+      "entity_name": "Rathdrum Power, LLC",
+      "shortest": "Rathdrum Power",
+      "short": "Rathdrum Power",
+      "normal": "Rathdrum Power, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11956",
+      "entity_name": "RE Astoria 2 LLC",
+      "shortest": "Astoria 2",
+      "short": "RE Astoria 2",
+      "normal": "RE Astoria 2 LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11955",
+      "entity_name": "RE Astoria LLC",
+      "shortest": "Astoria",
+      "short": "RE Astoria",
+      "normal": "RE Astoria LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13379",
+      "entity_name": "RE Barren Ridge 1 LLC",
+      "shortest": "Barren Ridge",
+      "short": "RE Barren Ridge 1",
+      "normal": "RE Barren Ridge 1 LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13214",
+      "entity_name": "RE Camelot, LLC",
+      "shortest": "Camelot",
+      "short": "RE Camelot",
+      "normal": "RE Camelot, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13331",
+      "entity_name": "RE Kansas Solar, LLC",
+      "shortest": "Kansas Solar",
+      "short": "RE Kansas Solar",
+      "normal": "RE Kansas Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11951",
+      "entity_name": "RE Mustang Holdings LLC",
+      "shortest": "Mustang",
+      "short": "RE Mustang Holdings",
+      "normal": "RE Mustang Holdings LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12063",
+      "entity_name": "RE Mustang Two LLC",
+      "shortest": "Mustang Two",
+      "short": "RE Mustang Two",
+      "normal": "RE Mustang Two LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13216",
+      "entity_name": "RE Old River One PV, LLC",
+      "shortest": "Old River One",
+      "short": "RE Old River One PV",
+      "normal": "RE Old River One PV, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12224",
+      "entity_name": "RE Slate 1, LLC",
+      "shortest": "Slate 1",
+      "short": "RE Slate 1",
+      "normal": "RE Slate 1, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04035",
+      "entity_name": "City of Garland",
+      "shortest": "GP&L",
+      "short": "City of Garland",
+      "normal": "City of Garland",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11630",
+      "entity_name": "Red Horse III, LLC",
+      "shortest": "Red Horse III",
+      "short": "Red Horse III",
+      "normal": "Red Horse III, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11578",
+      "entity_name": "Red Horse Wind 2, LLC",
+      "shortest": "Red Horse Wind 2",
+      "short": "Red Horse Wind 2",
+      "normal": "Red Horse Wind 2, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13391",
+      "entity_name": "Roadrunner Battery Storage LLC",
+      "shortest": "Roadrunner BESS",
+      "short": "Roadrunner Battery Storage",
+      "normal": "Roadrunner Battery Storage LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13390",
+      "entity_name": "Roadrunner Solar LLC",
+      "shortest": "Roadrunner Solar",
+      "short": "Roadrunner Solar",
+      "normal": "Roadrunner Solar LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12479",
+      "entity_name": "Rocket Solar, LLC",
+      "shortest": "Rocket Solar",
+      "short": "Rocket Solar",
+      "normal": "Rocket Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10197",
+      "entity_name": "Rocky Mountain Power, LLC",
+      "shortest": "Rocky Mountain Power",
+      "short": "Rocky Mountain Power",
+      "normal": "Rocky Mountain Power, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13248",
+      "entity_name": "Rosamond One LLC",
+      "shortest": "Rosamond One",
+      "short": "Rosamond One",
+      "normal": "Rosamond One LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13249",
+      "entity_name": "Rosamond Two LLC",
+      "shortest": "Rosamond Two",
+      "short": "Rosamond Two",
+      "normal": "Rosamond Two LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05367",
+      "entity_name": "Rosebud Operating Services, Inc.",
+      "shortest": "ROSI",
+      "short": "Rosebud Operating Services",
+      "normal": "Rosebud Operating Services, Inc.",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13313",
+      "entity_name": "Sage Solar",
+      "shortest": "Sage Solar",
+      "short": "Sage Solar",
+      "normal": "Sage Solar",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12350",
+      "entity_name": "Sagebrush ESS, LLC",
+      "shortest": "Sagebrush ESS",
+      "short": "Sagebrush ESS",
+      "normal": "Sagebrush ESS, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13262",
+      "entity_name": "San Isabel Solar LLC",
+      "shortest": "San Isabel Solar",
+      "short": "San Isabel Solar",
+      "normal": "San Isabel Solar LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05524",
+      "entity_name": "San Luis Valley Rural Electric Cooperative, Inc.",
+      "shortest": "SLVREC",
+      "short": "SLVREC",
+      "normal": "San Luis Valley Rural Electric Cooperative, Inc.",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13034",
+      "entity_name": "Scatter Wash Energy Storage",
+      "shortest": "Scatter Wash",
+      "short": "Scatter Wash Energy Storage",
+      "normal": "Scatter Wash Energy Storage",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12267",
+      "entity_name": "SE Athos I, LLC",
+      "shortest": "Athos I",
+      "short": "SE Athos I",
+      "normal": "SE Athos I, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12200",
+      "entity_name": "SE Athos II, LLC",
+      "shortest": "Athos II",
+      "short": "SE Athos II",
+      "normal": "SE Athos II, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13049",
+      "entity_name": "Serrano Solar, LLC",
+      "shortest": "Serrano",
+      "short": "Serrano Solar",
+      "normal": "Serrano Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13384",
+      "entity_name": "SF Azalea, LLC",
+      "shortest": "Azalea",
+      "short": "SF Azalea",
+      "normal": "SF Azalea, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13100",
+      "entity_name": "Shallow Basket Energy, LLC",
+      "shortest": "Shallow Basket",
+      "short": "Shallow Basket Energy",
+      "normal": "Shallow Basket Energy, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11232",
+      "entity_name": "Shiloh III Wind Project, LLC.",
+      "shortest": "Shiloh III",
+      "short": "Shiloh III Wind Project, LLC.",
+      "normal": "Shiloh III Wind Project, LLC.",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10292",
+      "entity_name": "Shiloh Wind Project 2, LLC",
+      "shortest": "Shiloh II",
+      "short": "Shiloh Wind Project 2",
+      "normal": "Shiloh Wind Project 2, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12519",
+      "entity_name": "Sierra Estrella Energy Storage, LLC",
+      "shortest": "Sierra Estrella",
+      "short": "Sierra Estrella Energy Storage",
+      "normal": "Sierra Estrella Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13175",
+      "entity_name": "Sierra Pinta Energy Storage, LLC",
+      "shortest": "Sierra Pinta",
+      "short": "Sierra Pinta Energy Storage",
+      "normal": "Sierra Pinta Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13263",
+      "entity_name": "Siete Solar, LLC",
+      "shortest": "Siete Solar",
+      "short": "Siete Solar",
+      "normal": "Siete Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12173",
+      "entity_name": "Sigurd Solar LLC",
+      "shortest": "Sigurd Solar",
+      "short": "Sigurd Solar",
+      "normal": "Sigurd Solar LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13070",
+      "entity_name": "Silver Peak Solar, LLC",
+      "shortest": "Silver Peak",
+      "short": "Silver Peak Solar",
+      "normal": "Silver Peak Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13104",
+      "entity_name": "Silver Sage Windpower, LLC",
+      "shortest": "Silver Sage",
+      "short": "Silver Sage Windpower",
+      "normal": "Silver Sage Windpower, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13163",
+      "entity_name": "Silver State Solar Power North LLC",
+      "shortest": "Silver State North",
+      "short": "Silver State Solar Power North",
+      "normal": "Silver State Solar Power North LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12522",
+      "entity_name": "SJS 1 Storage, LLC",
+      "shortest": "SJS 1",
+      "short": "SJS 1 Storage",
+      "normal": "SJS 1 Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13377",
+      "entity_name": "Skysol, LLC",
+      "shortest": "Skysol",
+      "short": "Skysol",
+      "normal": "Skysol, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13203",
+      "entity_name": "SloughHouse Solar, LLC",
+      "shortest": "SloughHouse",
+      "short": "SloughHouse Solar",
+      "normal": "SloughHouse Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13361",
+      "entity_name": "Sol Orchard Imperial 1, LLC",
+      "shortest": "Sol Orchard",
+      "short": "Sol Orchard Imperial 1",
+      "normal": "Sol Orchard Imperial 1, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12480",
+      "entity_name": "Solar Partners XI, LLC",
+      "shortest": "Gemini",
+      "short": "Solar Partners XI",
+      "normal": "Solar Partners XI, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11549",
+      "entity_name": "Solar Star California XIII, LLC",
+      "shortest": "Quinto",
+      "short": "Solar Star California XIII",
+      "normal": "Solar Star California XIII, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11704",
+      "entity_name": "Solar Star California XLI, LLC",
+      "shortest": "Solar Star XLI",
+      "short": "Solar Star California XLI",
+      "normal": "Solar Star California XLI, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13351",
+      "entity_name": "Solar Star Colorado III, LLC",
+      "shortest": "Hooper Solar",
+      "short": "Solar Star Colorado III",
+      "normal": "Solar Star Colorado III, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13251",
+      "entity_name": "Solar Star Lost Hills LLC",
+      "shortest": "Lost Hills Solar",
+      "short": "Solar Star Lost Hills",
+      "normal": "Solar Star Lost Hills LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12324",
+      "entity_name": "Sonoran West Solar Holdings, LLC",
+      "shortest": "Crimson",
+      "short": "Sonoran West Solar Holdings",
+      "normal": "Sonoran West Solar Holdings, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR01322",
+      "entity_name": "Southern Power Company",
+      "shortest": "Southern Power",
+      "short": "Southern Power Company",
+      "normal": "Southern Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12021",
+      "entity_name": "Southern Power Company",
+      "shortest": "Southern Power",
+      "short": "Southern Power",
+      "normal": "Southern Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11221",
+      "entity_name": "Southern Power Company",
+      "shortest": "Southern Power",
+      "short": "Southern Power",
+      "normal": "Southern Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11396",
+      "entity_name": "Southern Power Company",
+      "shortest": "Southern Power",
+      "short": "Southern Power",
+      "normal": "Southern Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13021",
+      "entity_name": "Spanish Peaks Solar LLC",
+      "shortest": "Spanish Peaks",
+      "short": "Spanish Peaks Solar",
+      "normal": "Spanish Peaks Solar LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13252",
+      "entity_name": "SR McNeal, LLC",
+      "shortest": "SR McNeal",
+      "short": "SR McNeal",
+      "normal": "SR McNeal, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13253",
+      "entity_name": "SR Rattlesnake, LLC",
+      "shortest": "SR Rattlesnake",
+      "short": "SR Rattlesnake",
+      "normal": "SR Rattlesnake, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13514",
+      "entity_name": "SSI O&M, LLC",
+      "shortest": "SSI O&M",
+      "short": "SSI O&M",
+      "normal": "SSI O&M, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13130",
+      "entity_name": "Stanton Battery Energy Storage, LLC",
+      "shortest": "SBES",
+      "short": "Stanton Battery Energy Storage",
+      "normal": "Stanton Battery Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13132",
+      "entity_name": "Stanton Energy Reliability Center, LLC",
+      "shortest": "SERC",
+      "short": "SERC",
+      "normal": "Stanton Energy Reliability Center, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12508",
+      "entity_name": "Steel Solar, LLC",
+      "shortest": "Steel Solar",
+      "short": "Steel Solar",
+      "normal": "Steel Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12319",
+      "entity_name": "Sun Mountain Solar 1, LLC",
+      "shortest": "Sun Mountain",
+      "short": "Sun Mountain Solar 1",
+      "normal": "Sun Mountain Solar 1, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13498",
+      "entity_name": "Sun Pond, LLC",
+      "shortest": "Sun Pond",
+      "short": "Sun Pond",
+      "normal": "Sun Pond, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12164",
+      "entity_name": "Sun Streams 2",
+      "shortest": "Sun Streams 2",
+      "short": "Sun Streams 2",
+      "normal": "Sun Streams 2",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13016",
+      "entity_name": "Sun Streams Expansion, LLC",
+      "shortest": "Sun Streams 4",
+      "short": "Sun Streams Expansion",
+      "normal": "Sun Streams Expansion, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12463",
+      "entity_name": "Sun Streams PVS, LLC",
+      "shortest": "Sun Streams 3",
+      "short": "Sun Streams PVS",
+      "normal": "Sun Streams PVS, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13186",
+      "entity_name": "Sunray Energy 2 LLC",
+      "shortest": "Sunray 2",
+      "short": "Sunray Energy 2",
+      "normal": "Sunray Energy 2 LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12475",
+      "entity_name": "Superstition Energy Storage, LLC",
+      "shortest": "Superstition",
+      "short": "Superstition Energy Storage",
+      "normal": "Superstition Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13215",
+      "entity_name": "TA-Acacia, LLC",
+      "shortest": "TA-Acacia",
+      "short": "TA-Acacia",
+      "normal": "TA-Acacia, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11904",
+      "entity_name": "Techren Solar I LLC",
+      "shortest": "Techren I",
+      "short": "Techren Solar I",
+      "normal": "Techren Solar I LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR10345",
+      "entity_name": "Three Buttes Windpower LLC",
+      "shortest": "Three Buttes",
+      "short": "Three Buttes Windpower",
+      "normal": "Three Buttes Windpower LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11737",
+      "entity_name": "Three Peaks Power LLC",
+      "shortest": "Three Peaks",
+      "short": "Three Peaks Power",
+      "normal": "Three Peaks Power LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13378",
+      "entity_name": "Titan Solar 1, LLC",
+      "shortest": "Titan Solar 1",
+      "short": "Titan Solar 1",
+      "normal": "Titan Solar 1, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11090",
+      "entity_name": "Top of the World Wind Energy LLC",
+      "shortest": "Top of the World",
+      "short": "Top of the World Wind Energy",
+      "normal": "Top of the World Wind Energy LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12222",
+      "entity_name": "Townsite Solar, LLC",
+      "shortest": "Townsite",
+      "short": "Townsite Solar",
+      "normal": "Townsite Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13197",
+      "entity_name": "TPE Alta Luna, LLC",
+      "shortest": "Alta Luna",
+      "short": "TPE Alta Luna",
+      "normal": "TPE Alta Luna, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13227",
+      "entity_name": "Tropico, LLC",
+      "shortest": "Tropico",
+      "short": "Tropico",
+      "normal": "Tropico, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13314",
+      "entity_name": "Tulare Solar Center, LLC",
+      "shortest": "Luciana",
+      "short": "Tulare Solar Center",
+      "normal": "Tulare Solar Center, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13315",
+      "entity_name": "Turquoise Nevada LLC",
+      "shortest": "Turquoise",
+      "short": "Turquoise Nevada",
+      "normal": "Turquoise Nevada LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05442",
+      "entity_name": "U.S. Department of Energy, Hanford Field Office",
+      "shortest": "DOE Hanford",
+      "short": "DOE Hanford",
+      "normal": "U.S. Department of Energy, Hanford Field Office",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05536",
+      "entity_name": "United Power, Inc",
+      "shortest": "United Power",
+      "short": "United Power",
+      "normal": "United Power, Inc",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13548",
+      "entity_name": "Upstream HC-1 LLC",
+      "shortest": "Centennial Flats",
+      "short": "Upstream HC-1",
+      "normal": "Upstream HC-1 LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05444",
+      "entity_name": "US Navy, Naval Base Kitsap",
+      "shortest": "NB Kitsap",
+      "short": "US Navy, Naval Base Kitsap",
+      "normal": "US Navy, Naval Base Kitsap",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR04156",
+      "entity_name": "USACE - Tulsa District",
+      "shortest": "USACE Tulsa",
+      "short": "USACE - Tulsa District",
+      "normal": "USACE - Tulsa District",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12050",
+      "entity_name": "Utah Red Hills Renewable Park,  LLC",
+      "shortest": "Red Hills",
+      "short": "Utah Red Hills Renewable Park",
+      "normal": "Utah Red Hills Renewable Park, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11959",
+      "entity_name": "Valentine Solar, LLC",
+      "shortest": "Valentine",
+      "short": "Valentine Solar",
+      "normal": "Valentine Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13372",
+      "entity_name": "Valley Center ESS, LLC",
+      "shortest": "Valley Center",
+      "short": "Valley Center ESS",
+      "normal": "Valley Center ESS, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13353",
+      "entity_name": "Vega Solar, LLC",
+      "shortest": "Vega",
+      "short": "Vega Solar",
+      "normal": "Vega Solar, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13198",
+      "entity_name": "Ventura Energy Storage, LLC",
+      "shortest": "Saticoy",
+      "short": "Ventura Energy Storage",
+      "normal": "Ventura Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13329",
+      "entity_name": "VESI 12 LLC",
+      "shortest": "Bottleneck",
+      "short": "VESI 12",
+      "normal": "VESI 12 LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13475",
+      "entity_name": "VESI 15 LLC",
+      "shortest": "Shirk",
+      "short": "VESI 15",
+      "normal": "VESI 15 LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12512",
+      "entity_name": "Vikings Energy Farm LLC",
+      "shortest": "Vikings",
+      "short": "Vikings Energy Farm",
+      "normal": "Vikings Energy Farm LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13255",
+      "entity_name": "Vista Energy Storage, LLC",
+      "shortest": "Vista ESS",
+      "short": "Vista Energy Storage",
+      "normal": "Vista Energy Storage, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12372",
+      "entity_name": "Warren Substation",
+      "shortest": "Warren SS",
+      "short": "Warren Substation",
+      "normal": "Warren Substation",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05456",
+      "entity_name": "Wellhead Power Panoche, LLC",
+      "shortest": "Wellhead Panoche",
+      "short": "Wellhead Power Panoche",
+      "normal": "Wellhead Power Panoche, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR05457",
+      "entity_name": "Wellhead Services, Inc",
+      "shortest": "Wellhead Services",
+      "short": "Wellhead Services",
+      "normal": "Wellhead Services, Inc",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11825",
+      "entity_name": "Western Frequency Response Sharing Group",
+      "shortest": "WFRSG",
+      "short": "WFRSG",
+      "normal": "Western Frequency Response Sharing Group",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13482",
+      "entity_name": "Westlands Almond, LLC",
+      "shortest": "Westlands Almond",
+      "short": "Westlands Almond",
+      "normal": "Westlands Almond, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13476",
+      "entity_name": "Westlands Cherry, LLC",
+      "shortest": "Westlands Cherry",
+      "short": "Westlands Cherry",
+      "normal": "Westlands Cherry, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR13041",
+      "entity_name": "Westlands Solar Blue (OZ) Owner, LLC",
+      "shortest": "Solar Blue",
+      "short": "Westlands Solar Blue (OZ) Owner",
+      "normal": "Westlands Solar Blue (OZ) Owner, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR11906",
+      "entity_name": "Willow Springs, LLC",
+      "shortest": "Willow Springs",
+      "short": "Willow Springs",
+      "normal": "Willow Springs, LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR12001",
+      "entity_name": "Wright Solar Park LLC",
+      "shortest": "Wright Solar",
+      "short": "Wright Solar Park",
+      "normal": "Wright Solar Park LLC",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR-SEED-001",
+      "entity_name": "PJM Interconnection, LLC",
+      "shortest": "PJM",
+      "short": "PJM",
+      "normal": "PJM Interconnection",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-004",
+      "entity_name": "Southwest Power Pool, Inc.",
+      "shortest": "SPP",
+      "short": "Southwest Power Pool",
+      "normal": "Southwest Power Pool, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-005",
+      "entity_name": "ISO New England Inc.",
+      "shortest": "ISO-NE",
+      "short": "ISO New England",
+      "normal": "ISO New England Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-024",
+      "entity_name": "Southern Company Services, Inc.",
+      "shortest": "Southern Co.",
+      "short": "Southern Company Services",
+      "normal": "Southern Company Services, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-027",
+      "entity_name": "Florida Power & Light Company",
+      "shortest": "FPL",
+      "short": "Florida Power & Light",
+      "normal": "Florida Power & Light Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-031",
+      "entity_name": "Virginia Electric and Power Company",
+      "shortest": "Dominion",
+      "short": "Dominion Energy Virginia",
+      "normal": "Virginia Electric and Power Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-032",
+      "entity_name": "Public Service Electric and Gas Company",
+      "shortest": "PSE&G",
+      "short": "PSE&G",
+      "normal": "Public Service Electric and Gas Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-036",
+      "entity_name": "American Electric Power Service Corporation",
+      "shortest": "AEP",
+      "short": "American Electric Power",
+      "normal": "American Electric Power Service Corporation",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-037",
+      "entity_name": "Indiana Michigan Power Company",
+      "shortest": "I&M",
+      "short": "Indiana Michigan Power",
+      "normal": "Indiana Michigan Power Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR-SEED-038",
+      "entity_name": "Ohio Edison Company",
+      "shortest": "Ohio Edison",
+      "short": "Ohio Edison",
+      "normal": "Ohio Edison Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR-SEED-042",
+      "entity_name": "Northern States Power Company - Minnesota",
+      "shortest": "NSP",
+      "short": "Northern States Power",
+      "normal": "Northern States Power Company - Minnesota",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-046",
+      "entity_name": "Southwestern Public Service Company",
+      "shortest": "SPS",
+      "short": "Southwestern Public Service",
+      "normal": "Southwestern Public Service Company",
+      "tier": "normal"
+    },
+    {
+      "ncr_id": "NCR-SEED-047",
+      "entity_name": "Oklahoma Gas and Electric Company",
+      "shortest": "OG&E",
+      "short": "Oklahoma Gas & Electric",
+      "normal": "Oklahoma Gas and Electric Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-053",
+      "entity_name": "AEP Texas Inc.",
+      "shortest": "AEP Texas",
+      "short": "AEP Texas",
+      "normal": "AEP Texas Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-056",
+      "entity_name": "Tri-State Generation and Transmission Association, Inc.",
+      "shortest": "Tri-State",
+      "short": "Tri-State G&T",
+      "normal": "Tri-State Generation and Transmission Association, Inc.",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "NCR-SEED-057",
+      "entity_name": "Luminant Generation Company LLC",
+      "shortest": "Luminant",
+      "short": "Luminant Generation",
+      "normal": "Luminant Generation Company LLC",
+      "tier": "normal"
     }
   ]
 }

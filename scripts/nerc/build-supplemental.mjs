@@ -18,16 +18,17 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { inferOrgType, orgWeight } from "../../src/lib/nerc/enrich.mjs";
+import { isExcludedTerritoryCode } from "../../src/lib/nerc/excluded-territories.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "../..");
 const CSV = resolve(root, "src/data/nerc/supplemental-candidates.csv");
 const OUT = resolve(root, "src/data/nerc/supplemental-orgs.json");
 
-// geoAlbersUsa only projects the 50 states (with AK/HI insets). Territories
-// cannot be plotted until the map switches to a projection that includes them,
-// so we keep them queued (no coords) and flag them.
-const OUT_OF_FOOTPRINT = new Set(["PR", "GU", "AS", "VI", "MP"]);
+// geoAlbersUsa only projects the 50 states (with AK/HI insets). Puerto Rico and
+// the U.S. Virgin Islands are rendered as labelled offshore insets instead; no
+// other U.S. territories are carried.
+const OUT_OF_FOOTPRINT = new Set(["PR", "VI"]);
 
 // Starter coordinates (approx HQ city) so a useful batch renders immediately.
 // Everything else lands with lat/lng = null and is geocoded later (see
@@ -153,7 +154,9 @@ function main() {
   const iUrl = col("source_url");
 
   const existing = existsSync(OUT) ? JSON.parse(readFileSync(OUT, "utf8")) : [];
-  const byKey = new Map(existing.map((o) => [nameKey(o.entity_name), o]));
+  const kept = existing.filter((o) => !isExcludedTerritoryCode(o.state));
+  const purged = existing.length - kept.length;
+  const byKey = new Map(kept.map((o) => [nameKey(o.entity_name), o]));
 
   let added = 0;
   let geocoded = 0;
@@ -164,6 +167,7 @@ function main() {
     if (byKey.has(key)) continue; // never clobber existing edits
 
     const state = (rows[r][iState] || "").trim() || null;
+    if (isExcludedTerritoryCode(state)) continue;
     const { org_type, roles } = classify(name, rows[r][iType] || "", rows[r][iLayer] || "");
     const coords = KNOWN_COORDS[name];
     if (coords) geocoded++;
@@ -185,19 +189,19 @@ function main() {
       geo_source_url: (rows[r][iUrl] || "").trim() || null,
       geo_notes: (rows[r][iBasis] || "").trim() || "",
     };
-    existing.push(entry);
+    kept.push(entry);
     byKey.set(key, entry);
     added++;
   }
 
-  existing.sort((a, b) => (a.state || "").localeCompare(b.state || "") || a.entity_name.localeCompare(b.entity_name));
-  writeFileSync(OUT, JSON.stringify(existing, null, 2) + "\n");
+  kept.sort((a, b) => (a.state || "").localeCompare(b.state || "") || a.entity_name.localeCompare(b.entity_name));
+  writeFileSync(OUT, JSON.stringify(kept, null, 2) + "\n");
 
-  const placed = existing.filter((o) => o.lat != null && o.lng != null).length;
-  const needGeo = existing.filter((o) => o.lat == null && !o.out_of_footprint).length;
-  console.log(`supplemental: ${existing.length} entries (${added} new this run)`);
+  const placed = kept.filter((o) => o.lat != null && o.lng != null).length;
+  const needGeo = kept.filter((o) => o.lat == null && !o.out_of_footprint).length;
+  console.log(`supplemental: ${kept.length} entries (${added} new this run${purged ? `, ${purged} excluded territories removed` : ""})`);
   console.log(`supplemental: ${placed} have coordinates (${geocoded} from the starter table)`);
-  console.log(`supplemental: ${needGeo} still need geocoding; ${existing.filter((o) => o.out_of_footprint).length} are out-of-footprint (territories)`);
+  console.log(`supplemental: ${needGeo} still need geocoding; ${kept.filter((o) => o.out_of_footprint).length} are out-of-footprint (territories)`);
   console.log(`supplemental: wrote ${OUT.replace(root + "/", "")}`);
 }
 

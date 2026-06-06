@@ -67,31 +67,43 @@ Most of the iteration is the map. Principles that have repeatedly proven right:
   land mask clamps declutter so dots never drift *far* to sea (the "≤~80% into
   water" rule), but Long Island / Block Island / Cape Cod utilities are genuinely
   in the water. Don't "fix" real coastal geography onto land.
-- **Progressive disclosure, not faint‑everything.** Dots below their reveal window
-  are not drawn at all (the `RENDER_EPS` gate in `redraw` *and* the declutter
-  solver). Reveal zoom is **continuous** in an importance score with a per‑id jitter
-  so near‑identical dots (the ~800 generators) trickle in instead of a whole tier
-  flooding at one zoom — a flood crashes dot size and re‑spikes overlap. See
-  `orgScore`/`orgMinZoom` and the `nerc-map-disclosure-model` memory.
+- **Disclosure is zoom‑only, rank‑based — and that is what makes panning calm.**
+  Every org gets a global importance rank (`_rank`, from `orgScore`, computed once).
+  A dot shows iff `rank < visibleCap(zoom)` (`dotStrength` ramps it with a soft
+  edge). `visibleCap` grows ~quadratically with zoom, so zooming into anywhere
+  reveals that area's locals. Because it depends only on rank + zoom, **the visible
+  set never changes as you pan.** The user's bar: *panning must cause no motion;
+  only zooming adds/removes/resizes bubbles.* The whole earlier model (continuous
+  `orgMinZoom` reveal, compact anchors, a top‑up pass, `declutterItemLimit`) was
+  deleted for this. Tune density with `visibleCap`'s `overview` constant.
+- **Anything that reads the on‑screen/neighbour set makes bubbles move on pan —
+  don't.** The big offender was the isolation system (`computeIsolation`/`_iso`/
+  `isolationBoost`): it resized dots from their live neighbours, so they grew/shrank
+  as you panned. Gone. **Radius = `visualRadius` = pure `weight × zoom`**, nothing
+  else. Same reasoning killed floating labels (greedy, viewport‑ordered) — see the
+  label note below.
+- **Keep bubbles near their true spot.** `maxDeclutterOffset` is deliberately small
+  (a "little" movement to ease overlap, never far). Dense regions just overlap —
+  *bubbles sit next to each other*, the user's explicit preference — rather than
+  drifting offshore or across the map. The land‑mask clamp still bounds water drift.
+- **Render every disclosed bubble; labels are a separate layer on a subset.** A
+  past refactor set `_vis = hasLabel`, which collapsed the map to ~140 dots (only
+  the labelled ones drew). That is the opposite of "show as much as you can." Keep
+  bubble visibility (the rank gate) independent of whether a label landed.
 - **Do not reserve margin around visible bubbles.** The user wants bubbles to pack
   edge-to-edge if needed: no bubble padding and no solver gap. The non-overlap rule
   is about actual drawn bubble bodies, not decorative whitespace. Hidden/future
   bubbles should not push visible ones around; at low zoom the declutter solver is
   capped to plausible visible candidates, and final label placement remains the
   authority on what is actually drawn.
-- **Labels are an ordered decision tree, evaluated most‑important first:**
-  1. **INSIDE** — if the short token fits in the bubble at a legible size, draw it
-     there. Inside labels are collision‑free and run *before* dedupe/thinning, so a
-     bubble big enough for its name always shows it.
-  2. **FLOAT** — otherwise place beside/below (above is last resort; the user
-     strongly dislikes labels floating above their dot). A floating label must
-     **physically clear every other protected bubble** (non‑overlap is now the
-     primary suppression rule), so a small org's label never lands on a big org's
-     bubble.
-  3. **THIN/DEDUPE** — identical on‑screen tokens (AEP, Evergy, MEAN…) collapse to
-     the single highest‑priority instance.
-- **Isolation boost:** lonely dots grow and always try for a label, which is what
-  fills the empty Mountain West / Plains. **Generation‑only dots stay smallest** so
+- **Labels are inside‑bubble only (for pan‑stability).** A label sits centred
+  inside its bubble iff the short token fits at a legible size; otherwise the dot
+  waits until you zoom in and the bubble grows. Inside labels ride their bubble (no
+  collision, no greedy placement), so they never move or flicker as you pan — unlike
+  the old floating labels, which were placed greedily over the *on‑screen* set and
+  so reshuffled on every pan. Identical tokens dedupe at the broad overview. Only
+  hover/selection floats a name (below the dot) when it can't fit inside.
+- **Generation‑only dots stay smallest** so
   the sea of plants doesn't balloon.
 
 ## 3. iOS/mobile is a first‑class, separate target
@@ -144,16 +156,17 @@ Spatial/visual tuning by eyeball is slow and unreliable across 20 zoom levels ×
   more geographic accuracy as you zoom in**; **labels ideally inside bubbles**;
   hide what can't fit cleanly until there's room.
 - `orgPriority` is a generous additive score (type/role bonuses), so *many* dots
-  score "high" — it does not by itself produce a clean overview count. That's why
-  disclosure layers a continuous reveal curve + per‑id jitter on top of it.
+  score "high." It feeds `orgScore` (+ weight + per‑id jitter), which is ranked once
+  into `_rank`; disclosure is then just `rank < visibleCap(zoom)`.
 
 ## 6. Where to look before changing things
 
 | You're about to… | Read first |
 | --- | --- |
-| change what's visible at a zoom | `orgScore`/`orgMinZoom`/`dotStrength` + `RENDER_EPS`; memory `nerc-map-disclosure-model` |
-| change label placement | the INSIDE→FLOAT→THIN loop in `redraw`; memory `nerc-name-research` |
-| change dot size | `visualRadius`/`renderedRadius`/`isolationBoost`/`hitTargetRadius` (all `compact`‑aware) |
+| change what's visible / density at a zoom | `visibleCap` + `_rank`/`orgScore`/`dotStrength`; memory `nerc-map-disclosure-model` |
+| change label placement | the inside‑bubble label loop in `redraw`; memory `nerc-name-research` |
+| change dot size | `visualRadius`/`renderedRadius`/`hitTargetRadius` (pure weight×zoom, `compact`‑aware) |
+| make panning calm | keep sizing/labels/positions off the on‑screen set; only `transform.k` may drive them |
 | move dots / fix offshore drift | `relaxDeclutter` + `buildLandMask`/`clampToLand` (base‑space!) |
 | touch data | `enrich.mjs`/`build-orgs.mjs`; never the renderer; respect seed/supplemental rules in AGENTS.md |
 | verify a visual change | `?audit=1` + `scripts/ux-audit.mjs`, then `npm run check` |

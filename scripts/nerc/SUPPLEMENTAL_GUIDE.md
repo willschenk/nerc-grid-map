@@ -85,10 +85,9 @@ functions — don't use them.) If `roles` is `[]`, the dot is colored by
   likely duplicates (similarity ≥ ~0.9 with the same real entity = skip). The
   build also auto-skips supplemental entries whose name matches an existing NERC
   org, but don't rely on it for near-matches/aliases.
-- **U.S. territories don't render yet.** Puerto Rico, Guam, American Samoa, USVI,
-  and N. Mariana (`out_of_footprint: true`) cannot be plotted because the map
-  uses `geoAlbersUsa` (50 states only). Leave them queued; do **not** invent
-  coordinates. (Showing them needs a projection/inset change — a separate task.)
+- **Only Puerto Rico and the U.S. Virgin Islands are carried as territories**
+  (`out_of_footprint: true`), rendered as labelled offshore insets. No other U.S.
+  territories are included — do not add them.
 - **Alaska & Hawaii DO render** (Albers USA has insets). Geocode them normally.
 - Keep entries sorted/clean; the converter re-sorts by state then name on run.
 

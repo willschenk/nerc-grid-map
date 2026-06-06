@@ -216,6 +216,17 @@
   display: none;
 }
 
+/* Real island land for the offshore territory insets (Puerto Rico, USVI),
+   projected into the inset by its own mercator fit. Styled like the mainland
+   states with a crisp non-scaling outline so the coast stays clean at any zoom. */
+#nerc-svg .terr-land {
+  fill: #d8e2dc;
+  stroke: rgba(255, 255, 255, 0.94);
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
 /* Offshore U.S. territories read as labelled clusters of dots (no framed box).
    The region name sits above its cluster like a place label, with a strong
    non-scaling halo so it stays legible over the sea at any zoom. */

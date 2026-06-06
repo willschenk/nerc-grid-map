@@ -32,6 +32,16 @@ const named = existsSync("src/data/nerc/org-names.json")
   : [];
 const doneIds = new Set(named.filter((n) => n && n.shortest).map((n) => n.ncr_id));
 
+// Drop placeholder seeds whose real twin is already named (seed retires from the map
+// once geocoded, but may linger in geocoded-orgs.json until cleaned up).
+const retiredSeeds = new Set();
+if (existsSync("src/data/nerc/seed-twins.json")) {
+  const twins = JSON.parse(readFileSync("src/data/nerc/seed-twins.json", "utf8")).twins ?? {};
+  for (const [seed, realIds] of Object.entries(twins)) {
+    if (realIds.some((id) => doneIds.has(id))) retiredSeeds.add(seed);
+  }
+}
+
 const ROLE_WEIGHTS = { RC: 10, BA: 8, PC: 6, TOP: 5, TSP: 4, TP: 3, RP: 2, RSG: 2 };
 const weightOf = (r) =>
   (r.roles ?? []).reduce((s, role) => s + (ROLE_WEIGHTS[role] ?? 1), 0);
@@ -39,6 +49,7 @@ const weightOf = (r) =>
 const todo = orgs
   .filter((o) => o.lat != null && o.lng != null)
   .filter((o) => !doneIds.has(o.ncr_id))
+  .filter((o) => !retiredSeeds.has(o.ncr_id))
   // Dedupe by name so we don't research the same brand twice.
   .filter((o, i, all) => all.findIndex((x) => x.entity_name === o.entity_name) === i)
   .map((o) => ({ ...o, _w: weightOf(o) }));

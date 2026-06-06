@@ -4,11 +4,12 @@
 // basemap into public/nerc/. Runs from npm "prebuild" so the data is always fresh.
 // (Spec Part 3.1: coordinates pre-baked into a static JSON at build time.)
 
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { feature } from "topojson-client";
 import { enrichOrg } from "../../src/lib/nerc/enrich.mjs";
+import { isExcludedTerritoryCode, isExcludedTerritoryFips } from "../../src/lib/nerc/excluded-territories.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "../..");
@@ -46,10 +47,14 @@ function loadSupplemental(existingNames) {
   let dupes = 0;
   let ungeocoded = 0;
   let territories = 0;
+  let excludedTerritories = 0;
   for (const s of list) {
-    // Territory orgs (PR/VI/GU/MP/AS) have no mainland-projectable coordinates
-    // but still belong on the map — the renderer places them in insets. Every
-    // other supplemental org needs real coordinates to be plotted.
+    if (isExcludedTerritoryCode(s.state)) {
+      excludedTerritories++;
+      continue;
+    }
+    // Territory orgs (PR/VI only) have no mainland-projectable coordinates but
+    // still belong on the map — the renderer places them in insets.
     const isTerritory = s.out_of_footprint === true;
     if ((s.lat == null || s.lng == null) && !isTerritory) { ungeocoded++; continue; }
     if (existingNames.has(normName(s.entity_name))) { dupes++; continue; }
@@ -69,7 +74,7 @@ function loadSupplemental(existingNames) {
     existingNames.add(normName(s.entity_name));
     out.push(org);
   }
-  console.log(`nerc: +${out.length} supplemental orgs (${territories} territory-inset, ${dupes} name-dupes, ${ungeocoded} ungeocoded skipped)`);
+  console.log(`nerc: +${out.length} supplemental orgs (${territories} territory-inset, ${dupes} name-dupes, ${ungeocoded} ungeocoded skipped${excludedTerritories ? `, ${excludedTerritories} excluded territories dropped` : ""})`);
   return out;
 }
 
@@ -169,6 +174,22 @@ function tally(orgs, key) {
   return Object.fromEntries(Object.entries(counts).sort((a, b) => b[1] - a[1]));
 }
 
+function stageBasemap() {
+  if (!existsSync(BASEMAP_SRC)) {
+    console.warn(`WARN: basemap not found at ${BASEMAP_SRC}. Run "npm install" first.`);
+    return;
+  }
+  const raw = JSON.parse(readFileSync(BASEMAP_SRC, "utf8"));
+  const geoms = raw.objects?.states?.geometries;
+  if (Array.isArray(geoms)) {
+    const before = geoms.length;
+    raw.objects.states.geometries = geoms.filter((g) => !isExcludedTerritoryFips(g.id));
+    const dropped = before - raw.objects.states.geometries.length;
+    if (dropped) console.log(`nerc: basemap omitted ${dropped} excluded territory geometries`);
+  }
+  writeFileSync(BASEMAP_OUT, JSON.stringify(raw));
+}
+
 function main() {
   const { file, records } = loadRecords();
   const names = loadNameTable();
@@ -191,12 +212,7 @@ function main() {
   };
   writeFileSync(OUT_ORGS, JSON.stringify(payload));
 
-  if (existsSync(BASEMAP_SRC)) {
-    copyFileSync(BASEMAP_SRC, BASEMAP_OUT);
-  } else {
-    console.warn(`WARN: basemap not found at ${BASEMAP_SRC}. Run "npm install" first.`);
-  }
-
+  stageBasemap();
   stageCanada();
 
   const isoCount = orgs.filter((o) => o.is_iso_rto).length;

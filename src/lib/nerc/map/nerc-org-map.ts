@@ -2,9 +2,10 @@ import { geoAlbersUsa, geoConicEqualArea, geoMercator, geoPath } from "d3-geo";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zoom";
 import "d3-transition";
-import { feature } from "topojson-client";
+import { feature, mesh } from "topojson-client";
 import { ROLE_FULL_NAMES } from "../roles.mjs";
 import { PLACES } from "../places.mjs";
+import { isExcludedTerritoryFips } from "../excluded-territories.mjs";
 
 type Place = { name: string; lat: number; lng: number; tier: number; _x?: number; _y?: number };
 
@@ -54,6 +55,10 @@ type Org = {
   _sx?: number;
   _sy?: number;
   _vis?: boolean;
+  // Whether this bubble found a non-overlapping spot at the current zoom bucket.
+  // Set by computePlacements; drives disclosure (placed => shown). Recomputed only
+  // when the zoom bucket changes, never on pan.
+  _placed?: boolean;
   _rk?: number;
   // Last viewBox radius actually written to the circle, so zoom-only sizing can
   // update without a per-frame attribute storm.
@@ -69,7 +74,7 @@ type Org = {
 type LandLabel = { name: string; x: number; y: number; small: boolean; _node?: SVGTextElement };
 // An offshore territory's layout region. x/y/w/h bound where its cluster of dots
 // is laid out; lx/ly is the anchor for the region name, centred above the dots.
-type TerritoryBox = { code: string; label: string; x: number; y: number; w: number; h: number; lx: number; ly: number };
+type TerritoryBox = { code: string; label: string; x: number; y: number; w: number; h: number; lx: number; ly: number; landPath?: string | null };
 
 type OrgsPayload = {
   generated_at?: string;
@@ -90,10 +95,6 @@ const SPIDER_RING_STEP_PX = 28;
 // _x/_y stay true; _dx/_dy are screen-space nudges divided by zoom at render.
 const MAX_RADIUS = 48;
 const MAX_ZOOM = 1200;
-// Reveal threshold: a dot is not drawn until its disclosure ramp (dotStrength)
-// passes this, so the overview shows only the high-priority set and lower
-// entities appear progressively as you zoom in.
-const RENDER_EPS = 0.02;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "TOP", "PC"]);
 const BA_RC_ROLES = new Set(["BA", "RC"]);
 const MAJOR_OPERATOR_PARTNER_ROLES = new Set(["TOP", "PC", "TSP"]);
@@ -106,9 +107,43 @@ const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corp
 const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
 const PUBLIC_UTILITY_NAME = /\b(Public Power|Public Utility|Utility District|PUD|Municipal|City of|Town of|Electric Department|Light Department|Cooperative|Electric Membership)\b/i;
 
-// Out-of-footprint U.S. territories: only Puerto Rico is drawn as a labelled
-// inset. Other territory rows stay in the data but are intentionally hidden.
-const PUERTO_RICO_STATE = "PR";
+// Out-of-footprint U.S. territories rendered as labelled inset clusters (geoAlbersUsa
+// cannot plot them on the mainland canvas).
+const TERRITORY_STATES = new Set(["PR", "VI"]);
+const TERRITORY_LABELS: Record<string, string> = {
+  PR: "Puerto Rico",
+  VI: "U.S. Virgin Islands",
+};
+// Right-to-bottom layout order; Puerto Rico is largest and anchors the cluster.
+const TERRITORY_LAYOUT_ORDER = ["PR", "VI"] as const;
+// FIPS ids of the territory land outlines carried in the states topojson, so the
+// inset can draw the real island shape (geoAlbersUsa can't project them).
+const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
+// Nudge territory insets toward the lower-right corner, clamped so org dots stay
+// on screen (a large uncapped offset pushed Puerto Rico entirely off the canvas).
+function territoryInsetPos(
+  code: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  compact: boolean,
+  u: number,
+  viewW: number,
+  viewH: number,
+): { x: number; y: number } {
+  let dx = 0;
+  let dy = 0;
+  if (code === "PR") {
+    dx = (compact ? 28 : 40) * u;
+    dy = (compact ? 36 : 28) * u;
+  }
+  const pad = 4 * u;
+  return {
+    x: Math.min(Math.max(pad, x + dx), viewW - w - pad),
+    y: Math.min(Math.max(pad, y + dy), viewH - h - pad),
+  };
+}
 
 // Canadian province label anchors (rough interior points), drawn faintly on the
 // land like the U.S. state labels.
@@ -402,6 +437,7 @@ export function mountNercOrgMap(): void {
   // per-redraw setAttribute storm during a tour (transform is static).
   let hitK = NaN;
   let nationFeature: unknown = null;
+  let nationOutline: unknown = null;
   let canadaFeature: unknown = null;
   let stateFeatures: unknown[] = [];
   // Low-res land mask (US + Canada silhouette) in viewBox space, rebuilt on every
@@ -568,29 +604,8 @@ export function mountNercOrgMap(): void {
     );
   }
 
-  // Map the one visual-priority score to a reveal zoom. No per-id jitter and no
-  // company-name exceptions: ties stay deterministic through the sort helpers.
-  function orgMinZoom(o: Org): number {
-    if (o._frame === "terr") return 0.72;
-    if (isMajorSystemOperator(o)) return 0.72;
-    const anchor = compact ? 80 : 64;
-    return Math.min(compact ? 13.5 : 11.5, 0.72 * Math.exp(0.045 * Math.max(0, anchor - visualPriority(o))));
-  }
-
-  // Disclosure ramp 0..1: a dot fades in over [minZoom - lead, minZoom] and is
-  // not rendered at all below that window (RENDER_EPS gate in redraw and the
-  // declutter solver), so the overview shows only the high-priority set and
-  // lower-priority entities appear progressively as you zoom in and make room.
-  function dotStrength(o: Org, k: number): number {
-    if (o._frame === "terr") return 1;
-    const fullAt = orgMinZoom(o);
-    if (fullAt <= 0.72) return 1;
-    const lead = compact ? 1.05 : 1.25;
-    return smoothStep((k - (fullAt - lead)) / lead);
-  }
-
-  function drawPriority(o: Org, k: number): number {
-    return dotStrength(o, k) * 90 + visualPriority(o) + meaningfulRoleCount(o) * 2;
+  function drawPriority(o: Org, _k: number): number {
+    return visualPriority(o) + meaningfulRoleCount(o) * 2;
   }
 
   // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
@@ -638,17 +653,6 @@ export function mountNercOrgMap(): void {
     return Math.round(cap * mult);
   }
 
-  function visibleBubbleTarget(k: number): number {
-    return Math.round(labelLimit(k) * (compact ? 0.95 : 1));
-  }
-
-  function declutterItemLimit(k: number): number {
-    if (k >= 2.6) return Number.POSITIVE_INFINITY;
-    const target = visibleBubbleTarget(k);
-    const mult = compact ? (k < 1.25 ? 0.95 : 1.1) : (k < 1.25 ? 1.2 : 1.35);
-    return Math.max(compact ? 44 : 90, Math.round(target * mult));
-  }
-
   function placeLabelLimit(k: number): number {
     if (compact) return 16;
     if (k < 1.8) return 14;
@@ -691,20 +695,21 @@ export function mountNercOrgMap(): void {
 
   function hitTargetRadius(o: Org, k: number): number {
     if (o._frame === "terr") return (compact ? 8.5 : 7) * unitPerPx;
+    // Every shown bubble is fully placed, so tap targets track the visible radius
+    // plus a small pad and a floor — no per-dot reveal strength to fold in.
     const visual = renderedRadius(o, k);
-    const strength = dotStrength(o, k);
     const priority = visualPriority(o);
     const overviewFloorPx = compact
       ? priority < 30 ? 9 : 12
-      : strength < 0.35 ? 3.2 : priority < 30 ? 4.2 : priority < 55 ? 5.2 : 7;
+      : priority < 30 ? 4.2 : priority < 55 ? 5.2 : 7;
     const deepFloorPx = compact
       ? priority < 30 ? 5.5 : 6.5
-      : strength < 0.35 ? 2.2 : priority < 30 ? 2.6 : priority < 55 ? 3.2 : 4.4;
+      : priority < 30 ? 2.6 : priority < 55 ? 3.2 : 4.4;
     const deepT = smoothStep((k - 10) / 18);
     const floorPx = overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT;
     const overviewPadPx = compact ? (priority < 30 ? 2.4 : 3.4) : priority < 30 ? 1 : priority < 55 ? 1.5 : 2.4;
     const deepPadPx = compact ? (priority < 30 ? 0.8 : 1.2) : priority < 30 ? 0.35 : priority < 55 ? 0.55 : 0.8;
-    const padPx = (overviewPadPx + (deepPadPx - overviewPadPx) * deepT) * (0.5 + strength * 0.5);
+    const padPx = overviewPadPx + (deepPadPx - overviewPadPx) * deepT;
     return Math.max(visual + padPx * unitPerPx, floorPx * unitPerPx);
   }
 
@@ -720,10 +725,11 @@ export function mountNercOrgMap(): void {
     return clamped * clamped * (3 - 2 * clamped);
   }
 
-  function spiderFanScale(k: number): number {
-    // Offsets are target screen-space SVG units; divide by k because circles
-    // live inside the zoomed group.
-    return smoothStep((k - SPIDER_START_K) / (SPIDER_FULL_K - SPIDER_START_K)) / Math.max(k, 0.001);
+  function spiderFanScale(_k: number): number {
+    // Disabled: coincident origins are now separated by the ring placement in
+    // computePlacements, so there is no separate fan-out term to add at render
+    // (an extra offset here would move a bubble off its solved, on-land spot).
+    return 0;
   }
 
   function declutterBucket(k: number): number {
@@ -737,15 +743,13 @@ export function mountNercOrgMap(): void {
   }
 
   function maxDeclutterOffset(k: number): number {
-    // Tight when zoomed out so dots sit close to their true location — accept
-    // more overlap/obfuscation of small orgs at the overview rather than letting
-    // them drift far from where they actually are. Loosens once deeply zoomed so
-    // dense clusters spread enough to tap and inspect individual entities.
-    // (Land clamping separately bounds water drift.)
+    // Keep bubbles close to their true location — only "a little" movement to
+    // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
+    // to each other) rather than drifting away. Grows only modestly with zoom.
     const basePx = compact
-      ? k < 1.25 ? 22 : k < 2.2 ? 36 : k < 4 ? 58 : k < 7 ? 76 : k < 18 ? 92 : 108
-      : k < 1.25 ? 68 : k < 2.2 ? 108 : k < 4 ? 148 : k < 7 ? 166 : k < 18 ? 190 : 216;
-    const deepPx = compact ? 126 : 260;
+      ? k < 1.25 ? 12 : k < 2.2 ? 16 : k < 4 ? 20 : k < 7 ? 26 : 32
+      : k < 1.25 ? 16 : k < 2.2 ? 22 : k < 4 ? 28 : k < 7 ? 36 : 44;
+    const deepPx = compact ? 40 : 56;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -753,6 +757,30 @@ export function mountNercOrgMap(): void {
   // visible nudge stable inside the zoomed group without mutating _x/_y.
   function declutterScale(k: number): number {
     return 1 / Math.max(k, 0.001);
+  }
+
+  // How far (screen viewBox units) a bubble center may sit from its true origin
+  // while it hunts for space. Bounded at every zoom; grows only modestly so a
+  // bubble never flies across the map.
+  function placementRadius(bucket: number): number {
+    return maxDeclutterOffset(bucket);
+  }
+
+  // Deterministic candidate offsets around an origin: the origin itself, then
+  // simple rings outward up to maxRadius. Rings increase in radius so iterating
+  // in order means the nearest valid spot wins. No randomness, no jitter.
+  function candidatePositions(maxRadius: number, step: number): Array<[number, number]> {
+    const spots: Array<[number, number]> = [[0, 0]];
+    for (let ring = 1; ring * step <= maxRadius + 1e-6; ring++) {
+      const radius = ring * step;
+      const count = Math.max(6, Math.round((Math.PI * 2 * radius) / step));
+      const phase = (ring % 2) * (Math.PI / count);
+      for (let i = 0; i < count; i++) {
+        const ang = (i / count) * Math.PI * 2 + phase;
+        spots.push([Math.cos(ang) * radius, Math.sin(ang) * radius]);
+      }
+    }
+    return spots;
   }
 
   function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
@@ -808,7 +836,7 @@ export function mountNercOrgMap(): void {
   }
 
   function positionOrgMarks(k = transform.k, force = false): void {
-    relaxDeclutter(k, force);
+    computePlacements(k, force);
     // Render positions only depend on k (panning is handled by the group
     // transform), so skip the per-dot rewrite while k is unchanged.
     if (!force && k === orgMarkK) return;
@@ -925,7 +953,7 @@ export function mountNercOrgMap(): void {
     canadaProj.scale(projection.scale()).translate(projection.translate() as [number, number]);
     if (canadaFeature) gMap.select<SVGPathElement>("path.canada").attr("d", canadaPath(canadaFeature as never));
     gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
-    gMap.select<SVGPathElement>("path.nation").attr("d", path(nationFeature as never));
+    gMap.select<SVGPathElement>("path.nation").attr("d", path((nationOutline ?? nationFeature) as never));
     buildLandMask();
 
     for (const o of orgs) {
@@ -935,7 +963,7 @@ export function mountNercOrgMap(): void {
       if (o.out_of_footprint) {
         o._x = undefined;
         o._y = undefined;
-        o._frame = o.state === PUERTO_RICO_STATE ? "terr" : undefined;
+        o._frame = TERRITORY_STATES.has(o.state ?? "") ? "terr" : undefined;
         continue;
       }
       if (o.lng == null || o.lat == null) {
@@ -1030,177 +1058,100 @@ export function mountNercOrgMap(): void {
     return landMask[my * maskW + mx] === 1;
   }
 
-  // Pull a displaced point back toward its base so it ends no more than `water`
-  // viewBox units past the coastline. The dot may still sit slightly offshore
-  // (so coastal clusters can breathe) but never far out to sea. Returns the
-  // accepted [x, y]. Walks the base→displaced segment and keeps the furthest
-  // point still on land, then allows a short hop into the water beyond it.
-  function clampToLand(
-    baseX: number,
-    baseY: number,
-    x: number,
-    y: number,
-    water: number,
-  ): [number, number] {
-    if (!landMask) return [x, y];
-    if (onLand(x, y)) return [x, y];
-    const dx = x - baseX;
-    const dy = y - baseY;
-    const dist = Math.hypot(dx, dy);
-    if (dist < 1e-3) return [baseX, baseY];
-    const ux = dx / dist;
-    const uy = dy / dist;
-    // March outward from the base, tracking the last on-land sample.
-    const stepLen = maskScale * 0.75;
-    let lastLand = 0;
-    for (let t = 0; t <= dist; t += stepLen) {
-      if (onLand(baseX + ux * t, baseY + uy * t)) lastLand = t;
-    }
-    // Permit a short hop into the water past the coast (the "80% into the water"
-    // allowance), but never the full requested distance.
-    const allowed = Math.min(dist, lastLand + water);
-    return [baseX + ux * allowed, baseY + uy * allowed];
-  }
-
-  // Resolve overlaps among dots currently eligible at this zoom. This is a
-  // render-space layout only: _x/_y remain the true projected coordinates used
-  // by links and projection math, while _dx/_dy are the temporary screen nudge.
-  function relaxDeclutter(k = transform.k, force = false): void {
+  // Deterministic bubble placement for a zoom bucket. Each org has a true
+  // projected origin (_x/_y); a bubble may move only within placementRadius of
+  // that origin to find space. Higher-priority bubbles place first and claim the
+  // best spots; lower-priority bubbles take whatever room is left. A bubble that
+  // finds no valid spot is hidden for this bucket (_placed = false) and retried
+  // at the next bucket. This is the ONLY thing that changes the visible set, and
+  // it depends only on the zoom bucket — never on pan.
+  //
+  // _x/_y stay the true projected coordinates (used by projection math); _dx/_dy
+  // are the solved screen-space nudge (divided by k at render so the origin stays
+  // true). Positions here are in screen viewBox units = origin * bucket.
+  function computePlacements(k = transform.k, force = false): void {
     const bucket = declutterBucket(k);
     if (!force && bucket === orgLayoutBucket) return;
     orgLayoutBucket = bucket;
 
-    const spiderScreenScale = smoothStep((bucket - SPIDER_START_K) / (SPIDER_FULL_K - SPIDER_START_K));
-    type LayoutItem = {
-      o: Org;
-      baseX: number;
-      baseY: number;
-      x: number;
-      y: number;
-      r: number;
-      mass: number;
-      fixed: boolean;
-    };
-    const items: LayoutItem[] = [];
+    type Item = { o: Org; ox: number; oy: number; r: number };
+    const items: Item[] = [];
     for (const o of orgs) {
       o._dx = 0;
       o._dy = 0;
-      if (o._x == null || o._y == null) continue;
-      // Undisclosed dots are hidden this frame, so they neither move nor push
-      // anyone. The low-zoom item cap below also keeps future/hidden candidates
-      // from pushing visible bubbles far away just to reserve space they will not
-      // actually occupy.
-      if (o._frame !== "terr" && dotStrength(o, bucket) < RENDER_EPS) continue;
-      const baseX = o._x * bucket + (o._rx ?? 0) * spiderScreenScale;
-      const baseY = o._y * bucket + (o._ry ?? 0) * spiderScreenScale;
-      const fixed = o._frame === "terr";
-      const strength = dotStrength(o, bucket);
-      const priority = Math.max(0, visualPriority(o));
-      const visualR = renderedRadius(o, bucket);
-      items.push({
-        o,
-        baseX,
-        baseY,
-        x: baseX,
-        y: baseY,
-        r: visualR,
-        mass: fixed ? 1000 : 1 + priority / 24 + visualR / 16 + strength,
-        fixed,
-      });
-    }
-    if (items.length < 2) return;
-
-    items.sort(
-      (a, b) =>
-        drawPriority(b.o, bucket) - drawPriority(a.o, bucket) ||
-        visualPrioritySort(a.o, b.o),
-    );
-    const itemLimit = declutterItemLimit(bucket);
-    if (items.length > itemLimit) {
-      const fixedItems = items.filter((it) => it.fixed);
-      const movableLimit = Math.max(0, itemLimit - fixedItems.length);
-      const movableItems = items.filter((it) => !it.fixed).slice(0, movableLimit);
-      items.length = 0;
-      items.push(...fixedItems, ...movableItems);
-    }
-
-    const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
-    const cell = Math.max(MAX_RADIUS * unitPerPx, maxR * 2 + 8 * unitPerPx);
-    const looseT = deepDeclutterT(bucket);
-    const basePasses = compact ? bucket < 2.2 ? 48 : 42 : bucket < 2.2 ? 104 : bucket < 4 ? 86 : 64;
-    const passes = Math.round(basePasses + looseT * (compact ? 34 : 54));
-    const gap = 0;
-
-    for (let pass = 0; pass < passes; pass++) {
-      const grid = new Map<string, number[]>();
-      for (let i = 0; i < items.length; i++) {
-        const key = Math.floor(items[i].x / cell) + ":" + Math.floor(items[i].y / cell);
-        const bucketItems = grid.get(key);
-        if (bucketItems) bucketItems.push(i);
-        else grid.set(key, [i]);
+      if (o._x == null || o._y == null) {
+        o._placed = false;
+        continue;
       }
-      let moved = false;
-      for (let i = 0; i < items.length; i++) {
-        const a = items[i];
-        const gx = Math.floor(a.x / cell);
-        const gy = Math.floor(a.y / cell);
-        for (let ox = -1; ox <= 1; ox++) {
-          for (let oy = -1; oy <= 1; oy++) {
-            const bucketItems = grid.get(gx + ox + ":" + (gy + oy));
-            if (!bucketItems) continue;
-            for (const j of bucketItems) {
-              if (j <= i) continue;
-              const b = items[j];
-              let dx = b.x - a.x;
-              let dy = b.y - a.y;
-              let d = Math.hypot(dx, dy);
-              const min = a.r + b.r + gap;
-              if (d >= min) continue;
-              if (d < 1e-4) {
-                const angle = ((i + 1) * 2.399963229728653 + (j + 1) * 0.618033988749895) % (Math.PI * 2);
-                dx = Math.cos(angle);
-                dy = Math.sin(angle);
-                d = 1;
-              }
-              const overlap = min - d;
-              const totalMass = a.mass + b.mass;
-              const moveA = a.fixed ? 0 : (overlap * (b.fixed ? 1 : b.mass / totalMass)) / d;
-              const moveB = b.fixed ? 0 : (overlap * (a.fixed ? 1 : a.mass / totalMass)) / d;
-              a.x -= dx * moveA;
-              a.y -= dy * moveA;
-              b.x += dx * moveB;
-              b.y += dy * moveB;
-              moved = true;
-            }
+      // Territory inset dots are positioned by layoutTerritoryInsets and always
+      // shown — they don't take part in the mainland packing.
+      if (o._frame === "terr") {
+        o._placed = true;
+        continue;
+      }
+      items.push({ o, ox: o._x * bucket, oy: o._y * bucket, r: renderedRadius(o, bucket) });
+    }
+    if (!items.length) return;
+
+    // Higher visual-priority orgs place first; zero-priority roles do not affect
+    // the ordering.
+    items.sort((a, b) => visualPrioritySort(a.o, b.o));
+
+    const radius = placementRadius(bucket);
+    const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
+    const step = Math.max(5 * unitPerPx, radius / 7);
+    const offsets = candidatePositions(radius, step);
+
+    // Spatial grid of already-placed bubbles for O(1) overlap queries.
+    const cell = Math.max(2 * maxR + 2 * unitPerPx, step);
+    const grid = new Map<string, Array<{ x: number; y: number; r: number }>>();
+    const cellKey = (cx: number, cy: number): string =>
+      Math.floor(cx / cell) + ":" + Math.floor(cy / cell);
+    const fits = (cx: number, cy: number, r: number): boolean => {
+      const gx = Math.floor(cx / cell);
+      const gy = Math.floor(cy / cell);
+      for (let ix = -1; ix <= 1; ix++) {
+        for (let iy = -1; iy <= 1; iy++) {
+          const arr = grid.get(gx + ix + ":" + (gy + iy));
+          if (!arr) continue;
+          for (const p of arr) {
+            const dx = p.x - cx;
+            const dy = p.y - cy;
+            const min = p.r + r;
+            if (dx * dx + dy * dy < min * min) return false;
           }
         }
       }
-      if (!moved) break;
-    }
+      return true;
+    };
+    const claim = (cx: number, cy: number, r: number): void => {
+      const key = cellKey(cx, cy);
+      const arr = grid.get(key);
+      if (arr) arr.push({ x: cx, y: cy, r });
+      else grid.set(key, [{ x: cx, y: cy, r }]);
+    };
 
-    const cap = maxDeclutterOffset(bucket);
-    // How far a dot may end up past the coastline, in viewBox units. Tight when
-    // zoomed out (no 1000-mile-offshore dots), looser as you zoom in and the
-    // coast itself spreads across more screen. ("80% into the water" — coastal
-    // dots can sit just offshore, never far out to sea.)
-    const waterBudget = (compact ? 7 : 10) + Math.max(0, bucket - 1) * 4 + looseT * (compact ? 18 : 28);
     for (const it of items) {
-      if (it.fixed) continue;
-      let dx = it.x - it.baseX;
-      let dy = it.y - it.baseY;
-      const m = Math.hypot(dx, dy);
-      if (m > cap) {
-        dx = (dx / m) * cap;
-        dy = (dy / m) * cap;
+      let placed = false;
+      for (const [dx, dy] of offsets) {
+        const cx = it.ox + dx;
+        const cy = it.oy + dy;
+        // Center must stay on land (the coastal edge may spill over water). The
+        // mask is base-space, so divide the screen-space candidate by the bucket.
+        if (!onLand(cx / bucket, cy / bucket)) continue;
+        if (!fits(cx, cy, it.r)) continue;
+        it.o._dx = dx;
+        it.o._dy = dy;
+        it.o._placed = true;
+        claim(cx, cy, it.r);
+        placed = true;
+        break;
       }
-      // Clamp against the land silhouette in viewBox space. The anchor is the
-      // dot's true projected location (always on/near land); the displaced point
-      // adds the solved offset (positions in the solver are scaled by `bucket`).
-      const anchorX = it.o._x as number;
-      const anchorY = it.o._y as number;
-      const [vx, vy] = clampToLand(anchorX, anchorY, anchorX + dx / bucket, anchorY + dy / bucket, waterBudget);
-      it.o._dx = (vx - anchorX) * bucket;
-      it.o._dy = (vy - anchorY) * bucket;
+      if (!placed) {
+        it.o._placed = false;
+        it.o._dx = 0;
+        it.o._dy = 0;
+      }
     }
   }
 
@@ -1271,7 +1222,6 @@ export function mountNercOrgMap(): void {
     const margin = 90;
     const candidates: Org[] = [];
     const visibleOrgs: Org[] = [];
-    const onScreenOrgs: Org[] = [];
     let shownCount = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
@@ -1283,36 +1233,16 @@ export function mountNercOrgMap(): void {
       o._sx = sx;
       o._sy = sy;
       const onScreen = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
-      // Progressive disclosure: a dot below its reveal window is not drawn at all
-      // (not merely faded), so the overview stays high-priority and lower entities
-      // appear as you zoom in. Hover/selected/tour and territory dots always show.
-      const due = o._frame === "terr" || dotStrength(o, k) >= RENDER_EPS;
+      // Disclosure is zoom-only: a dot shows once it found a non-overlapping spot
+      // at this zoom bucket (computePlacements sets _placed), so panning never
+      // changes the set. Hover/selected/tour and territory dots always show.
+      const due = o._frame === "terr" || o._placed === true;
       const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
       const vis = onScreen && (due || forced);
       o._vis = vis;
-      if (onScreen) onScreenOrgs.push(o);
       if (!vis) continue;
       shownCount++;
       visibleOrgs.push(o);
-    }
-
-    if (!tourActive && !tourRunning && visibleOrgs.length < Math.min(onScreenOrgs.length, visibleBubbleTarget(k))) {
-      const target = Math.min(onScreenOrgs.length, visibleBubbleTarget(k));
-      const visibleIds = new Set(visibleOrgs.map((o) => o.ncr_id));
-      const extras = onScreenOrgs
-        .filter((o) => !visibleIds.has(o.ncr_id) && o._frame !== "terr")
-        .sort(
-          (a, b) =>
-            visualPrioritySort(a, b) ||
-            a.entity_name.localeCompare(b.entity_name),
-        );
-      for (const o of extras) {
-        if (visibleOrgs.length >= target) break;
-        o._vis = true;
-        visibleOrgs.push(o);
-        visibleIds.add(o.ncr_id);
-      }
-      shownCount = visibleOrgs.length;
     }
 
     for (const o of visibleOrgs) {
@@ -1368,11 +1298,6 @@ export function mountNercOrgMap(): void {
     // one so top-row org labels don't hide behind the title chip.
     const topSafe = (compact && !tourActive ? 72 : tourActive ? 0 : 44) * unitPerPx;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
-    // Low zoom still thins tight same-token clusters. Once the user zooms in,
-    // physical non-overlap becomes the only suppression rule.
-    const clusterRadius = k < 2.6
-      ? (compact ? Math.max(9, 22 - Math.max(0, k - 1.6) * 4) : k < 1.25 ? 10 : 8) * unitPerPx
-      : 0;
     const labeledClusters: Array<{ x: number; y: number }> = [];
     // Phones spread labels a little at first; the inflation now fades back out as
     // you zoom in (was growing), so zoomed-in iOS fills space instead of thinning.
@@ -1449,15 +1374,12 @@ export function mountNercOrgMap(): void {
         continue;
       }
 
-      // 2/3. FLOAT — de-dupe + thin tight clusters (floating labels only).
-      if (
-        !forceLabel &&
-        ((k < 2.2 && usedLabels.has(brand)) ||
-          (clusterRadius > 0 && labeledClusters.some((p) => (p.x - sx) ** 2 + (p.y - sy) ** 2 <= clusterRadius ** 2)) ||
-          !bubbleClears(o))
-      ) {
-        continue;
-      }
+      // Non-forced dots get an INSIDE label or nothing — no floating labels — so
+      // a label never moves or flickers as you pan (it lives in its bubble, whose
+      // size depends only on zoom). A token too big to sit inside simply waits
+      // until you zoom in and the bubble grows. Hover/selection still floats a
+      // name below the dot so an inspected entity is always named.
+      if (!forceLabel) continue;
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
       const labelPadX = (compact ? 4.5 : 5) * unitPerPx;
@@ -1509,19 +1431,18 @@ export function mountNercOrgMap(): void {
       placedCount++;
     }
 
-    const finalVisibleOrgs = visibleOrgs.filter((o) => {
-      const keep = labelState.has(o.ncr_id);
-      o._vis = keep;
-      return keep;
-    });
+    // Every disclosed bubble renders (labels are a separate layer placed on top of
+    // a subset), so the map stays dense — "show as much as you can" — rather than
+    // only showing bubbles that happened to win a label.
+    const finalVisibleOrgs = visibleOrgs;
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
       // Radius is set in transform-space (divided by the group scale). It changes
-      // only with zoom and visual priority, so write only when the resolved radius
-      // actually moved — cheap, no storm.
+      // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
+      // so write only when the resolved radius actually moved — cheap, no storm.
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
         node.setAttribute("r", String(rr / k));
@@ -1693,13 +1614,16 @@ export function mountNercOrgMap(): void {
     keepFocusedOrgInView(k);
   }
 
-  // Lay Puerto Rico's offshore orgs out as a labelled cluster of dots — no
-  // framed box. Geocoded orgs keep relative geography via geoMercator fitExtent;
-  // ungeocoded orgs fall into a centred grid. Other out-of-footprint territories
-  // are intentionally hidden from the map.
+  // Lay out-of-footprint territory orgs as labelled clusters of dots — no framed
+  // box. Geocoded orgs keep relative geography via geoMercator fitExtent;
+  // ungeocoded orgs fall into a centred grid.
   function layoutTerritoryInsets(): void {
     territoryBoxes = [];
     const terrProj = geoMercator();
+    const terrPath = geoPath(terrProj);
+    // The real island outline (PR/VI) from the states topojson, found by FIPS id.
+    const featureFor = (code: string): unknown =>
+      stateFeatures.find((f) => String((f as { id?: string | number }).id ?? "") === TERRITORY_FIPS[code]);
     const margin = 6 * unitPerPx;
     const bottomMargin = (compact ? 64 : 8) * unitPerPx;
     const labelH = (compact ? 12 : 11) * unitPerPx + 5 * unitPerPx;
@@ -1707,17 +1631,20 @@ export function mountNercOrgMap(): void {
 
     const present = new Map<string, Org[]>();
     for (const o of orgs) {
-      if (!o.out_of_footprint || o.state !== PUERTO_RICO_STATE) continue;
-      const arr = present.get(o.state);
+      const code = o.state;
+      if (!code || !o.out_of_footprint || !TERRITORY_STATES.has(code)) continue;
+      const arr = present.get(code);
       if (arr) arr.push(o);
-      else present.set(o.state, [o]);
+      else present.set(code, [o]);
     }
 
     function boxSize(code: string): [number, number] {
       const u = unitPerPx;
       switch (code) {
         case "PR":
-          return [(compact ? 140 : 162) * u, (compact ? 104 : 118) * u];
+          return [(compact ? 148 : 176) * u, (compact ? 110 : 128) * u];
+        case "VI":
+          return [(compact ? 88 : 96) * u, (compact ? 72 : 78) * u];
         default:
           return [(compact ? 74 : 84) * u, (compact ? 64 : 70) * u];
       }
@@ -1726,7 +1653,7 @@ export function mountNercOrgMap(): void {
     function sortTerritory(list: Org[]): Org[] {
       return [...list].sort(
         (a, b) =>
-          b.weight - a.weight ||
+          visualPrioritySort(a, b) ||
           Number(b.roles.includes("DP")) - Number(a.roles.includes("DP")) ||
           a.entity_name.localeCompare(b.entity_name),
       );
@@ -1740,18 +1667,47 @@ export function mountNercOrgMap(): void {
       boxW: number,
       boxH: number,
       list: Org[],
+      landFeature: unknown,
     ): void {
       const geocoded = list.filter((o) => o.lat != null && o.lng != null);
       const ungeocoded = list.filter((o) => o.lat == null || o.lng == null);
 
-      if (geocoded.length) {
-        terrProj.fitExtent(
-          [
-            [x + innerPad, y + labelH + innerPad * 0.5],
-            [x + boxW - innerPad, y + boxH - innerPad],
+      const rect: [[number, number], [number, number]] = [
+        [x + innerPad, y + labelH + innerPad * 0.5],
+        [x + boxW - innerPad, y + boxH - innerPad],
+      ];
+      // Fit to the island outline plus org coordinates so every geocoded entity
+      // stays on the land shape at geographic positions.
+      let landPath: string | null = null;
+      let fitTarget: unknown = null;
+      if (landFeature && geocoded.length) {
+        fitTarget = {
+          type: "FeatureCollection",
+          features: [
+            landFeature,
+            {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "MultiPoint",
+                coordinates: geocoded.map((o) => [o.lng as number, o.lat as number]),
+              },
+            },
           ],
-          { type: "MultiPoint", coordinates: geocoded.map((o) => [o.lng as number, o.lat as number]) } as never,
-        );
+        };
+      } else if (landFeature) {
+        fitTarget = landFeature;
+      } else if (geocoded.length) {
+        fitTarget = {
+          type: "MultiPoint",
+          coordinates: geocoded.map((o) => [o.lng as number, o.lat as number]),
+        };
+      }
+      if (fitTarget) {
+        terrProj.fitExtent(rect, fitTarget as never);
+        if (landFeature) landPath = terrPath(landFeature as never);
+      }
+      if (fitTarget) {
         for (const o of geocoded) {
           const p = terrProj([o.lng as number, o.lat as number]);
           o._frame = "terr";
@@ -1806,14 +1762,57 @@ export function mountNercOrgMap(): void {
         labelHalf * 2 >= W - edge * 2
           ? W / 2
           : Math.min(W - edge - labelHalf, Math.max(edge + labelHalf, rawLx));
-      territoryBoxes.push({ code, label, x, y, w: boxW, h: boxH, lx, ly });
+      territoryBoxes.push({ code, label, x, y, w: boxW, h: boxH, lx, ly, landPath });
     }
 
-    const prList = present.get(PUERTO_RICO_STATE);
-    if (prList?.length) {
-      const [prW, prH] = boxSize("PR");
-      const y = compact ? Math.min(H - bottomMargin - prH, H * 0.7) : H - bottomMargin - prH;
-      placeInBox("PR", "Puerto Rico", W - margin - prW, y, prW, prH, sortTerritory(prList));
+    type TerrEntry = { code: string; label: string; list: Org[]; w: number; h: number };
+    const entries: TerrEntry[] = [];
+    for (const code of TERRITORY_LAYOUT_ORDER) {
+      const list = present.get(code);
+      if (!list?.length) continue;
+      const [w, h] = boxSize(code);
+      entries.push({ code, label: TERRITORY_LABELS[code] ?? code, list: sortTerritory(list), w, h });
+    }
+    if (!entries.length) return;
+
+    const gap = (compact ? 6 : 8) * unitPerPx;
+    if (compact) {
+      let yBottom = H - bottomMargin;
+      for (const e of entries) {
+        yBottom -= e.h;
+        const { x: tx, y: ty } = territoryInsetPos(
+          e.code,
+          W - margin - e.w,
+          yBottom,
+          e.w,
+          e.h,
+          compact,
+          unitPerPx,
+          W,
+          H,
+        );
+        placeInBox(e.code, e.label, tx, ty, e.w, e.h, e.list, featureFor(e.code));
+        yBottom -= gap;
+      }
+    } else {
+      let xRight = W - margin;
+      for (const e of entries) {
+        xRight -= e.w;
+        const y = H - bottomMargin - e.h;
+        const { x: tx, y: ty } = territoryInsetPos(
+          e.code,
+          xRight,
+          y,
+          e.w,
+          e.h,
+          compact,
+          unitPerPx,
+          W,
+          H,
+        );
+        placeInBox(e.code, e.label, tx, ty, e.w, e.h, e.list, featureFor(e.code));
+        xRight -= gap;
+      }
     }
   }
 
@@ -1824,6 +1823,14 @@ export function mountNercOrgMap(): void {
   // in redraw (kept constant on-screen). Geometry changes only on resize, so
   // this runs from project().
   function drawTerritoryFrames(): void {
+    // Real island land first (drawn under the territory dots in gOverlay), then
+    // the region name on top.
+    gInsets
+      .selectAll<SVGPathElement, TerritoryBox>("path.terr-land")
+      .data(territoryBoxes.filter((d) => d.landPath != null), (d) => (d as TerritoryBox).code)
+      .join("path")
+      .attr("class", "terr-land")
+      .attr("d", (d) => d.landPath as string);
     gInsets
       .selectAll<SVGTextElement, TerritoryBox>("text.terr-label")
       .data(territoryBoxes, (d) => (d as TerritoryBox).code)
@@ -2427,12 +2434,15 @@ export function mountNercOrgMap(): void {
 
     const topoAny = topo as { objects: Record<string, unknown> };
     const states = feature(topo as never, topoAny.objects.states as never) as never as { features: unknown[] };
-    nationFeature = feature(topo as never, topoAny.objects.nation as never) as never;
-    stateFeatures = states.features;
+    stateFeatures = states.features.filter(
+      (f) => !isExcludedTerritoryFips(String((f as { id?: string | number }).id ?? "")),
+    );
+    nationFeature = { type: "FeatureCollection", features: stateFeatures };
+    nationOutline = mesh(topo as never, topoAny.objects.states as never, (a, b) => a === b);
 
     // Draw order inside the basemap group: Canada (context) → states → nation.
     if (canadaFeature) gMap.append("path").attr("class", "canada");
-    gMap.selectAll("path.state").data(states.features).join("path").attr("class", "state");
+    gMap.selectAll("path.state").data(stateFeatures).join("path").attr("class", "state");
     gMap.append("path").attr("class", "nation");
 
     measure();
@@ -2607,6 +2617,7 @@ export function mountNercOrgMap(): void {
           H,
           compact,
           unitPerPx: +unitPerPx.toFixed(3),
+          onScreenCount: placeableOrgs.filter((o) => o._sx != null && o._sx >= -90 && o._sx <= W + 90 && (o._sy as number) >= -90 && (o._sy as number) <= H + 90).length,
           visible: vis.length,
           labels: labeled.length,
           inside: labeled.filter((v) => v.inside).length,
