@@ -304,6 +304,16 @@
       "code": "OTP",
       "ncr_id": "NCR01023",
       "meaning": "Otter Tail Power Company"
+    },
+    {
+      "code": "ALTW",
+      "ncr_id": "NCR00962",
+      "meaning": "Alliant Energy West / Wisconsin Power and Light"
+    },
+    {
+      "code": "MEC",
+      "ncr_id": "NCR00824",
+      "meaning": "MidAmerican Energy Company"
     }
   ]
 }
