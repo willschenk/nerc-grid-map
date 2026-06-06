@@ -735,6 +735,25 @@ export function mountNercOrgMap(): void {
     return compact ? TO_ONLY_REVEAL_K_COMPACT : TO_ONLY_REVEAL_K;
   }
 
+  // GO/GOP-only dots and TO-only transmission owners disclose as pinpoints; this
+  // ramps size quickly in the first ~5–7 zoom steps after reveal so a nudge in
+  // makes them inspectable (especially on phone screens).
+  function isMicroOrg(o: Org): boolean {
+    return isGenerationOnly(o) || isTransmissionOwnerOnly(o);
+  }
+
+  function microOrgRevealK(o: Org): number {
+    if (isGenerationOnly(o)) return generationOnlyRevealK();
+    if (isTransmissionOwnerOnly(o)) return transmissionOwnerOnlyRevealK();
+    return generationOnlyRevealK();
+  }
+
+  function postRevealBoostT(o: Org, k: number): number {
+    if (!isMicroOrg(o) || k < microOrgRevealK(o)) return 0;
+    const span = isGenerationOnly(o) ? (compact ? 7 : 5) : compact ? 5 : 4;
+    return smoothStep((k - microOrgRevealK(o)) / span);
+  }
+
   function canDisplayOrg(o: Org, k: number): boolean {
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     return !isGenerationOnly(o) || k >= generationOnlyRevealK();
@@ -829,7 +848,7 @@ export function mountNercOrgMap(): void {
   // GO/GOP and minor utilities at overview and mid zoom; catch-up ramps only deep in.
   function growthDominanceFactor(o: Org, k: number): number {
     if (isGridLeadershipOrg(o)) return 1;
-    if (isGenerationOnly(o)) return 0.14 + 0.1 * smoothStep((k - 16) / 6);
+    if (isGenerationOnly(o)) return 0.12 + 0.88 * postRevealBoostT(o, k);
     const pri = visualPriority(o);
     const lowPriT = smoothStep((48 - pri) / 40);
     const deepCatchUpT = smoothStep((k - 7) / 5);
@@ -1854,7 +1873,10 @@ export function mountNercOrgMap(): void {
         (priority >= 50 && k >= (midwest ? 1.85 : 2.05)) ||
         k >= (midwest ? 2.45 : 2.6);
       if (!allowFloat) continue;
-      const font = labelFontPx(o, k) * unitPerPx;
+      // Floating labels aren't bounded by a bubble chord (unlike inside labels),
+      // so cap their on-screen size to keep deep zoom from producing oversized
+      // text that overpowers the map.
+      const font = Math.min(labelFontPx(o, k), compact ? 20 : 24) * unitPerPx;
       const padScale = midwest ? 0.92 : 1;
       const labelPadX = (compact ? 4.5 : 5) * unitPerPx * padScale;
       const labelPadY = (compact ? 4 : 4.5) * unitPerPx * padScale;
