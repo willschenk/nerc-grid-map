@@ -19,6 +19,13 @@
   min-width: 0;
 }
 
+.nerc-stage {
+  --nerc-chrome-top: max(0.5rem, env(safe-area-inset-top, 0px));
+  --nerc-topbar-block: 3.15rem;
+  --nerc-popover-top: calc(var(--nerc-chrome-top) + var(--nerc-topbar-block) + 0.3rem);
+  --nerc-panel-top: calc(var(--nerc-chrome-top) + var(--nerc-topbar-block) + 1.15rem);
+}
+
 #nerc-svg {
   position: absolute;
   inset: 0;
@@ -268,19 +275,19 @@
 
 .nerc-topbar {
   position: absolute;
-  top: max(0.75rem, env(safe-area-inset-top, 0px));
-  left: max(0.75rem, env(safe-area-inset-left, 0px));
-  right: max(0.75rem, env(safe-area-inset-right, 0px));
+  top: var(--nerc-chrome-top);
+  left: max(0.5rem, env(safe-area-inset-left, 0px));
+  right: max(0.5rem, env(safe-area-inset-right, 0px));
   z-index: 20;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.65rem;
+  gap: 0.45rem;
+  padding: 0.4rem 0.5rem;
   border: 1px solid rgba(31, 47, 42, 0.14);
-  border-radius: 8px;
+  border-radius: 7px;
   background: rgba(255, 255, 255, 0.84);
-  box-shadow: 0 16px 38px rgba(20, 31, 28, 0.14);
+  box-shadow: 0 10px 24px rgba(20, 31, 28, 0.12);
 }
 
 .nerc-brand {
@@ -289,7 +296,7 @@
 
 #nerc-app h1 {
   margin: 0;
-  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  font-size: clamp(1rem, 1.5vw, 1.22rem);
   line-height: 1;
   letter-spacing: 0;
 }
@@ -385,7 +392,7 @@
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.28rem;
 }
 
 .nerc-icon-btn,
@@ -400,23 +407,23 @@
 }
 
 .nerc-icon-btn {
-  width: 2.05rem;
-  height: 2.05rem;
+  width: 1.85rem;
+  height: 1.85rem;
   display: inline-grid;
   place-items: center;
-  border-radius: 7px;
+  border-radius: 6px;
   font-weight: 800;
   line-height: 1;
 }
 
 .nerc-letter-button,
 .nerc-info-button {
-  min-width: 2.05rem;
+  min-width: 1.85rem;
   width: auto;
-  padding-inline: 0.5rem;
+  padding-inline: 0.42rem;
   font-family: ui-serif, Georgia, serif;
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
 }
 
 .nerc-letter-button.nerc-letter-typing,
@@ -426,13 +433,13 @@
 }
 
 .nerc-action-btn {
-  min-height: 2.05rem;
+  min-height: 1.85rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 7px;
-  padding: 0.25rem 0.58rem;
-  font-size: 0.78rem;
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.74rem;
   line-height: 1;
   white-space: nowrap;
 }
@@ -620,16 +627,16 @@
 }
 
 .nerc-panel {
-  top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 5.55rem);
-  max-height: calc(100dvh - 7rem);
+  top: var(--nerc-panel-top);
+  max-height: calc(100dvh - var(--nerc-panel-top) - 0.85rem);
   padding: 0.95rem 1rem;
   overflow-y: auto;
   font-size: 0.84rem;
 }
 
 .nerc-info-panel {
-  top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.8rem);
-  max-height: calc(100dvh - 7rem);
+  top: var(--nerc-popover-top);
+  max-height: calc(100dvh - var(--nerc-popover-top) - 0.85rem);
   padding: 1rem 1.05rem;
   overflow-y: auto;
   font-size: 0.84rem;
@@ -638,11 +645,11 @@
 /* Metrics popover, anchored under the top bar. */
 .nerc-metrics-panel {
   position: absolute;
-  top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.8rem);
-  left: max(0.75rem, env(safe-area-inset-left, 0px));
+  top: var(--nerc-popover-top);
+  left: max(0.5rem, env(safe-area-inset-left, 0px));
   z-index: 24;
   width: min(27rem, calc(100vw - 1.5rem));
-  max-height: calc(100dvh - 7rem);
+  max-height: calc(100dvh - var(--nerc-popover-top) - 0.85rem);
   overflow-y: auto;
   display: grid;
   gap: 0.6rem;
@@ -1008,6 +1015,10 @@
 }
 
 @media (max-width: 1120px) {
+  .nerc-stage {
+    --nerc-topbar-block: 3.85rem;
+  }
+
   .nerc-topbar {
     grid-template-columns: minmax(12rem, 1fr) auto;
   }
@@ -1015,19 +1026,20 @@
   .nerc-map-actions {
     align-self: start;
   }
-
-  .nerc-panel {
-    top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 8.3rem);
-  }
 }
 
 @media (max-width: 760px) {
+  .nerc-stage {
+    --nerc-chrome-top: max(0.4rem, env(safe-area-inset-top, 0px));
+    --nerc-topbar-block: 3.55rem;
+  }
+
   .nerc-topbar {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.48rem;
-    /* Sit a touch higher on phones. */
-    top: max(0.4rem, env(safe-area-inset-top, 0px));
     padding-block: 0.48rem;
+    left: max(0.75rem, env(safe-area-inset-left, 0px));
+    right: max(0.75rem, env(safe-area-inset-right, 0px));
   }
 
   .nerc-map-actions {
@@ -1068,7 +1080,7 @@
   /* On phones the caption sits up near the top (clear of the home indicator
      and the bottom tour control) and reads large. */
   .nerc-tour-status {
-    top: calc(max(0.75rem, env(safe-area-inset-top, 0px)) + 4.6rem);
+    top: calc(var(--nerc-chrome-top) + var(--nerc-topbar-block) + 0.35rem);
     bottom: auto;
   }
 
@@ -1102,6 +1114,10 @@
 }
 
 @media (max-width: 520px) {
+  .nerc-stage {
+    --nerc-topbar-block: 3.65rem;
+  }
+
   .nerc-topbar {
     grid-template-columns: minmax(0, 1fr) auto;
     padding: 0.5rem;

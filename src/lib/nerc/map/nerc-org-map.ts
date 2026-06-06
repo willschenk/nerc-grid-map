@@ -1041,7 +1041,7 @@ export function mountNercOrgMap(): void {
     if (!selectedOrg && now - lastUserZoomAt > 320) return;
     const r = renderedRadius(focused, k);
     const sideSafe = (compact ? 52 : 44) * unitPerPx + r;
-    const topSafe = (compact ? 92 : 48) * unitPerPx + r;
+    const topSafe = (compact ? 88 : 40) * unitPerPx + r;
     const bottomSafe = (compact ? 84 : 48) * unitPerPx + r;
     let dx = 0;
     let dy = 0;
@@ -1485,7 +1485,7 @@ export function mountNercOrgMap(): void {
     // Keep labels from tucking under the floating topbar. Phones reserve a tall
     // band (the bar is bigger relative to the screen); desktop reserves a slim
     // one so top-row org labels don't hide behind the title chip.
-    const topSafe = (compact && !tourActive ? 72 : tourActive ? 0 : 44) * unitPerPx;
+    const topSafe = (compact && !tourActive ? 68 : tourActive ? 0 : 36) * unitPerPx;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
     const labeledClusters: Array<{ x: number; y: number }> = [];
     // Phones spread labels a little at first; the inflation now fades back out as
