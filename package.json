@@ -16,6 +16,8 @@
     "nerc:ingest": "node scripts/nerc/ingest.mjs",
     "nerc:build": "node scripts/nerc/build-orgs.mjs",
     "nerc:qa": "node scripts/nerc/qa.mjs",
+    "nerc:payload-check": "node scripts/nerc/check-payload-split.mjs",
+    "perf:audit": "node scripts/perf/audit-map.mjs",
     "deploy": "npm run build && bash scripts/deploy-pages.sh"
   },
   "dependencies": {

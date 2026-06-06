@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Build step: read geocoded NCR records, enrich them (weight, color, flags), and
-// write the static public/orgs.json the map loads at runtime. Also stage the US
-// basemap into public/nerc/. Runs from npm "prebuild" so the data is always fresh.
+// write the canonical public/orgs.json plus split runtime payloads. Also stage
+// the US basemap into public/nerc/. Runs from npm "prebuild" so the data is fresh.
 // (Spec Part 3.1: coordinates pre-baked into a static JSON at build time.)
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
@@ -109,6 +109,8 @@ const MAP_COMBINES = resolve(root, "src/data/nerc/map-combines.json");
 
 const OUT_DIR = resolve(root, "public/nerc");
 const OUT_ORGS = resolve(OUT_DIR, "orgs.json");
+const OUT_RENDER_ORGS = resolve(OUT_DIR, "orgs-render.json");
+const OUT_ORG_DETAILS = resolve(OUT_DIR, "org-details.json");
 const BASEMAP_SRC = resolve(root, "node_modules/us-atlas/states-10m.json");
 const BASEMAP_OUT = resolve(OUT_DIR, "states-10m.json");
 // Canada landmass, drawn as faint context north of the border (Canadian NERC
@@ -192,6 +194,76 @@ function stageBasemap() {
   writeFileSync(BASEMAP_OUT, JSON.stringify(raw));
 }
 
+const RENDER_ORG_FIELDS = [
+  "ncr_id",
+  "entity_name",
+  "acronym",
+  "acronym_source",
+  "name_shortest",
+  "name_short",
+  "name_normal",
+  "name_major",
+  "region",
+  "roles",
+  "role_count",
+  "is_private",
+  "lat",
+  "lng",
+  "city",
+  "state",
+  "country",
+  "geo_confidence",
+  "geo_needs_review",
+  "weight",
+  "color",
+  "is_iso_rto",
+  "org_type",
+  "eia_utility_id",
+  "seed",
+  "nerc_registered",
+  "out_of_footprint",
+  "map_combine_label",
+];
+
+const ORG_DETAIL_FIELDS = [
+  "headquarters_address",
+  "geo_source",
+  "geo_source_url",
+  "geo_notes",
+  "parent_org",
+  "combined_members",
+  "map_combine_summary",
+];
+
+function pickFields(org, fields) {
+  const out = {};
+  for (const field of fields) {
+    if (Object.prototype.hasOwnProperty.call(org, field)) out[field] = org[field];
+  }
+  return out;
+}
+
+function buildSplitPayloads(payload) {
+  const renderOrgs = payload.orgs.map((org) => pickFields(org, RENDER_ORG_FIELDS));
+  const details = Object.fromEntries(
+    payload.orgs.map((org) => [org.ncr_id, pickFields(org, ORG_DETAIL_FIELDS)]),
+  );
+  return {
+    renderPayload: {
+      generated_at: payload.generated_at,
+      source_file: payload.source_file,
+      count: renderOrgs.length,
+      orgs: renderOrgs,
+    },
+    detailPayload: {
+      generated_at: payload.generated_at,
+      source_file: payload.source_file,
+      count: payload.orgs.length,
+      details,
+    },
+  };
+}
+
 function main() {
   const { file, records } = loadRecords();
   const names = loadNameTable();
@@ -213,13 +285,17 @@ function main() {
 
   mkdirSync(OUT_DIR, { recursive: true });
 
+  const generatedAt = new Date().toISOString();
   const payload = {
-    generated_at: new Date().toISOString(),
+    generated_at: generatedAt,
     source_file: file.replace(root + "/", ""),
     count: orgs.length,
     orgs,
   };
+  const { renderPayload, detailPayload } = buildSplitPayloads(payload);
   writeFileSync(OUT_ORGS, JSON.stringify(payload));
+  writeFileSync(OUT_RENDER_ORGS, JSON.stringify(renderPayload));
+  writeFileSync(OUT_ORG_DETAILS, JSON.stringify(detailPayload));
 
   stageBasemap();
   stageCanada();
@@ -229,7 +305,9 @@ function main() {
   console.log(`nerc: ISOs/RTOs (weight>=35): ${isoCount}`);
   console.log(`nerc: by region:`, tally(orgs, "region"));
   console.log(`nerc: by confidence:`, tally(orgs, "geo_confidence"));
-  console.log(`nerc: wrote ${OUT_ORGS.replace(root + "/", "")} and basemap`);
+  console.log(
+    `nerc: wrote ${OUT_ORGS.replace(root + "/", "")}, ${OUT_RENDER_ORGS.replace(root + "/", "")}, ${OUT_ORG_DETAILS.replace(root + "/", "")} and basemap`,
+  );
 }
 
 main();

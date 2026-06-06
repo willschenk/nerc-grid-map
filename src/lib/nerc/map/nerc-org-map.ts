@@ -26,14 +26,14 @@ type Org = {
   is_private: boolean;
   lat: number | null;
   lng: number | null;
-  headquarters_address: string | null;
+  headquarters_address?: string | null;
   city: string | null;
   state: string | null;
   country: string;
   geo_confidence: string;
-  geo_source: string | null;
+  geo_source?: string | null;
   geo_source_url?: string | null;
-  geo_notes: string;
+  geo_notes?: string | null;
   geo_needs_review?: boolean;
   weight: number;
   color: string;
@@ -89,6 +89,13 @@ type OrgsPayload = {
   source_file?: string;
   count?: number;
   orgs: Org[];
+};
+
+type OrgDetailsPayload = {
+  generated_at?: string;
+  source_file?: string;
+  count?: number;
+  details: Record<string, Partial<Org>>;
 };
 
 // Viewbox dimensions. These are recomputed from the live element size so the
@@ -421,6 +428,7 @@ export function mountNercOrgMap(): void {
   const root = document.querySelector<HTMLElement>("[data-nerc-map]");
   if (!root || root.dataset.mounted === "true") return;
   root.dataset.mounted = "true";
+  const dataBase = import.meta.env.BASE_URL;
 
   const svgNode = byId<SVGSVGElement>("nerc-svg");
   const svg = select(svgNode);
@@ -462,6 +470,9 @@ export function mountNercOrgMap(): void {
   let zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> | null = null;
   let orgs: Org[] = [];
   let placeableOrgs: Org[] = [];
+  let orgDetails = new Map<string, Partial<Org>>();
+  let orgDetailsLoaded = false;
+  let orgDetailsPromise: Promise<Map<string, Partial<Org>>> | null = null;
   const places = PLACES as Place[];
   let selectedOrg: Org | null = null;
   let hoverOrg: Org | null = null;
@@ -504,6 +515,7 @@ export function mountNercOrgMap(): void {
   // Last computed label placement, stashed for the optional ?audit UX harness so
   // it can report which dots got an inside vs floating label without recomputing.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
+  let tooltipRequest = 0;
 
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
@@ -513,6 +525,53 @@ export function mountNercOrgMap(): void {
   function rememberOrg(o: Org): void {
     recentOrg = o;
     recentOrgAt = performance.now();
+  }
+
+  function applyOrgDetails(o: Org): Org {
+    const detail = orgDetails.get(o.ncr_id);
+    if (detail) Object.assign(o, detail);
+    return o;
+  }
+
+  function applyAllOrgDetails(): void {
+    for (const o of orgs) applyOrgDetails(o);
+  }
+
+  function hasOrgDetails(o: Org): boolean {
+    return orgDetailsLoaded || orgDetails.has(o.ncr_id);
+  }
+
+  function loadOrgDetails(): Promise<Map<string, Partial<Org>>> {
+    if (orgDetailsPromise) return orgDetailsPromise;
+    orgDetailsPromise = loadJson<OrgDetailsPayload>(`${dataBase}nerc/org-details.json`)
+      .then((payload) => {
+        orgDetails = new Map(Object.entries(payload.details ?? {}));
+        orgDetailsLoaded = true;
+        applyAllOrgDetails();
+        return orgDetails;
+      })
+      .catch((err) => {
+        orgDetailsPromise = null;
+        throw err;
+      });
+    return orgDetailsPromise;
+  }
+
+  async function ensureOrgDetails(o: Org): Promise<Org> {
+    if (hasOrgDetails(o)) return applyOrgDetails(o);
+    await loadOrgDetails();
+    return applyOrgDetails(o);
+  }
+
+  function scheduleOrgDetailsLoad(): void {
+    const idle = (window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout?: number }) => number;
+    }).requestIdleCallback;
+    const load = (): void => {
+      void loadOrgDetails().catch((err) => console.warn("NERC org details were not available", err));
+    };
+    if (idle) idle(load, { timeout: 3000 });
+    else window.setTimeout(load, 250);
   }
 
   function pointerViewPoint(ev: MouseEvent): { x: number; y: number } | null {
@@ -1986,16 +2045,39 @@ export function mountNercOrgMap(): void {
   }
 
   function showTooltip(o: Org, ev: MouseEvent): void {
-    renderTooltip(o);
-    placeTooltip(ev.clientX, ev.clientY);
+    const request = ++tooltipRequest;
+    const x = ev.clientX;
+    const y = ev.clientY;
+    renderTooltip(applyOrgDetails(o));
+    placeTooltip(x, y);
+    if (!hasOrgDetails(o)) {
+      void ensureOrgDetails(o)
+        .then((fullOrg) => {
+          if (request !== tooltipRequest || hoverOrg?.ncr_id !== fullOrg.ncr_id) return;
+          renderTooltip(fullOrg);
+          placeTooltip(x, y);
+        })
+        .catch(() => {});
+    }
   }
 
   function showTooltipAt(o: Org, anchorX: number, anchorY: number): void {
-    renderTooltip(o);
+    const request = ++tooltipRequest;
+    renderTooltip(applyOrgDetails(o));
     placeTooltip(anchorX, anchorY);
+    if (!hasOrgDetails(o)) {
+      void ensureOrgDetails(o)
+        .then((fullOrg) => {
+          if (request !== tooltipRequest || hoverOrg?.ncr_id !== fullOrg.ncr_id) return;
+          renderTooltip(fullOrg);
+          placeTooltip(anchorX, anchorY);
+        })
+        .catch(() => {});
+    }
   }
 
   function hideTooltip(): void {
+    tooltipRequest++;
     tooltip.hidden = true;
   }
 
@@ -2038,6 +2120,7 @@ export function mountNercOrgMap(): void {
   }
 
   function renderPanel(o: Org): void {
+    o = applyOrgDetails(o);
     panelBody.replaceChildren();
     const close = createEl("button", "nerc-panel-close", "×");
     close.type = "button";
@@ -2196,6 +2279,17 @@ export function mountNercOrgMap(): void {
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
     renderPanel(o);
+    if (!hasOrgDetails(o)) {
+      const selectedId = o.ncr_id;
+      void ensureOrgDetails(o)
+        .then((fullOrg) => {
+          if (selectedOrg?.ncr_id !== selectedId) return;
+          selectedOrg = fullOrg;
+          renderPanel(fullOrg);
+          applyHighlights();
+        })
+        .catch(() => {});
+    }
     hideTooltip();
     if (opts.center) centerOnOrg(o);
     else redraw();
@@ -2469,17 +2563,16 @@ export function mountNercOrgMap(): void {
   }
 
   async function init(): Promise<void> {
-    const base = import.meta.env.BASE_URL;
     const [orgsPayload, topo] = await Promise.all([
-      loadJson<OrgsPayload>(`${base}nerc/orgs.json`),
-      loadJson<unknown>(`${base}nerc/states-10m.json`),
+      loadJson<OrgsPayload>(`${dataBase}nerc/orgs-render.json`),
+      loadJson<unknown>(`${dataBase}nerc/states-10m.json`),
     ]);
 
     if (!Array.isArray(orgsPayload.orgs)) throw new Error("No orgs array found in NERC payload");
     orgs = orgsPayload.orgs;
 
     // Canada landmass (context). Non-fatal if the file is missing.
-    canadaFeature = await loadJson<unknown>(`${base}nerc/canada-land.json`).catch(() => null);
+    canadaFeature = await loadJson<unknown>(`${dataBase}nerc/canada-land.json`).catch(() => null);
 
     const topoAny = topo as { objects: Record<string, unknown> };
     const states = feature(topo as never, topoAny.objects.states as never) as never as { features: unknown[] };
@@ -2574,6 +2667,7 @@ export function mountNercOrgMap(): void {
     window.visualViewport?.addEventListener("resize", onResize);
     loadingEl.style.display = "none";
     updateView();
+    scheduleOrgDetailsLoad();
     revealActionButtons();
     if (new URLSearchParams(location.search).has("audit")) setupAudit();
   }
