@@ -1155,10 +1155,10 @@ export function mountNercOrgMap(): void {
     // scaled up further via phoneSizeScale so small orgs stay easy to select.
     const tapScale = phoneSizeScale();
     const overviewFloorPx = (compact
-      ? priority < 30 ? 9.5 : 12.5
+      ? priority < 30 ? 11.5 : 15
       : priority < 30 ? 5 : priority < 55 ? 6.2 : 7.5) * tapScale;
     const deepFloorPx = (compact
-      ? priority < 30 ? 6.5 : 7.5
+      ? priority < 30 ? 7.8 : 9
       : priority < 30 ? 2.8 : priority < 55 ? 3.4 : 4.4) * tapScale;
     const deepT = smoothStep((k - 10) / 18);
     const floorPx = overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT;
