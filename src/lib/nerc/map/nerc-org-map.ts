@@ -142,6 +142,15 @@ const TERRITORY_LAYOUT_ORDER = ["PR", "VI"] as const;
 // inset can draw the real island shape (geoAlbersUsa can't project them).
 const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
 
+// Alaska and Hawaii plot inside geoAlbersUsa's built-in lower-left/right insets.
+// They share the mainland declutter path but need extra spread and tap area at
+// overview zoom where the inset is tiny on screen.
+const US_INSET_STATES = new Set(["AK", "HI"]);
+
+function isUsInsetOrg(o: { state?: string | null }): boolean {
+  return US_INSET_STATES.has(o.state ?? "");
+}
+
 function territoryLayoutMetrics(compact: boolean, u: number, viewW: number, viewH: number) {
   const padX = (compact ? 30 : 18) * u;
   const padY = (compact ? 12 : 8) * u;
@@ -892,8 +901,13 @@ export function mountNercOrgMap(): void {
     // its label can show. Screen coords are spread far apart at this zoom, so the
     // floor never reintroduces overlap (placement re-solves per bucket).
     const deepMinPx = (compact ? 6.5 : 7.5) * smoothStep((k - 8) / 16);
+    // Overview floor for AK/HI inset dots — lift the smallest utilities in the
+    // tiny projection inset without changing mainland sizing.
+    const insetOverviewMinPx = isUsInsetOrg(o)
+      ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2)
+      : 0;
     return (
-      Math.max(minPx, deepMinPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx + zoomGrowthPx)) *
+      Math.max(minPx, deepMinPx, insetOverviewMinPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx + zoomGrowthPx)) *
       unitPerPx
     );
   }
@@ -930,7 +944,14 @@ export function mountNercOrgMap(): void {
     // keeps the smallest dots comfortably clickable. This keeps clickable areas
     // in sync as bubbles grow with zoom.
     const margin = Math.max(padPx * unitPerPx, visual * 0.05);
-    return Math.max(visual + margin, floorPx * unitPerPx);
+    let target = Math.max(visual + margin, floorPx * unitPerPx);
+    // Inset utilities sit tight at overview; keep tap rings generous without
+    // changing mainland hit math.
+    if (isUsInsetOrg(o)) {
+      const insetClickPx = (compact ? 11.5 : 9.2) * smoothStep((3 - k) / 2.2);
+      target = Math.max(target, insetClickPx * unitPerPx);
+    }
+    return target;
   }
 
   function boxesOverlap(
@@ -992,6 +1013,12 @@ export function mountNercOrgMap(): void {
     // bigger grid organizations. Let those tiny dots travel farther to find
     // gaps around the already-claimed large bubbles.
     if (isGenerationOnly(o)) return radius * (compact ? 2.6 : 2.4);
+    // AK/HI insets are cramped at overview — let bubbles fan out farther within
+    // the inset land so more utilities disclose without mainland drift.
+    if (isUsInsetOrg(o)) {
+      const spreadT = smoothStep((4 - bucket) / 3.2);
+      return radius * (1 + (compact ? 1.15 : 1.45) * spreadT);
+    }
     return radius;
   }
 
@@ -1056,8 +1083,10 @@ export function mountNercOrgMap(): void {
     for (const cluster of clusters.values()) {
       if (cluster.length < 2) continue;
       cluster.sort((a, b) => a.ncr_id.localeCompare(b.ncr_id));
+      const insetCluster = cluster.some(isUsInsetOrg);
+      const ringStep = insetCluster ? step * 1.42 : step;
       cluster.forEach((o, i) => {
-        const [rx, ry] = spiderOffset(i, cluster.length, step);
+        const [rx, ry] = spiderOffset(i, cluster.length, ringStep);
         o._rx = rx;
         o._ry = ry;
       });
