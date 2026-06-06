@@ -2,8 +2,8 @@
   "_comment": "Duplicate-entity review for map-combines.json. Walk geocoded-orgs.json in file order, batch_size rows at a time. Criteria: same or clearly matching name AND headquarters within ~8 km (co-located NERC registrations). Seeds that auto-retire via seed-twins.json are skipped. Existing combines live in map-combines.json.",
   "source_file": "src/data/nerc/geocoded-orgs.json",
   "batch_size": 100,
-  "last_completed_batch": 4,
-  "last_completed_index_exclusive": 400,
+  "last_completed_batch": 14,
+  "last_completed_index_exclusive": 1400,
   "batches": [
     {
       "batch": 1,
@@ -231,7 +231,700 @@
         }
       ],
       "notes": "Seven combine groups added; batch 4 is mostly NPCC generation assets with several GO/GOP plant pairs."
+    },
+    {
+      "batch": 5,
+      "index_range": [400, 499],
+      "first_ncr_id": "NCR10358",
+      "last_ncr_id": "NCR07191",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR11727",
+          "members": ["NCR11582"],
+          "reason": "Evergreen Gen Lead + Evergreen Wind Power II at Oakfield ME; same address and EIA project 57002-1."
+        },
+        {
+          "canonical": "NCR12009",
+          "members": ["NCR12010"],
+          "reason": "Firstlight MA Hydro + Northfield Mountain LLC share Northfield MA plant office."
+        },
+        {
+          "canonical": "NCR07090",
+          "members": ["NCR07169"],
+          "reason": "Fortistar North Tonawanda GO + NAES GOP; same address and NY PUC filing."
+        },
+        {
+          "canonical": "NCR13364",
+          "members": ["NCR13365"],
+          "reason": "Hecate Energy Albany 1 and 2 share Coeymans NY project address."
+        },
+        {
+          "canonical": "NCR07111",
+          "members": ["NCR07112"],
+          "reason": "Hydro-Quebec HQ and HQCF reliability coordinator share Montreal HQ."
+        },
+        {
+          "canonical": "NCR11126",
+          "members": ["NCR11127"],
+          "reason": "Kleen Energy GO + NAES GOP at Middletown CT."
+        },
+        {
+          "canonical": "NCR07132",
+          "members": ["NCR07167"],
+          "reason": "Lockport Energy Associates GO + NAES Lockport GOP."
+        },
+        {
+          "canonical": "NCR11561",
+          "members": ["NCR11562"],
+          "reason": "NAES Linden cogeneration registrations share Linden NJ plant address (pair spans batch 5/8)."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR00540", "NCR11852"],
+          "reason": "Essential Power Newington vs GSP Newington — adjacent Piscataqua River plants (~1.6 km), different owners and EIA records."
+        },
+        {
+          "ids": ["NCR07091", "NCR12183"],
+          "reason": "New Hampshire Transmission vs NextEra Energy Transmission New York — separate TO registrations at Juno Beach corporate HQ."
+        },
+        {
+          "ids": ["NCR11710", "NCR07222"],
+          "reason": "GenConn Energy vs United Illuminating — co-located Orange CT address, distinct entities."
+        },
+        {
+          "ids": ["NCR13409", "NCR07178"],
+          "reason": "Nova Scotia ISO vs Nova Scotia Power — nearby Halifax addresses, separate system operator vs utility."
+        },
+        {
+          "ids": ["NCR07029", "NCR07134"],
+          "reason": "Central Maine Power vs Maine Electric Power — co-located Augusta ME (also flagged in batch 4)."
+        }
+      ],
+      "notes": "Eight combine groups added; batch 5 continues NPCC plant GO/GOP pairs plus Hydro-Québec HQ fold."
+    },
+    {
+      "batch": 6,
+      "index_range": [500, 599],
+      "first_ncr_id": "NCR07195",
+      "last_ncr_id": "NCR13516",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR13515",
+          "members": ["NCR13516"],
+          "reason": "Bluegrass Solar (1) and (2) share Church Hill MD address and gridinfo plant URL."
+        },
+        {
+          "canonical": "NCR00683",
+          "members": ["NCR11899"],
+          "reason": "American Municipal Power and AMP Transmission share Columbus OH HQ."
+        },
+        {
+          "canonical": "NCR13258",
+          "members": ["NCR13259"],
+          "reason": "Coldwater River Solar GO + AWAM GOP at Branch County MI (pair spans batch 6/7)."
+        },
+        {
+          "canonical": "NCR13102",
+          "members": ["NCR13101"],
+          "reason": "Wheatsborough Solar GO + AWAM GOP at Bellevue OH (pair spans batch 6/9)."
+        },
+        {
+          "canonical": "NCR00690",
+          "members": ["NCR00839"],
+          "reason": "Big Sandy Peaker GO + NAES Big Sandy GOP at Kenova WV (pair spans batch 6/8)."
+        },
+        {
+          "canonical": "NCR12188",
+          "members": ["NCR12190"],
+          "reason": "Assembly Solar and Assembly Solar III ~200 m apart in Lennon MI."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR10299", "NCR11408"],
+          "reason": "Sheldon Energy vs Stony Creek Energy — same Strykersville NY office address, distinct Invenergy wind projects."
+        },
+        {
+          "ids": ["NCR11040", "NCR12022"],
+          "reason": "Beech Ridge I vs II — same Rupert WV mailing address but plant pins ~11 km apart."
+        },
+        {
+          "ids": ["NCR11401", "NCR13230", "NCR00682"],
+          "reason": "Already folded in AEP Columbus HQ map-combine group."
+        },
+        {
+          "ids": ["NCR07041", "NCR11102"],
+          "reason": "Wallingford municipal utility vs LS Power Wallingford Energy plant — nearby John Street addresses, distinct entities."
+        },
+        {
+          "ids": ["NCR00200", "NCR10133"],
+          "reason": "Vistra Corp vs Luminant Energy — co-located Irving TX corporate HQ."
+        }
+      ],
+      "notes": "Six new combine groups; batch 6 spans NPCC tail and RF entries with solar GO/AWAM-GOP and AMP HQ patterns."
+    },
+    {
+      "batch": 7,
+      "index_range": [600, 699],
+      "first_ncr_id": "NCR00700",
+      "last_ncr_id": "NCR13420",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR03040",
+          "members": ["NCR10308"],
+          "reason": "Fowler Ridge II and III share Fowler IN office address and co-located map pin."
+        },
+        {
+          "canonical": "NCR00753",
+          "members": ["NCR12192"],
+          "reason": "DTE Electric and DTE Sustainable Generation Holdings share Detroit Energy Plaza HQ."
+        },
+        {
+          "canonical": "NCR10229",
+          "members": ["NCR10234"],
+          "reason": "Commonwealth Chesapeake GO + NAES Chesapeake GOP at New Church VA (pair spans batch 7/8)."
+        },
+        {
+          "canonical": "NCR11869",
+          "members": ["NCR13333"],
+          "reason": "Clean Energy Future Lordstown and Trumbull LLCs at adjacent Lordstown OH gas plants."
+        },
+        {
+          "canonical": "NCR00168",
+          "members": ["NCR00212"],
+          "reason": "Lakewood Cogeneration and Essential Power OPP share Lakewood NJ plant address (pair spans batch 7/8)."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR10307", "NCR03040", "NCR10308"],
+          "reason": "Fowler Ridge I vs II/III — shared Fowler IN mailing address but phase I pin ~5.6 km from II/III."
+        },
+        {
+          "ids": ["NCR13489", "NCR13488", "NCR13485"],
+          "reason": "Cottontail Solar 1/2/8 — related York PA portfolio but distinct township sites (1.7–6 km apart)."
+        },
+        {
+          "ids": ["NCR13258", "NCR13259"],
+          "reason": "Already folded in Coldwater River Solar map-combine group (added batch 6)."
+        }
+      ],
+      "notes": "Five new combine groups; batch 7 is RF-heavy with Fowler Ridge, DTE HQ, and plant GO/GOP pairs."
+    },
+    {
+      "batch": 8,
+      "index_range": [700, 799],
+      "first_ncr_id": "NCR11871",
+      "last_ncr_id": "NCR12168",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR10306",
+          "members": ["NCR11029", "NCR11030", "NCR11031"],
+          "reason": "Grand Ridge I–IV share Marseilles IL office address."
+        },
+        {
+          "canonical": "NCR11969",
+          "members": ["NCR11970"],
+          "reason": "Hickory Run GO + NAES GOP at New Castle PA."
+        },
+        {
+          "canonical": "NCR12257",
+          "members": ["NCR13075"],
+          "reason": "Indeck Niles GO + NAES GOP at Niles MI."
+        },
+        {
+          "canonical": "NCR12213",
+          "members": ["NCR12212"],
+          "reason": "Linden Combined Cycle and Linden Peaking share Wood Avenue NJ plant site."
+        },
+        {
+          "canonical": "NCR00803",
+          "members": ["NCR00820", "NCR08023"],
+          "reason": "ITC Transmission, METC, and MECS share Novi MI HQ."
+        },
+        {
+          "canonical": "NCR11859",
+          "members": ["NCR12392", "NCR12402"],
+          "reason": "Hunterstown plant, Heritage Hunterstown, and NAES GOP at Gettysburg PA."
+        },
+        {
+          "canonical": "NCR12133",
+          "members": ["NCR12134"],
+          "reason": "Hill Top Energy GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12393",
+          "members": ["NCR12404"],
+          "reason": "Heritage Mountain GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12396",
+          "members": ["NCR12386"],
+          "reason": "Heritage Sayreville GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12397",
+          "members": ["NCR12387"],
+          "reason": "Heritage Shawville GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12398",
+          "members": ["NCR12388"],
+          "reason": "Heritage Titus GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12399",
+          "members": ["NCR12389"],
+          "reason": "Heritage Tolna GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12391",
+          "members": ["NCR12401"],
+          "reason": "Heritage Gilbert GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR11141",
+          "members": ["NCR12405"],
+          "reason": "Heritage Single Units GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12390",
+          "members": ["NCR12400"],
+          "reason": "Heritage Brunot Island GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12395",
+          "members": ["NCR12385"],
+          "reason": "Heritage Portland GO + NAES GOP (pair spans batch 8/9)."
+        },
+        {
+          "canonical": "NCR12394",
+          "members": ["NCR12403"],
+          "reason": "Heritage New Castle GO + NAES GOP (pair spans batch 8/9)."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR12545", "NCR13012"],
+          "reason": "Hardin Solar II vs III — similar names but pins ~5.5 km apart in Hardin County OH."
+        },
+        {
+          "ids": ["NCR11747", "NCR12213", "NCR11561"],
+          "reason": "GEV Linden VFT and Linden cogeneration (RR & Chemico) vs PSEG Linden CC (Wood Avenue) — separate Linden NJ facilities."
+        },
+        {
+          "ids": ["NCR10229", "NCR10234"],
+          "reason": "Already folded in Commonwealth Chesapeake map-combine group (added batch 7)."
+        },
+        {
+          "ids": ["NCR00168", "NCR00212"],
+          "reason": "Already folded in Lakewood Cogen map-combine group (added batch 7)."
+        }
+      ],
+      "notes": "Seventeen new combine groups; batch 8 is NRG Heritage GO/GOP portfolio plus Grand Ridge and ITC HQ folds."
+    },
+    {
+      "batch": 9,
+      "index_range": [800, 899],
+      "first_ncr_id": "NCR11767",
+      "last_ncr_id": "NCR11890",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR11526",
+          "members": ["NCR11527"],
+          "reason": "Newark Energy Center GO + NAES GOP at Newark NJ."
+        },
+        {
+          "canonical": "NCR11812",
+          "members": ["NCR12264"],
+          "reason": "St. Joseph Energy Center GO + Siemens STJ GOP at New Carlisle IN."
+        },
+        {
+          "canonical": "NCR00889",
+          "members": ["NCR11362"],
+          "reason": "Susquehanna Nuclear and Talen Generation share Berwick PA Salem Blvd site."
+        },
+        {
+          "canonical": "NCR00953",
+          "members": ["NCR00849"],
+          "reason": "Wolf Hills Energy GO + NAES GOP at Bristol VA (pair spans batch 9/10)."
+        },
+        {
+          "canonical": "NCR11716",
+          "members": ["NCR11498"],
+          "reason": "UMERC and legacy WEPCO MIUP BA share Iron Mountain MI HQ (pair spans batch 9/10)."
+        },
+        {
+          "canonical": "NCR13518",
+          "members": ["NCR11383"],
+          "reason": "RWE Clean DCE Operations and RWE Clean Energy QSE share Chicago HQ (RF + Texas RE)."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR11767", "NCR12396"],
+          "reason": "NAES Red Oak vs Heritage Sayreville — both NAES-operated but separate Sayreville-area plants (~3 km)."
+        },
+        {
+          "ids": ["NCR11925", "NCR00682"],
+          "reason": "Transource East vs AEP Columbus HQ group — nearby Riverside Plaza addresses, separate transmission JV."
+        },
+        {
+          "ids": ["NCR12386", "NCR12396"],
+          "reason": "Already folded in Heritage Sayreville map-combine group (added batch 8)."
+        },
+        {
+          "ids": ["NCR00896", "NCR-SEED-032"],
+          "reason": "PSE&G duplicate seed twin; real org is canonical."
+        }
+      ],
+      "notes": "Six new combine groups; batch 9 continues RF plant GO/GOP and multi-region HQ patterns."
+    },
+    {
+      "batch": 10,
+      "index_range": [900, 999],
+      "first_ncr_id": "NCR13114",
+      "last_ncr_id": "NCR11092",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR13549",
+          "members": ["NCR13550"],
+          "reason": "AL Solar G/H (Walker Springs I/II) share Gainestown AL Boardwalk Road site."
+        },
+        {
+          "canonical": "NCR01083",
+          "members": ["NCR13099"],
+          "reason": "Cleco Corporate Holdings and Cleco Power share Pineville LA HQ."
+        },
+        {
+          "canonical": "NCR13413",
+          "members": ["NCR13414"],
+          "reason": "White Tail Solar GO + Invenergy GOP at Milan MI (pair spans batch 8/10)."
+        },
+        {
+          "canonical": "NCR13054",
+          "members": ["NCR13055"],
+          "reason": "Blue Bird Solar GO + Invenergy GOP at Warrenton MO (pair spans batch 10/11)."
+        },
+        {
+          "canonical": "NCR01254",
+          "members": ["NCR11916"],
+          "reason": "HMP&L utility and City of Henderson BA registration share Henderson KY HQ (pair spans batch 10/11)."
+        },
+        {
+          "canonical": "NCR10390",
+          "members": ["NCR11325"],
+          "reason": "Constellation South (SERC) and Western (WECC) share Baltimore regional office."
+        },
+        {
+          "canonical": "NCR13557",
+          "members": ["NCR13555"],
+          "reason": "Lotus Wind GO + AWAM GOP at Modesto IL (pair spans batch 10/11)."
+        },
+        {
+          "canonical": "NCR13062",
+          "members": ["NCR13060"],
+          "reason": "Prosperity Wind GO + AWAM GOP at Monticello IL (pair spans batch 10/11)."
+        },
+        {
+          "canonical": "NCR13010",
+          "members": ["NCR13011"],
+          "reason": "Timbermill Wind GO + AWAM GOP at Edenton NC (pair spans batch 10/12)."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR11833", "NCR12312", "NCR13549"],
+          "reason": "AL Solar A, D, G/H — separate Clarke County AL solar projects at different sites."
+        },
+        {
+          "ids": ["NCR13102", "NCR13101"],
+          "reason": "Already folded in Wheatsborough Solar map-combine group (added batch 6)."
+        },
+        {
+          "ids": ["NCR00953", "NCR00849"],
+          "reason": "Already folded in Wolf Hills map-combine group (added batch 9)."
+        },
+        {
+          "ids": ["NCR11498", "NCR11716"],
+          "reason": "Already folded in UMERC map-combine group (added batch 9)."
+        }
+      ],
+      "notes": "Nine new combine groups; batch 10 enters SERC with Cleco HQ, solar/wind GO+AWAM/Invenergy GOP pairs."
+    },
+    {
+      "batch": 11,
+      "index_range": [1000, 1099],
+      "first_ncr_id": "NCR01315",
+      "last_ncr_id": "NCR13449",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR01234",
+          "members": ["NCR11167", "NCR12526"],
+          "reason": "Entergy, Entergy Fossil & Hydro, and Entergy Renewables share New Orleans Loyola Ave HQ."
+        },
+        {
+          "canonical": "NCR11657",
+          "members": ["NCR11655"],
+          "reason": "ETEC San Jacinto peaking GO + EthosEnergy GOP at Shepherd TX."
+        },
+        {
+          "canonical": "NCR00128",
+          "members": ["NCR11993"],
+          "reason": "ExxonMobil Baton Rouge GO + EthosEnergy Louisiana Station GOP at Scenic Hwy."
+        },
+        {
+          "canonical": "NCR00022",
+          "members": ["NCR00023"],
+          "reason": "Florida Municipal Power Agency and FMPP share Orlando HQ."
+        },
+        {
+          "canonical": "NCR00026",
+          "members": ["NCR00464"],
+          "reason": "FRCC and Florida Reserve Sharing Group share Tampa HQ."
+        },
+        {
+          "canonical": "NCR01255",
+          "members": ["NCR01283"],
+          "reason": "Holland Energy GO + NAES Holland GOP at Beecher City IL (pair spans batch 11/12)."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR01248", "NCR01249"],
+          "reason": "Georgia System Operations vs Georgia Transmission — nearby Tucker GA addresses (~3.5 km), separate entities."
+        },
+        {
+          "ids": ["NCR01254", "NCR11916"],
+          "reason": "Already folded in Henderson HMP&L map-combine group (added batch 10)."
+        },
+        {
+          "ids": ["NCR01247", "NCR-SEED-022"],
+          "reason": "Georgia Power seed twin; real org is canonical."
+        }
+      ],
+      "notes": "Six new combine groups; batch 11 is SERC-heavy with Entergy HQ and Florida reliability/muni folds."
+    },
+    {
+      "batch": 12,
+      "index_range": [1100, 1199],
+      "first_ncr_id": "NCR13407",
+      "last_ncr_id": "NCR13373",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR13024",
+          "members": ["NCR13032"],
+          "reason": "Long Lake Solar GO + Invenergy Long Lake GOP; same Grayling MI address/coords."
+        },
+        {
+          "canonical": "NCR10385",
+          "members": ["NCR11584"],
+          "reason": "Plum Point Power Partners GO + NRG Plum Point GOP; same Osceola AR plant site."
+        },
+        {
+          "canonical": "NCR13285",
+          "members": ["NCR13422"],
+          "reason": "Kelso Solar + Kelso 2 Solar; identical coords (phase 2)."
+        },
+        {
+          "canonical": "NCR13442",
+          "members": ["NCR13443"],
+          "reason": "Richland Township Solar I/II; identical Lacon IL coords."
+        },
+        {
+          "canonical": "NCR11367",
+          "members": ["NCR13061"],
+          "reason": "South Boston Energy GO + NAES South Boston GOP; same VA plant site (member at index 1212)."
+        },
+        {
+          "canonical": "NCR12553",
+          "members": ["NCR12449"],
+          "reason": "MS Solar 5/6 Golden Triangle I/II; ~490 m apart in Artesia MS."
+        }
+      ],
+      "already_handled": [
+        {
+          "ids": ["NCR13054", "NCR13055"],
+          "reason": "Blue Bird Solar GO/GOP pair; merged batch 10."
+        },
+        {
+          "ids": ["NCR01255", "NCR01283"],
+          "reason": "Holland Energy GO/GOP pair; merged batch 11."
+        }
+      ],
+      "reviewed_not_combined": [],
+      "notes": "Six new combine groups; batch 12 is solar/wind plant GO+GOP and adjacent-phase merges."
+    },
+    {
+      "batch": 13,
+      "index_range": [1200, 1299],
+      "first_ncr_id": "NCR11483",
+      "last_ncr_id": "NCR11641",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR01320",
+          "members": ["NCR01319"],
+          "reason": "Southern Company Services Gen + Trans divisions; same Atlanta HQ."
+        },
+        {
+          "canonical": "NCR01330",
+          "members": ["NCR12012"],
+          "reason": "Spruance GO + Veolia GOP at Richmond VA cogen plant."
+        },
+        {
+          "canonical": "NCR04136",
+          "members": ["NCR00632"],
+          "reason": "Tenaska Frontier Partners SERC + Texas RE duplicate at Shiro TX plant."
+        },
+        {
+          "canonical": "NCR09028",
+          "members": ["NCR01214", "NCR11878"],
+          "reason": "Dominion Energy Virginia transmission, generation, and marketing at Richmond Tredegar HQ."
+        },
+        {
+          "canonical": "NCR11623",
+          "members": ["NCR11625"],
+          "reason": "Green Power Solutions GO + WestRock Southeast GOP at Dublin GA mill."
+        },
+        {
+          "canonical": "NCR12570",
+          "members": ["NCR12524"],
+          "reason": "Wildflower Solar GO + Deriva GOP at DeSoto County MS."
+        },
+        {
+          "canonical": "NCR12555",
+          "members": ["NCR12554"],
+          "reason": "7V Solar Ranch GO + Invenergy Services-7V GOP at Fayette County TX."
+        },
+        {
+          "canonical": "NCR13293",
+          "members": ["NCR13551"],
+          "reason": "SR Millington I + II adjacent Shelby County TN solar phases."
+        }
+      ],
+      "already_handled": [
+        {
+          "ids": ["NCR11367", "NCR13061"],
+          "reason": "South Boston Energy GO/GOP pair; merged batch 12."
+        },
+        {
+          "ids": ["NCR13010", "NCR13011"],
+          "reason": "Timbermill Wind GO/GOP pair; merged batch 10."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR11305", "NCR11286"],
+          "reason": "Smoky Mountain Transmission (TO) vs Brookfield Smoky Mountain Hydropower (GO) — same Tallassee TN address, separate asset and transmission registrations."
+        },
+        {
+          "ids": ["NCR13305", "NCR01360"],
+          "reason": "SR EPC (Silicon Ranch GOP) vs USACE Nashville District — downtown Nashville coincidence (~1 km)."
+        },
+        {
+          "ids": ["NCR12178", "NCR11418"],
+          "reason": "Siemens PEC at Ackerman CC vs Choctaw Red Hills lignite plant — ~940 m apart in Choctaw County MS, different plants."
+        },
+        {
+          "ids": ["NCR01319", "NCR12021"],
+          "reason": "Southern Company Services vs Southern Power Company — parent and subsidiary at Atlanta HQ, separate entities."
+        }
+      ],
+      "notes": "Eight new combine groups; batch 13 is SERC/Texas RE HQ folds, plant GO+GOP pairs, and adjacent solar phases."
+    },
+    {
+      "batch": 14,
+      "index_range": [1300, 1399],
+      "first_ncr_id": "NCR12051",
+      "last_ncr_id": "NCR13354",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR13047",
+          "members": ["NCR13048"],
+          "reason": "Angelo Solar GO + AWAM GOP at Tom Green County TX plant."
+        },
+        {
+          "canonical": "NCR13085",
+          "members": ["NCR13086"],
+          "reason": "Angelo Storage GO + AWAM GOP at co-located BESS site."
+        },
+        {
+          "canonical": "NCR13042",
+          "members": ["NCR13043"],
+          "reason": "Big Elm Solar GO + AWAM GOP at Bell County TX plant."
+        },
+        {
+          "canonical": "NCR12561",
+          "members": ["NCR12560"],
+          "reason": "Great Kiskadee Storage GO + AWAM GOP at Hidalgo County TX BESS."
+        },
+        {
+          "canonical": "NCR12430",
+          "members": ["NCR12431"],
+          "reason": "BPL Crown Solar + BPL Sol Solar at same Falls County TX address."
+        },
+        {
+          "canonical": "NCR12269",
+          "members": ["NCR12271"],
+          "reason": "Brazoria County Solar GO + Invenergy GOP at Danciger TX."
+        },
+        {
+          "canonical": "NCR04029",
+          "members": ["NCR04030"],
+          "reason": "Austin Energy transmission + generation registrations at Mueller Blvd HQ."
+        },
+        {
+          "canonical": "NCR04033",
+          "members": ["NCR04034", "NCR04035"],
+          "reason": "Garland Power & Light transmission, GOP, and GO at N. 5th Street HQ."
+        },
+        {
+          "canonical": "NCR12504",
+          "members": ["NCR12495"],
+          "reason": "Century Oak Wind + Longhorn Storage at Eastland County TX hybrid site."
+        },
+        {
+          "canonical": "NCR13110",
+          "members": ["NCR13418"],
+          "reason": "Bocanova Power + BRP Tortolas BESS at Alvin TX storage complex (~340 m)."
+        }
+      ],
+      "already_handled": [],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR13047", "NCR13085"],
+          "reason": "Angelo Solar vs Angelo Storage — co-located hybrid (~530 m) but separate EIA plants; each folded as its own GO+AWAM pair."
+        },
+        {
+          "ids": ["NCR11735", "NCR11736"],
+          "reason": "Cotton Plains Wind I vs Old Settler Wind — identical Floydada coords but separate Floyd County wind projects."
+        },
+        {
+          "ids": ["NCR13092", "NCR13031", "NCR12458"],
+          "reason": "Chillingham Storage vs Five Wells solar/storage hybrid — ~840 m apart in Bell County TX, different projects."
+        },
+        {
+          "ids": ["NCR12179", "NCR04028"],
+          "reason": "Broad Reach Power vs CenterPoint Energy Houston Electric — downtown Houston coincidence (~530 m)."
+        },
+        {
+          "ids": ["NCR12239", "NCR13403"],
+          "reason": "Braes Bayou Generating vs Bypass BESS — ~470 m apart in Houston area, different assets."
+        }
+      ],
+      "notes": "Ten new combine groups; batch 14 is Texas RE-heavy with AWAM/Invenergy plant pairs and municipal utility HQ folds."
     }
   ],
-  "pause_note": "PAUSE: Batch 4 complete (indices 300–399). Next review starts at geocoded-orgs.json index 400 (NCR10358). Run: node scripts/nerc/review-map-combine-batch.mjs 5"
+  "pause_note": "PAUSE: Batch 14 complete (indices 1300–1399). Next review starts at geocoded-orgs.json index 1400 (NCR04037). Run: node scripts/nerc/review-map-combine-batch.mjs 15"
 }

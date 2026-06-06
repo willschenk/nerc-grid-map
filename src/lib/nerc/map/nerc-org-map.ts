@@ -760,16 +760,20 @@ export function mountNercOrgMap(): void {
     return priority >= 24;
   }
 
-  // Target on-screen label size in CSS pixels (multiplied by unitPerPx before
-  // it hits the SVG). Grows a little as you zoom in instead of staying flat.
+  // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
+  // hits the SVG). Keeps growing as you zoom in — including for small/low-priority
+  // orgs — so that once you zoom in close enough on something its name reads big.
+  // (The inside-label path still clamps to the bubble's chord, so a label never
+  // overflows its own bubble; the bubble itself grows via visualRadius's deep
+  // boost, which is what lets the text keep getting bigger.)
   function labelFontPx(o: Org, k: number): number {
     const priority = visualPriority(o);
     const base = compact
       ? priority >= 80 ? 11.1 : priority >= 50 ? 9.2 : 6.7
       : priority >= 80 ? 12.7 : priority >= 50 ? 10.3 : 7.7;
     const growth = compact
-      ? Math.min(1.12, 1 + Math.max(0, k - 1) * 0.03)
-      : Math.min(1.22, 1 + Math.max(0, k - 1) * 0.055);
+      ? Math.min(1.95, 1 + Math.max(0, k - 1) * 0.05)
+      : Math.min(2.15, 1 + Math.max(0, k - 1) * 0.07);
     return base * growth;
   }
 
@@ -819,24 +823,28 @@ export function mountNercOrgMap(): void {
     // area. Radius is in CSS pixels, then converted to SVG units for the viewBox.
     const rawPriority = visualPriority(o);
     const priority = rawPriority / 100;
-    const minPx = compact ? 2.1 : 1.8;
-    const maxPx = compact ? 25 : 34;
+    const minPx = compact ? 2.1 : 2.2;
+    const maxPx = compact ? 25 : 36;
     const fullPx = minPx + (maxPx - minPx) * priority;
-    const zoomT = smoothStep((k - 0.72) / 5);
-    const overviewScale = compact ? 0.52 : 0.46;
+    // Bubbles start large at the overview (desktop now matches the iOS feel) and
+    // grow quickly toward full size as you begin to zoom in.
+    const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 4));
+    const overviewScale = compact ? 0.52 : 0.62;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
     const priorityT = smoothStep((rawPriority - 42) / 58);
-    const boostPx = canGrowAtZoom(o) ? (compact ? 5.5 : 8.5) * priorityT * closeT : 0;
-    const deepT = smoothStep((k - (compact ? 8 : 9)) / (compact ? 24 : 28));
+    const boostPx = canGrowAtZoom(o) ? (compact ? 6 : 10) * priorityT * closeT : 0;
+    // Deep-zoom boost, weighted toward the smallest orgs: if you keep zooming
+    // into a low-priority entity it grows so its name can finally read.
+    const deepT = smoothStep((k - (compact ? 6 : 7)) / (compact ? 22 : 26));
     const smallOrgT = smoothStep((72 - rawPriority) / 62);
     const deepBoostPx = canGrowAtZoom(o)
-      ? (compact ? 10 : 8) * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1)
+      ? (compact ? 13 : 13) * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1)
       : 0;
     const zoomMaxPx =
       maxPx +
-      (canGrowAtZoom(o) ? (compact ? 5.5 : 8.5) : 0) +
-      (canGrowAtZoom(o) ? (compact ? 10 : 8) : 0);
+      (canGrowAtZoom(o) ? (compact ? 6 : 10) : 0) +
+      (canGrowAtZoom(o) ? (compact ? 13 : 13) : 0);
     return Math.max(minPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx)) * unitPerPx;
   }
 
