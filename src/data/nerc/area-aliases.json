@@ -244,6 +244,21 @@
       "code": "SEC",
       "ncr_id": "NCR00068",
       "meaning": "Seminole Electric Cooperative"
+    },
+    {
+      "code": "TAL",
+      "ncr_id": "NCR00073",
+      "meaning": "City of Tallahassee"
+    },
+    {
+      "code": "TEC",
+      "ncr_id": "NCR00074",
+      "meaning": "Tampa Electric Company"
+    },
+    {
+      "code": "LAFA",
+      "ncr_id": "NCR01114",
+      "meaning": "Lafayette Utilities System"
     }
   ]
 }
