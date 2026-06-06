@@ -259,6 +259,21 @@
       "code": "LAFA",
       "ncr_id": "NCR01114",
       "meaning": "Lafayette Utilities System"
+    },
+    {
+      "code": "SPA",
+      "ncr_id": "NCR01144",
+      "meaning": "Southwestern Power Administration"
+    },
+    {
+      "code": "CSWS",
+      "ncr_id": "NCR00682",
+      "meaning": "Central and South West Services / AEP legacy area"
+    },
+    {
+      "code": "OKGE",
+      "ncr_id": "NCR01130",
+      "meaning": "Oklahoma Gas & Electric"
     }
   ]
 }
