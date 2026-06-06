@@ -1807,15 +1807,21 @@ export function mountNercOrgMap(): void {
       for (const o of finalVisibleOrgs) {
         if (o._sx == null || o._sy == null) continue;
         const r = renderedRadius(o, k);
-        if (r < (compact ? 7 : 9) * unitPerPx) continue;
-        const pad = (compact ? 5 : 4.5) * unitPerPx;
+        // Org bubbles take precedence: a land name yields to any bubble it would
+        // sit on, so state/province names fade behind the NERC data.
+        if (r < (compact ? 6 : 7) * unitPerPx) continue;
+        const pad = (compact ? 5.5 : 5) * unitPerPx;
         landBlockers.push({ x0: o._sx - r - pad, x1: o._sx + r + pad, y0: o._sy - r - pad, y1: o._sy + r + pad });
       }
       let placedLand = 0;
-      const landCap = compact ? 12 : 28;
+      // Thin out the orientation labels as you zoom in — by deep zoom the state
+      // name has done its job and would only clutter the view.
+      const deepLandT = smoothStep((k - 5) / 8);
+      const landCap = Math.max(4, Math.round((compact ? 12 : 28) * (1 - 0.6 * deepLandT)));
       for (const L of landLabels) {
         if (placedLand >= landCap) break;
         if (L.small && k < 3.2) continue; // tiny states only once zoomed in
+        if (!L.small && k >= 11) continue; // large state names drop out at deep zoom
         const sx = transform.applyX(L.x);
         const sy = transform.applyY(L.y);
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
