@@ -1264,10 +1264,15 @@ export function mountNercOrgMap(): void {
     // Keep bubbles close to their true location — only "a little" movement to
     // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
     // to each other) rather than drifting away. Grows only modestly with zoom.
+    // More travel so bubbles can hunt for a free gap and more fit everywhere, but
+    // bounded so they don't fly across the map or strand offshore (the per-
+    // candidate onLand() check in computePlacements still gates each spot; the
+    // bound keeps the search near the true location). Compact is kept tighter
+    // because the small viewBox magnifies any drift.
     const basePx = compact
-      ? k < 1.25 ? 12 : k < 2.2 ? 16 : k < 4 ? 24 : k < 7 ? 30 : 38
-      : k < 1.25 ? 17 : k < 2.2 ? 22 : k < 4 ? 34 : k < 7 ? 44 : 54;
-    const deepPx = compact ? 48 : 66;
+      ? k < 1.25 ? 15 : k < 2.2 ? 21 : k < 4 ? 30 : k < 7 ? 40 : 50
+      : k < 1.25 ? 22 : k < 2.2 ? 30 : k < 4 ? 44 : k < 7 ? 58 : 72;
+    const deepPx = compact ? 62 : 90;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
