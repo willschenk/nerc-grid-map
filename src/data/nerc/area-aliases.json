@@ -19,6 +19,21 @@
       "code": "NBSO",
       "ncr_id": "NCR07155",
       "meaning": "New Brunswick System Operator / NB Power"
+    },
+    {
+      "code": "HE",
+      "ncr_id": "NCR00794",
+      "meaning": "Hoosier Energy"
+    },
+    {
+      "code": "CIN",
+      "ncr_id": "SUP-duke-energy-ohio-kentucky",
+      "meaning": "Cinergy / Duke Energy Ohio-Kentucky legacy area"
+    },
+    {
+      "code": "DAY",
+      "ncr_id": "NCR00748",
+      "meaning": "Dayton Power & Light / AES Ohio"
     }
   ]
 }

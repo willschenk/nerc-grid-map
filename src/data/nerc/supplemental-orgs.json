@@ -1839,7 +1839,7 @@
   },
   {
     "entity_name": "Havana Electric",
-    "acronym": "HE",
+    "acronym": "Havana",
     "state": "FL",
     "city": "Havana",
     "lat": 30.6238,
@@ -3439,7 +3439,7 @@
   },
   {
     "entity_name": "Halifax EMC",
-    "acronym": "HE",
+    "acronym": "Halifax EMC",
     "state": "NC",
     "city": "Enfield",
     "lat": 36.1802,
@@ -5253,5 +5253,33 @@
     "geo_source_url": "https://www.psc.state.wv.us/annualstatrpts/anstatrpt2024.pdf",
     "geo_notes": "West Virginia regulated electric utility named in PSC annual statistical reporting; city-level placement in Wheeling / Northern Panhandle service area.",
     "verify": false
+  },
+  {
+    "ncr_id": "SUP-duke-energy-ohio-kentucky",
+    "entity_name": "Duke Energy Ohio-Kentucky",
+    "acronym": "Duke Energy Ohio-Kentucky",
+    "name_shortest": "Duke Energy Ohio-Kentucky",
+    "name_short": "Duke Energy Ohio-Kentucky",
+    "name_normal": "Duke Energy Ohio-Kentucky",
+    "name_major": true,
+    "state": "OH",
+    "city": "Cincinnati",
+    "lat": 39.1014,
+    "lng": -84.512,
+    "headquarters_address": "139 East Fourth Street, Cincinnati, OH 45202",
+    "roles": [
+      "BA",
+      "DP",
+      "LSE"
+    ],
+    "org_type": "IOU",
+    "region": "RF",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "EIA balancing authority / Duke Energy Ohio HQ",
+    "geo_source_url": "https://www.duke-energy.com/home/products/ohio",
+    "geo_notes": "Legacy Cinergy / CIN balancing authority area; Duke Energy Ohio and Kentucky operations. Not in the uploaded NERC extract as a standalone row."
   }
 ]
