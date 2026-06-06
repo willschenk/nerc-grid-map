@@ -137,10 +137,22 @@ export const REGION_ALIASES = {
   "WESTERN ELECTRICITY COORDINATING COUNCIL": "WECC",
 };
 
+// Retired Regional Entities that must not surface as a current RE. SPP RE
+// dissolved into MRO and SERC (2018); where a record provides the successor it
+// is corrected per entity, otherwise we show no RE rather than a phantom "SPP".
+// Keys are upper-cased / single-spaced to match normalizeRegion's lookup key.
+export const RETIRED_REGIONAL_ENTITIES = new Set([
+  "SPP",
+  "SWPP",
+  "SPP RE",
+  "SPPRE",
+]);
+
 export function normalizeRegion(region) {
   const raw = String(region ?? "").trim();
   if (!raw) return null;
   const key = raw.toUpperCase().replace(/\s+/g, " ");
+  if (RETIRED_REGIONAL_ENTITIES.has(key)) return null;
   return REGION_ALIASES[key] ?? raw;
 }
 
