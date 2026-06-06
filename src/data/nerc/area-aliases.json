@@ -149,6 +149,26 @@
       "code": "DOM",
       "ncr_id": "NCR09028",
       "meaning": "Dominion Energy Virginia / Virginia Electric and Power"
+    },
+    {
+      "code": "SOCO",
+      "ncr_id": "NCR01320",
+      "meaning": "Southern Company Services"
+    },
+    {
+      "code": "FPLNW",
+      "ncr_id": "NCR00024",
+      "meaning": "Florida Power & Light Northwest"
+    },
+    {
+      "code": "SME",
+      "ncr_id": "NCR01315",
+      "meaning": "South Mississippi Electric / Cooperative Energy"
+    },
+    {
+      "code": "EES",
+      "ncr_id": "NCR01234",
+      "meaning": "Entergy Electric System"
     }
   ]
 }
