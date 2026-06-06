@@ -850,6 +850,12 @@ export function mountNercOrgMap(): void {
   }
 
   function canDisplayOrg(o: Org, k: number): boolean {
+    // Compact (phones/small tablets): below k2 keep the overview to major
+    // entities only (grid leadership or high visual priority) so crowded metros
+    // don't stack low-priority dots. They reveal normally once zoomed past k2.
+    // (Orgs that find no free placement slot are additionally hidden by
+    // computePlacements via _placed, so only those with room actually draw.)
+    if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 50) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     // GO/GOP-only and PSE-market entities stay deferred to deep zoom.
     if (isDeferredMarketOrg(o)) return k >= generationOnlyDisplayK();
