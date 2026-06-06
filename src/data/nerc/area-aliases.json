@@ -79,6 +79,26 @@
       "code": "WEC",
       "ncr_id": "NCR00951",
       "meaning": "Wisconsin Electric / We Energies"
+    },
+    {
+      "code": "MIUP",
+      "ncr_id": "NCR00951",
+      "meaning": "Wisconsin Electric Power Michigan Upper Peninsula area"
+    },
+    {
+      "code": "BREC",
+      "ncr_id": "NCR01180",
+      "meaning": "Big Rivers Electric Corporation"
+    },
+    {
+      "code": "HMPL",
+      "ncr_id": "NCR01254",
+      "meaning": "Henderson Municipal Power & Light"
+    },
+    {
+      "code": "EMBA",
+      "ncr_id": "NCR01234",
+      "meaning": "Entergy Mississippi Balancing Authority"
     }
   ]
 }
