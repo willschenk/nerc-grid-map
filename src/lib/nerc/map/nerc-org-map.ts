@@ -684,6 +684,10 @@ export function mountNercOrgMap(): void {
     // selection matches the circle you clicked.
     let bestNorm = Number.POSITIVE_INFINITY;
     let bestInVisual = false;
+    let bestVisual = Number.POSITIVE_INFINITY;
+    // Tolerance (in viewBox units) for treating two bubble radii as "the same
+    // size" before falling back to normalized distance / draw priority.
+    const radiusTol = 0.75 * unitPerPx;
     for (const o of placeableOrgs) {
       if (!o._vis || o._sx == null || o._sy == null) continue;
       const dx = o._sx - point.x;
@@ -694,15 +698,31 @@ export function mountNercOrgMap(): void {
       const visual = renderedRadius(o, k);
       const inVisual = d2 <= visual * visual;
       const norm = d2 / (hit * hit);
-      const better =
-        (inVisual && !bestInVisual) ||
-        (inVisual === bestInVisual &&
-          (norm < bestNorm - 0.02 ||
-            (Math.abs(norm - bestNorm) <= 0.02 && drawPriority(o, k) > drawPriority(best, k))));
+      // Selection order in dense clusters:
+      //   1. A pointer inside a bubble's *drawn* circle always beats one only in
+      //      the padded hit ring.
+      //   2. When the pointer is inside more than one drawn circle, the INNERMOST
+      //      (smallest-radius) bubble wins — a small dot stacked under a larger
+      //      neighbour stays selectable when you click right on it.
+      //   3. Ties (same containment, same size) fall back to normalized distance,
+      //      then draw priority.
+      let better: boolean;
+      if (inVisual !== bestInVisual) {
+        better = inVisual;
+      } else if (inVisual && visual < bestVisual - radiusTol) {
+        better = true; // innermost (smaller) drawn circle wins
+      } else if (inVisual && visual > bestVisual + radiusTol) {
+        better = false; // keep the tighter bubble already chosen
+      } else {
+        better =
+          norm < bestNorm - 0.02 ||
+          (Math.abs(norm - bestNorm) <= 0.02 && drawPriority(o, k) > drawPriority(best, k));
+      }
       if (better) {
         best = o;
         bestNorm = norm;
         bestInVisual = inVisual;
+        bestVisual = visual;
       }
     }
     return best;
@@ -846,7 +866,11 @@ export function mountNercOrgMap(): void {
     const hasDp = o.roles.includes("DP");
     const hasLse = o.roles.includes("LSE");
     if (isTransmissionOwnerOnly(o)) return 8;
-    if (hasAnyRole(o, AUTHORITY_ROLES)) return 82;
+    // Authority tier: RC outranks BA outranks PC. Checked in precedence order so
+    // multi-role orgs inherit their highest authority. RC at 89 clears BA+multiRoleBonus (88).
+    if (o.roles.includes("RC")) return 89;
+    if (o.roles.includes("BA")) return 82;
+    if (o.roles.includes("PC")) return 78;
     if ((hasTo && (hasDp || hasLse)) || (hasDp && hasLse)) return 62;
     if (o.roles.includes("TOP") || o.roles.includes("TSP")) return 52;
     if (hasAnyRole(o, GRID_ROLES)) return 50;
@@ -874,7 +898,9 @@ export function mountNercOrgMap(): void {
     if (isDeferredMarketOrg(o) || o.is_private) return 0;
     let score = 0;
     if (o.is_iso_rto) score = Math.max(score, 82);
-    if (o.weight >= 28 && hasAnyRole(o, AUTHORITY_ROLES)) score = Math.max(score, 80);
+    if (o.weight >= 28 && o.roles.includes("RC")) score = Math.max(score, 86);
+    else if (o.weight >= 28 && o.roles.includes("BA")) score = Math.max(score, 82);
+    else if (o.weight >= 28 && o.roles.includes("PC")) score = Math.max(score, 78);
     if (FEDERAL_NAME.test(o.entity_name) || o.org_type === "federal") score = Math.max(score, 76);
     if (RELIABILITY_ORG_NAME.test(o.entity_name)) score = Math.max(score, 74);
     if (o.org_type === "ISO_RTO") score = Math.max(score, 72);
@@ -895,6 +921,9 @@ export function mountNercOrgMap(): void {
     return 0;
   }
 
+  // Final visual priority: role tier first, then type/data signals, then multi-role
+  // bonus. RC-only orgs (89) stay above BA+multiRoleBonus (88); visualPrioritySort
+  // uses rolePriority as a tiebreaker when scores match.
   function visualPriority(o: Org): number {
     if (isDeferredMarketOrg(o)) return 6;
     if (isTransmissionOwnerOnly(o)) return 8;
