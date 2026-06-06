@@ -901,6 +901,15 @@ export function mountNercOrgMap(): void {
     return maxDeclutterOffset(bucket);
   }
 
+  function orgPlacementRadius(o: Org, bucket: number): number {
+    const radius = placementRadius(bucket);
+    // Pure generation dots are hidden until close zoom and place after the
+    // bigger grid organizations. Let those tiny dots travel farther to find
+    // gaps around the already-claimed large bubbles.
+    if (isGenerationOnly(o)) return radius * (compact ? 2.6 : 2.4);
+    return radius;
+  }
+
   // Deterministic candidate offsets around an origin: the origin itself, then
   // simple rings outward up to maxRadius. Rings increase in radius so iterating
   // in order means the nearest valid spot wins. No randomness, no jitter.
@@ -1240,7 +1249,15 @@ export function mountNercOrgMap(): void {
     const radius = placementRadius(bucket);
     const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
     const step = Math.max(5 * unitPerPx, radius / 7);
-    const offsets = candidatePositions(radius, step);
+    const offsetsByRadius = new Map<number, Array<[number, number]>>();
+    const offsetsFor = (maxRadius: number): Array<[number, number]> => {
+      const key = Math.round(maxRadius / unitPerPx);
+      const existing = offsetsByRadius.get(key);
+      if (existing) return existing;
+      const offsets = candidatePositions(maxRadius, step);
+      offsetsByRadius.set(key, offsets);
+      return offsets;
+    };
 
     // Spatial grid of already-placed bubbles for O(1) overlap queries.
     const cell = Math.max(2 * maxR + 2 * unitPerPx, step);
@@ -1273,6 +1290,7 @@ export function mountNercOrgMap(): void {
 
     for (const it of items) {
       let placed = false;
+      const offsets = offsetsFor(orgPlacementRadius(it.o, bucket));
       for (const [dx, dy] of offsets) {
         const cx = it.ox + dx;
         const cy = it.oy + dy;
