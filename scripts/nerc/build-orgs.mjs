@@ -10,7 +10,7 @@ import { dirname, resolve } from "node:path";
 import { feature } from "topojson-client";
 import { enrichOrg } from "../../src/lib/nerc/enrich.mjs";
 import { applyMapCombines } from "../../src/lib/nerc/map-combines.mjs";
-import { applyAreaAliases } from "../../src/lib/nerc/area-aliases.mjs";
+import { applyAreaAliases, loadAreaInterfaces } from "../../src/lib/nerc/area-aliases.mjs";
 import { isExcludedTerritoryCode, isExcludedTerritoryFips } from "../../src/lib/nerc/excluded-territories.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -314,10 +314,12 @@ function main() {
   mkdirSync(OUT_DIR, { recursive: true });
 
   const generatedAt = new Date().toISOString();
+  const area_interfaces = loadAreaInterfaces();
   const payload = {
     generated_at: generatedAt,
     source_file: file.replace(root + "/", ""),
     count: orgs.length,
+    area_interfaces,
     orgs,
   };
   const { renderPayload, detailPayload } = buildSplitPayloads(payload);

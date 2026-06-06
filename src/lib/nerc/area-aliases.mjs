@@ -9,10 +9,19 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_PATH = resolve(__dirname, "../../data/nerc/area-aliases.json");
 
-export function loadAreaAliases(path = DEFAULT_PATH) {
-  if (!existsSync(path)) return [];
+function loadAreaAliasFile(path = DEFAULT_PATH) {
+  if (!existsSync(path)) return {};
   const raw = JSON.parse(readFileSync(path, "utf8"));
-  return Array.isArray(raw) ? raw : raw.aliases ?? [];
+  return Array.isArray(raw) ? { aliases: raw } : raw;
+}
+
+export function loadAreaAliases(path = DEFAULT_PATH) {
+  return loadAreaAliasFile(path).aliases ?? [];
+}
+
+/** Planning/interface codes that are not canonical org records. */
+export function loadAreaInterfaces(path = DEFAULT_PATH) {
+  return loadAreaAliasFile(path).interfaces ?? [];
 }
 
 /** alias code (uppercase) -> { ncr_id, meaning } */
@@ -83,6 +92,41 @@ export function validateAreaAliases(orgs, aliases = loadAreaAliases()) {
     const owner = acronymOwners.get(code);
     if (owner && owner !== ncr_id) {
       errors.push(`area alias ${code} conflicts with org acronym on ${owner}`);
+    }
+  }
+  return errors;
+}
+
+export function validateAreaInterfaces(orgs, aliases = loadAreaAliases(), interfaces = loadAreaInterfaces()) {
+  const errors = [];
+  const aliasCodes = new Set(
+    aliases.map((row) => String(row.code ?? "").trim().toUpperCase()).filter(Boolean),
+  );
+  const acronymOwners = new Map();
+  for (const o of orgs) {
+    const ac = String(o.acronym ?? "").trim().toUpperCase();
+    if (ac) acronymOwners.set(ac, o.ncr_id);
+    const ns = String(o.name_shortest ?? "").trim().toUpperCase();
+    if (ns) acronymOwners.set(ns, o.ncr_id);
+  }
+
+  const seen = new Map();
+  for (const row of interfaces) {
+    const code = String(row.code ?? "").trim().toUpperCase();
+    if (!code) {
+      errors.push("area interface missing code");
+      continue;
+    }
+    if (seen.has(code)) {
+      errors.push(`duplicate area interface code: ${code}`);
+      continue;
+    }
+    seen.set(code, true);
+    if (aliasCodes.has(code)) {
+      errors.push(`area interface ${code} conflicts with org alias`);
+    }
+    if (acronymOwners.has(code)) {
+      errors.push(`area interface ${code} conflicts with org acronym on ${acronymOwners.get(code)}`);
     }
   }
   return errors;

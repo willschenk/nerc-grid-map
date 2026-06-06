@@ -344,6 +344,103 @@
       "code": "ALTE",
       "ncr_id": "NCR00674",
       "meaning": "ALLETE / Minnesota Power"
+    },
+    {
+      "code": "UPPC",
+      "ncr_id": "NCR01033",
+      "meaning": "Upper Peninsula Power Company"
+    },
+    {
+      "code": "HQMT",
+      "ncr_id": "NCR07111",
+      "meaning": "Hydro-Québec modeled tie area (Montreal)"
+    },
+    {
+      "code": "HQOH",
+      "ncr_id": "NCR07111",
+      "meaning": "Hydro-Québec modeled tie area (Ontario-Hydro)"
+    },
+    {
+      "code": "HQHG",
+      "ncr_id": "NCR07111",
+      "meaning": "Hydro-Québec modeled tie area (Hudson Gateway)"
+    },
+    {
+      "code": "HQSP",
+      "ncr_id": "NCR07111",
+      "meaning": "Hydro-Québec modeled tie area (Saint-Prime)"
+    },
+    {
+      "code": "HQCH",
+      "ncr_id": "NCR07111",
+      "meaning": "Hydro-Québec modeled tie area (Churchill Falls)"
+    },
+    {
+      "code": "HQCD",
+      "ncr_id": "NCR07111",
+      "meaning": "Hydro-Québec modeled tie area (Churchill DC)"
+    },
+    {
+      "code": "HQCP",
+      "ncr_id": "NCR07111",
+      "meaning": "Hydro-Québec modeled tie area (Churchill parallel)"
+    },
+    {
+      "code": "ERCN",
+      "ncr_id": "NCR04056",
+      "meaning": "ERCOT North modeled equivalent area"
+    },
+    {
+      "code": "ERCE",
+      "ncr_id": "NCR04056",
+      "meaning": "ERCOT East modeled equivalent area"
+    }
+  ],
+  "interfaces": [
+    {
+      "code": "MISOPJMIN",
+      "kind": "interface",
+      "meaning": "MISO-PJM interchange/interface"
+    },
+    {
+      "code": "WSC1",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 1"
+    },
+    {
+      "code": "WSC2",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 2"
+    },
+    {
+      "code": "WSC3",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 3"
+    },
+    {
+      "code": "WSC4",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 4"
+    },
+    {
+      "code": "WSC5",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 5"
+    },
+    {
+      "code": "WSC6",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 6"
+    },
+    {
+      "code": "WSC7",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 7"
+    },
+    {
+      "code": "WSC8",
+      "kind": "equivalent",
+      "meaning": "WECC modeled equivalent area 8"
     }
   ]
 }
