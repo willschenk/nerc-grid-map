@@ -885,7 +885,12 @@ export function mountNercOrgMap(): void {
     const overviewPadPx = compact ? (priority < 30 ? 2.4 : 3.4) : priority < 30 ? 1 : priority < 55 ? 1.5 : 2.4;
     const deepPadPx = compact ? (priority < 30 ? 0.8 : 1.2) : priority < 30 ? 0.35 : priority < 55 ? 0.55 : 0.8;
     const padPx = overviewPadPx + (deepPadPx - overviewPadPx) * deepT;
-    return Math.max(visual + padPx * unitPerPx, floorPx * unitPerPx);
+    // Tie the hit ring to the rendered bubble: a proportional margin so large
+    // circles get a proportionally larger tap target, while the absolute floor
+    // keeps the smallest dots comfortably clickable. This keeps clickable areas
+    // in sync as bubbles grow with zoom.
+    const margin = Math.max(padPx * unitPerPx, visual * 0.05);
+    return Math.max(visual + margin, floorPx * unitPerPx);
   }
 
   function boxesOverlap(
