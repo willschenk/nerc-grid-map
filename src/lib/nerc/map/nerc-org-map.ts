@@ -993,9 +993,9 @@ export function mountNercOrgMap(): void {
     // room. Collision checks still gate floating labels, so denser caps only fill
     // genuinely free space rather than overlapping.
     const cap =
-      k < 1.25 ? 340 :
-      k < 1.8 ? 480 :
-      k < 2.6 ? 700 :
+      k < 1.25 ? 420 :
+      k < 1.8 ? 620 :
+      k < 2.6 ? 900 :
       k < 3.4 ? 980 :
       k < 4.8 ? 1320 :
       k < 6.8 ? 1800 :
