@@ -5307,5 +5307,32 @@
     "geo_source": "EIA plant records / legacy LaGen BA area",
     "geo_source_url": "https://www.gridinfo.com/plant/big-cajun-1",
     "geo_notes": "Legacy Louisiana Generating (LaGen) merchant portfolio at Big Cajun; LAGT/LEGN balancing authority aliases."
+  },
+  {
+    "ncr_id": "SUP-ameren-illinois",
+    "entity_name": "Ameren Illinois",
+    "acronym": "Ameren Illinois",
+    "name_shortest": "Ameren Illinois",
+    "name_short": "Ameren Illinois",
+    "name_normal": "Ameren Illinois",
+    "state": "IL",
+    "city": "Collinsville",
+    "lat": 38.6703,
+    "lng": -89.9848,
+    "headquarters_address": "10 Executive Drive, Collinsville, IL 62234",
+    "roles": [
+      "BA",
+      "DP",
+      "LSE"
+    ],
+    "org_type": "IOU",
+    "region": "RF",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "Ameren Illinois public utility records",
+    "geo_source_url": "https://www.ameren.com/illinois",
+    "geo_notes": "Legacy Central Illinois Public Service / AmerenIP balancing area; not in the uploaded NERC extract as a standalone row."
   }
 ]

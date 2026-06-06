@@ -194,6 +194,21 @@
       "code": "AMMO",
       "ncr_id": "NCR10248",
       "meaning": "Ameren Missouri"
+    },
+    {
+      "code": "AMIL",
+      "ncr_id": "SUP-ameren-illinois",
+      "meaning": "Ameren Illinois"
+    },
+    {
+      "code": "SBMU",
+      "ncr_id": "NCR01142",
+      "meaning": "Sikeston Board of Municipal Utilities"
+    },
+    {
+      "code": "GLH",
+      "ncr_id": "NCR11783",
+      "meaning": "GridLiance Heartland"
     }
   ]
 }
