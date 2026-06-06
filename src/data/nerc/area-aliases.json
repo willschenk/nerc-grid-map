@@ -324,6 +324,26 @@
       "code": "MHEB",
       "ncr_id": "NCR01003",
       "meaning": "Manitoba Hydro-Electric Board / Manitoba Hydro"
+    },
+    {
+      "code": "SPC",
+      "ncr_id": "NCR01029",
+      "meaning": "Saskatchewan Power Corporation / SaskPower"
+    },
+    {
+      "code": "SPIF",
+      "ncr_id": "NCR01029",
+      "meaning": "SaskPower interface / legacy modeled area"
+    },
+    {
+      "code": "DPC",
+      "ncr_id": "NCR00979",
+      "meaning": "Dairyland Power Cooperative"
+    },
+    {
+      "code": "ALTE",
+      "ncr_id": "NCR00674",
+      "meaning": "ALLETE / Minnesota Power"
     }
   ]
 }
