@@ -40,7 +40,7 @@ export const ROLE_ANCHORS = {
   GO: [28, 72, 46], // orange - close to TO (parallel structure)
   GOP: [38, 65, 48], // amber - close to GO (operator of GO's assets)
   LSE: [95, 58, 42], // yellow-green - commercial load cluster
-  PSE: [5, 65, 44], // red-orange - market player; warm, distinct from TO
+  PSE: [325, 60, 50], // rose-magenta - market/commercial player; deliberately far from the warm TO/GO asset cluster (hue ~15-38) and the blue DP (210) so a purchasing-selling function never reads like a distribution/transmission asset role
   DP: [210, 24, 61], // muted blue - low saturation; supporting role
   RP: [200, 28, 59], // muted blue - close to DP
   RSG: [190, 30, 50], // muted teal - coordination roles; low saturation
