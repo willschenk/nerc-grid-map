@@ -22,6 +22,7 @@ export type NERCOrg = {
   entity_name: string;
   acronym: string;
   acronym_source: string | null;
+  area_aliases?: string[];
 
   // Classification
   region: NERCRegion | null; // primary RE (first alphabetically when multi-RE)

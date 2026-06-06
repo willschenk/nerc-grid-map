@@ -1,0 +1,24 @@
+{
+  "aliases": [
+    {
+      "code": "ISNE",
+      "ncr_id": "NCR07124",
+      "meaning": "ISO New England"
+    },
+    {
+      "code": "NYIS",
+      "ncr_id": "NCR07160",
+      "meaning": "New York Independent System Operator"
+    },
+    {
+      "code": "ONT",
+      "ncr_id": "NCR07184",
+      "meaning": "Ontario IESO"
+    },
+    {
+      "code": "NBSO",
+      "ncr_id": "NCR07155",
+      "meaning": "New Brunswick System Operator / NB Power"
+    }
+  ]
+}

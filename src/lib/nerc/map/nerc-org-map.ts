@@ -14,6 +14,7 @@ type Org = {
   entity_name: string;
   acronym: string;
   acronym_source: string | null;
+  area_aliases?: string[];
   // Researched three-tier display names; null until Cursor fills org-names.json.
   // name_major entities are pinned to name_shortest at every zoom.
   name_shortest?: string | null;
@@ -1015,11 +1016,12 @@ export function mountNercOrgMap(): void {
   // boost, which is what lets the text keep getting bigger.)
   function labelFontPx(o: Org, k: number): number {
     const priority = visualPriority(o);
-    // Desktop bases bumped ~1.3–1.5px so the smallest national-view abbreviations
-    // (e.g. "Sunflower", "LPEA") read without squinting on a 1440×900 monitor.
+    // Desktop bases keep the smallest national-view abbreviations readable; the
+    // top tier is trimmed slightly (iOS more than desktop) so the largest labels
+    // don't crowd the map or cover too much space.
     const base = compact
-      ? priority >= 80 ? 11.1 : priority >= 50 ? 9.2 : 6.7
-      : priority >= 80 ? 16 : priority >= 50 ? 13.5 : 10.5;
+      ? priority >= 80 ? 10.2 : priority >= 50 ? 9.2 : 6.7
+      : priority >= 80 ? 15 : priority >= 50 ? 13.5 : 10.5;
     // Mid/high-zoom readability: an extra ramp that kicks in past the overview so
     // labels keep getting bigger (and more legible) the further you zoom in. The
     // inside-label path still clamps to the bubble chord and long names fall back
@@ -1029,8 +1031,15 @@ export function mountNercOrgMap(): void {
       ? Math.min(2.3, (1 + Math.max(0, k - 1) * 0.06) * midHighBoost)
       : Math.min(2.6, (1 + Math.max(0, k - 1) * 0.08) * midHighBoost);
     const microLabelBoost = 1 + (isDeferredMarketOrg(o) ? (compact ? 1.05 : 0.85) : 0.55) * postRevealBoostT(o, k);
+    // Once the user has intentionally zoomed in (k~3+), smaller organizations'
+    // labels grow an extra bit so they read easily. This does NOT change when a
+    // dot is disclosed (that is overviewRevealK/canDisplayOrg) — it only enlarges
+    // the text of dots already on screen. Top-tier (>=80) labels are left alone
+    // since they're already prominent (and being trimmed above).
+    const smallOrgCloseBoost =
+      priority >= 80 ? 1 : 1 + (priority < 50 ? 0.28 : 0.16) * smoothStep((k - 3) / 4);
     // Narrow phones: scale every label up so names stay readable on a small handset.
-    return base * growth * microLabelBoost * phoneSizeScale();
+    return base * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale();
   }
 
   function labelLimit(k: number): number {

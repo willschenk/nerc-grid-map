@@ -10,6 +10,7 @@ import { dirname, resolve } from "node:path";
 import { feature } from "topojson-client";
 import { enrichOrg } from "../../src/lib/nerc/enrich.mjs";
 import { applyMapCombines } from "../../src/lib/nerc/map-combines.mjs";
+import { applyAreaAliases } from "../../src/lib/nerc/area-aliases.mjs";
 import { isExcludedTerritoryCode, isExcludedTerritoryFips } from "../../src/lib/nerc/excluded-territories.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -248,6 +249,7 @@ const RENDER_ORG_FIELDS = [
   "nerc_registered",
   "out_of_footprint",
   "map_combine_label",
+  "area_aliases",
 ];
 
 const ORG_DETAIL_FIELDS = [
@@ -307,7 +309,7 @@ function main() {
 
   const existingNames = new Set(nercOrgs.map((o) => normName(o.entity_name)));
   const supplemental = loadSupplemental(existingNames);
-  const orgs = [...nercOrgs, ...supplemental];
+  const orgs = applyAreaAliases([...nercOrgs, ...supplemental]);
 
   mkdirSync(OUT_DIR, { recursive: true });
 

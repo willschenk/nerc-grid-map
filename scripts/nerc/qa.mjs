@@ -8,6 +8,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { orgWeight, roleSetColor, isPrivate } from "../../src/lib/nerc/enrich.mjs";
+import { validateAreaAliases } from "../../src/lib/nerc/area-aliases.mjs";
 import { CURRENT_REGIONAL_ENTITIES } from "../../src/lib/nerc/roles.mjs";
 
 const file = resolve(process.argv[2] || "public/nerc/orgs.json");
@@ -141,6 +142,9 @@ try {
 } catch {
   // map-combines.json optional
 }
+
+// 13. Area aliases: unique codes, valid targets, no acronym conflicts.
+for (const e of validateAreaAliases(orgs)) errors.push(e);
 
 // Acceptance: >= 60% HIGH or MEDIUM.
 const hiMed = ((conf.HIGH ?? 0) + (conf.MEDIUM ?? 0)) / orgs.length * 100;
