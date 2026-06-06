@@ -1802,6 +1802,7 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
+      node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
       const hr = hitTargetRadius(o, k);
       if (hitChanged || o._hr !== hr) {
         node.setAttribute("r", String(hr / k));
@@ -2333,7 +2334,8 @@ export function mountNercOrgMap(): void {
 
     gHit
       .selectAll<SVGCircleElement, Org>("circle.org-hit")
-      .classed("hot", (d) => hot?.ncr_id === d.ncr_id);
+      .classed("hot", (d) => hot?.ncr_id === d.ncr_id)
+      .classed("selected", (d) => selectedOrg?.ncr_id === d.ncr_id);
 
     gLabels
       .selectAll<SVGTextElement, Org>("text.olabel")

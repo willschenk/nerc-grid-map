@@ -142,30 +142,40 @@
 
 #nerc-svg .org.selected {
   fill-opacity: 1;
-  stroke: #07110e;
+  stroke: #061610;
   /* Bold non-scaling ring (constant on screen, so it reads the same on tiny and
-     large dots) plus a slow, subtle pulse for a glow that never overpowers the
-     map. Avoids filter blur, which would scale with zoom. */
-  stroke-width: 2.8;
+     large dots) plus a slow pulse and white halo so selection clearly beats hover. */
+  stroke-width: 3.2;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
   animation: nerc-selected-glow 1700ms ease-in-out infinite;
 }
 
 @keyframes nerc-selected-glow {
   0%,
   100% {
-    stroke-width: 2.4;
+    stroke-width: 3;
     stroke: #07110e;
   }
   50% {
-    stroke-width: 3.6;
-    stroke: #0b3a2c;
+    stroke-width: 4.1;
+    stroke: #0d4a3f;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   #nerc-svg .org.selected {
     animation: none;
+    stroke-width: 3.4;
+    stroke: #07110e;
   }
+}
+
+#nerc-svg .org-hit.selected:not(.hide) {
+  fill: rgba(29, 111, 98, 0.12);
+  stroke: rgba(7, 17, 14, 0.72);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 
 #nerc-svg .org.tour-dim {
@@ -212,18 +222,28 @@
   dominant-baseline: central;
 }
 
-#nerc-svg .olabel.inside.hot-label,
-#nerc-svg .olabel.inside.selected-label {
+#nerc-svg .olabel.inside.hot-label {
   fill: #ffffff;
   stroke: rgba(3, 8, 7, 0.7);
   stroke-width: 2.6;
 }
 
-#nerc-svg .olabel.hot-label,
-#nerc-svg .olabel.selected-label {
+#nerc-svg .olabel.inside.selected-label {
+  fill: #ffffff;
+  stroke: rgba(3, 8, 7, 0.78);
+  stroke-width: 2.9;
+}
+
+#nerc-svg .olabel.hot-label {
   fill: #030807;
   font-weight: 850;
   stroke-width: 4.4;
+}
+
+#nerc-svg .olabel.selected-label {
+  fill: #030807;
+  font-weight: 880;
+  stroke-width: 4.9;
 }
 
 #nerc-svg .olabel.tour-flash {
