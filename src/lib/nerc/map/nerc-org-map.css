@@ -308,16 +308,15 @@
 }
 
 /* Offshore U.S. territories read as labelled clusters of dots (no framed box).
-   The region name sits above its cluster like a place label, with a strong
-   non-scaling halo so it stays legible over the sea at any zoom. */
+   Region names use title case and a quiet weight so PR/VI stay legible without
+   competing with NERC org labels or shouting over the mainland. */
 #nerc-svg .terr-label {
-  fill: #45524d;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  fill: #586862;
+  font-weight: 640;
+  letter-spacing: 0.02em;
   paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.96);
-  stroke-width: 3;
+  stroke: rgba(248, 251, 249, 0.9);
+  stroke-width: 2.5;
   vector-effect: non-scaling-stroke;
   pointer-events: none;
   text-anchor: middle;

@@ -1954,9 +1954,13 @@ export function mountNercOrgMap(): void {
     // tracks its offshore cluster) but keep a constant on-screen size like every
     // other label: the group already scales by k, so divide the base font by k.
     // Hidden during the walkthrough like the other ambient labels.
+    // Slightly smaller at overview, easing up by mid zoom so PR/VI stay readable
+    // when the Atlantic lane fills more of the screen.
+    const terrFontPx =
+      (compact ? 10 : 9.75) * unitPerPx * Math.min(1.08, 0.88 + smoothStep((k - 0.72) / 2.8) * 0.2);
     gInsets
       .selectAll<SVGTextElement, TerritoryBox>("text.terr-label")
-      .attr("font-size", ((compact ? 11 : 10.5) * unitPerPx) / Math.max(k, 0.001))
+      .attr("font-size", terrFontPx / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
   }
