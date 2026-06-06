@@ -417,7 +417,13 @@ function displayName(o: Org): string {
     if (c) return c.mid;
     return o.name_normal ?? midName(o);
   }
-  if (o.entity_name.length > 96) return midName(o);
+  // Long legal names collapse to a shorter readable tier for titles/labels:
+  // researched short name, then shortest, then the algorithmic acronym fallback
+  // (midName -> tinyName -> acronym). The full entity_name is still shown in the
+  // detail panel (see renderPanel) and so stays available on inspect.
+  if (o.entity_name.length > 40) {
+    return o.name_short ?? o.name_shortest ?? midName(o);
+  }
   return o.entity_name;
 }
 
