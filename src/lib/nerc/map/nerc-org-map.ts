@@ -720,7 +720,7 @@ export function mountNercOrgMap(): void {
     if (isTransmissionOwnerOnly(o)) return 8;
     if (hasAnyRole(o, AUTHORITY_ROLES)) return 82;
     if ((hasTo && (hasDp || hasLse)) || (hasDp && hasLse)) return 62;
-    if (o.roles.includes("TOP")) return 46;
+    if (o.roles.includes("TOP") || o.roles.includes("TSP")) return 52;
     if (hasAnyRole(o, GRID_ROLES)) return 50;
     if (hasAnyRole(o, SUPPORT_ROLES)) return 42;
     if (isGenerationOnly(o)) return 6;
@@ -757,6 +757,26 @@ export function mountNercOrgMap(): void {
 
   function canGrowAtZoom(o: Org): boolean {
     return meaningfulRoleCount(o) > 0 || isGenerationOnly(o);
+  }
+
+  function isGridLeadershipOrg(o: Org): boolean {
+    return (
+      isMajorSystemOperator(o) ||
+      hasAnyRole(o, AUTHORITY_ROLES) ||
+      o.roles.includes("TOP") ||
+      o.roles.includes("TSP")
+    );
+  }
+
+  // Scale small-org catch-up growth so RC/BA/PC/TOP/TSP stay visually ahead of
+  // GO/GOP and minor utilities at overview and mid zoom; catch-up ramps only deep in.
+  function growthDominanceFactor(o: Org, k: number): number {
+    if (isGridLeadershipOrg(o)) return 1;
+    if (isGenerationOnly(o)) return 0.14 + 0.1 * smoothStep((k - 16) / 6);
+    const pri = visualPriority(o);
+    const lowPriT = smoothStep((48 - pri) / 40);
+    const deepCatchUpT = smoothStep((k - 7) / 5);
+    return 1 - 0.52 * lowPriT * (1 - deepCatchUpT);
   }
 
   function visualPrioritySort(a: Org, b: Org): number {
@@ -878,19 +898,25 @@ export function mountNercOrgMap(): void {
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
     const priorityT = smoothStep((rawPriority - 42) / 58);
     const boostPx = canGrowAtZoom(o) ? (compact ? 6 : 10) * priorityT * closeT : 0;
+    // Mid-zoom lift for grid leadership so BA/RC/PC/TOP/TSP stay ahead after the
+    // small-org growth pass; fades once deep-zoom catch-up kicks in.
+    const leadershipMidBoost = isGridLeadershipOrg(o)
+      ? (compact ? 4 : 6.5) * smoothStep((k - 0.85) / 2.4) * (1 - smoothStep((k - 7.5) / 3.5))
+      : 0;
     // Deep-zoom boost, weighted toward the smallest orgs: if you keep zooming
     // into a low-priority entity it grows so its name can finally read.
     const deepT = smoothStep((k - (compact ? 6 : 7)) / (compact ? 22 : 26));
     const smallOrgT = smoothStep((72 - rawPriority) / 62);
+    const dominance = growthDominanceFactor(o, k);
     const deepBoostPx = canGrowAtZoom(o)
-      ? (compact ? 13 : 13) * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1)
+      ? (compact ? 13 : 13) * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1) * dominance
       : 0;
     // Continuous growth applied to every bubble across the whole zoom range, so
     // that going one step deeper always yields visibly larger circles instead of
     // plateauing once basePx saturates. Ramps smoothly from the overview to deep
     // zoom, scaled by priority so important orgs grow the most.
     const wideT = smoothStep((k - 1) / 36);
-    const zoomGrowthPx = (compact ? 12 : 18) * wideT * (0.4 + 0.6 * priority);
+    const zoomGrowthPx = (compact ? 12 : 18) * wideT * (0.18 + 0.82 * priority) * dominance;
     const zoomMaxPx =
       maxPx +
       (canGrowAtZoom(o) ? (compact ? 6 : 10) : 0) +
@@ -900,15 +926,22 @@ export function mountNercOrgMap(): void {
     // tiny when there is clearly room — every bubble reaches a readable floor so
     // its label can show. Screen coords are spread far apart at this zoom, so the
     // floor never reintroduces overlap (placement re-solves per bucket).
-    const deepMinPx = (compact ? 6.5 : 7.5) * smoothStep((k - 8) / 16);
+    const deepMinPx =
+      (compact ? 6.5 : 7.5) *
+      smoothStep((k - 8) / 16) *
+      (isGridLeadershipOrg(o) ? 1 : smoothStep((rawPriority - 22) / 38));
     // Overview floor for AK/HI inset dots — lift the smallest utilities in the
     // tiny projection inset without changing mainland sizing.
     const insetOverviewMinPx = isUsInsetOrg(o)
       ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2)
       : 0;
     return (
-      Math.max(minPx, deepMinPx, insetOverviewMinPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx + zoomGrowthPx)) *
-      unitPerPx
+      Math.max(
+        minPx,
+        deepMinPx,
+        insetOverviewMinPx,
+        Math.min(zoomMaxPx, basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx),
+      ) * unitPerPx
     );
   }
 
