@@ -121,7 +121,7 @@ const SPIDER_RING_STEP_PX = 28;
 // Drives visualRadius's desktop maxPx, so raising it enlarges every bubble.
 // Bubbles only ever move in render space (_dx/_dy nudges); the true projected
 // _x/_y are never mutated, so geography stays exact.
-const MAX_RADIUS = 75;
+const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
@@ -460,17 +460,6 @@ function safeColor(color: string | null | undefined): string {
   return /^hsl\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*\)$/i.test(value) ? value : "hsl(0, 0%, 45%)";
 }
 
-// Pick the readable inside-label ink (and matching halo) for a bubble colour.
-// Light bubbles get dark text with a light halo; dark bubbles keep white text
-// with a dark halo. Driven by the HSL lightness carried in the org colour, so it
-// adapts per bubble without changing any bubble colour.
-function labelInkFor(color: string | null | undefined): { fill: string; halo: string } {
-  const m = /^hsl\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*(\d{1,3})%\s*\)$/i.exec(String(color ?? "").trim());
-  const lightness = m ? Number(m[1]) : 45;
-  if (lightness >= 62) return { fill: "#0b1512", halo: "rgba(255, 255, 255, 0.85)" };
-  return { fill: "#ffffff", halo: "rgba(7, 17, 14, 0.55)" };
-}
-
 function safeHttpUrl(value: string | null | undefined): string | null {
   if (!value) return null;
   try {
@@ -597,6 +586,13 @@ export function mountNercOrgMap(): void {
   // Last computed label placement, stashed for the optional ?audit UX harness so
   // it can report which dots got an inside vs floating label without recomputing.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
+  // Transform (k + translate) at the last FULL redraw — the label/place/land
+  // layers were positioned in screen space at this transform. While the user is
+  // panning (k unchanged) we translate those layers by the delta from here so
+  // nothing re-selects, reflows, or jumps; a full redraw fires on pan end.
+  let lastFullLabelK = NaN;
+  let lastFullLabelTx = 0;
+  let lastFullLabelTy = 0;
   let tooltipRequest = 0;
 
   function invalidateOrgLayout(): void {
@@ -842,12 +838,11 @@ export function mountNercOrgMap(): void {
     const pri = visualPriority(o);
     const w = o.weight ?? 0;
     // Grid leadership and high-value utilities are always present at the overview.
-    if (isGridLeadershipOrg(o) || pri >= 62) return 0;
-    if (pri >= 50) return 0.85; // grid roles (TO+DP, TOP/TSP, support groups)
-    if (pri >= 42) return w >= 12 ? 0.95 : 1.2; // utilities, cooperatives, municipals
-    if (pri >= 28) return w >= 8 ? 1.4 : 1.9;
-    if (pri >= 18) return 2.3;
-    return 2.8; // lowest non-deferred (minor/merchant) — GO/GOP/PSE deferred separately
+    if (isGridLeadershipOrg(o) || pri >= 50) return 0; // leadership + grid roles always
+    if (pri >= 42) return w >= 12 ? 0.78 : 0.95; // utilities, cooperatives, municipals
+    if (pri >= 28) return w >= 8 ? 1.1 : 1.5;
+    if (pri >= 18) return 1.9;
+    return 2.4; // lowest non-deferred (minor/merchant) — GO/GOP/PSE deferred separately
   }
 
   function canDisplayOrg(o: Org, k: number): boolean {
@@ -856,7 +851,7 @@ export function mountNercOrgMap(): void {
     // don't stack low-priority dots. They reveal normally once zoomed past k2.
     // (Orgs that find no free placement slot are additionally hidden by
     // computePlacements via _placed, so only those with room actually draw.)
-    if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 42) return false;
+    if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 28) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     // GO/GOP-only and PSE-market entities stay deferred to deep zoom.
     if (isDeferredMarketOrg(o)) return k >= generationOnlyDisplayK();
@@ -1003,13 +998,13 @@ export function mountNercOrgMap(): void {
     const priority = visualPriority(o);
     const midwest = isMidwestOrg(o);
     if (k >= 2.2) return true;
-    // Lowered so more high/mid-priority orgs attempt a label at the overview and
-    // mid zoom (collision + placement checks still prevent crowding, and Fix 1
-    // hides any that can't land a readable label). GO/GOP/PSE remain deferred via
-    // canDisplayOrg, so they don't flood in here.
-    if (k < 1.25) return priority >= (midwest ? 30 : 34);
-    if (k < 1.8) return priority >= (midwest ? 20 : 22);
-    return priority >= (midwest ? 14 : 16);
+    // Low thresholds so most disclosed orgs attempt a label at overview/mid zoom —
+    // the user wants a dense map. Collision + placement checks still prevent true
+    // overlap, and Fix 1 hides any that can't land a readable label. GO/GOP/PSE
+    // remain deferred via canDisplayOrg, so they don't flood in here.
+    if (k < 1.25) return priority >= (midwest ? 22 : 26);
+    if (k < 1.8) return priority >= (midwest ? 16 : 18);
+    return priority >= (midwest ? 12 : 14);
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
@@ -1024,8 +1019,8 @@ export function mountNercOrgMap(): void {
     // top tier is trimmed slightly (iOS more than desktop) so the largest labels
     // don't crowd the map or cover too much space.
     const base = compact
-      ? priority >= 80 ? 10.2 : priority >= 50 ? 9.2 : 6.7
-      : priority >= 80 ? 15 : priority >= 50 ? 13.5 : 10.5;
+      ? priority >= 80 ? 9 : priority >= 50 ? 7.8 : 6
+      : priority >= 80 ? 12 : priority >= 50 ? 10.5 : 8.5;
     // Mid/high-zoom readability: an extra ramp that kicks in past the overview so
     // labels keep getting bigger (and more legible) the further you zoom in. The
     // inside-label path still clamps to the bubble chord and long names fall back
@@ -1051,12 +1046,12 @@ export function mountNercOrgMap(): void {
     // room. Collision checks still gate floating labels, so denser caps only fill
     // genuinely free space rather than overlapping.
     const cap =
-      k < 1.25 ? 420 :
-      k < 1.8 ? 620 :
-      k < 2.6 ? 900 :
-      k < 3.4 ? 980 :
-      k < 4.8 ? 1320 :
-      k < 6.8 ? 1800 :
+      k < 1.25 ? 700 :
+      k < 1.8 ? 1000 :
+      k < 2.6 ? 1400 :
+      k < 3.4 ? 1800 :
+      k < 4.8 ? 2200 :
+      k < 6.8 ? 2800 :
       k < 9.5 ? 2400 :
       k < 12.5 ? 3200 :
       k < 18 ? 4200 :
@@ -1098,15 +1093,14 @@ export function mountNercOrgMap(): void {
     // area. Radius is in CSS pixels, then converted to SVG units for the viewBox.
     const rawPriority = visualPriority(o);
     const priority = rawPriority / 100;
-    const minPx = compact ? 2.1 : 2.2;
-    const maxPx = compact ? 30 : MAX_RADIUS;
+    const minPx = compact ? 1.7 : 1.7;
+    const maxPx = compact ? 24 : MAX_RADIUS;
     const fullPx = minPx + (maxPx - minPx) * priority;
-    // Bubbles start large at the overview (the strong national view) and then
-    // grow toward full size. Desktop uses a gentle ramp so the mid-low zoom range
-    // (around k=5) doesn't balloon — full size is reached deep in, not early.
-    // Mobile keeps its quicker ramp unchanged.
+    // Bubbles start smaller at the overview so many more organizations fit on
+    // screen at once (denser national/mid view), then grow toward full size as the
+    // user zooms in. Desktop keeps a gentle ramp so mid-low zoom doesn't balloon.
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    const overviewScale = compact ? 0.52 : 0.62;
+    const overviewScale = compact ? 0.4 : 0.46;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
     const priorityT = smoothStep((rawPriority - 42) / 58);
@@ -1844,6 +1838,32 @@ export function mountNercOrgMap(): void {
   function redraw(): void {
     const k = transform.k;
     syncZoomGroups();
+    // Pan-only fast path: while the user is dragging at a constant zoom, freeze
+    // the entire label/place/land selection and just translate those screen-space
+    // layers by the pan delta. Bubbles already ride the group transform, so this
+    // keeps everything locked together with zero reflow, popping, or recompute.
+    // A full redraw runs on pan end (see the zoom "end" handler).
+    if (userPanning && lastLabelState && k === lastFullLabelK) {
+      const t = `translate(${transform.x - lastFullLabelTx},${transform.y - lastFullLabelTy})`;
+      gLabels.attr("transform", t);
+      gPlaces.attr("transform", t);
+      gLand.attr("transform", t);
+      // Keep _sx/_sy current (pan is a pure translation) so hit-testing stays
+      // accurate if the user taps right after panning, before the pan-end redraw.
+      const fs = spiderFanScale(k);
+      const ds = declutterScale(k);
+      for (const o of placeableOrgs) {
+        if (o._x == null || o._y == null) continue;
+        o._sx = transform.applyX(orgRenderX(o, fs, ds));
+        o._sy = transform.applyY(orgRenderY(o, fs, ds));
+      }
+      return;
+    }
+    // Full redraw: the layers are repositioned in absolute screen space, so clear
+    // any pan translate left on them.
+    gLabels.attr("transform", null);
+    gPlaces.attr("transform", null);
+    gLand.attr("transform", null);
     const fanScale = spiderFanScale(k);
     const declScale = declutterScale(k);
     positionOrgMarks(k);
@@ -2064,7 +2084,7 @@ export function mountNercOrgMap(): void {
       // any circle on screen ends up labeled when fully zoomed in.
       const deepLabelT = smoothStep((k - 9) / 13);
       const insideMin =
-        (compact ? 5.8 : 6.4) *
+        (compact ? 4.4 : 5) *
         (1 - 0.9 * deepLabelT) *
         (isMidwestOrg(o) ? 0.9 : 1) *
         // Desktop: a very short acronym (e.g. LES, CWLP, ConEd) that nearly fits
@@ -2236,16 +2256,19 @@ export function mountNercOrgMap(): void {
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
       node.classList.toggle("inside", state.inside);
-      // Contrast: an inside label sits on its bubble's colour, so pick dark or
-      // light ink from that colour's lightness. Floating labels sit on the map
-      // background and keep the stylesheet's default ink.
+      // Inside labels stay white on every bubble colour; longer tokens get a
+      // thicker dark outline so they stay readable instead of switching to dark
+      // text. Floating labels keep the stylesheet's default ink.
       if (state.inside) {
-        const ink = labelInkFor(o.color);
-        node.style.fill = ink.fill;
-        node.style.stroke = ink.halo;
+        node.style.fill = "#ffffff";
+        node.style.stroke = "rgba(7, 17, 14, 0.82)";
+        const len = state.text.length;
+        const strokeScale = len > 13 ? 0.34 : len > 8 ? 0.3 : 0.26;
+        node.style.strokeWidth = String(Math.max(2.2 * unitPerPx, state.font * strokeScale));
       } else {
         node.style.fill = "";
         node.style.stroke = "";
+        node.style.strokeWidth = "";
       }
       node.classList.toggle("hover-on-dot", !!state.centered);
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
@@ -2396,6 +2419,11 @@ export function mountNercOrgMap(): void {
       .attr("font-size", terrFontPx / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
+    // Remember the transform this full layout was computed at, so a subsequent
+    // pan can translate the layers instead of recomputing them.
+    lastFullLabelK = k;
+    lastFullLabelTx = transform.x;
+    lastFullLabelTy = transform.y;
   }
 
   // Lay out-of-footprint territory orgs as labelled clusters of dots — no framed
@@ -3185,6 +3213,9 @@ export function mountNercOrgMap(): void {
         if (isPanSourceEvent(ev.sourceEvent)) {
           userPanning = false;
           lastPanEndAt = performance.now();
+          // Pan is over: do one full redraw so labels/place/land resettle for the
+          // new viewport (during the drag they were frozen and only translated).
+          scheduleRedraw();
         }
         if (isWheelEvent(ev.sourceEvent)) finishWheelZoom();
       })

@@ -257,15 +257,9 @@
   animation: nerc-label-pulse 1300ms ease-out infinite;
 }
 
-/* Secondary geographic context — quiet, so NERC labels read as primary. */
+/* Secondary geographic context. The little marker dots are hidden (they read as
+   stray gray dots not tied to any organization); the city *name* labels stay. */
 #nerc-svg .place-dot {
-  fill: rgba(74, 94, 87, 0.62);
-  stroke: rgba(248, 251, 249, 0.9);
-  stroke-width: 1.1;
-  pointer-events: none;
-}
-
-#nerc-svg .place-dot.dim {
   display: none;
 }
 
