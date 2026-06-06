@@ -1248,8 +1248,8 @@ export function mountNercOrgMap(): void {
     // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
     // to each other) rather than drifting away. Grows only modestly with zoom.
     const basePx = compact
-      ? k < 1.25 ? 14 : k < 2.2 ? 18 : k < 4 ? 24 : k < 7 ? 30 : 38
-      : k < 1.25 ? 19 : k < 2.2 ? 26 : k < 4 ? 34 : k < 7 ? 44 : 54;
+      ? k < 1.25 ? 12 : k < 2.2 ? 16 : k < 4 ? 24 : k < 7 ? 30 : 38
+      : k < 1.25 ? 17 : k < 2.2 ? 22 : k < 4 ? 34 : k < 7 ? 44 : 54;
     const deepPx = compact ? 48 : 66;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
