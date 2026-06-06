@@ -229,6 +229,21 @@
       "code": "FPC",
       "ncr_id": "NCR00063",
       "meaning": "Florida Power Corporation / Duke Energy Florida"
+    },
+    {
+      "code": "GVL",
+      "ncr_id": "NCR00032",
+      "meaning": "Gainesville Regional Utilities"
+    },
+    {
+      "code": "HST",
+      "ncr_id": "NCR00037",
+      "meaning": "City of Homestead"
+    },
+    {
+      "code": "SEC",
+      "ncr_id": "NCR00068",
+      "meaning": "Seminole Electric Cooperative"
     }
   ]
 }
