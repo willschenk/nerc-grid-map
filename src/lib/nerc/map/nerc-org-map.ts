@@ -103,14 +103,17 @@ type OrgDetailsPayload = {
 // viewBox aspect ratio matches the screen (no letterbox bands on tall phones).
 let W = 960;
 let H = 600;
+// Vestigial spider-fan constants. The fan is disabled (spiderFanScale returns 0)
+// now that coincident origins are separated by ring placement in
+// computePlacements; kept only so the few remaining references compile.
 const SPIDER_CLUSTER_EPSILON = 0.35;
 const SPIDER_START_K = 4;
 const SPIDER_FULL_K = 10;
 const SPIDER_RING_STEP_PX = 28;
-// Declutter: visible bubbles move in render space only. Lat/lng and projected
-// _x/_y stay true; _dx/_dy are screen-space nudges divided by zoom at render.
 // Full-size (priority-100, fully-zoomed) bubble radius in CSS px on desktop.
 // Drives visualRadius's desktop maxPx, so raising it enlarges every bubble.
+// Bubbles only ever move in render space (_dx/_dy nudges); the true projected
+// _x/_y are never mutated, so geography stays exact.
 const MAX_RADIUS = 60;
 const MAX_ZOOM = 1200;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
