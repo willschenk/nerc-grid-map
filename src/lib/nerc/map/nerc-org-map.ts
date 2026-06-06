@@ -1041,7 +1041,7 @@ export function mountNercOrgMap(): void {
     const rawPriority = visualPriority(o);
     const priority = rawPriority / 100;
     const minPx = compact ? 2.1 : 2.2;
-    const maxPx = compact ? 25 : MAX_RADIUS;
+    const maxPx = compact ? 30 : MAX_RADIUS;
     const fullPx = minPx + (maxPx - minPx) * priority;
     // Bubbles start large at the overview (the strong national view) and then
     // grow toward full size. Desktop uses a gentle ramp so the mid-low zoom range
