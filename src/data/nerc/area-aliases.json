@@ -169,6 +169,31 @@
       "code": "EES",
       "ncr_id": "NCR01234",
       "meaning": "Entergy Electric System"
+    },
+    {
+      "code": "YAD",
+      "ncr_id": "NCR01169",
+      "meaning": "Yadkin / Cube Hydro Carolinas legacy hydro area"
+    },
+    {
+      "code": "SEHA",
+      "ncr_id": "NCR00070",
+      "meaning": "SEPA Hartwell project"
+    },
+    {
+      "code": "SERU",
+      "ncr_id": "NCR00070",
+      "meaning": "SEPA Russell project"
+    },
+    {
+      "code": "SETH",
+      "ncr_id": "NCR00070",
+      "meaning": "SEPA Thurmond project"
+    },
+    {
+      "code": "AMMO",
+      "ncr_id": "NCR10248",
+      "meaning": "Ameren Missouri"
     }
   ]
 }
