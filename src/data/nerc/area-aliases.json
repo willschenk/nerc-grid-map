@@ -289,6 +289,21 @@
       "code": "MPS",
       "ncr_id": "SUP-evergy-missouri-west",
       "meaning": "Missouri Public Service / Evergy Missouri West legacy area"
+    },
+    {
+      "code": "MP",
+      "ncr_id": "NCR00674",
+      "meaning": "Minnesota Power"
+    },
+    {
+      "code": "SMP",
+      "ncr_id": "NCR01030",
+      "meaning": "Southern Minnesota Municipal Power Agency"
+    },
+    {
+      "code": "OTP",
+      "ncr_id": "NCR01023",
+      "meaning": "Otter Tail Power Company"
     }
   ]
 }
