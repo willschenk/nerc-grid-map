@@ -133,13 +133,13 @@ const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 // Growth anchor for generation-only micro-orgs: how deep before their post-reveal
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
-const GENERATION_ONLY_REVEAL_K = 44;
+const GENERATION_ONLY_REVEAL_K = 50;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
 // Display anchor (desktop only): generation-only orgs become eligible to render
 // this early, so they start appearing at NYC-area deep zoom (~k18+) — but their
 // size ramp still waits for GENERATION_ONLY_REVEAL_K, so they stay small and never
 // overpower important orgs. Mobile keeps the higher reveal-K for display.
-const GENERATION_ONLY_DISPLAY_K = 16;
+const GENERATION_ONLY_DISPLAY_K = 20;
 const TO_ONLY_REVEAL_K = 12;
 const TO_ONLY_REVEAL_K_COMPACT = 14;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
@@ -957,7 +957,7 @@ export function mountNercOrgMap(): void {
     if (isDeferredMarketOrg(o)) return 0.12 + 0.88 * postRevealBoostT(o, k);
     const pri = visualPriority(o);
     const lowPriT = smoothStep((48 - pri) / 40);
-    const deepCatchUpT = smoothStep((k - 7) / 5);
+    const deepCatchUpT = smoothStep((k - 8) / 5);
     return 1 - 0.52 * lowPriT * (1 - deepCatchUpT);
   }
 
