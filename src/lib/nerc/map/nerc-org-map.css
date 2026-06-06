@@ -118,6 +118,28 @@
   stroke-width: 1.4;
 }
 
+@media (hover: hover) {
+  /* Desktop: constant-width ring + faint halo so the exact target reads in clusters. */
+  #nerc-svg .org.hot:not(.selected) {
+    stroke: #07110e;
+    stroke-width: 2.2;
+    paint-order: stroke fill;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.88));
+  }
+
+  #nerc-svg .org-hit.hot:not(.hide) {
+    fill: rgba(29, 111, 98, 0.08);
+    stroke: rgba(11, 58, 44, 0.52);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  #nerc-svg .olabel.hot-label:not(.selected-label) {
+    font-weight: 830;
+    stroke-width: 4.2;
+  }
+}
+
 #nerc-svg .org.selected {
   fill-opacity: 1;
   stroke: #07110e;
