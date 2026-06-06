@@ -880,9 +880,12 @@ export function mountNercOrgMap(): void {
   }
 
   function typePriority(o: Org): number {
-    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return 72;
-    if (FEDERAL_NAME.test(o.entity_name) || o.org_type === "federal") return 74;
-    if (o.is_iso_rto || o.org_type === "ISO_RTO") return 78;
+    // Federal power authorities, named reliability bodies and ISO/RTOs lead the
+    // type tier so TVA/BPA/WAPA/NERC etc. read as major even without authority
+    // roles. IOUs are not demoted (still 66 below).
+    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return 80;
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return 78;
+    if (o.is_iso_rto || o.org_type === "ISO_RTO") return 76;
     if (o.org_type === "IOU") return 66;
     if (o.org_type === "cca") return 38;
     if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return 66;
@@ -901,8 +904,8 @@ export function mountNercOrgMap(): void {
     if (o.weight >= 28 && o.roles.includes("RC")) score = Math.max(score, 86);
     else if (o.weight >= 28 && o.roles.includes("BA")) score = Math.max(score, 82);
     else if (o.weight >= 28 && o.roles.includes("PC")) score = Math.max(score, 78);
-    if (FEDERAL_NAME.test(o.entity_name) || o.org_type === "federal") score = Math.max(score, 76);
-    if (RELIABILITY_ORG_NAME.test(o.entity_name)) score = Math.max(score, 74);
+    if (FEDERAL_NAME.test(o.entity_name) || o.org_type === "federal") score = Math.max(score, 78);
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) score = Math.max(score, 78);
     if (o.org_type === "ISO_RTO") score = Math.max(score, 72);
     if (
       o.name_major &&
