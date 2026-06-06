@@ -489,6 +489,9 @@ export function mountNercOrgMap(): void {
   let lastUserZoomAt = 0;
   let userPanning = false;
   let lastPanEndAt = 0;
+  let wheelZooming = false;
+  let zoomBoundsDirty = false;
+  let wheelRedrawPending = false;
   let focusPanPending = false;
   let tourIds = new Set<string>();
   let tourTimers: number[] = [];
@@ -937,8 +940,8 @@ export function mountNercOrgMap(): void {
     // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
     // to each other) rather than drifting away. Grows only modestly with zoom.
     const basePx = compact
-      ? k < 1.25 ? 14 : k < 2.2 ? 18 : k < 4 ? 24 : k < 7 ? 30 : 38
-      : k < 1.25 ? 19 : k < 2.2 ? 26 : k < 4 ? 34 : k < 7 ? 44 : 54;
+      ? k < 1.25 ? 14 : k < 2.2 ? 22 : k < 4 ? 30 : k < 7 ? 38 : 46
+      : k < 1.25 ? 19 : k < 2.2 ? 30 : k < 4 ? 40 : k < 7 ? 52 : 62;
     const deepPx = compact ? 48 : 66;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
@@ -1058,10 +1061,77 @@ export function mountNercOrgMap(): void {
     return type === "mousedown" || type === "mousemove" || type === "touchstart" || type === "touchmove";
   }
 
+  function isWheelEvent(event: Event | null | undefined): boolean {
+    return event?.type === "wheel";
+  }
+
   function wheelDelta(event: WheelEvent): number {
-    const unit = event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.0017;
-    const pinch = event.ctrlKey ? 9 : 1;
-    return (-event.deltaY * unit * pinch) / (compact ? 1.08 : 1);
+    const unit = event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002;
+    const pinch = event.ctrlKey ? 4.5 : 1;
+    let dy = -event.deltaY * unit * pinch;
+    // Cap each wheel frame so trackpad momentum cannot jump several "steps" at once.
+    const stepCap = compact ? 0.065 : 0.055;
+    dy = Math.sign(dy) * Math.min(Math.abs(dy), stepCap);
+    // Same scroll gesture feels similar from overview through deep zoom.
+    const k = Math.max(transform.k, 0.72);
+    dy /= Math.pow(Math.log10(k + 9), 0.5);
+    return dy / (compact ? 1.04 : 1);
+  }
+
+  function syncZoomGroups(): void {
+    const tStr = transform.toString();
+    gMap.attr("transform", tStr);
+    gInsets.attr("transform", tStr);
+    gOverlay.attr("transform", tStr);
+    gHit.attr("transform", tStr);
+  }
+
+  function redrawWhileWheeling(): void {
+    const k = transform.k;
+    syncZoomGroups();
+    const fanScale = spiderFanScale(k);
+    const declScale = declutterScale(k);
+    positionOrgMarks(k);
+    gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
+      const node = this as SVGCircleElement;
+      if (node.classList.contains("hide")) return;
+      const rr = renderedRadius(o, k);
+      if (o._rk !== k || o._rr !== rr) {
+        node.setAttribute("r", String(rr / k));
+        o._rk = k;
+        o._rr = rr;
+      }
+    });
+    gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
+      const node = this as SVGCircleElement;
+      if (node.classList.contains("hide")) return;
+      const hr = hitTargetRadius(o, k);
+      if (hitK !== k || o._hr !== hr) {
+        node.setAttribute("r", String(hr / k));
+        o._hr = hr;
+      }
+    });
+    hitK = k;
+    gLabels.style("opacity", "0.55");
+  }
+
+  function scheduleWheelRedraw(): void {
+    if (wheelRedrawPending) return;
+    wheelRedrawPending = true;
+    requestAnimationFrame(() => {
+      wheelRedrawPending = false;
+      if (wheelZooming) redrawWhileWheeling();
+    });
+  }
+
+  function finishWheelZoom(): void {
+    wheelZooming = false;
+    gLabels.style("opacity", null);
+    if (zoomBoundsDirty) {
+      zoomBoundsDirty = false;
+      updateZoomBounds();
+    }
+    redraw();
   }
 
   function updateZoomBounds(): void {
@@ -1423,13 +1493,7 @@ export function mountNercOrgMap(): void {
 
   function redraw(): void {
     const k = transform.k;
-    const tStr = transform.toString();
-    // Circles ride the zoom transform, so panning is a single group attribute
-    // (GPU-composited) instead of repositioning every dot in JS each frame.
-    gMap.attr("transform", tStr);
-    gInsets.attr("transform", tStr);
-    gOverlay.attr("transform", tStr);
-    gHit.attr("transform", tStr);
+    syncZoomGroups();
     const fanScale = spiderFanScale(k);
     const declScale = declutterScale(k);
     positionOrgMarks(k);
@@ -2615,6 +2679,7 @@ export function mountNercOrgMap(): void {
       // control so they know they can take over.
       .on("start", (ev) => {
         if (isPanSourceEvent(ev.sourceEvent)) userPanning = true;
+        if (isWheelEvent(ev.sourceEvent)) wheelZooming = true;
         if (ev.sourceEvent && tourRunning) nudgeStopAttention();
       })
       .on("end", (ev) => {
@@ -2622,13 +2687,23 @@ export function mountNercOrgMap(): void {
           userPanning = false;
           lastPanEndAt = performance.now();
         }
+        if (isWheelEvent(ev.sourceEvent)) finishWheelZoom();
       })
       .on("zoom", (ev) => {
         if (ev.sourceEvent) lastUserZoomAt = performance.now();
         const prevK = transform.k;
         transform = ev.transform;
-        if (Math.abs(transform.k - prevK) > 0.001) updateZoomBounds();
-        scheduleRedraw();
+        const kChanged = Math.abs(transform.k - prevK) > 0.001;
+        if (kChanged) {
+          if (wheelZooming || isWheelEvent(ev.sourceEvent)) zoomBoundsDirty = true;
+          else updateZoomBounds();
+        }
+        if (wheelZooming || isWheelEvent(ev.sourceEvent)) {
+          if (!wheelZooming) wheelZooming = true;
+          scheduleWheelRedraw();
+        } else {
+          scheduleRedraw();
+        }
       });
     updateZoomBounds();
     svg.call(zoomBehavior);
