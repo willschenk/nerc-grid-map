@@ -843,11 +843,11 @@ export function mountNercOrgMap(): void {
     const w = o.weight ?? 0;
     // Grid leadership and high-value utilities are always present at the overview.
     if (isGridLeadershipOrg(o) || pri >= 62) return 0;
-    if (pri >= 50) return 0.95; // grid roles (TO+DP, TOP/TSP, support groups)
-    if (pri >= 42) return w >= 12 ? 1.2 : 1.6;
-    if (pri >= 28) return w >= 8 ? 1.8 : 2.6;
-    if (pri >= 18) return 2.9;
-    return 3.6; // very low priority / low weight — reveal only once zoomed in
+    if (pri >= 50) return 0.85; // grid roles (TO+DP, TOP/TSP, support groups)
+    if (pri >= 42) return w >= 12 ? 0.95 : 1.2; // utilities, cooperatives, municipals
+    if (pri >= 28) return w >= 8 ? 1.4 : 1.9;
+    if (pri >= 18) return 2.3;
+    return 2.8; // lowest non-deferred (minor/merchant) — GO/GOP/PSE deferred separately
   }
 
   function canDisplayOrg(o: Org, k: number): boolean {
@@ -856,7 +856,7 @@ export function mountNercOrgMap(): void {
     // don't stack low-priority dots. They reveal normally once zoomed past k2.
     // (Orgs that find no free placement slot are additionally hidden by
     // computePlacements via _placed, so only those with room actually draw.)
-    if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 50) return false;
+    if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 42) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     // GO/GOP-only and PSE-market entities stay deferred to deep zoom.
     if (isDeferredMarketOrg(o)) return k >= generationOnlyDisplayK();
@@ -1003,9 +1003,13 @@ export function mountNercOrgMap(): void {
     const priority = visualPriority(o);
     const midwest = isMidwestOrg(o);
     if (k >= 2.2) return true;
-    if (k < 1.25) return priority >= (midwest ? 38 : 42);
-    if (k < 1.8) return priority >= (midwest ? 24 : 28);
-    return priority >= (midwest ? 16 : 18);
+    // Lowered so more high/mid-priority orgs attempt a label at the overview and
+    // mid zoom (collision + placement checks still prevent crowding, and Fix 1
+    // hides any that can't land a readable label). GO/GOP/PSE remain deferred via
+    // canDisplayOrg, so they don't flood in here.
+    if (k < 1.25) return priority >= (midwest ? 30 : 34);
+    if (k < 1.8) return priority >= (midwest ? 20 : 22);
+    return priority >= (midwest ? 14 : 16);
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
