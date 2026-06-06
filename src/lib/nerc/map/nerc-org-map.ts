@@ -1272,7 +1272,7 @@ export function mountNercOrgMap(): void {
     // Pure generation dots are hidden until close zoom and place after the
     // bigger grid organizations. Let those tiny dots travel farther to find
     // gaps around the already-claimed large bubbles.
-    if (isDeferredMarketOrg(o)) return radius * (compact ? 2.6 : 2.4);
+    if (isDeferredMarketOrg(o)) return radius * (compact ? 2.8 : 3.0);
     // AK/HI insets are cramped at overview — let bubbles fan out farther within
     // the inset land so more utilities disclose without mainland drift.
     if (isUsInsetOrg(o)) {
