@@ -126,6 +126,7 @@ const TO_ONLY_REVEAL_K = 12;
 const TO_ONLY_REVEAL_K_COMPACT = 14;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
+const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation|USACE|U\.S\. Army Corps)\b/i;
 const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
 const PUBLIC_UTILITY_NAME = /\b(Public Power|Public Utility|Utility District|PUD|Municipal|City of|Town of|Electric Department|Light Department|Cooperative|Electric Membership)\b/i;
 
@@ -692,6 +693,11 @@ export function mountNercOrgMap(): void {
   }
 
   function isTransmissionOwnerOnly(o: Org): boolean {
+    // Federal and reliability orgs often carry GO/GOP alongside TO; don't shrink
+    // them to the transmission-owner floor when the data marks them as agencies.
+    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return false;
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return false;
+    if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return false;
     return isOnlyMeaningfulRole(o, "TO");
   }
 
@@ -728,16 +734,36 @@ export function mountNercOrgMap(): void {
   }
 
   function typePriority(o: Org): number {
-    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return 70;
-    if (o.org_type === "federal") return 70;
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return 72;
+    if (FEDERAL_NAME.test(o.entity_name) || o.org_type === "federal") return 74;
+    if (o.is_iso_rto || o.org_type === "ISO_RTO") return 78;
     if (o.org_type === "IOU") return 66;
-    if (o.org_type === "ISO_RTO") return 66;
     if (o.org_type === "cca") return 38;
     if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return 66;
     if (o.org_type === "municipal" || o.org_type === "cooperative") return 42;
     if (o.org_type === "merchant") return 24;
     if (PUBLIC_UTILITY_NAME.test(o.entity_name)) return 42;
     return 14;
+  }
+
+  // Build-time signals (weight, is_iso_rto, name_major) that mark grid importance
+  // beyond what role heuristics alone capture.
+  function dataProminenceScore(o: Org): number {
+    if (isGenerationOnly(o) || o.is_private) return 0;
+    let score = 0;
+    if (o.is_iso_rto) score = Math.max(score, 82);
+    if (o.weight >= 28 && hasAnyRole(o, AUTHORITY_ROLES)) score = Math.max(score, 80);
+    if (FEDERAL_NAME.test(o.entity_name) || o.org_type === "federal") score = Math.max(score, 76);
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) score = Math.max(score, 74);
+    if (o.org_type === "ISO_RTO") score = Math.max(score, 72);
+    if (
+      o.name_major &&
+      meaningfulRoleCount(o) >= 2 &&
+      (hasAnyRole(o, AUTHORITY_ROLES) || hasAnyRole(o, GRID_ROLES) || hasAnyRole(o, SUPPORT_ROLES))
+    ) {
+      score = Math.max(score, 70);
+    }
+    return score;
   }
 
   function multiRoleBonus(o: Org): number {
@@ -751,7 +777,8 @@ export function mountNercOrgMap(): void {
     if (isGenerationOnly(o)) return 6;
     if (isTransmissionOwnerOnly(o)) return 8;
     if (isMajorSystemOperator(o)) return 100;
-    const score = Math.max(rolePriority(o), typePriority(o)) + multiRoleBonus(o);
+    const score =
+      Math.max(rolePriority(o), typePriority(o), dataProminenceScore(o)) + multiRoleBonus(o);
     return Math.max(10, Math.min(100, score));
   }
 
@@ -764,7 +791,11 @@ export function mountNercOrgMap(): void {
       isMajorSystemOperator(o) ||
       hasAnyRole(o, AUTHORITY_ROLES) ||
       o.roles.includes("TOP") ||
-      o.roles.includes("TSP")
+      o.roles.includes("TSP") ||
+      o.is_iso_rto ||
+      o.org_type === "federal" ||
+      FEDERAL_NAME.test(o.entity_name) ||
+      RELIABILITY_ORG_NAME.test(o.entity_name)
     );
   }
 
