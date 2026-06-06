@@ -732,6 +732,17 @@ export function mountNercOrgMap(): void {
     return o.roles.length > 0 && o.roles.every((r) => GENERATION_ROLES.has(r));
   }
 
+  // PSE-only (or PSE with other zero-priority roles like GO/GOP) — no grid/reliability
+  // roles. Kept separate from isGenerationOnly so PSE+TO etc. stay prominent.
+  function isPseMarketOnly(o: Org): boolean {
+    return o.roles.includes("PSE") && meaningfulRoleCount(o) === 0;
+  }
+
+  // GO/GOP-only and PSE-market orgs disclose at the same deep zoom tier.
+  function isDeferredMarketOrg(o: Org): boolean {
+    return isGenerationOnly(o) || isPseMarketOnly(o);
+  }
+
   function isTransmissionOwnerOnly(o: Org): boolean {
     // Federal and reliability orgs often carry GO/GOP alongside TO; don't shrink
     // them to the transmission-owner floor when the data marks them as agencies.
@@ -753,18 +764,18 @@ export function mountNercOrgMap(): void {
   // ramps size quickly in the first ~5–7 zoom steps after reveal so a nudge in
   // makes them inspectable (especially on phone screens).
   function isMicroOrg(o: Org): boolean {
-    return isGenerationOnly(o) || isTransmissionOwnerOnly(o);
+    return isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o);
   }
 
   function microOrgRevealK(o: Org): number {
-    if (isGenerationOnly(o)) return generationOnlyRevealK();
+    if (isDeferredMarketOrg(o)) return generationOnlyRevealK();
     if (isTransmissionOwnerOnly(o)) return transmissionOwnerOnlyRevealK();
     return generationOnlyRevealK();
   }
 
   function postRevealBoostT(o: Org, k: number): number {
     if (!isMicroOrg(o) || k < microOrgRevealK(o)) return 0;
-    const span = isGenerationOnly(o) ? (compact ? 7 : 5) : compact ? 5 : 4;
+    const span = isDeferredMarketOrg(o) ? (compact ? 7 : 5) : compact ? 5 : 4;
     return smoothStep((k - microOrgRevealK(o)) / span);
   }
 
@@ -777,7 +788,7 @@ export function mountNercOrgMap(): void {
 
   function canDisplayOrg(o: Org, k: number): boolean {
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
-    return !isGenerationOnly(o) || k >= generationOnlyDisplayK();
+    return !isDeferredMarketOrg(o) || k >= generationOnlyDisplayK();
   }
 
   function isMajorSystemOperator(o: Org): boolean {
@@ -795,7 +806,7 @@ export function mountNercOrgMap(): void {
     if (o.roles.includes("TOP") || o.roles.includes("TSP")) return 52;
     if (hasAnyRole(o, GRID_ROLES)) return 50;
     if (hasAnyRole(o, SUPPORT_ROLES)) return 42;
-    if (isGenerationOnly(o)) return 6;
+    if (isDeferredMarketOrg(o)) return 6;
     return 14;
   }
 
@@ -815,7 +826,7 @@ export function mountNercOrgMap(): void {
   // Build-time signals (weight, is_iso_rto, name_major) that mark grid importance
   // beyond what role heuristics alone capture.
   function dataProminenceScore(o: Org): number {
-    if (isGenerationOnly(o) || o.is_private) return 0;
+    if (isDeferredMarketOrg(o) || o.is_private) return 0;
     let score = 0;
     if (o.is_iso_rto) score = Math.max(score, 82);
     if (o.weight >= 28 && hasAnyRole(o, AUTHORITY_ROLES)) score = Math.max(score, 80);
@@ -840,7 +851,7 @@ export function mountNercOrgMap(): void {
   }
 
   function visualPriority(o: Org): number {
-    if (isGenerationOnly(o)) return 6;
+    if (isDeferredMarketOrg(o)) return 6;
     if (isTransmissionOwnerOnly(o)) return 8;
     if (isMajorSystemOperator(o)) return 100;
     const score =
@@ -849,7 +860,7 @@ export function mountNercOrgMap(): void {
   }
 
   function canGrowAtZoom(o: Org): boolean {
-    return meaningfulRoleCount(o) > 0 || isGenerationOnly(o);
+    return meaningfulRoleCount(o) > 0 || isDeferredMarketOrg(o);
   }
 
   function isGridLeadershipOrg(o: Org): boolean {
@@ -869,7 +880,7 @@ export function mountNercOrgMap(): void {
   // GO/GOP and minor utilities at overview and mid zoom; catch-up ramps only deep in.
   function growthDominanceFactor(o: Org, k: number): number {
     if (isGridLeadershipOrg(o)) return 1;
-    if (isGenerationOnly(o)) return 0.12 + 0.88 * postRevealBoostT(o, k);
+    if (isDeferredMarketOrg(o)) return 0.12 + 0.88 * postRevealBoostT(o, k);
     const pri = visualPriority(o);
     const lowPriT = smoothStep((48 - pri) / 40);
     const deepCatchUpT = smoothStep((k - 7) / 5);
@@ -931,7 +942,7 @@ export function mountNercOrgMap(): void {
     const growth = compact
       ? Math.min(2.3, (1 + Math.max(0, k - 1) * 0.06) * midHighBoost)
       : Math.min(2.6, (1 + Math.max(0, k - 1) * 0.08) * midHighBoost);
-    const microLabelBoost = 1 + (isGenerationOnly(o) ? (compact ? 1.05 : 0.85) : 0.55) * postRevealBoostT(o, k);
+    const microLabelBoost = 1 + (isDeferredMarketOrg(o) ? (compact ? 1.05 : 0.85) : 0.55) * postRevealBoostT(o, k);
     return base * growth * microLabelBoost;
   }
 
@@ -1012,7 +1023,7 @@ export function mountNercOrgMap(): void {
     const dominance = growthDominanceFactor(o, k);
     const deepBoostMaxPx = 13;
     const deepBoostPx = canGrowAtZoom(o)
-      ? deepBoostMaxPx * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1) * dominance
+      ? deepBoostMaxPx * deepT * (0.25 + 0.75 * smallOrgT) * (isDeferredMarketOrg(o) ? 0.55 : 1) * dominance
       : 0;
     // Continuous growth applied to every bubble across the whole zoom range, so
     // that going one step deeper always yields visibly larger circles instead of
@@ -1040,9 +1051,9 @@ export function mountNercOrgMap(): void {
       : 0;
     const postRevealT = postRevealBoostT(o, k);
     const postRevealPx = postRevealT
-      * (isGenerationOnly(o) ? (compact ? 18 : 22) : isTransmissionOwnerOnly(o) ? (compact ? 10 : 12) : 0);
+      * (isDeferredMarketOrg(o) ? (compact ? 18 : 22) : isTransmissionOwnerOnly(o) ? (compact ? 10 : 12) : 0);
     const microRevealMinPx =
-      postRevealT * (isGenerationOnly(o) ? (compact ? 9 : 11) : (compact ? 6.5 : 7.5));
+      postRevealT * (isDeferredMarketOrg(o) ? (compact ? 9 : 11) : (compact ? 6.5 : 7.5));
     return (
       Math.max(
         minPx,
@@ -1116,7 +1127,7 @@ export function mountNercOrgMap(): void {
     }
     if (isMicroOrg(o)) {
       const microClickPx =
-        (isGenerationOnly(o) ? (compact ? 13 : 11) : compact ? 10 : 8.5) * postRevealBoostT(o, k);
+        (isDeferredMarketOrg(o) ? (compact ? 13 : 11) : compact ? 10 : 8.5) * postRevealBoostT(o, k);
       target = Math.max(target, microClickPx * unitPerPx);
     }
     return target;
@@ -1180,7 +1191,7 @@ export function mountNercOrgMap(): void {
     // Pure generation dots are hidden until close zoom and place after the
     // bigger grid organizations. Let those tiny dots travel farther to find
     // gaps around the already-claimed large bubbles.
-    if (isGenerationOnly(o)) return radius * (compact ? 2.6 : 2.4);
+    if (isDeferredMarketOrg(o)) return radius * (compact ? 2.6 : 2.4);
     // AK/HI insets are cramped at overview — let bubbles fan out farther within
     // the inset land so more utilities disclose without mainland drift.
     if (isUsInsetOrg(o)) {
