@@ -787,17 +787,20 @@ export function mountNercOrgMap(): void {
   }
 
   function labelLimit(k: number): number {
+    // Raised at high zoom so smaller organizations' names appear once there's
+    // room. Collision checks still gate floating labels, so denser caps only fill
+    // genuinely free space rather than overlapping.
     const cap =
       k < 1.25 ? 340 :
       k < 1.8 ? 480 :
-      k < 2.6 ? 640 :
-      k < 3.4 ? 820 :
-      k < 4.8 ? 1020 :
-      k < 6.8 ? 1240 :
-      k < 9.5 ? 1500 :
-      k < 12.5 ? 1900 :
-      k < 18 ? 2600 :
-      10000;
+      k < 2.6 ? 700 :
+      k < 3.4 ? 980 :
+      k < 4.8 ? 1320 :
+      k < 6.8 ? 1800 :
+      k < 9.5 ? 2400 :
+      k < 12.5 ? 3200 :
+      k < 18 ? 4200 :
+      100000;
     // On phones, keep the overview sparse (small screen) but open up as you zoom
     // in — there's screen space to fill, and the user wants iOS to feel as dynamic
     // as desktop. Now that the compact overview discloses fewer (bigger) dots, it
