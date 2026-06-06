@@ -912,7 +912,8 @@ export function mountNercOrgMap(): void {
     const growth = compact
       ? Math.min(2.3, (1 + Math.max(0, k - 1) * 0.06) * midHighBoost)
       : Math.min(2.6, (1 + Math.max(0, k - 1) * 0.08) * midHighBoost);
-    return base * growth;
+    const microLabelBoost = 1 + (isGenerationOnly(o) ? (compact ? 1.05 : 0.85) : 0.55) * postRevealBoostT(o, k);
+    return base * growth * microLabelBoost;
   }
 
   function labelLimit(k: number): number {
@@ -1015,12 +1016,21 @@ export function mountNercOrgMap(): void {
     const insetOverviewMinPx = isUsInsetOrg(o)
       ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2)
       : 0;
+    const postRevealT = postRevealBoostT(o, k);
+    const postRevealPx = postRevealT
+      * (isGenerationOnly(o) ? (compact ? 18 : 22) : isTransmissionOwnerOnly(o) ? (compact ? 10 : 12) : 0);
+    const microRevealMinPx =
+      postRevealT * (isGenerationOnly(o) ? (compact ? 9 : 11) : (compact ? 6.5 : 7.5));
     return (
       Math.max(
         minPx,
         deepMinPx,
         insetOverviewMinPx,
-        Math.min(zoomMaxPx, basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx),
+        microRevealMinPx,
+        Math.min(
+          zoomMaxPx,
+          basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
+        ),
       ) * unitPerPx
     );
   }
@@ -1071,6 +1081,11 @@ export function mountNercOrgMap(): void {
     if (isUsInsetOrg(o)) {
       const insetClickPx = (compact ? 11.5 : 9.2) * smoothStep((3 - k) / 2.2);
       target = Math.max(target, insetClickPx * unitPerPx);
+    }
+    if (isMicroOrg(o)) {
+      const microClickPx =
+        (isGenerationOnly(o) ? (compact ? 13 : 11) : compact ? 10 : 8.5) * postRevealBoostT(o, k);
+      target = Math.max(target, microClickPx * unitPerPx);
     }
     return target;
   }
@@ -3141,6 +3156,93 @@ export function mountNercOrgMap(): void {
     scheduleOrgDetailsLoad();
     revealActionButtons();
     if (new URLSearchParams(location.search).has("audit")) setupAudit();
+    if (import.meta.env.DEV || new URLSearchParams(location.search).has("devView")) setupDevView();
+  }
+
+  // TEMPORARY dev-only helper (dev build or ?devView=1). Adds a small floating
+  // button that copies a plain-text description of the current map view — zoom,
+  // pan transform, viewport size, selected org, and the approximate geographic
+  // centre — so it can be pasted straight into an AI prompt. Reads live D3 zoom
+  // state on each click, so the text always reflects the latest zoom/pan/
+  // selection. No effect on map behaviour; ships inert unless the flag is set.
+  function setupDevView(): void {
+    const btn = createEl("button", undefined, "Copy view prompt");
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Copy current map view as a prompt");
+    Object.assign(btn.style, {
+      position: "fixed",
+      bottom: "10px",
+      left: "10px",
+      zIndex: "9999",
+      padding: "6px 10px",
+      font: "12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace",
+      color: "#0b1a16",
+      background: "rgba(255,255,255,0.92)",
+      border: "1px solid rgba(13,23,20,0.35)",
+      borderRadius: "6px",
+      boxShadow: "0 4px 14px rgba(20,31,28,0.22)",
+      cursor: "pointer",
+    } as Partial<CSSStyleDeclaration>);
+
+    const buildPrompt = (): string => {
+      const k = transform.k;
+      const rect = svgNode.getBoundingClientRect();
+      const vw = Math.round(rect.width);
+      const vh = Math.round(rect.height);
+      // Approximate geographic centre: invert the zoom transform at the viewBox
+      // centre, then invert the (mainland Albers) projection. May be null off the
+      // composite — fall back to a generic phrase.
+      let area = "the current map view";
+      const center = transform.invert([W / 2, H / 2]);
+      const lnglat = projection.invert?.(center as [number, number]);
+      if (lnglat && Number.isFinite(lnglat[0]) && Number.isFinite(lnglat[1])) {
+        area = `the area near ${lnglat[1].toFixed(3)}, ${lnglat[0].toFixed(3)} (lat, lng)`;
+      }
+      const sel = selectedOrg ? displayName(selectedOrg) : "none";
+      return (
+        `I am currently looking at ${area}. ` +
+        `Zoom: ${k.toFixed(3)}. ` +
+        `Pan/transform: x=${transform.x.toFixed(1)}, y=${transform.y.toFixed(1)}. ` +
+        `Viewport: ${vw}x${vh}. ` +
+        `Selected org: ${sel}. ` +
+        `Please inspect this exact area.`
+      );
+    };
+
+    const flash = (msg: string): void => {
+      const prev = btn.textContent;
+      btn.textContent = msg;
+      window.setTimeout(() => {
+        btn.textContent = prev;
+      }, 1200);
+    };
+
+    btn.addEventListener("click", async (ev) => {
+      ev.stopPropagation();
+      const text = buildPrompt();
+      try {
+        await navigator.clipboard.writeText(text);
+        flash("Copied ✓");
+      } catch {
+        // Clipboard API unavailable (e.g. non-secure context): fall back to a
+        // hidden textarea + execCommand so the dev helper still works.
+        const ta = createEl("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.append(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+          flash("Copied ✓");
+        } catch {
+          flash("Copy failed");
+        }
+        ta.remove();
+      }
+    });
+
+    document.body.append(btn);
   }
 
   // Optional UX-audit harness (only when the page is loaded with ?audit=1). It
