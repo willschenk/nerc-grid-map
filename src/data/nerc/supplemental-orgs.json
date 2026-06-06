@@ -3719,7 +3719,7 @@
   },
   {
     "entity_name": "South Central Public Power District",
-    "acronym": "SC",
+    "acronym": "South Central",
     "state": "NE",
     "city": "Nelson",
     "lat": 40.2014,
@@ -5078,7 +5078,7 @@
   },
   {
     "entity_name": "Seattle City Light",
-    "acronym": "SC",
+    "acronym": "Seattle City Light",
     "state": "WA",
     "city": null,
     "lat": 47.61,

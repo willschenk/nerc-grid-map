@@ -124,6 +124,31 @@
       "code": "CPLE",
       "ncr_id": "NCR01298",
       "meaning": "Carolina Power & Light East / Duke Energy Progress"
+    },
+    {
+      "code": "CPLW",
+      "ncr_id": "NCR01298",
+      "meaning": "Carolina Power & Light West / Duke Energy Progress"
+    },
+    {
+      "code": "DUK",
+      "ncr_id": "NCR01219",
+      "meaning": "Duke Energy Carolinas"
+    },
+    {
+      "code": "SCEG",
+      "ncr_id": "NCR00915",
+      "meaning": "South Carolina Electric & Gas / Dominion Energy South Carolina"
+    },
+    {
+      "code": "SC",
+      "ncr_id": "NCR01312",
+      "meaning": "South Carolina Public Service Authority / Santee Cooper"
+    },
+    {
+      "code": "DOM",
+      "ncr_id": "NCR09028",
+      "meaning": "Dominion Energy Virginia / Virginia Electric and Power"
     }
   ]
 }
