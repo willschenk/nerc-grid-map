@@ -453,6 +453,17 @@ function safeColor(color: string | null | undefined): string {
   return /^hsl\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*\)$/i.test(value) ? value : "hsl(0, 0%, 45%)";
 }
 
+// Pick the readable inside-label ink (and matching halo) for a bubble colour.
+// Light bubbles get dark text with a light halo; dark bubbles keep white text
+// with a dark halo. Driven by the HSL lightness carried in the org colour, so it
+// adapts per bubble without changing any bubble colour.
+function labelInkFor(color: string | null | undefined): { fill: string; halo: string } {
+  const m = /^hsl\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*(\d{1,3})%\s*\)$/i.exec(String(color ?? "").trim());
+  const lightness = m ? Number(m[1]) : 45;
+  if (lightness >= 62) return { fill: "#0b1512", halo: "rgba(255, 255, 255, 0.85)" };
+  return { fill: "#ffffff", halo: "rgba(7, 17, 14, 0.55)" };
+}
+
 function safeHttpUrl(value: string | null | undefined): string | null {
   if (!value) return null;
   try {
@@ -567,6 +578,13 @@ export function mountNercOrgMap(): void {
   // Phone-sized screens get fewer labels when zoomed in (less screen real
   // estate for the same physical-size labels).
   let compact = false;
+  // Narrow phones (< ~450px CSS width): bubbles, labels and tap targets are
+  // scaled up ~20% over the compact baseline so they stay tappable/readable on a
+  // small handset. Desktop (and tablet-width compact) sizing is untouched.
+  let phone = false;
+  // Multiplier applied to bubble radius, label font and tap floors on narrow
+  // phones only. 1 everywhere else, so desktop sizes never change.
+  const phoneSizeScale = (): number => (phone ? 1.2 : 1);
   let orgMarkK = NaN;
   let orgLayoutBucket = NaN;
   // Last computed label placement, stashed for the optional ?audit UX harness so
@@ -711,7 +729,10 @@ export function mountNercOrgMap(): void {
           : 3.8;
     if (k < shortAt) return [tiny];
     const mid = midName(o);
-    if (mid === tiny || mid.length > (compact ? 22 : 34)) return [tiny];
+    // Keep the longer "mid" brand only when it is genuinely short; otherwise stay
+    // with the compact token so a long name never dominates its neighbours. (The
+    // full legal name still appears in the detail panel.)
+    if (mid === tiny || mid.length > (compact ? 18 : 26)) return [tiny];
     return [tiny, mid];
   }
 
@@ -786,9 +807,27 @@ export function mountNercOrgMap(): void {
     return compact ? GENERATION_ONLY_REVEAL_K_COMPACT : GENERATION_ONLY_DISPLAY_K;
   }
 
+  // Progressive zoom tiers. Lower-priority / lower-weight entities reveal as the
+  // user zooms in, so the widest view stays dominated by RC/BA/PC/TOP/TSP, ISOs/
+  // RTOs and major utilities, while every zoom step still adds meaningful new
+  // organizations. Nothing is removed from the dataset — only revealed later.
+  function overviewRevealK(o: Org): number {
+    const pri = visualPriority(o);
+    const w = o.weight ?? 0;
+    // Grid leadership and high-value utilities are always present at the overview.
+    if (isGridLeadershipOrg(o) || pri >= 62) return 0;
+    if (pri >= 50) return 0.95; // grid roles (TO+DP, TOP/TSP, support groups)
+    if (pri >= 42) return w >= 12 ? 1.2 : 1.6;
+    if (pri >= 28) return w >= 8 ? 1.9 : 2.3;
+    if (pri >= 18) return 2.9;
+    return 3.6; // very low priority / low weight — reveal only once zoomed in
+  }
+
   function canDisplayOrg(o: Org, k: number): boolean {
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
-    return !isDeferredMarketOrg(o) || k >= generationOnlyDisplayK();
+    // GO/GOP-only and PSE-market entities stay deferred to deep zoom.
+    if (isDeferredMarketOrg(o)) return k >= generationOnlyDisplayK();
+    return k >= overviewRevealK(o);
   }
 
   function isMajorSystemOperator(o: Org): boolean {
@@ -931,9 +970,11 @@ export function mountNercOrgMap(): void {
   // boost, which is what lets the text keep getting bigger.)
   function labelFontPx(o: Org, k: number): number {
     const priority = visualPriority(o);
+    // Desktop bases bumped ~1.3–1.5px so the smallest national-view abbreviations
+    // (e.g. "Sunflower", "LPEA") read without squinting on a 1440×900 monitor.
     const base = compact
       ? priority >= 80 ? 11.1 : priority >= 50 ? 9.2 : 6.7
-      : priority >= 80 ? 12.7 : priority >= 50 ? 10.3 : 7.7;
+      : priority >= 80 ? 14 : priority >= 50 ? 11.8 : 9.2;
     // Mid/high-zoom readability: an extra ramp that kicks in past the overview so
     // labels keep getting bigger (and more legible) the further you zoom in. The
     // inside-label path still clamps to the bubble chord and long names fall back
@@ -943,7 +984,8 @@ export function mountNercOrgMap(): void {
       ? Math.min(2.3, (1 + Math.max(0, k - 1) * 0.06) * midHighBoost)
       : Math.min(2.6, (1 + Math.max(0, k - 1) * 0.08) * midHighBoost);
     const microLabelBoost = 1 + (isDeferredMarketOrg(o) ? (compact ? 1.05 : 0.85) : 0.55) * postRevealBoostT(o, k);
-    return base * growth * microLabelBoost;
+    // Narrow phones: scale every label up so names stay readable on a small handset.
+    return base * growth * microLabelBoost * phoneSizeScale();
   }
 
   function labelLimit(k: number): number {
@@ -1064,7 +1106,7 @@ export function mountNercOrgMap(): void {
           zoomMaxPx,
           basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
         ),
-      ) * unitPerPx
+      ) * unitPerPx * phoneSizeScale()
     );
   }
 
@@ -1102,12 +1144,16 @@ export function mountNercOrgMap(): void {
     // Floors keep even modest mid-priority utilities (e.g. western irrigation /
     // municipal districts like TID, IID, LADWP) comfortably clickable when their
     // bubble is small at the overview.
-    const overviewFloorPx = compact
+    // Tap-target floors are kept independent of the (smaller) visual radius so a
+    // tiny bubble still gets a comfortable hit ring. On narrow phones they are
+    // scaled up further via phoneSizeScale so small orgs stay easy to select.
+    const tapScale = phoneSizeScale();
+    const overviewFloorPx = (compact
       ? priority < 30 ? 9.5 : 12.5
-      : priority < 30 ? 5 : priority < 55 ? 6.2 : 7.5;
-    const deepFloorPx = compact
-      ? priority < 30 ? 5.5 : 6.5
-      : priority < 30 ? 2.8 : priority < 55 ? 3.4 : 4.4;
+      : priority < 30 ? 5 : priority < 55 ? 6.2 : 7.5) * tapScale;
+    const deepFloorPx = (compact
+      ? priority < 30 ? 6.5 : 7.5
+      : priority < 30 ? 2.8 : priority < 55 ? 3.4 : 4.4) * tapScale;
     const deepT = smoothStep((k - 10) / 18);
     const floorPx = overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT;
     const overviewPadPx = compact ? (priority < 30 ? 2.4 : 3.4) : priority < 30 ? 1 : priority < 55 ? 1.5 : 2.4;
@@ -1311,8 +1357,10 @@ export function mountNercOrgMap(): void {
     const unit = event.deltaMode === 1 ? 0.068 : event.deltaMode ? 1 : 0.0028;
     const pinch = event.ctrlKey ? 4.5 : 1;
     let dy = -event.deltaY * unit * pinch;
-    // Cap each wheel frame so trackpad momentum cannot jump several "steps" at once.
-    const stepCap = compact ? 0.085 : 0.075;
+    // Cap each frame so mouse-wheel momentum cannot jump several "steps" at once.
+    // Pinch (ctrlKey on trackpads) gets a much higher cap so it tracks the
+    // fingers smoothly instead of feeling throttled.
+    const stepCap = event.ctrlKey ? (compact ? 0.24 : 0.2) : compact ? 0.085 : 0.075;
     dy = Math.sign(dy) * Math.min(Math.abs(dy), stepCap);
     // Same scroll gesture feels similar from overview through deep zoom.
     const k = Math.max(transform.k, 0.72);
@@ -1453,7 +1501,8 @@ export function mountNercOrgMap(): void {
     }
     unitPerPx = W / elW;
     compact = elW < 640;
-    radiusGen++; // unitPerPx/compact may have changed — invalidate radius memo
+    phone = elW < 450;
+    radiusGen++; // unitPerPx/compact/phone may have changed — invalidate radius memo
     svg.attr("viewBox", `0 0 ${W} ${H}`);
     updateZoomBounds();
   }
@@ -2059,10 +2108,22 @@ export function mountNercOrgMap(): void {
       if (hoverLabel) labelState.set(hot.ncr_id, hoverLabel);
     }
 
-    // Every disclosed bubble renders (labels are a separate layer placed on top of
-    // a subset), so the map stays dense — "show as much as you can" — rather than
-    // only showing bubbles that happened to win a label.
-    const finalVisibleOrgs = visibleOrgs;
+    // A bubble renders only if it earned a readable label at this zoom. If its
+    // name could not render (no room inside the bubble, no collision-free floating
+    // spot, or priority/zoom rules held it back) the bubble is hidden until the
+    // user zooms in far enough for the label to land — so there is never a grey
+    // dot without text. Hover/selected dots are exempt (they carry forced labels).
+    // Skipped during a tour, where the walkthrough deliberately dims rather than
+    // hides the off-step bubbles, and territory inset dots, which are identified by
+    // their region name instead of an individual label.
+    if (!tourActive && !tourRunning) {
+      for (const o of visibleOrgs) {
+        if (!o._vis || o._frame === "terr") continue;
+        const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id;
+        if (!forced && !labelState.has(o.ncr_id)) o._vis = false;
+      }
+    }
+    const finalVisibleOrgs = visibleOrgs.filter((o) => o._vis);
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
       const node = this as SVGCircleElement;
@@ -2117,6 +2178,17 @@ export function mountNercOrgMap(): void {
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
       node.classList.toggle("inside", state.inside);
+      // Contrast: an inside label sits on its bubble's colour, so pick dark or
+      // light ink from that colour's lightness. Floating labels sit on the map
+      // background and keep the stylesheet's default ink.
+      if (state.inside) {
+        const ink = labelInkFor(o.color);
+        node.style.fill = ink.fill;
+        node.style.stroke = ink.halo;
+      } else {
+        node.style.fill = "";
+        node.style.stroke = "";
+      }
       node.classList.toggle("hover-on-dot", !!state.centered);
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
@@ -2238,6 +2310,10 @@ export function mountNercOrgMap(): void {
       }
     }
 
+    // Geographic reference labels stay secondary: the more org bubbles are on
+    // screen, the more these state/province names recede so organization labels
+    // remain the primary focus. They never disappear entirely (floor 0.35).
+    const landDensityOpacity = Math.max(0.35, 1 - shownCount / (compact ? 90 : 240));
     gLand.selectAll<SVGTextElement, LandLabel>("text.land-label").each(function (L) {
       const node = this as SVGTextElement;
       const state = landState.get(L.name);
@@ -2246,6 +2322,7 @@ export function mountNercOrgMap(): void {
       node.setAttribute("x", String(state.x));
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
+      node.style.opacity = String(landDensityOpacity);
     });
 
     // Territory region names ride the inset group's transform (so each label
@@ -2820,6 +2897,19 @@ export function mountNercOrgMap(): void {
     animateTransform(zoomIdentity, duration);
   }
 
+  // Smooth, centred zoom step for the on-screen +/- controls. Goes through the
+  // zoom behaviour (like wheel/pinch) so bounds, redraw scheduling and the
+  // transition all stay consistent with a real gesture.
+  function zoomByFactor(factor: number): void {
+    if (!zoomBehavior) return;
+    stopTour();
+    svg.interrupt();
+    svg
+      .transition()
+      .duration(220)
+      .call(zoomBehavior.scaleBy as never, factor, [W / 2, H / 2]);
+  }
+
   // Where the walkthrough opens. On phones it starts a bit further out (a calm
   // overview with margin) so the first reveals read before you zoom in.
   function tourStartView(duration: number): void {
@@ -2939,25 +3029,31 @@ export function mountNercOrgMap(): void {
     playBtn.addEventListener("click", toggleTour);
     fabBtn.addEventListener("click", toggleTour);
 
+    // Opening Info/Metrics must not disturb the map view or the current selection
+    // (the detail panel lives on the opposite side, so it can stay open). Only the
+    // other popover is closed so the two reference popovers never stack.
     infoToggle.addEventListener("click", () => {
       stopTour();
       metricsPanel.hidden = true;
-      panel.hidden = true;
-      selectedOrg = null;
       infoPanel.hidden = !infoPanel.hidden;
-      redraw();
     });
     metricsToggle.addEventListener("click", () => {
       stopTour();
       infoPanel.hidden = true;
-      panel.hidden = true;
-      selectedOrg = null;
       metricsPanel.hidden = !metricsPanel.hidden;
       if (!metricsPanel.hidden) renderStats();
-      redraw();
     });
     byId<HTMLButtonElement>("nerc-info-close").addEventListener("click", closeInfo);
     byId<HTMLButtonElement>("nerc-metrics-close").addEventListener("click", closeMetrics);
+
+    // On-screen zoom controls. These only change zoom — they never open a panel —
+    // so re: changing zoom is clearly separate from the Metrics/Info popovers.
+    byId<HTMLButtonElement>("nerc-zoom-in").addEventListener("click", () => zoomByFactor(1.55));
+    byId<HTMLButtonElement>("nerc-zoom-out").addEventListener("click", () => zoomByFactor(1 / 1.55));
+    byId<HTMLButtonElement>("nerc-zoom-home").addEventListener("click", () => {
+      stopTour();
+      homeView(260);
+    });
 
     document.addEventListener("keydown", (ev) => {
       if (ev.key === "Escape") {

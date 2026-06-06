@@ -47,6 +47,12 @@ const tiers = [1, 2, 3].map((t) => ({
 
         <button id="nerc-tour-fab" type="button" class="nerc-tour-fab" aria-label="Play walkthrough">&#9654; Tour</button>
 
+        <div class="nerc-zoom-controls" role="group" aria-label="Zoom controls">
+          <button id="nerc-zoom-in" type="button" class="nerc-zoom-btn" aria-label="Zoom in to reveal more organizations" title="Zoom in">+</button>
+          <button id="nerc-zoom-out" type="button" class="nerc-zoom-btn" aria-label="Zoom out" title="Zoom out">&#8722;</button>
+          <button id="nerc-zoom-home" type="button" class="nerc-zoom-btn nerc-zoom-home" aria-label="Reset to national view" title="Reset view">&#8962;</button>
+        </div>
+
         <aside id="nerc-metrics-panel" class="nerc-popover nerc-metrics-panel" hidden>
           <button id="nerc-metrics-close" type="button" class="nerc-panel-close" aria-label="Close metrics">&times;</button>
           <h2>Dataset summary</h2>
@@ -62,6 +68,29 @@ const tiers = [1, 2, 3].map((t) => ({
           <h2>How to read it</h2>
           <p class="nerc-info-lead">Each dot is one organization, at its headquarters.</p>
           <p class="nerc-info-legend"><b>Color</b> role mix <span aria-hidden="true">&middot;</span> <b>Size</b> role weight <span aria-hidden="true">&middot;</span> <b>Dotted</b> no NERC ID</p>
+          <div class="nerc-legend-examples" aria-label="How to read a dot">
+            <div class="nerc-legend-row">
+              <span class="nerc-legend-swatch nerc-legend-size">
+                <span class="nerc-legend-dot nerc-legend-dot-lg"></span>
+                <span class="nerc-legend-dot nerc-legend-dot-sm"></span>
+              </span>
+              <span class="nerc-legend-text"><b>Bigger dot</b> = more reliability roles (a grid authority); <b>smaller dot</b> = a single-role entity.</span>
+            </div>
+            <div class="nerc-legend-row">
+              <span class="nerc-legend-swatch">
+                <span class="nerc-legend-dot" style="--c:hsl(210, 70%, 52%)"></span>
+                <span class="nerc-legend-dot" style="--c:hsl(140, 55%, 45%)"></span>
+                <span class="nerc-legend-dot" style="--c:hsl(28, 80%, 55%)"></span>
+              </span>
+              <span class="nerc-legend-text"><b>Color</b> shows the mix of roles — see the abbreviations below.</span>
+            </div>
+            <div class="nerc-legend-row">
+              <span class="nerc-legend-swatch">
+                <span class="nerc-legend-dot nerc-legend-dot-dotted"></span>
+              </span>
+              <span class="nerc-legend-text"><b>Dotted outline</b> = not in the NERC registry (no NERC ID).</span>
+            </div>
+          </div>
           <details class="nerc-role-guide" open>
             <summary>Role abbreviations</summary>
             <div class="nerc-role-guide-grid">
