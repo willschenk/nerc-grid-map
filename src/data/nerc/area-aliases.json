@@ -274,6 +274,21 @@
       "code": "OKGE",
       "ncr_id": "NCR01130",
       "meaning": "Oklahoma Gas & Electric"
+    },
+    {
+      "code": "SECI",
+      "ncr_id": "NCR01148",
+      "meaning": "Sunflower Electric Power Corporation"
+    },
+    {
+      "code": "WR",
+      "ncr_id": "NCR-SEED-048",
+      "meaning": "Westar Energy / Evergy Kansas Central legacy area"
+    },
+    {
+      "code": "MPS",
+      "ncr_id": "SUP-evergy-missouri-west",
+      "meaning": "Missouri Public Service / Evergy Missouri West legacy area"
     }
   ]
 }
