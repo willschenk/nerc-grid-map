@@ -121,7 +121,7 @@ const SPIDER_RING_STEP_PX = 28;
 // Bubbles only ever move in render space (_dx/_dy nudges); the true projected
 // _x/_y are never mutated, so geography stays exact.
 const MAX_RADIUS = 75;
-const MAX_ZOOM = 1200;
+const MAX_ZOOM = 1600;
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
