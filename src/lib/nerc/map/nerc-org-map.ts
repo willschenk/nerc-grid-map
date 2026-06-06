@@ -845,11 +845,20 @@ export function mountNercOrgMap(): void {
     const deepBoostPx = canGrowAtZoom(o)
       ? (compact ? 13 : 13) * deepT * (0.25 + 0.75 * smallOrgT) * (isGenerationOnly(o) ? 0.55 : 1)
       : 0;
+    // Continuous growth applied to every bubble across the whole zoom range, so
+    // that going one step deeper always yields visibly larger circles instead of
+    // plateauing once basePx saturates. Ramps smoothly from the overview to deep
+    // zoom, scaled by priority so important orgs grow the most.
+    const wideT = smoothStep((k - 1) / 36);
+    const zoomGrowthPx = (compact ? 12 : 18) * wideT * (0.4 + 0.6 * priority);
     const zoomMaxPx =
       maxPx +
       (canGrowAtZoom(o) ? (compact ? 6 : 10) : 0) +
-      (canGrowAtZoom(o) ? (compact ? 13 : 13) : 0);
-    return Math.max(minPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx)) * unitPerPx;
+      (canGrowAtZoom(o) ? (compact ? 13 : 13) : 0) +
+      (compact ? 12 : 18);
+    return (
+      Math.max(minPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx + zoomGrowthPx)) * unitPerPx
+    );
   }
 
   // Puerto Rico inset dots are schematic (small, uniform) so they fit the
