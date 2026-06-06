@@ -876,8 +876,14 @@ export function mountNercOrgMap(): void {
       (canGrowAtZoom(o) ? (compact ? 6 : 10) : 0) +
       (canGrowAtZoom(o) ? (compact ? 13 : 13) : 0) +
       (compact ? 12 : 18);
+    // Deep-zoom minimum: once you are zoomed right in, no visible org should stay
+    // tiny when there is clearly room — every bubble reaches a readable floor so
+    // its label can show. Screen coords are spread far apart at this zoom, so the
+    // floor never reintroduces overlap (placement re-solves per bucket).
+    const deepMinPx = (compact ? 6.5 : 7.5) * smoothStep((k - 8) / 16);
     return (
-      Math.max(minPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx + zoomGrowthPx)) * unitPerPx
+      Math.max(minPx, deepMinPx, Math.min(zoomMaxPx, basePx + boostPx + deepBoostPx + zoomGrowthPx)) *
+      unitPerPx
     );
   }
 
