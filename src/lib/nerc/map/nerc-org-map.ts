@@ -816,10 +816,12 @@ export function mountNercOrgMap(): void {
   }
 
   function placeLabelLimit(k: number): number {
-    if (compact) return 16;
-    if (k < 1.8) return 14;
-    if (k < 4.8) return 34;
-    return 58;
+    // Kept modest so city names support orientation without crowding out NERC
+    // org labels in dense regions.
+    if (compact) return 10;
+    if (k < 1.8) return 10;
+    if (k < 4.8) return 24;
+    return 42;
   }
 
   function placeDotMinK(tier: number): number {
@@ -940,8 +942,8 @@ export function mountNercOrgMap(): void {
     // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
     // to each other) rather than drifting away. Grows only modestly with zoom.
     const basePx = compact
-      ? k < 1.25 ? 14 : k < 2.2 ? 22 : k < 4 ? 30 : k < 7 ? 38 : 46
-      : k < 1.25 ? 19 : k < 2.2 ? 30 : k < 4 ? 40 : k < 7 ? 52 : 62;
+      ? k < 1.25 ? 14 : k < 2.2 ? 18 : k < 4 ? 24 : k < 7 ? 30 : 38
+      : k < 1.25 ? 19 : k < 2.2 ? 26 : k < 4 ? 34 : k < 7 ? 44 : 54;
     const deepPx = compact ? 48 : 66;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
@@ -1796,10 +1798,19 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("tour-flash", tourActive && !!state);
     });
 
-    const placeBlockers = [...placed];
+    // City labels yield to NERC org labels AND bubbles: inflate every org-label
+    // box and every bubble into a keep-away region so place names only land in
+    // genuinely free space (important in the dense Midwest/Northeast clusters).
+    const labelMargin = (compact ? 3 : 3.5) * unitPerPx;
+    const placeBlockers: Box[] = placed.map((b) => ({
+      x0: b.x0 - labelMargin,
+      x1: b.x1 + labelMargin,
+      y0: b.y0 - labelMargin,
+      y1: b.y1 + labelMargin,
+    }));
     for (const o of finalVisibleOrgs) {
       if (o._sx == null || o._sy == null) continue;
-      const r = renderedRadius(o, k) + (compact ? 4 : 4.5) * unitPerPx;
+      const r = renderedRadius(o, k) + (compact ? 6 : 7) * unitPerPx;
       placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
     }
     // City context. Dots can appear before labels, but every city mark stays
