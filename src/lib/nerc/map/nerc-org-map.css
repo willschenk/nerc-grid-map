@@ -640,7 +640,6 @@
   position: absolute;
   right: max(0.75rem, env(safe-area-inset-right, 0px));
   z-index: 25;
-  width: min(25rem, calc(100vw - 1.5rem));
   border: 1px solid rgba(31, 47, 42, 0.16);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.92);
@@ -648,10 +647,15 @@
   color: #18211f;
 }
 
+.nerc-info-panel {
+  width: min(25rem, calc(100vw - 1.5rem));
+}
+
 .nerc-panel {
   top: var(--nerc-panel-top);
-  max-height: calc(100dvh - var(--nerc-panel-top) - 0.85rem);
-  padding: 0.95rem 1rem;
+  width: min(19.25rem, calc(100vw - 1.5rem));
+  max-height: min(68dvh, calc(100dvh - var(--nerc-panel-top) - 0.85rem));
+  padding: 0.78rem 0.85rem;
   overflow-y: auto;
   font-size: 0.84rem;
 }
@@ -801,7 +805,7 @@
 
 .nerc-panel .p-sub {
   color: #66736f;
-  margin: 0.48rem 1.8rem 0.8rem 0;
+  margin: 0.4rem 1.8rem 0.65rem 0;
   font-size: 0.75rem;
 }
 
@@ -810,7 +814,7 @@
 }
 
 .nerc-panel dt {
-  margin-top: 0.78rem;
+  margin-top: 0.68rem;
   color: #485852;
   font-weight: 820;
   font-size: 0.68rem;
@@ -1087,6 +1091,12 @@
   .nerc-tour-fab.attention {
     animation: none;
     transition: none;
+  }
+}
+
+@media (min-width: 761px) {
+  .nerc-stage {
+    --nerc-panel-top: calc(var(--nerc-chrome-top) + var(--nerc-topbar-block) + 0.65rem);
   }
 }
 
