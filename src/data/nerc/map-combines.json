@@ -1,5 +1,6 @@
 {
   "_comment": "Fold multiple NERC registrations that share one HQ into a single map dot. Source rows stay in geocoded-orgs.json; build-orgs.mjs merges roles onto the canonical id and drops the satellites from public/nerc/orgs.json.",
+  "_review_progress": "PAUSE: Batch 5 reviewed (geocoded-orgs indices 400–499). Resume at index 500 (NCR07195). Run: node scripts/nerc/review-map-combine-batch.mjs 6",
   "combines": [
     {
       "canonical": "NCR00682",
@@ -13,6 +14,168 @@
       "label": "AEP Columbus HQ",
       "summary": "Six separate NERC registrations share AEP's Columbus headquarters and appear here as one map location.",
       "display_name": "American Electric Power"
+    },
+    {
+      "canonical": "NCR11314",
+      "members": [
+        "NCR11785"
+      ],
+      "label": "Flat Ridge 2 wind",
+      "summary": "Clearlight Energy (America) and Flat Ridge 2 Wind Energy share the same plant address and EIA interconnection record; one map location.",
+      "display_name": "Flat Ridge 2"
+    },
+    {
+      "canonical": "NCR12074",
+      "members": [
+        "NCR12075"
+      ],
+      "label": "Coyote Ridge wind",
+      "summary": "Coyote Ridge Wind (GO) and Invenergy Services-Coyote Ridge (GOP) share the Brookings County plant site.",
+      "display_name": "Coyote Ridge"
+    },
+    {
+      "canonical": "NCR11257",
+      "members": [
+        "NCR13057"
+      ],
+      "label": "Ironwood wind",
+      "summary": "Ironwood Windpower (GO) and DS Cornerstone (GOP) share the Spearville plant site; DS Cornerstone is the Duke/Sumitomo JV operator.",
+      "display_name": "Ironwood"
+    },
+    {
+      "canonical": "NCR11972",
+      "members": [
+        "NCR11441"
+      ],
+      "label": "Glacier's Edge wind",
+      "summary": "Glacier's Edge Wind Project (GO) and EDF Renewable Service (GOP) share the Cleghorn, IA plant site.",
+      "display_name": "Glacier's Edge"
+    },
+    {
+      "canonical": "NCR11607",
+      "members": [
+        "NCR12371"
+      ],
+      "label": "Harrison County Power Project",
+      "summary": "Northeast Texas Electric Cooperative - HCPP (GO) and NRG Energy Services LLC - HCPP (GOP) share the Marshall, TX plant site.",
+      "display_name": "HCPP"
+    },
+    {
+      "canonical": "NCR11953",
+      "members": [
+        "NCR11954"
+      ],
+      "label": "Prairie Breeze II/III",
+      "summary": "Prairie Breeze Wind Energy II and III share the same Elgin, NE plant office address.",
+      "display_name": "Prairie Breeze II/III"
+    },
+    {
+      "canonical": "NCR11153",
+      "members": [
+        "NCR11730"
+      ],
+      "label": "Golden Spread Panhandle Wind",
+      "summary": "Golden Spread Panhandle Wind Ranch (GO) and NRG Energy Services-Panhandle Wind Ranch (GOP) share the Wildorado, TX plant site.",
+      "display_name": "Golden Spread Panhandle"
+    },
+    {
+      "canonical": "NCR11250",
+      "members": [
+        "NCR06054"
+      ],
+      "label": "Dogwood Energy",
+      "summary": "Dogwood Power Management (GO) and NAES Corporation - Dogwood (GOP) share the Pleasant Hill, MO plant site.",
+      "display_name": "Dogwood"
+    },
+    {
+      "canonical": "NCR11695",
+      "members": [
+        "NCR01322"
+      ],
+      "label": "Southern Power HQ",
+      "summary": "Southern Power Company MRO and NPCC registrations share the Atlanta headquarters.",
+      "display_name": "Southern Power"
+    },
+    {
+      "canonical": "NCR00303",
+      "members": [
+        "NCR05256"
+      ],
+      "label": "MEAN HQ",
+      "summary": "Municipal Energy Agency of Nebraska MRO and WECC registrations share the Lincoln, NE headquarters.",
+      "display_name": "MEAN"
+    },
+    {
+      "canonical": "NCR05282",
+      "members": [
+        "NCR01021"
+      ],
+      "label": "NorthWestern HQ",
+      "summary": "NorthWestern Corporation (WECC) and NorthWestern Energy Public Service (MRO) share the Sioux Falls headquarters.",
+      "display_name": "NorthWestern Energy"
+    },
+    {
+      "canonical": "NCR10237",
+      "members": [
+        "NCR00503"
+      ],
+      "label": "Brooklyn Navy Yard Cogen",
+      "summary": "Brooklyn Navy Yard Cogeneration Partners (GO) and BNY Power Operations (GOP) share the Brooklyn plant site.",
+      "display_name": "BNY Cogen"
+    },
+    {
+      "canonical": "NCR00778",
+      "members": [
+        "NCR04057"
+      ],
+      "label": "Constellation Kennett Square HQ",
+      "summary": "Constellation Energy Generation Nuclear and Power NPCC registrations share the Kennett Square, PA headquarters.",
+      "display_name": "Constellation Energy Generation"
+    },
+    {
+      "canonical": "NCR13027",
+      "members": [
+        "NCR13026"
+      ],
+      "label": "Downeast Wind",
+      "summary": "Downeast Wind (GO) and AWAM - Downeast Wind (GOP) share the Columbia, ME plant site.",
+      "display_name": "Downeast Wind"
+    },
+    {
+      "canonical": "NCR10245",
+      "members": [
+        "NCR12076"
+      ],
+      "label": "Tatanka wind",
+      "summary": "Tatanka Wind Power (GO) and Invenergy Services-Tatanka (GOP) share the Ashley, ND plant site.",
+      "display_name": "Tatanka"
+    },
+    {
+      "canonical": "NCR11061",
+      "members": [
+        "NCR11729"
+      ],
+      "label": "Empire Generating",
+      "summary": "Empire Generating Co (GO) and NAES Corporation - Empire (GOP) share the Rensselaer, NY plant site.",
+      "display_name": "Empire Generating"
+    },
+    {
+      "canonical": "NCR00538",
+      "members": [
+        "NCR11112"
+      ],
+      "label": "Astoria Energy I/II",
+      "summary": "Astoria Energy and Astoria Energy II share the Steinway Street plant office in Astoria, NY.",
+      "display_name": "Astoria Energy"
+    },
+    {
+      "canonical": "NCR12229",
+      "members": [
+        "NCR03035"
+      ],
+      "label": "Bridgeport Harbor",
+      "summary": "Bridgeport Harbor and Bridgeport Energy share the Bridgeport Harbor station complex in Connecticut.",
+      "display_name": "Bridgeport Harbor"
     }
   ]
 }

@@ -1,0 +1,237 @@
+{
+  "_comment": "Duplicate-entity review for map-combines.json. Walk geocoded-orgs.json in file order, batch_size rows at a time. Criteria: same or clearly matching name AND headquarters within ~8 km (co-located NERC registrations). Seeds that auto-retire via seed-twins.json are skipped. Existing combines live in map-combines.json.",
+  "source_file": "src/data/nerc/geocoded-orgs.json",
+  "batch_size": 100,
+  "last_completed_batch": 4,
+  "last_completed_index_exclusive": 400,
+  "batches": [
+    {
+      "batch": 1,
+      "index_range": [0, 99],
+      "first_ncr_id": "NCR-SEED-001",
+      "last_ncr_id": "NCR05059",
+      "reviewed": 100,
+      "combines_added": [],
+      "already_handled": [
+        {
+          "ids": ["NCR-SEED-043", "NCR00102"],
+          "reason": "Seed twin; NCR00102 is canonical on map (Basin Electric)."
+        },
+        {
+          "ids": ["NCR-SEED-036", "NCR01056", "NCR12527"],
+          "reason": "Seed retires to NCR00682; NCR01056 and NCR12527 folded in map-combines AEP Columbus HQ group."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR-SEED-015", "NCR-SEED-017", "NCR-SEED-054", "NCR10259"],
+          "reason": "Portland metro co-location (PacifiCorp, PGE, BPA, Avangrid) — distinct legal entities."
+        },
+        {
+          "ids": ["NCR-SEED-022", "NCR-SEED-024"],
+          "reason": "Atlanta co-location (Georgia Power vs Southern Company Services) — separate NERC registrations."
+        },
+        {
+          "ids": ["NCR00961", "NCR00962"],
+          "reason": "Alliant East vs West — different states/HQs (Cedar Rapids vs Madison)."
+        },
+        {
+          "ids": ["NCR13280", "NCR13281"],
+          "reason": "Bowman Wind vs AWAM Bowman — same region, ~24 km apart; different wind projects."
+        }
+      ],
+      "notes": "No new map-combine groups needed in batch 1."
+    },
+    {
+      "batch": 2,
+      "index_range": [100, 199],
+      "first_ncr_id": "NCR13265",
+      "last_ncr_id": "NCR13178",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR11314",
+          "members": ["NCR11785"],
+          "reason": "Same Zenda KS address and EIA project 57787-1; Clearlight platform vs Flat Ridge 2 plant SPV."
+        },
+        {
+          "canonical": "NCR12074",
+          "members": ["NCR12075"],
+          "reason": "Same White SD address and EIA project 61047-wt1; GO + Invenergy GOP at Coyote Ridge."
+        },
+        {
+          "canonical": "NCR11257",
+          "members": ["NCR13057"],
+          "reason": "Same Spearville KS coords; Ironwood GO + DS Cornerstone GOP (Duke/Sumitomo JV operator)."
+        },
+        {
+          "canonical": "NCR11972",
+          "members": ["NCR11441"],
+          "reason": "Same Cleghorn IA address; Glacier's Edge GO + EDF Renewable Service GOP."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR10312", "NCR11314", "NCR12356"],
+          "reason": "Flat Ridge 1/2/3 — related Clearlight portfolio but distinct plant sites (~15–20 km apart)."
+        },
+        {
+          "ids": ["NCR11692", "NCR12088"],
+          "reason": "Frontier Windpower I (Newkirk) vs II (Blackwell) — separate Oklahoma wind projects."
+        },
+        {
+          "ids": ["NCR00979", "NCR12181"],
+          "reason": "Dairyland Power Cooperative HQ (La Crosse) vs RockGen plant (Cambridge) — separate locations."
+        },
+        {
+          "ids": ["NCR11240", "NCR13057"],
+          "reason": "Cimarron II vs DS Cornerstone — DS Cornerstone GOP also covers Cimarron II but map pin is at Ironwood only."
+        }
+      ],
+      "notes": "Four wind-farm GO/GOP pairs merged; scanner missed three pairs with different legal names but identical plant addresses."
+    },
+    {
+      "batch": 3,
+      "index_range": [200, 299],
+      "first_ncr_id": "NCR13339",
+      "last_ncr_id": "NCR13022",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR11607",
+          "members": ["NCR12371"],
+          "reason": "Same Marshall TX address and gridinfo plant URL; HCPP GO + NRG GOP."
+        },
+        {
+          "canonical": "NCR11953",
+          "members": ["NCR11954"],
+          "reason": "Prairie Breeze II and III share the same Elgin NE Highway 70 office address."
+        },
+        {
+          "canonical": "NCR11153",
+          "members": ["NCR11730"],
+          "reason": "Golden Spread Panhandle GO + NRG GOP at Wildorado TX (pair spans batch 2/3)."
+        },
+        {
+          "canonical": "NCR11250",
+          "members": ["NCR06054"],
+          "reason": "Dogwood Power Management GO + NAES Dogwood GOP at Pleasant Hill MO (pair spans batch 2/3)."
+        },
+        {
+          "canonical": "NCR11695",
+          "members": ["NCR01322"],
+          "reason": "Southern Power Company MRO and NPCC registrations share Atlanta HQ."
+        },
+        {
+          "canonical": "NCR00303",
+          "members": ["NCR05256"],
+          "reason": "MEAN MRO and WECC registrations share Lincoln NE HQ."
+        },
+        {
+          "canonical": "NCR05282",
+          "members": ["NCR01021"],
+          "reason": "NorthWestern Corporation and NorthWestern Energy Public Service share Sioux Falls HQ."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR10019", "NCR12556"],
+          "reason": "NextEra Energy Resources vs NextEra Energy Transmission Southwest — separate gen and transmission registrations at Juno Beach corporate HQ."
+        },
+        {
+          "ids": ["NCR11730", "NCR11323"],
+          "reason": "Golden Spread Panhandle vs Spinning Spur — nearby Texas panhandle wind projects (~0.9 km), different owners and EIA records."
+        },
+        {
+          "ids": ["NCR11919", "NCR11992"],
+          "reason": "Solomon Forks vs East Fork — shared Colby KS coords but distinct wind projects."
+        },
+        {
+          "ids": ["NCR11460", "NCR11953", "NCR11954"],
+          "reason": "Prairie Breeze I vs II/III — phase I site ~12 km from II/III office."
+        },
+        {
+          "ids": ["NCR00824", "NCR12018"],
+          "reason": "MidAmerican Energy vs BHER Market Operations — co-located Des Moines HQ, distinct legal entities."
+        },
+        {
+          "ids": ["NCR12223", "NCR12482"],
+          "reason": "Recurrent Energy vs RWE Americas — nearby Austin TX offices, unrelated companies."
+        },
+        {
+          "ids": ["NCR01015", "NCR12235"],
+          "reason": "Montana-Dakota Utilities vs Nexus Line — nearby Bismarck addresses, separate entities."
+        }
+      ],
+      "notes": "Seven combine groups added; three cross-batch plant pairs and three multi-region HQ duplicates discovered via address/URL matching."
+    },
+    {
+      "batch": 4,
+      "index_range": [300, 399],
+      "first_ncr_id": "NCR13394",
+      "last_ncr_id": "NCR11061",
+      "reviewed": 100,
+      "combines_added": [
+        {
+          "canonical": "NCR10237",
+          "members": ["NCR00503"],
+          "reason": "Same Brooklyn Navy Yard address and bnycogen.com URL; GO + GOP at cogen plant."
+        },
+        {
+          "canonical": "NCR00778",
+          "members": ["NCR04057"],
+          "reason": "Constellation Nuclear and Constellation Power share Kennett Square HQ."
+        },
+        {
+          "canonical": "NCR13027",
+          "members": ["NCR13026"],
+          "reason": "Downeast Wind GO + AWAM GOP at Columbia ME."
+        },
+        {
+          "canonical": "NCR10245",
+          "members": ["NCR12076"],
+          "reason": "Tatanka Wind GO + Invenergy GOP at Ashley ND (pair spans batch 3/4)."
+        },
+        {
+          "canonical": "NCR11061",
+          "members": ["NCR11729"],
+          "reason": "Empire Generating GO + NAES Empire GOP at Rensselaer NY (pair spans batch 4/5)."
+        },
+        {
+          "canonical": "NCR00538",
+          "members": ["NCR11112"],
+          "reason": "Astoria Energy and Astoria Energy II share 17-10 Steinway Street office."
+        },
+        {
+          "canonical": "NCR12229",
+          "members": ["NCR03035"],
+          "reason": "Bridgeport Harbor and Bridgeport Energy at same harbor station complex (~160 m)."
+        }
+      ],
+      "reviewed_not_combined": [
+        {
+          "ids": ["NCR00538", "NCR07012", "NCR11112"],
+          "reason": "Astoria Generating Company — separate Astoria peaker ~1.5 km away on 20th Avenue."
+        },
+        {
+          "ids": ["NCR11647", "NCR13428"],
+          "reason": "Brookfield Power US Asset Management vs TerraForm Power Operating — shared Brookfield NY office, distinct legal entities."
+        },
+        {
+          "ids": ["NCR13522", "NCR13523"],
+          "reason": "Branscom Solar vs Darby Solar — adjacent Schaghticoke NY sites, different project names."
+        },
+        {
+          "ids": ["NCR13238", "NCR00658"],
+          "reason": "Transource Midwest vs Evergy — nearby Kansas City MO addresses, separate transmission vs utility HQ."
+        },
+        {
+          "ids": ["NCR07029", "NCR07134"],
+          "reason": "Central Maine Power vs Maine Electric Power — co-located Augusta ME, separate registrations."
+        }
+      ],
+      "notes": "Seven combine groups added; batch 4 is mostly NPCC generation assets with several GO/GOP plant pairs."
+    }
+  ],
+  "pause_note": "PAUSE: Batch 4 complete (indices 300–399). Next review starts at geocoded-orgs.json index 400 (NCR10358). Run: node scripts/nerc/review-map-combine-batch.mjs 5"
+}
