@@ -101,7 +101,7 @@ const MAJOR_OPERATOR_PARTNER_ROLES = new Set(["TOP", "PC", "TSP"]);
 const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
 const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
-const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "PSE"]);
+const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
@@ -584,6 +584,10 @@ export function mountNercOrgMap(): void {
     return Math.max(10, Math.min(100, score));
   }
 
+  function canGrowAtZoom(o: Org): boolean {
+    return meaningfulRoleCount(o) > 0;
+  }
+
   function visualPrioritySort(a: Org, b: Org): number {
     return (
       visualPriority(b) - visualPriority(a) ||
@@ -676,14 +680,19 @@ export function mountNercOrgMap(): void {
     // Simple visual-priority sizing: low-priority entities stay small but visible,
     // while authority, regulated, public, and reliability organizations get more
     // area. Radius is in CSS pixels, then converted to SVG units for the viewBox.
-    const priority = visualPriority(o) / 100;
+    const rawPriority = visualPriority(o);
+    const priority = rawPriority / 100;
     const minPx = compact ? 2.1 : 1.8;
     const maxPx = compact ? 25 : 34;
     const fullPx = minPx + (maxPx - minPx) * priority;
     const zoomT = smoothStep((k - 0.72) / 5);
     const overviewScale = compact ? 0.52 : 0.46;
-    const px = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
-    return Math.max(minPx, Math.min(maxPx, px)) * unitPerPx;
+    const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
+    const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
+    const priorityT = smoothStep((rawPriority - 42) / 58);
+    const boostPx = canGrowAtZoom(o) ? (compact ? 5.5 : 8.5) * priorityT * closeT : 0;
+    const zoomMaxPx = maxPx + (canGrowAtZoom(o) ? (compact ? 5.5 : 8.5) : 0);
+    return Math.max(minPx, Math.min(zoomMaxPx, basePx + boostPx)) * unitPerPx;
   }
 
   // Puerto Rico inset dots are schematic (small, uniform) so they fit the
@@ -747,9 +756,9 @@ export function mountNercOrgMap(): void {
     // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
     // to each other) rather than drifting away. Grows only modestly with zoom.
     const basePx = compact
-      ? k < 1.25 ? 12 : k < 2.2 ? 16 : k < 4 ? 20 : k < 7 ? 26 : 32
-      : k < 1.25 ? 16 : k < 2.2 ? 22 : k < 4 ? 28 : k < 7 ? 36 : 44;
-    const deepPx = compact ? 40 : 56;
+      ? k < 1.25 ? 14 : k < 2.2 ? 18 : k < 4 ? 24 : k < 7 ? 30 : 38
+      : k < 1.25 ? 19 : k < 2.2 ? 26 : k < 4 ? 34 : k < 7 ? 44 : 54;
+    const deepPx = compact ? 48 : 66;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -1309,7 +1318,7 @@ export function mountNercOrgMap(): void {
     //      never collide and are never thinned by a neighbour — that is why a
     //      bubble big enough to hold its name always shows it.
     //   2. FLOAT: otherwise place a floating label in preferred spots (on /
-    //      beside / below; above only as a last resort). A floating label may
+    //      beside / below, never above). A floating label may
     //      not overlap an already-placed label, nor any *other* protected
     //      bubble — so a smaller org's label can never sit on a bigger org's
     //      bubble.
@@ -1374,12 +1383,12 @@ export function mountNercOrgMap(): void {
         continue;
       }
 
-      // Non-forced dots get an INSIDE label or nothing — no floating labels — so
-      // a label never moves or flickers as you pan (it lives in its bubble, whose
-      // size depends only on zoom). A token too big to sit inside simply waits
-      // until you zoom in and the bubble grows. Hover/selection still floats a
-      // name below the dot so an inspected entity is always named.
-      if (!forceLabel) continue;
+      // Bigger organizations can try a side/below floating label when their
+      // token cannot fit inside the bubble. Smaller non-forced dots wait until
+      // zoom makes an inside label possible.
+      const priority = visualPriority(o);
+      const allowFloat = forceLabel || (priority >= 82 && k >= 1.25) || (priority >= 66 && k >= 1.8);
+      if (!allowFloat) continue;
       const text = labelText(o, k);
       const font = labelFontPx(o, k) * unitPerPx;
       const labelPadX = (compact ? 4.5 : 5) * unitPerPx;
@@ -1388,9 +1397,7 @@ export function mountNercOrgMap(): void {
       const h = (font + labelPadY * 2) * spacing;
       const nudge = r + font * 0.82 + 2 * unitPerPx;
       // Sit on the dot, then to the sides, then below, then the below-diagonals.
-      // Above-the-bubble labels visually detach from the mark and too often read
-      // as labels for a neighbouring dot, so they are only allowed for a focused
-      // hover/selection label when there is no better placement.
+      // Labels never go above the organization.
       const spots = [
         [sx, sy + font * 0.32],
         [sx + nudge, sy + font * 0.32],
@@ -1399,13 +1406,6 @@ export function mountNercOrgMap(): void {
         [sx + nudge * 0.78, sy + nudge * 0.72],
         [sx - nudge * 0.78, sy + nudge * 0.72],
       ];
-      if (forceLabel) {
-        spots.push(
-          [sx, sy - nudge],
-          [sx + nudge * 0.78, sy - nudge * 0.58],
-          [sx - nudge * 0.78, sy - nudge * 0.58],
-        );
-      }
       let chosen: { x: number; y: number; box: Box } | null = null;
       for (const [lx, ly] of spots) {
         const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
@@ -1417,8 +1417,11 @@ export function mountNercOrgMap(): void {
       }
       if (!chosen && forceLabel) {
         const lx = Math.min(W - edgeSafe - w / 2, Math.max(edgeSafe + w / 2, sx));
-        const ly = Math.min(H - edgeSafe - h * 0.3, Math.max(topSafe + h * 0.7, sy - nudge));
-        chosen = { x: lx, y: ly, box: { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 } };
+        const ly = sy + nudge;
+        const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
+        if (box.x0 >= edgeSafe && box.x1 <= W - edgeSafe && box.y0 >= topSafe && box.y1 <= H - edgeSafe) {
+          chosen = { x: lx, y: ly, box };
+        }
       }
       if (!chosen || !bubbleClears(o)) continue;
       placed.push(chosen.box);
@@ -1441,8 +1444,8 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
       // Radius is set in transform-space (divided by the group scale). It changes
-      // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
-      // so write only when the resolved radius actually moved — cheap, no storm.
+      // only with zoom and visual priority, so write only when the resolved radius
+      // actually moved — cheap, no storm.
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
         node.setAttribute("r", String(rr / k));
