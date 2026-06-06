@@ -775,9 +775,14 @@ export function mountNercOrgMap(): void {
     const base = compact
       ? priority >= 80 ? 11.1 : priority >= 50 ? 9.2 : 6.7
       : priority >= 80 ? 12.7 : priority >= 50 ? 10.3 : 7.7;
+    // Mid/high-zoom readability: an extra ramp that kicks in past the overview so
+    // labels keep getting bigger (and more legible) the further you zoom in. The
+    // inside-label path still clamps to the bubble chord and long names fall back
+    // to the short token, so this never causes overflow.
+    const midHighBoost = 1 + 0.5 * smoothStep((k - 1.8) / (compact ? 6 : 7));
     const growth = compact
-      ? Math.min(1.95, 1 + Math.max(0, k - 1) * 0.05)
-      : Math.min(2.15, 1 + Math.max(0, k - 1) * 0.07);
+      ? Math.min(2.3, (1 + Math.max(0, k - 1) * 0.06) * midHighBoost)
+      : Math.min(2.6, (1 + Math.max(0, k - 1) * 0.08) * midHighBoost);
     return base * growth;
   }
 
