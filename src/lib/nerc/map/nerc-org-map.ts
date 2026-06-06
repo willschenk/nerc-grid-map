@@ -487,6 +487,8 @@ export function mountNercOrgMap(): void {
   let recentOrg: Org | null = null;
   let recentOrgAt = 0;
   let lastUserZoomAt = 0;
+  let userPanning = false;
+  let lastPanEndAt = 0;
   let focusPanPending = false;
   let tourIds = new Set<string>();
   let tourTimers: number[] = [];
@@ -1050,21 +1052,34 @@ export function mountNercOrgMap(): void {
       .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
   }
 
+  function isPanSourceEvent(event: Event | null | undefined): boolean {
+    if (!event) return false;
+    const type = event.type;
+    return type === "mousedown" || type === "mousemove" || type === "touchstart" || type === "touchmove";
+  }
+
+  function wheelDelta(event: WheelEvent): number {
+    const unit = event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.0017;
+    const pinch = event.ctrlKey ? 9 : 1;
+    return (-event.deltaY * unit * pinch) / (compact ? 1.08 : 1);
+  }
+
   function updateZoomBounds(): void {
     if (!zoomBehavior) return;
-    const pad = (compact ? 180 : 220) * unitPerPx;
+    const k = Math.max(transform.k, 0.72);
+    const base = (compact ? 190 : 260) * unitPerPx;
+    // Looser bounds when zoomed out so overview pans do not hit a wall immediately.
+    const pad = base * Math.max(0.6, Math.min(1.85, 1.08 / Math.pow(k, 0.32)));
     zoomBehavior.extent([[0, 0], [W, H]]).translateExtent([[-pad, -pad], [W + pad, H + pad]]);
   }
 
-  function keepFocusedOrgInView(k: number): void {
-    if (!zoomBehavior || focusPanPending || tourRunning || k < 8) return;
-    const now = performance.now();
-    // Only keep an org in view during an ACTIVE zoom gesture (so it doesn't slip
-    // past the edge as you zoom). Selecting a bubble by clicking never recenters
-    // the map — the view stays put so clicking small dots doesn't jump you away.
-    if (now - lastUserZoomAt > 320) return;
-    const focused = hoverOrg ?? (now - recentOrgAt < 2400 ? recentOrg : null);
-    if (!focused || focused._sx == null || focused._sy == null) return;
+  function nudgeSelectedOrgIntoView(duration = 280): void {
+    if (!zoomBehavior || focusPanPending || tourRunning || userPanning || !selectedOrg) return;
+    if (performance.now() - lastPanEndAt < 500) return;
+    const k = transform.k;
+    if (k < 8) return;
+    const focused = selectedOrg;
+    if (focused._sx == null || focused._sy == null) return;
     const r = renderedRadius(focused, k);
     const sideSafe = (compact ? 52 : 44) * unitPerPx + r;
     const topSafe = (compact ? 88 : 40) * unitPerPx + r;
@@ -1075,11 +1090,36 @@ export function mountNercOrgMap(): void {
     else if (focused._sx > W - sideSafe) dx = W - sideSafe - focused._sx;
     if (focused._sy < topSafe) dy = topSafe - focused._sy;
     else if (focused._sy > H - bottomSafe) dy = H - bottomSafe - focused._sy;
+    if (!panel.hidden) {
+      const svgRect = svgNode.getBoundingClientRect();
+      const panelRect = panel.getBoundingClientRect();
+      const gap = (compact ? 18 : 20) * unitPerPx;
+      const panelBox = {
+        x0: (panelRect.left - svgRect.left) * unitPerPx - gap,
+        x1: (panelRect.right - svgRect.left) * unitPerPx + gap,
+        y0: (panelRect.top - svgRect.top) * unitPerPx - gap,
+        y1: (panelRect.bottom - svgRect.top) * unitPerPx + gap,
+      };
+      const overlapsPanel =
+        focused._sx + r > panelBox.x0 &&
+        focused._sx - r < panelBox.x1 &&
+        focused._sy + r > panelBox.y0 &&
+        focused._sy - r < panelBox.y1;
+      if (overlapsPanel) {
+        if (compact) {
+          const targetY = Math.max(topSafe, panelBox.y0 - r);
+          dy = Math.min(dy, targetY - focused._sy);
+        } else {
+          const targetX = Math.max(sideSafe, panelBox.x0 - r);
+          dx = Math.min(dx, targetX - focused._sx);
+        }
+      }
+    }
     if (Math.abs(dx) < 0.5 * unitPerPx && Math.abs(dy) < 0.5 * unitPerPx) return;
     focusPanPending = true;
     requestAnimationFrame(() => {
       focusPanPending = false;
-      animateTransform(zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k), 0);
+      animateTransform(zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(k), duration);
     });
   }
 
@@ -1811,7 +1851,6 @@ export function mountNercOrgMap(): void {
       .attr("font-size", ((compact ? 11 : 10.5) * unitPerPx) / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
-    keepFocusedOrgInView(k);
   }
 
   // Lay out-of-footprint territory orgs as labelled clusters of dots — no framed
@@ -2303,6 +2342,7 @@ export function mountNercOrgMap(): void {
       );
     }
     panel.hidden = false;
+    requestAnimationFrame(() => nudgeSelectedOrgIntoView(320));
   }
 
   function closePanel(): void {
@@ -2545,15 +2585,27 @@ export function mountNercOrgMap(): void {
   function setupZoom(): void {
     zoomBehavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.72, MAX_ZOOM])
+      .clickDistance(compact ? 6 : 4)
+      .tapDistance(compact ? 12 : 8)
+      .wheelDelta(wheelDelta)
       // The walkthrough keeps playing while the user pans/zooms (programmatic
       // transitions have no sourceEvent). A real gesture just nudges the Stop
       // control so they know they can take over.
       .on("start", (ev) => {
+        if (isPanSourceEvent(ev.sourceEvent)) userPanning = true;
         if (ev.sourceEvent && tourRunning) nudgeStopAttention();
+      })
+      .on("end", (ev) => {
+        if (isPanSourceEvent(ev.sourceEvent)) {
+          userPanning = false;
+          lastPanEndAt = performance.now();
+        }
       })
       .on("zoom", (ev) => {
         if (ev.sourceEvent) lastUserZoomAt = performance.now();
+        const prevK = transform.k;
         transform = ev.transform;
+        if (Math.abs(transform.k - prevK) > 0.001) updateZoomBounds();
         scheduleRedraw();
       });
     updateZoomBounds();
@@ -2795,11 +2847,11 @@ export function mountNercOrgMap(): void {
       return inDisc ? water / inDisc : 0;
     };
     const setZoom = (k: number, cx = W / 2, cy = H / 2): void => {
-      transform = zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-cx, -cy);
-      redraw();
+      animateTransform(zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-cx, -cy), 0);
     };
     (window as unknown as { __nercAudit: unknown }).__nercAudit = {
       info: () => ({ W, H, compact, unitPerPx, count: placeableOrgs.length }),
+      getTransform: () => ({ x: transform.x, y: transform.y, k: transform.k }),
       project: (lng: number, lat: number) => projection([lng, lat]),
       setZoom,
       setZoomAt: (k: number, lng: number, lat: number) => {
