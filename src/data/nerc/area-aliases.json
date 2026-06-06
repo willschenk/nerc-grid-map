@@ -314,6 +314,16 @@
       "code": "MEC",
       "ncr_id": "NCR00824",
       "meaning": "MidAmerican Energy Company"
+    },
+    {
+      "code": "WAUE",
+      "ncr_id": "NCR01036",
+      "meaning": "WAPA Upper Great Plains East"
+    },
+    {
+      "code": "MHEB",
+      "ncr_id": "NCR01003",
+      "meaning": "Manitoba Hydro-Electric Board / Manitoba Hydro"
     }
   ]
 }
