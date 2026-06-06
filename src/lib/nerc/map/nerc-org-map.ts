@@ -122,6 +122,8 @@ const SPIDER_RING_STEP_PX = 28;
 // _x/_y are never mutated, so geography stays exact.
 const MAX_RADIUS = 60;
 const MAX_ZOOM = 1200;
+// D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
+const ZOOM_TRANSITION_MS = 175;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
 const BA_RC_ROLES = new Set(["BA", "RC"]);
 const MAJOR_OPERATOR_PARTNER_ROLES = new Set(["TOP", "PC", "TSP"]);
@@ -2673,7 +2675,7 @@ export function mountNercOrgMap(): void {
     hideTooltip();
   }
 
-  function animateTransform(next: ZoomTransform, duration = 350): void {
+  function animateTransform(next: ZoomTransform, duration = ZOOM_TRANSITION_MS): void {
     if (!zoomBehavior) {
       transform = next;
       redraw();
@@ -2688,7 +2690,7 @@ export function mountNercOrgMap(): void {
     svg.transition().duration(duration).call(zoomBehavior.transform as never, next);
   }
 
-  function homeView(duration = 350): void {
+  function homeView(duration = ZOOM_TRANSITION_MS): void {
     animateTransform(zoomIdentity, duration);
   }
 
@@ -2703,7 +2705,7 @@ export function mountNercOrgMap(): void {
     animateTransform(zoomIdentity.translate(W / 2, H / 2).scale(s).translate(-W / 2, -H / 2), duration);
   }
 
-  function centerOnOrg(o: Org, duration = 450): void {
+  function centerOnOrg(o: Org, duration = 225): void {
     if (o._x == null || o._y == null) return;
     // Ensure a readable zoom, but never zoom the user back out if they've
     // already zoomed in deeper.
@@ -2993,7 +2995,7 @@ export function mountNercOrgMap(): void {
 
     const reduced = prefersReducedMotion();
     // Open on the overview (further out on phones) before the walkthrough runs.
-    tourStartView(reduced ? 0 : compact ? 520 : 760);
+    tourStartView(reduced ? 0 : compact ? 260 : 380);
 
     const steps = [
       { label: "ISOs and RTOs", match: (o: Org) => o.is_iso_rto },
