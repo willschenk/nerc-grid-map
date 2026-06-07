@@ -4,6 +4,7 @@ import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zo
 import "d3-transition";
 import { feature, mesh } from "topojson-client";
 import { ROLE_FULL_NAMES } from "../roles.mjs";
+import { MAP_LABEL_MAX, compressSpacedBrand, tightenMapLabel } from "../display-names.mjs";
 import { PLACES } from "../places.mjs";
 import { isExcludedTerritoryFips } from "../excluded-territories.mjs";
 
@@ -130,11 +131,11 @@ const SPIDER_RING_STEP_PX = 28;
 // _x/_y are never mutated, so geography stays exact.
 const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
-const ORG_CONTENT_SCALE = 0.85;
+const ORG_CONTENT_SCALE = 0.92;
 // Quiet dots for orgs that could not earn a non-overlapping bubble slot.
 // Background-tier dots: present on the map but not yet promoted to a bubble.
-const FALLBACK_TINY_RADIUS_PX = { desktop: 1.1, compact: 1.0 };
-const FALLBACK_TINY_RADIUS_DEEP_PX = { desktop: 1.35, compact: 1.2 };
+const FALLBACK_TINY_RADIUS_PX = { desktop: 1.35, compact: 1.2 };
+const FALLBACK_TINY_RADIUS_DEEP_PX = { desktop: 1.75, compact: 1.55 };
 // Flip to true locally when tuning render outcomes without a URL flag.
 const RENDER_STATS_LOCAL = false;
 type RenderOutcomeStats = {
@@ -172,13 +173,13 @@ const GENERATION_ONLY_REVEAL_K = 50;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
 // PSE-market entities stay the deepest tier. (GO/GOP-only companies are excluded
 // from the map entirely, so they have no display anchor.)
-const PSE_MARKET_DISPLAY_K = 20;
-const PSE_MARKET_DISPLAY_K_COMPACT = 48;
-const TO_ONLY_REVEAL_K = 12;
-const TO_ONLY_REVEAL_K_COMPACT = 14;
+const PSE_MARKET_DISPLAY_K = 14;
+const PSE_MARKET_DISPLAY_K_COMPACT = 20;
+const TO_ONLY_REVEAL_K = 8.5;
+const TO_ONLY_REVEAL_K_COMPACT = 10;
 // Regional dev view (k≈7.5) and deeper: every non-generation-only org may appear.
-const FULL_REGISTRY_REVEAL_K = 5.5;
-const FULL_REGISTRY_REVEAL_K_COMPACT = 6.0;
+const FULL_REGISTRY_REVEAL_K = 4.6;
+const FULL_REGISTRY_REVEAL_K_COMPACT = 5.0;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const REGIONAL_ENTITY_NAME = /\b(NERC|SERC|WECC|MRO|NPCC|ReliabilityFirst|Texas Reliability Entity|Midwest Reliability Organization|Northeast Power Coordinating Council|Western Electricity Coordinating Council|Regional Entity)\b/i;
@@ -352,20 +353,20 @@ function fallbackAcronym(name: string): string {
 // "… as agent for …" registry names; everything else is derived algorithmically.
 const NAME_RULES: Array<[RegExp, { tiny: string; mid: string }]> = [
   [/^consolidated edison/i, { tiny: "ConEd", mid: "Con Edison" }],
-  [/^american electric power/i, { tiny: "AEP", mid: "American Electric Power" }],
-  [/^firstenergy/i, { tiny: "FirstEnergy", mid: "FirstEnergy" }],
+  [/^american electric power/i, { tiny: "AEP", mid: "AEP" }],
+  [/^firstenergy/i, { tiny: "FE", mid: "FirstEnergy" }],
   [/^(public service enterprise group|pseg|p\.?s\.?e\.?&?g)/i, { tiny: "PSEG", mid: "PSEG" }],
-  [/^northern states power|\bxcel energy\b/i, { tiny: "Xcel", mid: "Xcel Energy" }],
-  [/^pacificorp/i, { tiny: "PacifiCorp", mid: "PacifiCorp" }],
-  [/^next\s?era/i, { tiny: "NextEra", mid: "NextEra Energy" }],
-  [/^duke energy/i, { tiny: "Duke", mid: "Duke Energy" }],
-  [/^dominion/i, { tiny: "Dominion", mid: "Dominion Energy" }],
-  [/^southern (company|co\b)/i, { tiny: "Southern", mid: "Southern Company" }],
+  [/^northern states power|\bxcel energy\b/i, { tiny: "Xcel", mid: "Xcel" }],
+  [/^pacificorp/i, { tiny: "PacCorp", mid: "PacifiCorp" }],
+  [/^next\s?era/i, { tiny: "NextEra", mid: "NextEra" }],
+  [/^duke energy/i, { tiny: "Duke", mid: "Duke" }],
+  [/^dominion/i, { tiny: "Dominion", mid: "Dominion" }],
+  [/^southern (company|co\b)/i, { tiny: "Southern", mid: "Southern Co" }],
   [/^entergy/i, { tiny: "Entergy", mid: "Entergy" }],
   [/^ameren/i, { tiny: "Ameren", mid: "Ameren" }],
   [/^exelon/i, { tiny: "Exelon", mid: "Exelon" }],
-  [/^berkshire hathaway energy|^midamerican/i, { tiny: "MidAmerican", mid: "MidAmerican" }],
-  [/^national grid/i, { tiny: "Nat. Grid", mid: "National Grid" }],
+  [/^berkshire hathaway energy|^midamerican/i, { tiny: "MidAm", mid: "MidAmerican" }],
+  [/^national grid/i, { tiny: "NatGrid", mid: "Nat. Grid" }],
   [/^tennessee valley/i, { tiny: "TVA", mid: "TVA" }],
   [/^bonneville power/i, { tiny: "BPA", mid: "Bonneville (BPA)" }],
   [/^los angeles department of water/i, { tiny: "LADWP", mid: "LADWP" }],
@@ -376,21 +377,39 @@ const NAME_RULES: Array<[RegExp, { tiny: string; mid: string }]> = [
   [/^portland general electric/i, { tiny: "PGE", mid: "Portland General" }],
   [/^pacific gas and electric/i, { tiny: "PG&E", mid: "PG&E" }],
   [/^southern california edison/i, { tiny: "SCE", mid: "SoCal Edison" }],
+  [/^potomac edison/i, { tiny: "Potomac", mid: "Potomac Ed" }],
+  [/^ohio edison/i, { tiny: "Ohio", mid: "Ohio Ed" }],
+  [/^toledo edison/i, { tiny: "Toledo", mid: "Toledo Ed" }],
+  [/^potomac electric power|^pepco\b/i, { tiny: "PEPCO", mid: "PEPCO" }],
+  [/^jersey central power/i, { tiny: "JCP&L", mid: "JCP&L" }],
+  [/^monongahela power/i, { tiny: "Mon Power", mid: "Mon Power" }],
   [/^san diego gas/i, { tiny: "SDG&E", mid: "SDG&E" }],
   [/^commonwealth edison/i, { tiny: "ComEd", mid: "ComEd" }],
   [/^baltimore gas/i, { tiny: "BGE", mid: "BGE" }],
-  [/^georgia power/i, { tiny: "GA Power", mid: "Georgia Power" }],
+  [/^georgia power/i, { tiny: "GA Pwr", mid: "GA Power" }],
   [/^florida power & light/i, { tiny: "FPL", mid: "FP&L" }],
   [/^tampa electric/i, { tiny: "TECO", mid: "Tampa Electric" }],
-  [/^idaho power/i, { tiny: "Idaho Pwr", mid: "Idaho Power" }],
-  [/^nevada power|^sierra pacific power/i, { tiny: "NV Energy", mid: "NV Energy" }],
+  [/^idaho power/i, { tiny: "Idaho", mid: "Idaho Pwr" }],
+  [/^nevada power|^sierra pacific power|^nv energy/i, { tiny: "NV", mid: "NV Energy" }],
   [/^oncor/i, { tiny: "Oncor", mid: "Oncor" }],
-  [/^centerpoint|d\/b\/a centerpoint/i, { tiny: "CenterPoint", mid: "CenterPoint" }],
+  [/^centerpoint|d\/b\/a centerpoint/i, { tiny: "CNP", mid: "CenterPoint" }],
+  [/^consumers energy/i, { tiny: "CE", mid: "Consumers" }],
+  [/^dte electric|^detroit edison/i, { tiny: "DTE", mid: "DTE" }],
+  [/^rocky mountain power/i, { tiny: "RM", mid: "Rocky Mtn" }],
+  [/^minnesota power/i, { tiny: "MN Pwr", mid: "MN Power" }],
+  [/^cleveland electric illuminating/i, { tiny: "CEI", mid: "CEI" }],
+  [/^wheelabrator/i, { tiny: "Wheel", mid: "Wheelabrator" }],
+  [/^invenergy/i, { tiny: "InvEnrg", mid: "Invenergy" }],
+  [/^constellation/i, { tiny: "CEG", mid: "Constellation" }],
+  [/^clearway/i, { tiny: "Clearwy", mid: "Clearway" }],
+  [/^avangrid/i, { tiny: "Avgird", mid: "Avangrid" }],
+  [/^tenaska/i, { tiny: "Tenaska", mid: "Tenaska" }],
+  [/^brookfield/i, { tiny: "Brookfld", mid: "Brookfield" }],
   [/^hydro[- ]?qu[eé]bec/i, { tiny: "Hydro-Québec", mid: "Hydro-Québec" }],
   [/^hydro one/i, { tiny: "Hydro One", mid: "Hydro One" }],
   [/ontario.*ieso|^ieso\b/i, { tiny: "IESO", mid: "Ontario IESO" }],
   [/^new brunswick power/i, { tiny: "NB Power", mid: "NB Power" }],
-  [/^nova scotia power/i, { tiny: "NS Power", mid: "Nova Scotia Power" }],
+  [/^nova scotia power/i, { tiny: "NS Pwr", mid: "NS Power" }],
   [/^manitoba hydro/i, { tiny: "MB Hydro", mid: "Manitoba Hydro" }],
   [/^saskatchewan power|^saskpower/i, { tiny: "SaskPower", mid: "SaskPower" }],
 ];
@@ -410,30 +429,39 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
-  // Researched shortest acronym wins (e.g. "PJM", "CE"); else curated rule; else
-  // the algorithmic fallback.
-  if (o.name_shortest) return o.name_shortest;
-  const c = curate(o.entity_name);
-  if (c) return c.tiny;
-  if (o.acronym) {
-    const core = coreFromAcronym(o.acronym);
-    if (core.length <= 7) return core;
-    if (o.acronym.length <= 9) return o.acronym;
-    return core.length <= o.acronym.length ? core : o.acronym;
+  // Curated brand rules beat researched shortest when they compress further
+  // (e.g. org-names "Wheelabrator" -> Wheel). Researched shortest still wins
+  // when it is already the tightest label we have.
+  const curated = curate(o.entity_name);
+  const fromShortest = o.name_shortest
+    ? tightenMapLabel(o.name_shortest, MAP_LABEL_MAX)
+    : null;
+  if (curated) {
+    const tiny = tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
+    if (!fromShortest || tiny.length < fromShortest.length) return tiny;
   }
-  return fallbackAcronym(o.entity_name);
+  if (fromShortest) return fromShortest;
+  if (curated) return tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
+  if (o.acronym) {
+    const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
+    if (compressed.length <= MAP_LABEL_MAX) return compressed;
+    const core = coreFromAcronym(o.acronym);
+    return tightenMapLabel(core, MAP_LABEL_MAX);
+  }
+  return tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
 }
 
 // A shortened-but-readable brand: cut "… as agent for …", "d/b/a", trailing
 // lists/clauses, and legal suffixes; fall back to the tiny token if still long.
 function midName(o: Org): string {
   // Researched "short" name wins (e.g. "Consumers", "PJM Interconnection").
-  if (o.name_short) return o.name_short;
+  if (o.name_short) return tightenMapLabel(o.name_short, 14);
   const c = curate(o.entity_name);
   if (c) return c.mid;
   let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
   s = shortName(s).replace(/,.*$/, "").trim();
-  return s.length >= 3 && s.length <= 30 ? s : tinyName(o);
+  if (s.length >= 3 && s.length <= 22) return s;
+  return tinyName(o);
 }
 
 // "Acronym"-style token used in chips / tooltips / aria: the super-short name.
@@ -824,11 +852,11 @@ export function mountNercOrgMap(): void {
       : lp >= 88 ? 1.6 : lp >= 68 ? 2.2 : lp >= 38 ? 3.2 : 4.5;
     if (k < shortAt) return [tiny];
     const mid = midName(o);
+    const midTight = tightenMapLabel(mid, compact ? 12 : 14);
     // Keep the longer "mid" brand only when it is genuinely short; otherwise stay
-    // with the compact token so a long name never dominates its neighbours. (The
-    // full legal name still appears in the detail panel.)
-    if (mid === tiny || mid.length > (compact ? 18 : 26)) return [tiny];
-    return [tiny, mid];
+    // with the compact token so a long name never dominates its neighbours.
+    if (midTight === tiny || midTight.length > (compact ? 12 : 14)) return [tiny];
+    return [tiny, midTight];
   }
 
   function hasAnyRole(o: Org, roles: Set<string>): boolean {
@@ -914,9 +942,9 @@ export function mountNercOrgMap(): void {
     const w = o.weight ?? 0;
     if (isGridLeadershipOrg(o) || pri >= 50) return 0;
     if (pri >= 42) return w >= 12 ? (compact ? 0.32 : 0.22) : compact ? 0.52 : 0.42;
-    if (pri >= 28) return compact ? 0.68 : 0.58;
-    if (pri >= 18) return compact ? 0.82 : 0.72;
-    return compact ? 0.95 : 0.85;
+    if (pri >= 28) return compact ? 0.62 : 0.52;
+    if (pri >= 18) return compact ? 0.74 : 0.64;
+    return compact ? 0.88 : 0.76;
   }
 
   function canDisplayOrg(o: Org, k: number): boolean {
@@ -1193,7 +1221,9 @@ export function mountNercOrgMap(): void {
 
   // Which orgs may *try* for a label at this zoom (collision still decides).
   function shouldTryLabel(o: Org, k: number): boolean {
-    if (o.placementMode === "fallbackTiny") return false;
+    if (o.placementMode === "fallbackTiny") {
+      return k >= (compact ? 5 : 4.2) && labelPriority(o) >= 22;
+    }
     if (isDeferredMarketOrg(o)) return k >= (compact ? 5.5 : 4.8);
     const lp = labelPriority(o);
     const revealK =
@@ -1315,29 +1345,29 @@ export function mountNercOrgMap(): void {
     const rawPriority = visualPriority(o);
     const priority = rawPriority / 100;
     const weight = Math.max(1, o.weight ?? 1);
-    const weightT = Math.max(0, Math.min(1, (weight - 1) / 48));
-    const minPx = compact ? 3 : 3.2;
-    const maxPx = compact ? 21 : Math.min(38, MAX_RADIUS);
-    const fullPx = minPx + (maxPx - minPx) * weightT;
+    const weightT = Math.max(0, Math.min(1, (weight - 1) / 40));
+    const minPx = compact ? 2.8 : 3.0;
+    const maxPx = compact ? 24 : Math.min(46, MAX_RADIUS);
+    const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.82);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    const overviewScale = compact ? 0.36 : 0.4;
+    const overviewScale = compact ? 0.36 : 0.39;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
-    const weightLiftPx = weightT * (compact ? 4.5 : 7) * (0.35 + 0.65 * zoomT);
+    const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
     const priorityT = smoothStep((rawPriority - 42) / 58);
     const weightCloseT = smoothStep((weightT - 0.35) / 0.65);
-    const boostPx = canGrowAtZoom(o) ? (compact ? 6 : 10) * Math.max(priorityT, weightCloseT) * closeT : 0;
+    const boostPx = canGrowAtZoom(o) ? (compact ? 7 : 11.5) * Math.max(priorityT, weightCloseT) * closeT : 0;
     // Mid-zoom lift for grid leadership so BA/RC/PC/TOP/TSP stay ahead after the
     // small-org growth pass; fades once deep-zoom catch-up kicks in.
     const leadershipMidBoost = isGridLeadershipOrg(o)
-      ? (compact ? 4 : 6.5) * smoothStep((k - 0.85) / 2.4) * (1 - smoothStep((k - 7.5) / 3.5))
+      ? (compact ? 4.5 : 7.2) * smoothStep((k - 0.85) / 2.4) * (1 - smoothStep((k - 7.5) / 3.5))
       : 0;
     // Deep-zoom boost, weighted toward the smallest orgs: if you keep zooming
     // into a low-priority entity it grows so its name can finally read.
     const deepT = smoothStep((k - (compact ? 6 : 7)) / (compact ? 22 : 26));
     const smallOrgT = smoothStep((72 - rawPriority) / 62);
     const dominance = growthDominanceFactor(o, k);
-    const deepBoostMaxPx = 13;
+    const deepBoostMaxPx = 15;
     const deepBoostPx = canGrowAtZoom(o)
       ? deepBoostMaxPx * deepT * (0.25 + 0.75 * smallOrgT) * (isDeferredMarketOrg(o) ? 0.55 : 1) * dominance
       : 0;
@@ -1346,12 +1376,12 @@ export function mountNercOrgMap(): void {
     // plateauing once basePx saturates. Ramps smoothly from the overview to deep
     // zoom, scaled by priority so important orgs grow the most.
     const wideT = smoothStep((k - 1) / 36);
-    const zoomGrowthPx = (compact ? 12 : 18) * wideT * (0.18 + 0.82 * priority) * dominance;
+    const zoomGrowthPx = (compact ? 14 : 21) * wideT * (0.18 + 0.82 * priority) * dominance;
     const zoomMaxPx =
       maxPx +
       (canGrowAtZoom(o) ? (compact ? 6 : 10) : 0) +
       (canGrowAtZoom(o) ? deepBoostMaxPx : 0) +
-      (compact ? 12 : 18);
+      (compact ? 14 : 21);
     // Deep-zoom minimum: once you are zoomed right in, no visible org should stay
     // tiny when there is clearly room — every bubble reaches a readable floor so
     // its label can show. Screen coords are spread far apart at this zoom, so the
@@ -1522,8 +1552,8 @@ export function mountNercOrgMap(): void {
     // Substantial freedom at every zoom step; taper is gentle so regional/mid views
     // still allow bubbles to spread when packing gets tight.
     const t = declutterZoomT(k);
-    const overviewPx = compact ? 38 : 54;
-    const deepPx = compact ? 24 : 36;
+    const overviewPx = compact ? 42 : 62;
+    const deepPx = compact ? 27 : 41;
     return (overviewPx + (deepPx - overviewPx) * t) * unitPerPx;
   }
 
@@ -1549,8 +1579,8 @@ export function mountNercOrgMap(): void {
     const majorT = smoothStep((visualPriority(o) - 12) / 72);
     const weightT = smoothStep(((o.weight ?? 0) - 6) / 38);
     const bigT = Math.max(majorT, weightT);
-    const smallMult = (compact ? 2.9 : 3.5) - (compact ? 0.35 : 0.4) * zoomT;
-    const bigMult = (compact ? 1.65 : 1.95) - (compact ? 0.25 : 0.28) * zoomT;
+    const smallMult = (compact ? 3.15 : 3.85) - (compact ? 0.35 : 0.4) * zoomT;
+    const bigMult = (compact ? 1.78 : 2.12) - (compact ? 0.25 : 0.28) * zoomT;
     radius *= smallMult + (bigMult - smallMult) * bigT;
     if (isTopTierOrg(o)) radius *= compact ? 1.35 : 1.55;
 
@@ -2641,13 +2671,14 @@ export function mountNercOrgMap(): void {
       const shortHighValue = !compact && lp >= 68 && brand.length <= 7;
       const allowFloat =
         forceLabel ||
-        (lp >= 88 && k >= (compact ? 1.0 : 0.9)) ||
-        (lp >= 78 && k >= (compact ? 1.15 : 1.05)) ||
-        (lp >= 68 && k >= (midwest ? 1.35 : 1.45)) ||
-        (shortHighValue && k >= 1.7) ||
-        (lp >= 52 && k >= (midwest ? 1.75 : 1.95)) ||
-        (lp >= 38 && k >= (midwest ? 2.35 : 2.55)) ||
-        (lp >= 16 && k >= (midwest ? 3.0 : 3.2));
+        (lp >= 88 && k >= (compact ? 0.85 : 0.75)) ||
+        (lp >= 78 && k >= (compact ? 1.0 : 0.9)) ||
+        (lp >= 68 && k >= (midwest ? 1.2 : 1.3)) ||
+        (shortHighValue && k >= 1.45) ||
+        (lp >= 52 && k >= (midwest ? 1.55 : 1.7)) ||
+        (lp >= 38 && k >= (midwest ? 2.05 : 2.25)) ||
+        (lp >= 16 && k >= (midwest ? 2.65 : 2.85)) ||
+        k >= (compact ? 6.5 : 5.8);
       if (!allowFloat) continue;
       // Floating labels aren't bounded by a bubble chord (unlike inside labels),
       // so cap their on-screen size to keep deep zoom from producing oversized
@@ -4487,6 +4518,8 @@ export function mountNercOrgMap(): void {
 
   init().catch((err) => {
     console.error(err);
-    loadingEl.textContent = "Could not load map data.";
+    const msg = err instanceof Error ? err.message : String(err);
+    loadingEl.textContent = `Could not load map data. (${msg})`;
+    loadingEl.style.display = "grid";
   });
 }
