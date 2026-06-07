@@ -86,9 +86,9 @@ type Org = {
   // Set by computePlacements; drives disclosure (placed => shown). Recomputed only
   // when the zoom bucket changes, never on pan.
   _placed?: boolean;
-  // bubble = normal decluttered placement; fallbackTiny = quiet dot at true origin.
+  // bubble = normal decluttered placement; fallbackTiny = background-tier dot.
   placementMode?: "bubble" | "fallbackTiny";
-  // Ephemeral per-frame: draw as a tiny fallback dot (failed placement or no label yet).
+  // Ephemeral per-frame: draw at background tier (tiny, subdued, no label).
   _renderFallback?: boolean;
   _rk?: number;
   // Last viewBox radius actually written to the circle, so zoom-only sizing can
@@ -148,7 +148,8 @@ const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
 const ORG_CONTENT_SCALE = 0.85;
 // Quiet dots for orgs that could not earn a non-overlapping bubble slot.
-const FALLBACK_TINY_RADIUS_PX = { desktop: 1.05, compact: 0.95 };
+// Background-tier dots: present on the map but not yet promoted to a bubble.
+const FALLBACK_TINY_RADIUS_PX = { desktop: 1.1, compact: 1.0 };
 const FALLBACK_TINY_RADIUS_DEEP_PX = { desktop: 1.35, compact: 1.2 };
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
@@ -870,7 +871,7 @@ export function mountNercOrgMap(): void {
     // entities only (grid leadership or high visual priority) so crowded metros
     // don't stack low-priority dots. They reveal normally once zoomed past k2.
     // Orgs that fail bubble placement still render as quiet fallback dots at their
-    // true projected location (see computePlacements / rendersAsFallbackDot).
+    // true projected location (see computePlacements / rendersAsBackgroundDot).
     if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 28) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     // PSE-market entities remain the deepest tier.
@@ -1060,10 +1061,14 @@ export function mountNercOrgMap(): void {
   }
 
   // True when the org should draw as a tiny dot this frame (placement failed).
-  function rendersAsFallbackDot(o: Org, hasLabel: boolean, forced: boolean): boolean {
+  function rendersAsBackgroundDot(o: Org, hasLabel: boolean, forced: boolean): boolean {
     if (o._frame === "terr" || o.placementMode !== "fallbackTiny") return false;
     if (forced || hasLabel) return false;
     return true;
+  }
+
+  function visualTier(o: Org): "bubble" | "background" {
+    return o._renderFallback || o.placementMode === "fallbackTiny" ? "background" : "bubble";
   }
 
   // Label eligibility is independent of bubble visibility. Fallback dots never
@@ -2399,7 +2404,7 @@ export function mountNercOrgMap(): void {
     for (const o of visibleOrgs) {
       if (!o._vis || o._frame === "terr") continue;
       const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
-      o._renderFallback = rendersAsFallbackDot(
+      o._renderFallback = rendersAsBackgroundDot(
         o,
         labelState.has(o.ncr_id),
         forced,
@@ -2432,7 +2437,7 @@ export function mountNercOrgMap(): void {
       const labeled = labelState.has(o.ncr_id);
       const inTour = tourActive && tourIds.has(o.ncr_id);
       node.classList.toggle("labeled", labeled);
-      node.classList.toggle("fallback-tiny", !!o._renderFallback);
+      node.classList.toggle("org-background", visualTier(o) === "background");
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
       // Only the labeled subset breathes (bounded count = cheap on iOS); the
@@ -2441,10 +2446,6 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("tour-flash", inTour && labeled);
       node.classList.toggle("tour-pick", inTour && !labeled);
       node.classList.toggle("tour-dim", tourRunning && !inTour);
-      node.style.setProperty(
-        "--org-opacity",
-        "1",
-      );
     });
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
