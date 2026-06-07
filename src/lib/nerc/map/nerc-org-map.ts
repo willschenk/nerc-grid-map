@@ -136,6 +136,10 @@ const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 50;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
+// PSE-market entities stay the deepest tier. (GO/GOP-only companies are excluded
+// from the map entirely, so they have no display anchor.)
+const PSE_MARKET_DISPLAY_K = 20;
+const PSE_MARKET_DISPLAY_K_COMPACT = 48;
 const TO_ONLY_REVEAL_K = 12;
 const TO_ONLY_REVEAL_K_COMPACT = 14;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
@@ -819,10 +823,42 @@ export function mountNercOrgMap(): void {
   }
 
   // Zoom at which a generation-only org may start rendering. On desktop this is
-  function canDisplayOrg(o: Org, _k: number): boolean {
-    // Rule: every organization shows at every zoom level. The only exception is
-    // generation-only (GO/GOP) companies, which the user removed from the map.
-    return !isGenerationOnly(o);
+  // earlier than its growth anchor (so it appears at deep zoom while still drawn
+  // small); mobile keeps the conservative reveal-K to leave the overview clean.
+  function pseMarketDisplayK(): number {
+    return compact ? PSE_MARKET_DISPLAY_K_COMPACT : PSE_MARKET_DISPLAY_K;
+  }
+
+  // Progressive zoom tiers. Lower-priority / lower-weight entities reveal as the
+  // user zooms in, so the widest view stays dominated by RC/BA/PC/TOP/TSP, ISOs/
+  // RTOs and major utilities, while every zoom step still adds meaningful new
+  // organizations. Nothing is removed from the dataset — only revealed later.
+  function overviewRevealK(o: Org): number {
+    const pri = visualPriority(o);
+    const w = o.weight ?? 0;
+    // Grid leadership and high-value utilities are always present at the overview.
+    if (isGridLeadershipOrg(o) || pri >= 50) return 0; // leadership + grid roles always
+    if (pri >= 42) return w >= 12 ? 0.78 : 0.95; // utilities, cooperatives, municipals
+    if (pri >= 28) return w >= 8 ? 1.1 : 1.5;
+    if (pri >= 18) return 1.9;
+    return 2.4; // lowest non-deferred (minor/merchant) — GO/GOP/PSE deferred separately
+  }
+
+  function canDisplayOrg(o: Org, k: number): boolean {
+    // Generation-only (GO/GOP) companies are excluded from the map entirely. They
+    // are the bulk of the low-priority dots, so dropping them frees space for the
+    // grid/utility organizations to fit cleanly at every zoom.
+    if (isGenerationOnly(o)) return false;
+    // Compact (phones/small tablets): below k2 keep the overview to major
+    // entities only (grid leadership or high visual priority) so crowded metros
+    // don't stack low-priority dots. They reveal normally once zoomed past k2.
+    // (Orgs that find no free placement slot are additionally hidden by
+    // computePlacements via _placed, so only those with room actually draw.)
+    if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 28) return false;
+    if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
+    // PSE-market entities remain the deepest tier.
+    if (isDeferredMarketOrg(o)) return k >= pseMarketDisplayK();
+    return k >= overviewRevealK(o);
   }
 
   function isMajorSystemOperator(o: Org): boolean {
@@ -1237,9 +1273,9 @@ export function mountNercOrgMap(): void {
     // bound keeps the search near the true location). Compact is kept tighter
     // because the small viewBox magnifies any drift.
     const basePx = compact
-      ? k < 1.25 ? 26 : k < 2.2 ? 36 : k < 4 ? 50 : k < 7 ? 64 : 78
-      : k < 1.25 ? 38 : k < 2.2 ? 52 : k < 4 ? 74 : k < 7 ? 94 : 116;
-    const deepPx = compact ? 100 : 145;
+      ? k < 1.25 ? 20 : k < 2.2 ? 28 : k < 4 ? 40 : k < 7 ? 52 : 64
+      : k < 1.25 ? 30 : k < 2.2 ? 40 : k < 4 ? 58 : k < 7 ? 76 : 94;
+    const deepPx = compact ? 82 : 116;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -1744,11 +1780,6 @@ export function mountNercOrgMap(): void {
 
     for (const it of items) {
       let placed = false;
-      // First on-land candidate (even if it overlaps) — the fallback so the dot is
-      // always shown somewhere on land rather than dropped.
-      let fbDx = 0;
-      let fbDy = 0;
-      let hasFb = false;
       const offsets = offsetsFor(orgPlacementRadius(it.o, bucket));
       for (const [dx, dy] of offsets) {
         const cx = it.ox + dx;
@@ -1756,11 +1787,6 @@ export function mountNercOrgMap(): void {
         // Center must stay on land (the coastal edge may spill over water). The
         // mask is base-space, so divide the screen-space candidate by the bucket.
         if (!onLand(cx / bucket, cy / bucket)) continue;
-        if (!hasFb) {
-          fbDx = dx;
-          fbDy = dy;
-          hasFb = true;
-        }
         if (!fits(cx, cy, it.r)) continue;
         it.o._dx = dx;
         it.o._dy = dy;
@@ -1770,13 +1796,9 @@ export function mountNercOrgMap(): void {
         break;
       }
       if (!placed) {
-        // Rule: every organization always shows. With no free spot, keep it on
-        // land at the nearest candidate (its true location when that is on land)
-        // and allow overlap rather than hiding it.
-        it.o._dx = hasFb ? fbDx : 0;
-        it.o._dy = hasFb ? fbDy : 0;
-        it.o._placed = true;
-        claim(it.ox + it.o._dx, it.oy + it.o._dy, it.r);
+        it.o._placed = false;
+        it.o._dx = 0;
+        it.o._dy = 0;
       }
     }
   }
@@ -2172,21 +2194,19 @@ export function mountNercOrgMap(): void {
       if (hoverLabel) labelState.set(hot.ncr_id, hoverLabel);
     }
 
-    // Rule: every organization always carries a label. Any visible bubble that did
-    // not earn one above gets a forced inside label (its short token, clamped to
-    // the bubble chord but never below a small readable floor), so there is never
-    // an unlabeled dot. (Skipped during the tour, which dims off-step bubbles.)
+    // A bubble renders only if it earned a readable label at this zoom. If its
+    // name could not render (no room inside the bubble, no collision-free floating
+    // spot, or priority/zoom rules held it back) the bubble is hidden until the
+    // user zooms in far enough for the label to land — so there is never a grey
+    // dot without text. Hover/selected dots are exempt (they carry forced labels).
+    // Skipped during a tour, where the walkthrough deliberately dims rather than
+    // hides the off-step bubbles, and territory inset dots, which are identified by
+    // their region name instead of an individual label.
     if (!tourActive && !tourRunning) {
       for (const o of visibleOrgs) {
-        if (o._frame === "terr" || labelState.has(o.ncr_id)) continue;
-        if (o._sx == null || o._sy == null) continue;
-        const r = renderedRadius(o, k);
-        const brand = tinyName(o);
-        const font = Math.max(
-          (compact ? 4 : 4.5) * unitPerPx,
-          Math.min(labelFontPx(o, k) * unitPerPx, (r * 1.74) / Math.max(1, brand.length) / 0.56),
-        );
-        labelState.set(o.ncr_id, { x: o._sx, y: o._sy, font, text: brand, inside: true });
+        if (!o._vis || o._frame === "terr") continue;
+        const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id;
+        if (!forced && !labelState.has(o.ncr_id)) o._vis = false;
       }
     }
     const finalVisibleOrgs = visibleOrgs.filter((o) => o._vis);
