@@ -1033,20 +1033,35 @@ export function mountNercOrgMap(): void {
     return true;
   }
 
-  // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
-  // low zoom (only the highest-priority entities) and opened up fully once
-  // zoomed in, where viewport culling keeps the on-screen candidate count small.
+  // Label eligibility is independent of bubble visibility. Fallback dots never
+  // label unless forced; major orgs label early; low-priority orgs defer.
+  function isLabelForced(o: Org, tourActive: boolean, hot: Org | null): boolean {
+    if (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id) return true;
+    if (tourActive && tourIds.has(o.ncr_id)) return true;
+    return false;
+  }
+
+  function isLabelEligible(o: Org, k: number, forced: boolean): boolean {
+    if (o._frame === "terr") return forced;
+    if (o.placementMode === "fallbackTiny" || o._renderFallback) return forced;
+    if (forced) return true;
+    return shouldTryLabel(o, k);
+  }
+
+  // Which orgs may *try* for a label at this zoom (collision still decides).
   function shouldTryLabel(o: Org, k: number): boolean {
     if (o.placementMode === "fallbackTiny") return false;
     const priority = visualPriority(o);
     const midwest = isMidwestOrg(o);
-    if (k >= 2.2) return true;
-    // Low thresholds so most disclosed orgs attempt a label at overview/mid zoom.
-    // Collision checks still gate floating labels; placement failures draw as tiny
-    // fallback dots instead of disappearing.
+    // Major regulated/grid orgs label at overview; small orgs wait for deep zoom.
+    if (priority >= 66) return true;
+    if (priority >= 50) return k >= 0.85;
+    if (priority >= 40) return k >= 1.1;
+    if (k >= 3.4) return true;
     if (k < 1.25) return priority >= (midwest ? 22 : 26);
     if (k < 1.8) return priority >= (midwest ? 16 : 18);
-    return priority >= (midwest ? 12 : 14);
+    if (k < 2.2) return priority >= (midwest ? 12 : 14);
+    return priority >= (midwest ? 10 : 12);
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
@@ -2076,27 +2091,15 @@ export function mountNercOrgMap(): void {
     }
 
     for (const o of visibleOrgs) {
-      // Puerto Rico inset dots are identified by the territory label, so they only
-      // get an individual label when hovered/selected (never in the normal flow).
       const isTerr = o._frame === "terr";
+      const forced = isLabelForced(o, tourActive, hot);
       if (tourActive) {
         // During a walkthrough step only the highlighted set gets labels.
-        if ((tourIds.has(o.ncr_id) || hot?.ncr_id === o.ncr_id) && (!isTerr || hot?.ncr_id === o.ncr_id)) candidates.push(o);
-      } else if (
-        !tourRunning &&
-        (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || (!isTerr && shouldTryLabel(o, k)))
-      ) {
+        if (forced && (!isTerr || hot?.ncr_id === o.ncr_id)) candidates.push(o);
+      } else if (!tourRunning && isLabelEligible(o, k, forced)) {
         // Normal map. (During a blank beat — tourRunning && !tourActive — we
         // deliberately collect no candidates so nothing is labelled.)
         candidates.push(o);
-      }
-    }
-    if (!tourActive && !tourRunning && shownCount <= (compact ? 12 : 28)) {
-      const candidateIds = new Set(candidates.map((o) => o.ncr_id));
-      for (const o of visibleOrgs) {
-        if (o._frame === "terr" || o.placementMode === "fallbackTiny" || candidateIds.has(o.ncr_id)) continue;
-        candidates.push(o);
-        candidateIds.add(o.ncr_id);
       }
     }
 
@@ -2120,7 +2123,7 @@ export function mountNercOrgMap(): void {
     const labelState = new Map<string, LabelPlacement>();
     const placed: Box[] = [];
     // De-dupe identical on-screen tokens only in the broad overview. Once zoomed
-    // in, duplicate brands can each carry text because unlabeled dots are hidden.
+    // in, duplicate brands can each carry text when collision room allows.
     const usedLabels = new Set<string>();
     // Bound the animated/highlighted set so it stays cheap on iOS.
     const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
@@ -2352,16 +2355,6 @@ export function mountNercOrgMap(): void {
     if (hot?._vis && hot._sx != null && hot._sy != null && isHoverLabelTarget(hot) && !labelState.has(hot.ncr_id)) {
       const hoverLabel = tryHoverUnlabeledLabel(hot);
       if (hoverLabel) labelState.set(hot.ncr_id, hoverLabel);
-    }
-
-    // Placed bubbles without a readable label stay hidden until zoom/room allows
-    // one — except fallback tiny dots (placement failed) and tour/hover/selected.
-    if (!tourActive && !tourRunning) {
-      for (const o of visibleOrgs) {
-        if (!o._vis || o._frame === "terr" || o.placementMode === "fallbackTiny") continue;
-        const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id;
-        if (!forced && !labelState.has(o.ncr_id)) o._vis = false;
-      }
     }
 
     for (const o of visibleOrgs) {
