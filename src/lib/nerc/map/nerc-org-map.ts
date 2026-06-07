@@ -141,6 +141,7 @@ const SPIDER_RING_STEP_PX = 28;
 // _x/_y are never mutated, so geography stays exact.
 const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
+const ORG_CONTENT_SCALE = 0.85;
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
@@ -1054,7 +1055,7 @@ export function mountNercOrgMap(): void {
     const smallOrgCloseBoost =
       priority >= 80 ? 1 : 1 + (priority < 50 ? 0.28 : 0.16) * smoothStep((k - 3) / 4);
     // Narrow phones: scale every label up so names stay readable on a small handset.
-    return base * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale();
+    return base * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale() * ORG_CONTENT_SCALE;
   }
 
   function labelLimit(k: number): number {
@@ -1174,7 +1175,7 @@ export function mountNercOrgMap(): void {
           zoomMaxPx,
           basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
         ),
-      ) * unitPerPx * phoneSizeScale()
+      ) * unitPerPx * phoneSizeScale() * ORG_CONTENT_SCALE
     );
   }
 
@@ -1280,21 +1281,13 @@ export function mountNercOrgMap(): void {
   }
 
   function maxDeclutterOffset(k: number): number {
-    // Keep bubbles close to their true location — only "a little" movement to
-    // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
-    // to each other) rather than drifting away. Grows only modestly with zoom.
-    // 2x the previous travel so bubbles have much more freedom to hunt for a free
-    // gap and more of them fit everywhere. The per-candidate onLand() check in
-    // computePlacements still gates each spot, so the wider search packs density
-    // rather than drifting offshore. Compact is kept proportionally tighter
-    // because its small viewBox magnifies any movement.
-    // Less freedom of movement (halved again): a tight search radius keeps bubbles
-    // close to their true location, so fewer find a non-overlapping on-land gap and
-    // fewer are displayed (the rest drop). Geography reads more accurately.
+    // Tight leash: declutter may nudge a bubble only around its own projected
+    // location. This prevents entities from drifting to distant land just to find
+    // a gap.
     const basePx = compact
-      ? k < 1.25 ? 15 : k < 2.2 ? 21 : k < 4 ? 40 : k < 7 ? 52 : 64
-      : k < 1.25 ? 22 : k < 2.2 ? 31 : k < 4 ? 58 : k < 7 ? 76 : 94;
-    const deepPx = compact ? 82 : 116;
+      ? k < 1.25 ? 4 : k < 2.2 ? 5 : k < 4 ? 7 : k < 7 ? 9 : 11
+      : k < 1.25 ? 5 : k < 2.2 ? 7 : k < 4 ? 9 : k < 7 ? 12 : 15;
+    const deepPx = compact ? 14 : 20;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -1313,22 +1306,21 @@ export function mountNercOrgMap(): void {
 
   function orgPlacementRadius(o: Org, bucket: number): number {
     const radius = placementRadius(bucket);
-    // Pure generation dots are hidden until close zoom and place after the
-    // bigger grid organizations. Let those tiny dots travel farther to find
-    // gaps around the already-claimed large bubbles.
-    if (isDeferredMarketOrg(o)) return radius * (compact ? 2.8 : 3.0);
+    // Deferred market dots are tiny and can move a touch more, but still stay
+    // close to their own origin.
+    if (isDeferredMarketOrg(o)) return radius * 1.15;
     // AK/HI insets are a small projected region. Cap their travel to a modest
     // absolute amount (not a multiple of the large mainland offset) so dots fan
     // out within the inset land instead of flying out into open water.
     if (isUsInsetOrg(o)) {
       const spreadT = smoothStep((4 - bucket) / 3.2);
-      return Math.min(radius, (compact ? 26 : 34) * unitPerPx * (1 + 0.4 * spreadT));
+      return Math.min(radius, (compact ? 11 : 14) * unitPerPx * (1 + 0.15 * spreadT));
     }
-    // NE/IA/MN/WI clusters pack many co-ops and munis together — modest extra
-    // spread at mid zoom opens gaps for labels without mainland drift.
+    // Midwest clusters still get a small extra search, but not enough to detach
+    // them from local geography.
     if (isMidwestOrg(o)) {
       const spreadT = smoothStep((6 - bucket) / 4.5);
-      return radius * (1 + (compact ? 0.48 : 0.68) * spreadT);
+      return radius * (1 + (compact ? 0.08 : 0.12) * spreadT);
     }
     return radius;
   }
