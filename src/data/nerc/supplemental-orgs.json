@@ -17049,8 +17049,8 @@
   {
     "ncr_id": "SUP-duke-energy-ohio-kentucky",
     "entity_name": "Duke Energy Ohio-Kentucky",
-    "acronym": "Duke Energy Ohio-Kentucky",
-    "name_shortest": "Duke Energy Ohio-Kentucky",
+    "acronym": "DEOK",
+    "name_shortest": "DEOK",
     "name_short": "Duke Energy Ohio-Kentucky",
     "name_normal": "Duke Energy Ohio-Kentucky",
     "name_major": true,
@@ -17262,8 +17262,8 @@
   {
     "ncr_id": "SUP-evergy-missouri-west",
     "entity_name": "Evergy Missouri West",
-    "acronym": "Evergy Missouri West",
-    "name_shortest": "Evergy Missouri West",
+    "acronym": "EMW",
+    "name_shortest": "EMW",
     "name_short": "Evergy Missouri West",
     "name_normal": "Evergy Missouri West",
     "state": "MO",

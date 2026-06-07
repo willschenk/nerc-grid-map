@@ -87,6 +87,12 @@ const COOP_NAME = /\b(Cooperative|Co-?op|Electric Membership|G\s*&\s*T)\b/i;
 const MUNI_NAME = /\b(Municipal|Public Power|Public Utility District|Utility District|PUD|City of|Town of|Electric Department|Light\s*&\s*Power|Light Department)\b/i;
 const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation)\b/i;
 
+const SHORT_NAME_OVERRIDES = new Map([
+  ["Duke Energy Ohio-Kentucky", "DEOK"],
+  ["Evergy Missouri West", "EMW"],
+]);
+const RESERVED_SHORT_NAMES = new Set(["HE", "SC", "SMT", "WR"]);
+
 const KNOWN_ACRONYMS = new Map([
   ["pjm interconnection", "PJM"],
   ["midcontinent independent system operator", "MISO"],
@@ -154,6 +160,32 @@ const KNOWN_ACRONYMS = new Map([
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;
 const LIGHT_LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|corporation|corp|limited|ltd)\b/gi;
 const ACRONYM_STOP = new Set(["THE", "OF", "AND", "FOR", "A", "AN", "DE"]);
+const SHORT_NAME_DROP = new Set(["THE", "OF", "AND", "FOR", "A", "AN", "AS", "AT", "BY", "IN", "TO"]);
+const SHORT_NAME_UTILITY = new Set([
+  "AUTHORITY",
+  "ASSOCIATION",
+  "COMMISSION",
+  "COOPERATIVE",
+  "DEPARTMENT",
+  "DISTRICT",
+  "DIVISION",
+  "ELECTRIC",
+  "ENERGY",
+  "GENERATING",
+  "GENERATION",
+  "LIGHT",
+  "MUNICIPAL",
+  "POWER",
+  "PUBLIC",
+  "SERVICES",
+  "SYSTEM",
+  "TRANSMISSION",
+  "UTILITIES",
+  "UTILITY",
+  "WATER",
+  "WORKS",
+]);
+const GOVERNMENT_PREFIX = /^(city|town|village|borough|county|municipality)\s+(of|and)\s+/i;
 
 function nameKey(name) {
   return String(name || "")
@@ -200,6 +232,81 @@ export function inferAcronym(entityName) {
 
   const initials = words.map((w) => w[0]).join("").toUpperCase();
   return initials.length > 8 ? initials.slice(0, 8) : initials;
+}
+
+function compactShortSource(rec) {
+  return String(rec.name_shortest || rec.acronym || rec.entity_name || "ORG")
+    .replace(/\s+as agent\b.*$/i, "")
+    .replace(/\bd\/b\/a\b.*$/i, "")
+    .replace(/[,;].*$/g, "")
+    .replace(/\([^)]*\)/g, " ")
+    .replace(GOVERNMENT_PREFIX, "")
+    .trim();
+}
+
+function compactShortWords(source) {
+  return cleanNameForAcronym(source)
+    .split(/\s+/)
+    .map((w) => w.replace(/[^A-Za-z0-9]/g, ""))
+    .filter(Boolean)
+    .filter((w) => !SHORT_NAME_DROP.has(w.toUpperCase()));
+}
+
+function compactFromWords(words) {
+  const keyWords = words.filter((w) => !SHORT_NAME_UTILITY.has(w.toUpperCase()));
+  const selected = keyWords.length ? keyWords : words;
+  if (selected.length === 1) {
+    const word = selected[0];
+    if (word.length <= 6) return word;
+    return word.replace(/[aeiou]/gi, "").slice(0, 6).toUpperCase() || word.slice(0, 6).toUpperCase();
+  }
+  return selected
+    .slice(0, 5)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+}
+
+function expandReservedShortName(words, fallback) {
+  const keyWords = words.filter((w) => !SHORT_NAME_UTILITY.has(w.toUpperCase()));
+  const selected = keyWords.length ? keyWords : words;
+  const expanded = selected
+    .slice(0, 3)
+    .map((w) => {
+      const clean = w.replace(/[^A-Za-z0-9]/g, "");
+      if (/^[A-Z0-9]{2,4}$/.test(clean)) return clean;
+      return clean.slice(0, Math.min(4, Math.max(2, clean.length))).toUpperCase();
+    })
+    .join("");
+  return (expanded || fallback || "ORG").slice(0, 8);
+}
+
+function compactDisplayName(rec, acronym) {
+  const override = SHORT_NAME_OVERRIDES.get(rec.entity_name);
+  if (override) return override;
+
+  const existing = rec.name_shortest != null ? String(rec.name_shortest).trim() : "";
+  if (existing && existing.length <= 8) return existing;
+
+  const compactAcronym = String(acronym || "").replace(/[^A-Za-z0-9&/-]/g, "");
+  if (compactAcronym && compactAcronym.length <= 8 && !/\s/.test(acronym)) return acronym;
+
+  const source = compactShortSource(rec);
+  const known = (() => {
+    const rawKey = nameKey(source);
+    for (const [key, value] of KNOWN_ACRONYMS) {
+      if (rawKey === key || rawKey.startsWith(`${key} `)) return value;
+    }
+    return null;
+  })();
+  if (known && known.length <= 8) return known;
+
+  const words = compactShortWords(source);
+  const generated = compactFromWords(words);
+  if (RESERVED_SHORT_NAMES.has(String(generated).toUpperCase())) {
+    return expandReservedShortName(words, generated);
+  }
+  return (generated || compactAcronym || "ORG").slice(0, 8);
 }
 
 export function inferAcronymSource(entityName) {
@@ -370,8 +477,9 @@ export function enrichOrg(rec) {
     acronym,
     acronym_source: acronymSource,
     // Researched three-tier display names (Cursor fills src/data/nerc/org-names.json).
-    // null until researched; the map falls back to its algorithmic shortening.
-    name_shortest: rec.name_shortest ?? null,
+    // The shortest tier is guaranteed and compact enough to fit early; longer
+    // researched tiers remain available as bubbles grow.
+    name_shortest: compactDisplayName(rec, acronym),
     name_short: rec.name_short ?? null,
     name_normal: rec.name_normal ?? null,
     name_major: rec.name_major === true,
