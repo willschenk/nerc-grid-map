@@ -1267,15 +1267,19 @@ export function mountNercOrgMap(): void {
     // Keep bubbles close to their true location — only "a little" movement to
     // ease overlap, never pushed far. Dense areas just overlap (bubbles sit next
     // to each other) rather than drifting away. Grows only modestly with zoom.
-    // More travel so bubbles can hunt for a free gap and more fit everywhere, but
-    // bounded so they don't fly across the map or strand offshore (the per-
-    // candidate onLand() check in computePlacements still gates each spot; the
-    // bound keeps the search near the true location). Compact is kept tighter
-    // because the small viewBox magnifies any drift.
+    // 2x the previous travel so bubbles have much more freedom to hunt for a free
+    // gap and more of them fit everywhere. The per-candidate onLand() check in
+    // computePlacements still gates each spot, so the wider search packs density
+    // rather than drifting offshore. Compact is kept proportionally tighter
+    // because its small viewBox magnifies any movement.
+    // ~2x freedom across the explorable range (k>=4 and deep), but the two widest
+    // bands are kept more moderate: at the national view the low-res land mask
+    // can't tell that a far-flung bubble has crossed the coastline, so full 2x
+    // there strands bubbles offshore. Mid/deep zoom gets the full doubling.
     const basePx = compact
-      ? k < 1.25 ? 20 : k < 2.2 ? 28 : k < 4 ? 40 : k < 7 ? 52 : 64
-      : k < 1.25 ? 30 : k < 2.2 ? 40 : k < 4 ? 58 : k < 7 ? 76 : 94;
-    const deepPx = compact ? 82 : 116;
+      ? k < 1.25 ? 30 : k < 2.2 ? 42 : k < 4 ? 80 : k < 7 ? 104 : 128
+      : k < 1.25 ? 44 : k < 2.2 ? 62 : k < 4 ? 116 : k < 7 ? 152 : 188;
+    const deepPx = compact ? 164 : 232;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -1777,6 +1781,21 @@ export function mountNercOrgMap(): void {
       if (arr) arr.push({ x: cx, y: cy, r });
       else grid.set(key, [{ x: cx, y: cy, r }]);
     };
+    // Stricter land test for the wide (2x) search: the center plus four points at
+    // most of the bubble radius must be on land (one of four may be coastal water),
+    // so a far-flung candidate that sits over the ocean is rejected. This lets the
+    // search roam widely for density without stranding bubbles offshore. The mask
+    // is base-space, so divide screen-space candidates by the bucket.
+    const onLandHere = (cx: number, cy: number, r: number): boolean => {
+      if (!onLand(cx / bucket, cy / bucket)) return false;
+      const rr = r * 0.72;
+      let water = 0;
+      if (!onLand((cx + rr) / bucket, cy / bucket)) water++;
+      if (!onLand((cx - rr) / bucket, cy / bucket)) water++;
+      if (!onLand(cx / bucket, (cy + rr) / bucket)) water++;
+      if (!onLand(cx / bucket, (cy - rr) / bucket)) water++;
+      return water <= 1;
+    };
 
     for (const it of items) {
       let placed = false;
@@ -1784,9 +1803,7 @@ export function mountNercOrgMap(): void {
       for (const [dx, dy] of offsets) {
         const cx = it.ox + dx;
         const cy = it.oy + dy;
-        // Center must stay on land (the coastal edge may spill over water). The
-        // mask is base-space, so divide the screen-space candidate by the bucket.
-        if (!onLand(cx / bucket, cy / bucket)) continue;
+        if (!onLandHere(cx, cy, it.r)) continue;
         if (!fits(cx, cy, it.r)) continue;
         it.o._dx = dx;
         it.o._dy = dy;
