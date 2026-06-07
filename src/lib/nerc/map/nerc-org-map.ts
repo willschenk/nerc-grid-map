@@ -807,12 +807,13 @@ export function mountNercOrgMap(): void {
       const d2fb = (fallback._sx - point.x) ** 2 + (fallback._sy - point.y) ** 2;
       const hitFb = hitTargetRadius(fallback, k) + unitPerPx;
       if (d2fb <= hitFb * hitFb) {
-        const visBest = renderedRadius(best, k);
+        if (best.ncr_id === fallback.ncr_id) return fallback;
         const d2best = (best._sx! - point.x) ** 2 + (best._sy! - point.y) ** 2;
+        const visBest = renderedRadius(best, k);
         const bestInsideVis = d2best <= visBest * visBest;
-        if (best === fallback || !bestInsideVis || visBest < renderedRadius(fallback, k) * 1.2) {
-          return fallback;
-        }
+        // Keep the tapped tiny dot unless the pointer is clearly inside another
+        // bubble's drawn circle and nearer that neighbour's centre.
+        if (!bestInsideVis || d2fb <= d2best) return fallback;
       }
     }
     return best;
