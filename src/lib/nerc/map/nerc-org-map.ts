@@ -1275,14 +1275,14 @@ export function mountNercOrgMap(): void {
     // computePlacements still gates each spot, so the wider search packs density
     // rather than drifting offshore. Compact is kept proportionally tighter
     // because its small viewBox magnifies any movement.
-    // 2x more freedom again: bubbles can roam widely to find a non-overlapping,
-    // on-land gap. The disc-based on-land test in computePlacements rejects spots
-    // over water and any bubble with no clean gap is dropped, so the wide search
-    // packs density without overlap or offshore drift.
+    // Less freedom of movement: a tighter search radius keeps bubbles closer to
+    // their true location, and by extension fewer of them find a non-overlapping
+    // on-land gap, so fewer are displayed (the rest drop). Roughly half the
+    // previous (wide) values.
     const basePx = compact
-      ? k < 1.25 ? 60 : k < 2.2 ? 84 : k < 4 ? 160 : k < 7 ? 208 : 256
-      : k < 1.25 ? 88 : k < 2.2 ? 124 : k < 4 ? 232 : k < 7 ? 304 : 376;
-    const deepPx = compact ? 328 : 464;
+      ? k < 1.25 ? 30 : k < 2.2 ? 42 : k < 4 ? 80 : k < 7 ? 104 : 128
+      : k < 1.25 ? 44 : k < 2.2 ? 62 : k < 4 ? 116 : k < 7 ? 152 : 188;
+    const deepPx = compact ? 164 : 232;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
