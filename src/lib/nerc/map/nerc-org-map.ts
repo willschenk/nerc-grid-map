@@ -171,6 +171,7 @@ const TO_ONLY_REVEAL_K = 12;
 const TO_ONLY_REVEAL_K_COMPACT = 14;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
+const REGIONAL_ENTITY_NAME = /\b(NERC|SERC|WECC|MRO|NPCC|ReliabilityFirst|Texas Reliability Entity|Midwest Reliability Organization|Northeast Power Coordinating Council|Western Electricity Coordinating Council|Regional Entity)\b/i;
 const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation|USACE|U\.S\. Army Corps)\b/i;
 const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
 const PUBLIC_UTILITY_NAME = /\b(Public Power|Public Utility|Utility District|PUD|Municipal|City of|Town of|Electric Department|Light Department|Cooperative|Electric Membership)\b/i;
@@ -761,16 +762,10 @@ export function mountNercOrgMap(): void {
     // Super-short token first; once zoomed in, try the short brand too. The full
     // legal name only ever appears in the detail panel.
     const tiny = tinyName(o);
-    const priority = visualPriority(o);
+    const lp = labelPriority(o);
     const shortAt = compact
-      ? priority >= 80 ? 2.8 : priority >= 50 ? 3.6 : 4.8
-      : priority >= 80
-        ? 2.2
-        : priority >= 50
-          ? isMidwestOrg(o)
-            ? 2.6
-            : 2.9
-          : 3.8;
+      ? lp >= 88 ? 2.2 : lp >= 68 ? 3.0 : lp >= 38 ? 4.2 : 5.5
+      : lp >= 88 ? 1.6 : lp >= 68 ? 2.2 : lp >= 38 ? 3.2 : 4.5;
     if (k < shortAt) return [tiny];
     const mid = midName(o);
     // Keep the longer "mid" brand only when it is genuinely short; otherwise stay
@@ -964,6 +959,33 @@ export function mountNercOrgMap(): void {
     return Math.max(10, Math.min(100, score));
   }
 
+  // Label-specific priority: ISO/RTO and grid authority lead; merchant and
+  // deferred-market orgs trail. Used for label eligibility, ordering, and tiers.
+  function labelPriority(o: Org): number {
+    if (isDeferredMarketOrg(o)) return 2;
+    if (isTransmissionOwnerOnly(o)) return 10;
+    if (o.is_iso_rto || o.org_type === "ISO_RTO" || SYSTEM_OPERATOR_NAME.test(o.entity_name)) return 98;
+    if (isMajorSystemOperator(o)) return 96;
+    if (o.roles.includes("RC")) return 92;
+    if (o.roles.includes("BA")) return 88;
+    if (o.roles.includes("PC")) return 85;
+    if (o.roles.includes("TOP")) return 82;
+    if (o.roles.includes("TSP")) return 80;
+    if (o.roles.includes("TP")) return 78;
+    if (REGIONAL_ENTITY_NAME.test(o.entity_name) || RELIABILITY_ORG_NAME.test(o.entity_name)) return 74;
+    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return 72;
+    if (o.org_type === "IOU" || PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return 68;
+    if (o.name_major && o.weight >= 20) return 64;
+    if (hasAnyRole(o, GRID_ROLES)) return 52;
+    if (o.org_type === "municipal" || o.org_type === "cooperative" || PUBLIC_UTILITY_NAME.test(o.entity_name)) {
+      return 38;
+    }
+    if (o.org_type === "cca") return 34;
+    if (hasAnyRole(o, SUPPORT_ROLES)) return 40;
+    if (o.org_type === "merchant") return 16;
+    return 24;
+  }
+
   function canGrowAtZoom(o: Org): boolean {
     return meaningfulRoleCount(o) > 0 || isDeferredMarketOrg(o);
   }
@@ -994,6 +1016,17 @@ export function mountNercOrgMap(): void {
 
   function visualPrioritySort(a: Org, b: Org): number {
     return (
+      visualPriority(b) - visualPriority(a) ||
+      rolePriority(b) - rolePriority(a) ||
+      typePriority(b) - typePriority(a) ||
+      meaningfulRoleCount(b) - meaningfulRoleCount(a) ||
+      a.ncr_id.localeCompare(b.ncr_id)
+    );
+  }
+
+  function labelPrioritySort(a: Org, b: Org): number {
+    return (
+      labelPriority(b) - labelPriority(a) ||
       visualPriority(b) - visualPriority(a) ||
       rolePriority(b) - rolePriority(a) ||
       typePriority(b) - typePriority(a) ||
@@ -1051,17 +1084,24 @@ export function mountNercOrgMap(): void {
   // Which orgs may *try* for a label at this zoom (collision still decides).
   function shouldTryLabel(o: Org, k: number): boolean {
     if (o.placementMode === "fallbackTiny") return false;
-    const priority = visualPriority(o);
+    if (isDeferredMarketOrg(o)) return k >= (compact ? 5.5 : 4.8);
+    const lp = labelPriority(o);
     const midwest = isMidwestOrg(o);
-    // Major regulated/grid orgs label at overview; small orgs wait for deep zoom.
-    if (priority >= 66) return true;
-    if (priority >= 50) return k >= 0.85;
-    if (priority >= 40) return k >= 1.1;
-    if (k >= 3.4) return true;
-    if (k < 1.25) return priority >= (midwest ? 22 : 26);
-    if (k < 1.8) return priority >= (midwest ? 16 : 18);
-    if (k < 2.2) return priority >= (midwest ? 12 : 14);
-    return priority >= (midwest ? 10 : 12);
+    // ISO/RTO and grid authority: label at national overview.
+    if (lp >= 88) return true;
+    if (lp >= 78) return k >= (compact ? 0.95 : 0.85);
+    // Regional entity, federal, major regulated utility.
+    if (lp >= 68) return k >= (compact ? 1.05 : 0.95);
+    // Co-op, muni, smaller utility.
+    if (lp >= 38) return k >= (compact ? 2.0 : 1.65);
+    // Merchant / IPP.
+    if (lp >= 16) return k >= (compact ? 3.2 : 2.8);
+    // Residual low tier — deep zoom only.
+    if (k >= (compact ? 4.5 : 4.0)) return lp >= 10;
+    if (k < 1.25) return lp >= (midwest ? 30 : 34);
+    if (k < 1.8) return lp >= (midwest ? 24 : 28);
+    if (k < 2.2) return lp >= (midwest ? 20 : 24);
+    return lp >= (midwest ? 16 : 20);
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
@@ -2107,7 +2147,7 @@ export function mountNercOrgMap(): void {
       (a, b) =>
         Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
         Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
-        visualPrioritySort(a, b) ||
+        labelPrioritySort(a, b) ||
         a.entity_name.localeCompare(b.entity_name),
     );
     // Cap how many candidates we even try during a tour step. Big roles (GO has
@@ -2241,6 +2281,7 @@ export function mountNercOrgMap(): void {
       const r = renderedRadius(o, k);
       const forceLabel = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
       const brand = tinyName(o);
+      const lp = labelPriority(o);
 
       // 1. INSIDE — preferred, collision-free, never suppressed by neighbours.
       // The font may shrink to span the chord, but only to a readable floor. If
@@ -2258,6 +2299,7 @@ export function mountNercOrgMap(): void {
         (compact ? 4.4 : 5) *
         (1 - 0.9 * deepLabelT) *
         (isMidwestOrg(o) ? 0.9 : 1) *
+        (lp >= 88 ? (compact ? 0.82 : 0.78) : lp >= 68 ? 0.92 : 1) *
         // Desktop: a very short acronym (e.g. LES, CWLP, ConEd) that nearly fits
         // inside its bubble at low-mid zoom is allowed in at a slightly smaller
         // floor, so easy-to-fit short labels stop falling into a dead zone.
@@ -2278,20 +2320,17 @@ export function mountNercOrgMap(): void {
       // Bigger organizations can try a side/below floating label when their
       // token cannot fit inside the bubble. Once zoomed in, any visible org can
       // try for this overflow label; collision checks decide if there is room.
-      const priority = visualPriority(o);
       const midwest = isMidwestOrg(o);
-      // Desktop: a short, high-value acronym may float a bit earlier at low-mid
-      // zoom so it isn't suppressed when there is obvious room. Collision checks
-      // and labelLimit still gate placement, so dense areas don't flood. Mobile
-      // keeps its existing (sparser) thresholds.
-      const shortHighValue = !compact && priority >= 40 && brand.length <= 7;
+      const shortHighValue = !compact && lp >= 68 && brand.length <= 7;
       const allowFloat =
         forceLabel ||
-        (priority >= 82 && k >= 1.2) ||
-        (priority >= 66 && k >= (midwest ? 1.45 : 1.55)) ||
-        (shortHighValue && k >= 1.8) ||
-        (priority >= 50 && k >= (midwest ? 1.85 : 2.05)) ||
-        k >= (midwest ? 2.45 : 2.6);
+        (lp >= 88 && k >= (compact ? 1.0 : 0.9)) ||
+        (lp >= 78 && k >= (compact ? 1.15 : 1.05)) ||
+        (lp >= 68 && k >= (midwest ? 1.35 : 1.45)) ||
+        (shortHighValue && k >= 1.7) ||
+        (lp >= 52 && k >= (midwest ? 1.75 : 1.95)) ||
+        (lp >= 38 && k >= (midwest ? 2.35 : 2.55)) ||
+        (lp >= 16 && k >= (midwest ? 3.0 : 3.2));
       if (!allowFloat) continue;
       // Floating labels aren't bounded by a bubble chord (unlike inside labels),
       // so cap their on-screen size to keep deep zoom from producing oversized
