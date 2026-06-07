@@ -596,10 +596,11 @@ export function mountNercOrgMap(): void {
   let nationOutline: unknown = null;
   let canadaFeature: unknown = null;
   let stateFeatures: unknown[] = [];
-  // Low-res land mask (US + Canada silhouette) in viewBox space, rebuilt on every
-  // project(). Lets the declutter solver tell land from water in O(1) so dots
-  // never drift far out to sea. mask[my*maskW+mx] is 1 on land, 0 on water.
+  // Low-res land masks in viewBox space, rebuilt on every project(). Separate US
+  // and Canada silhouettes so mainland orgs cannot drift across the border.
   let landMask: Uint8Array | null = null;
+  let usLandMask: Uint8Array | null = null;
+  let caLandMask: Uint8Array | null = null;
   let maskW = 0;
   let maskH = 0;
   let maskScale = 1; // viewBox units per mask cell
@@ -1809,18 +1810,10 @@ export function mountNercOrgMap(): void {
     }
   }
 
-  // Rasterize the US + Canada silhouette into a coarse land mask in viewBox
-  // coordinates. Cheap to build (~once per project/resize) and O(1) to query, so
-  // the declutter solver can keep dots from drifting far out to sea. Best-effort:
-  // if no 2D canvas is available the mask stays null and clamping is skipped.
-  function buildLandMask(): void {
-    landMask = null;
-    if (!nationFeature) return;
-    // ~6 viewBox units per cell: fine enough to trace the coastline, coarse
-    // enough to stay tiny (a few thousand cells) and fast on iOS.
-    maskScale = 6;
-    maskW = Math.max(1, Math.ceil(W / maskScale));
-    maskH = Math.max(1, Math.ceil(H / maskScale));
+  // Rasterize a land silhouette into a coarse mask. Best-effort: null if no canvas.
+  function rasterizeLandMask(
+    draw: (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D) => void,
+  ): Uint8Array | null {
     let canvas: HTMLCanvasElement | OffscreenCanvas;
     try {
       canvas =
@@ -1828,36 +1821,131 @@ export function mountNercOrgMap(): void {
           ? new OffscreenCanvas(maskW, maskH)
           : Object.assign(document.createElement("canvas"), { width: maskW, height: maskH });
     } catch {
-      return;
+      return null;
     }
     const ctx = canvas.getContext("2d") as
       | CanvasRenderingContext2D
       | OffscreenCanvasRenderingContext2D
       | null;
-    if (!ctx) return;
+    if (!ctx) return null;
     ctx.save();
     ctx.scale(1 / maskScale, 1 / maskScale);
     ctx.fillStyle = "#fff";
-    const maskPath = geoPath(projection, ctx as CanvasRenderingContext2D);
-    ctx.beginPath();
-    maskPath(nationFeature as never);
-    ctx.fill();
-    if (canadaFeature) {
-      const cPath = geoPath(canadaProj, ctx as CanvasRenderingContext2D);
-      ctx.beginPath();
-      cPath(canadaFeature as never);
-      ctx.fill();
-    }
+    draw(ctx);
     ctx.restore();
     let data: Uint8ClampedArray;
     try {
       data = ctx.getImageData(0, 0, maskW, maskH).data;
     } catch {
-      return;
+      return null;
     }
     const mask = new Uint8Array(maskW * maskH);
     for (let i = 0; i < mask.length; i++) mask[i] = data[i * 4 + 3] > 40 ? 1 : 0;
-    landMask = mask;
+    return mask;
+  }
+
+  function buildLandMask(): void {
+    landMask = null;
+    usLandMask = null;
+    caLandMask = null;
+    if (!nationFeature) return;
+    maskScale = 6;
+    maskW = Math.max(1, Math.ceil(W / maskScale));
+    maskH = Math.max(1, Math.ceil(H / maskScale));
+    usLandMask = rasterizeLandMask((ctx) => {
+      const p = geoPath(projection, ctx as CanvasRenderingContext2D);
+      ctx.beginPath();
+      p(nationFeature as never);
+      ctx.fill();
+    });
+    if (canadaFeature) {
+      caLandMask = rasterizeLandMask((ctx) => {
+        const p = geoPath(canadaProj, ctx as CanvasRenderingContext2D);
+        ctx.beginPath();
+        p(canadaFeature as never);
+        ctx.fill();
+      });
+      landMask = rasterizeLandMask((ctx) => {
+        const pUs = geoPath(projection, ctx as CanvasRenderingContext2D);
+        ctx.beginPath();
+        pUs(nationFeature as never);
+        ctx.fill();
+        const pCa = geoPath(canadaProj, ctx as CanvasRenderingContext2D);
+        ctx.beginPath();
+        pCa(canadaFeature as never);
+        ctx.fill();
+      });
+    } else {
+      landMask = usLandMask;
+    }
+  }
+
+  type LandFrame = "us" | "ca";
+
+  function landMaskForFrame(frame: LandFrame | "terr" | undefined): Uint8Array | null {
+    if (frame === "ca") return caLandMask ?? landMask;
+    return usLandMask ?? landMask;
+  }
+
+  function orgLandFrame(o: Org, slotFrame?: LandFrame): LandFrame {
+    if (slotFrame) return slotFrame;
+    return o._frame === "ca" ? "ca" : "us";
+  }
+
+  // Frame-aware land query. lenientBorder=true keeps legacy audit behaviour at edges.
+  function onLandForFrame(
+    x: number,
+    y: number,
+    frame: LandFrame | "terr" | undefined,
+    lenientBorder: boolean,
+  ): boolean {
+    if (frame === "terr") return true;
+    const mask = landMaskForFrame(frame);
+    if (!mask) return true;
+    const mx = Math.floor(x / maskScale);
+    const my = Math.floor(y / maskScale);
+    if (mx < 0 || my < 0 || mx >= maskW || my >= maskH) return lenientBorder;
+    return mask[my * maskW + mx] === 1;
+  }
+
+  // Validate a candidate bubble center in screen bucket space.
+  function placementLandValid(
+    cx: number,
+    cy: number,
+    r: number,
+    bucket: number,
+    frame: LandFrame | "terr",
+    tiny: boolean,
+  ): boolean {
+    if (frame === "terr") return true;
+    const bx = cx / bucket;
+    const by = cy / bucket;
+    if (!onLandForFrame(bx, by, frame, false)) return false;
+    if (tiny) return true;
+    const rr = r / bucket;
+    const cardinals: Array<[number, number]> = [
+      [bx + rr * 0.75, by],
+      [bx - rr * 0.75, by],
+      [bx, by + rr * 0.75],
+      [bx, by - rr * 0.75],
+    ];
+    for (const [x, y] of cardinals) {
+      if (!onLandForFrame(x, y, frame, false)) return false;
+    }
+    if (rr > 8 * unitPerPx) {
+      const rd = rr * 0.52;
+      for (const [dx, dy] of [[rd, rd], [-rd, rd], [rd, -rd], [-rd, -rd]] as const) {
+        if (!onLandForFrame(bx + dx, by + dy, frame, false)) return false;
+      }
+    }
+    return true;
+  }
+
+  function bubbleScreenCenter(o: Org, bucket: number): { cx: number; cy: number } {
+    return {
+      cx: (o._x as number) * bucket + (o._dx ?? 0),
+      cy: (o._y as number) * bucket + (o._dy ?? 0),
+    };
   }
 
   // True when (x, y) in viewBox space sits on land (or just off any edge, so
@@ -1874,22 +1962,79 @@ export function mountNercOrgMap(): void {
   // Pick true origin or the nearest on-land candidate for a fallback tiny dot.
   // Does not claim collision grid space — normal bubbles keep priority.
   function findFallbackTinySlot(
-    slots: Array<{ rank: 1 | 2 | 3; ox: number; oy: number; bx: number; by: number }>,
+    o: Org,
+    slots: Array<{ rank: 1 | 2 | 3; ox: number; oy: number; bx: number; by: number; frame?: LandFrame }>,
     bucket: number,
     offsets: Array<[number, number]>,
-    onLandHere: (cx: number, cy: number, r: number) => boolean,
   ): { slot: (typeof slots)[0]; dx: number; dy: number } | null {
     if (!slots.length) return null;
     const tinyR = fallbackTinyRadiusPx(bucket) * unitPerPx * ORG_CONTENT_SCALE;
     for (const slot of slots) {
-      if (onLandHere(slot.ox, slot.oy, tinyR)) return { slot, dx: 0, dy: 0 };
+      const frame = orgLandFrame(o, slot.frame);
+      if (placementLandValid(slot.ox, slot.oy, tinyR, bucket, frame, true)) {
+        return { slot, dx: 0, dy: 0 };
+      }
       for (const [dx, dy] of offsets) {
         const cx = slot.ox + dx;
         const cy = slot.oy + dy;
-        if (onLandHere(cx, cy, tinyR)) return { slot, dx, dy };
+        if (placementLandValid(cx, cy, tinyR, bucket, frame, true)) {
+          return { slot, dx, dy };
+        }
       }
     }
-    return { slot: slots[0], dx: 0, dy: 0 };
+    return null;
+  }
+
+  function demoteToBackgroundDot(
+    o: Org,
+    slots: Array<{ rank: 1 | 2 | 3; ox: number; oy: number; bx: number; by: number; frame?: LandFrame }>,
+    bucket: number,
+    offsets: Array<[number, number]>,
+  ): boolean {
+    const land = findFallbackTinySlot(o, slots, bucket, offsets);
+    if (!land) {
+      o._placed = false;
+      o.placementMode = undefined;
+      o._dx = 0;
+      o._dy = 0;
+      return false;
+    }
+    o._placed = true;
+    o.placementMode = "fallbackTiny";
+    o._dx = land.dx;
+    o._dy = land.dy;
+    o._x = land.slot.bx;
+    o._y = land.slot.by;
+    o.map_location_rank = land.slot.rank;
+    return true;
+  }
+
+  function guardVisiblePlacement(o: Org, k: number, forced: boolean): void {
+    if (forced || o._frame === "terr" || !o._placed) return;
+    const bucket = declutterBucket(k);
+    const frame = orgLandFrame(o);
+    const tiny = o.placementMode === "fallbackTiny";
+    const r = tiny
+      ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
+      : renderedRadius(o, k);
+    const { cx, cy } = bubbleScreenCenter(o, bucket);
+    if (placementLandValid(cx, cy, r, bucket, frame, tiny)) return;
+    if (o.placementMode === "bubble") {
+      o.placementMode = "fallbackTiny";
+      o._dx = 0;
+      o._dy = 0;
+      const tinyR = fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE;
+      const origin = bubbleScreenCenter(o, bucket);
+      if (!placementLandValid(origin.cx, origin.cy, tinyR, bucket, frame, true)) {
+        o._placed = false;
+        o.placementMode = undefined;
+        o._vis = false;
+      }
+    } else {
+      o._placed = false;
+      o.placementMode = undefined;
+      o._vis = false;
+    }
   }
 
   // Deterministic bubble placement for a zoom bucket. Each org has a true
@@ -1915,7 +2060,7 @@ export function mountNercOrgMap(): void {
     // overlapping, with no built-in margin.
     const bucketTop = bucket < 2.6 ? bucket + 0.125 : bucket < 8 ? bucket + 0.25 : bucket + 0.5;
     const reserveR = (o: Org): number => Math.max(renderedRadius(o, bucket), renderedRadius(o, bucketTop));
-    type SlotOrigin = { rank: 1 | 2 | 3; ox: number; oy: number; bx: number; by: number };
+    type SlotOrigin = { rank: 1 | 2 | 3; ox: number; oy: number; bx: number; by: number; frame?: LandFrame };
     type Item = { o: Org; slots: SlotOrigin[]; r: number };
     const items: Item[] = [];
     for (const o of orgs) {
@@ -1944,6 +2089,7 @@ export function mountNercOrgMap(): void {
           oy: loc.y * bucket,
           bx: loc.x,
           by: loc.y,
+          frame: loc.frame,
         });
       }
       if (!slotOrigins.length && o._x != null && o._y != null) {
@@ -1953,6 +2099,7 @@ export function mountNercOrgMap(): void {
           oy: o._y * bucket,
           bx: o._x,
           by: o._y,
+          frame: orgLandFrame(o),
         });
       }
       if (!slotOrigins.length) {
@@ -2008,30 +2155,17 @@ export function mountNercOrgMap(): void {
       if (arr) arr.push({ x: cx, y: cy, r });
       else grid.set(key, [{ x: cx, y: cy, r }]);
     };
-    // Stricter land test for the wide (2x) search: the center plus four points at
-    // most of the bubble radius must be on land (one of four may be coastal water),
-    // so a far-flung candidate that sits over the ocean is rejected. This lets the
-    // search roam widely for density without stranding bubbles offshore. The mask
-    // is base-space, so divide screen-space candidates by the bucket.
-    const onLandHere = (cx: number, cy: number, r: number): boolean => {
-      if (!onLand(cx / bucket, cy / bucket)) return false;
-      const rr = r * 0.72;
-      let water = 0;
-      if (!onLand((cx + rr) / bucket, cy / bucket)) water++;
-      if (!onLand((cx - rr) / bucket, cy / bucket)) water++;
-      if (!onLand(cx / bucket, (cy + rr) / bucket)) water++;
-      if (!onLand(cx / bucket, (cy - rr) / bucket)) water++;
-      return water <= 1;
-    };
-
+    // Stricter frame-aware land test: center plus disc samples must stay on the
+    // correct land silhouette (US orgs cannot drift into Canada or the ocean).
     for (const it of items) {
       let placed = false;
       const offsets = offsetsFor(orgPlacementRadius(it.o, bucket));
       slotLoop: for (const slot of it.slots) {
+        const frame = orgLandFrame(it.o, slot.frame);
         for (const [dx, dy] of offsets) {
           const cx = slot.ox + dx;
           const cy = slot.oy + dy;
-          if (!onLandHere(cx, cy, it.r)) continue;
+          if (!placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
           if (!fits(cx, cy, it.r)) continue;
           it.o._dx = dx;
           it.o._dy = dy;
@@ -2046,24 +2180,27 @@ export function mountNercOrgMap(): void {
         }
       }
       if (!placed) {
-        const land = findFallbackTinySlot(
+        demoteToBackgroundDot(
+          it.o,
           it.slots,
           bucket,
           offsetsFor(orgPlacementRadius(it.o, bucket)),
-          onLandHere,
         );
-        if (!land) {
-          it.o._placed = false;
-          continue;
-        }
-        it.o._placed = true;
-        it.o.placementMode = "fallbackTiny";
-        it.o._dx = land.dx;
-        it.o._dy = land.dy;
-        it.o._x = land.slot.bx;
-        it.o._y = land.slot.by;
-        it.o.map_location_rank = land.slot.rank;
       }
+    }
+
+    // Final guard: never render a promoted bubble on illegal land.
+    for (const it of items) {
+      if (it.o.placementMode !== "bubble" || it.o._frame === "terr") continue;
+      const frame = orgLandFrame(it.o);
+      const { cx, cy } = bubbleScreenCenter(it.o, bucket);
+      if (placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
+      demoteToBackgroundDot(
+        it.o,
+        it.slots,
+        bucket,
+        offsetsFor(orgPlacementRadius(it.o, bucket)),
+      );
     }
   }
 
@@ -2157,6 +2294,8 @@ export function mountNercOrgMap(): void {
       const vis = onScreen && (due || forced);
       o._vis = vis;
       if (!vis) continue;
+      guardVisiblePlacement(o, k, forced);
+      if (!o._vis) continue;
       shownCount++;
       visibleOrgs.push(o);
     }
@@ -3846,7 +3985,7 @@ export function mountNercOrgMap(): void {
             sx: +o._sx.toFixed(1),
             sy: +o._sy.toFixed(1),
             waterFrac: +waterFrac.toFixed(2),
-            centerWater: !onLand(bx, by),
+            centerWater: !onLandForFrame(bx, by, orgLandFrame(o), false),
             baseOff: +baseOffset.toFixed(1),
             labeled: !!st,
             inside: !!st?.inside,
