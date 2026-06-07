@@ -1717,10 +1717,11 @@ export function mountNercOrgMap(): void {
     if (!force && bucket === orgLayoutBucket) return;
     orgLayoutBucket = bucket;
 
-    // Reserve each bubble a little larger than its rendered radius so that small
-    // radius growth between the placement bucket and the exact render zoom can
-    // never produce a visible overlap (rule: no overlapping bubbles).
-    const OVERLAP_PAD = 1.12;
+    // No margin between organizations: reserve essentially the rendered radius so
+    // bubbles pack edge-to-edge (touching) rather than with a gap. A hair over 1.0
+    // only to absorb tiny radius growth between the placement bucket and the exact
+    // render zoom, so touching never tips into actual overlap.
+    const OVERLAP_PAD = 1.01;
     type Item = { o: Org; ox: number; oy: number; r: number };
     const items: Item[] = [];
     for (const o of orgs) {
