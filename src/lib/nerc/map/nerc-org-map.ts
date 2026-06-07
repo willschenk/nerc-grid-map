@@ -1254,8 +1254,11 @@ export function mountNercOrgMap(): void {
   }
 
   function declutterBucket(k: number): number {
-    if (k < 2.6) return Math.round(k * 2) / 2;
-    if (k < 8) return Math.round(k);
+    // Finer buckets so bubbles re-solve their positions more often as the zoom
+    // changes (rule: allow repositioning as zoom changes), and so the placement
+    // radius tracks the rendered radius closely (helps guarantee no overlap).
+    if (k < 2.6) return Math.round(k * 4) / 4; // 0.25 steps
+    if (k < 8) return Math.round(k * 2) / 2; // 0.5 steps
     return Math.round(k);
   }
 
@@ -1272,14 +1275,14 @@ export function mountNercOrgMap(): void {
     // computePlacements still gates each spot, so the wider search packs density
     // rather than drifting offshore. Compact is kept proportionally tighter
     // because its small viewBox magnifies any movement.
-    // ~2x freedom across the explorable range (k>=4 and deep), but the two widest
-    // bands are kept more moderate: at the national view the low-res land mask
-    // can't tell that a far-flung bubble has crossed the coastline, so full 2x
-    // there strands bubbles offshore. Mid/deep zoom gets the full doubling.
+    // 2x more freedom again: bubbles can roam widely to find a non-overlapping,
+    // on-land gap. The disc-based on-land test in computePlacements rejects spots
+    // over water and any bubble with no clean gap is dropped, so the wide search
+    // packs density without overlap or offshore drift.
     const basePx = compact
-      ? k < 1.25 ? 30 : k < 2.2 ? 42 : k < 4 ? 80 : k < 7 ? 104 : 128
-      : k < 1.25 ? 44 : k < 2.2 ? 62 : k < 4 ? 116 : k < 7 ? 152 : 188;
-    const deepPx = compact ? 164 : 232;
+      ? k < 1.25 ? 60 : k < 2.2 ? 84 : k < 4 ? 160 : k < 7 ? 208 : 256
+      : k < 1.25 ? 88 : k < 2.2 ? 124 : k < 4 ? 232 : k < 7 ? 304 : 376;
+    const deepPx = compact ? 328 : 464;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
@@ -1302,11 +1305,12 @@ export function mountNercOrgMap(): void {
     // bigger grid organizations. Let those tiny dots travel farther to find
     // gaps around the already-claimed large bubbles.
     if (isDeferredMarketOrg(o)) return radius * (compact ? 2.8 : 3.0);
-    // AK/HI insets are cramped at overview — let bubbles fan out farther within
-    // the inset land so more utilities disclose without mainland drift.
+    // AK/HI insets are a small projected region. Cap their travel to a modest
+    // absolute amount (not a multiple of the large mainland offset) so dots fan
+    // out within the inset land instead of flying out into open water.
     if (isUsInsetOrg(o)) {
       const spreadT = smoothStep((4 - bucket) / 3.2);
-      return radius * (1 + (compact ? 1.15 : 1.45) * spreadT);
+      return Math.min(radius, (compact ? 26 : 34) * unitPerPx * (1 + 0.4 * spreadT));
     }
     // NE/IA/MN/WI clusters pack many co-ops and munis together — modest extra
     // spread at mid zoom opens gaps for labels without mainland drift.
@@ -1713,6 +1717,10 @@ export function mountNercOrgMap(): void {
     if (!force && bucket === orgLayoutBucket) return;
     orgLayoutBucket = bucket;
 
+    // Reserve each bubble a little larger than its rendered radius so that small
+    // radius growth between the placement bucket and the exact render zoom can
+    // never produce a visible overlap (rule: no overlapping bubbles).
+    const OVERLAP_PAD = 1.12;
     type Item = { o: Org; ox: number; oy: number; r: number };
     const items: Item[] = [];
     for (const o of orgs) {
@@ -1732,7 +1740,7 @@ export function mountNercOrgMap(): void {
         o._placed = true;
         continue;
       }
-      items.push({ o, ox: o._x * bucket, oy: o._y * bucket, r: renderedRadius(o, bucket) });
+      items.push({ o, ox: o._x * bucket, oy: o._y * bucket, r: renderedRadius(o, bucket) * OVERLAP_PAD });
     }
     if (!items.length) return;
 
