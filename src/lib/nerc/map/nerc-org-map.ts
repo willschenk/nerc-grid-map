@@ -1221,6 +1221,12 @@ export function mountNercOrgMap(): void {
     const base = compact
       ? priority >= 80 ? 9 : priority >= 50 ? 7.8 : 6
       : priority >= 80 ? 12 : priority >= 50 ? 10.5 : 8.5;
+    // Explicit zoom scaling: keep national-view labels subdued, then grow text
+    // steadily as the user moves into regional and local views.
+    const zoomFontScale =
+      (compact ? 0.74 : 0.68) +
+      (compact ? 0.24 : 0.3) * smoothStep((k - 0.7) / 2.2) +
+      (compact ? 0.34 : 0.42) * smoothStep((k - 3.2) / 7.5);
     // Mid/high-zoom readability: an extra ramp that kicks in past the overview so
     // labels keep getting bigger (and more legible) the further you zoom in. The
     // inside-label path still clamps to the bubble chord and long names fall back
@@ -1238,7 +1244,7 @@ export function mountNercOrgMap(): void {
     const smallOrgCloseBoost =
       priority >= 80 ? 1 : 1 + (priority < 50 ? 0.28 : 0.16) * smoothStep((k - 3) / 4);
     // Narrow phones: scale every label up so names stay readable on a small handset.
-    return base * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale() * ORG_CONTENT_SCALE;
+    return base * zoomFontScale * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale() * ORG_CONTENT_SCALE;
   }
 
   // White label ink with a length-aware dark halo — keeps long names readable
