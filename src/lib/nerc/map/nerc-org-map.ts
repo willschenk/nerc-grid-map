@@ -154,6 +154,28 @@ const ORG_CONTENT_SCALE = 0.85;
 // Background-tier dots: present on the map but not yet promoted to a bubble.
 const FALLBACK_TINY_RADIUS_PX = { desktop: 1.1, compact: 1.0 };
 const FALLBACK_TINY_RADIUS_DEEP_PX = { desktop: 1.35, compact: 1.2 };
+// Flip to true locally when tuning render outcomes without a URL flag.
+const RENDER_STATS_LOCAL = false;
+type RenderOutcomeStats = {
+  bucket: number;
+  k: number;
+  projectedValid: number;
+  visible: number;
+  bubbleNormal: number;
+  fallbackTiny: number;
+  labeled: number;
+  insideLabels: number;
+  floatLabels: number;
+  labelCandidates: number;
+  labelsSkippedCollision: number;
+  illegalDemoted: number;
+  placementPackFallback: number;
+};
+type PlacementOutcomeStats = {
+  bucket: number;
+  packFallback: number;
+  illegalGuardDemoted: number;
+};
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
@@ -633,6 +655,13 @@ export function mountNercOrgMap(): void {
   // it can report which dots got an inside vs floating label without recomputing.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
   let tooltipRequest = 0;
+  const renderStatsEnabled =
+    RENDER_STATS_LOCAL ||
+    (typeof location !== "undefined" && new URLSearchParams(location.search).has("debug"));
+  let lastRenderStats: RenderOutcomeStats | null = null;
+  let lastPlacementStats: PlacementOutcomeStats | null = null;
+  let lastStatsLogBucket = NaN;
+  let renderGuardDemoted = 0;
 
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
@@ -2096,6 +2125,7 @@ export function mountNercOrgMap(): void {
       : renderedRadius(o, k);
     const { cx, cy } = bubbleScreenCenter(o, bucket);
     if (placementLandValid(cx, cy, r, bucket, frame, tiny)) return;
+    if (renderStatsEnabled) renderGuardDemoted++;
     if (o.placementMode === "bubble") {
       o.placementMode = "fallbackTiny";
       o._dx = 0;
@@ -2129,6 +2159,9 @@ export function mountNercOrgMap(): void {
     const bucket = declutterBucket(k);
     if (!force && bucket === orgLayoutBucket) return;
     orgLayoutBucket = bucket;
+    const placementStats: PlacementOutcomeStats | null = renderStatsEnabled
+      ? { bucket, packFallback: 0, illegalGuardDemoted: 0 }
+      : null;
 
     // No margin: bubbles pack edge-to-edge so they can touch but never overlap.
     // We reserve each bubble at the LARGEST radius it reaches anywhere in this
@@ -2257,6 +2290,7 @@ export function mountNercOrgMap(): void {
         }
       }
       if (!placed) {
+        if (placementStats) placementStats.packFallback++;
         demoteToBackgroundDot(
           it.o,
           it.slots,
@@ -2272,6 +2306,7 @@ export function mountNercOrgMap(): void {
       const frame = orgLandFrame(it.o);
       const { cx, cy } = bubbleScreenCenter(it.o, bucket);
       if (placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
+      if (placementStats) placementStats.illegalGuardDemoted++;
       demoteToBackgroundDot(
         it.o,
         it.slots,
@@ -2279,6 +2314,7 @@ export function mountNercOrgMap(): void {
         offsetsFor(orgPlacementRadius(it.o, bucket)),
       );
     }
+    if (placementStats) lastPlacementStats = placementStats;
   }
 
   // U.S. state + Canadian province name anchors (base coordinates), drawn faintly
@@ -2346,17 +2382,21 @@ export function mountNercOrgMap(): void {
     // deep-zoom panning doesn't leave stale targets.
     const hitChanged = hitK !== k;
     hitK = k;
+    if (renderStatsEnabled) renderGuardDemoted = 0;
 
     // Project to screen space once, drop off-screen dots, collect label candidates.
     const margin = 90;
     const candidates: Org[] = [];
     const visibleOrgs: Org[] = [];
     let shownCount = 0;
+    let projectedValid = 0;
+    let labelsSkippedCollision = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
         o._vis = false;
         continue;
       }
+      if (canDisplayOrg(o, k)) projectedValid++;
       const sx = transform.applyX(orgRenderX(o, fanScale, declScale));
       const sy = transform.applyY(orgRenderY(o, fanScale, declScale));
       o._sx = sx;
@@ -2561,6 +2601,8 @@ export function mountNercOrgMap(): void {
           if (!forceLabel) usedLabels.add(brand);
           addBubbleBlocker(o);
           placedCount++;
+        } else if (renderStatsEnabled && !bubbleClears(o)) {
+          labelsSkippedCollision++;
         }
         continue;
       }
@@ -2628,7 +2670,10 @@ export function mountNercOrgMap(): void {
       } else if (!chosen && textOptions[1]) {
         chosen = tryFloatingText(textOptions[1]);
       }
-      if (!chosen || !bubbleClears(o)) continue;
+      if (!chosen || !bubbleClears(o)) {
+        if (renderStatsEnabled) labelsSkippedCollision++;
+        continue;
+      }
       placed.push(chosen.box);
       if (!forceLabel) {
         labeledClusters.push({ x: sx, y: sy });
@@ -2883,6 +2928,43 @@ export function mountNercOrgMap(): void {
       .attr("font-size", terrFontPx / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
+
+    if (renderStatsEnabled) {
+      const bucket = declutterBucket(k);
+      let bubbleNormal = 0;
+      let fallbackTiny = 0;
+      let insideLabels = 0;
+      let floatLabels = 0;
+      for (const o of visibleOrgs) {
+        if (!o._vis) continue;
+        if (o.placementMode === "bubble" && !o._renderFallback) bubbleNormal++;
+        else if (o.placementMode === "fallbackTiny" || o._renderFallback) fallbackTiny++;
+      }
+      for (const st of labelState.values()) {
+        if (st.inside) insideLabels++;
+        else floatLabels++;
+      }
+      const stats: RenderOutcomeStats = {
+        bucket,
+        k: +k.toFixed(3),
+        projectedValid,
+        visible: shownCount,
+        bubbleNormal,
+        fallbackTiny,
+        labeled: labelState.size,
+        insideLabels,
+        floatLabels,
+        labelCandidates: candidates.length,
+        labelsSkippedCollision,
+        illegalDemoted: (lastPlacementStats?.illegalGuardDemoted ?? 0) + renderGuardDemoted,
+        placementPackFallback: lastPlacementStats?.packFallback ?? 0,
+      };
+      lastRenderStats = stats;
+      if (bucket !== lastStatsLogBucket) {
+        lastStatsLogBucket = bucket;
+        console.debug("[nerc render stats]", stats);
+      }
+    }
   }
 
   // Lay out-of-footprint territory orgs as labelled clusters of dots — no framed
@@ -3922,6 +4004,19 @@ export function mountNercOrgMap(): void {
     revealActionButtons();
     if (new URLSearchParams(location.search).has("audit")) setupAudit();
     if (import.meta.env.DEV || new URLSearchParams(location.search).has("devView")) setupDevView();
+    if (renderStatsEnabled) setupRenderStats();
+  }
+
+  // Optional render-outcome counters (?debug=1 or RENDER_STATS_LOCAL). Console
+  // logs once per zoom bucket; window.__nercRenderStats exposes the latest snapshot.
+  function setupRenderStats(): void {
+    (window as unknown as { __nercRenderStats: unknown }).__nercRenderStats = {
+      latest: (): RenderOutcomeStats | null => lastRenderStats,
+      placement: (): PlacementOutcomeStats | null => lastPlacementStats,
+      log: (): void => {
+        if (lastRenderStats) console.debug("[nerc render stats]", lastRenderStats);
+      },
+    };
   }
 
   // TEMPORARY dev-only helper (dev build or ?devView=1). Adds a small floating
