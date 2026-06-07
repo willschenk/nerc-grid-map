@@ -147,8 +147,9 @@ const SPIDER_RING_STEP_PX = 28;
 const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
 const ORG_CONTENT_SCALE = 0.85;
-// Quiet overview dots for orgs that could not earn a bubble slot or readable label.
-const FALLBACK_TINY_RADIUS_PX = { desktop: 1.15, compact: 1.05 };
+// Quiet dots for orgs that could not earn a non-overlapping bubble slot.
+const FALLBACK_TINY_RADIUS_PX = { desktop: 1.05, compact: 0.95 };
+const FALLBACK_TINY_RADIUS_DEEP_PX = { desktop: 1.35, compact: 1.2 };
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
@@ -1018,22 +1019,18 @@ export function mountNercOrgMap(): void {
     return visualPriority(o) + meaningfulRoleCount(o) * 2;
   }
 
-  function fallbackTinyRadiusPx(): number {
-    return compact ? FALLBACK_TINY_RADIUS_PX.compact : FALLBACK_TINY_RADIUS_PX.desktop;
+  function fallbackTinyRadiusPx(k: number): number {
+    const overview = compact ? FALLBACK_TINY_RADIUS_PX.compact : FALLBACK_TINY_RADIUS_PX.desktop;
+    const deep = compact ? FALLBACK_TINY_RADIUS_DEEP_PX.compact : FALLBACK_TINY_RADIUS_DEEP_PX.desktop;
+    // Always well below visualRadius's ~1.7px floor; grows slightly when zoomed in.
+    return overview + (deep - overview) * smoothStep((k - 0.85) / 14);
   }
 
-  // True when the org should draw as a tiny dot at its true origin this frame.
-  function rendersAsFallbackDot(
-    o: Org,
-    hasLabel: boolean,
-    forced: boolean,
-    tourActive: boolean,
-    tourRunning: boolean,
-  ): boolean {
-    if (o._frame === "terr") return false;
+  // True when the org should draw as a tiny dot this frame (placement failed).
+  function rendersAsFallbackDot(o: Org, hasLabel: boolean, forced: boolean): boolean {
+    if (o._frame === "terr" || o.placementMode !== "fallbackTiny") return false;
     if (forced || hasLabel) return false;
-    if (tourActive || tourRunning) return false;
-    return o.placementMode === "fallbackTiny" || o.placementMode === "bubble";
+    return true;
   }
 
   // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
@@ -1044,9 +1041,9 @@ export function mountNercOrgMap(): void {
     const priority = visualPriority(o);
     const midwest = isMidwestOrg(o);
     if (k >= 2.2) return true;
-    // Low thresholds so most disclosed orgs attempt a label at overview/mid zoom —
-    // collision checks still prevent overlap; orgs that cannot land a readable
-    // label draw as quiet fallback dots instead of disappearing.
+    // Low thresholds so most disclosed orgs attempt a label at overview/mid zoom.
+    // Collision checks still gate floating labels; placement failures draw as tiny
+    // fallback dots instead of disappearing.
     if (k < 1.25) return priority >= (midwest ? 22 : 26);
     if (k < 1.8) return priority >= (midwest ? 16 : 18);
     return priority >= (midwest ? 12 : 14);
@@ -1229,7 +1226,7 @@ export function mountNercOrgMap(): void {
       return o._vr;
     }
     const v = fallback
-      ? fallbackTinyRadiusPx() * unitPerPx * ORG_CONTENT_SCALE
+      ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
       : visualRadius(o, k);
     o._vr = v;
     o._vrk = k;
@@ -1381,13 +1378,11 @@ export function mountNercOrgMap(): void {
   }
 
   function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
-    const decl = o._renderFallback ? 0 : declScale;
-    return (o._x as number) + (o._dx ?? 0) * decl + (o._rx ?? 0) * fanScale;
+    return (o._x as number) + (o._dx ?? 0) * declScale + (o._rx ?? 0) * fanScale;
   }
 
   function orgRenderY(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
-    const decl = o._renderFallback ? 0 : declScale;
-    return (o._y as number) + (o._dy ?? 0) * decl + (o._ry ?? 0) * fanScale;
+    return (o._y as number) + (o._dy ?? 0) * declScale + (o._ry ?? 0) * fanScale;
   }
 
   function spiderOffset(index: number, total: number, step: number): [number, number] {
@@ -1790,6 +1785,27 @@ export function mountNercOrgMap(): void {
     return landMask[my * maskW + mx] === 1;
   }
 
+  // Pick true origin or the nearest on-land candidate for a fallback tiny dot.
+  // Does not claim collision grid space — normal bubbles keep priority.
+  function findFallbackTinySlot(
+    slots: Array<{ rank: 1 | 2 | 3; ox: number; oy: number; bx: number; by: number }>,
+    bucket: number,
+    offsets: Array<[number, number]>,
+    onLandHere: (cx: number, cy: number, r: number) => boolean,
+  ): { slot: (typeof slots)[0]; dx: number; dy: number } | null {
+    if (!slots.length) return null;
+    const tinyR = fallbackTinyRadiusPx(bucket) * unitPerPx * ORG_CONTENT_SCALE;
+    for (const slot of slots) {
+      if (onLandHere(slot.ox, slot.oy, tinyR)) return { slot, dx: 0, dy: 0 };
+      for (const [dx, dy] of offsets) {
+        const cx = slot.ox + dx;
+        const cy = slot.oy + dy;
+        if (onLandHere(cx, cy, tinyR)) return { slot, dx, dy };
+      }
+    }
+    return { slot: slots[0], dx: 0, dy: 0 };
+  }
+
   // Deterministic bubble placement for a zoom bucket. Each org has a true
   // projected origin (_x/_y); a bubble may move only within placementRadius of
   // that origin to find space. Higher-priority bubbles place first and claim the
@@ -1944,16 +1960,23 @@ export function mountNercOrgMap(): void {
         }
       }
       if (!placed) {
-        const slot = it.slots[0];
+        const land = findFallbackTinySlot(
+          it.slots,
+          bucket,
+          offsetsFor(orgPlacementRadius(it.o, bucket)),
+          onLandHere,
+        );
+        if (!land) {
+          it.o._placed = false;
+          continue;
+        }
         it.o._placed = true;
         it.o.placementMode = "fallbackTiny";
-        it.o._dx = 0;
-        it.o._dy = 0;
-        it.o.map_location_rank = slot?.rank ?? 1;
-        if (slot) {
-          it.o._x = slot.bx;
-          it.o._y = slot.by;
-        }
+        it.o._dx = land.dx;
+        it.o._dy = land.dy;
+        it.o._x = land.slot.bx;
+        it.o._y = land.slot.by;
+        it.o.map_location_rank = land.slot.rank;
       }
     }
   }
@@ -2331,6 +2354,16 @@ export function mountNercOrgMap(): void {
       if (hoverLabel) labelState.set(hot.ncr_id, hoverLabel);
     }
 
+    // Placed bubbles without a readable label stay hidden until zoom/room allows
+    // one — except fallback tiny dots (placement failed) and tour/hover/selected.
+    if (!tourActive && !tourRunning) {
+      for (const o of visibleOrgs) {
+        if (!o._vis || o._frame === "terr" || o.placementMode === "fallbackTiny") continue;
+        const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id;
+        if (!forced && !labelState.has(o.ncr_id)) o._vis = false;
+      }
+    }
+
     for (const o of visibleOrgs) {
       if (!o._vis || o._frame === "terr") continue;
       const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
@@ -2338,8 +2371,6 @@ export function mountNercOrgMap(): void {
         o,
         labelState.has(o.ncr_id),
         forced,
-        tourActive,
-        tourRunning,
       );
       if (o._sx != null && o._sy != null) {
         o._sx = transform.applyX(orgRenderX(o, fanScale, declScale));
