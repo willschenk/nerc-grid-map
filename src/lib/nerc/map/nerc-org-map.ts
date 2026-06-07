@@ -90,6 +90,8 @@ type Org = {
   placementMode?: "bubble" | "fallbackTiny";
   // Ephemeral per-frame: draw at background tier (tiny, subdued, no label).
   _renderFallback?: boolean;
+  // Ephemeral: background dot temporarily enlarged for hover/select/tour focus.
+  _promoteBackground?: boolean;
   _rk?: number;
   // Last viewBox radius actually written to the circle, so zoom-only sizing can
   // update without a per-frame attribute storm.
@@ -101,6 +103,7 @@ type Org = {
   _vrk?: number;
   _vrGen?: number;
   _vrFallback?: boolean;
+  _vrPromoted?: boolean;
   // Last viewBox hit radius written to the invisible target. It follows the
   // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
   _hr?: number;
@@ -730,6 +733,9 @@ export function mountNercOrgMap(): void {
       if (d2 > hit * hit) continue;
       const visual = renderedRadius(o, k);
       const inVisual = d2 <= visual * visual;
+      const focusBoost =
+        (hoverOrg?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id ? 5000 : 0) +
+        (tourIds.has(o.ncr_id) ? 4000 : 0);
       const norm = d2 / (hit * hit);
       // Selection order in dense clusters:
       //   1. A pointer inside a bubble's *drawn* circle always beats one only in
@@ -749,13 +755,35 @@ export function mountNercOrgMap(): void {
       } else {
         better =
           norm < bestNorm - 0.02 ||
-          (Math.abs(norm - bestNorm) <= 0.02 && drawPriority(o, k) > drawPriority(best, k));
+          (Math.abs(norm - bestNorm) <= 0.02 &&
+            drawPriority(o, k) + focusBoost > drawPriority(best, k) +
+              ((hoverOrg?.ncr_id === best.ncr_id || selectedOrg?.ncr_id === best.ncr_id ? 5000 : 0) +
+                (tourIds.has(best.ncr_id) ? 4000 : 0)));
       }
       if (better) {
         best = o;
         bestNorm = norm;
         bestInVisual = inVisual;
         bestVisual = visual;
+      }
+    }
+    // Honour the hit circle the pointer landed on — especially background dots
+    // whose visual radius is tiny but whose padded target is easy to tap.
+    if (
+      fallback._vis &&
+      fallback._sx != null &&
+      fallback._sy != null &&
+      (fallback.placementMode === "fallbackTiny" || fallback._promoteBackground)
+    ) {
+      const d2fb = (fallback._sx - point.x) ** 2 + (fallback._sy - point.y) ** 2;
+      const hitFb = hitTargetRadius(fallback, k) + unitPerPx;
+      if (d2fb <= hitFb * hitFb) {
+        const visBest = renderedRadius(best, k);
+        const d2best = (best._sx! - point.x) ** 2 + (best._sy! - point.y) ** 2;
+        const bestInsideVis = d2best <= visBest * visBest;
+        if (best === fallback || !bestInsideVis || visBest < renderedRadius(fallback, k) * 1.2) {
+          return fallback;
+        }
       }
     }
     return best;
@@ -900,6 +928,9 @@ export function mountNercOrgMap(): void {
 
   // Disclosure tier for rendering: background dot → small bubble → full bubble (+ label).
   function disclosureTier(o: Org, k: number, hasLabel: boolean): "background" | "small" | "bubble" | "labeled" {
+    if (o.placementMode === "fallbackTiny" && o._promoteBackground) {
+      return hasLabel ? "labeled" : "bubble";
+    }
     if (o.placementMode === "fallbackTiny" || o._renderFallback) return "background";
     if (hasLabel) return "labeled";
     const t = bubbleDisclosureT(o, k);
@@ -1075,6 +1106,9 @@ export function mountNercOrgMap(): void {
   }
 
   function drawPriority(o: Org, _k: number): number {
+    if (o._promoteBackground) {
+      return visualPriority(o) + meaningfulRoleCount(o) * 2 + 500;
+    }
     if (o.placementMode === "fallbackTiny" || o._renderFallback) {
       return visualPriority(o) - 1000;
     }
@@ -1086,6 +1120,19 @@ export function mountNercOrgMap(): void {
     const deep = compact ? FALLBACK_TINY_RADIUS_DEEP_PX.compact : FALLBACK_TINY_RADIUS_DEEP_PX.desktop;
     // Always well below visualRadius's ~1.7px floor; grows slightly when zoomed in.
     return overview + (deep - overview) * smoothStep((k - 0.85) / 14);
+  }
+
+  function promotedBackgroundRadius(o: Org, k: number): number {
+    const tiny = fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE;
+    const cap = Math.min(
+      visualRadius(o, k),
+      (compact ? 9.5 : 12) * unitPerPx * ORG_CONTENT_SCALE,
+    );
+    return Math.min(cap, Math.max(tiny * 2.4, tiny + (compact ? 5.5 : 6.5) * unitPerPx));
+  }
+
+  function isBackgroundPromoted(o: Org, forced: boolean): boolean {
+    return forced && o.placementMode === "fallbackTiny";
   }
 
   // True when the org should draw as a tiny dot this frame (placement failed).
@@ -1283,19 +1330,23 @@ export function mountNercOrgMap(): void {
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return territoryBubbleRadiusPx() * unitPerPx;
     const fallback = !!o._renderFallback;
+    const promoted = !!o._promoteBackground;
     // Memoize: visualRadius is heavy and called many times per org per frame.
     // The result only depends on (o, k, unitPerPx, compact); radiusGen folds in
     // the latter two, so panning (constant k) reuses the cached value.
-    if (o._vrk === k && o._vrGen === radiusGen && o._vr != null && o._vrFallback === fallback) {
+    if (o._vrk === k && o._vrGen === radiusGen && o._vr != null && o._vrFallback === fallback && o._vrPromoted === promoted) {
       return o._vr;
     }
-    const v = fallback
-      ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
-      : visualRadius(o, k);
+    const v = promoted
+      ? promotedBackgroundRadius(o, k)
+      : fallback
+        ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
+        : visualRadius(o, k);
     o._vr = v;
     o._vrk = k;
     o._vrGen = radiusGen;
     o._vrFallback = fallback;
+    o._vrPromoted = promoted;
     return v;
   }
 
@@ -2288,6 +2339,7 @@ export function mountNercOrgMap(): void {
       const displayable = canDisplayOrg(o, k);
       const due = displayable && (o._frame === "terr" || o._placed === true);
       const forced = displayable && (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id));
+      o._promoteBackground = isBackgroundPromoted(o, forced);
       const vis = onScreen && (due || forced);
       o._vis = vis;
       if (!vis) continue;
@@ -2579,6 +2631,12 @@ export function mountNercOrgMap(): void {
 
     const finalVisibleOrgs = visibleOrgs.filter((o) => o._vis);
 
+    for (const o of finalVisibleOrgs) {
+      if (o._promoteBackground || selectedOrg?.ncr_id === o.ncr_id || hot?.ncr_id === o.ncr_id) {
+        raiseVisibleOrg(o);
+      }
+    }
+
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
@@ -2601,6 +2659,7 @@ export function mountNercOrgMap(): void {
       const inTour = tourActive && tourIds.has(o.ncr_id);
       node.classList.toggle("labeled", labeled);
       node.classList.toggle("org-background", tier === "background");
+      node.classList.toggle("org-promoted", !!o._promoteBackground);
       node.classList.toggle("bubble-small", tier === "small");
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
@@ -3409,7 +3468,6 @@ export function mountNercOrgMap(): void {
     hoverOrg = null;
     selectedOrg = o;
     rememberOrg(o);
-    invalidateOrgLayout();
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
     renderPanel(o);
@@ -3426,6 +3484,7 @@ export function mountNercOrgMap(): void {
     }
     hideTooltip();
     clearOrgPointerFocus();
+    raiseVisibleOrg(o);
     if (opts.center) centerOnOrg(o);
     else redraw();
     applyHighlights();

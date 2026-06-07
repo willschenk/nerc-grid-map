@@ -117,6 +117,26 @@
   opacity: 1;
 }
 
+/* Hover/select/tour promotion for background dots — readable, not full bubble size. */
+#nerc-svg .org.org-promoted {
+  fill-opacity: 0.95;
+  opacity: 1;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 0.65;
+}
+
+#nerc-svg .org.org-promoted.hot,
+#nerc-svg .org.org-promoted.selected {
+  stroke: #07110e;
+  stroke-width: 1.4;
+}
+
+#nerc-svg .org.org-promoted.estimated {
+  stroke: #34413e;
+  stroke-width: 0.85;
+  stroke-dasharray: 2 1.5;
+}
+
 /* Mid-disclosure: promoted bubble not yet at full size (unlabeled). */
 #nerc-svg .org.bubble-small {
   fill-opacity: 0.88;
