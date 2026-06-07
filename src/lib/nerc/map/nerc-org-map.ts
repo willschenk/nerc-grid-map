@@ -1198,12 +1198,12 @@ export function mountNercOrgMap(): void {
     const lp = labelPriority(o);
     const revealK =
       lp >= 88 ? 0 :
-      lp >= 78 ? 0 :
-      lp >= 68 ? (compact ? 0.5 : 0.4) :
-      lp >= 52 ? (compact ? 0.62 : 0.52) :
-      lp >= 38 ? (compact ? 0.85 : 0.72) :
-      lp >= 16 ? (compact ? 1.15 : 1.0) :
-      compact ? 1.35 : 1.15;
+      lp >= 78 ? (compact ? 0.5 : 0.38) :
+      lp >= 68 ? (compact ? 0.95 : 0.82) :
+      lp >= 52 ? (compact ? 1.45 : 1.25) :
+      lp >= 38 ? (compact ? 2.15 : 1.9) :
+      lp >= 16 ? (compact ? 3.2 : 2.9) :
+      compact ? 4.6 : 4.1;
     return k >= revealK;
   }
 
@@ -1273,9 +1273,9 @@ export function mountNercOrgMap(): void {
   function labelLimit(k: number): number {
     // Smooth ramp: more label slots unlock gradually as zoom increases.
     const t = smoothStep((k - 0.85) / (compact ? 5.5 : 6.5));
-    const overview = compact ? 620 : 1050;
-    const mid = compact ? 1280 : 2100;
-    const deep = compact ? 2500 : 4800;
+    const overview = compact ? 120 : 220;
+    const mid = compact ? 720 : 1250;
+    const deep = compact ? 2200 : 3900;
     const cap = overview + (mid - overview) * smoothStep((k - 1) / 2.8) + (deep - mid) * t * t;
     if (!compact) return Math.round(cap);
     return Math.round(cap * (0.62 + 0.38 * smoothStep((k - 1.4) / 4.2)));
@@ -2465,10 +2465,9 @@ export function mountNercOrgMap(): void {
     const spacing = compact && !tourActive ? Math.max(1, 1.25 - Math.max(0, k - 2) * 0.12) : 1;
     // ── Label decision tree (candidates are pre-sorted most-important first) ──
     // For each org, in importance order:
-    //   1. INSIDE: if its short token fits inside the bubble at a legible size,
-    //      draw it there. Inside labels live within their own bubble, so they
-    //      never collide and are never thinned by a neighbour — that is why a
-    //      bubble big enough to hold its name always shows it.
+    //   1. INSIDE: if its short token fits inside the bubble at a legible size
+    //      and its text box does not overlap a higher-priority label, draw it
+    //      there. Importance ordering decides who wins when labels collide.
     //   2. FLOAT: otherwise place a floating label in preferred spots (on /
     //      beside / below, never above). A floating label may
     //      not overlap an already-placed label, nor any *other* protected
@@ -2493,6 +2492,25 @@ export function mountNercOrgMap(): void {
       const cy = Math.max(box.y0, Math.min(circle.y, box.y1));
       return (circle.x - cx) ** 2 + (circle.y - cy) ** 2 < circle.r ** 2;
     };
+    const labelCollisionPad = (compact ? 2.2 : 2.6) * unitPerPx;
+    const inflateBox = (box: Box, pad: number): Box => ({
+      x0: box.x0 - pad,
+      x1: box.x1 + pad,
+      y0: box.y0 - pad,
+      y1: box.y1 + pad,
+    });
+    const labelBox = (x: number, y: number, text: string, font: number, inside: boolean): Box => {
+      const w = Math.max(8 * unitPerPx, text.length * font * (inside ? 0.56 : 0.58));
+      const h = font * (inside ? 1.05 : 1.15);
+      return inside
+        ? { x0: x - w / 2, x1: x + w / 2, y0: y - h / 2, y1: y + h / 2 }
+        : { x0: x - w / 2, x1: x + w / 2, y0: y - h * 0.7, y1: y + h * 0.3 };
+    };
+    const labelClears = (box: Box): boolean => !placed.some((p) => boxesOverlap(box, p));
+    const reserveLabel = (box: Box): void => {
+      const inflated = inflateBox(box, labelCollisionPad);
+      placed.push(inflated);
+    };
     const bubbleClears = (o: Org): boolean => {
       if (o._frame === "terr") return true;
       const circle = bubbleCircle(o);
@@ -2507,7 +2525,7 @@ export function mountNercOrgMap(): void {
       !bubbleBlockers.some((b) => b.id !== id && boxOverlapsCircle(box, b));
 
     const isHoverLabelTarget = (o: Org): boolean =>
-      hot?.ncr_id === o.ncr_id && selectedOrg?.ncr_id !== o.ncr_id && !tourActive;
+      (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id) && !tourActive;
 
     // Hover-only labels for visible dots that did not earn persistent text. Prefer
     // inside the bubble, then centred across it; below-the-dot is a last resort.
@@ -2597,12 +2615,14 @@ export function mountNercOrgMap(): void {
       const insideChord = isMidwestOrg(o) ? 1.94 : 1.86;
       if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * insideChord) {
         const insideDedupK = k < 1.4 ? (lp >= 78 ? 0.65 : lp >= 68 ? 1.05 : 2.0) : isMidwestOrg(o) ? 2.0 : 2.2;
-        if ((forceLabel || k >= insideDedupK || !usedLabels.has(brand)) && bubbleClears(o)) {
+        const box = labelBox(sx, sy, brand, insideFont, true);
+        if ((forceLabel || k >= insideDedupK || !usedLabels.has(brand)) && labelClears(box) && bubbleClears(o)) {
           labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
           if (!forceLabel) usedLabels.add(brand);
+          reserveLabel(box);
           addBubbleBlocker(o);
           placedCount++;
-        } else if (renderStatsEnabled && !bubbleClears(o)) {
+        } else if (renderStatsEnabled && (!labelClears(box) || !bubbleClears(o))) {
           labelsSkippedCollision++;
         }
         continue;
@@ -2675,7 +2695,7 @@ export function mountNercOrgMap(): void {
         if (renderStatsEnabled) labelsSkippedCollision++;
         continue;
       }
-      placed.push(chosen.box);
+      reserveLabel(chosen.box);
       if (!forceLabel) {
         labeledClusters.push({ x: sx, y: sy });
         usedLabels.add(chosen.text);
@@ -2685,9 +2705,12 @@ export function mountNercOrgMap(): void {
       placedCount++;
     }
 
-    if (hot?._vis && hot._sx != null && hot._sy != null && isHoverLabelTarget(hot) && !labelState.has(hot.ncr_id)) {
-      const hoverLabel = tryHoverUnlabeledLabel(hot);
-      if (hoverLabel) labelState.set(hot.ncr_id, hoverLabel);
+    for (const focus of [selectedOrg, hot]) {
+      if (!focus?._vis || focus._sx == null || focus._sy == null || !isHoverLabelTarget(focus) || labelState.has(focus.ncr_id)) {
+        continue;
+      }
+      const hoverLabel = tryHoverUnlabeledLabel(focus);
+      if (hoverLabel) labelState.set(focus.ncr_id, hoverLabel);
     }
 
     for (const o of visibleOrgs) {
