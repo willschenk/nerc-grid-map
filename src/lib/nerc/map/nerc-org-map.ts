@@ -136,13 +136,8 @@ const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 50;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
-// Display anchor: GO/GOP-only orgs become eligible to render this early, so they
-// start appearing at mid/deep zoom — but their size ramp still waits for
-// GENERATION_ONLY_REVEAL_K, so they stay small and never overpower important
-// orgs. Lowered so generation companies show up noticeably earlier as you zoom.
-const GENERATION_ONLY_DISPLAY_K = 10;
-const GENERATION_ONLY_DISPLAY_K_COMPACT = 13;
-// PSE-market entities stay the deepest tier (they appear later than GO/GOP).
+// PSE-market entities stay the deepest tier. (GO/GOP-only companies are excluded
+// from the map entirely, so they have no display anchor.)
 const PSE_MARKET_DISPLAY_K = 20;
 const PSE_MARKET_DISPLAY_K_COMPACT = 48;
 const TO_ONLY_REVEAL_K = 12;
@@ -830,10 +825,6 @@ export function mountNercOrgMap(): void {
   // Zoom at which a generation-only org may start rendering. On desktop this is
   // earlier than its growth anchor (so it appears at deep zoom while still drawn
   // small); mobile keeps the conservative reveal-K to leave the overview clean.
-  function generationOnlyDisplayK(): number {
-    return compact ? GENERATION_ONLY_DISPLAY_K_COMPACT : GENERATION_ONLY_DISPLAY_K;
-  }
-
   function pseMarketDisplayK(): number {
     return compact ? PSE_MARKET_DISPLAY_K_COMPACT : PSE_MARKET_DISPLAY_K;
   }
@@ -854,6 +845,10 @@ export function mountNercOrgMap(): void {
   }
 
   function canDisplayOrg(o: Org, k: number): boolean {
+    // Generation-only (GO/GOP) companies are excluded from the map entirely. They
+    // are the bulk of the low-priority dots, so dropping them frees space for the
+    // grid/utility organizations to fit cleanly at every zoom.
+    if (isGenerationOnly(o)) return false;
     // Compact (phones/small tablets): below k2 keep the overview to major
     // entities only (grid leadership or high visual priority) so crowded metros
     // don't stack low-priority dots. They reveal normally once zoomed past k2.
@@ -861,11 +856,8 @@ export function mountNercOrgMap(): void {
     // computePlacements via _placed, so only those with room actually draw.)
     if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 28) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
-    // GO/GOP-only and PSE-market entities stay deferred to deep zoom; GO/GOP now
-    // appear earlier than PSE-market.
-    if (isDeferredMarketOrg(o)) {
-      return k >= (isPseMarketOnly(o) ? pseMarketDisplayK() : generationOnlyDisplayK());
-    }
+    // PSE-market entities remain the deepest tier.
+    if (isDeferredMarketOrg(o)) return k >= pseMarketDisplayK();
     return k >= overviewRevealK(o);
   }
 
@@ -1281,9 +1273,9 @@ export function mountNercOrgMap(): void {
     // bound keeps the search near the true location). Compact is kept tighter
     // because the small viewBox magnifies any drift.
     const basePx = compact
-      ? k < 1.25 ? 15 : k < 2.2 ? 21 : k < 4 ? 30 : k < 7 ? 40 : 50
-      : k < 1.25 ? 22 : k < 2.2 ? 30 : k < 4 ? 44 : k < 7 ? 58 : 72;
-    const deepPx = compact ? 62 : 90;
+      ? k < 1.25 ? 20 : k < 2.2 ? 28 : k < 4 ? 40 : k < 7 ? 52 : 64
+      : k < 1.25 ? 30 : k < 2.2 ? 40 : k < 4 ? 58 : k < 7 ? 76 : 94;
+    const deepPx = compact ? 82 : 116;
     return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
   }
 
