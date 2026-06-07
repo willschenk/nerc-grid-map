@@ -86,6 +86,10 @@ type Org = {
   // Set by computePlacements; drives disclosure (placed => shown). Recomputed only
   // when the zoom bucket changes, never on pan.
   _placed?: boolean;
+  // bubble = normal decluttered placement; fallbackTiny = quiet dot at true origin.
+  placementMode?: "bubble" | "fallbackTiny";
+  // Ephemeral per-frame: draw as a tiny fallback dot (failed placement or no label yet).
+  _renderFallback?: boolean;
   _rk?: number;
   // Last viewBox radius actually written to the circle, so zoom-only sizing can
   // update without a per-frame attribute storm.
@@ -96,6 +100,7 @@ type Org = {
   _vr?: number;
   _vrk?: number;
   _vrGen?: number;
+  _vrFallback?: boolean;
   // Last viewBox hit radius written to the invisible target. It follows the
   // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
   _hr?: number;
@@ -142,6 +147,8 @@ const SPIDER_RING_STEP_PX = 28;
 const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
 const ORG_CONTENT_SCALE = 0.85;
+// Quiet overview dots for orgs that could not earn a bubble slot or readable label.
+const FALLBACK_TINY_RADIUS_PX = { desktop: 1.15, compact: 1.05 };
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
@@ -866,8 +873,8 @@ export function mountNercOrgMap(): void {
     // Compact (phones/small tablets): below k2 keep the overview to major
     // entities only (grid leadership or high visual priority) so crowded metros
     // don't stack low-priority dots. They reveal normally once zoomed past k2.
-    // (Orgs that find no free placement slot are additionally hidden by
-    // computePlacements via _placed, so only those with room actually draw.)
+    // Orgs that fail bubble placement still render as quiet fallback dots at their
+    // true projected location (see computePlacements / rendersAsFallbackDot).
     if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 28) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     // PSE-market entities remain the deepest tier.
@@ -1005,20 +1012,41 @@ export function mountNercOrgMap(): void {
   }
 
   function drawPriority(o: Org, _k: number): number {
+    if (o.placementMode === "fallbackTiny" || o._renderFallback) {
+      return visualPriority(o) - 1000;
+    }
     return visualPriority(o) + meaningfulRoleCount(o) * 2;
+  }
+
+  function fallbackTinyRadiusPx(): number {
+    return compact ? FALLBACK_TINY_RADIUS_PX.compact : FALLBACK_TINY_RADIUS_PX.desktop;
+  }
+
+  // True when the org should draw as a tiny dot at its true origin this frame.
+  function rendersAsFallbackDot(
+    o: Org,
+    hasLabel: boolean,
+    forced: boolean,
+    tourActive: boolean,
+    tourRunning: boolean,
+  ): boolean {
+    if (o._frame === "terr") return false;
+    if (forced || hasLabel) return false;
+    if (tourActive || tourRunning) return false;
+    return o.placementMode === "fallbackTiny" || o.placementMode === "bubble";
   }
 
   // Which orgs are eligible to *try* for a label at this zoom. Kept sparse at
   // low zoom (only the highest-priority entities) and opened up fully once
   // zoomed in, where viewport culling keeps the on-screen candidate count small.
   function shouldTryLabel(o: Org, k: number): boolean {
+    if (o.placementMode === "fallbackTiny") return false;
     const priority = visualPriority(o);
     const midwest = isMidwestOrg(o);
     if (k >= 2.2) return true;
     // Low thresholds so most disclosed orgs attempt a label at overview/mid zoom —
-    // the user wants a dense map. Collision + placement checks still prevent true
-    // overlap, and Fix 1 hides any that can't land a readable label. GO/GOP/PSE
-    // remain deferred via canDisplayOrg, so they don't flood in here.
+    // collision checks still prevent overlap; orgs that cannot land a readable
+    // label draw as quiet fallback dots instead of disappearing.
     if (k < 1.25) return priority >= (midwest ? 22 : 26);
     if (k < 1.8) return priority >= (midwest ? 16 : 18);
     return priority >= (midwest ? 12 : 14);
@@ -1193,19 +1221,29 @@ export function mountNercOrgMap(): void {
 
   function renderedRadius(o: Org, k: number): number {
     if (o._frame === "terr") return territoryBubbleRadiusPx() * unitPerPx;
+    const fallback = !!o._renderFallback;
     // Memoize: visualRadius is heavy and called many times per org per frame.
     // The result only depends on (o, k, unitPerPx, compact); radiusGen folds in
     // the latter two, so panning (constant k) reuses the cached value.
-    if (o._vrk === k && o._vrGen === radiusGen && o._vr != null) return o._vr;
-    const v = visualRadius(o, k);
+    if (o._vrk === k && o._vrGen === radiusGen && o._vr != null && o._vrFallback === fallback) {
+      return o._vr;
+    }
+    const v = fallback
+      ? fallbackTinyRadiusPx() * unitPerPx * ORG_CONTENT_SCALE
+      : visualRadius(o, k);
     o._vr = v;
     o._vrk = k;
     o._vrGen = radiusGen;
+    o._vrFallback = fallback;
     return v;
   }
 
   function hitTargetRadius(o: Org, k: number): number {
     if (o._frame === "terr") return territoryHitRadiusPx() * unitPerPx;
+    if (o._renderFallback) {
+      const visual = renderedRadius(o, k);
+      return Math.max(visual + 2 * unitPerPx, (compact ? 8 : 6) * unitPerPx);
+    }
     // Every shown bubble is fully placed, so tap targets track the visible radius
     // plus a small pad and a floor — no per-dot reveal strength to fold in.
     const visual = renderedRadius(o, k);
@@ -1343,11 +1381,13 @@ export function mountNercOrgMap(): void {
   }
 
   function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
-    return (o._x as number) + (o._dx ?? 0) * declScale + (o._rx ?? 0) * fanScale;
+    const decl = o._renderFallback ? 0 : declScale;
+    return (o._x as number) + (o._dx ?? 0) * decl + (o._rx ?? 0) * fanScale;
   }
 
   function orgRenderY(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
-    return (o._y as number) + (o._dy ?? 0) * declScale + (o._ry ?? 0) * fanScale;
+    const decl = o._renderFallback ? 0 : declScale;
+    return (o._y as number) + (o._dy ?? 0) * decl + (o._ry ?? 0) * fanScale;
   }
 
   function spiderOffset(index: number, total: number, step: number): [number, number] {
@@ -1754,9 +1794,9 @@ export function mountNercOrgMap(): void {
   // projected origin (_x/_y); a bubble may move only within placementRadius of
   // that origin to find space. Higher-priority bubbles place first and claim the
   // best spots; lower-priority bubbles take whatever room is left. A bubble that
-  // finds no valid spot is hidden for this bucket (_placed = false) and retried
-  // at the next bucket. This is the ONLY thing that changes the visible set, and
-  // it depends only on the zoom bucket — never on pan.
+  // finds no valid spot is demoted to a quiet fallback dot at its true origin
+  // (placementMode = fallbackTiny). Bubble placement depends only on the zoom
+  // bucket — never on pan.
   //
   // _x/_y stay the true projected coordinates (used by projection math); _dx/_dy
   // are the solved screen-space nudge (divided by k at render so the origin stays
@@ -1780,6 +1820,8 @@ export function mountNercOrgMap(): void {
       o._dx = 0;
       o._dy = 0;
       o.map_location_rank = undefined;
+      o.placementMode = undefined;
+      o._renderFallback = false;
       if (!canDisplayOrg(o, bucket)) {
         o._placed = false;
         continue;
@@ -1788,6 +1830,7 @@ export function mountNercOrgMap(): void {
       // shown — they don't take part in the mainland packing.
       if (o._frame === "terr") {
         o._placed = true;
+        o.placementMode = "bubble";
         continue;
       }
       const slotOrigins: SlotOrigin[] = [];
@@ -1894,16 +1937,23 @@ export function mountNercOrgMap(): void {
           it.o._y = slot.by;
           it.o.map_location_rank = slot.rank;
           it.o._placed = true;
+          it.o.placementMode = "bubble";
           claim(cx, cy, it.r);
           placed = true;
           break slotLoop;
         }
       }
       if (!placed) {
-        it.o._placed = false;
+        const slot = it.slots[0];
+        it.o._placed = true;
+        it.o.placementMode = "fallbackTiny";
         it.o._dx = 0;
         it.o._dy = 0;
-        it.o.map_location_rank = undefined;
+        it.o.map_location_rank = slot?.rank ?? 1;
+        if (slot) {
+          it.o._x = slot.bx;
+          it.o._y = slot.by;
+        }
       }
     }
   }
@@ -1959,6 +2009,9 @@ export function mountNercOrgMap(): void {
     gLand.attr("transform", null);
     const fanScale = spiderFanScale(k);
     const declScale = declutterScale(k);
+    for (const o of orgs) {
+      o._renderFallback = o.placementMode === "fallbackTiny";
+    }
     positionOrgMarks(k);
 
     const hot = hoverOrg;
@@ -1987,8 +2040,8 @@ export function mountNercOrgMap(): void {
       o._sy = sy;
       const onScreen = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
       // Disclosure is zoom-only: a dot shows once it found a non-overlapping spot
-      // at this zoom bucket (computePlacements sets _placed), so panning never
-      // changes the set. Hover/selected/tour and territory dots always show.
+      // at this zoom bucket (computePlacements sets _placed), or as a fallback
+      // tiny dot when placement failed. Panning never changes the set.
       const displayable = canDisplayOrg(o, k);
       const due = displayable && (o._frame === "terr" || o._placed === true);
       const forced = displayable && (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id));
@@ -2018,7 +2071,7 @@ export function mountNercOrgMap(): void {
     if (!tourActive && !tourRunning && shownCount <= (compact ? 12 : 28)) {
       const candidateIds = new Set(candidates.map((o) => o.ncr_id));
       for (const o of visibleOrgs) {
-        if (o._frame === "terr" || candidateIds.has(o.ncr_id)) continue;
+        if (o._frame === "terr" || o.placementMode === "fallbackTiny" || candidateIds.has(o.ncr_id)) continue;
         candidates.push(o);
         candidateIds.add(o.ncr_id);
       }
@@ -2070,9 +2123,8 @@ export function mountNercOrgMap(): void {
     //      bubble.
     //   3. THIN: identical tokens are de-duped and tight floating clusters are
     //      thinned — floating only; inside labels are exempt.
-    // Bubble blockers are added only after a bubble earns a label. Lower-priority
-    // candidates that fail placement are hidden, so they should not reserve space
-    // or cause blank dots.
+    // Bubble blockers are added only after a bubble earns a label. Orgs that draw
+    // as fallback dots do not reserve bubble space.
     const bubblePad = 0;
     const bubbleBlockers: Array<{ id: string; x: number; y: number; r: number }> = [];
     const bubbleCircle = (o: Org): { x: number; y: number; r: number } | null => {
@@ -2279,27 +2331,32 @@ export function mountNercOrgMap(): void {
       if (hoverLabel) labelState.set(hot.ncr_id, hoverLabel);
     }
 
-    // A bubble renders only if it earned a readable label at this zoom. If its
-    // name could not render (no room inside the bubble, no collision-free floating
-    // spot, or priority/zoom rules held it back) the bubble is hidden until the
-    // user zooms in far enough for the label to land — so there is never a grey
-    // dot without text. Hover/selected dots are exempt (they carry forced labels).
-    // Skipped during a tour, where the walkthrough deliberately dims rather than
-    // hides the off-step bubbles, and territory inset dots, which are identified by
-    // their region name instead of an individual label.
-    if (!tourActive && !tourRunning) {
-      for (const o of visibleOrgs) {
-        if (!o._vis || o._frame === "terr") continue;
-        const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id;
-        if (!forced && !labelState.has(o.ncr_id)) o._vis = false;
+    for (const o of visibleOrgs) {
+      if (!o._vis || o._frame === "terr") continue;
+      const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
+      o._renderFallback = rendersAsFallbackDot(
+        o,
+        labelState.has(o.ncr_id),
+        forced,
+        tourActive,
+        tourRunning,
+      );
+      if (o._sx != null && o._sy != null) {
+        o._sx = transform.applyX(orgRenderX(o, fanScale, declScale));
+        o._sy = transform.applyY(orgRenderY(o, fanScale, declScale));
       }
     }
+
     const finalVisibleOrgs = visibleOrgs.filter((o) => o._vis);
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
+      const cx = orgRenderX(o, fanScale, declScale);
+      const cy = orgRenderY(o, fanScale, declScale);
+      node.setAttribute("cx", String(cx));
+      node.setAttribute("cy", String(cy));
       // Radius is set in transform-space (divided by the group scale). It changes
       // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
       // so write only when the resolved radius actually moved — cheap, no storm.
@@ -2312,6 +2369,7 @@ export function mountNercOrgMap(): void {
       const labeled = labelState.has(o.ncr_id);
       const inTour = tourActive && tourIds.has(o.ncr_id);
       node.classList.toggle("labeled", labeled);
+      node.classList.toggle("fallback-tiny", !!o._renderFallback);
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
       // Only the labeled subset breathes (bounded count = cheap on iOS); the
@@ -2330,6 +2388,10 @@ export function mountNercOrgMap(): void {
       const node = this as SVGCircleElement;
       node.classList.toggle("hide", !o._vis);
       if (!o._vis) return;
+      const cx = orgRenderX(o, fanScale, declScale);
+      const cy = orgRenderY(o, fanScale, declScale);
+      node.setAttribute("cx", String(cx));
+      node.setAttribute("cy", String(cy));
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
       const hr = hitTargetRadius(o, k);

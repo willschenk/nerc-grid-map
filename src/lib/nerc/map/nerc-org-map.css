@@ -97,6 +97,19 @@
   fill-opacity: 1;
 }
 
+#nerc-svg .org.fallback-tiny {
+  fill-opacity: 0.72;
+  opacity: 0.42;
+  stroke-width: 0.45;
+  stroke: rgba(255, 255, 255, 0.6);
+}
+
+#nerc-svg .org.fallback-tiny.hot,
+#nerc-svg .org.fallback-tiny.selected {
+  opacity: 0.82;
+  fill-opacity: 0.95;
+}
+
 #nerc-svg .org.hide {
   display: none;
 }
