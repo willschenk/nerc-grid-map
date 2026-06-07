@@ -1300,23 +1300,23 @@ export function mountNercOrgMap(): void {
   }
 
   function visualRadius(o: Org, k: number): number {
-    // Simple visual-priority sizing: low-priority entities stay small but visible,
-    // while authority, regulated, public, and reliability organizations get more
-    // area. Radius is in CSS pixels, then converted to SVG units for the viewBox.
+    // Role weight is the primary size signal; priority affects disclosure and
+    // placement, but cannot make bubbles escape these visual bounds.
     const rawPriority = visualPriority(o);
     const priority = rawPriority / 100;
-    const minPx = compact ? 1.7 : 1.7;
-    const maxPx = compact ? 24 : MAX_RADIUS;
-    const fullPx = minPx + (maxPx - minPx) * priority;
-    // Bubbles start smaller at the overview so many more organizations fit on
-    // screen at once (denser national/mid view), then grow toward full size as the
-    // user zooms in. Desktop keeps a gentle ramp so mid-low zoom doesn't balloon.
+    const weight = Math.max(1, o.weight ?? 1);
+    const weightT = Math.max(0, Math.min(1, (weight - 1) / 48));
+    const minPx = compact ? 3 : 3.2;
+    const maxPx = compact ? 21 : Math.min(38, MAX_RADIUS);
+    const fullPx = minPx + (maxPx - minPx) * weightT;
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    const overviewScale = compact ? 0.4 : 0.46;
+    const overviewScale = compact ? 0.36 : 0.4;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
+    const weightLiftPx = weightT * (compact ? 4.5 : 7) * (0.35 + 0.65 * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
     const priorityT = smoothStep((rawPriority - 42) / 58);
-    const boostPx = canGrowAtZoom(o) ? (compact ? 6 : 10) * priorityT * closeT : 0;
+    const weightCloseT = smoothStep((weightT - 0.35) / 0.65);
+    const boostPx = canGrowAtZoom(o) ? (compact ? 6 : 10) * Math.max(priorityT, weightCloseT) * closeT : 0;
     // Mid-zoom lift for grid leadership so BA/RC/PC/TOP/TSP stay ahead after the
     // small-org growth pass; fades once deep-zoom catch-up kicks in.
     const leadershipMidBoost = isGridLeadershipOrg(o)
@@ -1367,11 +1367,12 @@ export function mountNercOrgMap(): void {
       microRevealMinPx,
       Math.min(
         zoomMaxPx,
-        basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
+        basePx + weightLiftPx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
       ),
     );
     const discloseT = bubbleDisclosureT(o, k);
-    return (minPx + (targetPx - minPx) * discloseT) * unitPerPx * phoneSizeScale() * ORG_CONTENT_SCALE;
+    const scaledPx = (minPx + (targetPx - minPx) * discloseT) * phoneSizeScale() * ORG_CONTENT_SCALE;
+    return Math.max(minPx, Math.min(maxPx, scaledPx)) * unitPerPx;
   }
 
   // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
