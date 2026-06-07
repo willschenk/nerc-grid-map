@@ -16,6 +16,10 @@
     "nerc:ingest": "node scripts/nerc/ingest.mjs",
     "nerc:build": "node scripts/nerc/build-orgs.mjs",
     "nerc:qa": "node scripts/nerc/qa.mjs",
+    "nerc:migrate-locations": "node scripts/nerc/migrate-locations.mjs",
+    "nerc:location-queue": "node scripts/nerc/build-location-queue.mjs",
+    "nerc:apply-location-alternates": "node scripts/nerc/apply-location-alternates.mjs",
+    "nerc:assign-sparse-alternates": "node scripts/nerc/assign-sparse-alternates.mjs",
     "nerc:payload-check": "node scripts/nerc/check-payload-split.mjs",
     "perf:audit": "node scripts/perf/audit-map.mjs",
     "deploy": "npm run build && bash scripts/deploy-pages.sh"

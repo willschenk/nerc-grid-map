@@ -15,8 +15,9 @@ Every dot is one entity from the NERC Compliance Registry, placed at its headqua
 - Map styles: `src/lib/nerc/map/nerc-org-map.css` (scoped under `#nerc-app`)
 - Role tables (weights, color anchors, names, tiers): `src/lib/nerc/roles.mjs`
 - Build-time enrichment: `src/lib/nerc/enrich.mjs`
-- Pipeline scripts: `scripts/nerc/{ingest,build-orgs,qa,build-research-queue}.mjs`
+- Pipeline scripts: `scripts/nerc/{ingest,build-orgs,qa,build-research-queue,build-location-queue,migrate-locations}.mjs`
 - Manual research hand-off: `scripts/nerc/cursor-research-queue.md` + `src/data/nerc/research-queue.{jsonl,csv}`
+- Alternate-location queue: `src/data/nerc/location-queue.{jsonl,csv}` (shared rank-1 coordinates)
 - Source data: `src/data/nerc/*`, raw CSV in `data/`
 
 ## Data pipeline
@@ -48,6 +49,11 @@ hand-delete a seed.
 - Preserve established punctuation in names (PG&E, PSE&G, OG&E, ISO-NE).
 - NERC region is the strongest geographic constraint. If a found address contradicts the region, downgrade confidence and note the conflict.
 - Subsidiaries use their own geography, not the parent's.
+- Each org may have up to three geographic slots in `locations[]` (rank 1 = HQ, ranks 2–3 = alternates). Fill ranks 2–3 when multiple entities share rank-1 coordinates; see `location-queue.csv`. Rank 1 always drives published `lat`/`lng`; the map tries rank 1→2→3 at runtime when declutter cannot place a dot near the current slot.
+
+### Map-combines and alternate locations
+
+`map-combines.json` folds same-entity co-registrations into one dot. Alternate `locations[]` slots belong to the canonical combined org only; member rows are not merged slot-by-slot.
 
 ## Map conventions
 
@@ -61,5 +67,7 @@ hand-delete a seed.
 npm run dev       # build data + serve
 npm run build     # build data + static site
 npm run check     # astro + TypeScript
-npm run nerc:qa   # validate public/nerc/orgs.json
+npm run nerc:qa              # validate public/nerc/orgs.json
+npm run nerc:migrate-locations  # backfill locations[] on source JSON
+npm run nerc:location-queue     # export shared-coordinate rows needing ranks 2–3
 ```

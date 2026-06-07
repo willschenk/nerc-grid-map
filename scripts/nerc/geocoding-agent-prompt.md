@@ -35,6 +35,11 @@ OUTPUT SCHEMA (exact keys, this order):
   "source": string,                 // one source tag (see list)
   "source_url": string|null,        // required when confidence=HIGH
   "notes": string,                  // short reasoning, esp. for ESTIMATED
+  "locations": [                    // optional; when present rank 1 mirrors lat/lng
+    { "rank": 1, "role": "headquarters", "lat": number, "lng": number, ...geo fields },
+    { "rank": 2, "role": "alternate", "lat": null, "lng": null },
+    { "rank": 3, "role": "alternate", "lat": null, "lng": null }
+  ],
   "skip": boolean,                  // true ONLY if not a US/CA/MX entity
   "skip_reason": string
 }
@@ -96,6 +101,10 @@ HARD RULES:
 7. Subsidiaries use their own geography, not the parent's ("Duke Energy Indiana" -> Indiana).
 8. Round lat/lng to exactly 4 decimals.
 9. Headquarters over plant site. Use a plant only if no corporate address exists; note it.
+10. LOCATIONS (optional `locations` array): rank 1 = confirmed HQ (required when array is
+    present). Ranks 2–3 = alternate real facilities (regional office, control center, major
+    plant) used when the map cannot place the org near rank 1; leave lat/lng null until found.
+    Do not invent alternates.
 
 SELF-CHECK BEFORE OUTPUT:
 - lat in [24,72], lng in [-180,-50] (North America).

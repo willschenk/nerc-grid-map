@@ -235,6 +235,7 @@ const RENDER_ORG_FIELDS = [
   "is_private",
   "lat",
   "lng",
+  "locations",
   "city",
   "state",
   "country",
@@ -254,6 +255,7 @@ const RENDER_ORG_FIELDS = [
 
 const ORG_DETAIL_FIELDS = [
   "headquarters_address",
+  "locations",
   "geo_source",
   "geo_source_url",
   "geo_notes",

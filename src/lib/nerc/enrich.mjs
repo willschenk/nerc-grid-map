@@ -241,6 +241,116 @@ function round4(n) {
   return n == null ? null : Math.round(n * 1e4) / 1e4;
 }
 
+function emptyLocationSlot(rank) {
+  return {
+    rank,
+    role: rank === 1 ? "headquarters" : "alternate",
+    lat: null,
+    lng: null,
+    headquarters_address: null,
+    city: null,
+    state: null,
+    country: null,
+    geo_confidence: null,
+    geo_source: null,
+    geo_source_url: null,
+    geo_notes: null,
+  };
+}
+
+function locationFromRecord(rec, rank) {
+  const confidence = normalizeConfidence(rec.geo_confidence ?? rec.confidence);
+  return {
+    rank,
+    role: rank === 1 ? "headquarters" : "alternate",
+    lat: round4(rec.lat),
+    lng: round4(rec.lng),
+    headquarters_address: rec.headquarters_address ?? null,
+    city: rec.city ?? null,
+    state: rec.state ?? null,
+    country: rec.country ?? "US",
+    geo_confidence: confidence,
+    geo_source: rec.geo_source ?? rec.source ?? null,
+    geo_source_url: rec.geo_source_url ?? rec.source_url ?? null,
+    geo_notes: rec.geo_notes ?? rec.notes ?? "",
+  };
+}
+
+function normalizeLocationRow(loc, rank) {
+  const confidence = loc.geo_confidence != null ? normalizeConfidence(loc.geo_confidence) : null;
+  return {
+    rank,
+    role: loc.role ?? (rank === 1 ? "headquarters" : "alternate"),
+    lat: round4(loc.lat),
+    lng: round4(loc.lng),
+    headquarters_address: loc.headquarters_address ?? null,
+    city: loc.city ?? null,
+    state: loc.state ?? null,
+    country: loc.country ?? null,
+    geo_confidence: confidence,
+    geo_source: loc.geo_source ?? null,
+    geo_source_url: loc.geo_source_url ?? null,
+    geo_notes: loc.geo_notes ?? null,
+  };
+}
+
+/** Three map-location slots per org; rank 1 required, ranks 2–3 optional fallbacks. */
+export function normalizeLocations(rec) {
+  const byRank = new Map();
+  if (Array.isArray(rec.locations) && rec.locations.length) {
+    for (const loc of rec.locations) {
+      const rank = Number(loc.rank);
+      if (rank >= 1 && rank <= 3) byRank.set(rank, normalizeLocationRow(loc, rank));
+    }
+  }
+  const slots = [1, 2, 3].map((rank) => byRank.get(rank) ?? emptyLocationSlot(rank));
+  if (slots[0].lat == null && rec.lat != null) {
+    slots[0] = locationFromRecord(rec, 1);
+  }
+  return slots;
+}
+
+/** QA checks for the locations array on enriched org records. */
+export function validateLocations(orgs) {
+  const errors = [];
+  const warnings = [];
+  for (const o of orgs) {
+    if (o.out_of_footprint) continue;
+    const locs = o.locations;
+    if (!Array.isArray(locs) || locs.length !== 3) {
+      errors.push(`locations invalid: ${o.ncr_id} (expected 3 slots)`);
+      continue;
+    }
+    for (let i = 0; i < 3; i++) {
+      const loc = locs[i];
+      if (loc.rank !== i + 1) {
+        errors.push(`locations rank mismatch: ${o.ncr_id} slot ${i + 1}`);
+      }
+    }
+    const primary = locs[0];
+    if (primary.lat == null || primary.lng == null) {
+      errors.push(`locations rank 1 missing coords: ${o.ncr_id}`);
+      continue;
+    }
+    if (primary.lat !== o.lat || primary.lng !== o.lng) {
+      errors.push(`locations rank 1 != lat/lng: ${o.ncr_id}`);
+    }
+    for (const loc of locs.slice(1)) {
+      if (loc.lat == null && loc.lng == null) continue;
+      if (loc.lat == null || loc.lng == null) {
+        errors.push(`locations partial coords: ${o.ncr_id} rank ${loc.rank}`);
+      } else if (loc.lat < 24 || loc.lat > 72 || loc.lng < -180 || loc.lng > -50) {
+        warnings.push(`locations out-of-range: ${o.ncr_id} rank ${loc.rank} (${loc.lat}, ${loc.lng})`);
+      }
+    }
+    const shared = locs.filter((l) => l.lat != null).length === 1;
+    if (shared && locs.slice(1).every((l) => l.lat == null)) {
+      // rank-1-only is expected until alternates are researched
+    }
+  }
+  return { errors, warnings };
+}
+
 // Geocoded record -> final NERCOrg. Accepts raw or already-normalized roles.
 // (Spec Part 2.2 schema + Part 3.2/3.3 precompute step.)
 export function enrichOrg(rec) {
@@ -250,6 +360,8 @@ export function enrichOrg(rec) {
   const confidence = normalizeConfidence(rec.geo_confidence ?? rec.confidence);
   const acronym = rec.acronym ? String(rec.acronym).trim() : inferAcronym(rec.entity_name);
   const acronymSource = rec.acronym_source ?? (rec.acronym ? null : inferAcronymSource(rec.entity_name));
+  const locations = normalizeLocations(rec);
+  const primary = locations[0];
 
   return {
     // Identity
@@ -281,13 +393,14 @@ export function enrichOrg(rec) {
     role_count: roles.length,
     is_private: isPrivate(roles),
 
-    // Location
-    lat: round4(rec.lat),
-    lng: round4(rec.lng),
-    headquarters_address: rec.headquarters_address ?? null,
-    city: rec.city ?? null,
-    state: rec.state ?? null,
-    country: rec.country ?? "US",
+    // Location (canonical HQ = rank 1; alternates in locations[1..2])
+    locations,
+    lat: primary.lat ?? round4(rec.lat),
+    lng: primary.lng ?? round4(rec.lng),
+    headquarters_address: primary.headquarters_address ?? rec.headquarters_address ?? null,
+    city: primary.city ?? rec.city ?? null,
+    state: primary.state ?? rec.state ?? null,
+    country: primary.country ?? rec.country ?? "US",
 
     // Geocoding metadata
     geo_confidence: confidence,

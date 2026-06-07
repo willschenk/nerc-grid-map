@@ -7,7 +7,7 @@
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { orgWeight, roleSetColor, isPrivate } from "../../src/lib/nerc/enrich.mjs";
+import { orgWeight, roleSetColor, isPrivate, validateLocations } from "../../src/lib/nerc/enrich.mjs";
 import { validateAreaAliases, validateAreaInterfaces } from "../../src/lib/nerc/area-aliases.mjs";
 import { CURRENT_REGIONAL_ENTITIES } from "../../src/lib/nerc/roles.mjs";
 
@@ -148,6 +148,11 @@ for (const e of validateAreaAliases(orgs)) errors.push(e);
 
 // 14. Area interfaces: non-org planning/interface codes excluded from the map.
 for (const e of validateAreaInterfaces(orgs)) errors.push(e);
+
+// 15. Locations: three-slot schema; rank 1 must match lat/lng.
+const locCheck = validateLocations(orgs);
+for (const e of locCheck.errors) errors.push(e);
+for (const w of locCheck.warnings) warnings.push(w);
 
 // Acceptance: >= 60% HIGH or MEDIUM.
 const hiMed = ((conf.HIGH ?? 0) + (conf.MEDIUM ?? 0)) / orgs.length * 100;

@@ -1,0 +1,50 @@
+ncr_id,entity_name,lat,lng,shared_count,shared_with,needs_research
+NCR12278,"Carolinas Reserve Sharing Group",35.2271,-80.8431,3,"NCR11861; NCR01219",false
+NCR01219,"Duke Energy Carolinas, LLC",35.2271,-80.8431,3,"NCR11861; NCR12278",false
+NCR11861,"Pioneer Transmission, LLC",35.2271,-80.8431,3,"NCR12278; NCR01219",false
+SUP-alaska-energy-authority,"Alaska Energy Authority",61.22,-149.89,2,"SUP-railbelt-reliability-council",false
+SUP-alaska-power-company,"Alaska Power Company",61.19,-149.86,2,"SUP-alaska-village-electric-cooperative-inc",false
+SUP-alaska-village-electric-cooperative-inc,"Alaska Village Electric Cooperative, Inc.",61.19,-149.86,2,"SUP-alaska-power-company",false
+SUP-appalachian-power-company,"Appalachian Power Company",38.3498,-81.6326,2,"SUP-black-diamond-power-company",false
+NCR13052,"Big Cajun 1",30.6739,-91.3556,2,"SUP-louisiana-generating",false
+SUP-black-diamond-power-company,"Black Diamond Power Company",38.3498,-81.6326,2,"SUP-appalachian-power-company",false
+NCR11286,"Brookfield Smoky Mountain Hydropower LLC",35.4923,-83.9806,2,"NCR11305",false
+SUP-california-choice-energy-authority,"California Choice Energy Authority",34.6868,-118.1541,2,"SUP-lancaster-energy",false
+SUP-chattanooga-electric-power-board,"Chattanooga Electric Power Board",35.0456,-85.3097,2,"NCR03043",false
+SUP-city-of-dillingham-electric-utility,"City of Dillingham Electric Utility",59.0397,-158.4575,2,"SUP-nushagak-electric-telephone-cooperative-inc",false
+SUP-city-of-vinton-electric-utility,"City of Vinton Electric Utility",30.1908,-93.5813,2,"SUP-vinton-public-power-authority",false
+NCR13209,"Columbia II, LLC",35.0267,-118.1856,2,"NCR13214",false
+NCR11735,"Cotton Plains Wind I, LLC",34.0603,-101.1876,2,"NCR11736",false
+NCR11992,"East Fork Wind Project, LLC",39.306,-101.0744,2,"NCR11919",false
+NCR11710,"GenConn Energy LLC",41.2585,-73.0006,2,"NCR07222",false
+NCR11747,"GEV - Linden VFT",40.6322,-74.2156,2,"NCR11561",false
+NCR11703,"Golden Fields Solar I, LLC",34.839,-118.3868,2,"NCR11704",false
+SUP-hawaiian-electric-company-inc,"Hawaiian Electric Company, Inc.",21.31,-157.86,2,"SUP-hawaiian-electric-industries-inc",false
+SUP-hawaiian-electric-industries-inc,"Hawaiian Electric Industries, Inc.",21.31,-157.86,2,"SUP-hawaiian-electric-company-inc",false
+SUP-lancaster-energy,"Lancaster Energy",34.6868,-118.1541,2,"SUP-california-choice-energy-authority",false
+SUP-louisiana-generating,"Louisiana Generating",30.6739,-91.3556,2,"NCR13052",false
+NCR11561,"NAES Corporation - Cogen Technologies Linden Venture",40.6322,-74.2156,2,"NCR11747",false
+NCR07091,"New Hampshire Transmission, LLC",26.8582,-80.06,2,"NCR12183",false
+NCR10019,"NextEra Energy Resources, LLC",26.844,-80.101,2,"NCR12556",false
+NCR12183,"NextEra Energy Transmission New York",26.8582,-80.06,2,"NCR07091",false
+NCR12556,"NextEra Energy Transmission Southwest, LLC",26.844,-80.101,2,"NCR10019",false
+NCR10090,"NRG Texas Power, LLC",29.7604,-95.3698,2,"SUP-shell-energy-north-america",false
+SUP-nushagak-electric-telephone-cooperative-inc,"Nushagak Electric & Telephone Cooperative, Inc.",59.0397,-158.4575,2,"SUP-city-of-dillingham-electric-utility",false
+NCR11736,"Old Settler Wind, LLC",34.0603,-101.1876,2,"NCR11735",false
+SUP-railbelt-reliability-council,"Railbelt Reliability Council",61.22,-149.89,2,"SUP-alaska-energy-authority",false
+NCR13214,"RE Camelot, LLC",35.0267,-118.1856,2,"NCR13209",false
+NCR10299,"Sheldon Energy, LLC",42.7625,-78.4185,2,"NCR11408",false
+SUP-shell-energy-north-america,"Shell Energy North America",29.7604,-95.3698,2,"NCR10090",false
+NCR11305,"Smoky Mountain Transmission LLC",35.4923,-83.9806,2,"NCR11286",false
+NCR11704,"Solar Star California XLI, LLC",34.839,-118.3868,2,"NCR11703",false
+NCR11919,"Solomon Forks Wind Project, LLC",39.306,-101.0744,2,"NCR11992",false
+NCR11408,"Stony Creek Energy LLC",42.7625,-78.4185,2,"NCR10299",false
+NCR03043,"TEE Contingency Reserve Sharing Group",35.0456,-85.3097,2,"SUP-chattanooga-electric-power-board",false
+NCR13238,"Transource Midwest",39.1014,-94.5804,2,"NCR01357",false
+NCR07222,"United Illuminating Company",41.2585,-73.0006,2,"NCR11710",false
+NCR01357,"USACE - Kansas City District",39.1014,-94.5804,2,"NCR13238",false
+NCR05445,"Utah Associated Municipal Power Systems",40.7721,-111.9031,2,"NCR11825",false
+SUP-vinton-public-power-authority,"Vinton Public Power Authority",30.1908,-93.5813,2,"SUP-city-of-vinton-electric-utility",false
+NCR-SEED-055,"Western Area Power Administration",39.7036,-105.1192,2,"NCR05467",false
+NCR05467,"Western Area Power Administration - Upper Great Plains Region",39.7036,-105.1192,2,"NCR-SEED-055",false
+NCR11825,"Western Frequency Response Sharing Group",40.7721,-111.9031,2,"NCR05445",false

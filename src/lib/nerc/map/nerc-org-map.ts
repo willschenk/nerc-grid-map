@@ -9,6 +9,21 @@ import { isExcludedTerritoryFips } from "../excluded-territories.mjs";
 
 type Place = { name: string; lat: number; lng: number; tier: number; _x?: number; _y?: number };
 
+type OrgLocation = {
+  rank: 1 | 2 | 3;
+  role?: string;
+  lat: number | null;
+  lng: number | null;
+  headquarters_address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  country?: string | null;
+  geo_confidence?: string | null;
+  geo_source?: string | null;
+  geo_source_url?: string | null;
+  geo_notes?: string | null;
+};
+
 type Org = {
   ncr_id: string;
   entity_name: string;
@@ -28,6 +43,8 @@ type Org = {
   is_private: boolean;
   lat: number | null;
   lng: number | null;
+  locations?: OrgLocation[];
+  map_location_rank?: 1 | 2 | 3 | null;
   headquarters_address?: string | null;
   city: string | null;
   state: string | null;
@@ -85,6 +102,7 @@ type Org = {
   // Which projection placed this org: mainland Albers ("us"), the Canada conic
   // ("ca"), or a territory inset ("terr").
   _frame?: "us" | "ca" | "terr";
+  _locXY?: Array<{ rank: 1 | 2 | 3; x: number; y: number; frame: "us" | "ca" } | null>;
 };
 
 type LandLabel = { name: string; x: number; y: number; small: boolean; _node?: SVGTextElement };
@@ -450,8 +468,10 @@ function confidenceLabel(value: string | null): string {
 }
 
 function locationLabel(o: Org): string {
-  const place = [o.city, o.state].filter(Boolean).join(", ");
-  return place || o.headquarters_address || o.country || "Location unknown";
+  const rank = o.map_location_rank ?? 1;
+  const loc = o.locations?.find((l) => l.rank === rank) ?? o.locations?.[0];
+  const place = [loc?.city ?? o.city, loc?.state ?? o.state].filter(Boolean).join(", ");
+  return place || loc?.headquarters_address || o.headquarters_address || o.country || "Location unknown";
 }
 
 function safeColor(color: string | null | undefined): string {
@@ -1606,10 +1626,43 @@ export function mountNercOrgMap(): void {
       o._rk = undefined;
       o._dx = 0;
       o._dy = 0;
+      o.map_location_rank = undefined;
+      o._locXY = [];
       if (o.out_of_footprint) {
         o._x = undefined;
         o._y = undefined;
         o._frame = TERRITORY_STATES.has(o.state ?? "") ? "terr" : undefined;
+        continue;
+      }
+      const slots = o.locations?.length ? o.locations : null;
+      if (slots) {
+        for (const loc of slots) {
+          if (loc.lat == null || loc.lng == null) {
+            o._locXY.push(null);
+            continue;
+          }
+          const proj = loc.country === "CA" ? canadaProj : projection;
+          const p = proj([loc.lng, loc.lat]);
+          if (!p) {
+            o._locXY.push(null);
+            continue;
+          }
+          o._locXY.push({
+            rank: loc.rank,
+            x: p[0],
+            y: p[1],
+            frame: loc.country === "CA" ? "ca" : "us",
+          });
+        }
+        const primary = o._locXY.find((l) => l?.rank === 1) ?? o._locXY.find(Boolean) ?? null;
+        if (primary) {
+          o._frame = primary.frame;
+          o._x = primary.x;
+          o._y = primary.y;
+        } else {
+          o._x = undefined;
+          o._y = undefined;
+        }
         continue;
       }
       if (o.lng == null || o.lat == null) {
@@ -1627,6 +1680,7 @@ export function mountNercOrgMap(): void {
       o._frame = o.country === "CA" ? "ca" : "us";
       o._x = p[0];
       o._y = p[1];
+      o._locXY.push({ rank: 1, x: p[0], y: p[1], frame: o._frame });
     }
 
     layoutTerritoryInsets();
@@ -1727,15 +1781,13 @@ export function mountNercOrgMap(): void {
     // overlapping, with no built-in margin.
     const bucketTop = bucket < 2.6 ? bucket + 0.125 : bucket < 8 ? bucket + 0.25 : bucket + 0.5;
     const reserveR = (o: Org): number => Math.max(renderedRadius(o, bucket), renderedRadius(o, bucketTop));
-    type Item = { o: Org; ox: number; oy: number; r: number };
+    type SlotOrigin = { rank: 1 | 2 | 3; ox: number; oy: number; bx: number; by: number };
+    type Item = { o: Org; slots: SlotOrigin[]; r: number };
     const items: Item[] = [];
     for (const o of orgs) {
       o._dx = 0;
       o._dy = 0;
-      if (o._x == null || o._y == null) {
-        o._placed = false;
-        continue;
-      }
+      o.map_location_rank = undefined;
       if (!canDisplayOrg(o, bucket)) {
         o._placed = false;
         continue;
@@ -1746,7 +1798,31 @@ export function mountNercOrgMap(): void {
         o._placed = true;
         continue;
       }
-      items.push({ o, ox: o._x * bucket, oy: o._y * bucket, r: reserveR(o) });
+      const slotOrigins: SlotOrigin[] = [];
+      for (const loc of o._locXY ?? []) {
+        if (!loc) continue;
+        slotOrigins.push({
+          rank: loc.rank,
+          ox: loc.x * bucket,
+          oy: loc.y * bucket,
+          bx: loc.x,
+          by: loc.y,
+        });
+      }
+      if (!slotOrigins.length && o._x != null && o._y != null) {
+        slotOrigins.push({
+          rank: 1,
+          ox: o._x * bucket,
+          oy: o._y * bucket,
+          bx: o._x,
+          by: o._y,
+        });
+      }
+      if (!slotOrigins.length) {
+        o._placed = false;
+        continue;
+      }
+      items.push({ o, slots: slotOrigins, r: reserveR(o) });
     }
     if (!items.length) return;
 
@@ -1814,22 +1890,28 @@ export function mountNercOrgMap(): void {
     for (const it of items) {
       let placed = false;
       const offsets = offsetsFor(orgPlacementRadius(it.o, bucket));
-      for (const [dx, dy] of offsets) {
-        const cx = it.ox + dx;
-        const cy = it.oy + dy;
-        if (!onLandHere(cx, cy, it.r)) continue;
-        if (!fits(cx, cy, it.r)) continue;
-        it.o._dx = dx;
-        it.o._dy = dy;
-        it.o._placed = true;
-        claim(cx, cy, it.r);
-        placed = true;
-        break;
+      slotLoop: for (const slot of it.slots) {
+        for (const [dx, dy] of offsets) {
+          const cx = slot.ox + dx;
+          const cy = slot.oy + dy;
+          if (!onLandHere(cx, cy, it.r)) continue;
+          if (!fits(cx, cy, it.r)) continue;
+          it.o._dx = dx;
+          it.o._dy = dy;
+          it.o._x = slot.bx;
+          it.o._y = slot.by;
+          it.o.map_location_rank = slot.rank;
+          it.o._placed = true;
+          claim(cx, cy, it.r);
+          placed = true;
+          break slotLoop;
+        }
       }
       if (!placed) {
         it.o._placed = false;
         it.o._dx = 0;
         it.o._dy = 0;
+        it.o.map_location_rank = undefined;
       }
     }
   }
@@ -2891,6 +2973,16 @@ export function mountNercOrgMap(): void {
     addDlRow(dl, "Role weight", `${o.weight}${o.is_iso_rto ? " | ISO/RTO scale" : ""}`);
     addDlRow(dl, "Regional Entity", regionLabel(o));
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
+    if (o.map_location_rank && o.map_location_rank > 1) {
+      addDlRow(dl, "Map pin", `Alternate location (rank ${o.map_location_rank})`);
+    }
+    const altLocs = (o.locations ?? []).filter((l) => l.rank > 1 && l.lat != null);
+    if (altLocs.length) {
+      const altText = altLocs
+        .map((l) => `Rank ${l.rank}: ${[l.city, l.state].filter(Boolean).join(", ") || l.headquarters_address || `${l.lat}, ${l.lng}`}`)
+        .join("; ");
+      addDlRow(dl, "Alternate locations", altText);
+    }
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     if (o.geo_notes) addDlRow(dl, "Notes", o.geo_notes);
 

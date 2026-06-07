@@ -16,6 +16,28 @@ export type OrgType =
   | "IOU" | "cooperative" | "municipal" | "federal"
   | "merchant" | "ISO_RTO" | "cca" | "other" | null;
 
+export type OrgLocationRole =
+  | "headquarters"
+  | "regional_office"
+  | "control_center"
+  | "plant"
+  | "alternate";
+
+export type OrgLocation = {
+  rank: 1 | 2 | 3;
+  role?: OrgLocationRole;
+  lat: number | null;
+  lng: number | null;
+  headquarters_address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  country?: "US" | "CA" | "MX" | string | null;
+  geo_confidence?: GeoConfidence | null;
+  geo_source?: string | null;
+  geo_source_url?: string | null;
+  geo_notes?: string | null;
+};
+
 export type NERCOrg = {
   // Identity
   ncr_id: string; // "NCR11516" - primary key
@@ -31,7 +53,8 @@ export type NERCOrg = {
   role_count: number;
   is_private: boolean;
 
-  // Location
+  // Location (lat/lng = rank-1 headquarters; map may use rank 2/3 at runtime)
+  locations?: OrgLocation[];
   lat: number | null; // 4 decimals
   lng: number | null; // 4 decimals
   headquarters_address: string | null;
@@ -68,6 +91,7 @@ export type GeoRecord = {
   roles: string[];
   lat: number;
   lng: number;
+  locations?: OrgLocation[];
   headquarters_address?: string | null;
   city?: string | null;
   state?: string | null;
