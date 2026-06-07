@@ -1717,11 +1717,13 @@ export function mountNercOrgMap(): void {
     if (!force && bucket === orgLayoutBucket) return;
     orgLayoutBucket = bucket;
 
-    // No margin between organizations: reserve essentially the rendered radius so
-    // bubbles pack edge-to-edge (touching) rather than with a gap. A hair over 1.0
-    // only to absorb tiny radius growth between the placement bucket and the exact
-    // render zoom, so touching never tips into actual overlap.
-    const OVERLAP_PAD = 1.01;
+    // No margin: bubbles pack edge-to-edge so they can touch but never overlap.
+    // We reserve each bubble at the LARGEST radius it reaches anywhere in this
+    // zoom bucket (its upper edge), so within the bucket two neighbours touch at
+    // most (at the top of the bucket) and are otherwise a hair apart — never
+    // overlapping, with no built-in margin.
+    const bucketTop = bucket < 2.6 ? bucket + 0.125 : bucket < 8 ? bucket + 0.25 : bucket + 0.5;
+    const reserveR = (o: Org): number => Math.max(renderedRadius(o, bucket), renderedRadius(o, bucketTop));
     type Item = { o: Org; ox: number; oy: number; r: number };
     const items: Item[] = [];
     for (const o of orgs) {
@@ -1741,7 +1743,7 @@ export function mountNercOrgMap(): void {
         o._placed = true;
         continue;
       }
-      items.push({ o, ox: o._x * bucket, oy: o._y * bucket, r: renderedRadius(o, bucket) * OVERLAP_PAD });
+      items.push({ o, ox: o._x * bucket, oy: o._y * bucket, r: reserveR(o) });
     }
     if (!items.length) return;
 
