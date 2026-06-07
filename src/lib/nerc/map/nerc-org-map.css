@@ -181,7 +181,7 @@
 
   #nerc-svg .olabel.hot-label:not(.selected-label) {
     font-weight: 830;
-    stroke-width: 4.2;
+    stroke-width: 4.4;
   }
 }
 
@@ -247,11 +247,11 @@
 }
 
 #nerc-svg .olabel {
-  fill: #07110e;
+  fill: #ffffff;
   font-weight: 760;
-  paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.98);
-  stroke-width: 3.5;
+  paint-order: stroke fill;
+  stroke: rgba(7, 17, 14, 0.88);
+  stroke-width: 3.2;
   pointer-events: none;
   text-anchor: middle;
 }
@@ -261,12 +261,14 @@
 }
 
 /* Super-short token tucked inside its own bubble: white text, centred, with a
-   thin dark halo so it reads on any role colour (some are mid-light). */
+   dark halo so it reads on any role colour (some are mid-light). Inline styles
+   in redraw() refine stroke width by name length; these are fallbacks. */
 #nerc-svg .olabel.inside {
   fill: #ffffff;
   font-weight: 740;
-  stroke: rgba(7, 17, 14, 0.55);
-  stroke-width: 2.2;
+  paint-order: stroke fill;
+  stroke: rgba(7, 17, 14, 0.84);
+  stroke-width: 2.6;
   dominant-baseline: central;
 }
 
@@ -276,26 +278,28 @@
 
 #nerc-svg .olabel.inside.hot-label {
   fill: #ffffff;
-  stroke: rgba(3, 8, 7, 0.7);
-  stroke-width: 2.6;
+  stroke: rgba(3, 8, 7, 0.92);
+  stroke-width: 3;
 }
 
 #nerc-svg .olabel.inside.selected-label {
   fill: #ffffff;
-  stroke: rgba(3, 8, 7, 0.78);
-  stroke-width: 2.9;
+  stroke: rgba(3, 8, 7, 0.96);
+  stroke-width: 3.2;
 }
 
 #nerc-svg .olabel.hot-label {
-  fill: #030807;
+  fill: #ffffff;
   font-weight: 850;
-  stroke-width: 4.4;
+  stroke: rgba(3, 8, 7, 0.92);
+  stroke-width: 4.2;
 }
 
 #nerc-svg .olabel.selected-label {
-  fill: #030807;
+  fill: #ffffff;
   font-weight: 880;
-  stroke-width: 4.9;
+  stroke: rgba(3, 8, 7, 0.96);
+  stroke-width: 4.6;
 }
 
 #nerc-svg .olabel.tour-flash {
@@ -1285,6 +1289,15 @@
   #nerc-svg .org.tour-flash,
   #nerc-svg .olabel.tour-flash {
     animation-duration: 950ms;
+  }
+
+  /* Phones: slightly stronger halo floor so white org labels stay legible on small screens. */
+  #nerc-svg .olabel:not(.inside) {
+    stroke-width: 3.6;
+  }
+
+  #nerc-svg .olabel.inside {
+    stroke-width: 2.8;
   }
 
   .nerc-panel,

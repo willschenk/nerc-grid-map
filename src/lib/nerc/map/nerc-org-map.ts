@@ -1207,6 +1207,35 @@ export function mountNercOrgMap(): void {
     return base * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale() * ORG_CONTENT_SCALE;
   }
 
+  // White label ink with a length-aware dark halo — keeps long names readable
+  // without a heavy outline that reads as black clutter over the map.
+  function orgLabelInk(
+    state: { text: string; font: number; inside: boolean },
+    emphasis: "normal" | "hot" | "selected",
+  ): { fill: string; stroke: string; strokeWidth: number } {
+    const len = state.text.length;
+    const scale = state.inside
+      ? len > 13
+        ? 0.36
+        : len > 8
+          ? 0.32
+          : 0.28
+      : len > 18
+        ? 0.26
+        : len > 12
+          ? 0.23
+          : len > 7
+            ? 0.21
+            : 0.19;
+    const minPx = state.inside ? (compact ? 2.4 : 2.35) : compact ? 2.65 : 2.5;
+    let strokeWidth = Math.max(minPx * unitPerPx, state.font * scale);
+    if (emphasis === "selected") strokeWidth *= 1.14;
+    else if (emphasis === "hot") strokeWidth *= 1.08;
+    const alpha =
+      emphasis === "selected" ? 0.96 : emphasis === "hot" ? 0.92 : state.inside ? 0.84 : 0.88;
+    return { fill: "#ffffff", stroke: `rgba(7, 17, 14, ${alpha})`, strokeWidth };
+  }
+
   function labelLimit(k: number): number {
     // Smooth ramp: more label slots unlock gradually as zoom increases.
     const t = smoothStep((k - 0.85) / (compact ? 5.5 : 6.5));
@@ -2698,20 +2727,13 @@ export function mountNercOrgMap(): void {
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
       node.classList.toggle("inside", state.inside);
-      // Inside labels stay white on every bubble colour; longer tokens get a
-      // thicker dark outline so they stay readable instead of switching to dark
-      // text. Floating labels keep the stylesheet's default ink.
-      if (state.inside) {
-        node.style.fill = "#ffffff";
-        node.style.stroke = "rgba(7, 17, 14, 0.82)";
-        const len = state.text.length;
-        const strokeScale = len > 13 ? 0.34 : len > 8 ? 0.3 : 0.26;
-        node.style.strokeWidth = String(Math.max(2.2 * unitPerPx, state.font * strokeScale));
-      } else {
-        node.style.fill = "";
-        node.style.stroke = "";
-        node.style.strokeWidth = "";
-      }
+      const emphasis =
+        selectedOrg?.ncr_id === o.ncr_id ? "selected" : hot?.ncr_id === o.ncr_id ? "hot" : "normal";
+      const ink = orgLabelInk(state, emphasis);
+      node.style.fill = ink.fill;
+      node.style.stroke = ink.stroke;
+      node.style.strokeWidth = String(ink.strokeWidth);
+      node.style.paintOrder = "stroke fill";
       node.classList.toggle("hover-on-dot", !!state.centered);
       node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
