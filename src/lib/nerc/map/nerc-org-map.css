@@ -117,6 +117,11 @@
   opacity: 1;
 }
 
+/* Mid-disclosure: promoted bubble not yet at full size (unlabeled). */
+#nerc-svg .org.bubble-small {
+  fill-opacity: 0.88;
+}
+
 #nerc-svg .org.hide {
   display: none;
 }

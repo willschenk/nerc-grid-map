@@ -860,36 +860,51 @@ export function mountNercOrgMap(): void {
     return compact ? PSE_MARKET_DISPLAY_K_COMPACT : PSE_MARKET_DISPLAY_K;
   }
 
-  // Progressive zoom tiers. Lower-priority / lower-weight entities reveal as the
-  // user zooms in, so the widest view stays dominated by RC/BA/PC/TOP/TSP, ISOs/
-  // RTOs and major utilities, while every zoom step still adds meaningful new
-  // organizations. Nothing is removed from the dataset — only revealed later.
+  // Progressive zoom tiers. Every non-GO org is eligible to appear by ~k 1.0–1.35
+  // (as a bubble or background dot); higher-priority orgs promote earlier.
   function overviewRevealK(o: Org): number {
     const pri = visualPriority(o);
     const w = o.weight ?? 0;
-    // Grid leadership and high-value utilities are always present at the overview.
-    if (isGridLeadershipOrg(o) || pri >= 50) return 0; // leadership + grid roles always
-    if (pri >= 42) return w >= 12 ? 0.78 : 0.95; // utilities, cooperatives, municipals
-    if (pri >= 28) return w >= 8 ? 1.1 : 1.5;
-    if (pri >= 18) return 1.9;
-    return 2.4; // lowest non-deferred (minor/merchant) — GO/GOP/PSE deferred separately
+    if (isGridLeadershipOrg(o) || pri >= 50) return 0;
+    if (pri >= 42) return w >= 12 ? (compact ? 0.55 : 0.45) : compact ? 0.75 : 0.65;
+    if (pri >= 28) return compact ? 0.95 : 0.85;
+    if (pri >= 18) return compact ? 1.15 : 1.0;
+    return compact ? 1.35 : 1.2;
   }
 
   function canDisplayOrg(o: Org, k: number): boolean {
-    // Generation-only (GO/GOP) companies are excluded from the map entirely. They
-    // are the bulk of the low-priority dots, so dropping them frees space for the
-    // grid/utility organizations to fit cleanly at every zoom.
+    // Generation-only (GO/GOP) companies are excluded from the map entirely.
     if (isGenerationOnly(o)) return false;
-    // Compact (phones/small tablets): below k2 keep the overview to major
-    // entities only (grid leadership or high visual priority) so crowded metros
-    // don't stack low-priority dots. They reveal normally once zoomed past k2.
-    // Orgs that fail bubble placement still render as quiet fallback dots at their
-    // true projected location (see computePlacements / rendersAsBackgroundDot).
-    if (compact && k < 2 && !isGridLeadershipOrg(o) && visualPriority(o) < 28) return false;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
-    // PSE-market entities remain the deepest tier.
     if (isDeferredMarketOrg(o)) return k >= pseMarketDisplayK();
     return k >= overviewRevealK(o);
+  }
+
+  // 0–1 ramp: how fully an org promotes from background dot to readable bubble.
+  // Higher labelPriority promotes earlier; low tiers stay tiny until mid/deep zoom.
+  function bubbleDisclosureT(o: Org, k: number): number {
+    if (isDeferredMarketOrg(o)) {
+      const start = microOrgRevealK(o);
+      if (k < start) return 0;
+      return smoothStep((k - start) / (compact ? 5 : 4));
+    }
+    const lp = labelPriority(o);
+    if (lp >= 88) return 1;
+    if (lp >= 78) return 0.32 + 0.68 * smoothStep((k - 0.75) / (compact ? 1.1 : 0.9));
+    if (lp >= 68) return 0.22 + 0.78 * smoothStep((k - 0.95) / (compact ? 1.3 : 1.1));
+    if (lp >= 52) return 0.16 + 0.84 * smoothStep((k - 1.15) / (compact ? 1.6 : 1.4));
+    if (lp >= 38) return 0.1 + 0.9 * smoothStep((k - 1.5) / (compact ? 2.0 : 1.8));
+    if (lp >= 16) return 0.06 + 0.94 * smoothStep((k - 2.2) / (compact ? 2.6 : 2.4));
+    return 0.04 + 0.96 * smoothStep((k - 2.8) / (compact ? 3.2 : 3.0));
+  }
+
+  // Disclosure tier for rendering: background dot → small bubble → full bubble (+ label).
+  function disclosureTier(o: Org, k: number, hasLabel: boolean): "background" | "small" | "bubble" | "labeled" {
+    if (o.placementMode === "fallbackTiny" || o._renderFallback) return "background";
+    if (hasLabel) return "labeled";
+    const t = bubbleDisclosureT(o, k);
+    if (t < 0.58) return "small";
+    return "bubble";
   }
 
   function isMajorSystemOperator(o: Org): boolean {
@@ -1080,10 +1095,6 @@ export function mountNercOrgMap(): void {
     return true;
   }
 
-  function visualTier(o: Org): "bubble" | "background" {
-    return o._renderFallback || o.placementMode === "fallbackTiny" ? "background" : "bubble";
-  }
-
   // Label eligibility is independent of bubble visibility. Fallback dots never
   // label unless forced; major orgs label early; low-priority orgs defer.
   function isLabelForced(o: Org, tourActive: boolean, hot: Org | null): boolean {
@@ -1104,22 +1115,15 @@ export function mountNercOrgMap(): void {
     if (o.placementMode === "fallbackTiny") return false;
     if (isDeferredMarketOrg(o)) return k >= (compact ? 5.5 : 4.8);
     const lp = labelPriority(o);
-    const midwest = isMidwestOrg(o);
-    // ISO/RTO and grid authority: label at national overview.
-    if (lp >= 88) return true;
-    if (lp >= 78) return k >= (compact ? 0.95 : 0.85);
-    // Regional entity, federal, major regulated utility.
-    if (lp >= 68) return k >= (compact ? 1.05 : 0.95);
-    // Co-op, muni, smaller utility.
-    if (lp >= 38) return k >= (compact ? 2.0 : 1.65);
-    // Merchant / IPP.
-    if (lp >= 16) return k >= (compact ? 3.2 : 2.8);
-    // Residual low tier — deep zoom only.
-    if (k >= (compact ? 4.5 : 4.0)) return lp >= 10;
-    if (k < 1.25) return lp >= (midwest ? 30 : 34);
-    if (k < 1.8) return lp >= (midwest ? 24 : 28);
-    if (k < 2.2) return lp >= (midwest ? 20 : 24);
-    return lp >= (midwest ? 16 : 20);
+    const revealK =
+      lp >= 88 ? 0 :
+      lp >= 78 ? (compact ? 0.95 : 0.85) :
+      lp >= 68 ? (compact ? 1.05 : 0.95) :
+      lp >= 52 ? (compact ? 1.45 : 1.25) :
+      lp >= 38 ? (compact ? 2.0 : 1.65) :
+      lp >= 16 ? (compact ? 3.2 : 2.8) :
+      compact ? 4.5 : 4.0;
+    return k >= revealK;
   }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
@@ -1157,27 +1161,14 @@ export function mountNercOrgMap(): void {
   }
 
   function labelLimit(k: number): number {
-    // Raised at high zoom so smaller organizations' names appear once there's
-    // room. Collision checks still gate floating labels, so denser caps only fill
-    // genuinely free space rather than overlapping.
-    const cap =
-      k < 1.25 ? 700 :
-      k < 1.8 ? 1000 :
-      k < 2.6 ? 1400 :
-      k < 3.4 ? 1800 :
-      k < 4.8 ? 2200 :
-      k < 6.8 ? 2800 :
-      k < 9.5 ? 2400 :
-      k < 12.5 ? 3200 :
-      k < 18 ? 4200 :
-      100000;
-    // On phones, keep the overview sparse (small screen) but open up as you zoom
-    // in — there's screen space to fill, and the user wants iOS to feel as dynamic
-    // as desktop. Now that the compact overview discloses fewer (bigger) dots, it
-    // can carry a few more labels. Multiplier ramps 0.56 -> 1.0 across the range.
-    if (!compact) return cap;
-    const mult = 0.65 + 0.31 * smoothStep((k - 1.6) / 4.5);
-    return Math.round(cap * mult);
+    // Smooth ramp: more label slots unlock gradually as zoom increases.
+    const t = smoothStep((k - 0.85) / (compact ? 5.5 : 6.5));
+    const overview = compact ? 420 : 680;
+    const mid = compact ? 1100 : 1800;
+    const deep = compact ? 2200 : 4200;
+    const cap = overview + (mid - overview) * smoothStep((k - 1) / 2.8) + (deep - mid) * t * t;
+    if (!compact) return Math.round(cap);
+    return Math.round(cap * (0.62 + 0.38 * smoothStep((k - 1.4) / 4.2)));
   }
 
   function placeLabelLimit(k: number): number {
@@ -1263,18 +1254,18 @@ export function mountNercOrgMap(): void {
       * (isDeferredMarketOrg(o) ? (compact ? 18 : 22) : isTransmissionOwnerOnly(o) ? (compact ? 10 : 12) : 0);
     const microRevealMinPx =
       postRevealT * (isDeferredMarketOrg(o) ? (compact ? 9 : 11) : (compact ? 6.5 : 7.5));
-    return (
-      Math.max(
-        minPx,
-        deepMinPx,
-        insetOverviewMinPx,
-        microRevealMinPx,
-        Math.min(
-          zoomMaxPx,
-          basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
-        ),
-      ) * unitPerPx * phoneSizeScale() * ORG_CONTENT_SCALE
+    const targetPx = Math.max(
+      minPx,
+      deepMinPx,
+      insetOverviewMinPx,
+      microRevealMinPx,
+      Math.min(
+        zoomMaxPx,
+        basePx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
+      ),
     );
+    const discloseT = bubbleDisclosureT(o, k);
+    return (minPx + (targetPx - minPx) * discloseT) * unitPerPx * phoneSizeScale() * ORG_CONTENT_SCALE;
   }
 
   // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
@@ -1342,6 +1333,12 @@ export function mountNercOrgMap(): void {
     // in sync as bubbles grow with zoom.
     const margin = Math.max(padPx * unitPerPx, visual * 0.05);
     let target = Math.max(visual + margin, floorPx * unitPerPx);
+    // Low-priority orgs gain clickability as they promote through mid/deep zoom.
+    const discloseT = bubbleDisclosureT(o, k);
+    if (discloseT < 0.85 && visualPriority(o) < 45) {
+      const promoteClickPx = (compact ? 9 : 7) * (1 - discloseT) * smoothStep((k - 1.5) / 3);
+      target = Math.max(target, (floorPx + promoteClickPx) * unitPerPx);
+    }
     // Inset utilities sit tight at overview; keep tap rings generous without
     // changing mainland hit math.
     if (isUsInsetOrg(o)) {
@@ -2600,9 +2597,11 @@ export function mountNercOrgMap(): void {
         o._rr = rr;
       }
       const labeled = labelState.has(o.ncr_id);
+      const tier = disclosureTier(o, k, labeled);
       const inTour = tourActive && tourIds.has(o.ncr_id);
       node.classList.toggle("labeled", labeled);
-      node.classList.toggle("org-background", visualTier(o) === "background");
+      node.classList.toggle("org-background", tier === "background");
+      node.classList.toggle("bubble-small", tier === "small");
       node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
       node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
       // Only the labeled subset breathes (bounded count = cheap on iOS); the
