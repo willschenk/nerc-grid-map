@@ -200,16 +200,28 @@ const TERRITORY_BUBBLE_SCALE = 4;
 // overview zoom where the inset is tiny on screen.
 const US_INSET_STATES = new Set(["AK", "HI"]);
 
-function isUsInsetOrg(o: { state?: string | null }): boolean {
-  return US_INSET_STATES.has(o.state ?? "");
-}
-
 // Dense upper-Midwest utility belt (NE/IA/MN/WI): extra declutter spread and
 // slightly earlier label tries without changing the placement algorithm.
 const MIDWEST_STATES = new Set(["NE", "IA", "MN", "WI"]);
 
+// Coastal and international-border states: keep declutter leashes tight so dots
+// do not drift offshore or away from their true geography.
+const COASTAL_BORDER_STATES = new Set([
+  "AK", "AL", "AZ", "CA", "CT", "DE", "FL", "GA", "HI", "LA", "MA", "MD", "ME",
+  "MI", "MN", "MS", "MT", "NC", "ND", "NH", "NJ", "NM", "NY", "OR", "RI", "SC",
+  "TX", "VA", "VT", "WA",
+]);
+
+function isUsInsetOrg(o: { state?: string | null }): boolean {
+  return US_INSET_STATES.has(o.state ?? "");
+}
+
 function isMidwestOrg(o: { state?: string | null }): boolean {
   return MIDWEST_STATES.has(o.state ?? "");
+}
+
+function isCoastalOrBorderOrg(o: { state?: string | null }): boolean {
+  return COASTAL_BORDER_STATES.has(o.state ?? "");
 }
 
 function territoryLayoutMetrics(compact: boolean, u: number, viewW: number, viewH: number) {
@@ -1371,19 +1383,24 @@ export function mountNercOrgMap(): void {
     return Math.round(k);
   }
 
-  function deepDeclutterT(k: number): number {
-    return smoothStep((k - 8) / 28);
+  // 0 at national overview, 1 at deep zoom — shrinks the placement leash.
+  function declutterZoomT(k: number): number {
+    return smoothStep((k - 0.85) / 10);
   }
 
   function maxDeclutterOffset(k: number): number {
-    // Tight leash: declutter may nudge a bubble only around its own projected
-    // location. This prevents entities from drifting to distant land just to find
-    // a gap.
-    const basePx = compact
-      ? k < 1.25 ? 4 : k < 2.2 ? 5 : k < 4 ? 7 : k < 7 ? 9 : 11
-      : k < 1.25 ? 5 : k < 2.2 ? 7 : k < 4 ? 9 : k < 7 ? 12 : 15;
-    const deepPx = compact ? 14 : 20;
-    return (basePx + (deepPx - basePx) * deepDeclutterT(k)) * unitPerPx;
+    // More freedom at overview so bubbles can pack; leash tightens as you zoom in
+    // so deep views stay geographically faithful.
+    const t = declutterZoomT(k);
+    const overviewPx = compact ? 13 : 17;
+    const midPx = compact ? 8 : 10;
+    const deepPx = compact ? 3 : 2.5;
+    if (t < 0.45) {
+      const tEarly = t / 0.45;
+      return (overviewPx + (midPx - overviewPx) * tEarly) * unitPerPx;
+    }
+    const tLate = (t - 0.45) / 0.55;
+    return (midPx + (deepPx - midPx) * tLate) * unitPerPx;
   }
 
   // _dx/_dy are solved in screen-space SVG units. Dividing by k keeps the
@@ -1393,30 +1410,39 @@ export function mountNercOrgMap(): void {
   }
 
   // How far (screen viewBox units) a bubble center may sit from its true origin
-  // while it hunts for space. Bounded at every zoom; grows only modestly so a
-  // bubble never flies across the map.
+  // while it hunts for space. Shrinks with zoom; per-org adjustments in
+  // orgPlacementRadius.
   function placementRadius(bucket: number): number {
     return maxDeclutterOffset(bucket);
   }
 
   function orgPlacementRadius(o: Org, bucket: number): number {
-    const radius = placementRadius(bucket);
-    // Deferred market dots are tiny and can move a touch more, but still stay
-    // close to their own origin.
-    if (isDeferredMarketOrg(o)) return radius * 1.15;
-    // AK/HI insets are a small projected region. Cap their travel to a modest
-    // absolute amount (not a multiple of the large mainland offset) so dots fan
-    // out within the inset land instead of flying out into open water.
+    let radius = placementRadius(bucket);
+    const zoomT = declutterZoomT(bucket);
+    const overviewFreedom = 1 - zoomT;
+    const pri = visualPriority(o);
+    const lp = labelPriority(o);
+
+    // Grid leadership: modest extra room at overview only.
+    if (lp >= 78) radius *= 1 + 0.16 * overviewFreedom;
+    else if (lp >= 50) radius *= 1 + 0.08 * overviewFreedom;
+    else if (pri < 30) radius *= 0.7 + 0.3 * zoomT;
+
+    // Coastal/border: tighter leash so bubbles do not float offshore.
+    if (isCoastalOrBorderOrg(o)) radius *= 0.55 + 0.28 * overviewFreedom;
+
+    // AK/HI insets: cap absolute travel within the tiny projection inset.
     if (isUsInsetOrg(o)) {
-      const spreadT = smoothStep((4 - bucket) / 3.2);
-      return Math.min(radius, (compact ? 11 : 14) * unitPerPx * (1 + 0.15 * spreadT));
+      const cap = (compact ? 10 : 12) * unitPerPx * (0.5 + 0.5 * overviewFreedom);
+      return Math.min(radius, cap);
     }
-    // Midwest clusters still get a small extra search, but not enough to detach
-    // them from local geography.
+
+    // Midwest clusters: small overview-only spread for dense utility belts.
     if (isMidwestOrg(o)) {
-      const spreadT = smoothStep((6 - bucket) / 4.5);
-      return radius * (1 + (compact ? 0.08 : 0.12) * spreadT);
+      radius *= 1 + (compact ? 0.06 : 0.1) * overviewFreedom;
     }
+
+    if (isDeferredMarketOrg(o)) return radius * 0.82;
     return radius;
   }
 
@@ -1867,12 +1893,12 @@ export function mountNercOrgMap(): void {
   }
 
   // Deterministic bubble placement for a zoom bucket. Each org has a true
-  // projected origin (_x/_y); a bubble may move only within placementRadius of
+  // projected origin (_x/_y); a bubble may move only within orgPlacementRadius of
   // that origin to find space. Higher-priority bubbles place first and claim the
   // best spots; lower-priority bubbles take whatever room is left. A bubble that
-  // finds no valid spot is demoted to a quiet fallback dot at its true origin
-  // (placementMode = fallbackTiny). Bubble placement depends only on the zoom
-  // bucket — never on pan.
+  // finds no valid spot within its leash becomes a background-tier dot instead of
+  // drifting farther away. Bubble placement depends only on the zoom bucket —
+  // never on pan.
   //
   // _x/_y stay the true projected coordinates (used by projection math); _dx/_dy
   // are the solved screen-space nudge (divided by k at render so the origin stays
