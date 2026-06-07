@@ -585,13 +585,6 @@ export function mountNercOrgMap(): void {
   // Last computed label placement, stashed for the optional ?audit UX harness so
   // it can report which dots got an inside vs floating label without recomputing.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
-  // Transform (k + translate) at the last FULL redraw — the label/place/land
-  // layers were positioned in screen space at this transform. While the user is
-  // panning (k unchanged) we translate those layers by the delta from here so
-  // nothing re-selects, reflows, or jumps; a full redraw fires on pan end.
-  let lastFullLabelK = NaN;
-  let lastFullLabelTx = 0;
-  let lastFullLabelTy = 0;
   let tooltipRequest = 0;
 
   function invalidateOrgLayout(): void {
@@ -1413,7 +1406,18 @@ export function mountNercOrgMap(): void {
   function isPanSourceEvent(event: Event | null | undefined): boolean {
     if (!event) return false;
     const type = event.type;
-    return type === "mousedown" || type === "mousemove" || type === "touchstart" || type === "touchmove";
+    return (
+      type === "mousedown" ||
+      type === "mousemove" ||
+      type === "mouseup" ||
+      type === "pointerdown" ||
+      type === "pointermove" ||
+      type === "pointerup" ||
+      type === "touchstart" ||
+      type === "touchmove" ||
+      type === "touchend" ||
+      type === "touchcancel"
+    );
   }
 
   function isWheelEvent(event: Event | null | undefined): boolean {
@@ -1873,29 +1877,9 @@ export function mountNercOrgMap(): void {
   function redraw(): void {
     const k = transform.k;
     syncZoomGroups();
-    // Pan-only fast path: while the user is dragging at a constant zoom, freeze
-    // the entire label/place/land selection and just translate those screen-space
-    // layers by the pan delta. Bubbles already ride the group transform, so this
-    // keeps everything locked together with zero reflow, popping, or recompute.
-    // A full redraw runs on pan end (see the zoom "end" handler).
-    if (userPanning && lastLabelState && k === lastFullLabelK) {
-      const t = `translate(${transform.x - lastFullLabelTx},${transform.y - lastFullLabelTy})`;
-      gLabels.attr("transform", t);
-      gPlaces.attr("transform", t);
-      gLand.attr("transform", t);
-      // Keep _sx/_sy current (pan is a pure translation) so hit-testing stays
-      // accurate if the user taps right after panning, before the pan-end redraw.
-      const fs = spiderFanScale(k);
-      const ds = declutterScale(k);
-      for (const o of placeableOrgs) {
-        if (o._x == null || o._y == null) continue;
-        o._sx = transform.applyX(orgRenderX(o, fs, ds));
-        o._sy = transform.applyY(orgRenderY(o, fs, ds));
-      }
-      return;
-    }
-    // Full redraw: the layers are repositioned in absolute screen space, so clear
-    // any pan translate left on them.
+    // Recompute viewport visibility on pan as well as zoom. The previous pan-only
+    // fast path translated existing labels but never admitted newly panned-in
+    // organizations, so off-screen areas stayed blank until a zoom forced layout.
     gLabels.attr("transform", null);
     gPlaces.attr("transform", null);
     gLand.attr("transform", null);
@@ -2454,11 +2438,6 @@ export function mountNercOrgMap(): void {
       .attr("font-size", terrFontPx / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
-    // Remember the transform this full layout was computed at, so a subsequent
-    // pan can translate the layers instead of recomputing them.
-    lastFullLabelK = k;
-    lastFullLabelTx = transform.x;
-    lastFullLabelTy = transform.y;
   }
 
   // Lay out-of-footprint territory orgs as labelled clusters of dots — no framed
