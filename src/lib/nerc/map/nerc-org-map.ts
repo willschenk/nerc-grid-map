@@ -199,6 +199,11 @@ const TERRITORY_LAYOUT_ORDER = ["PR", "VI"] as const;
 // FIPS ids of the territory land outlines carried in the states topojson, so the
 // inset can draw the real island shape (geoAlbersUsa can't project them).
 const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
+// Out-of-footprint PR/VI inset dots use a fixed schematic radius (not priority-based).
+const TERRITORY_BUBBLE_RADIUS_PX = { desktop: 4.6, compact: 5.4 };
+const TERRITORY_HIT_RADIUS_PX = { desktop: 8.6, compact: 10 };
+// PR/VI have few orgs and ample inset space — enlarge for visibility and tapping.
+const TERRITORY_BUBBLE_SCALE = 4;
 
 // Alaska and Hawaii plot inside geoAlbersUsa's built-in lower-left/right insets.
 // They share the mainland declutter path but need extra spread and tap area at
@@ -233,7 +238,7 @@ function territoryLayoutMetrics(compact: boolean, u: number, viewW: number, view
   const padX = (compact ? 30 : 18) * u;
   const padY = (compact ? 12 : 8) * u;
   // Dedicated Atlantic lane east of the lower-48 footprint so PR/VI never sit on Florida.
-  const laneW = (compact ? 96 : 148) * u;
+  const laneW = (compact ? 136 : 224) * u;
   return {
     padX,
     padY,
@@ -343,45 +348,74 @@ function fallbackAcronym(name: string): string {
 }
 
 const WEAK_MAP_LABELS = new Set([
-  "A", "AN", "AND", "AT", "BY", "CO", "COMPANY", "COOP", "COOPERATIVE", "CORP", "CORPORATION",
-  "EAST", "ELECTRIC", "ENERGY", "FOR", "GAS", "GENERATION", "GENERATING", "LIGHT", "NEW", "NORTH",
-  "OF", "OLD", "ONE", "POWER", "SOUTH", "THE", "TO", "UTILITY", "UTILITIES", "WATER", "WEST",
+  "A",
+  "AN",
+  "AND",
+  "AT",
+  "BY",
+  "CO",
+  "COMPANY",
+  "COOP",
+  "COOPERATIVE",
+  "CORP",
+  "CORPORATION",
+  "EAST",
+  "ELECTRIC",
+  "ENERGY",
+  "FOR",
+  "GAS",
+  "GENERATION",
+  "GENERATING",
+  "LIGHT",
+  "NEW",
+  "NORTH",
+  "OF",
+  "OLD",
+  "ONE",
+  "POWER",
+  "SOUTH",
+  "THE",
+  "TO",
+  "UTILITY",
+  "UTILITIES",
+  "WATER",
+  "WEST",
 ]);
-
-/** Connectives, bare industry nouns, and other tokens that are never a map label alone. */
-function isWeakMapLabel(text: string): boolean {
+function isWeakMapLabel(text: string | null | undefined): boolean {
   const token = String(text ?? "").trim();
   if (!token) return true;
   const clean = token.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
   if (!clean || /\d/.test(clean)) return false;
   return WEAK_MAP_LABELS.has(clean);
 }
-
 function compactMapLabel(text: string | null | undefined, maxLen = MAP_LABEL_MAX): string | null {
   const raw = String(text ?? "").trim();
   if (!raw) return null;
   if (raw.length <= maxLen && !isWeakMapLabel(raw)) return raw;
-
-  const label = tightenMapLabel(raw, maxLen);
-  if (label && label.length <= maxLen && !isWeakMapLabel(label)) return label;
-
+  const tightened = tightenMapLabel(raw, maxLen);
+  if (tightened && tightened.length <= maxLen && !isWeakMapLabel(tightened)) {
+    return tightened;
+  }
   const words = raw.split(/\s+/).filter(Boolean);
   if (words.length >= 2) {
     const first = tightenMapLabel(words[0], maxLen);
     if (first && first.length <= maxLen && !isWeakMapLabel(first)) return first;
-    const initials = words.map((w) => w[0]).join("");
-    if (initials.length >= 2 && initials.length <= maxLen && !isWeakMapLabel(initials)) return initials;
+    const initials = words.map((w) => w[0]).join("").toUpperCase().slice(0, maxLen);
+    if (initials.length >= 2 && !isWeakMapLabel(initials)) return initials;
   }
   return null;
 }
-
 function compactAcronymLabel(o: Org): string | null {
   if (!o.acronym) return null;
   const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
-  if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) return compressed;
+  if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) {
+    return compressed;
+  }
   const core = coreFromAcronym(o.acronym);
   const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
-  if (tightened.length <= MAP_LABEL_MAX && !isWeakMapLabel(tightened)) return tightened;
+  if (tightened.length <= MAP_LABEL_MAX && !isWeakMapLabel(tightened)) {
+    return tightened;
+  }
   return null;
 }
 
@@ -467,46 +501,44 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
-  // Prefer curated brands, then researched shortest/acronym, then algorithmic fallback.
-  // Skip weak fragments (and, One, Water, …) from tightenMapLabel's last-word rule.
   const curated = curate(o.entity_name);
   const fromShortest = compactMapLabel(o.name_shortest);
-  const fromShort = compactMapLabel(o.name_short, 14);
-  const fromAcronym = compactAcronymLabel(o);
-
-  if (curated) {
-    const tiny =
-      compactMapLabel(curated.tiny) ?? tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
-    if (tiny && !isWeakMapLabel(tiny) && (!fromShortest || tiny.length <= fromShortest.length || isWeakMapLabel(fromShortest))) {
-      return tiny;
-    }
-  }
   if (fromShortest) return fromShortest;
+  const fromAcronym = compactAcronymLabel(o);
   if (fromAcronym) return fromAcronym;
-  if (curated) return compactMapLabel(curated.tiny) ?? tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
-  if (fromShort) return tightenMapLabel(fromShort, MAP_LABEL_MAX);
+  if (curated) {
+    const curatedTiny = compactMapLabel(curated.tiny);
+    if (curatedTiny) return curatedTiny;
+  }
+  const fromShort = compactMapLabel(o.name_short, MAP_LABEL_MAX);
+  if (fromShort) return fromShort;
   if (o.acronym) {
     const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
-    if (compressed.length <= MAP_LABEL_MAX) return compressed;
+    if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) {
+      return compressed;
+    }
     const core = coreFromAcronym(o.acronym);
-    return tightenMapLabel(core, MAP_LABEL_MAX);
+    const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
+    if (!isWeakMapLabel(tightened)) return tightened;
   }
-  return tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
+  const fallback = tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
+  if (!isWeakMapLabel(fallback)) return fallback;
+  return fallbackAcronym(o.entity_name);
 }
 
 // A shortened-but-readable brand: cut "… as agent for …", "d/b/a", trailing
 // lists/clauses, and legal suffixes; fall back to the tiny token if still long.
 function midName(o: Org): string {
-  // Researched "short" name wins (e.g. "Consumers", "PJM Interconnection").
-  if (o.name_short) {
-    const fromShort = compactMapLabel(o.name_short, 14);
-    if (fromShort) return fromShort;
-  }
+  const fromShort = compactMapLabel(o.name_short, 14);
+  if (fromShort) return fromShort;
   const c = curate(o.entity_name);
   if (c) return c.mid;
   let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
   s = shortName(s).replace(/,.*$/, "").trim();
-  if (s.length >= 3 && s.length <= 22 && !isWeakMapLabel(tightenMapLabel(s, 14))) return s;
+  const tightened = tightenMapLabel(s, 14);
+  if (s.length >= 3 && s.length <= 22 && !isWeakMapLabel(tightened)) {
+    return s;
+  }
   return tinyName(o);
 }
 
@@ -546,7 +578,7 @@ function displayName(o: Org): string {
   // (midName -> tinyName -> acronym). The full entity_name is still shown in the
   // detail panel (see renderPanel) and so stays available on inspect.
   if (o.entity_name.length > 40) {
-    return compactMapLabel(o.name_short, 14) ?? compactMapLabel(o.name_shortest) ?? midName(o);
+    return o.name_short ?? o.name_shortest ?? midName(o);
   }
   return o.entity_name;
 }
@@ -898,10 +930,10 @@ export function mountNercOrgMap(): void {
       : lp >= 88 ? 1.6 : lp >= 68 ? 2.2 : lp >= 38 ? 3.2 : 4.5;
     if (k < shortAt) return [tiny];
     const mid = midName(o);
-    const midTight = tightenMapLabel(mid, compact ? 12 : 14);
-    // Keep the longer "mid" brand only when it is genuinely short; otherwise stay
-    // with the compact token so a long name never dominates its neighbours.
-    if (midTight === tiny || isWeakMapLabel(midTight) || midTight.length > (compact ? 12 : 14)) return [tiny];
+    const midTight = compactMapLabel(mid, compact ? 12 : 14);
+    if (!midTight || midTight === tiny || midTight.length > (compact ? 12 : 14)) {
+      return [tiny];
+    }
     return [tiny, midTight];
   }
 
@@ -1259,6 +1291,7 @@ export function mountNercOrgMap(): void {
   }
 
   function isLabelEligible(o: Org, k: number, forced: boolean): boolean {
+    if (o._frame === "terr") return forced;
     if (o.placementMode === "fallbackTiny" || o._renderFallback) return forced;
     if (forced) return true;
     return shouldTryLabel(o, k);
@@ -1460,7 +1493,20 @@ export function mountNercOrgMap(): void {
     return Math.max(minPx, Math.min(maxPx, scaledPx)) * unitPerPx;
   }
 
+  // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
+  // priority-based) so they fit the offshore cluster; scaled up — few orgs, ample space.
+  function territoryBubbleRadiusPx(): number {
+    return (compact ? TERRITORY_BUBBLE_RADIUS_PX.compact : TERRITORY_BUBBLE_RADIUS_PX.desktop)
+      * TERRITORY_BUBBLE_SCALE;
+  }
+
+  function territoryHitRadiusPx(): number {
+    return (compact ? TERRITORY_HIT_RADIUS_PX.compact : TERRITORY_HIT_RADIUS_PX.desktop)
+      * TERRITORY_BUBBLE_SCALE;
+  }
+
   function renderedRadius(o: Org, k: number): number {
+    if (o._frame === "terr") return territoryBubbleRadiusPx() * unitPerPx;
     const fallback = !!o._renderFallback;
     const promoted = !!o._promoteBackground;
     // Memoize: visualRadius is heavy and called many times per org per frame.
@@ -1483,6 +1529,7 @@ export function mountNercOrgMap(): void {
   }
 
   function hitTargetRadius(o: Org, k: number): number {
+    if (o._frame === "terr") return territoryHitRadiusPx() * unitPerPx;
     if (o._renderFallback) {
       const visual = renderedRadius(o, k);
       return Math.max(visual + 2 * unitPerPx, (compact ? 8 : 6) * unitPerPx);
@@ -2144,11 +2191,11 @@ export function mountNercOrgMap(): void {
     const { ox, oy } = placementOrigin(o, bucket);
     const nudge = findFallbackTinyOffset(o, ox, oy, bucket, offsets);
     if (!nudge) {
-      o._placed = true;
-      o.placementMode = "fallbackTiny";
+      o._placed = false;
+      o.placementMode = undefined;
       o._dx = 0;
       o._dy = 0;
-      return true;
+      return false;
     }
     o._placed = true;
     o.placementMode = "fallbackTiny";
@@ -2161,6 +2208,7 @@ export function mountNercOrgMap(): void {
     if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o)) return;
     const bucket = declutterBucket(k);
     const frame = orgLandFrame(o);
+    const fullRegistry = k >= fullRegistryRevealK();
     const tiny = o.placementMode === "fallbackTiny";
     const r = tiny
       ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
@@ -2175,29 +2223,30 @@ export function mountNercOrgMap(): void {
       const tinyR = fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE;
       const origin = bubbleScreenCenter(o, bucket);
       if (!placementLandValid(origin.cx, origin.cy, tinyR, bucket, frame, true)) {
-        const { ox, oy } = placementOrigin(o, bucket);
-        const baseLeash = orgPlacementRadius(o, bucket);
-        const step = Math.max(2.5 * unitPerPx, baseLeash / 16);
-        const nudge = findFallbackTinyOffset(o, ox, oy, bucket, candidatePositions(baseLeash * 12, step));
-        if (nudge) {
-          o._dx = nudge[0];
-          o._dy = nudge[1];
+        if (fullRegistry) {
+          const { ox, oy } = placementOrigin(o, bucket);
+          const baseLeash = orgPlacementRadius(o, bucket);
+          const step = Math.max(2.5 * unitPerPx, baseLeash / 16);
+          const nudge = findFallbackTinyOffset(o, ox, oy, bucket, candidatePositions(baseLeash * 12, step));
+          if (nudge) {
+            o._dx = nudge[0];
+            o._dy = nudge[1];
+          }
+          o._placed = true;
+          return;
         }
-        o._placed = true;
+        o._placed = false;
+        o.placementMode = undefined;
+        o._vis = false;
       }
-    } else {
+    } else if (fullRegistry) {
       o.placementMode = "fallbackTiny";
       o._placed = true;
+    } else {
+      o._placed = false;
+      o.placementMode = undefined;
+      o._vis = false;
     }
-  }
-
-  function shouldAttemptBubblePlacement(o: Org, k: number): boolean {
-    if (o._frame === "terr") return true;
-    if (isTopTierOrg(o)) return true;
-    if (isDeferredMarketOrg(o)) return k >= (compact ? 8 : 6);
-    if (isTransmissionOwnerOnly(o)) return k >= (compact ? 3.8 : 3.2);
-    if (labelPriority(o) >= 52) return true;
-    return bubbleDisclosureT(o, k) >= 0.24;
   }
 
   // Deterministic bubble placement for a zoom bucket. Each org has a true
@@ -2246,11 +2295,6 @@ export function mountNercOrgMap(): void {
       }
       if (o._x == null || o._y == null) {
         o._placed = false;
-        continue;
-      }
-      if (!shouldAttemptBubblePlacement(o, bucket)) {
-        o._placed = true;
-        o.placementMode = "fallbackTiny";
         continue;
       }
       const { ox, oy } = placementOrigin(o, bucket);
@@ -2345,11 +2389,13 @@ export function mountNercOrgMap(): void {
             }
             if (placed) break;
           }
-          if (!placed) {
+          if (!placed && bucket >= fullRegistryRevealK()) {
             it.o._placed = true;
             it.o.placementMode = "fallbackTiny";
             it.o._dx = 0;
             it.o._dy = 0;
+          } else if (!placed) {
+            it.o._placed = false;
           }
         } else {
           let demoted = false;
@@ -2359,11 +2405,13 @@ export function mountNercOrgMap(): void {
               break;
             }
           }
-          if (!demoted) {
+          if (!demoted && bucket >= fullRegistryRevealK()) {
             it.o._placed = true;
             it.o.placementMode = "fallbackTiny";
             it.o._dx = 0;
             it.o._dy = 0;
+          } else if (!demoted) {
+            it.o._placed = false;
           }
         }
       }
@@ -2484,10 +2532,11 @@ export function mountNercOrgMap(): void {
     }
 
     for (const o of visibleOrgs) {
+      const isTerr = o._frame === "terr";
       const forced = isLabelForced(o, tourActive, hot);
       if (tourActive) {
         // During a walkthrough step only the highlighted set gets labels.
-        if (forced) candidates.push(o);
+        if (forced && (!isTerr || hot?.ncr_id === o.ncr_id)) candidates.push(o);
       } else if (!tourRunning && isLabelEligible(o, k, forced)) {
         // Normal map. (During a blank beat — tourRunning && !tourActive — we
         // deliberately collect no candidates so nothing is labelled.)
@@ -2577,10 +2626,12 @@ export function mountNercOrgMap(): void {
       placed.push(inflated);
     };
     const bubbleClears = (o: Org): boolean => {
+      if (o._frame === "terr") return true;
       const circle = bubbleCircle(o);
       return !!circle && !bubbleBlockers.some((b) => b.id !== o.ncr_id && circlesOverlap(circle, b));
     };
     const addBubbleBlocker = (o: Org): void => {
+      if (o._frame === "terr") return;
       const circle = bubbleCircle(o);
       if (circle) bubbleBlockers.push({ id: o.ncr_id, ...circle });
     };
@@ -2648,13 +2699,17 @@ export function mountNercOrgMap(): void {
       const sy = o._sy as number;
       const r = renderedRadius(o, k);
       const forceLabel = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
+      const brand = tinyName(o);
       const lp = labelPriority(o);
-      const textOptions = labelTextOptions(o, k);
 
       // 1. INSIDE — preferred, collision-free, never suppressed by neighbours.
       // The font may shrink to span the chord, but only to a readable floor. If
       // it would need to shrink past that point, the label can overflow/float
       // outside its own bubble instead.
+      const insideFont = Math.min(
+        labelFontPx(o, k) * unitPerPx,
+        (r * 1.74) / Math.max(1, brand.length) / 0.56,
+      );
       // The readable floor for an inside label relaxes toward zero as you zoom in,
       // so by max zoom every visible (now-large) bubble takes its name inside —
       // any circle on screen ends up labeled when fully zoomed in.
@@ -2669,40 +2724,40 @@ export function mountNercOrgMap(): void {
         // Desktop: a very short acronym (e.g. LES, CWLP, ConEd) that nearly fits
         // inside its bubble at low-mid zoom is allowed in at a slightly smaller
         // floor, so easy-to-fit short labels stop falling into a dead zone.
-        (!compact && textOptions[0].length <= 5 ? 0.85 : 1) *
+        (!compact && brand.length <= 5 ? 0.85 : 1) *
         unitPerPx;
       const insideChord = isMidwestOrg(o) ? 1.94 : 1.86;
-      let placedInside = false;
-      for (const brand of textOptions) {
-        const optionFont = Math.min(
-          labelFontPx(o, k) * unitPerPx,
-          (r * 1.74) / Math.max(1, brand.length) / 0.56,
-        );
-        if (optionFont < insideMin || optionFont * 0.56 * brand.length > r * insideChord) continue;
+      if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * insideChord) {
         const insideDedupK = k < 1.4 ? (lp >= 78 ? 0.65 : lp >= 68 ? 1.05 : 2.0) : isMidwestOrg(o) ? 2.0 : 2.2;
-        const box = labelBox(sx, sy, brand, optionFont, true);
+        const box = labelBox(sx, sy, brand, insideFont, true);
         if ((forceLabel || k >= insideDedupK || !usedLabels.has(brand)) && labelClears(box) && bubbleClears(o)) {
-          labelState.set(o.ncr_id, { x: sx, y: sy, font: optionFont, text: brand, inside: true });
+          labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
           if (!forceLabel) usedLabels.add(brand);
           reserveLabel(box);
           addBubbleBlocker(o);
           placedCount++;
-          placedInside = true;
-          break;
         } else if (renderStatsEnabled && (!labelClears(box) || !bubbleClears(o))) {
           labelsSkippedCollision++;
         }
-      }
-      if (placedInside) {
         continue;
       }
 
-      if (!forceLabel) continue;
-
       // Bigger organizations can try a side/below floating label when their
-      // token cannot fit inside the bubble, but only for intentional focus/tour
-      // states. Ambient labels stay inside bubbles so they do not strand.
+      // token cannot fit inside the bubble. Once zoomed in, any visible org can
+      // try for this overflow label; collision checks decide if there is room.
       const midwest = isMidwestOrg(o);
+      const shortHighValue = !compact && lp >= 68 && brand.length <= 7;
+      const allowFloat =
+        forceLabel ||
+        (lp >= 88 && k >= (compact ? 0.85 : 0.75)) ||
+        (lp >= 78 && k >= (compact ? 1.0 : 0.9)) ||
+        (lp >= 68 && k >= (midwest ? 1.2 : 1.3)) ||
+        (shortHighValue && k >= 1.45) ||
+        (lp >= 52 && k >= (midwest ? 1.55 : 1.7)) ||
+        (lp >= 38 && k >= (midwest ? 2.05 : 2.25)) ||
+        (lp >= 16 && k >= (midwest ? 2.65 : 2.85)) ||
+        k >= (compact ? 6.5 : 5.8);
+      if (!allowFloat) continue;
       // Floating labels aren't bounded by a bubble chord (unlike inside labels),
       // so cap their on-screen size to keep deep zoom from producing oversized
       // text that overpowers the map.
@@ -2743,6 +2798,7 @@ export function mountNercOrgMap(): void {
         }
         return null;
       };
+      const textOptions = labelTextOptions(o, k);
       let chosen = tryFloatingText(textOptions[0]);
       if (chosen && textOptions[1]) {
         const upgraded = tryFloatingText(textOptions[1]);
@@ -3002,6 +3058,8 @@ export function mountNercOrgMap(): void {
     // tracks its offshore cluster) but keep a constant on-screen size like every
     // other label: the group already scales by k, so divide the base font by k.
     // Hidden during the walkthrough like the other ambient labels.
+    // Slightly smaller at overview, easing up by mid zoom so PR/VI stay readable
+    // when the Atlantic lane fills more of the screen.
     const terrFontPx =
       (compact ? 10 : 9.75) * unitPerPx * Math.min(1.08, 0.88 + smoothStep((k - 0.72) / 2.8) * 0.2);
     gInsets
@@ -3074,9 +3132,11 @@ export function mountNercOrgMap(): void {
       const u = unitPerPx;
       switch (code) {
         case "PR":
-          return [(compact ? 108 : 128) * u, (compact ? 82 : 96) * u];
+          // Roomier inset so Puerto Rico's many coastal entities spread out and
+          // stay individually readable/clickable instead of clumping together.
+          return [(compact ? 162 : 198) * u, (compact ? 122 : 144) * u];
         case "VI":
-          return [(compact ? 64 : 72) * u, (compact ? 54 : 58) * u];
+          return [(compact ? 96 : 108) * u, (compact ? 80 : 88) * u];
         default:
           return [(compact ? 74 : 84) * u, (compact ? 64 : 70) * u];
       }
@@ -4513,7 +4573,6 @@ export function mountNercOrgMap(): void {
           H,
           compact,
           unitPerPx: +unitPerPx.toFixed(3),
-          displayableCount: placeableOrgs.filter((o) => canDisplayOrg(o, k)).length,
           onScreenCount: placeableOrgs.filter((o) => o._sx != null && o._sx >= -90 && o._sx <= W + 90 && (o._sy as number) >= -90 && (o._sy as number) <= H + 90).length,
           visible: vis.length,
           labels: labeled.length,
