@@ -108,6 +108,30 @@ type OrgsPayload = {
   orgs: Org[];
 };
 
+type DisplayTier = 0 | 1 | 2 | 3;
+type TierCounts = Record<DisplayTier, number>;
+type PlacementDebugStats = {
+  bucket: number;
+  eligibleCandidates: number;
+  visibleBubbles: number;
+  fallbackTiny: number;
+  hiddenNoSpace: number;
+  eligibleByTier: TierCounts;
+  visibleByTier: TierCounts;
+  fallbackByTier: TierCounts;
+  hiddenNoSpaceByTier: TierCounts;
+};
+type RenderDebugStats = PlacementDebugStats & {
+  k: number;
+  projectedValid: number;
+  onScreenBubbles: number;
+  onScreenFallbackTiny: number;
+  visibleOnScreen: number;
+  labelsShown: number;
+  visibleByTier: TierCounts;
+  fallbackByTier: TierCounts;
+};
+
 type OrgDetailsPayload = {
   generated_at?: string;
   source_file?: string;
@@ -145,19 +169,16 @@ const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
 const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
-// Growth anchor for generation-only micro-orgs: how deep before their post-reveal
-// size ramp begins. Kept high so they stay small at mid/deep zoom.
-const GENERATION_ONLY_REVEAL_K = 50;
-const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
-// PSE-market entities stay the deepest tier. (GO/GOP-only companies are excluded
-// from the map entirely, so they have no display anchor.)
-const PSE_MARKET_DISPLAY_K = 14;
-const PSE_MARKET_DISPLAY_K_COMPACT = 20;
-const TO_ONLY_REVEAL_K = 8.5;
-const TO_ONLY_REVEAL_K_COMPACT = 10;
-// Regional dev view (k≈7.5) and deeper: every non-generation-only org may appear.
-const FULL_REGISTRY_REVEAL_K = 4.6;
-const FULL_REGISTRY_REVEAL_K_COMPACT = 5.0;
+// Deep/local reveal anchors for entities that should never flood the overview.
+const GENERATION_ONLY_REVEAL_K = 18;
+const GENERATION_ONLY_REVEAL_K_COMPACT = 22;
+const PSE_MARKET_DISPLAY_K = 12;
+const PSE_MARKET_DISPLAY_K_COMPACT = 16;
+const TO_ONLY_REVEAL_K = 5.8;
+const TO_ONLY_REVEAL_K_COMPACT = 7.2;
+// Past this point conservative fallback dots are allowed for low-priority misses.
+const FULL_REGISTRY_REVEAL_K = 12;
+const FULL_REGISTRY_REVEAL_K_COMPACT = 15;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const REGIONAL_ENTITY_NAME = /\b(NERC|SERC|WECC|MRO|NPCC|ReliabilityFirst|Texas Reliability Entity|Midwest Reliability Organization|Northeast Power Coordinating Council|Western Electricity Coordinating Council|Regional Entity)\b/i;
@@ -466,38 +487,43 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
-  // Curated brand rules beat researched shortest when they compress further
-  // (e.g. org-names "Wheelabrator" -> Wheel). Researched shortest still wins
-  // when it is already the tightest label we have.
   const curated = curate(o.entity_name);
-  const fromShortest = o.name_shortest
-    ? tightenMapLabel(o.name_shortest, MAP_LABEL_MAX)
-    : null;
+  const curatedTiny = curated ? compactMapLabel(curated.tiny) : null;
   if (curated) {
-    const tiny = tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
-    if (!fromShortest || tiny.length < fromShortest.length) return tiny;
+    const fromShortest = compactMapLabel(o.name_shortest);
+    if (curatedTiny && (!fromShortest || curatedTiny.length < fromShortest.length)) return curatedTiny;
+    if (fromShortest) return fromShortest;
+    if (curatedTiny) return curatedTiny;
   }
+  const fromShortest = compactMapLabel(o.name_shortest);
   if (fromShortest) return fromShortest;
-  if (curated) return tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
+  const fromAcronym = compactAcronymLabel(o);
+  if (fromAcronym) return fromAcronym;
+  const fromShort = compactMapLabel(o.name_short, MAP_LABEL_MAX);
+  if (fromShort) return fromShort;
   if (o.acronym) {
     const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
-    if (compressed.length <= MAP_LABEL_MAX) return compressed;
+    if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) return compressed;
     const core = coreFromAcronym(o.acronym);
-    return tightenMapLabel(core, MAP_LABEL_MAX);
+    const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
+    if (!isWeakMapLabel(tightened)) return tightened;
   }
-  return tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
+  const fallback = tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
+  if (!isWeakMapLabel(fallback)) return fallback;
+  return fallbackAcronym(o.entity_name);
 }
 
 // A shortened-but-readable brand: cut "… as agent for …", "d/b/a", trailing
 // lists/clauses, and legal suffixes; fall back to the tiny token if still long.
 function midName(o: Org): string {
-  // Researched "short" name wins (e.g. "Consumers", "PJM Interconnection").
-  if (o.name_short) return tightenMapLabel(o.name_short, 14);
+  const fromShort = compactMapLabel(o.name_short, 14);
+  if (fromShort) return fromShort;
   const c = curate(o.entity_name);
   if (c) return c.mid;
   let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
   s = shortName(s).replace(/,.*$/, "").trim();
-  if (s.length >= 3 && s.length <= 22) return s;
+  const tightened = tightenMapLabel(s, 14);
+  if (s.length >= 3 && s.length <= 22 && !isWeakMapLabel(tightened)) return s;
   return tinyName(o);
 }
 
@@ -743,6 +769,11 @@ export function mountNercOrgMap(): void {
   // recomputing the full label pass.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
   let tooltipRequest = 0;
+  const debugStatsEnabled =
+    typeof location !== "undefined" && new URLSearchParams(location.search).has("debug");
+  let lastPlacementDebugStats: PlacementDebugStats | null = null;
+  let lastRenderDebugStats: RenderDebugStats | null = null;
+  let lastDebugLogBucket = NaN;
 
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
@@ -921,10 +952,8 @@ export function mountNercOrgMap(): void {
       : lp >= 88 ? 1.6 : lp >= 68 ? 2.2 : lp >= 38 ? 3.2 : 4.5;
     if (k < shortAt) return [tiny];
     const mid = midName(o);
-    const midTight = tightenMapLabel(mid, compact ? 12 : 14);
-    // Keep the longer "mid" brand only when it is genuinely short; otherwise stay
-    // with the compact token so a long name never dominates its neighbours.
-    if (midTight === tiny || midTight.length > (compact ? 12 : 14)) return [tiny];
+    const midTight = compactMapLabel(mid, compact ? 12 : 14);
+    if (!midTight || midTight === tiny || midTight.length > (compact ? 12 : 14)) return [tiny];
     return [tiny, midTight];
   }
 
@@ -1003,39 +1032,21 @@ export function mountNercOrgMap(): void {
     return compact ? PSE_MARKET_DISPLAY_K_COMPACT : PSE_MARKET_DISPLAY_K;
   }
 
-  // Progressive zoom tiers. Every non-GO org is eligible to appear by ~k 1.0–1.35
-  // (as a bubble or background dot); higher-priority orgs promote earlier.
-  function overviewRevealK(o: Org): number {
-    if (isTopTierOrg(o)) return 0;
-    const pri = visualPriority(o);
-    const w = o.weight ?? 0;
-    if (isGridLeadershipOrg(o) || pri >= 50) return 0;
-    if (pri >= 42) return w >= 12 ? (compact ? 0.32 : 0.22) : compact ? 0.52 : 0.42;
-    if (pri >= 28) return compact ? 0.62 : 0.52;
-    if (pri >= 18) return compact ? 0.74 : 0.64;
-    return compact ? 0.88 : 0.76;
-  }
-
   function canDisplayOrg(o: Org, k: number): boolean {
-    // Generation-only (GO/GOP) companies are excluded from the map entirely.
-    if (isGenerationOnly(o)) return false;
-    if (k >= fullRegistryRevealK()) return true;
-    if (isTopTierOrg(o)) return true;
-    if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
-    if (isDeferredMarketOrg(o)) return k >= pseMarketDisplayK();
-    return k >= overviewRevealK(o);
+    if (o.lat == null || o.lng == null) return false;
+    return k >= minRevealK(o);
   }
 
   // 0–1 ramp: how fully an org promotes from background dot to readable bubble.
   // Higher labelPriority promotes earlier; low tiers stay tiny until mid/deep zoom.
   function bubbleDisclosureT(o: Org, k: number): number {
     if (isTopTierOrg(o)) return 1;
-    if (k >= fullRegistryRevealK()) return 1;
     if (isDeferredMarketOrg(o)) {
       const start = microOrgRevealK(o);
       if (k < start) return 0;
       return smoothStep((k - start) / (compact ? 4 : 3));
     }
+    if (k < minRevealK(o)) return 0;
     const lp = labelPriority(o);
     if (lp >= 88) return 1;
     if (lp >= 78) return 0.42 + 0.58 * smoothStep((k - 0.55) / (compact ? 0.95 : 0.8));
@@ -1194,6 +1205,91 @@ export function mountNercOrgMap(): void {
     return false;
   }
 
+  function emptyTierCounts(): TierCounts {
+    return { 0: 0, 1: 0, 2: 0, 3: 0 };
+  }
+
+  function displayTier(o: Org): DisplayTier {
+    if (isTopTierOrg(o)) return 0;
+    if (
+      o.is_iso_rto ||
+      isMajorSystemOperator(o) ||
+      hasAnyRole(o, AUTHORITY_ROLES) ||
+      o.roles.includes("PC") ||
+      (isGridLeadershipOrg(o) && o.weight >= 16) ||
+      dataProminenceScore(o) >= 70 ||
+      visualPriority(o) >= 78
+    ) {
+      return 0;
+    }
+    if (isDeferredMarketOrg(o) || o.org_type === "merchant") return 3;
+    if (isTransmissionOwnerOnly(o)) return o.weight >= 8 ? 2 : 3;
+    if (
+      visualPriority(o) >= 52 ||
+      labelPriority(o) >= 68 ||
+      o.roles.includes("TOP") ||
+      o.roles.includes("TSP") ||
+      o.roles.includes("TP") ||
+      (hasAnyRole(o, GRID_ROLES) && o.weight >= 10) ||
+      o.org_type === "IOU" ||
+      PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)
+    ) {
+      return 1;
+    }
+    if (
+      visualPriority(o) >= 16 ||
+      hasAnyRole(o, GRID_ROLES) ||
+      hasAnyRole(o, SUPPORT_ROLES) ||
+      o.org_type === "municipal" ||
+      o.org_type === "cooperative" ||
+      o.org_type === "cca" ||
+      PUBLIC_UTILITY_NAME.test(o.entity_name)
+    ) {
+      return 2;
+    }
+    return 3;
+  }
+
+  function minRevealK(o: Org): number {
+    if (isTopTierOrg(o)) return 0;
+    if (isGenerationOnly(o)) return generationOnlyRevealK();
+    if (isPseMarketOnly(o)) return pseMarketDisplayK();
+    if (isTransmissionOwnerOnly(o)) return transmissionOwnerOnlyRevealK();
+
+    const lp = labelPriority(o);
+    const pri = visualPriority(o);
+    switch (displayTier(o)) {
+      case 0:
+        return pri >= 78 || lp >= 78 ? 0 : compact ? 0.78 : 0.72;
+      case 1:
+        if (lp >= 68 || pri >= 66) return compact ? 1.08 : 0.92;
+        return compact ? 1.45 : 1.25;
+      case 2:
+        if (lp >= 38 || pri >= 42) return compact ? 2.35 : 2.05;
+        return compact ? 3.7 : 3.25;
+      case 3:
+        if (o.org_type === "merchant") return compact ? 10 : 8;
+        return compact ? 7.5 : 6.2;
+    }
+  }
+
+  function shouldAllowFallbackTiny(o: Org, k: number): boolean {
+    if (o._frame === "terr") return true;
+    if (isGenerationOnly(o)) return k >= generationOnlyRevealK() + (compact ? 8 : 6);
+    if (isPseMarketOnly(o)) return k >= pseMarketDisplayK() + (compact ? 6 : 4);
+    if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK() + (compact ? 2.6 : 2.2);
+    switch (displayTier(o)) {
+      case 0:
+        return k >= (compact ? 3.4 : 3.0);
+      case 1:
+        return k >= (compact ? 5.6 : 4.8);
+      case 2:
+        return k >= (compact ? 8.5 : 7.0);
+      case 3:
+        return k >= fullRegistryRevealK();
+    }
+  }
+
   // Scale small-org catch-up growth so RC/BA/PC/TOP/TSP stay visually ahead of
   // GO/GOP and minor utilities at overview and mid zoom; catch-up ramps only deep in.
   function growthDominanceFactor(o: Org, k: number): number {
@@ -1268,8 +1364,9 @@ export function mountNercOrgMap(): void {
 
   // True when the org should draw as a tiny dot this frame (placement failed).
   function rendersAsBackgroundDot(o: Org, hasLabel: boolean, forced: boolean): boolean {
+    void hasLabel;
     if (o._frame === "terr" || o.placementMode !== "fallbackTiny") return false;
-    if (forced || hasLabel) return false;
+    if (forced) return false;
     return true;
   }
 
@@ -1337,8 +1434,8 @@ export function mountNercOrgMap(): void {
     const microLabelBoost = 1 + (isDeferredMarketOrg(o) ? (compact ? 1.05 : 0.85) : 0.55) * postRevealBoostT(o, k);
     // Once the user has intentionally zoomed in (k~3+), smaller organizations'
     // labels grow an extra bit so they read easily. This does NOT change when a
-    // dot is disclosed (that is overviewRevealK/canDisplayOrg) — it only enlarges
-    // the text of dots already on screen. Top-tier (>=80) labels are left alone
+    // dot is eligible/placed — it only enlarges the text of dots already on screen.
+    // Top-tier (>=80) labels are left alone
     // since they're already prominent (and being trimmed above).
     const smallOrgCloseBoost =
       priority >= 80 ? 1 : 1 + (priority < 50 ? 0.28 : 0.16) * smoothStep((k - 3) / 4);
@@ -2168,6 +2265,7 @@ export function mountNercOrgMap(): void {
     offsets: Array<[number, number]>,
   ): boolean {
     if (isTopTierOrg(o)) return false;
+    if (!shouldAllowFallbackTiny(o, bucket)) return false;
     const { ox, oy } = placementOrigin(o, bucket);
     const nudge = findFallbackTinyOffset(o, ox, oy, bucket, offsets);
     if (!nudge) {
@@ -2188,7 +2286,7 @@ export function mountNercOrgMap(): void {
     if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o)) return;
     const bucket = declutterBucket(k);
     const frame = orgLandFrame(o);
-    const fullRegistry = k >= fullRegistryRevealK();
+    const allowFallback = shouldAllowFallbackTiny(o, k);
     const tiny = o.placementMode === "fallbackTiny";
     const r = tiny
       ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
@@ -2202,7 +2300,7 @@ export function mountNercOrgMap(): void {
       const tinyR = fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE;
       const origin = bubbleScreenCenter(o, bucket);
       if (!placementLandValid(origin.cx, origin.cy, tinyR, bucket, frame, true)) {
-        if (fullRegistry) {
+        if (allowFallback) {
           const { ox, oy } = placementOrigin(o, bucket);
           const baseLeash = orgPlacementRadius(o, bucket);
           const step = Math.max(2.5 * unitPerPx, baseLeash / 16);
@@ -2218,7 +2316,7 @@ export function mountNercOrgMap(): void {
         o.placementMode = undefined;
         o._vis = false;
       }
-    } else if (fullRegistry) {
+    } else if (allowFallback) {
       o.placementMode = "fallbackTiny";
       o._placed = true;
     } else {
@@ -2364,7 +2462,7 @@ export function mountNercOrgMap(): void {
             }
             if (placed) break;
           }
-          if (!placed && bucket >= fullRegistryRevealK()) {
+          if (!placed && shouldAllowFallbackTiny(it.o, bucket)) {
             it.o._placed = true;
             it.o.placementMode = "fallbackTiny";
             it.o._dx = 0;
@@ -2380,7 +2478,7 @@ export function mountNercOrgMap(): void {
               break;
             }
           }
-          if (!demoted && bucket >= fullRegistryRevealK()) {
+          if (!demoted && shouldAllowFallbackTiny(it.o, bucket)) {
             it.o._placed = true;
             it.o.placementMode = "fallbackTiny";
             it.o._dx = 0;
@@ -2400,6 +2498,40 @@ export function mountNercOrgMap(): void {
       if (placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
       if (isTopTierOrg(it.o)) continue;
       demoteToBackgroundDot(it.o, bucket, offsetsFor(orgPlacementRadius(it.o, bucket)));
+    }
+    if (debugStatsEnabled) {
+      const eligibleByTier = emptyTierCounts();
+      const visibleByTier = emptyTierCounts();
+      const fallbackByTier = emptyTierCounts();
+      const hiddenNoSpaceByTier = emptyTierCounts();
+      let visibleBubbles = 0;
+      let fallbackTiny = 0;
+      let hiddenNoSpace = 0;
+      for (const { o } of items) {
+        const tier = displayTier(o);
+        eligibleByTier[tier]++;
+        if (o.placementMode === "bubble" && o._placed) {
+          visibleBubbles++;
+          visibleByTier[tier]++;
+        } else if (o.placementMode === "fallbackTiny" && o._placed) {
+          fallbackTiny++;
+          fallbackByTier[tier]++;
+        } else {
+          hiddenNoSpace++;
+          hiddenNoSpaceByTier[tier]++;
+        }
+      }
+      lastPlacementDebugStats = {
+        bucket,
+        eligibleCandidates: items.length,
+        visibleBubbles,
+        fallbackTiny,
+        hiddenNoSpace,
+        eligibleByTier,
+        visibleByTier,
+        fallbackByTier,
+        hiddenNoSpaceByTier,
+      };
     }
   }
 
@@ -2474,11 +2606,13 @@ export function mountNercOrgMap(): void {
     const candidates: Org[] = [];
     const visibleOrgs: Org[] = [];
     let shownCount = 0;
+    let projectedValid = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
         o._vis = false;
         continue;
       }
+      if (canDisplayOrg(o, k)) projectedValid++;
       const sx = transform.applyX(orgRenderX(o, fanScale, declScale));
       const sy = transform.applyY(orgRenderY(o, fanScale, declScale));
       o._sx = sx;
@@ -3039,6 +3173,56 @@ export function mountNercOrgMap(): void {
       .attr("font-size", terrFontPx / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
+
+    if (debugStatsEnabled) {
+      const onScreenVisibleByTier = emptyTierCounts();
+      const onScreenFallbackByTier = emptyTierCounts();
+      let onScreenBubbles = 0;
+      let onScreenFallbackTiny = 0;
+      for (const o of finalVisibleOrgs) {
+        const tier = displayTier(o);
+        if (o.placementMode === "fallbackTiny" || o._renderFallback) {
+          onScreenFallbackTiny++;
+          onScreenFallbackByTier[tier]++;
+        } else {
+          onScreenBubbles++;
+          onScreenVisibleByTier[tier]++;
+        }
+      }
+      const placement = lastPlacementDebugStats ?? {
+        bucket: declutterBucket(k),
+        eligibleCandidates: 0,
+        visibleBubbles: 0,
+        fallbackTiny: 0,
+        hiddenNoSpace: 0,
+        eligibleByTier: emptyTierCounts(),
+        visibleByTier: emptyTierCounts(),
+        fallbackByTier: emptyTierCounts(),
+        hiddenNoSpaceByTier: emptyTierCounts(),
+      };
+      const stats: RenderDebugStats = {
+        bucket: placement.bucket,
+        k: +k.toFixed(3),
+        projectedValid,
+        eligibleCandidates: placement.eligibleCandidates,
+        visibleBubbles: placement.visibleBubbles,
+        fallbackTiny: placement.fallbackTiny,
+        hiddenNoSpace: placement.hiddenNoSpace,
+        labelsShown: labelState.size,
+        eligibleByTier: placement.eligibleByTier,
+        visibleByTier: placement.visibleByTier,
+        fallbackByTier: placement.fallbackByTier,
+        hiddenNoSpaceByTier: placement.hiddenNoSpaceByTier,
+        onScreenBubbles,
+        onScreenFallbackTiny,
+        visibleOnScreen: finalVisibleOrgs.length,
+      };
+      lastRenderDebugStats = stats;
+      if (stats.bucket !== lastDebugLogBucket) {
+        lastDebugLogBucket = stats.bucket;
+        console.debug("[nerc render stats]", stats);
+      }
+    }
   }
 
   // Lay out-of-footprint territory orgs
@@ -4088,6 +4272,26 @@ export function mountNercOrgMap(): void {
     updateView();
     scheduleOrgDetailsLoad();
     revealActionButtons();
+    if (debugStatsEnabled) setupDebugStats();
+  }
+
+  function setupDebugStats(): void {
+    (window as unknown as { __nercRenderStats: unknown }).__nercRenderStats = {
+      latest: (): RenderDebugStats | null => lastRenderDebugStats,
+      placement: (): PlacementDebugStats | null => lastPlacementDebugStats,
+      byTier: (): {
+        visible: TierCounts;
+        fallback: TierCounts;
+        hiddenNoSpace: TierCounts;
+      } | null =>
+        lastRenderDebugStats
+          ? {
+              visible: lastRenderDebugStats.visibleByTier,
+              fallback: lastRenderDebugStats.fallbackByTier,
+              hiddenNoSpace: lastRenderDebugStats.hiddenNoSpaceByTier,
+            }
+          : null,
+    };
   }
 
 
