@@ -342,6 +342,49 @@ function fallbackAcronym(name: string): string {
   return words.map((w) => w[0]).join("").toUpperCase().slice(0, 8);
 }
 
+const WEAK_MAP_LABELS = new Set([
+  "A", "AN", "AND", "AT", "BY", "CO", "COMPANY", "COOP", "COOPERATIVE", "CORP", "CORPORATION",
+  "EAST", "ELECTRIC", "ENERGY", "FOR", "GAS", "GENERATION", "GENERATING", "LIGHT", "NEW", "NORTH",
+  "OF", "OLD", "ONE", "POWER", "SOUTH", "THE", "TO", "UTILITY", "UTILITIES", "WATER", "WEST",
+]);
+
+/** Connectives, bare industry nouns, and other tokens that are never a map label alone. */
+function isWeakMapLabel(text: string): boolean {
+  const token = String(text ?? "").trim();
+  if (!token) return true;
+  const clean = token.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+  if (!clean || /\d/.test(clean)) return false;
+  return WEAK_MAP_LABELS.has(clean);
+}
+
+function compactMapLabel(text: string | null | undefined, maxLen = MAP_LABEL_MAX): string | null {
+  const raw = String(text ?? "").trim();
+  if (!raw) return null;
+  if (raw.length <= maxLen && !isWeakMapLabel(raw)) return raw;
+
+  const label = tightenMapLabel(raw, maxLen);
+  if (label && label.length <= maxLen && !isWeakMapLabel(label)) return label;
+
+  const words = raw.split(/\s+/).filter(Boolean);
+  if (words.length >= 2) {
+    const first = tightenMapLabel(words[0], maxLen);
+    if (first && first.length <= maxLen && !isWeakMapLabel(first)) return first;
+    const initials = words.map((w) => w[0]).join("");
+    if (initials.length >= 2 && initials.length <= maxLen && !isWeakMapLabel(initials)) return initials;
+  }
+  return null;
+}
+
+function compactAcronymLabel(o: Org): string | null {
+  if (!o.acronym) return null;
+  const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
+  if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) return compressed;
+  const core = coreFromAcronym(o.acronym);
+  const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
+  if (tightened.length <= MAP_LABEL_MAX && !isWeakMapLabel(tightened)) return tightened;
+  return null;
+}
+
 // Three-tier names. tiny = super-short (zoomed out / tight spots), mid =
 // shortened (zoomed in), and the full legal entity_name is reserved for the
 // detail panel. Curated rules cover recognizable brands and the awkward
@@ -424,19 +467,24 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
-  // Curated brand rules beat researched shortest when they compress further
-  // (e.g. org-names "Wheelabrator" -> Wheel). Researched shortest still wins
-  // when it is already the tightest label we have.
+  // Prefer curated brands, then researched shortest/acronym, then algorithmic fallback.
+  // Skip weak fragments (and, One, Water, …) from tightenMapLabel's last-word rule.
   const curated = curate(o.entity_name);
-  const fromShortest = o.name_shortest
-    ? tightenMapLabel(o.name_shortest, MAP_LABEL_MAX)
-    : null;
+  const fromShortest = compactMapLabel(o.name_shortest);
+  const fromShort = compactMapLabel(o.name_short, 14);
+  const fromAcronym = compactAcronymLabel(o);
+
   if (curated) {
-    const tiny = tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
-    if (!fromShortest || tiny.length < fromShortest.length) return tiny;
+    const tiny =
+      compactMapLabel(curated.tiny) ?? tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
+    if (tiny && !isWeakMapLabel(tiny) && (!fromShortest || tiny.length <= fromShortest.length || isWeakMapLabel(fromShortest))) {
+      return tiny;
+    }
   }
   if (fromShortest) return fromShortest;
-  if (curated) return tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
+  if (fromAcronym) return fromAcronym;
+  if (curated) return compactMapLabel(curated.tiny) ?? tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
+  if (fromShort) return tightenMapLabel(fromShort, MAP_LABEL_MAX);
   if (o.acronym) {
     const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
     if (compressed.length <= MAP_LABEL_MAX) return compressed;
@@ -450,12 +498,15 @@ function tinyName(o: Org): string {
 // lists/clauses, and legal suffixes; fall back to the tiny token if still long.
 function midName(o: Org): string {
   // Researched "short" name wins (e.g. "Consumers", "PJM Interconnection").
-  if (o.name_short) return tightenMapLabel(o.name_short, 14);
+  if (o.name_short) {
+    const fromShort = compactMapLabel(o.name_short, 14);
+    if (fromShort) return fromShort;
+  }
   const c = curate(o.entity_name);
   if (c) return c.mid;
   let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
   s = shortName(s).replace(/,.*$/, "").trim();
-  if (s.length >= 3 && s.length <= 22) return s;
+  if (s.length >= 3 && s.length <= 22 && !isWeakMapLabel(tightenMapLabel(s, 14))) return s;
   return tinyName(o);
 }
 
@@ -495,7 +546,7 @@ function displayName(o: Org): string {
   // (midName -> tinyName -> acronym). The full entity_name is still shown in the
   // detail panel (see renderPanel) and so stays available on inspect.
   if (o.entity_name.length > 40) {
-    return o.name_short ?? o.name_shortest ?? midName(o);
+    return compactMapLabel(o.name_short, 14) ?? compactMapLabel(o.name_shortest) ?? midName(o);
   }
   return o.entity_name;
 }
@@ -850,8 +901,8 @@ export function mountNercOrgMap(): void {
     const midTight = tightenMapLabel(mid, compact ? 12 : 14);
     // Keep the longer "mid" brand only when it is genuinely short; otherwise stay
     // with the compact token so a long name never dominates its neighbours.
-    if (midTight === tiny || midTight.length > (compact ? 12 : 14)) return [tiny];
-    return [midTight, tiny];
+    if (midTight === tiny || isWeakMapLabel(midTight) || midTight.length > (compact ? 12 : 14)) return [tiny];
+    return [tiny, midTight];
   }
 
   function hasAnyRole(o: Org, roles: Set<string>): boolean {
@@ -942,10 +993,14 @@ export function mountNercOrgMap(): void {
     return compact ? 0.88 : 0.76;
   }
 
-  function canDisplayOrg(_o: Org, _k: number): boolean {
-    // No registry row is hidden. Low-priority and generation-only orgs may remain
-    // tiny background dots until deep zoom, but they are still present.
-    return true;
+  function canDisplayOrg(o: Org, k: number): boolean {
+    // Generation-only (GO/GOP) companies are excluded from the map entirely.
+    if (isGenerationOnly(o)) return false;
+    if (k >= fullRegistryRevealK()) return true;
+    if (isTopTierOrg(o)) return true;
+    if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
+    if (isDeferredMarketOrg(o)) return k >= pseMarketDisplayK();
+    return k >= overviewRevealK(o);
   }
 
   // 0–1 ramp: how fully an org promotes from background dot to readable bubble.
@@ -4458,6 +4513,7 @@ export function mountNercOrgMap(): void {
           H,
           compact,
           unitPerPx: +unitPerPx.toFixed(3),
+          displayableCount: placeableOrgs.filter((o) => canDisplayOrg(o, k)).length,
           onScreenCount: placeableOrgs.filter((o) => o._sx != null && o._sx >= -90 && o._sx <= W + 90 && (o._sy as number) >= -90 && (o._sy as number) <= H + 90).length,
           visible: vis.length,
           labels: labeled.length,

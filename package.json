@@ -16,6 +16,7 @@
     "nerc:ingest": "node scripts/nerc/ingest.mjs",
     "nerc:build": "node scripts/nerc/build-orgs.mjs",
     "nerc:qa": "node scripts/nerc/qa.mjs",
+    "nerc:check-disclosure": "node scripts/nerc/check-map-disclosure.mjs",
     "nerc:migrate-locations": "node scripts/nerc/migrate-locations.mjs",
     "nerc:location-queue": "node scripts/nerc/build-location-queue.mjs",
     "nerc:apply-location-alternates": "node scripts/nerc/apply-location-alternates.mjs",
