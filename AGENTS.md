@@ -61,6 +61,12 @@ hand-delete a seed.
 - At low zoom, labels use acronyms or short names, not full legal names.
 - The renderer never recomputes weight, color, or flags; those are precomputed at build time in `enrich.mjs`. Change the math there, not in the client.
 
+### Short map labels (`name_shortest`, max 8 chars)
+
+Build-time priority in `enrich.mjs` → `compactDisplayName()`: `SHORT_NAME_OVERRIDES` → `KNOWN_ACRONYMS` → `org-names.json` `shortest` → `tightenMapLabel()` in `display-names.mjs`. Runtime `NAME_RULES` in `nerc-org-map.ts` can prefer a shorter curated `tiny` label.
+
+**Known open bug:** some entities get filler tokens (`and`, `One`, `Water`, …) from the "prefer last word" rule in `tightenMapLabel()`. See [docs/bugs/map-label-filler-bug.md](docs/bugs/map-label-filler-bug.md) for examples, root cause, and rejected fix attempts. **Do not deploy label fixes without explicit user request** and verification against the production baseline (gh-pages `c0ca47b`). Prefer manual curation over bulk automated batches.
+
 ## Commands
 
 ```bash

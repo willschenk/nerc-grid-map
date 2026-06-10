@@ -136,28 +136,6 @@ const ORG_CONTENT_SCALE = 0.92;
 // Background-tier dots: present on the map but not yet promoted to a bubble.
 const FALLBACK_TINY_RADIUS_PX = { desktop: 1.35, compact: 1.2 };
 const FALLBACK_TINY_RADIUS_DEEP_PX = { desktop: 1.75, compact: 1.55 };
-// Flip to true locally when tuning render outcomes without a URL flag.
-const RENDER_STATS_LOCAL = false;
-type RenderOutcomeStats = {
-  bucket: number;
-  k: number;
-  projectedValid: number;
-  visible: number;
-  bubbleNormal: number;
-  fallbackTiny: number;
-  labeled: number;
-  insideLabels: number;
-  floatLabels: number;
-  labelCandidates: number;
-  labelsSkippedCollision: number;
-  illegalDemoted: number;
-  placementPackFallback: number;
-};
-type PlacementOutcomeStats = {
-  bucket: number;
-  packFallback: number;
-  illegalGuardDemoted: number;
-};
 // D3 transition duration for programmatic zoom (tour, center-on-org, home reset).
 const ZOOM_TRANSITION_MS = 175;
 const AUTHORITY_ROLES = new Set(["BA", "RC", "PC"]);
@@ -405,19 +383,6 @@ function compactMapLabel(text: string | null | undefined, maxLen = MAP_LABEL_MAX
   }
   return null;
 }
-function compactAcronymLabel(o: Org): string | null {
-  if (!o.acronym) return null;
-  const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
-  if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) {
-    return compressed;
-  }
-  const core = coreFromAcronym(o.acronym);
-  const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
-  if (tightened.length <= MAP_LABEL_MAX && !isWeakMapLabel(tightened)) {
-    return tightened;
-  }
-  return null;
-}
 
 // Three-tier names. tiny = super-short (zoomed out / tight spots), mid =
 // shortened (zoomed in), and the full legal entity_name is reserved for the
@@ -501,50 +466,85 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
+  // Curated brand rules beat researched shortest when they compress further
+  // (e.g. org-names "Wheelabrator" -> Wheel). Researched shortest still wins
+  // when it is already the tightest label we have.
   const curated = curate(o.entity_name);
-  const fromShortest = compactMapLabel(o.name_shortest);
-  if (fromShortest) return fromShortest;
-  const fromAcronym = compactAcronymLabel(o);
-  if (fromAcronym) return fromAcronym;
+  const fromShortest = o.name_shortest
+    ? tightenMapLabel(o.name_shortest, MAP_LABEL_MAX)
+    : null;
   if (curated) {
-    const curatedTiny = compactMapLabel(curated.tiny);
-    if (curatedTiny) return curatedTiny;
+    const tiny = tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
+    if (!fromShortest || tiny.length < fromShortest.length) return tiny;
   }
-  const fromShort = compactMapLabel(o.name_short, MAP_LABEL_MAX);
-  if (fromShort) return fromShort;
+  if (fromShortest) return fromShortest;
+  if (curated) return tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
   if (o.acronym) {
     const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
-    if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) {
-      return compressed;
-    }
+    if (compressed.length <= MAP_LABEL_MAX) return compressed;
     const core = coreFromAcronym(o.acronym);
-    const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
-    if (!isWeakMapLabel(tightened)) return tightened;
+    return tightenMapLabel(core, MAP_LABEL_MAX);
   }
-  const fallback = tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
-  if (!isWeakMapLabel(fallback)) return fallback;
-  return fallbackAcronym(o.entity_name);
+  return tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
 }
 
 // A shortened-but-readable brand: cut "… as agent for …", "d/b/a", trailing
 // lists/clauses, and legal suffixes; fall back to the tiny token if still long.
 function midName(o: Org): string {
-  const fromShort = compactMapLabel(o.name_short, 14);
-  if (fromShort) return fromShort;
+  // Researched "short" name wins (e.g. "Consumers", "PJM Interconnection").
+  if (o.name_short) return tightenMapLabel(o.name_short, 14);
   const c = curate(o.entity_name);
   if (c) return c.mid;
   let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
   s = shortName(s).replace(/,.*$/, "").trim();
-  const tightened = tightenMapLabel(s, 14);
-  if (s.length >= 3 && s.length <= 22 && !isWeakMapLabel(tightened)) {
-    return s;
-  }
+  if (s.length >= 3 && s.length <= 22) return s;
   return tinyName(o);
+}
+
+function compactAcronymLabel(o: Org): string | null {
+  if (!o.acronym) return null;
+  const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
+  if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) {
+    return compressed;
+  }
+  const core = coreFromAcronym(o.acronym);
+  const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
+  if (tightened.length <= MAP_LABEL_MAX && !isWeakMapLabel(tightened)) {
+    return tightened;
+  }
+  return null;
+}
+
+// Display-only: swap weak placement tokens for a real acronym. Placement, dedup,
+// and bubble-vs-dot decisions still use tinyName()/midName() unchanged.
+function displayMapLabel(o: Org, placementText: string, maxLen = MAP_LABEL_MAX): string {
+  if (!isWeakMapLabel(placementText)) return placementText;
+  const fromAcronym = compactAcronymLabel(o);
+  if (fromAcronym && fromAcronym.length <= maxLen) return fromAcronym;
+  const curated = curate(o.entity_name);
+  if (curated) {
+    const curatedTiny = compactMapLabel(curated.tiny, maxLen);
+    if (curatedTiny) return curatedTiny;
+  }
+  const fromShort = compactMapLabel(o.name_short, maxLen);
+  if (fromShort) return fromShort;
+  const fromShortest = compactMapLabel(o.name_shortest, maxLen);
+  if (fromShortest) return fromShortest;
+  if (o.acronym) {
+    const compressed = compressSpacedBrand(o.acronym, maxLen);
+    if (compressed.length <= maxLen && !isWeakMapLabel(compressed)) return compressed;
+    const core = coreFromAcronym(o.acronym);
+    const tightened = tightenMapLabel(core, maxLen);
+    if (tightened.length <= maxLen && !isWeakMapLabel(tightened)) return tightened;
+  }
+  const fallback = tightenMapLabel(fallbackAcronym(o.entity_name), maxLen);
+  if (!isWeakMapLabel(fallback)) return fallback;
+  return fallbackAcronym(o.entity_name);
 }
 
 // "Acronym"-style token used in chips / tooltips / aria: the super-short name.
 function orgAcronym(o: Org): string {
-  return tinyName(o);
+  return displayMapLabel(o, tinyName(o));
 }
 
 function memberDisplayName(name: string): string {
@@ -739,19 +739,10 @@ export function mountNercOrgMap(): void {
   const phoneSizeScale = (): number => (phone ? 1.2 : 1);
   let orgMarkK = NaN;
   let orgLayoutBucket = NaN;
-  // Last computed label placement, stashed for the optional ?audit UX harness so
-  // it can report which dots got an inside vs floating label without recomputing.
+  // Last computed label placement, used for hover radius/class updates without
+  // recomputing the full label pass.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
   let tooltipRequest = 0;
-  const renderStatsEnabled =
-    RENDER_STATS_LOCAL ||
-    (typeof location !== "undefined" && new URLSearchParams(location.search).has("debug"));
-  let lastRenderStats: RenderOutcomeStats | null = null;
-  let lastPlacementStats: PlacementOutcomeStats | null = null;
-  let lastStatsLogBucket = NaN;
-  let renderGuardDemoted = 0;
-  // Dev view mode: zoom locked to preset k values; pan only.
-  let devViewLock: { activeK: number } | null = null;
 
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
@@ -930,10 +921,10 @@ export function mountNercOrgMap(): void {
       : lp >= 88 ? 1.6 : lp >= 68 ? 2.2 : lp >= 38 ? 3.2 : 4.5;
     if (k < shortAt) return [tiny];
     const mid = midName(o);
-    const midTight = compactMapLabel(mid, compact ? 12 : 14);
-    if (!midTight || midTight === tiny || midTight.length > (compact ? 12 : 14)) {
-      return [tiny];
-    }
+    const midTight = tightenMapLabel(mid, compact ? 12 : 14);
+    // Keep the longer "mid" brand only when it is genuinely short; otherwise stay
+    // with the compact token so a long name never dominates its neighbours.
+    if (midTight === tiny || midTight.length > (compact ? 12 : 14)) return [tiny];
     return [tiny, midTight];
   }
 
@@ -2153,17 +2144,6 @@ export function mountNercOrgMap(): void {
     };
   }
 
-  // True when (x, y) in viewBox space sits on land (or just off any edge, so
-  // dots near the viewport border aren't yanked inward). Null mask => treat all
-  // as land (no clamping).
-  function onLand(x: number, y: number): boolean {
-    if (!landMask) return true;
-    const mx = Math.floor(x / maskScale);
-    const my = Math.floor(y / maskScale);
-    if (mx < 0 || my < 0 || mx >= maskW || my >= maskH) return true;
-    return landMask[my * maskW + mx] === 1;
-  }
-
   // Pick true origin or the nearest on-land candidate for a fallback tiny dot.
   // Does not claim collision grid space — normal bubbles keep priority.
   function findFallbackTinyOffset(
@@ -2215,7 +2195,6 @@ export function mountNercOrgMap(): void {
       : renderedRadius(o, k);
     const { cx, cy } = bubbleScreenCenter(o, bucket);
     if (placementLandValid(cx, cy, r, bucket, frame, tiny)) return;
-    if (renderStatsEnabled) renderGuardDemoted++;
     if (o.placementMode === "bubble") {
       o.placementMode = "fallbackTiny";
       o._dx = 0;
@@ -2264,9 +2243,6 @@ export function mountNercOrgMap(): void {
     const bucket = declutterBucket(k);
     if (!force && bucket === orgLayoutBucket) return;
     orgLayoutBucket = bucket;
-    const placementStats: PlacementOutcomeStats | null = renderStatsEnabled
-      ? { bucket, packFallback: 0, illegalGuardDemoted: 0 }
-      : null;
 
     // No margin: bubbles pack edge-to-edge so they can touch but never overlap.
     // We reserve each bubble at the LARGEST radius it reaches anywhere in this
@@ -2371,7 +2347,6 @@ export function mountNercOrgMap(): void {
         if (placed) break;
       }
       if (!placed) {
-        if (placementStats) placementStats.packFallback++;
         if (isTopTierOrg(it.o)) {
           for (const mult of [4.5, 6.5, 8.5, 10.5, 12.5]) {
             for (const [dx, dy] of offsetsFor(baseLeash * mult)) {
@@ -2424,10 +2399,8 @@ export function mountNercOrgMap(): void {
       const { cx, cy } = bubbleScreenCenter(it.o, bucket);
       if (placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
       if (isTopTierOrg(it.o)) continue;
-      if (placementStats) placementStats.illegalGuardDemoted++;
       demoteToBackgroundDot(it.o, bucket, offsetsFor(orgPlacementRadius(it.o, bucket)));
     }
-    if (placementStats) lastPlacementStats = placementStats;
   }
 
   // U.S. state + Canadian province name anchors (base coordinates), drawn faintly
@@ -2495,21 +2468,17 @@ export function mountNercOrgMap(): void {
     // deep-zoom panning doesn't leave stale targets.
     const hitChanged = hitK !== k;
     hitK = k;
-    if (renderStatsEnabled) renderGuardDemoted = 0;
 
     // Project to screen space once, drop off-screen dots, collect label candidates.
     const margin = 90;
     const candidates: Org[] = [];
     const visibleOrgs: Org[] = [];
     let shownCount = 0;
-    let projectedValid = 0;
-    let labelsSkippedCollision = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
         o._vis = false;
         continue;
       }
-      if (canDisplayOrg(o, k)) projectedValid++;
       const sx = transform.applyX(orgRenderX(o, fanScale, declScale));
       const sy = transform.applyY(orgRenderY(o, fanScale, declScale));
       o._sx = sx;
@@ -2662,7 +2631,7 @@ export function mountNercOrgMap(): void {
           (r * 1.74) / Math.max(1, text.length) / 0.56,
         );
         if (insideFont >= hoverInsideMin && insideFont * 0.56 * text.length <= r * insideChord) {
-          return { x: sx, y: sy, font: insideFont, text, inside: true };
+          return { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, text), inside: true };
         }
       }
 
@@ -2673,7 +2642,7 @@ export function mountNercOrgMap(): void {
         const h = acrossFont * 1.15;
         const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.55, y1: sy + h * 0.45 };
         if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
-        return { x: sx, y: sy, font: acrossFont, text, inside: false, centered: true };
+        return { x: sx, y: sy, font: acrossFont, text: displayMapLabel(o, text), inside: false, centered: true };
       }
 
       const fallbackFont = hoverAcrossMin;
@@ -2685,10 +2654,10 @@ export function mountNercOrgMap(): void {
         const ly = sy + nudge;
         const box: Box = { x0: lx - w / 2, x1: lx + w / 2, y0: ly - h * 0.7, y1: ly + h * 0.3 };
         if (box.y1 <= H - edgeSafe && box.y0 >= topSafe) {
-          return { x: lx, y: ly, font: fallbackFont, text, inside: false };
+          return { x: lx, y: ly, font: fallbackFont, text: displayMapLabel(o, text), inside: false };
         }
       }
-      return { x: sx, y: sy, font: fallbackFont, text: textOptions[0], inside: false, centered: true };
+      return { x: sx, y: sy, font: fallbackFont, text: displayMapLabel(o, textOptions[0]), inside: false, centered: true };
     };
 
     let placedCount = 0;
@@ -2731,13 +2700,11 @@ export function mountNercOrgMap(): void {
         const insideDedupK = k < 1.4 ? (lp >= 78 ? 0.65 : lp >= 68 ? 1.05 : 2.0) : isMidwestOrg(o) ? 2.0 : 2.2;
         const box = labelBox(sx, sy, brand, insideFont, true);
         if ((forceLabel || k >= insideDedupK || !usedLabels.has(brand)) && labelClears(box) && bubbleClears(o)) {
-          labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: brand, inside: true });
+          labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, brand), inside: true });
           if (!forceLabel) usedLabels.add(brand);
           reserveLabel(box);
           addBubbleBlocker(o);
           placedCount++;
-        } else if (renderStatsEnabled && (!labelClears(box) || !bubbleClears(o))) {
-          labelsSkippedCollision++;
         }
         continue;
       }
@@ -2807,7 +2774,6 @@ export function mountNercOrgMap(): void {
         chosen = tryFloatingText(textOptions[1]);
       }
       if (!chosen || !bubbleClears(o)) {
-        if (renderStatsEnabled) labelsSkippedCollision++;
         continue;
       }
       reserveLabel(chosen.box);
@@ -2815,7 +2781,13 @@ export function mountNercOrgMap(): void {
         labeledClusters.push({ x: sx, y: sy });
         usedLabels.add(chosen.text);
       }
-      labelState.set(o.ncr_id, { x: chosen.x, y: chosen.y, font, text: chosen.text, inside: false });
+      labelState.set(o.ncr_id, {
+        x: chosen.x,
+        y: chosen.y,
+        font,
+        text: displayMapLabel(o, chosen.text, compact ? 12 : 14),
+        inside: false,
+      });
       addBubbleBlocker(o);
       placedCount++;
     }
@@ -3067,46 +3039,9 @@ export function mountNercOrgMap(): void {
       .attr("font-size", terrFontPx / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
-
-    if (renderStatsEnabled) {
-      const bucket = declutterBucket(k);
-      let bubbleNormal = 0;
-      let fallbackTiny = 0;
-      let insideLabels = 0;
-      let floatLabels = 0;
-      for (const o of visibleOrgs) {
-        if (!o._vis) continue;
-        if (o.placementMode === "bubble" && !o._renderFallback) bubbleNormal++;
-        else if (o.placementMode === "fallbackTiny" || o._renderFallback) fallbackTiny++;
-      }
-      for (const st of labelState.values()) {
-        if (st.inside) insideLabels++;
-        else floatLabels++;
-      }
-      const stats: RenderOutcomeStats = {
-        bucket,
-        k: +k.toFixed(3),
-        projectedValid,
-        visible: shownCount,
-        bubbleNormal,
-        fallbackTiny,
-        labeled: labelState.size,
-        insideLabels,
-        floatLabels,
-        labelCandidates: candidates.length,
-        labelsSkippedCollision,
-        illegalDemoted: (lastPlacementStats?.illegalGuardDemoted ?? 0) + renderGuardDemoted,
-        placementPackFallback: lastPlacementStats?.packFallback ?? 0,
-      };
-      lastRenderStats = stats;
-      if (bucket !== lastStatsLogBucket) {
-        lastStatsLogBucket = bucket;
-        console.debug("[nerc render stats]", stats);
-      }
-    }
   }
 
-  // Lay out-of-footprint territory orgs as labelled clusters of dots — no framed
+  // Lay out-of-footprint territory orgs
   // box. Geocoded orgs keep relative geography via geoMercator fitExtent;
   // ungeocoded orgs fall into a centred grid.
   function layoutTerritoryInsets(): void {
@@ -3902,10 +3837,7 @@ export function mountNercOrgMap(): void {
       .clickDistance(compact ? 6 : 4)
       .tapDistance(compact ? 12 : 8)
       .wheelDelta(wheelDelta)
-      .filter((event) => {
-        if (devViewLock && (event.type === "wheel" || event.type === "dblclick")) return false;
-        return !event.ctrlKey && !event.button;
-      })
+      .filter((event) => !event.ctrlKey && !event.button)
       // The walkthrough keeps playing while the user pans/zooms (programmatic
       // transitions have no sourceEvent). A real gesture just nudges the Stop
       // control so they know they can take over.
@@ -3926,12 +3858,8 @@ export function mountNercOrgMap(): void {
       })
       .on("zoom", (ev) => {
         if (ev.sourceEvent) lastUserZoomAt = performance.now();
-        let next = ev.transform;
-        if (devViewLock) {
-          next = zoomIdentity.translate(next.x, next.y).scale(devViewLock.activeK);
-        }
         const prevK = transform.k;
-        transform = next;
+        transform = ev.transform;
         const kChanged = Math.abs(transform.k - prevK) > 0.001;
         if (kChanged) {
           if (wheelZooming || isWheelEvent(ev.sourceEvent)) zoomBoundsDirty = true;
@@ -4160,439 +4088,8 @@ export function mountNercOrgMap(): void {
     updateView();
     scheduleOrgDetailsLoad();
     revealActionButtons();
-    if (new URLSearchParams(location.search).has("audit")) setupAudit();
-    if (import.meta.env.DEV || new URLSearchParams(location.search).has("devView")) setupDevView();
-    if (renderStatsEnabled) setupRenderStats();
   }
 
-  // Optional render-outcome counters (?debug=1 or RENDER_STATS_LOCAL). Console
-  // logs once per zoom bucket; window.__nercRenderStats exposes the latest snapshot.
-  function setupRenderStats(): void {
-    (window as unknown as { __nercRenderStats: unknown }).__nercRenderStats = {
-      latest: (): RenderOutcomeStats | null => lastRenderStats,
-      placement: (): PlacementOutcomeStats | null => lastPlacementStats,
-      log: (): void => {
-        if (lastRenderStats) console.debug("[nerc render stats]", lastRenderStats);
-      },
-    };
-  }
-
-  // Dev-only: three locked zoom presets. Pan freely; use tabs or +/- to change level.
-  function setupDevView(): void {
-    type DevView = {
-      id: string;
-      label: string;
-      k: number;
-      lng: number;
-      lat: number;
-      purpose: string;
-      tune: string[];
-    };
-    const DEV_VIEWS: DevView[] = [
-      {
-        id: "overview",
-        label: "Overview",
-        k: 0.72,
-        lng: -98,
-        lat: 39.5,
-        purpose: "Full US at minimum zoom. Who appears, bubble density, top-tier always visible.",
-        tune: [
-          "Which orgs should appear vs stay hidden?",
-          "Are top-tier ISO/RTO/weight≥28 orgs all visible as bubbles?",
-          "Bubble size spread by weight — too flat or too extreme?",
-          "Declutter offsets — too crowded in metros (NYC, Houston, LA, Chicago)?",
-        ],
-      },
-      {
-        id: "mid",
-        label: "Mid",
-        k: 3.2,
-        lng: -98,
-        lat: 39.5,
-        purpose: "Multi-state zoom. Regional clusters, label overlap, mid-weight org disclosure.",
-        tune: [
-          "Which clusters need more separation or smaller bubbles?",
-          "Which labels are missing, colliding, or illegible?",
-          "Any orgs that should promote to bubbles here but stay tiny?",
-          "Pan to a problem region and re-copy if tuning a specific area.",
-        ],
-      },
-      {
-        id: "regional",
-        label: "Regional",
-        k: 7.5,
-        lng: -98,
-        lat: 39.5,
-        purpose: "State/metro zoom. Every non-GO org visible; local placement and labels.",
-        tune: [
-          "Are all ~770 registry orgs visible (bubbles or tiny dots)?",
-          "Should bubbles sit on HQ or may they offset farther?",
-          "Inside-label readability vs float placement?",
-          "Any misplaced coastal/offshore dots?",
-        ],
-      },
-    ];
-    let activeViewId = DEV_VIEWS[0].id;
-
-    const bar = createEl("div");
-    Object.assign(bar.style, {
-      position: "fixed",
-      top: "10px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      zIndex: "9999",
-      display: "flex",
-      flexWrap: "wrap",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "6px",
-      maxWidth: "min(96vw, 920px)",
-      padding: "8px 10px",
-      background: "rgba(255,255,255,0.96)",
-      border: "1px solid rgba(13,23,20,0.35)",
-      borderRadius: "8px",
-      boxShadow: "0 4px 14px rgba(20,31,28,0.22)",
-      font: "12px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace",
-      color: "#0b1a16",
-    } as Partial<CSSStyleDeclaration>);
-
-    const hint = createEl("span", undefined, "Pan only · keys 1–3 or ± to change zoom");
-    Object.assign(hint.style, {
-      flexBasis: "100%",
-      textAlign: "center",
-      fontSize: "10px",
-      opacity: "0.72",
-      marginBottom: "2px",
-    } as Partial<CSSStyleDeclaration>);
-    bar.append(hint);
-
-    const btnStyle = (active: boolean): Partial<CSSStyleDeclaration> => ({
-      padding: "5px 10px",
-      border: active ? "1px solid rgba(13,23,20,0.55)" : "1px solid rgba(13,23,20,0.25)",
-      borderRadius: "5px",
-      background: active ? "rgba(13,23,20,0.08)" : "transparent",
-      color: "#0b1a16",
-      cursor: "pointer",
-    });
-
-    const copyBtn = createEl("button", undefined, "Copy view brief");
-    copyBtn.type = "button";
-
-    const flash = (el: HTMLElement, msg: string): void => {
-      const prev = el.textContent;
-      el.textContent = msg;
-      window.setTimeout(() => {
-        el.textContent = prev;
-      }, 1200);
-    };
-
-    const orgLine = (o: Org, k: number): string => {
-      const mode = o.placementMode === "fallbackTiny" ? "tiny" : o._placed ? "bubble" : "unplaced";
-      const st = lastLabelState?.get(o.ncr_id);
-      const label = st ? (st.inside ? "label:in" : "label:float") : "label:no";
-      const bx = orgRenderX(o);
-      const by = orgRenderY(o);
-      const off = Math.hypot(bx - (o._x as number), by - (o._y as number)).toFixed(1);
-      const rCss = (renderedRadius(o, k) / unitPerPx).toFixed(1);
-      const tier = isTopTierOrg(o) ? "TOP" : "—";
-      return (
-        `  ${orgAcronym(o).padEnd(8)} w=${String(o.weight).padStart(2)} ${tier.padEnd(3)} ` +
-        `${mode.padEnd(9)} ${label.padEnd(11)} r=${rCss}px off=${off}px  ${o.ncr_id}`
-      );
-    };
-
-    const describeView = (viewId = activeViewId): string => {
-      const view = DEV_VIEWS.find((v) => v.id === viewId) ?? DEV_VIEWS[0];
-      const k = transform.k;
-      const rect = svgNode.getBoundingClientRect();
-      const center = transform.invert([W / 2, H / 2]);
-      const lnglat = projection.invert?.(center as [number, number]);
-      const area =
-        lnglat && Number.isFinite(lnglat[0]) && Number.isFinite(lnglat[1])
-          ? `${lnglat[1].toFixed(3)}, ${lnglat[0].toFixed(3)} (lat, lng)`
-          : "unknown";
-
-      const visible = placeableOrgs
-        .filter((o) => o._vis)
-        .sort((a, b) => visualPrioritySort(a, b));
-      const bubbles = visible.filter((o) => o.placementMode === "bubble");
-      const tinies = visible.filter((o) => o.placementMode === "fallbackTiny");
-      const labeled = visible.filter((o) => lastLabelState?.has(o.ncr_id));
-
-      const topTier = placeableOrgs.filter(isTopTierOrg);
-      const topVisible = topTier.filter((o) => o._vis);
-      const topOffScreen = topTier.filter((o) => !o._vis && canDisplayOrg(o, k));
-      const topMissingBubble = topVisible.filter((o) => o.placementMode !== "bubble");
-
-      const displayableAll = placeableOrgs.filter((o) => canDisplayOrg(o, k));
-      const placedAll = displayableAll.filter((o) => o._placed);
-      const unplacedAll = displayableAll.filter((o) => !o._placed);
-      const tinyAll = placedAll.filter((o) => o.placementMode === "fallbackTiny");
-      const bubbleAll = placedAll.filter((o) => o.placementMode === "bubble");
-
-      const stats = lastRenderStats;
-      const lines: string[] = [
-        `# NERC map — dev view brief`,
-        ``,
-        `## View: ${view.label} (${view.id})`,
-        view.purpose,
-        ``,
-        `## Camera (locked preset)`,
-        `- zoom k: ${k.toFixed(3)} (preset ${view.k} — wheel zoom disabled in dev)`,
-        `- pan transform: x=${transform.x.toFixed(1)}, y=${transform.y.toFixed(1)}`,
-        `- map center: ${area}`,
-        `- viewport: ${Math.round(rect.width)}×${Math.round(rect.height)}px (${compact ? "compact" : "desktop"})`,
-        ``,
-        `## Counts`,
-        `- visible on screen: ${visible.length}`,
-        `- bubbles: ${bubbles.length} | fallback tiny: ${tinies.length} | labeled: ${labeled.length}`,
-        `- displayable at this k: ${displayableAll.length}`,
-        `- placed (global): ${placedAll.length} — bubbles ${bubbleAll.length}, tiny ${tinyAll.length}`,
-        ...(unplacedAll.length ? [`- unplaced (hidden until placed): ${unplacedAll.length}`] : []),
-        ...(stats
-          ? [
-              `- render stats: projected=${stats.projectedValid} packFallback=${stats.placementPackFallback} labelCandidates=${stats.labelCandidates}`,
-            ]
-          : []),
-        ``,
-        `## Top-tier orgs (ISO / weight≥28 / name_major — must always show)`,
-        `- visible: ${topVisible.length} / ${topTier.length}`,
-        ...(topOffScreen.length
-          ? [`- off-screen (pan to see): ${topOffScreen.map((o) => orgAcronym(o)).join(", ")}`]
-          : []),
-        ...(topMissingBubble.length
-          ? [`- visible but NOT bubble (fix): ${topMissingBubble.map((o) => orgAcronym(o)).join(", ")}`]
-          : []),
-        ``,
-        `## Visible orgs (${visible.length}) — acronym  weight  tier  placement  label  radius  HQ-offset  ncr_id`,
-        ...visible.slice(0, 100).map((o) => orgLine(o, k)),
-        ...(visible.length > 100 ? [`  … +${visible.length - 100} more on screen`] : []),
-        ``,
-        `## Selected`,
-        selectedOrg
-          ? `${displayName(selectedOrg)} (${selectedOrg.ncr_id}) w=${selectedOrg.weight} ${orgLine(selectedOrg, k).trim()}`
-          : "none — click an org to include it in the brief",
-        ``,
-        `## Tune this view`,
-        ...view.tune.map((t) => `- ${t}`),
-        ``,
-        `## Your instructions (fill in after copying)`,
-        `- MOVE:`,
-        `- HIDE / defer until higher zoom:`,
-        `- EMPHASIZE (larger / label / always show):`,
-        `- OTHER:`,
-      ];
-      return lines.join("\n");
-    };
-
-    const applyView = (view: DevView): void => {
-      activeViewId = view.id;
-      devViewLock = { activeK: view.k };
-      zoomBehavior?.scaleExtent([view.k, view.k]);
-      const p = projection([view.lng, view.lat]);
-      animateTransform(
-        zoomIdentity.translate(W / 2, H / 2).scale(view.k).translate(-(p?.[0] ?? W / 2), -(p?.[1] ?? H / 2)),
-        280,
-      );
-      for (const btn of bar.querySelectorAll<HTMLButtonElement>("button[data-view-id]")) {
-        Object.assign(btn.style, btnStyle(btn.dataset.viewId === view.id));
-      }
-    };
-
-    const cycleView = (dir: -1 | 1): void => {
-      const idx = DEV_VIEWS.findIndex((v) => v.id === activeViewId);
-      const next = DEV_VIEWS[Math.max(0, Math.min(DEV_VIEWS.length - 1, idx + dir))];
-      applyView(next);
-    };
-
-    for (const view of DEV_VIEWS) {
-      const btn = createEl("button", undefined, view.label);
-      btn.type = "button";
-      btn.dataset.viewId = view.id;
-      btn.title = view.purpose;
-      Object.assign(btn.style, btnStyle(view.id === activeViewId));
-      btn.addEventListener("click", (ev) => {
-        ev.stopPropagation();
-        applyView(view);
-      });
-      bar.append(btn);
-    }
-
-    Object.assign(copyBtn.style, btnStyle(false));
-    copyBtn.addEventListener("click", async (ev) => {
-      ev.stopPropagation();
-      const text = describeView();
-      try {
-        await navigator.clipboard.writeText(text);
-        flash(copyBtn, "Copied ✓");
-      } catch {
-        const ta = createEl("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.append(ta);
-        ta.select();
-        try {
-          document.execCommand("copy");
-          flash(copyBtn, "Copied ✓");
-        } catch {
-          flash(copyBtn, "Copy failed");
-        }
-        ta.remove();
-      }
-    });
-    bar.append(copyBtn);
-    document.body.append(bar);
-
-    const rewireZoomBtn = (id: string, handler: () => void): void => {
-      const el = byId<HTMLButtonElement>(id);
-      const fresh = el.cloneNode(true) as HTMLButtonElement;
-      el.parentNode?.replaceChild(fresh, el);
-      fresh.addEventListener("click", (ev) => {
-        ev.stopPropagation();
-        handler();
-      });
-    };
-    rewireZoomBtn("nerc-zoom-in", () => cycleView(1));
-    rewireZoomBtn("nerc-zoom-out", () => cycleView(-1));
-    rewireZoomBtn("nerc-zoom-home", () => applyView(DEV_VIEWS[0]));
-
-    const onDevKey = (ev: KeyboardEvent): void => {
-      if (ev.target instanceof HTMLInputElement || ev.target instanceof HTMLTextAreaElement) return;
-      if (ev.key === "1") applyView(DEV_VIEWS[0]);
-      else if (ev.key === "2") applyView(DEV_VIEWS[1]);
-      else if (ev.key === "3") applyView(DEV_VIEWS[2]);
-      else if (ev.key === "+" || ev.key === "=") cycleView(1);
-      else if (ev.key === "-" || ev.key === "_") cycleView(-1);
-    };
-    document.addEventListener("keydown", onDevKey);
-
-    applyView(DEV_VIEWS[0]);
-
-    (window as unknown as { __nercDevViews: unknown }).__nercDevViews = {
-      views: DEV_VIEWS.map(({ id, label, k, purpose }) => ({ id, label, k, purpose })),
-      current: () => activeViewId,
-      setView: (id: string) => {
-        const view = DEV_VIEWS.find((v) => v.id === id);
-        if (view) applyView(view);
-      },
-      describe: () => describeView(),
-      copy: async () => {
-        const text = describeView();
-        await navigator.clipboard.writeText(text);
-        return text;
-      },
-    };
-  }
-
-  // Optional UX-audit harness (only when the page is loaded with ?audit=1). It
-  // drives the *real* renderer and reads out per-bubble stats using the same
-  // land mask / sizing / label functions the map uses, so the audit reflects
-  // exactly what ships. No effect on the normal map. Removable; ships inert.
-  function setupAudit(): void {
-    const sampleWater = (bx: number, by: number, rBase: number): number => {
-      if (rBase <= 0) return onLand(bx, by) ? 0 : 1;
-      const step = Math.max(0.6, rBase / 4);
-      let inDisc = 0;
-      let water = 0;
-      for (let yy = -rBase; yy <= rBase; yy += step) {
-        for (let xx = -rBase; xx <= rBase; xx += step) {
-          if (xx * xx + yy * yy > rBase * rBase) continue;
-          inDisc++;
-          if (!onLand(bx + xx, by + yy)) water++;
-        }
-      }
-      return inDisc ? water / inDisc : 0;
-    };
-    const setZoom = (k: number, cx = W / 2, cy = H / 2): void => {
-      animateTransform(zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-cx, -cy), 0);
-    };
-    (window as unknown as { __nercAudit: unknown }).__nercAudit = {
-      info: () => ({ W, H, compact, unitPerPx, count: placeableOrgs.length }),
-      getTransform: () => ({ x: transform.x, y: transform.y, k: transform.k }),
-      project: (lng: number, lat: number) => projection([lng, lat]),
-      setZoom,
-      setZoomAt: (k: number, lng: number, lat: number) => {
-        const p = projection([lng, lat]);
-        setZoom(k, p ? p[0] : W / 2, p ? p[1] : H / 2);
-      },
-      audit: () => {
-        const k = transform.k;
-        const fanScale = spiderFanScale(k);
-        const declScale = declutterScale(k);
-        const vis: Array<Record<string, number | string | boolean>> = [];
-        for (const o of placeableOrgs) {
-          if (!o._vis || o._sx == null || o._sy == null) continue;
-          const bx = orgRenderX(o, fanScale, declScale);
-          const by = orgRenderY(o, fanScale, declScale);
-          const rScreen = renderedRadius(o, k); // screen viewBox units
-          const rBase = rScreen / k; // base-space radius (mask is base space)
-          const waterFrac = o._frame === "terr" ? 0 : sampleWater(bx, by, rBase);
-          const baseOffset = Math.hypot(bx - (o._x as number), by - (o._y as number));
-          const st = lastLabelState?.get(o.ncr_id);
-          vis.push({
-            id: o.ncr_id,
-            name: tinyName(o),
-            frame: o._frame ?? "",
-            pr: Math.round(visualPriority(o)),
-            w: o.weight,
-            rcss: +(rScreen / unitPerPx).toFixed(1),
-            sx: +o._sx.toFixed(1),
-            sy: +o._sy.toFixed(1),
-            waterFrac: +waterFrac.toFixed(2),
-            centerWater: !onLandForFrame(bx, by, orgLandFrame(o), false),
-            baseOff: +baseOffset.toFixed(1),
-            labeled: !!st,
-            inside: !!st?.inside,
-          });
-        }
-        // Severe-overlap pairs among visible dots (screen space).
-        let severe = 0;
-        for (let i = 0; i < vis.length; i++) {
-          for (let j = i + 1; j < vis.length; j++) {
-            const a = vis[i];
-            const b = vis[j];
-            const dx = (a.sx as number) - (b.sx as number);
-            const dy = (a.sy as number) - (b.sy as number);
-            const d = Math.hypot(dx, dy);
-            const ra = (a.rcss as number) * unitPerPx;
-            const rb = (b.rcss as number) * unitPerPx;
-            if (d < (ra + rb) * 0.62) severe++;
-          }
-        }
-        const labeled = vis.filter((v) => v.labeled);
-        // Highest-priority visible dots and whether each earned a label — used to
-        // confirm high-priority entities are disclosed/labeled before low ones.
-        const topByPriority = [...vis]
-          .sort((a, b) => (b.pr as number) - (a.pr as number))
-          .slice(0, 22)
-          .map((v) => `${v.name}${v.labeled ? (v.inside ? "·in" : "·fl") : "·NO"}`);
-        return {
-          k: +k.toFixed(2),
-          W,
-          H,
-          compact,
-          unitPerPx: +unitPerPx.toFixed(3),
-          onScreenCount: placeableOrgs.filter((o) => o._sx != null && o._sx >= -90 && o._sx <= W + 90 && (o._sy as number) >= -90 && (o._sy as number) <= H + 90).length,
-          visible: vis.length,
-          labels: labeled.length,
-          inside: labeled.filter((v) => v.inside).length,
-          float: labeled.filter((v) => !v.inside).length,
-          severeOverlaps: severe,
-          stranded: vis.filter((v) => v.frame !== "terr" && (v.waterFrac as number) >= 0.85).length,
-          centerInWater: vis.filter((v) => v.frame !== "terr" && v.centerWater).length,
-          minRcss: vis.length ? Math.min(...vis.map((v) => v.rcss as number)) : 0,
-          medRcss: vis.length
-            ? vis.map((v) => v.rcss as number).sort((a, b) => a - b)[Math.floor(vis.length / 2)]
-            : 0,
-          maxBaseOff: vis.length ? Math.max(...vis.map((v) => v.baseOff as number)) : 0,
-          topByPriority,
-          dots: vis,
-        };
-      },
-    };
-    (window as unknown as { __nercAuditReady: boolean }).__nercAuditReady = true;
-  }
 
   init().catch((err) => {
     console.error(err);

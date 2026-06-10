@@ -170,3 +170,18 @@ Spatial/visual tuning by eyeball is slow and unreliable across 20 zoom levels ×
 | move dots / fix offshore drift | `relaxDeclutter` + `buildLandMask`/`clampToLand` (base‑space!) |
 | touch data | `enrich.mjs`/`build-orgs.mjs`; never the renderer; respect seed/supplemental rules in AGENTS.md |
 | verify a visual change | `?audit=1` + `scripts/ux-audit.mjs`, then `npm run check` |
+| fix a bad map label | read [docs/bugs/map-label-filler-bug.md](docs/bugs/map-label-filler-bug.md) first; prefer manual `KNOWN_ACRONYMS` / `org-names.json` over bulk scripts |
+
+## 7. Map labels — production baseline and the filler bug
+
+**Production map behavior is frozen at gh-pages `c0ca47b`** (2026-06-10 deploy). Bubble placement, disclosure, declutter, and dot density on that deploy are correct. Do not ship label or renderer changes without verifying against that baseline (`?audit=1`, side‑by‑side at low zoom on desktop and iOS).
+
+**One known text bug remains:** `tightenMapLabel()` in `display-names.mjs` can emit meaningless single‑word labels — connectives and generic nouns — when it "prefers the last word" after stripping industry descriptors. Examples: Connecticut Light and Power → `and`, Hydro One → `One`, Muscatine Power & Water → `Water`. Full write‑up, root cause, and every fix attempt tried so far: [docs/bugs/map-label-filler-bug.md](docs/bugs/map-label-filler-bug.md).
+
+**What not to do (learned the hard way):**
+
+- **No automated 100‑label batch scripts** without a user‑supplied manual target list. Bulk patches to `KNOWN_ACRONYMS`, `NAME_RULES`, and `org-names.json` sometimes improved labels but often made others worse.
+- **Do not mix label fixes with data/pipeline WIP.** Running `npm run dev` rebuilds org data via `predev` → `build-orgs.mjs`. Uncommitted changes to `geocoded-orgs.json`, `build-orgs.mjs`, or alternate‑location scripts change dot counts and low‑zoom density — easy to misattribute to a label‑only diff.
+- **Do not ship algorithmic filler guards** until manually reviewed against `c0ca47b`. A local `isFillerLabel()` / `recoverLabel()` pass fixed the specific examples but the user rejected it when local did not feel identical to production.
+- **Label work spans build and runtime:** `name_shortest` is baked in `enrich.mjs`; `tinyName()` / `NAME_RULES` in `nerc-org-map.ts` can override at runtime. Fix the layer that actually produces the bad token.
+- **Hard cap is 8 chars** (`MAP_LABEL_MAX`). Curated names longer than 8 get truncated by `tightenMapLabel()` — check length when adding `KNOWN` entries.
