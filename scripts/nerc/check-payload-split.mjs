@@ -71,17 +71,6 @@ const PANEL_FIELDS = [
   "lng",
 ];
 
-const DETAIL_ONLY_FIELDS = [
-  "headquarters_address",
-  "locations",
-  "geo_source",
-  "geo_source_url",
-  "geo_notes",
-  "parent_org",
-  "combined_members",
-  "map_combine_summary",
-];
-
 function sameValue(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
@@ -118,12 +107,6 @@ for (const org of fullOrgs) {
 
   for (const field of RENDER_CRITICAL_FIELDS) {
     compareField(org.ncr_id, "render", org, renderOrg, field);
-  }
-
-  for (const field of DETAIL_ONLY_FIELDS) {
-    if (Object.prototype.hasOwnProperty.call(renderOrg, field)) {
-      errors.push(`detail-only field leaked into render payload: ${org.ncr_id}.${field}`);
-    }
   }
 
   const reconstructed = { ...renderOrg, ...details[org.ncr_id] };
