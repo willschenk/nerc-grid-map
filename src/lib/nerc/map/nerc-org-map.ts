@@ -94,6 +94,17 @@ type Org = {
   // Which projection placed this org: mainland Albers ("us"), the Canada conic
   // ("ca"), or a territory inset ("terr").
   _frame?: "us" | "ca" | "terr";
+  // Static memos — set once after orgs load, never change at runtime.
+  _tiny?: string;       // tinyName(o)
+  _mrc?: number;        // meaningfulRoleCount(o)
+  _defMarket?: boolean; // isDeferredMarketOrg(o)
+  _toOnly?: boolean;    // isTransmissionOwnerOnly(o)
+  _gridLead?: boolean;  // isGridLeadershipOrg(o)
+  _topTier?: boolean;   // isTopTierOrg(o)
+  _vp?: number;         // visualPriority(o)
+  _lpv?: number;        // labelPriority(o)
+  _visRank?: number;    // position in visual-priority-descending sort
+  _labelRank?: number;  // position in label-priority-descending sort
 };
 
 type LandLabel = { name: string; x: number; y: number; small: boolean; _node?: SVGTextElement };
@@ -466,6 +477,10 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
+  if (o._tiny != null) return o._tiny;
+  return (o._tiny = _computeTinyName(o));
+}
+function _computeTinyName(o: Org): string {
   // Curated brand rules beat researched shortest when they compress further
   // (e.g. org-names "Wheelabrator" -> Wheel). Researched shortest still wins
   // when it is already the tightest label we have.
@@ -933,7 +948,8 @@ export function mountNercOrgMap(): void {
   }
 
   function meaningfulRoleCount(o: Org): number {
-    return o.roles.filter((r) => !ZERO_VISUAL_PRIORITY_ROLES.has(r)).length;
+    if (o._mrc != null) return o._mrc;
+    return (o._mrc = o.roles.filter((r) => !ZERO_VISUAL_PRIORITY_ROLES.has(r)).length);
   }
 
   function isOnlyMeaningfulRole(o: Org, role: string): boolean {
@@ -953,16 +969,18 @@ export function mountNercOrgMap(): void {
 
   // GO/GOP-only and PSE-market orgs disclose at the same deep zoom tier.
   function isDeferredMarketOrg(o: Org): boolean {
-    return isGenerationOnly(o) || isPseMarketOnly(o);
+    if (o._defMarket != null) return o._defMarket;
+    return (o._defMarket = isGenerationOnly(o) || isPseMarketOnly(o));
   }
 
   function isTransmissionOwnerOnly(o: Org): boolean {
+    if (o._toOnly != null) return o._toOnly;
     // Federal and reliability orgs often carry GO/GOP alongside TO; don't shrink
     // them to the transmission-owner floor when the data marks them as agencies.
-    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return false;
-    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return false;
-    if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return false;
-    return isOnlyMeaningfulRole(o, "TO");
+    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return (o._toOnly = false);
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return (o._toOnly = false);
+    if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return (o._toOnly = false);
+    return (o._toOnly = isOnlyMeaningfulRole(o, "TO"));
   }
 
   function generationOnlyRevealK(): number {
@@ -1131,39 +1149,45 @@ export function mountNercOrgMap(): void {
   // bonus. RC-only orgs (89) stay above BA+multiRoleBonus (88); visualPrioritySort
   // uses rolePriority as a tiebreaker when scores match.
   function visualPriority(o: Org): number {
-    if (isDeferredMarketOrg(o)) return 6;
-    if (isTransmissionOwnerOnly(o)) return 8;
-    if (isMajorSystemOperator(o)) return 100;
-    const score =
-      Math.max(rolePriority(o), typePriority(o), dataProminenceScore(o)) + multiRoleBonus(o);
-    return Math.max(10, Math.min(100, score));
+    if (o._vp != null) return o._vp;
+    let v: number;
+    if (isDeferredMarketOrg(o)) v = 6;
+    else if (isTransmissionOwnerOnly(o)) v = 8;
+    else if (isMajorSystemOperator(o)) v = 100;
+    else {
+      const score =
+        Math.max(rolePriority(o), typePriority(o), dataProminenceScore(o)) + multiRoleBonus(o);
+      v = Math.max(10, Math.min(100, score));
+    }
+    return (o._vp = v);
   }
 
   // Label-specific priority: ISO/RTO and grid authority lead; merchant and
   // deferred-market orgs trail. Used for label eligibility, ordering, and tiers.
   function labelPriority(o: Org): number {
-    if (isDeferredMarketOrg(o)) return 2;
-    if (isTransmissionOwnerOnly(o)) return 10;
-    if (o.is_iso_rto || o.org_type === "ISO_RTO" || SYSTEM_OPERATOR_NAME.test(o.entity_name)) return 98;
-    if (isMajorSystemOperator(o)) return 96;
-    if (o.roles.includes("RC")) return 92;
-    if (o.roles.includes("BA")) return 88;
-    if (o.roles.includes("PC")) return 85;
-    if (o.roles.includes("TOP")) return 82;
-    if (o.roles.includes("TSP")) return 80;
-    if (o.roles.includes("TP")) return 78;
-    if (REGIONAL_ENTITY_NAME.test(o.entity_name) || RELIABILITY_ORG_NAME.test(o.entity_name)) return 74;
-    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return 72;
-    if (o.org_type === "IOU" || PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return 68;
-    if (o.name_major && o.weight >= 20) return 64;
-    if (hasAnyRole(o, GRID_ROLES)) return 52;
-    if (o.org_type === "municipal" || o.org_type === "cooperative" || PUBLIC_UTILITY_NAME.test(o.entity_name)) {
-      return 38;
-    }
-    if (o.org_type === "cca") return 34;
-    if (hasAnyRole(o, SUPPORT_ROLES)) return 40;
-    if (o.org_type === "merchant") return 16;
-    return 24;
+    if (o._lpv != null) return o._lpv;
+    let v: number;
+    if (isDeferredMarketOrg(o)) v = 2;
+    else if (isTransmissionOwnerOnly(o)) v = 10;
+    else if (o.is_iso_rto || o.org_type === "ISO_RTO" || SYSTEM_OPERATOR_NAME.test(o.entity_name)) v = 98;
+    else if (isMajorSystemOperator(o)) v = 96;
+    else if (o.roles.includes("RC")) v = 92;
+    else if (o.roles.includes("BA")) v = 88;
+    else if (o.roles.includes("PC")) v = 85;
+    else if (o.roles.includes("TOP")) v = 82;
+    else if (o.roles.includes("TSP")) v = 80;
+    else if (o.roles.includes("TP")) v = 78;
+    else if (REGIONAL_ENTITY_NAME.test(o.entity_name) || RELIABILITY_ORG_NAME.test(o.entity_name)) v = 74;
+    else if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) v = 72;
+    else if (o.org_type === "IOU" || PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) v = 68;
+    else if (o.name_major && o.weight >= 20) v = 64;
+    else if (hasAnyRole(o, GRID_ROLES)) v = 52;
+    else if (o.org_type === "municipal" || o.org_type === "cooperative" || PUBLIC_UTILITY_NAME.test(o.entity_name)) v = 38;
+    else if (o.org_type === "cca") v = 34;
+    else if (hasAnyRole(o, SUPPORT_ROLES)) v = 40;
+    else if (o.org_type === "merchant") v = 16;
+    else v = 24;
+    return (o._lpv = v);
   }
 
   function canGrowAtZoom(o: Org): boolean {
@@ -1171,7 +1195,8 @@ export function mountNercOrgMap(): void {
   }
 
   function isGridLeadershipOrg(o: Org): boolean {
-    return (
+    if (o._gridLead != null) return o._gridLead;
+    return (o._gridLead =
       isMajorSystemOperator(o) ||
       hasAnyRole(o, AUTHORITY_ROLES) ||
       o.roles.includes("TOP") ||
@@ -1179,19 +1204,19 @@ export function mountNercOrgMap(): void {
       o.is_iso_rto ||
       o.org_type === "federal" ||
       FEDERAL_NAME.test(o.entity_name) ||
-      RELIABILITY_ORG_NAME.test(o.entity_name)
-    );
+      RELIABILITY_ORG_NAME.test(o.entity_name));
   }
 
   // Largest grid entities — always eligible and always placed at every zoom.
   function isTopTierOrg(o: Org): boolean {
-    if (isGenerationOnly(o) || isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o)) return false;
+    if (o._topTier != null) return o._topTier;
+    if (isGenerationOnly(o) || isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o)) return (o._topTier = false);
     const w = o.weight ?? 0;
-    if (o.is_iso_rto || isMajorSystemOperator(o)) return true;
-    if (w >= 28) return true;
-    if (o.name_major && w >= 18) return true;
-    if (isGridLeadershipOrg(o) && w >= 22) return true;
-    return false;
+    if (o.is_iso_rto || isMajorSystemOperator(o)) return (o._topTier = true);
+    if (w >= 28) return (o._topTier = true);
+    if (o.name_major && w >= 18) return (o._topTier = true);
+    if (isGridLeadershipOrg(o) && w >= 22) return (o._topTier = true);
+    return (o._topTier = false);
   }
 
   // Scale small-org catch-up growth so RC/BA/PC/TOP/TSP stay visually ahead of
@@ -1234,6 +1259,18 @@ export function mountNercOrgMap(): void {
       meaningfulRoleCount(a) - meaningfulRoleCount(b) ||
       a.ncr_id.localeCompare(b.ncr_id)
     );
+  }
+
+  // Pre-compute stable integer sort ranks once after orgs load so that hot-path
+  // per-frame sorts (computePlacements, label candidates) compare integers instead
+  // of invoking the full multi-comparator chains on every element pair.
+  function computeStaticRanks(): void {
+    const byVisual = [...orgs].sort(visualPrioritySort);
+    byVisual.forEach((o, i) => { o._visRank = i; });
+    const byLabel = [...orgs].sort(
+      (a, b) => labelPrioritySort(a, b) || a.entity_name.localeCompare(b.entity_name),
+    );
+    byLabel.forEach((o, i) => { o._labelRank = i; });
   }
 
   function drawPriority(o: Org, _k: number): number {
@@ -2278,9 +2315,8 @@ export function mountNercOrgMap(): void {
     }
     if (!items.length) return;
 
-    // Higher visual-priority orgs place first; zero-priority roles do not affect
-    // the ordering.
-    items.sort((a, b) => visualPrioritySort(a.o, b.o));
+    // Higher visual-priority orgs place first; use pre-computed rank for O(1) compare.
+    items.sort((a, b) => (a.o._visRank ?? 0) - (b.o._visRank ?? 0));
 
     const radius = placementRadius(bucket);
     const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
@@ -2517,8 +2553,7 @@ export function mountNercOrgMap(): void {
       (a, b) =>
         Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
         Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
-        labelPrioritySort(a, b) ||
-        a.entity_name.localeCompare(b.entity_name),
+        (a._labelRank ?? 0) - (b._labelRank ?? 0),
     );
     // Cap how many candidates we even try during a tour step. Big roles (GO has
     // ~1,500) would otherwise run the placement loop thousands of times each
@@ -3989,6 +4024,7 @@ export function mountNercOrgMap(): void {
 
     if (!Array.isArray(orgsPayload.orgs)) throw new Error("No orgs array found in NERC payload");
     orgs = orgsPayload.orgs;
+    computeStaticRanks(); // prime per-org memos and integer sort ranks once
 
     // Canada landmass (context). Non-fatal if the file is missing.
     canadaFeature = await loadJson<unknown>(`${dataBase}nerc/canada-land.json`).catch(() => null);
