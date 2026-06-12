@@ -235,7 +235,6 @@ const RENDER_ORG_FIELDS = [
   "is_private",
   "lat",
   "lng",
-  "locations",
   "city",
   "state",
   "country",
