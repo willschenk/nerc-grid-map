@@ -1,6 +1,7 @@
 import { geoAlbersUsa, geoConicEqualArea, geoMercator, geoPath } from "d3-geo";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zoom";
+import { forceSimulation, forceCollide, forceX, forceY, type Simulation } from "d3-force";
 import "d3-transition";
 import { feature, mesh } from "topojson-client";
 import { ROLE_FULL_NAMES } from "../roles.mjs";
@@ -780,6 +781,25 @@ export function mountNercOrgMap(): void {
   const phoneSizeScale = (): number => (phone ? 1.2 : 1);
   let orgMarkK = NaN;
   let orgLayoutBucket = NaN;
+  // Live force-simulation layout state (see computePlacements). The sim owns each
+  // disclosed bubble's screen-space offset (_dx/_dy); it animates while warm and
+  // is reheated when the zoom bucket changes.
+  type SimNode = {
+    o: Org;
+    hx: number; // home (true projected) x in screen-at-bucket space
+    hy: number;
+    r: number; // reserved radius (visual + half gap)
+    anchor: number; // positional-force strength (small orgs roam, big anchor)
+    cap: number; // max wander distance from home
+    frame: LandFrame;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+  };
+  let orgSim: Simulation<SimNode, undefined> | null = null;
+  let simNodes: SimNode[] = [];
+  let simBucket = NaN;
   // Last computed label placement, used for hover radius/class updates without
   // recomputing the full label pass.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
@@ -788,6 +808,8 @@ export function mountNercOrgMap(): void {
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
     orgLayoutBucket = NaN;
+    orgSim?.stop();
+    simNodes = [];
   }
 
   function rememberOrg(o: Org): void {
@@ -1709,69 +1731,6 @@ export function mountNercOrgMap(): void {
     return 1 / Math.max(k, 0.001);
   }
 
-  // How far (screen viewBox units) a bubble center may sit from its true origin
-  // while it hunts for space. Shrinks with zoom; per-org adjustments in
-  // orgPlacementRadius.
-  function placementRadius(bucket: number): number {
-    return maxDeclutterOffset(bucket);
-  }
-
-  function orgPlacementRadius(o: Org, bucket: number): number {
-    let radius = placementRadius(bucket);
-    const zoomT = declutterZoomT(bucket);
-    const overviewFreedom = 1 - zoomT;
-
-    // Big orgs get room to claim space; small orgs get a much longer leash so they
-    // can orbit around the larger bubbles that overshadow their true location and
-    // still find an open slot (more freedom for the small ones, per the brief).
-    const majorT = smoothStep((visualPriority(o) - 12) / 72);
-    const weightT = smoothStep(((o.weight ?? 0) - 6) / 38);
-    const bigT = Math.max(majorT, weightT);
-    const smallMult = (compact ? 3.7 : 4.5) - (compact ? 0.4 : 0.45) * zoomT;
-    const bigMult = (compact ? 1.78 : 2.12) - (compact ? 0.25 : 0.28) * zoomT;
-    radius *= smallMult + (bigMult - smallMult) * bigT;
-    if (isTopTierOrg(o)) radius *= compact ? 1.35 : 1.55;
-
-    // Coastal/border: modestly tighter leash; still room to spread at mid zoom.
-    if (isCoastalOrBorderOrg(o)) radius *= 0.68 + 0.42 * overviewFreedom;
-
-    // AK/HI insets: cap absolute travel within the tiny projection inset.
-    if (isUsInsetOrg(o)) {
-      const cap = (compact ? 12 : 14) * unitPerPx * (0.55 + 0.45 * overviewFreedom);
-      return Math.min(radius, cap);
-    }
-
-    // Midwest clusters: extra spread for small orgs weaving around majors.
-    if (isMidwestOrg(o)) {
-      radius *= 1 + (compact ? 0.08 : 0.12) * overviewFreedom * (1 - bigT * 0.55);
-    }
-
-    return radius;
-  }
-
-  function placementLeashMultipliers(o: Org): number[] {
-    if (isTopTierOrg(o)) return [1, 1.6, 2.4, 3.4, 4.8, 6.2, 8.0, 10.0];
-    if (visualPriority(o) >= 50 || (o.weight ?? 0) >= 22) return [1, 1.5, 2.2, 3.2, 4.5, 6.0, 8.0];
-    return [1, 1.7, 2.6, 3.8, 5.2, 7.0, 9.0];
-  }
-
-  // Deterministic candidate offsets around an origin: the origin itself, then
-  // simple rings outward up to maxRadius. Rings increase in radius so iterating
-  // in order means the nearest valid spot wins. No randomness, no jitter.
-  function candidatePositions(maxRadius: number, step: number): Array<[number, number]> {
-    const spots: Array<[number, number]> = [[0, 0]];
-    for (let ring = 1; ring * step <= maxRadius + 1e-6; ring++) {
-      const radius = ring * step;
-      const count = Math.max(6, Math.round((Math.PI * 2 * radius) / step));
-      const phase = (ring % 2) * (Math.PI / count);
-      for (let i = 0; i < count; i++) {
-        const ang = (i / count) * Math.PI * 2 + phase;
-        spots.push([Math.cos(ang) * radius, Math.sin(ang) * radius]);
-      }
-    }
-    return spots;
-  }
-
   function orgRenderX(o: Org, fanScale = spiderFanScale(transform.k), declScale = declutterScale(transform.k)): number {
     return (o._x as number) + (o._dx ?? 0) * declScale + (o._rx ?? 0) * fanScale;
   }
@@ -2238,154 +2197,222 @@ export function mountNercOrgMap(): void {
     o._vis = false;
   }
 
-  // Deterministic bubble placement for a zoom bucket. Each org has a true
-  // projected origin (_x/_y); a bubble may move only within orgPlacementRadius of
-  // that origin to find space. Higher-priority bubbles place first and claim the
-  // best spots; lower-priority bubbles take whatever room is left. A bubble that
-  // finds no valid spot within its leash becomes a background-tier dot instead of
-  // drifting farther away. Bubble placement depends only on the zoom bucket —
-  // never on pan.
-  //
-  // _x/_y stay the true projected coordinates (used by projection math); _dx/_dy
-  // are the solved screen-space nudge (divided by k at render so the origin stays
-  // true). Positions here are in screen viewBox units = origin * bucket.
+  // Positional-force strength: how firmly a bubble is pulled back to its true
+  // projected location. Big/important orgs hold their geography tightly; small
+  // orgs get a slack leash so they drift to fill open space and weave around the
+  // larger bubbles that overshadow their spot (the "more freedom for small orgs"
+  // rule, now continuous instead of a discrete ring leash).
+  function orgAnchorStrength(o: Org): number {
+    if (isTopTierOrg(o)) return 0.28;
+    const bigT = Math.max(
+      smoothStep((visualPriority(o) - 12) / 72),
+      smoothStep(((o.weight ?? 0) - 6) / 38),
+    );
+    return 0.035 + 0.2 * bigT;
+  }
+
+  // Bubble layout is a LIVE, BOUNDED force simulation. Disclosed bubbles (those
+  // that pass the label-fit gate) become nodes packed in screen-at-bucket space:
+  //   • forceCollide spreads them so they fill the open space and never overlap;
+  //   • a size-scaled positional force anchors each near its true location.
+  // The sim ticks (animating) only while warm and is reheated when the zoom
+  // bucket changes — so PANNING never moves a bubble (the group transform does
+  // that), but ZOOMING makes the whole field flow and re-settle. Each tick caps
+  // wander distance and clamps to the correct land silhouette. _x/_y stay the
+  // true projected coordinates; _dx/_dy are the live offset (÷k at render).
   function computePlacements(k = transform.k, force = false): void {
     const bucket = declutterBucket(k);
     if (!force && bucket === orgLayoutBucket) return;
     orgLayoutBucket = bucket;
 
-    // No margin: bubbles pack edge-to-edge so they can touch but never overlap.
-    // We reserve each bubble at the LARGEST radius it reaches anywhere in this
-    // zoom bucket (its upper edge), so within the bucket two neighbours touch at
-    // most (at the top of the bucket) and are otherwise a hair apart — never
-    // overlapping, with no built-in margin.
     const gap = packGapPx(bucket);
+    const capBase = maxDeclutterOffset(bucket);
     const reserveR = (o: Org): number => renderedRadius(o, bucket) + gap * 0.5;
-    type Item = { o: Org; ox: number; oy: number; r: number };
-    const items: Item[] = [];
+
+    // Gather orgs eligible at this zoom (label fits inside), most-important first.
+    const eligible: Org[] = [];
     for (const o of orgs) {
-      o._dx = 0;
-      o._dy = 0;
       o.placementMode = undefined;
       o._renderFallback = false;
-      if (!canDisplayOrg(o, bucket)) {
-        o._placed = false;
-        continue;
-      }
       // Territory inset dots are positioned by layoutTerritoryInsets and always
-      // shown — they don't take part in the mainland packing.
+      // shown — they don't take part in the mainland force packing.
       if (o._frame === "terr") {
         o._placed = true;
         o.placementMode = "bubble";
         continue;
       }
-      if (o._x == null || o._y == null) {
+      if (
+        o._x == null ||
+        o._y == null ||
+        !canDisplayOrg(o, bucket) ||
+        !labelFitsInside(o, bucket)
+      ) {
         o._placed = false;
+        o._dx = 0;
+        o._dy = 0;
         continue;
       }
-      // Disclosure gate: hold back any org whose short name can't fit legibly
-      // inside its bubble at this zoom. It appears once zooming in grows the
-      // bubble enough to read — so every shown bubble is always labeled. This is
-      // what makes the overview few/large/high-rank and fills lower-rank orgs in
-      // as you zoom into an area and bubbles grow.
-      if (!labelFitsInside(o, bucket)) {
-        o._placed = false;
-        continue;
-      }
-      const { ox, oy } = placementOrigin(o, bucket);
-      items.push({ o, ox, oy, r: reserveR(o) });
+      eligible.push(o);
     }
-    if (!items.length) return;
+    eligible.sort((a, b) => (a._visRank ?? 0) - (b._visRank ?? 0));
 
-    // Higher visual-priority orgs place first; use pre-computed rank for O(1) compare.
-    items.sort((a, b) => (a.o._visRank ?? 0) - (b.o._visRank ?? 0));
-
-    const radius = placementRadius(bucket);
-    const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
-    const step = Math.max(2.5 * unitPerPx, radius / 16);
-    const offsetsByRadius = new Map<number, Array<[number, number]>>();
-    const offsetsFor = (maxRadius: number): Array<[number, number]> => {
-      const key = Math.round(maxRadius / unitPerPx);
-      const existing = offsetsByRadius.get(key);
-      if (existing) return existing;
-      const offsets = candidatePositions(maxRadius, step);
-      offsetsByRadius.set(key, offsets);
-      return offsets;
-    };
-
-    // Spatial grid of already-placed bubbles for O(1) overlap queries.
-    const cell = Math.max(2 * maxR + 2 * unitPerPx, step);
+    // CAPACITY GATE: a spatial grid greedily admits each eligible org (highest
+    // priority first) only if a non-overlapping, on-land slot exists near its true
+    // location; the rest are held back. This bounds the count to what actually
+    // fits, so the force sim below can lay the admitted set out WITHOUT overlap
+    // even on a small screen (otherwise everything would show and overlap). It
+    // also gives a good non-overlapping seed position for newly-shown bubbles.
+    const maxR = eligible.reduce((m, o) => Math.max(m, reserveR(o)), 4 * unitPerPx);
+    const cell = 2 * maxR + 2 * unitPerPx;
     const grid = new Map<string, Array<{ x: number; y: number; r: number }>>();
-    const cellKey = (cx: number, cy: number): string =>
-      Math.floor(cx / cell) + ":" + Math.floor(cy / cell);
     const fits = (cx: number, cy: number, r: number): boolean => {
       const gx = Math.floor(cx / cell);
       const gy = Math.floor(cy / cell);
-      for (let ix = -1; ix <= 1; ix++) {
+      for (let ix = -1; ix <= 1; ix++)
         for (let iy = -1; iy <= 1; iy++) {
           const arr = grid.get(gx + ix + ":" + (gy + iy));
           if (!arr) continue;
           for (const p of arr) {
-            const dx = p.x - cx;
-            const dy = p.y - cy;
+            const ddx = p.x - cx;
+            const ddy = p.y - cy;
             const min = p.r + r + gap;
-            if (dx * dx + dy * dy < min * min) return false;
+            if (ddx * ddx + ddy * ddy < min * min) return false;
           }
         }
-      }
       return true;
     };
     const claim = (cx: number, cy: number, r: number): void => {
-      const key = cellKey(cx, cy);
+      const key = Math.floor(cx / cell) + ":" + Math.floor(cy / cell);
       const arr = grid.get(key);
       if (arr) arr.push({ x: cx, y: cy, r });
       else grid.set(key, [{ x: cx, y: cy, r }]);
     };
-    // Stricter frame-aware land test: center plus disc samples must stay on the
-    // correct land silhouette (US orgs cannot drift into Canada or the ocean).
-    // Each bubble (highest-priority first) hunts outward from its true location
-    // for the nearest non-overlapping, on-land slot. Smaller orgs get a longer
-    // leash (orgPlacementRadius/placementLeashMultipliers) so they can orbit
-    // around the big anchors that overshadow their spot. A bubble that finds no
-    // room is simply held back — never drawn as an unlabeled dot.
-    for (const it of items) {
+
+    const step = Math.max(2.5 * unitPerPx, capBase / 9);
+    const prevById = new Map(simNodes.map((n) => [n.o.ncr_id, n]));
+    const nodes: SimNode[] = [];
+    for (const o of eligible) {
+      const { ox, oy } = placementOrigin(o, bucket);
+      const frame = orgLandFrame(o);
+      const r = reserveR(o);
+      const anchor = orgAnchorStrength(o);
+      // Smaller / freer orgs may wander (and search) farther to find open space.
+      const reach = isTopTierOrg(o) ? 2 : 2.6 + 3.4 * (1 - anchor / 0.26);
+      // Ring-search outward from home for a non-overlapping on-land slot; if one
+      // exists, admit the org and reserve that slot in the grid (capacity bound).
       let placed = false;
-      const frame = orgLandFrame(it.o);
-      const baseLeash = orgPlacementRadius(it.o, bucket);
-      for (const mult of placementLeashMultipliers(it.o)) {
-        const offsets = offsetsFor(baseLeash * mult);
-        for (const [dx, dy] of offsets) {
-          const cx = it.ox + dx;
-          const cy = it.oy + dy;
-          if (!placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
-          if (!fits(cx, cy, it.r)) continue;
-          it.o._dx = dx;
-          it.o._dy = dy;
-          it.o._placed = true;
-          it.o.placementMode = "bubble";
-          claim(cx, cy, it.r);
+      for (let rad = 0; rad <= capBase * reach && !placed; rad += step) {
+        const cnt = rad < step ? 1 : Math.max(6, Math.round((2 * Math.PI * rad) / step));
+        for (let i = 0; i < cnt; i++) {
+          const ang = (i / cnt) * 2 * Math.PI + (Math.round(rad / step) % 2) * (Math.PI / cnt);
+          const cx = ox + Math.cos(ang) * rad;
+          const cy = oy + Math.sin(ang) * rad;
+          if (!placementLandValid(cx, cy, r, bucket, frame, false)) continue;
+          if (!fits(cx, cy, r)) continue;
+          claim(cx, cy, r);
           placed = true;
           break;
         }
-        if (placed) break;
       }
       if (!placed) {
-        it.o._placed = false;
-        it.o.placementMode = undefined;
-        it.o._dx = 0;
-        it.o._dy = 0;
+        o._placed = false;
+        o._dx = 0;
+        o._dy = 0;
+        continue;
       }
+      o._placed = true;
+      o.placementMode = "bubble";
+      const prev = prevById.get(o.ncr_id);
+      // Continuing bubbles flow from where they are now (smooth zoom motion);
+      // newly-shown bubbles BLOOM outward from their true location as collide
+      // pushes them apart into the slot the gate just proved exists — a lively
+      // "growing into place" entrance. The small deterministic nudge breaks ties
+      // so coincident bubbles separate (forceCollide can't split exact overlaps).
+      nodes.push({
+        o,
+        hx: ox,
+        hy: oy,
+        r,
+        anchor,
+        cap: capBase * reach,
+        frame,
+        x: prev ? ox + (o._dx ?? 0) : ox + (Math.cos(o._visRank ?? 0) * r) / 6,
+        y: prev ? oy + (o._dy ?? 0) : oy + (Math.sin(o._visRank ?? 0) * r) / 6,
+        vx: prev?.vx ?? 0,
+        vy: prev?.vy ?? 0,
+      });
     }
 
-    // Final guard: never render a bubble that ended up on illegal land — hide it.
-    for (const it of items) {
-      if (it.o.placementMode !== "bubble" || it.o._frame === "terr") continue;
-      const frame = orgLandFrame(it.o);
-      const { cx, cy } = bubbleScreenCenter(it.o, bucket);
-      if (placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
-      it.o._placed = false;
-      it.o.placementMode = undefined;
+    simNodes = nodes;
+    simBucket = bucket;
+    if (!nodes.length) {
+      orgSim?.stop();
+      return;
     }
+
+    if (!orgSim) {
+      orgSim = forceSimulation<SimNode>()
+        // Lower velocity decay = more momentum, so bubbles glide into place
+        // instead of snapping — that fluid motion is the "cool to navigate" feel.
+        .velocityDecay(0.38)
+        .alphaMin(0.02)
+        .on("tick", onSimTick);
+      orgSim.stop();
+    }
+    orgSim.nodes(nodes);
+    // Collide is the dominant force (full strength, extra iterations) so bubbles
+    // reliably separate to non-overlapping; the weaker positional force then pulls
+    // the separated field back toward true geography.
+    orgSim.force("collide", forceCollide<SimNode>((n) => n.r).strength(1).iterations(5));
+    orgSim.force("x", forceX<SimNode>((n) => n.hx).strength((n) => n.anchor));
+    orgSim.force("y", forceY<SimNode>((n) => n.hy).strength((n) => n.anchor));
+    // Reheat with plenty of energy and a gentle decay so the re-pack visibly
+    // flows and settles over ~1.7s rather than jumping.
+    orgSim.alphaDecay(0.035).alpha(0.95).restart();
+  }
+
+  // Sim tick: cap each node's wander from home, keep it on the correct land mass,
+  // publish the offset as _dx/_dy, and request a redraw so the motion animates.
+  function onSimTick(): void {
+    const bucket = simBucket;
+    for (const n of simNodes) {
+      let dx = n.x - n.hx;
+      let dy = n.y - n.hy;
+      const off = Math.hypot(dx, dy);
+      if (off > n.cap) {
+        const s = n.cap / off;
+        dx *= s;
+        dy *= s;
+        n.x = n.hx + dx;
+        n.y = n.hy + dy;
+        n.vx *= 0.5;
+        n.vy *= 0.5;
+      }
+      // Keep the bubble centre on its land silhouette. Coastal bubbles may sit
+      // slightly offshore (lenient border), but never drift out to open sea.
+      if (!onLandForFrame(n.x / bucket, n.y / bucket, n.frame, true)) {
+        let recovered = false;
+        for (let s = 0.75; s > 0; s -= 0.25) {
+          const tx = n.hx + dx * s;
+          const ty = n.hy + dy * s;
+          if (onLandForFrame(tx / bucket, ty / bucket, n.frame, true)) {
+            n.x = tx;
+            n.y = ty;
+            recovered = true;
+            break;
+          }
+        }
+        if (!recovered) {
+          n.x = n.hx;
+          n.y = n.hy;
+        }
+        n.vx *= 0.4;
+        n.vy *= 0.4;
+      }
+      n.o._dx = n.x - n.hx;
+      n.o._dy = n.y - n.hy;
+    }
+    scheduleRedraw();
   }
 
   // U.S. state + Canadian province name anchors (base coordinates), drawn faintly

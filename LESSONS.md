@@ -56,8 +56,20 @@ tree often contains someone else's in‑progress edits. Because of this:
 > you zoom into an area; bubbles pack non-overlapping; no-slot → held back (never an
 > unlabeled dot). Because non-overlapping bubbles + inside-only labels can't
 > collide, the inside label is drawn unconditionally (no cap/dedup/collision). Tune
-> coverage via `visualRadius` overviewScale; small-org freedom via
-> `orgPlacementRadius` smallMult. See memory `nerc-map-disclosure-model`.
+> coverage via `visualRadius` overviewScale. See memory `nerc-map-disclosure-model`.
+>
+> **Layout is now a live d3-force sim (2026-06-14), supersedes the "no
+> force-directed / panning must cause no motion" bullets below.** The user asked
+> for motion + freedom + "cool to navigate," so bubbles now flow: a capacity gate
+> admits the non-overlapping set, then `forceCollide` + a size-scaled positional
+> anchor (`orgAnchorStrength`) lay them out (small orgs roam to fill space, big
+> orgs hold geography), animating (bloom-in, glide). **The pan-stability rule still
+> holds and is non-negotiable**: the sim runs in screen-at-bucket space and reheats
+> ONLY on a zoom-bucket change, so *panning* still causes zero motion — only
+> *zooming* makes the field flow. Never drive the sim from the live viewport/pan
+> set (that was the original force-directed mistake). Tune feel via velocityDecay /
+> alphaDecay / `orgAnchorStrength`; verify overlap+motion with `/tmp/shoot.mjs` &
+> `/tmp/motion.mjs` (headless-Chrome CDP probes).
 
 Most of the iteration is the map. Principles that have repeatedly proven right:
 

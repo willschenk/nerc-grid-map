@@ -87,6 +87,14 @@ hand-delete a seed.
   area and bubbles grow. Bubbles pack non-overlapping; one that finds no slot is
   held back (never drawn as an unlabeled dot). Don't reintroduce unlabeled
   "background"/fallbackTiny dots or a label cap/dedup — they break the invariant.
+- **Bubble layout is a live d3-force simulation** (`computePlacements` → `orgSim`):
+  a capacity gate (greedy ring-fit, priority order) admits the bubbles that fit
+  without overlap and holds back the rest, then `forceCollide` + a size-scaled
+  positional anchor (`orgAnchorStrength`) lay them out — small orgs roam to fill
+  open space, big orgs hold their geography. It **animates** (bloom-in on appear,
+  glide on zoom) and is **pan-stable**: it runs in screen-at-bucket space and
+  reheats only when the zoom bucket changes, so panning never moves a bubble. Keep
+  it that way — never drive the sim from the live pan/viewport set.
 - Keep the role color schema from `roleSetColor` in `enrich.mjs`. A circle's color encodes its role mix (a weighted centroid of role anchors). Do not restyle color as decoration; identical role sets must share one color.
 - At low zoom, labels use acronyms or short names, not full legal names.
 - The renderer never recomputes weight, color, or flags; those are precomputed at build time in `enrich.mjs`. Change the math there, not in the client.
