@@ -94,6 +94,39 @@ type Org = {
   // Which projection placed this org: mainland Albers ("us"), the Canada conic
   // ("ca"), or a territory inset ("terr").
   _frame?: "us" | "ca" | "terr";
+  // Static memos — set once after orgs load, never change at runtime.
+  _tiny?: string;       // tinyName(o)
+  _mrc?: number;        // meaningfulRoleCount(o)
+  _defMarket?: boolean; // isDeferredMarketOrg(o)
+  _toOnly?: boolean;    // isTransmissionOwnerOnly(o)
+  _gridLead?: boolean;  // isGridLeadershipOrg(o)
+  _topTier?: boolean;   // isTopTierOrg(o)
+  _vp?: number;         // visualPriority(o)
+  _lpv?: number;        // labelPriority(o)
+  _visRank?: number;    // position in visual-priority-descending sort
+  _labelRank?: number;  // position in label-priority-descending sort
+  // Last-written DOM state — skip redundant attribute/class writes when unchanged.
+  _wox?: number;
+  _woy?: number;
+  _whx?: number;
+  _why?: number;
+  _wasVis?: boolean;
+  _hitVis?: boolean;
+  _clsMask?: number;
+  _hitMask?: number;
+  _lw?: {
+    vis: boolean;
+    x: number;
+    y: number;
+    font: number;
+    text: string;
+    inside: boolean;
+    centered: boolean;
+    fill: string;
+    stroke: string;
+    strokeWidth: string;
+    flags: number;
+  };
 };
 
 type LandLabel = { name: string; x: number; y: number; small: boolean; _node?: SVGTextElement };
@@ -466,6 +499,10 @@ function coreFromAcronym(acr: string): string {
 }
 
 function tinyName(o: Org): string {
+  if (o._tiny != null) return o._tiny;
+  return (o._tiny = _computeTinyName(o));
+}
+function _computeTinyName(o: Org): string {
   // Curated brand rules beat researched shortest when they compress further
   // (e.g. org-names "Wheelabrator" -> Wheel). Researched shortest still wins
   // when it is already the tightest label we have.
@@ -640,6 +677,10 @@ export function mountNercOrgMap(): void {
   if (!root || root.dataset.mounted === "true") return;
   root.dataset.mounted = "true";
   const dataBase = import.meta.env.BASE_URL;
+  // Start fetching map payloads immediately so network overlaps SVG setup.
+  const orgsPayloadPromise = loadJson<OrgsPayload>(`${dataBase}nerc/orgs-render.json`);
+  const topoPromise = loadJson<unknown>(`${dataBase}nerc/states-10m.json`);
+  const canadaPromise = loadJson<unknown>(`${dataBase}nerc/canada-land.json`).catch(() => null);
 
   const svgNode = byId<SVGSVGElement>("nerc-svg");
   const svg = select(svgNode);
@@ -933,7 +974,8 @@ export function mountNercOrgMap(): void {
   }
 
   function meaningfulRoleCount(o: Org): number {
-    return o.roles.filter((r) => !ZERO_VISUAL_PRIORITY_ROLES.has(r)).length;
+    if (o._mrc != null) return o._mrc;
+    return (o._mrc = o.roles.filter((r) => !ZERO_VISUAL_PRIORITY_ROLES.has(r)).length);
   }
 
   function isOnlyMeaningfulRole(o: Org, role: string): boolean {
@@ -953,16 +995,18 @@ export function mountNercOrgMap(): void {
 
   // GO/GOP-only and PSE-market orgs disclose at the same deep zoom tier.
   function isDeferredMarketOrg(o: Org): boolean {
-    return isGenerationOnly(o) || isPseMarketOnly(o);
+    if (o._defMarket != null) return o._defMarket;
+    return (o._defMarket = isGenerationOnly(o) || isPseMarketOnly(o));
   }
 
   function isTransmissionOwnerOnly(o: Org): boolean {
+    if (o._toOnly != null) return o._toOnly;
     // Federal and reliability orgs often carry GO/GOP alongside TO; don't shrink
     // them to the transmission-owner floor when the data marks them as agencies.
-    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return false;
-    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return false;
-    if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return false;
-    return isOnlyMeaningfulRole(o, "TO");
+    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return (o._toOnly = false);
+    if (RELIABILITY_ORG_NAME.test(o.entity_name)) return (o._toOnly = false);
+    if (PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return (o._toOnly = false);
+    return (o._toOnly = isOnlyMeaningfulRole(o, "TO"));
   }
 
   function generationOnlyRevealK(): number {
@@ -1131,39 +1175,45 @@ export function mountNercOrgMap(): void {
   // bonus. RC-only orgs (89) stay above BA+multiRoleBonus (88); visualPrioritySort
   // uses rolePriority as a tiebreaker when scores match.
   function visualPriority(o: Org): number {
-    if (isDeferredMarketOrg(o)) return 6;
-    if (isTransmissionOwnerOnly(o)) return 8;
-    if (isMajorSystemOperator(o)) return 100;
-    const score =
-      Math.max(rolePriority(o), typePriority(o), dataProminenceScore(o)) + multiRoleBonus(o);
-    return Math.max(10, Math.min(100, score));
+    if (o._vp != null) return o._vp;
+    let v: number;
+    if (isDeferredMarketOrg(o)) v = 6;
+    else if (isTransmissionOwnerOnly(o)) v = 8;
+    else if (isMajorSystemOperator(o)) v = 100;
+    else {
+      const score =
+        Math.max(rolePriority(o), typePriority(o), dataProminenceScore(o)) + multiRoleBonus(o);
+      v = Math.max(10, Math.min(100, score));
+    }
+    return (o._vp = v);
   }
 
   // Label-specific priority: ISO/RTO and grid authority lead; merchant and
   // deferred-market orgs trail. Used for label eligibility, ordering, and tiers.
   function labelPriority(o: Org): number {
-    if (isDeferredMarketOrg(o)) return 2;
-    if (isTransmissionOwnerOnly(o)) return 10;
-    if (o.is_iso_rto || o.org_type === "ISO_RTO" || SYSTEM_OPERATOR_NAME.test(o.entity_name)) return 98;
-    if (isMajorSystemOperator(o)) return 96;
-    if (o.roles.includes("RC")) return 92;
-    if (o.roles.includes("BA")) return 88;
-    if (o.roles.includes("PC")) return 85;
-    if (o.roles.includes("TOP")) return 82;
-    if (o.roles.includes("TSP")) return 80;
-    if (o.roles.includes("TP")) return 78;
-    if (REGIONAL_ENTITY_NAME.test(o.entity_name) || RELIABILITY_ORG_NAME.test(o.entity_name)) return 74;
-    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return 72;
-    if (o.org_type === "IOU" || PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) return 68;
-    if (o.name_major && o.weight >= 20) return 64;
-    if (hasAnyRole(o, GRID_ROLES)) return 52;
-    if (o.org_type === "municipal" || o.org_type === "cooperative" || PUBLIC_UTILITY_NAME.test(o.entity_name)) {
-      return 38;
-    }
-    if (o.org_type === "cca") return 34;
-    if (hasAnyRole(o, SUPPORT_ROLES)) return 40;
-    if (o.org_type === "merchant") return 16;
-    return 24;
+    if (o._lpv != null) return o._lpv;
+    let v: number;
+    if (isDeferredMarketOrg(o)) v = 2;
+    else if (isTransmissionOwnerOnly(o)) v = 10;
+    else if (o.is_iso_rto || o.org_type === "ISO_RTO" || SYSTEM_OPERATOR_NAME.test(o.entity_name)) v = 98;
+    else if (isMajorSystemOperator(o)) v = 96;
+    else if (o.roles.includes("RC")) v = 92;
+    else if (o.roles.includes("BA")) v = 88;
+    else if (o.roles.includes("PC")) v = 85;
+    else if (o.roles.includes("TOP")) v = 82;
+    else if (o.roles.includes("TSP")) v = 80;
+    else if (o.roles.includes("TP")) v = 78;
+    else if (REGIONAL_ENTITY_NAME.test(o.entity_name) || RELIABILITY_ORG_NAME.test(o.entity_name)) v = 74;
+    else if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) v = 72;
+    else if (o.org_type === "IOU" || PUBLIC_POWER_AUTHORITY_NAME.test(o.entity_name)) v = 68;
+    else if (o.name_major && o.weight >= 20) v = 64;
+    else if (hasAnyRole(o, GRID_ROLES)) v = 52;
+    else if (o.org_type === "municipal" || o.org_type === "cooperative" || PUBLIC_UTILITY_NAME.test(o.entity_name)) v = 38;
+    else if (o.org_type === "cca") v = 34;
+    else if (hasAnyRole(o, SUPPORT_ROLES)) v = 40;
+    else if (o.org_type === "merchant") v = 16;
+    else v = 24;
+    return (o._lpv = v);
   }
 
   function canGrowAtZoom(o: Org): boolean {
@@ -1171,7 +1221,8 @@ export function mountNercOrgMap(): void {
   }
 
   function isGridLeadershipOrg(o: Org): boolean {
-    return (
+    if (o._gridLead != null) return o._gridLead;
+    return (o._gridLead =
       isMajorSystemOperator(o) ||
       hasAnyRole(o, AUTHORITY_ROLES) ||
       o.roles.includes("TOP") ||
@@ -1179,19 +1230,19 @@ export function mountNercOrgMap(): void {
       o.is_iso_rto ||
       o.org_type === "federal" ||
       FEDERAL_NAME.test(o.entity_name) ||
-      RELIABILITY_ORG_NAME.test(o.entity_name)
-    );
+      RELIABILITY_ORG_NAME.test(o.entity_name));
   }
 
   // Largest grid entities — always eligible and always placed at every zoom.
   function isTopTierOrg(o: Org): boolean {
-    if (isGenerationOnly(o) || isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o)) return false;
+    if (o._topTier != null) return o._topTier;
+    if (isGenerationOnly(o) || isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o)) return (o._topTier = false);
     const w = o.weight ?? 0;
-    if (o.is_iso_rto || isMajorSystemOperator(o)) return true;
-    if (w >= 28) return true;
-    if (o.name_major && w >= 18) return true;
-    if (isGridLeadershipOrg(o) && w >= 22) return true;
-    return false;
+    if (o.is_iso_rto || isMajorSystemOperator(o)) return (o._topTier = true);
+    if (w >= 28) return (o._topTier = true);
+    if (o.name_major && w >= 18) return (o._topTier = true);
+    if (isGridLeadershipOrg(o) && w >= 22) return (o._topTier = true);
+    return (o._topTier = false);
   }
 
   // Scale small-org catch-up growth so RC/BA/PC/TOP/TSP stay visually ahead of
@@ -1234,6 +1285,18 @@ export function mountNercOrgMap(): void {
       meaningfulRoleCount(a) - meaningfulRoleCount(b) ||
       a.ncr_id.localeCompare(b.ncr_id)
     );
+  }
+
+  // Pre-compute stable integer sort ranks once after orgs load so that hot-path
+  // per-frame sorts (computePlacements, label candidates) compare integers instead
+  // of invoking the full multi-comparator chains on every element pair.
+  function computeStaticRanks(): void {
+    const byVisual = [...orgs].sort(visualPrioritySort);
+    byVisual.forEach((o, i) => { o._visRank = i; });
+    const byLabel = [...orgs].sort(
+      (a, b) => labelPrioritySort(a, b) || a.entity_name.localeCompare(b.entity_name),
+    );
+    byLabel.forEach((o, i) => { o._labelRank = i; });
   }
 
   function drawPriority(o: Org, _k: number): number {
@@ -1281,30 +1344,6 @@ export function mountNercOrgMap(): void {
     return false;
   }
 
-  function isLabelEligible(o: Org, k: number, forced: boolean): boolean {
-    if (o._frame === "terr") return forced;
-    if (o.placementMode === "fallbackTiny" || o._renderFallback) return forced;
-    if (forced) return true;
-    return shouldTryLabel(o, k);
-  }
-
-  // Which orgs may *try* for a label at this zoom (collision still decides).
-  function shouldTryLabel(o: Org, k: number): boolean {
-    if (o.placementMode === "fallbackTiny") {
-      return k >= (compact ? 5 : 4.2) && labelPriority(o) >= 22;
-    }
-    if (isDeferredMarketOrg(o)) return k >= (compact ? 5.5 : 4.8);
-    const lp = labelPriority(o);
-    const revealK =
-      lp >= 88 ? 0 :
-      lp >= 78 ? (compact ? 0.5 : 0.38) :
-      lp >= 68 ? (compact ? 0.95 : 0.82) :
-      lp >= 52 ? (compact ? 1.45 : 1.25) :
-      lp >= 38 ? (compact ? 2.15 : 1.9) :
-      lp >= 16 ? (compact ? 3.2 : 2.9) :
-      compact ? 4.6 : 4.1;
-    return k >= revealK;
-  }
 
   // Target on-screen label size in CSS pixels (multiplied by unitPerPx before it
   // hits the SVG). Keeps growing as you zoom in — including for small/low-priority
@@ -1346,6 +1385,51 @@ export function mountNercOrgMap(): void {
     return base * zoomFontScale * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale() * ORG_CONTENT_SCALE;
   }
 
+  // ── Inside-label fit (the disclosure gate) ─────────────────────────────────
+  // A bubble is shown ONLY when its short name fits legibly inside it. That makes
+  // "every visible bubble is labeled and readable" a structural guarantee instead
+  // of a best-effort label pass. computePlacements (which org earns a slot) and
+  // redraw (drawing the label) both call these, so they agree exactly.
+
+  // Smallest legible inside-label font in viewBox units for this org at zoom k.
+  function insideLabelMinFont(o: Org, k: number, brandLen: number): number {
+    const lp = labelPriority(o);
+    const deepLabelT = smoothStep((k - 9) / 13);
+    const overviewInsideScale = k < 1.2 ? 0.76 : 1;
+    return (
+      (compact ? 4.4 : 5) *
+      overviewInsideScale *
+      (1 - 0.9 * deepLabelT) *
+      (isMidwestOrg(o) ? 0.9 : 1) *
+      (lp >= 88 ? (compact ? 0.78 : 0.72) : lp >= 68 ? 0.86 : 1) *
+      (!compact && brandLen <= 5 ? 0.85 : 1) *
+      unitPerPx
+    );
+  }
+
+  // How wide (as a multiple of radius) an inside label may span the chord.
+  function insideLabelChord(o: Org): number {
+    return isMidwestOrg(o) ? 1.94 : 1.86;
+  }
+
+  // The inside-label font a bubble of radius r would use for its short name.
+  function insideLabelFont(o: Org, k: number, r: number, brandLen: number): number {
+    return Math.min(labelFontPx(o, k) * unitPerPx, (r * 1.74) / Math.max(1, brandLen) / 0.56);
+  }
+
+  // THE disclosure gate: does o's short name fit legibly inside its bubble at k?
+  function labelFitsInside(o: Org, k: number): boolean {
+    if (o._frame === "terr") return true;
+    const brand = tinyName(o);
+    if (!brand) return false;
+    const r = visualRadius(o, k);
+    const font = insideLabelFont(o, k, r, brand.length);
+    return (
+      font >= insideLabelMinFont(o, k, brand.length) &&
+      font * 0.56 * brand.length <= r * insideLabelChord(o)
+    );
+  }
+
   // White label ink with a length-aware dark halo — keeps long names readable
   // without a heavy outline that reads as black clutter over the map.
   function orgLabelInk(
@@ -1373,17 +1457,6 @@ export function mountNercOrgMap(): void {
     const alpha =
       emphasis === "selected" ? 0.96 : emphasis === "hot" ? 0.92 : state.inside ? 0.84 : 0.88;
     return { fill: "#ffffff", stroke: `rgba(7, 17, 14, ${alpha})`, strokeWidth };
-  }
-
-  function labelLimit(k: number): number {
-    // Smooth ramp: more label slots unlock gradually as zoom increases.
-    const t = smoothStep((k - 0.85) / (compact ? 5.5 : 6.5));
-    const overview = compact ? 120 : 220;
-    const mid = compact ? 720 : 1250;
-    const deep = compact ? 2200 : 3900;
-    const cap = overview + (mid - overview) * smoothStep((k - 1) / 2.8) + (deep - mid) * t * t;
-    if (!compact) return Math.round(cap);
-    return Math.round(cap * (0.62 + 0.38 * smoothStep((k - 1.4) / 4.2)));
   }
 
   function placeLabelLimit(k: number): number {
@@ -1419,7 +1492,11 @@ export function mountNercOrgMap(): void {
     const maxPx = compact ? 24 : Math.min(46, MAX_RADIUS);
     const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.82);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    const overviewScale = compact ? 0.36 : 0.39;
+    // Overview bubble size. Bigger here = more bubbles clear the readable-label
+    // floor and show, and each covers more map — so the zoomed-out view stays
+    // "covered in (larger) bubbles." Compact is lifted harder because the wide US
+    // sits in a narrow band on a tall phone, so it needs bigger marks to fill.
+    const overviewScale = compact ? 0.5 : 0.42;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
@@ -1644,11 +1721,13 @@ export function mountNercOrgMap(): void {
     const zoomT = declutterZoomT(bucket);
     const overviewFreedom = 1 - zoomT;
 
-    // Big orgs get room to claim space; small orgs get even more to orbit around them.
+    // Big orgs get room to claim space; small orgs get a much longer leash so they
+    // can orbit around the larger bubbles that overshadow their true location and
+    // still find an open slot (more freedom for the small ones, per the brief).
     const majorT = smoothStep((visualPriority(o) - 12) / 72);
     const weightT = smoothStep(((o.weight ?? 0) - 6) / 38);
     const bigT = Math.max(majorT, weightT);
-    const smallMult = (compact ? 3.15 : 3.85) - (compact ? 0.35 : 0.4) * zoomT;
+    const smallMult = (compact ? 3.7 : 4.5) - (compact ? 0.4 : 0.45) * zoomT;
     const bigMult = (compact ? 1.78 : 2.12) - (compact ? 0.25 : 0.28) * zoomT;
     radius *= smallMult + (bigMult - smallMult) * bigT;
     if (isTopTierOrg(o)) radius *= compact ? 1.35 : 1.55;
@@ -2144,88 +2223,19 @@ export function mountNercOrgMap(): void {
     };
   }
 
-  // Pick true origin or the nearest on-land candidate for a fallback tiny dot.
-  // Does not claim collision grid space — normal bubbles keep priority.
-  function findFallbackTinyOffset(
-    o: Org,
-    ox: number,
-    oy: number,
-    bucket: number,
-    offsets: Array<[number, number]>,
-  ): [number, number] | null {
-    const frame = orgLandFrame(o);
-    const tinyR = fallbackTinyRadiusPx(bucket) * unitPerPx * ORG_CONTENT_SCALE;
-    if (placementLandValid(ox, oy, tinyR, bucket, frame, true)) return [0, 0];
-    for (const [dx, dy] of offsets) {
-      if (placementLandValid(ox + dx, oy + dy, tinyR, bucket, frame, true)) return [dx, dy];
-    }
-    return null;
-  }
-
-  function demoteToBackgroundDot(
-    o: Org,
-    bucket: number,
-    offsets: Array<[number, number]>,
-  ): boolean {
-    if (isTopTierOrg(o)) return false;
-    const { ox, oy } = placementOrigin(o, bucket);
-    const nudge = findFallbackTinyOffset(o, ox, oy, bucket, offsets);
-    if (!nudge) {
-      o._placed = false;
-      o.placementMode = undefined;
-      o._dx = 0;
-      o._dy = 0;
-      return false;
-    }
-    o._placed = true;
-    o.placementMode = "fallbackTiny";
-    o._dx = nudge[0];
-    o._dy = nudge[1];
-    return true;
-  }
-
+  // Mid-frame safety: a bubble placed at the zoom bucket is re-checked against the
+  // land mask at the live zoom. If it can no longer sit legally, hide it rather
+  // than show it unlabeled — placement re-solves on the next bucket change.
   function guardVisiblePlacement(o: Org, k: number, forced: boolean): void {
     if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o)) return;
     const bucket = declutterBucket(k);
     const frame = orgLandFrame(o);
-    const fullRegistry = k >= fullRegistryRevealK();
-    const tiny = o.placementMode === "fallbackTiny";
-    const r = tiny
-      ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
-      : renderedRadius(o, k);
+    const r = renderedRadius(o, k);
     const { cx, cy } = bubbleScreenCenter(o, bucket);
-    if (placementLandValid(cx, cy, r, bucket, frame, tiny)) return;
-    if (o.placementMode === "bubble") {
-      o.placementMode = "fallbackTiny";
-      o._dx = 0;
-      o._dy = 0;
-      const tinyR = fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE;
-      const origin = bubbleScreenCenter(o, bucket);
-      if (!placementLandValid(origin.cx, origin.cy, tinyR, bucket, frame, true)) {
-        if (fullRegistry) {
-          const { ox, oy } = placementOrigin(o, bucket);
-          const baseLeash = orgPlacementRadius(o, bucket);
-          const step = Math.max(2.5 * unitPerPx, baseLeash / 16);
-          const nudge = findFallbackTinyOffset(o, ox, oy, bucket, candidatePositions(baseLeash * 12, step));
-          if (nudge) {
-            o._dx = nudge[0];
-            o._dy = nudge[1];
-          }
-          o._placed = true;
-          return;
-        }
-        o._placed = false;
-        o.placementMode = undefined;
-        o._vis = false;
-      }
-    } else if (fullRegistry) {
-      o.placementMode = "fallbackTiny";
-      o._placed = true;
-    } else {
-      o._placed = false;
-      o.placementMode = undefined;
-      o._vis = false;
-    }
+    if (placementLandValid(cx, cy, r, bucket, frame, false)) return;
+    o._placed = false;
+    o.placementMode = undefined;
+    o._vis = false;
   }
 
   // Deterministic bubble placement for a zoom bucket. Each org has a true
@@ -2273,14 +2283,22 @@ export function mountNercOrgMap(): void {
         o._placed = false;
         continue;
       }
+      // Disclosure gate: hold back any org whose short name can't fit legibly
+      // inside its bubble at this zoom. It appears once zooming in grows the
+      // bubble enough to read — so every shown bubble is always labeled. This is
+      // what makes the overview few/large/high-rank and fills lower-rank orgs in
+      // as you zoom into an area and bubbles grow.
+      if (!labelFitsInside(o, bucket)) {
+        o._placed = false;
+        continue;
+      }
       const { ox, oy } = placementOrigin(o, bucket);
       items.push({ o, ox, oy, r: reserveR(o) });
     }
     if (!items.length) return;
 
-    // Higher visual-priority orgs place first; zero-priority roles do not affect
-    // the ordering.
-    items.sort((a, b) => visualPrioritySort(a.o, b.o));
+    // Higher visual-priority orgs place first; use pre-computed rank for O(1) compare.
+    items.sort((a, b) => (a.o._visRank ?? 0) - (b.o._visRank ?? 0));
 
     const radius = placementRadius(bucket);
     const maxR = items.reduce((m, it) => Math.max(m, it.r), 0);
@@ -2325,6 +2343,11 @@ export function mountNercOrgMap(): void {
     };
     // Stricter frame-aware land test: center plus disc samples must stay on the
     // correct land silhouette (US orgs cannot drift into Canada or the ocean).
+    // Each bubble (highest-priority first) hunts outward from its true location
+    // for the nearest non-overlapping, on-land slot. Smaller orgs get a longer
+    // leash (orgPlacementRadius/placementLeashMultipliers) so they can orbit
+    // around the big anchors that overshadow their spot. A bubble that finds no
+    // room is simply held back — never drawn as an unlabeled dot.
     for (const it of items) {
       let placed = false;
       const frame = orgLandFrame(it.o);
@@ -2347,59 +2370,21 @@ export function mountNercOrgMap(): void {
         if (placed) break;
       }
       if (!placed) {
-        if (isTopTierOrg(it.o)) {
-          for (const mult of [4.5, 6.5, 8.5, 10.5, 12.5]) {
-            for (const [dx, dy] of offsetsFor(baseLeash * mult)) {
-              const cx = it.ox + dx;
-              const cy = it.oy + dy;
-              if (!placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
-              if (!fits(cx, cy, it.r)) continue;
-              it.o._dx = dx;
-              it.o._dy = dy;
-              it.o._placed = true;
-              it.o.placementMode = "bubble";
-              claim(cx, cy, it.r);
-              placed = true;
-              break;
-            }
-            if (placed) break;
-          }
-          if (!placed && bucket >= fullRegistryRevealK()) {
-            it.o._placed = true;
-            it.o.placementMode = "fallbackTiny";
-            it.o._dx = 0;
-            it.o._dy = 0;
-          } else if (!placed) {
-            it.o._placed = false;
-          }
-        } else {
-          let demoted = false;
-          for (const mult of [3.2, 5.5, 8.0, 10.5, 13.0]) {
-            if (demoteToBackgroundDot(it.o, bucket, offsetsFor(baseLeash * mult))) {
-              demoted = true;
-              break;
-            }
-          }
-          if (!demoted && bucket >= fullRegistryRevealK()) {
-            it.o._placed = true;
-            it.o.placementMode = "fallbackTiny";
-            it.o._dx = 0;
-            it.o._dy = 0;
-          } else if (!demoted) {
-            it.o._placed = false;
-          }
-        }
+        it.o._placed = false;
+        it.o.placementMode = undefined;
+        it.o._dx = 0;
+        it.o._dy = 0;
       }
     }
 
-    // Final guard: never render a promoted bubble on illegal land.
+    // Final guard: never render a bubble that ended up on illegal land — hide it.
     for (const it of items) {
       if (it.o.placementMode !== "bubble" || it.o._frame === "terr") continue;
       const frame = orgLandFrame(it.o);
       const { cx, cy } = bubbleScreenCenter(it.o, bucket);
       if (placementLandValid(cx, cy, it.r, bucket, frame, false)) continue;
-      if (isTopTierOrg(it.o)) continue;
-      demoteToBackgroundDot(it.o, bucket, offsetsFor(orgPlacementRadius(it.o, bucket)));
+      it.o._placed = false;
+      it.o.placementMode = undefined;
     }
   }
 
@@ -2506,10 +2491,12 @@ export function mountNercOrgMap(): void {
       if (tourActive) {
         // During a walkthrough step only the highlighted set gets labels.
         if (forced && (!isTerr || hot?.ncr_id === o.ncr_id)) candidates.push(o);
-      } else if (!tourRunning && isLabelEligible(o, k, forced)) {
-        // Normal map. (During a blank beat — tourRunning && !tourActive — we
-        // deliberately collect no candidates so nothing is labelled.)
-        candidates.push(o);
+      } else if (!tourRunning) {
+        // Normal map: every visible mainland bubble is labeled (it was only shown
+        // because its short name fits inside it). Territory-inset dots stay
+        // hover-labeled. (During a blank tour beat — tourRunning && !tourActive —
+        // nothing is collected so nothing is labelled.)
+        if (!isTerr || forced) candidates.push(o);
       }
     }
 
@@ -2517,8 +2504,7 @@ export function mountNercOrgMap(): void {
       (a, b) =>
         Number(tourIds.has(b.ncr_id)) - Number(tourIds.has(a.ncr_id)) ||
         Number(selectedOrg?.ncr_id === b.ncr_id) - Number(selectedOrg?.ncr_id === a.ncr_id) ||
-        labelPrioritySort(a, b) ||
-        a.entity_name.localeCompare(b.entity_name),
+        (a._labelRank ?? 0) - (b._labelRank ?? 0),
     );
     // Cap how many candidates we even try during a tour step. Big roles (GO has
     // ~1,500) would otherwise run the placement loop thousands of times each
@@ -2532,17 +2518,11 @@ export function mountNercOrgMap(): void {
     type LabelPlacement = { x: number; y: number; font: number; text: string; inside: boolean; centered?: boolean };
     const labelState = new Map<string, LabelPlacement>();
     const placed: Box[] = [];
-    // De-dupe identical on-screen tokens only in the broad overview. Once zoomed
-    // in, duplicate brands can each carry text when collision room allows.
-    const usedLabels = new Set<string>();
-    // Bound the animated/highlighted set so it stays cheap on iOS.
-    const maxLabels = tourActive ? (compact ? 45 : 130) : labelLimit(k);
     // Keep labels from tucking under the floating topbar. Phones reserve a tall
     // band (the bar is bigger relative to the screen); desktop reserves a slim
     // one so top-row org labels don't hide behind the title chip.
     const topSafe = (compact && !tourActive ? 68 : tourActive ? 0 : 36) * unitPerPx;
     const edgeSafe = compact && !tourActive ? 5 * unitPerPx : 2 * unitPerPx;
-    const labeledClusters: Array<{ x: number; y: number }> = [];
     // Phones spread labels a little at first; the inflation now fades back out as
     // you zoom in (was growing), so zoomed-in iOS fills space instead of thinning.
     const spacing = compact && !tourActive ? Math.max(1, 1.25 - Math.max(0, k - 2) * 0.12) : 1;
@@ -2589,7 +2569,6 @@ export function mountNercOrgMap(): void {
         ? { x0: x - w / 2, x1: x + w / 2, y0: y - h / 2, y1: y + h / 2 }
         : { x0: x - w / 2, x1: x + w / 2, y0: y - h * 0.7, y1: y + h * 0.3 };
     };
-    const labelClears = (box: Box): boolean => !placed.some((p) => boxesOverlap(box, p));
     const reserveLabel = (box: Box): void => {
       const inflated = inflateBox(box, labelCollisionPad);
       placed.push(inflated);
@@ -2660,58 +2639,32 @@ export function mountNercOrgMap(): void {
       return { x: sx, y: sy, font: fallbackFont, text: displayMapLabel(o, textOptions[0]), inside: false, centered: true };
     };
 
-    let placedCount = 0;
     for (const o of candidates) {
-      if (placedCount >= maxLabels) break;
       if (isHoverLabelTarget(o)) continue;
       const sx = o._sx as number;
       const sy = o._sy as number;
       const r = renderedRadius(o, k);
-      const forceLabel = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
       const brand = tinyName(o);
-      const lp = labelPriority(o);
 
-      // 1. INSIDE — preferred, collision-free, never suppressed by neighbours.
-      // The font may shrink to span the chord, but only to a readable floor. If
-      // it would need to shrink past that point, the label can overflow/float
-      // outside its own bubble instead.
-      const insideFont = Math.min(
-        labelFontPx(o, k) * unitPerPx,
-        (r * 1.74) / Math.max(1, brand.length) / 0.56,
-      );
-      // The readable floor for an inside label relaxes toward zero as you zoom in,
-      // so by max zoom every visible (now-large) bubble takes its name inside —
-      // any circle on screen ends up labeled when fully zoomed in.
-      const deepLabelT = smoothStep((k - 9) / 13);
-      const overviewInsideScale = k < 1.2 ? 0.76 : 1;
-      const insideMin =
-        (compact ? 4.4 : 5) *
-        overviewInsideScale *
-        (1 - 0.9 * deepLabelT) *
-        (isMidwestOrg(o) ? 0.9 : 1) *
-        (lp >= 88 ? (compact ? 0.78 : 0.72) : lp >= 68 ? 0.86 : 1) *
-        // Desktop: a very short acronym (e.g. LES, CWLP, ConEd) that nearly fits
-        // inside its bubble at low-mid zoom is allowed in at a slightly smaller
-        // floor, so easy-to-fit short labels stop falling into a dead zone.
-        (!compact && brand.length <= 5 ? 0.85 : 1) *
-        unitPerPx;
-      const insideChord = isMidwestOrg(o) ? 1.94 : 1.86;
-      if (insideFont >= insideMin && insideFont * 0.56 * brand.length <= r * insideChord) {
-        const insideDedupK = k < 1.4 ? (lp >= 78 ? 0.65 : lp >= 68 ? 1.05 : 2.0) : isMidwestOrg(o) ? 2.0 : 2.2;
-        const box = labelBox(sx, sy, brand, insideFont, true);
-        if ((forceLabel || k >= insideDedupK || !usedLabels.has(brand)) && labelClears(box) && bubbleClears(o)) {
-          labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, brand), inside: true });
-          if (!forceLabel) usedLabels.add(brand);
-          reserveLabel(box);
-          addBubbleBlocker(o);
-          placedCount++;
-        }
+      // INSIDE LABEL — every visible mainland bubble carries its short name.
+      // Bubbles never overlap (computePlacements) and the label sits inside the
+      // bubble, so inside labels never collide with each other: draw it
+      // unconditionally — no cap, no dedup, no collision test. The font spans the
+      // chord down to the legible floor the disclosure gate already guaranteed, so
+      // it always reads. (reserveLabel/addBubbleBlocker keep the rare forced
+      // floating label below from sitting on top of it.)
+      if (o._frame !== "terr") {
+        const insideFont = insideLabelFont(o, k, r, brand.length);
+        labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, brand), inside: true });
+        reserveLabel(labelBox(sx, sy, brand, insideFont, true));
+        addBubbleBlocker(o);
         continue;
       }
 
-      // Bigger organizations can try a side/below floating label when their
-      // token cannot fit inside the bubble. Once zoomed in, any visible org can
-      // try for this overflow label; collision checks decide if there is room.
+      // Territory-inset dots only reach here when forced (hover/selected/tour) —
+      // they carry no inside label, so fall through to a floating label.
+      const forceLabel = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id);
+      const lp = labelPriority(o);
       const midwest = isMidwestOrg(o);
       const shortHighValue = !compact && lp >= 68 && brand.length <= 7;
       const allowFloat =
@@ -2777,10 +2730,6 @@ export function mountNercOrgMap(): void {
         continue;
       }
       reserveLabel(chosen.box);
-      if (!forceLabel) {
-        labeledClusters.push({ x: sx, y: sy });
-        usedLabels.add(chosen.text);
-      }
       labelState.set(o.ncr_id, {
         x: chosen.x,
         y: chosen.y,
@@ -2789,7 +2738,6 @@ export function mountNercOrgMap(): void {
         inside: false,
       });
       addBubbleBlocker(o);
-      placedCount++;
     }
 
     for (const focus of [selectedOrg, hot]) {
@@ -2824,12 +2772,27 @@ export function mountNercOrgMap(): void {
 
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
       const node = this as SVGCircleElement;
-      node.classList.toggle("hide", !o._vis);
-      if (!o._vis) return;
+      if (!o._vis) {
+        if (o._wasVis !== false) {
+          node.classList.add("hide");
+          o._wasVis = false;
+        }
+        return;
+      }
+      if (o._wasVis !== true) {
+        node.classList.remove("hide");
+        o._wasVis = true;
+      }
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
-      node.setAttribute("cx", String(cx));
-      node.setAttribute("cy", String(cy));
+      if (o._wox !== cx) {
+        node.setAttribute("cx", String(cx));
+        o._wox = cx;
+      }
+      if (o._woy !== cy) {
+        node.setAttribute("cy", String(cy));
+        o._woy = cy;
+      }
       // Radius is set in transform-space (divided by the group scale). It changes
       // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
       // so write only when the resolved radius actually moved — cheap, no storm.
@@ -2842,30 +2805,63 @@ export function mountNercOrgMap(): void {
       const labeled = labelState.has(o.ncr_id);
       const tier = disclosureTier(o, k, labeled);
       const inTour = tourActive && tourIds.has(o.ncr_id);
-      node.classList.toggle("labeled", labeled);
-      node.classList.toggle("org-background", tier === "background");
-      node.classList.toggle("org-promoted", !!o._promoteBackground);
-      node.classList.toggle("bubble-small", tier === "small");
-      node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
-      node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
-      // Only the labeled subset breathes (bounded count = cheap on iOS); the
-      // rest of the focus set gets a static highlight. During a step everything
-      // else dims; during a blank beat (tourRunning, no step) everything dims.
-      node.classList.toggle("tour-flash", inTour && labeled);
-      node.classList.toggle("tour-pick", inTour && !labeled);
-      node.classList.toggle("tour-dim", tourRunning && !inTour);
+      const mask =
+        (labeled ? 1 : 0) |
+        (tier === "background" ? 2 : 0) |
+        (o._promoteBackground ? 4 : 0) |
+        (tier === "small" ? 8 : 0) |
+        (hot?.ncr_id === o.ncr_id ? 16 : 0) |
+        (selectedOrg?.ncr_id === o.ncr_id ? 32 : 0) |
+        (inTour && labeled ? 64 : 0) |
+        (inTour && !labeled ? 128 : 0) |
+        (tourRunning && !inTour ? 256 : 0);
+      if (o._clsMask !== mask) {
+        o._clsMask = mask;
+        node.classList.toggle("labeled", labeled);
+        node.classList.toggle("org-background", tier === "background");
+        node.classList.toggle("org-promoted", !!o._promoteBackground);
+        node.classList.toggle("bubble-small", tier === "small");
+        node.classList.toggle("hot", (mask & 16) !== 0);
+        node.classList.toggle("selected", (mask & 32) !== 0);
+        // Only the labeled subset breathes (bounded count = cheap on iOS); the
+        // rest of the focus set gets a static highlight. During a step everything
+        // else dims; during a blank beat (tourRunning, no step) everything dims.
+        node.classList.toggle("tour-flash", (mask & 64) !== 0);
+        node.classList.toggle("tour-pick", (mask & 128) !== 0);
+        node.classList.toggle("tour-dim", (mask & 256) !== 0);
+      }
     });
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
       const node = this as SVGCircleElement;
-      node.classList.toggle("hide", !o._vis);
-      if (!o._vis) return;
+      if (!o._vis) {
+        if (o._hitVis !== false) {
+          node.classList.add("hide");
+          o._hitVis = false;
+        }
+        return;
+      }
+      if (o._hitVis !== true) {
+        node.classList.remove("hide");
+        o._hitVis = true;
+      }
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
-      node.setAttribute("cx", String(cx));
-      node.setAttribute("cy", String(cy));
-      node.classList.toggle("hot", hot?.ncr_id === o.ncr_id);
-      node.classList.toggle("selected", selectedOrg?.ncr_id === o.ncr_id);
+      if (o._whx !== cx) {
+        node.setAttribute("cx", String(cx));
+        o._whx = cx;
+      }
+      if (o._why !== cy) {
+        node.setAttribute("cy", String(cy));
+        o._why = cy;
+      }
+      const mask =
+        (hot?.ncr_id === o.ncr_id ? 1 : 0) | (selectedOrg?.ncr_id === o.ncr_id ? 2 : 0);
+      if (o._hitMask !== mask) {
+        o._hitMask = mask;
+        node.classList.toggle("hot", (mask & 1) !== 0);
+        node.classList.toggle("selected", (mask & 2) !== 0);
+      }
       const hr = hitTargetRadius(o, k);
       if (hitChanged || o._hr !== hr) {
         node.setAttribute("r", String(hr / k));
@@ -2876,24 +2872,97 @@ export function mountNercOrgMap(): void {
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").each(function (o) {
       const node = this as SVGTextElement;
       const state = labelState.get(o.ncr_id);
-      node.classList.toggle("dim", !state);
-      if (!state) return;
-      node.textContent = state.text;
-      node.setAttribute("x", String(state.x));
-      node.setAttribute("y", String(state.y));
-      node.setAttribute("font-size", String(state.font));
-      node.classList.toggle("inside", state.inside);
+      const prev = o._lw;
+      if (!state) {
+        if (!prev || prev.vis) {
+          node.classList.add("dim");
+          if (prev) prev.vis = false;
+          else {
+            o._lw = {
+              vis: false,
+              x: NaN,
+              y: NaN,
+              font: NaN,
+              text: "",
+              inside: false,
+              centered: false,
+              fill: "",
+              stroke: "",
+              strokeWidth: "",
+              flags: -1,
+            };
+          }
+        }
+        return;
+      }
+      const lw =
+        prev ??
+        (o._lw = {
+          vis: false,
+          x: NaN,
+          y: NaN,
+          font: NaN,
+          text: "",
+          inside: false,
+          centered: false,
+          fill: "",
+          stroke: "",
+          strokeWidth: "",
+          flags: -1,
+        });
+      if (!lw.vis) {
+        node.classList.remove("dim");
+        lw.vis = true;
+      }
+      if (lw.text !== state.text) {
+        node.textContent = state.text;
+        lw.text = state.text;
+      }
+      if (lw.x !== state.x) {
+        node.setAttribute("x", String(state.x));
+        lw.x = state.x;
+      }
+      if (lw.y !== state.y) {
+        node.setAttribute("y", String(state.y));
+        lw.y = state.y;
+      }
+      if (lw.font !== state.font) {
+        node.setAttribute("font-size", String(state.font));
+        lw.font = state.font;
+      }
+      if (lw.inside !== state.inside) {
+        node.classList.toggle("inside", state.inside);
+        lw.inside = state.inside;
+      }
       const emphasis =
         selectedOrg?.ncr_id === o.ncr_id ? "selected" : hot?.ncr_id === o.ncr_id ? "hot" : "normal";
       const ink = orgLabelInk(state, emphasis);
-      node.style.fill = ink.fill;
-      node.style.stroke = ink.stroke;
-      node.style.strokeWidth = String(ink.strokeWidth);
+      if (lw.fill !== ink.fill) {
+        node.style.fill = ink.fill;
+        lw.fill = ink.fill;
+      }
+      if (lw.stroke !== ink.stroke) {
+        node.style.stroke = ink.stroke;
+        lw.stroke = ink.stroke;
+      }
+      const strokeWidth = String(ink.strokeWidth);
+      if (lw.strokeWidth !== strokeWidth) {
+        node.style.strokeWidth = strokeWidth;
+        lw.strokeWidth = strokeWidth;
+      }
       node.style.paintOrder = "stroke fill";
-      node.classList.toggle("hover-on-dot", !!state.centered);
-      node.classList.toggle("hot-label", hot?.ncr_id === o.ncr_id);
-      node.classList.toggle("selected-label", selectedOrg?.ncr_id === o.ncr_id);
-      node.classList.toggle("tour-flash", tourActive && !!state);
+      const flags =
+        (state.centered ? 1 : 0) |
+        (hot?.ncr_id === o.ncr_id ? 2 : 0) |
+        (selectedOrg?.ncr_id === o.ncr_id ? 4 : 0) |
+        (tourActive && !!state ? 8 : 0);
+      if (lw.flags !== flags) {
+        lw.flags = flags;
+        node.classList.toggle("hover-on-dot", !!state.centered);
+        node.classList.toggle("hot-label", (flags & 2) !== 0);
+        node.classList.toggle("selected-label", (flags & 4) !== 0);
+        node.classList.toggle("tour-flash", (flags & 8) !== 0);
+      }
     });
 
     // City labels yield to NERC org labels AND bubbles: inflate every org-label
@@ -3982,16 +4051,18 @@ export function mountNercOrgMap(): void {
   }
 
   async function init(): Promise<void> {
-    const [orgsPayload, topo] = await Promise.all([
-      loadJson<OrgsPayload>(`${dataBase}nerc/orgs-render.json`),
-      loadJson<unknown>(`${dataBase}nerc/states-10m.json`),
+    const [orgsPayload, topo, canadaMaybe] = await Promise.all([
+      orgsPayloadPromise,
+      topoPromise,
+      canadaPromise,
     ]);
 
     if (!Array.isArray(orgsPayload.orgs)) throw new Error("No orgs array found in NERC payload");
     orgs = orgsPayload.orgs;
+    computeStaticRanks(); // prime per-org memos and integer sort ranks once
 
     // Canada landmass (context). Non-fatal if the file is missing.
-    canadaFeature = await loadJson<unknown>(`${dataBase}nerc/canada-land.json`).catch(() => null);
+    canadaFeature = canadaMaybe;
 
     const topoAny = topo as { objects: Record<string, unknown> };
     const states = feature(topo as never, topoAny.objects.states as never) as never as { features: unknown[] };

@@ -219,11 +219,16 @@ function stageBasemap() {
   writeFileSync(BASEMAP_OUT, JSON.stringify(raw));
 }
 
+// Fields baked into the first-paint payload (public/nerc/orgs-render.json).
+// Keep this to ONLY what the D3 renderer actually reads to place, size, color,
+// label, and gate disclosure of a dot. Everything panel-only lives in
+// ORG_DETAIL_FIELDS (lazy-loaded). The renderer reads no location alternates and
+// no provenance/review fields, so those stay out of the render payload — this is
+// the bulk of its weight. check-payload-split.mjs enforces the contract.
 const RENDER_ORG_FIELDS = [
   "ncr_id",
   "entity_name",
   "acronym",
-  "acronym_source",
   "name_shortest",
   "name_short",
   "name_normal",
@@ -235,17 +240,14 @@ const RENDER_ORG_FIELDS = [
   "is_private",
   "lat",
   "lng",
-  "locations",
   "city",
   "state",
   "country",
   "geo_confidence",
-  "geo_needs_review",
   "weight",
   "color",
   "is_iso_rto",
   "org_type",
-  "eia_utility_id",
   "seed",
   "nerc_registered",
   "out_of_footprint",
@@ -254,6 +256,7 @@ const RENDER_ORG_FIELDS = [
 ];
 
 const ORG_DETAIL_FIELDS = [
+  "acronym_source",
   "headquarters_address",
   "locations",
   "geo_source",
@@ -293,6 +296,32 @@ function buildSplitPayloads(payload) {
   };
 }
 
+function writeSplitPayloads(payload) {
+  const { renderPayload, detailPayload } = buildSplitPayloads(payload);
+  writeFileSync(OUT_RENDER_ORGS, JSON.stringify(renderPayload));
+  writeFileSync(OUT_ORG_DETAILS, JSON.stringify(detailPayload));
+}
+
+// Re-derive the split runtime payloads from the existing canonical orgs.json
+// WITHOUT re-enriching from source data. Use this to apply a RENDER_ORG_FIELDS /
+// ORG_DETAIL_FIELDS change to the already-built data: the rendered orgs (coords,
+// weight, color, counts) are guaranteed unchanged because nothing is recomputed —
+// only which fields land in which file. Verify with `npm run nerc:payload-check`.
+function resplit() {
+  if (!existsSync(OUT_ORGS)) {
+    console.error(
+      `nerc: cannot --resplit — missing ${OUT_ORGS.replace(root + "/", "")}. Run a full build first.`,
+    );
+    process.exit(1);
+  }
+  const payload = JSON.parse(readFileSync(OUT_ORGS, "utf8"));
+  writeSplitPayloads(payload);
+  console.log(`nerc: re-split ${payload.orgs.length} orgs from canonical orgs.json (no re-enrich)`);
+  console.log(
+    `nerc: wrote ${OUT_RENDER_ORGS.replace(root + "/", "")}, ${OUT_ORG_DETAILS.replace(root + "/", "")}`,
+  );
+}
+
 function main() {
   const { file, records } = loadRecords();
   const names = loadNameTable();
@@ -324,10 +353,8 @@ function main() {
     area_interfaces,
     orgs,
   };
-  const { renderPayload, detailPayload } = buildSplitPayloads(payload);
   writeFileSync(OUT_ORGS, JSON.stringify(payload));
-  writeFileSync(OUT_RENDER_ORGS, JSON.stringify(renderPayload));
-  writeFileSync(OUT_ORG_DETAILS, JSON.stringify(detailPayload));
+  writeSplitPayloads(payload);
 
   stageBasemap();
   stageCanada();
@@ -342,4 +369,8 @@ function main() {
   );
 }
 
-main();
+if (process.argv.includes("--resplit")) {
+  resplit();
+} else {
+  main();
+}

@@ -22,9 +22,13 @@ const tiers = [1, 2, 3].map((t) => ({
   name: tierNames[t],
   roles: roleRows.filter((r) => r.tier === t),
 }));
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="NERC Grid Map" wide>
+  <link slot="head" rel="preload" as="fetch" href={`${base}nerc/orgs-render.json`} crossorigin />
+  <link slot="head" rel="preload" as="fetch" href={`${base}nerc/states-10m.json`} crossorigin />
+  <link slot="head" rel="preload" as="fetch" href={`${base}nerc/canada-land.json`} crossorigin />
   <div id="nerc-app">
     <div class="nerc-map-shell" data-nerc-map>
       <section class="nerc-stage" aria-label="NERC organization map">

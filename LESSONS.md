@@ -47,6 +47,18 @@ tree often contains someone else's in‑progress edits. Because of this:
 
 ## 2. The renderer is the whole game — and it's subtle
 
+> **Current disclosure model (2026-06-13), supersedes the bullets below that
+> describe `visibleCap`/floating-label/fallbackTiny iterations.** A bubble shows
+> **iff its short name fits legibly inside it** (`labelFitsInside()` — the one gate,
+> shared by `computePlacements` and `redraw`). Consequences the user asked for and
+> that must be preserved: every visible bubble always carries a readable inside
+> label; zoomed-out shows fewer/larger/higher-rank bubbles; lower-rank fill in as
+> you zoom into an area; bubbles pack non-overlapping; no-slot → held back (never an
+> unlabeled dot). Because non-overlapping bubbles + inside-only labels can't
+> collide, the inside label is drawn unconditionally (no cap/dedup/collision). Tune
+> coverage via `visualRadius` overviewScale; small-org freedom via
+> `orgPlacementRadius` smallMult. See memory `nerc-map-disclosure-model`.
+
 Most of the iteration is the map. Principles that have repeatedly proven right:
 
 - **Size labels (and reason about "too small") in real CSS pixels**, via
@@ -132,17 +144,20 @@ own tuning at nearly every knob:
 ## 4. Tune from measurement, not vibes
 
 Spatial/visual tuning by eyeball is slow and unreliable across 20 zoom levels ×
-2 viewports. The reusable tool for this:
+2 viewports. Measure instead of guessing.
 
-- Load with **`?audit=1`** to expose `window.__nercAudit`
-  (`setZoom`/`setZoomAt`/`audit()`), which drives the *real* renderer and reads out
-  per‑bubble water coverage (reusing the actual land mask), displacement, overlaps,
-  label inside/float, and high‑priority label coverage. Ships inert.
-- **`node scripts/ux-audit.mjs`** is a headless‑Chrome (CDP) driver that sweeps
-  ~20 zooms on desktop (1440×900) + iOS (390×844), dumping stats + screenshots to
-  `/tmp/nerc-audit/`. Re‑run it after any sizing/disclosure/label change; read the
-  PNGs to confirm the numbers match what you'd actually see. This caught that
-  "severe overlap" counts can both under‑ and over‑state the visible problem.
+- **The in‑page audit harness (`?audit=1` → `window.__nercAudit`) and the headless
+  `scripts/ux-audit.mjs` driver were removed in `00d97b1`** ("remove dev tooling"),
+  along with the dev zoom‑lock and the `?debug=1` render‑stat counters. If you need
+  measured tuning again, re‑introduce a harness that drives the *real* renderer and
+  reads per‑bubble water coverage (reuse the actual land mask), displacement,
+  overlaps, label inside/float, and high‑priority label coverage — and keep it inert
+  in production. Don't tune sizing/disclosure/labels by eyeball alone.
+- For load/render *performance* (not spatial tuning), measure payload bytes
+  directly (`ls -l public/nerc/orgs-render.json`) and reason from the field‑cost
+  breakdown — the render payload should carry ONLY fields the renderer reads
+  (`RENDER_ORG_FIELDS` in `build-orgs.mjs`); everything panel‑only is lazy in
+  `org-details.json`. `npm run nerc:payload-check` enforces the split is lossless.
 
 ## 5. Map gotchas worth knowing up front
 
@@ -169,12 +184,12 @@ Spatial/visual tuning by eyeball is slow and unreliable across 20 zoom levels ×
 | make panning calm | keep sizing/labels/positions off the on‑screen set; only `transform.k` may drive them |
 | move dots / fix offshore drift | `relaxDeclutter` + `buildLandMask`/`clampToLand` (base‑space!) |
 | touch data | `enrich.mjs`/`build-orgs.mjs`; never the renderer; respect seed/supplemental rules in AGENTS.md |
-| verify a visual change | `?audit=1` + `scripts/ux-audit.mjs`, then `npm run check` |
+| verify a visual change | side‑by‑side vs the frozen baseline at matched zooms (desktop + iOS), then `npm run check` (the old `?audit`/`ux-audit.mjs` harness is gone — see §4) |
 | fix a bad map label | read [docs/bugs/map-label-filler-bug.md](docs/bugs/map-label-filler-bug.md) first; prefer manual `KNOWN_ACRONYMS` / `org-names.json` over bulk scripts |
 
 ## 7. Map labels — production baseline and the filler bug
 
-**Production map behavior is frozen at gh-pages `c0ca47b`** (2026-06-10 deploy). Bubble placement, disclosure, declutter, and dot density on that deploy are correct. Do not ship label or renderer changes without verifying against that baseline (`?audit=1`, side‑by‑side at low zoom on desktop and iOS).
+**Production map behavior is frozen at gh-pages `c0ca47b`** (2026-06-10 deploy). Bubble placement, disclosure, declutter, and dot density on that deploy are correct. Do not ship label or renderer changes without verifying against that baseline (side‑by‑side at low zoom on desktop and iOS).
 
 **One known text bug remains:** `tightenMapLabel()` in `display-names.mjs` can emit meaningless single‑word labels — connectives and generic nouns — when it "prefers the last word" after stripping industry descriptors. Examples: Connecticut Light and Power → `and`, Hydro One → `One`, Muscatine Power & Water → `Water`. Full write‑up, root cause, and every fix attempt tried so far: [docs/bugs/map-label-filler-bug.md](docs/bugs/map-label-filler-bug.md).
 
