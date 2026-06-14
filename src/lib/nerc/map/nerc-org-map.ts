@@ -788,8 +788,8 @@ export function mountNercOrgMap(): void {
     o: Org;
     hx: number; // home (true projected) x in screen-at-bucket space — for _dx
     hy: number;
-    tx: number; // anchor TARGET: the non-overlapping, space-filling slot the gate
-    ty: number; // found (may sit well away from home so the field fills gaps)
+    tx: number; // anchor TARGET: the nearest non-overlapping on-land slot the gate
+    ty: number; // found within the geographic leash (close to home, never flung away)
     r: number; // reserved radius (visual + half gap)
     anchor: number; // positional-force strength toward the target slot
     cap: number; // max wander distance from the target slot
@@ -2301,7 +2301,7 @@ export function mountNercOrgMap(): void {
       else grid.set(key, [{ x: cx, y: cy, r }]);
     };
 
-    const step = Math.max(2.5 * unitPerPx, capBase / 9);
+    const step = Math.max(2 * unitPerPx, capBase / 12);
     const prevById = new Map(simNodes.map((n) => [n.o.ncr_id, n]));
     const nodes: SimNode[] = [];
     for (const o of eligible) {
@@ -2309,22 +2309,35 @@ export function mountNercOrgMap(): void {
       const frame = orgLandFrame(o);
       const r = reserveR(o);
       const anchor = orgAnchorStrength(o);
-      // Smaller orgs search much farther for a slot, so the field spreads out to
-      // FILL open space instead of clustering at true locations and leaving gaps.
+      // GEOGRAPHIC LEASH: a bubble may shift only a small multiple of its OWN
+      // radius from home — just enough to dodge its neighbours, never to teleport
+      // across the map to backfill an empty region. If no near-home slot is free
+      // the org is HELD BACK (not flung away) and revealed later: zooming in spreads
+      // the neighbourhood apart (screen-at-bucket positions scale with the zoom
+      // bucket while radii saturate), opening a near-home slot so the org appears
+      // where it truly is. Small/low-rank orgs get a little more room to weave
+      // around the big anchors overshadowing their spot; top-tier anchors barely
+      // move and hold the geography. (Was a wide capBase·reach search that filled
+      // gaps by displacing orgs hundreds of map-miles — the user: "not at the
+      // expense of moving an organization 500 miles away".)
       const bigT = Math.max(
         smoothStep((visualPriority(o) - 12) / 72),
         smoothStep(((o.weight ?? 0) - 6) / 38),
       );
-      const reach = isTopTierOrg(o) ? 3.5 : 4 + 6 * (1 - bigT);
-      // Ring-search outward from home for a non-overlapping on-land slot; if one
-      // exists, admit the org, reserve that slot, and remember it as the layout
-      // TARGET. Because the search spreads outward, slots fan out to fill open
-      // space; anchoring the sim to the slot (not home) keeps the field filled
-      // AND overlap-free (the slot is non-overlapping by construction).
+      // Compact keeps a tighter leash: a phone squeezes the whole US into a narrow
+      // band, so a bubble's radius is a big fraction of the screen and the same
+      // radius-multiple would shove it much farther in real geography.
+      const leashR = isTopTierOrg(o)
+        ? (compact ? 0.6 : 0.8)
+        : (compact ? 1.1 : 1.6) + (compact ? 1.2 : 2.0) * (1 - bigT);
+      const leash = Math.min(capBase, r * leashR);
+      // Ring-search outward from home for the NEAREST non-overlapping on-land slot
+      // within the leash; admit the org there and anchor the sim to that slot.
+      // Nearest-first keeps each bubble as close to its true location as possible.
       let slotX = ox;
       let slotY = oy;
       let placed = false;
-      for (let rad = 0; rad <= capBase * reach && !placed; rad += step) {
+      for (let rad = 0; rad <= leash && !placed; rad += step) {
         const cnt = rad < step ? 1 : Math.max(6, Math.round((2 * Math.PI * rad) / step));
         for (let i = 0; i < cnt; i++) {
           const ang = (i / cnt) * 2 * Math.PI + (Math.round(rad / step) % 2) * (Math.PI / cnt);
