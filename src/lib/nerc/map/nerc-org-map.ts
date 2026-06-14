@@ -1105,13 +1105,16 @@ export function mountNercOrgMap(): void {
       return smoothStep((k - start) / (compact ? 4 : 3));
     }
     const lp = labelPriority(o);
+    // Floors raised so lower-rank orgs render less tiny at overview (a gentler size
+    // contrast) and clear the inside-label gate sooner — so MORE bubbles show when
+    // zoomed out, then fill in further on zoom.
     if (lp >= 88) return 1;
-    if (lp >= 78) return 0.42 + 0.58 * smoothStep((k - 0.55) / (compact ? 0.95 : 0.8));
-    if (lp >= 68) return 0.32 + 0.68 * smoothStep((k - 0.72) / (compact ? 1.1 : 0.95));
-    if (lp >= 52) return 0.24 + 0.76 * smoothStep((k - 0.9) / (compact ? 1.35 : 1.2));
-    if (lp >= 38) return 0.16 + 0.84 * smoothStep((k - 1.2) / (compact ? 1.7 : 1.5));
-    if (lp >= 16) return 0.1 + 0.9 * smoothStep((k - 1.8) / (compact ? 2.2 : 2.0));
-    return 0.06 + 0.94 * smoothStep((k - 2.3) / (compact ? 2.8 : 2.6));
+    if (lp >= 78) return 0.52 + 0.48 * smoothStep((k - 0.55) / (compact ? 0.95 : 0.8));
+    if (lp >= 68) return 0.46 + 0.54 * smoothStep((k - 0.72) / (compact ? 1.1 : 0.95));
+    if (lp >= 52) return 0.38 + 0.62 * smoothStep((k - 0.9) / (compact ? 1.35 : 1.2));
+    if (lp >= 38) return 0.3 + 0.7 * smoothStep((k - 1.2) / (compact ? 1.7 : 1.5));
+    if (lp >= 16) return 0.2 + 0.8 * smoothStep((k - 1.8) / (compact ? 2.2 : 2.0));
+    return 0.13 + 0.87 * smoothStep((k - 2.3) / (compact ? 2.8 : 2.6));
   }
 
   // Disclosure tier for rendering: background dot → small bubble → full bubble (+ label).
@@ -1419,7 +1422,7 @@ export function mountNercOrgMap(): void {
   function insideLabelMinFont(o: Org, k: number, brandLen: number): number {
     const lp = labelPriority(o);
     const deepLabelT = smoothStep((k - 9) / 13);
-    const overviewInsideScale = k < 1.2 ? 0.76 : 1;
+    const overviewInsideScale = k < 1.2 ? 0.66 : 1;
     return (
       (compact ? 4.4 : 5) *
       overviewInsideScale *
@@ -1512,17 +1515,17 @@ export function mountNercOrgMap(): void {
     const priority = rawPriority / 100;
     const weight = Math.max(1, o.weight ?? 1);
     const weightT = Math.max(0, Math.min(1, (weight - 1) / 40));
-    const minPx = compact ? 3.4 : 4.5;
-    const maxPx = compact ? 22 : Math.min(54, MAX_RADIUS);
+    const minPx = compact ? 4.4 : 6.2;
+    const maxPx = compact ? 18 : Math.min(38, MAX_RADIUS);
     const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.7);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    // Overview bubble size — kept LARGE so the bubbles shown when zoomed out pack
-    // edge-to-edge and fill the whole landmass (the brief: "fewer bubbles when
-    // zoomed out, but they fill up all the space"). The capacity gate then admits
-    // only as many as fit; zooming in shrinks the per-screen footprint so more
-    // bubbles fill in. Compact is smaller so the narrow phone band packs with
-    // enough bubbles to fill it (a few huge ones would just leave gaps).
-    const overviewScale = compact ? 0.56 : 0.82;
+    // Overview bubble size — moderate, NOT huge. Smaller giants + a higher floor
+    // (smaller min↔max spread) means the size contrast is gentle and MORE bubbles
+    // fit on screen when zoomed out (user: "they are too big now and the smaller
+    // ones too small; more should show when zoomed out"). The capacity gate admits
+    // only what fits near home; zooming in shrinks the per-screen footprint so more
+    // bubbles fill in. Compact is smaller still (narrow phone band).
+    const overviewScale = compact ? 0.5 : 0.72;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
