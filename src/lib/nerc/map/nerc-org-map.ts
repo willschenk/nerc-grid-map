@@ -786,11 +786,13 @@ export function mountNercOrgMap(): void {
   // is reheated when the zoom bucket changes.
   type SimNode = {
     o: Org;
-    hx: number; // home (true projected) x in screen-at-bucket space
+    hx: number; // home (true projected) x in screen-at-bucket space — for _dx
     hy: number;
+    tx: number; // anchor TARGET: the non-overlapping, space-filling slot the gate
+    ty: number; // found (may sit well away from home so the field fills gaps)
     r: number; // reserved radius (visual + half gap)
-    anchor: number; // positional-force strength (small orgs roam, big anchor)
-    cap: number; // max wander distance from home
+    anchor: number; // positional-force strength toward the target slot
+    cap: number; // max wander distance from the target slot
     frame: LandFrame;
     x: number;
     y: number;
@@ -1510,15 +1512,17 @@ export function mountNercOrgMap(): void {
     const priority = rawPriority / 100;
     const weight = Math.max(1, o.weight ?? 1);
     const weightT = Math.max(0, Math.min(1, (weight - 1) / 40));
-    const minPx = compact ? 2.8 : 3.0;
-    const maxPx = compact ? 24 : Math.min(46, MAX_RADIUS);
-    const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.82);
+    const minPx = compact ? 3.4 : 4.5;
+    const maxPx = compact ? 22 : Math.min(54, MAX_RADIUS);
+    const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.7);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    // Overview bubble size. Bigger here = more bubbles clear the readable-label
-    // floor and show, and each covers more map — so the zoomed-out view stays
-    // "covered in (larger) bubbles." Compact is lifted harder because the wide US
-    // sits in a narrow band on a tall phone, so it needs bigger marks to fill.
-    const overviewScale = compact ? 0.5 : 0.42;
+    // Overview bubble size — kept LARGE so the bubbles shown when zoomed out pack
+    // edge-to-edge and fill the whole landmass (the brief: "fewer bubbles when
+    // zoomed out, but they fill up all the space"). The capacity gate then admits
+    // only as many as fit; zooming in shrinks the per-screen footprint so more
+    // bubbles fill in. Compact is smaller so the narrow phone band packs with
+    // enough bubbles to fill it (a few huge ones would just leave gaps).
+    const overviewScale = compact ? 0.56 : 0.82;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
@@ -2203,12 +2207,14 @@ export function mountNercOrgMap(): void {
   // larger bubbles that overshadow their spot (the "more freedom for small orgs"
   // rule, now continuous instead of a discrete ring leash).
   function orgAnchorStrength(o: Org): number {
-    if (isTopTierOrg(o)) return 0.28;
+    // Pull toward the space-filling target slot. Firm enough to hold the filled
+    // layout steady (collide handles separation); big orgs hold a touch firmer.
+    if (isTopTierOrg(o)) return 0.5;
     const bigT = Math.max(
       smoothStep((visualPriority(o) - 12) / 72),
       smoothStep(((o.weight ?? 0) - 6) / 38),
     );
-    return 0.035 + 0.2 * bigT;
+    return 0.32 + 0.16 * bigT;
   }
 
   // Bubble layout is a LIVE, BOUNDED force simulation. Disclosed bubbles (those
@@ -2227,7 +2233,14 @@ export function mountNercOrgMap(): void {
 
     const gap = packGapPx(bucket);
     const capBase = maxDeclutterOffset(bucket);
-    const reserveR = (o: Org): number => renderedRadius(o, bucket) + gap * 0.5;
+    // Reserve each bubble at the LARGEST radius it reaches within this zoom
+    // bucket (its upper edge), so a bubble drawn at the live k — which can sit
+    // above the bucket value — is never larger than its reserved slot. Without
+    // this, big bubbles drawn mid-bucket overlap their neighbours. Find the exact
+    // ceiling: the largest k that still maps to this bucket.
+    let bucketTop = bucket;
+    while (declutterBucket(bucketTop + 0.02) === bucket) bucketTop += 0.02;
+    const reserveR = (o: Org): number => renderedRadius(o, bucketTop) + gap * 0.5;
 
     // Gather orgs eligible at this zoom (label fits inside), most-important first.
     const eligible: Org[] = [];
@@ -2296,10 +2309,20 @@ export function mountNercOrgMap(): void {
       const frame = orgLandFrame(o);
       const r = reserveR(o);
       const anchor = orgAnchorStrength(o);
-      // Smaller / freer orgs may wander (and search) farther to find open space.
-      const reach = isTopTierOrg(o) ? 2 : 2.6 + 3.4 * (1 - anchor / 0.26);
+      // Smaller orgs search much farther for a slot, so the field spreads out to
+      // FILL open space instead of clustering at true locations and leaving gaps.
+      const bigT = Math.max(
+        smoothStep((visualPriority(o) - 12) / 72),
+        smoothStep(((o.weight ?? 0) - 6) / 38),
+      );
+      const reach = isTopTierOrg(o) ? 3.5 : 4 + 6 * (1 - bigT);
       // Ring-search outward from home for a non-overlapping on-land slot; if one
-      // exists, admit the org and reserve that slot in the grid (capacity bound).
+      // exists, admit the org, reserve that slot, and remember it as the layout
+      // TARGET. Because the search spreads outward, slots fan out to fill open
+      // space; anchoring the sim to the slot (not home) keeps the field filled
+      // AND overlap-free (the slot is non-overlapping by construction).
+      let slotX = ox;
+      let slotY = oy;
       let placed = false;
       for (let rad = 0; rad <= capBase * reach && !placed; rad += step) {
         const cnt = rad < step ? 1 : Math.max(6, Math.round((2 * Math.PI * rad) / step));
@@ -2310,6 +2333,8 @@ export function mountNercOrgMap(): void {
           if (!placementLandValid(cx, cy, r, bucket, frame, false)) continue;
           if (!fits(cx, cy, r)) continue;
           claim(cx, cy, r);
+          slotX = cx;
+          slotY = cy;
           placed = true;
           break;
         }
@@ -2323,21 +2348,21 @@ export function mountNercOrgMap(): void {
       o._placed = true;
       o.placementMode = "bubble";
       const prev = prevById.get(o.ncr_id);
-      // Continuing bubbles flow from where they are now (smooth zoom motion);
-      // newly-shown bubbles BLOOM outward from their true location as collide
-      // pushes them apart into the slot the gate just proved exists — a lively
-      // "growing into place" entrance. The small deterministic nudge breaks ties
-      // so coincident bubbles separate (forceCollide can't split exact overlaps).
+      // Continuing bubbles flow from where they are now into their new slot (smooth
+      // zoom motion); newly-shown bubbles appear at their slot and settle. A tiny
+      // deterministic nudge breaks exact ties so coincident bubbles can separate.
       nodes.push({
         o,
         hx: ox,
         hy: oy,
+        tx: slotX,
+        ty: slotY,
         r,
         anchor,
-        cap: capBase * reach,
+        cap: capBase * 1.3,
         frame,
-        x: prev ? ox + (o._dx ?? 0) : ox + (Math.cos(o._visRank ?? 0) * r) / 6,
-        y: prev ? oy + (o._dy ?? 0) : oy + (Math.sin(o._visRank ?? 0) * r) / 6,
+        x: prev ? ox + (o._dx ?? 0) : slotX + (Math.cos(o._visRank ?? 0) * r) / 8,
+        y: prev ? oy + (o._dy ?? 0) : slotY + (Math.sin(o._visRank ?? 0) * r) / 8,
         vx: prev?.vx ?? 0,
         vy: prev?.vy ?? 0,
       });
@@ -2352,62 +2377,49 @@ export function mountNercOrgMap(): void {
 
     if (!orgSim) {
       orgSim = forceSimulation<SimNode>()
-        // Lower velocity decay = more momentum, so bubbles glide into place
-        // instead of snapping — that fluid motion is the "cool to navigate" feel.
-        .velocityDecay(0.38)
+        // Some momentum so bubbles glide into place (the "cool to navigate" feel),
+        // but enough damping that they settle onto the filled slots quickly.
+        .velocityDecay(0.5)
         .alphaMin(0.02)
         .on("tick", onSimTick);
       orgSim.stop();
     }
     orgSim.nodes(nodes);
-    // Collide is the dominant force (full strength, extra iterations) so bubbles
-    // reliably separate to non-overlapping; the weaker positional force then pulls
-    // the separated field back toward true geography.
+    // Collide (full strength) guarantees no overlap; the positional force pulls
+    // each bubble to its space-filling target slot. Both agree (the slot is
+    // non-overlapping), so the field settles filled AND clean.
     orgSim.force("collide", forceCollide<SimNode>((n) => n.r).strength(1).iterations(5));
-    orgSim.force("x", forceX<SimNode>((n) => n.hx).strength((n) => n.anchor));
-    orgSim.force("y", forceY<SimNode>((n) => n.hy).strength((n) => n.anchor));
-    // Reheat with plenty of energy and a gentle decay so the re-pack visibly
-    // flows and settles over ~1.7s rather than jumping.
-    orgSim.alphaDecay(0.035).alpha(0.95).restart();
+    orgSim.force("x", forceX<SimNode>((n) => n.tx).strength((n) => n.anchor));
+    orgSim.force("y", forceY<SimNode>((n) => n.ty).strength((n) => n.anchor));
+    // Reheat with energy then settle snappily (~1.1s) onto the filled slot layout
+    // — fast enough to feel responsive while zooming, slow enough to read as flow.
+    orgSim.alphaDecay(0.05).alpha(0.95).restart();
   }
 
-  // Sim tick: cap each node's wander from home, keep it on the correct land mass,
-  // publish the offset as _dx/_dy, and request a redraw so the motion animates.
+  // Sim tick: cap each node's wander from its target slot, keep it on the correct
+  // land mass, publish the offset as _dx/_dy, and request a redraw to animate.
   function onSimTick(): void {
     const bucket = simBucket;
     for (const n of simNodes) {
-      let dx = n.x - n.hx;
-      let dy = n.y - n.hy;
+      // Cap wander from the target slot (hard, but rare — a runaway backstop).
+      const dx = n.x - n.tx;
+      const dy = n.y - n.ty;
       const off = Math.hypot(dx, dy);
       if (off > n.cap) {
         const s = n.cap / off;
-        dx *= s;
-        dy *= s;
-        n.x = n.hx + dx;
-        n.y = n.hy + dy;
+        n.x = n.tx + dx * s;
+        n.y = n.ty + dy * s;
         n.vx *= 0.5;
         n.vy *= 0.5;
       }
-      // Keep the bubble centre on its land silhouette. Coastal bubbles may sit
-      // slightly offshore (lenient border), but never drift out to open sea.
+      // Soft land-keep: the target slot is on-land and the anchor holds bubbles
+      // near it, so if collide nudges one offshore just steer its velocity back
+      // toward the slot — a gentle pull, NOT a hard reposition (hard-resetting the
+      // position each tick fought collide and reintroduced overlap at crowded
+      // coastlines). Coastal bubbles may sit slightly offshore; that's fine.
       if (!onLandForFrame(n.x / bucket, n.y / bucket, n.frame, true)) {
-        let recovered = false;
-        for (let s = 0.75; s > 0; s -= 0.25) {
-          const tx = n.hx + dx * s;
-          const ty = n.hy + dy * s;
-          if (onLandForFrame(tx / bucket, ty / bucket, n.frame, true)) {
-            n.x = tx;
-            n.y = ty;
-            recovered = true;
-            break;
-          }
-        }
-        if (!recovered) {
-          n.x = n.hx;
-          n.y = n.hy;
-        }
-        n.vx *= 0.4;
-        n.vy *= 0.4;
+        n.vx += (n.tx - n.x) * 0.18;
+        n.vy += (n.ty - n.y) * 0.18;
       }
       n.o._dx = n.x - n.hx;
       n.o._dy = n.y - n.hy;
