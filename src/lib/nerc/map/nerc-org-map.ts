@@ -1083,9 +1083,30 @@ export function mountNercOrgMap(): void {
     return compact ? 0.88 : 0.76;
   }
 
+  function isOuterOverviewZoom(k: number): boolean {
+    return declutterBucket(k) <= 0.75;
+  }
+
+  function isOuterOverviewMajor(o: Org): boolean {
+    if (isTopTierOrg(o)) return true;
+    if (isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o)) return false;
+    const lp = labelPriority(o);
+    const vp = visualPriority(o);
+    const weight = o.weight ?? 0;
+    if (lp >= 78 || vp >= 78) return true;
+    if (lp >= 68 && weight >= 10) return true;
+    if (isGridLeadershipOrg(o) && weight >= 8) return true;
+    if (typePriority(o) >= 66 && weight >= 14) return true;
+    return false;
+  }
+
   function canDisplayOrg(o: Org, k: number): boolean {
     // Generation-only (GO/GOP) companies are excluded from the map entirely.
     if (isGenerationOnly(o)) return false;
+    // The fully zoomed-out view is a major-org overview: smaller eligible orgs
+    // wait until the next zoom bucket so they do not take slots from high-ranked
+    // regulated entities.
+    if (isOuterOverviewZoom(k) && !isOuterOverviewMajor(o)) return false;
     if (k >= fullRegistryRevealK()) return true;
     if (isTopTierOrg(o)) return true;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
@@ -1547,10 +1568,15 @@ export function mountNercOrgMap(): void {
     const maxPx = compact ? (topTier ? 21 : 18) : Math.min(topTier ? 46 : 40, MAX_RADIUS);
     const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.7);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    // Overview bubble size: preserve hierarchy for the largest regulated orgs
-    // while keeping the small-org floor readable. The capacity gate still admits
-    // only what fits near home; the top-tier sort makes those anchors win first.
-    const overviewScale = compact ? (topTier ? 0.58 : 0.5) : (topTier ? 0.8 : 0.72);
+    // Overview bubble size: at the outermost bucket, top-tier bubbles are smaller
+    // so more high-ranked orgs fit before smaller orgs enter on the next zoom
+    // bucket. They ramp back to the fuller overview size as soon as the user zooms
+    // in, preserving hierarchy without letting a few giants consume the map.
+    const outerTopScaleT = smoothStep((k - 0.75) / (compact ? 0.5 : 0.55));
+    const topOverviewScale = compact
+      ? 0.48 + 0.1 * outerTopScaleT
+      : 0.56 + 0.24 * outerTopScaleT;
+    const overviewScale = compact ? (topTier ? topOverviewScale : 0.5) : (topTier ? topOverviewScale : 0.72);
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
