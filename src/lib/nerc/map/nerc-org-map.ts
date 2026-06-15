@@ -1087,16 +1087,21 @@ export function mountNercOrgMap(): void {
     return declutterBucket(k) <= 0.75;
   }
 
+  function isAuthorityColorOrg(o: Org): boolean {
+    return hasAnyRole(o, AUTHORITY_ROLES);
+  }
+
   function isOuterOverviewMajor(o: Org): boolean {
-    if (isTopTierOrg(o)) return true;
     if (isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o)) return false;
+    if (isAuthorityColorOrg(o)) return true;
+    if (isTopTierOrg(o)) return true;
     const lp = labelPriority(o);
     const vp = visualPriority(o);
     const weight = o.weight ?? 0;
-    if (lp >= 78 || vp >= 78) return true;
-    if (lp >= 68 && weight >= 10) return true;
-    if (isGridLeadershipOrg(o) && weight >= 8) return true;
-    if (typePriority(o) >= 66 && weight >= 14) return true;
+    if (lp >= 82 && weight >= 18) return true;
+    if (vp >= 82 && weight >= 18) return true;
+    if ((o.is_iso_rto || o.org_type === "ISO_RTO" || RELIABILITY_ORG_NAME.test(o.entity_name)) && weight >= 10) return true;
+    if ((o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) && weight >= 18) return true;
     return false;
   }
 
@@ -1319,11 +1324,13 @@ export function mountNercOrgMap(): void {
   function outerOverviewPlacementScore(o: Org): number {
     const weight = Math.max(0, o.weight ?? 0);
     const regulated =
+      isAuthorityColorOrg(o) ||
       labelPriority(o) >= 52 ||
       typePriority(o) >= 66 ||
       isGridLeadershipOrg(o);
     return (
-      (isTopTierOrg(o) ? 100000 : 0) +
+      (isAuthorityColorOrg(o) ? 180000 : 0) +
+      (isTopTierOrg(o) ? 70000 : 0) +
       (regulated && weight >= 10 ? 20000 : 0) +
       Math.min(weight, 45) * 420 +
       visualPriority(o) * 60 +
@@ -1569,13 +1576,14 @@ export function mountNercOrgMap(): void {
     const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.7);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
     // Overview bubble size: at the outermost bucket, top-tier bubbles are smaller
-    // so more high-ranked orgs fit before smaller orgs enter on the next zoom
-    // bucket. They ramp back to the fuller overview size as soon as the user zooms
-    // in, preserving hierarchy without letting a few giants consume the map.
-    const outerTopScaleT = smoothStep((k - 0.75) / (compact ? 0.5 : 0.55));
+    // so more high-ranked blue/purple authority orgs fit before smaller orgs enter
+    // on the next zoom bucket. They ramp back to the fuller overview size as soon
+    // as the user zooms in, preserving hierarchy without letting a few giants
+    // consume the map.
+    const outerTopScaleT = smoothStep((k - 0.75) / (compact ? 0.22 : 0.2));
     const topOverviewScale = compact
-      ? 0.48 + 0.1 * outerTopScaleT
-      : 0.56 + 0.24 * outerTopScaleT;
+      ? 0.36 + 0.22 * outerTopScaleT
+      : 0.34 + 0.46 * outerTopScaleT;
     const overviewScale = compact ? (topTier ? topOverviewScale : 0.5) : (topTier ? topOverviewScale : 0.72);
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
@@ -1642,7 +1650,10 @@ export function mountNercOrgMap(): void {
     );
     const discloseT = topTier ? 1 : bubbleDisclosureT(o, k);
     const scaledPx = (minPx + (targetPx - minPx) * discloseT) * phoneSizeScale() * ORG_CONTENT_SCALE;
-    return Math.max(minPx, Math.min(maxPx, scaledPx)) * unitPerPx;
+    const outerCapPx = isOuterOverviewZoom(k) && isOuterOverviewMajor(o)
+      ? (compact ? 12 : 16.5)
+      : maxPx;
+    return Math.max(minPx, Math.min(maxPx, outerCapPx, scaledPx)) * unitPerPx;
   }
 
   // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
