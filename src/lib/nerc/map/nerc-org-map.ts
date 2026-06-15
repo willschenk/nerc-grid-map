@@ -211,11 +211,10 @@ const TERRITORY_LAYOUT_ORDER = ["PR", "VI"] as const;
 // FIPS ids of the territory land outlines carried in the states topojson, so the
 // inset can draw the real island shape (geoAlbersUsa can't project them).
 const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
-// Out-of-footprint PR/VI inset dots use a fixed schematic radius (not priority-based).
+// Out-of-footprint PR/VI inset dots use a fixed schematic radius, sized like
+// ordinary small map bubbles instead of oversized island callouts.
 const TERRITORY_BUBBLE_RADIUS_PX = { desktop: 4.6, compact: 5.4 };
 const TERRITORY_HIT_RADIUS_PX = { desktop: 8.6, compact: 10 };
-// PR/VI have few orgs and ample inset space — enlarge for visibility and tapping.
-const TERRITORY_BUBBLE_SCALE = 4;
 
 // Alaska and Hawaii plot inside geoAlbersUsa's built-in lower-left/right insets.
 // They share the mainland declutter path but need extra spread and tap area at
@@ -1077,10 +1076,10 @@ export function mountNercOrgMap(): void {
     if (isTopTierOrg(o)) return 0;
     const pri = visualPriority(o);
     const w = o.weight ?? 0;
-    if (isGridLeadershipOrg(o) || pri >= 50) return 0;
-    if (pri >= 42) return w >= 12 ? (compact ? 0.32 : 0.22) : compact ? 0.52 : 0.42;
-    if (pri >= 28) return compact ? 0.62 : 0.52;
-    if (pri >= 18) return compact ? 0.74 : 0.64;
+    if (isGridLeadershipOrg(o) || pri >= 50 || labelPriority(o) >= 68) return 0;
+    if (pri >= 42) return w >= 12 ? (compact ? 0.24 : 0.16) : compact ? 0.44 : 0.34;
+    if (pri >= 28) return compact ? 0.54 : 0.44;
+    if (pri >= 18) return compact ? 0.66 : 0.56;
     return compact ? 0.88 : 0.76;
   }
 
@@ -1285,7 +1284,10 @@ export function mountNercOrgMap(): void {
 
   function visualPrioritySort(a: Org, b: Org): number {
     return (
+      Number(isTopTierOrg(b)) - Number(isTopTierOrg(a)) ||
       visualPriority(b) - visualPriority(a) ||
+      labelPriority(b) - labelPriority(a) ||
+      (b.weight ?? 0) - (a.weight ?? 0) ||
       rolePriority(b) - rolePriority(a) ||
       typePriority(b) - typePriority(a) ||
       meaningfulRoleCount(b) - meaningfulRoleCount(a) ||
@@ -1422,14 +1424,14 @@ export function mountNercOrgMap(): void {
   function insideLabelMinFont(o: Org, k: number, brandLen: number): number {
     const lp = labelPriority(o);
     const deepLabelT = smoothStep((k - 9) / 13);
-    const overviewInsideScale = k < 1.2 ? 0.66 : 1;
+    const overviewInsideScale = k < 1.2 ? (compact ? 0.88 : 0.9) : 1;
     return (
-      (compact ? 4.4 : 5) *
+      (compact ? 5 : 5.4) *
       overviewInsideScale *
       (1 - 0.9 * deepLabelT) *
       (isMidwestOrg(o) ? 0.9 : 1) *
-      (lp >= 88 ? (compact ? 0.78 : 0.72) : lp >= 68 ? 0.86 : 1) *
-      (!compact && brandLen <= 5 ? 0.85 : 1) *
+      (lp >= 88 ? 0.9 : lp >= 68 ? 0.95 : 1) *
+      (!compact && brandLen <= 5 ? 0.95 : 1) *
       unitPerPx
     );
   }
@@ -1513,19 +1515,17 @@ export function mountNercOrgMap(): void {
     // placement, but cannot make bubbles escape these visual bounds.
     const rawPriority = visualPriority(o);
     const priority = rawPriority / 100;
+    const topTier = isTopTierOrg(o);
     const weight = Math.max(1, o.weight ?? 1);
     const weightT = Math.max(0, Math.min(1, (weight - 1) / 40));
     const minPx = compact ? 4.4 : 6.2;
-    const maxPx = compact ? 18 : Math.min(38, MAX_RADIUS);
+    const maxPx = compact ? (topTier ? 21 : 18) : Math.min(topTier ? 46 : 40, MAX_RADIUS);
     const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.7);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    // Overview bubble size — moderate, NOT huge. Smaller giants + a higher floor
-    // (smaller min↔max spread) means the size contrast is gentle and MORE bubbles
-    // fit on screen when zoomed out (user: "they are too big now and the smaller
-    // ones too small; more should show when zoomed out"). The capacity gate admits
-    // only what fits near home; zooming in shrinks the per-screen footprint so more
-    // bubbles fill in. Compact is smaller still (narrow phone band).
-    const overviewScale = compact ? 0.5 : 0.72;
+    // Overview bubble size: preserve hierarchy for the largest regulated orgs
+    // while keeping the small-org floor readable. The capacity gate still admits
+    // only what fits near home; the top-tier sort makes those anchors win first.
+    const overviewScale = compact ? (topTier ? 0.58 : 0.5) : (topTier ? 0.8 : 0.72);
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
     const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
@@ -1570,6 +1570,9 @@ export function mountNercOrgMap(): void {
     const insetOverviewMinPx = isUsInsetOrg(o)
       ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2)
       : 0;
+    const topTierOverviewMinPx = topTier
+      ? (compact ? 10.5 : 13.5) * (1 - smoothStep((k - 1.25) / 2.75))
+      : 0;
     const postRevealT = postRevealBoostT(o, k);
     const postRevealPx = postRevealT
       * (isDeferredMarketOrg(o) ? (compact ? 18 : 22) : isTransmissionOwnerOnly(o) ? (compact ? 10 : 12) : 0);
@@ -1579,27 +1582,26 @@ export function mountNercOrgMap(): void {
       minPx,
       deepMinPx,
       insetOverviewMinPx,
+      topTierOverviewMinPx,
       microRevealMinPx,
       Math.min(
         zoomMaxPx,
         basePx + weightLiftPx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
       ),
     );
-    const discloseT = isTopTierOrg(o) ? 1 : bubbleDisclosureT(o, k);
+    const discloseT = topTier ? 1 : bubbleDisclosureT(o, k);
     const scaledPx = (minPx + (targetPx - minPx) * discloseT) * phoneSizeScale() * ORG_CONTENT_SCALE;
     return Math.max(minPx, Math.min(maxPx, scaledPx)) * unitPerPx;
   }
 
   // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
-  // priority-based) so they fit the offshore cluster; scaled up — few orgs, ample space.
+  // priority-based) so they fit the offshore cluster without dwarfing mainland orgs.
   function territoryBubbleRadiusPx(): number {
-    return (compact ? TERRITORY_BUBBLE_RADIUS_PX.compact : TERRITORY_BUBBLE_RADIUS_PX.desktop)
-      * TERRITORY_BUBBLE_SCALE;
+    return compact ? TERRITORY_BUBBLE_RADIUS_PX.compact : TERRITORY_BUBBLE_RADIUS_PX.desktop;
   }
 
   function territoryHitRadiusPx(): number {
-    return (compact ? TERRITORY_HIT_RADIUS_PX.compact : TERRITORY_HIT_RADIUS_PX.desktop)
-      * TERRITORY_BUBBLE_SCALE;
+    return compact ? TERRITORY_HIT_RADIUS_PX.compact : TERRITORY_HIT_RADIUS_PX.desktop;
   }
 
   function renderedRadius(o: Org, k: number): number {
