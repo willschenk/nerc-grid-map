@@ -1295,6 +1295,31 @@ export function mountNercOrgMap(): void {
     );
   }
 
+  function outerOverviewPlacementScore(o: Org): number {
+    const weight = Math.max(0, o.weight ?? 0);
+    const regulated =
+      labelPriority(o) >= 52 ||
+      typePriority(o) >= 66 ||
+      isGridLeadershipOrg(o);
+    return (
+      (isTopTierOrg(o) ? 100000 : 0) +
+      (regulated && weight >= 10 ? 20000 : 0) +
+      Math.min(weight, 45) * 420 +
+      visualPriority(o) * 60 +
+      labelPriority(o) * 35 +
+      typePriority(o) * 18 +
+      rolePriority(o) * 12 +
+      meaningfulRoleCount(o) * 140
+    );
+  }
+
+  function outerOverviewPlacementSort(a: Org, b: Org): number {
+    return (
+      outerOverviewPlacementScore(b) - outerOverviewPlacementScore(a) ||
+      visualPrioritySort(a, b)
+    );
+  }
+
   function labelPrioritySort(a: Org, b: Org): number {
     return (
       labelPriority(b) - labelPriority(a) ||
@@ -2272,7 +2297,11 @@ export function mountNercOrgMap(): void {
       }
       eligible.push(o);
     }
-    eligible.sort((a, b) => (a._visRank ?? 0) - (b._visRank ?? 0));
+    eligible.sort(
+      bucket <= 0.75
+        ? outerOverviewPlacementSort
+        : (a, b) => (a._visRank ?? 0) - (b._visRank ?? 0),
+    );
 
     // CAPACITY GATE: a spatial grid greedily admits each eligible org (highest
     // priority first) only if a non-overlapping, on-land slot exists near its true
