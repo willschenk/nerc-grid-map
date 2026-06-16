@@ -1651,7 +1651,7 @@ export function mountNercOrgMap(): void {
     const discloseT = topTier ? 1 : bubbleDisclosureT(o, k);
     const scaledPx = (minPx + (targetPx - minPx) * discloseT) * phoneSizeScale() * ORG_CONTENT_SCALE;
     const outerCapPx = isOuterOverviewZoom(k) && isOuterOverviewMajor(o)
-      ? (compact ? 12 : 16.5)
+      ? (compact ? 11.4 : 15.2)
       : maxPx;
     return Math.max(minPx, Math.min(maxPx, outerCapPx, scaledPx)) * unitPerPx;
   }
@@ -1769,8 +1769,15 @@ export function mountNercOrgMap(): void {
     };
   }
 
-  function packGapPx(_bucket: number): number {
-    return 1.25 * unitPerPx;
+  function packGapPx(bucket: number): number {
+    // The non-overlap solver was reserving a visible moat around every bubble:
+    // reserveR adds half the gap and fits() adds the gap again. Keep just enough
+    // clearance to avoid overlap, so bubbles pack edge-to-edge and more of them
+    // fit while the field reads fuller.
+    const overviewT = 1 - smoothStep((bucket - 0.9) / 3.2);
+    const overviewPx = compact ? 0.22 : 0.32;
+    const deepPx = compact ? 0.55 : 0.68;
+    return (overviewPx + (deepPx - overviewPx) * (1 - overviewT)) * unitPerPx;
   }
 
   function declutterBucket(k: number): number {
@@ -1791,7 +1798,7 @@ export function mountNercOrgMap(): void {
     // Substantial freedom at every zoom step; taper is gentle so regional/mid views
     // still allow bubbles to spread when packing gets tight.
     const t = declutterZoomT(k);
-    const overviewPx = compact ? 42 : 62;
+    const overviewPx = compact ? 48 : 72;
     const deepPx = compact ? 27 : 41;
     return (overviewPx + (deepPx - overviewPx) * t) * unitPerPx;
   }
@@ -2398,9 +2405,14 @@ export function mountNercOrgMap(): void {
       // Compact keeps a tighter leash: a phone squeezes the whole US into a narrow
       // band, so a bubble's radius is a big fraction of the screen and the same
       // radius-multiple would shove it much farther in real geography.
-      const leashR = isTopTierOrg(o)
-        ? (compact ? 0.6 : 0.8)
-        : (compact ? 1.1 : 1.6) + (compact ? 1.2 : 2.0) * (1 - bigT);
+      const outerMajor = isOuterOverviewZoom(bucket) && isOuterOverviewMajor(o);
+      const leashR = outerMajor
+        ? isTopTierOrg(o)
+          ? (compact ? 0.85 : 1.2)
+          : (compact ? 1.45 : 2.0)
+        : isTopTierOrg(o)
+          ? (compact ? 0.6 : 0.8)
+          : (compact ? 1.1 : 1.6) + (compact ? 1.2 : 2.0) * (1 - bigT);
       const leash = Math.min(capBase, r * leashR);
       // Ring-search outward from home for the NEAREST non-overlapping on-land slot
       // within the leash; admit the org there and anchor the sim to that slot.
