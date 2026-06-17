@@ -1102,7 +1102,7 @@ export function mountNercOrgMap(): void {
   }
 
   function isOuterOverviewZoom(k: number): boolean {
-    return k <= (compact ? 1.08 : 1.04);
+    return declutterBucket(k) <= 0.75;
   }
 
   function isAuthorityColorOrg(o: Org): boolean {
@@ -1124,6 +1124,27 @@ export function mountNercOrgMap(): void {
     return false;
   }
 
+  function isNationalFillZoom(k: number): boolean {
+    return declutterBucket(k) <= 1;
+  }
+
+  function isNationalFillOrg(o: Org): boolean {
+    if (isOuterOverviewMajor(o)) return true;
+    if (isDeferredMarketOrg(o) || isTransmissionOwnerOnly(o)) return false;
+    if (o.is_private || o.org_type === "merchant") return false;
+    const lp = labelPriority(o);
+    const vp = visualPriority(o);
+    const weight = o.weight ?? 0;
+    if (isGridLeadershipOrg(o) && weight >= 6) return true;
+    if (lp >= 68 && weight >= 8) return true;
+    if (lp >= 52 && weight >= 9) return true;
+    if (vp >= 50 && weight >= 10) return true;
+    if (o.name_major && weight >= 12) return true;
+    if (typePriority(o) >= 66 && weight >= 12) return true;
+    if (meaningfulRoleCount(o) >= 2 && weight >= 12 && typePriority(o) >= 42) return true;
+    return false;
+  }
+
   function canDisplayOrg(o: Org, k: number): boolean {
     // Generation-only (GO/GOP) companies are excluded from the map entirely.
     if (isGenerationOnly(o)) return false;
@@ -1131,6 +1152,10 @@ export function mountNercOrgMap(): void {
     // wait until the next zoom bucket so they do not take slots from high-ranked
     // regulated entities.
     if (isOuterOverviewZoom(k) && !isOuterOverviewMajor(o)) return false;
+    // The first zoom-in buckets should feel full without turning into a low-ranked
+    // local-utility scatter. Admit a broader but still regulated/grid-significant
+    // tier before the normal progressive reveal takes over.
+    if (!isOuterOverviewZoom(k) && isNationalFillZoom(k) && !isNationalFillOrg(o)) return false;
     if (k >= fullRegistryRevealK()) return true;
     if (isTopTierOrg(o)) return true;
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
@@ -1155,8 +1180,8 @@ export function mountNercOrgMap(): void {
     if (lp >= 88) return 1;
     if (lp >= 78) return 0.52 + 0.48 * smoothStep((k - 0.55) / (compact ? 0.95 : 0.8));
     if (lp >= 68) return 0.46 + 0.54 * smoothStep((k - 0.72) / (compact ? 1.1 : 0.95));
-    if (lp >= 52) return 0.38 + 0.62 * smoothStep((k - 0.9) / (compact ? 1.35 : 1.2));
-    if (lp >= 38) return 0.3 + 0.7 * smoothStep((k - 1.2) / (compact ? 1.7 : 1.5));
+    if (lp >= 52) return 0.44 + 0.56 * smoothStep((k - 0.82) / (compact ? 1.25 : 1.1));
+    if (lp >= 38) return 0.34 + 0.66 * smoothStep((k - 1.08) / (compact ? 1.55 : 1.35));
     if (lp >= 16) return 0.2 + 0.8 * smoothStep((k - 1.8) / (compact ? 2.2 : 2.0));
     return 0.13 + 0.87 * smoothStep((k - 2.3) / (compact ? 2.8 : 2.6));
   }
@@ -1815,12 +1840,17 @@ export function mountNercOrgMap(): void {
   }
 
   function maxDeclutterOffset(k: number): number {
-    // Substantial freedom at every zoom step; taper is gentle so regional/mid views
-    // still allow bubbles to spread when packing gets tight.
+    // Substantial freedom at every zoom step; regional/deep buckets get an extra
+    // local-fill allowance so eligible orgs can use nearby whitespace instead of
+    // disappearing from roomy views.
     const t = declutterZoomT(k);
-    const overviewPx = compact ? 48 : 72;
-    const deepPx = compact ? 27 : 41;
-    return (overviewPx + (deepPx - overviewPx) * t) * unitPerPx;
+    const overviewPx = compact ? 48 : 74;
+    const deepPx = compact ? 34 : 50;
+    const regionalFillPx =
+      (compact ? 16 : 34) *
+      smoothStep((k - 3.5) / 5.5) *
+      (1 - smoothStep((k - 18) / 18));
+    return (overviewPx + (deepPx - overviewPx) * t + regionalFillPx) * unitPerPx;
   }
 
   // _dx/_dy are solved in screen-space SVG units. Dividing by k keeps the
@@ -2361,7 +2391,7 @@ export function mountNercOrgMap(): void {
       eligible.push(o);
     }
     eligible.sort(
-      bucket <= 0.75
+      (isNationalFillZoom(bucket) || bucket <= 1.5)
         ? outerOverviewPlacementSort
         : (a, b) => (a._visRank ?? 0) - (b._visRank ?? 0),
     );
@@ -2425,13 +2455,16 @@ export function mountNercOrgMap(): void {
       // band, so a bubble's radius is a big fraction of the screen and the same
       // radius-multiple would shove it much farther in real geography.
       const outerMajor = isOuterOverviewZoom(bucket) && isOuterOverviewMajor(o);
+      const regionalLeashT = smoothStep((bucket - 4.5) / 6.5);
       const leashR = outerMajor
         ? isTopTierOrg(o)
           ? (compact ? 0.85 : 1.2)
           : (compact ? 1.45 : 2.0)
         : isTopTierOrg(o)
           ? (compact ? 0.6 : 0.8)
-          : (compact ? 1.1 : 1.6) + (compact ? 1.2 : 2.0) * (1 - bigT);
+          : (compact ? 1.1 : 1.7) +
+            (compact ? 1.25 : 2.25) * (1 - bigT) +
+            (compact ? 0.55 : 0.95) * regionalLeashT * (1 - 0.45 * bigT);
       const leash = Math.min(capBase, r * leashR);
       // Ring-search outward from home for the NEAREST non-overlapping on-land slot
       // within the leash; admit the org there and anchor the sim to that slot.
@@ -3911,17 +3944,78 @@ export function mountNercOrgMap(): void {
     animateTransform(zoomIdentity, duration);
   }
 
-  // Smooth, centred zoom step for the on-screen +/- controls. Goes through the
-  // zoom behaviour (like wheel/pinch) so bounds, redraw scheduling and the
-  // transition all stay consistent with a real gesture.
+  function buttonZoomFocusPoint(factor: number): [number, number] {
+    if (factor <= 1 || transform.k < 2.2) return [W / 2, H / 2];
+    const points: Array<{ x: number; y: number; w: number }> = [];
+    let sx = 0;
+    let sy = 0;
+    let total = 0;
+    const topFocusSafe = compact ? 78 : 90;
+    const bottomFocusSafe = compact ? 56 : 44;
+    for (const o of placeableOrgs) {
+      if (!o._vis || o._frame === "terr" || o._sx == null || o._sy == null) continue;
+      if (o._sx < 0 || o._sx > W || o._sy < 0 || o._sy > H) continue;
+      if (o._sy < topFocusSafe || o._sy > H - bottomFocusSafe) continue;
+      const rPx = renderedRadius(o, transform.k) / unitPerPx;
+      const w =
+        1 +
+        Math.min(4, rPx / 18) +
+        3 * smoothStep((visualPriority(o) - 38) / 62) +
+        0.15 * meaningfulRoleCount(o);
+      sx += o._sx * w;
+      sy += o._sy * w;
+      total += w;
+      points.push({ x: o._sx, y: o._sy, w });
+    }
+    if (total < 8) return [W / 2, H / 2];
+    let cx = sx / total;
+    let cy = sy / total;
+    if (transform.k >= 4.2 && points.length >= 6) {
+      const densityR = compact ? 150 : 230;
+      let best = points[0];
+      let bestScore = -Infinity;
+      for (const p of points) {
+        let density = 0;
+        for (const q of points) {
+          const d = Math.hypot(p.x - q.x, p.y - q.y);
+          if (d > densityR) continue;
+          const t = 1 - d / densityR;
+          density += q.w * t * t;
+        }
+        const centerPenalty = Math.hypot(p.x - W / 2, p.y - H / 2) / Math.hypot(W, H);
+        const score = density + p.w * 0.35 - centerPenalty * 0.3;
+        if (score > bestScore) {
+          bestScore = score;
+          best = p;
+        }
+      }
+      cx = best.x;
+      cy = best.y;
+    }
+    const steer = transform.k >= 4.2
+      ? 0.46 + 0.36 * smoothStep((transform.k - 4.2) / 8)
+      : 0.18 + 0.34 * smoothStep((transform.k - 2.4) / 8);
+    const ySteer = steer * (transform.k >= 4.2 ? 0.55 : 0.75);
+    const x = W / 2 + (cx - W / 2) * steer;
+    const y = H / 2 + (cy - H / 2) * ySteer;
+    return [
+      Math.max(W * 0.24, Math.min(W * 0.76, x)),
+      Math.max(H * 0.3, Math.min(H * 0.76, y)),
+    ];
+  }
+
+  // Smooth zoom step for the on-screen +/- controls. After the overview, zoom-in
+  // leans toward the visible org field so repeated button taps do not tunnel
+  // into empty national-center whitespace.
   function zoomByFactor(factor: number): void {
     if (!zoomBehavior) return;
     if (tourRunning) stopTour(true);
     svg.interrupt();
+    const focus = buttonZoomFocusPoint(factor);
     svg
       .transition()
       .duration(220)
-      .call(zoomBehavior.scaleBy as never, factor, [W / 2, H / 2]);
+      .call(zoomBehavior.scaleBy as never, factor, focus);
   }
 
   // Where the walkthrough opens. On phones it starts a bit further out (a calm
