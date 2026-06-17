@@ -43,18 +43,18 @@ const base = import.meta.env.BASE_URL;
           </div>
 
           <div class="nerc-map-actions" aria-label="Map actions">
-            <button id="nerc-metrics-toggle" type="button" class="nerc-icon-btn nerc-letter-button" aria-label="Map metrics" title="Map metrics">M</button>
-            <button id="nerc-info-toggle" type="button" class="nerc-icon-btn nerc-info-button" aria-label="How to read this map" title="How to read this map">i</button>
-            <button id="nerc-play-tour" type="button" class="nerc-action-btn nerc-play-btn" aria-label="Play walkthrough">&#9654; Tour</button>
+            <button id="nerc-metrics-toggle" type="button" class="nerc-action-btn" aria-label="Dataset summary" title="Dataset summary">Data</button>
+            <button id="nerc-info-toggle" type="button" class="nerc-action-btn" aria-label="How to read this map" title="How to read this map">Info</button>
+            <button id="nerc-play-tour" type="button" class="nerc-action-btn nerc-play-btn" aria-label="Play walkthrough">Take Tour</button>
           </div>
         </header>
 
-        <button id="nerc-tour-fab" type="button" class="nerc-tour-fab" aria-label="Play walkthrough">&#9654; Tour</button>
+        <button id="nerc-tour-fab" type="button" class="nerc-tour-fab" aria-label="Play walkthrough">Tour</button>
 
         <div class="nerc-zoom-controls" role="group" aria-label="Zoom controls">
           <button id="nerc-zoom-in" type="button" class="nerc-zoom-btn" aria-label="Zoom in to reveal more organizations" title="Zoom in">+</button>
           <button id="nerc-zoom-out" type="button" class="nerc-zoom-btn" aria-label="Zoom out" title="Zoom out">&#8722;</button>
-          <button id="nerc-zoom-home" type="button" class="nerc-zoom-btn nerc-zoom-home" aria-label="Reset to national view" title="Reset view">&#8962;</button>
+          <button id="nerc-zoom-home" type="button" class="nerc-zoom-btn nerc-zoom-home" aria-label="Reset map view" title="Reset map view">&#8962;</button>
         </div>
 
         <aside id="nerc-metrics-panel" class="nerc-popover nerc-metrics-panel" hidden>
@@ -70,7 +70,7 @@ const base = import.meta.env.BASE_URL;
         <aside id="nerc-info-panel" class="nerc-popover nerc-info-panel" hidden>
           <button id="nerc-info-close" type="button" class="nerc-panel-close" aria-label="Close">&times;</button>
           <h2>How to read it</h2>
-          <p class="nerc-info-lead">Each dot is one organization, at its headquarters.</p>
+          <p class="nerc-info-lead">Each bubble is one organization, near its headquarters.</p>
           <p class="nerc-info-legend"><b>Color</b> role mix <span aria-hidden="true">&middot;</span> <b>Size</b> role weight <span aria-hidden="true">&middot;</span> <b>Dotted</b> no NERC ID</p>
           <div class="nerc-legend-examples" aria-label="How to read a dot">
             <div class="nerc-legend-row">
@@ -95,7 +95,7 @@ const base = import.meta.env.BASE_URL;
               <span class="nerc-legend-text"><b>Dotted outline</b> = not in the NERC registry (no NERC ID).</span>
             </div>
           </div>
-          <details class="nerc-role-guide" open>
+          <details class="nerc-role-guide">
             <summary>Role abbreviations</summary>
             <div class="nerc-role-guide-grid">
               {

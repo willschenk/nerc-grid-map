@@ -179,6 +179,25 @@ const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
 const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
+const PRIMARY_ROLE_ORDER = [
+  "RC",
+  "BA",
+  "PC",
+  "TOP",
+  "TSP",
+  "TP",
+  "TO",
+  "DP",
+  "LSE",
+  "RP",
+  "RSG",
+  "FRSG",
+  "RRSG",
+  "GO",
+  "GOP",
+  "PSE",
+];
+const PRIMARY_ROLE_RANK = new Map(PRIMARY_ROLE_ORDER.map((role, i) => [role, i]));
 // Growth anchor for generation-only micro-orgs: how deep before their post-reveal
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 50;
@@ -741,8 +760,7 @@ export function mountNercOrgMap(): void {
   let tourTimers: number[] = [];
   // Tour mode is on (button shows Stop) even between steps / during the reset.
   let tourRunning = false;
-  // Timer that clears the Stop-button "attention" pulse after a gesture.
-  let attentionTimer: number | undefined;
+  let tourNoticeTimer: number | undefined;
   // Cache for hit-circle radii: they only change with zoom, so skip the
   // per-redraw setAttribute storm during a tour (transform is static).
   let hitK = NaN;
@@ -1084,7 +1102,7 @@ export function mountNercOrgMap(): void {
   }
 
   function isOuterOverviewZoom(k: number): boolean {
-    return declutterBucket(k) <= 0.75;
+    return k <= (compact ? 1.08 : 1.04);
   }
 
   function isAuthorityColorOrg(o: Org): boolean {
@@ -1098,7 +1116,8 @@ export function mountNercOrgMap(): void {
     const lp = labelPriority(o);
     const vp = visualPriority(o);
     const weight = o.weight ?? 0;
-    if (lp >= 82 && weight >= 18) return true;
+    if (isGridLeadershipOrg(o) && lp >= 72 && weight >= 14) return true;
+    if (lp >= 78 && weight >= 14) return true;
     if (vp >= 82 && weight >= 18) return true;
     if ((o.is_iso_rto || o.org_type === "ISO_RTO" || RELIABILITY_ORG_NAME.test(o.entity_name)) && weight >= 10) return true;
     if ((o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) && weight >= 18) return true;
@@ -1534,6 +1553,7 @@ export function mountNercOrgMap(): void {
             : 0.19;
     const minPx = state.inside ? (compact ? 2.4 : 2.35) : compact ? 2.65 : 2.5;
     let strokeWidth = Math.max(minPx * unitPerPx, state.font * scale);
+    if (state.inside && state.font < 8.5 * unitPerPx) strokeWidth *= compact ? 1.18 : 1.14;
     if (emphasis === "selected") strokeWidth *= 1.14;
     else if (emphasis === "hot") strokeWidth *= 1.08;
     const alpha =
@@ -1693,7 +1713,7 @@ export function mountNercOrgMap(): void {
     if (o._frame === "terr") return territoryHitRadiusPx() * unitPerPx;
     if (o._renderFallback) {
       const visual = renderedRadius(o, k);
-      return Math.max(visual + 2 * unitPerPx, (compact ? 8 : 6) * unitPerPx);
+      return Math.max(visual + 2 * unitPerPx, (compact ? 18 : 12) * unitPerPx);
     }
     // Every shown bubble is fully placed, so tap targets track the visible radius
     // plus a small pad and a floor — no per-dot reveal strength to fold in.
@@ -1707,13 +1727,13 @@ export function mountNercOrgMap(): void {
     // scaled up further via phoneSizeScale so small orgs stay easy to select.
     const tapScale = phoneSizeScale();
     const overviewFloorPx = (compact
-      ? priority < 30 ? 11.5 : 15
-      : priority < 30 ? 5 : priority < 55 ? 6.2 : 7.5) * tapScale;
+      ? priority < 30 ? 18 : 18.5
+      : priority < 30 ? 12 : priority < 55 ? 12.5 : 13.5) * tapScale;
     const deepFloorPx = (compact
       ? priority < 30 ? 7.8 : 9
       : priority < 30 ? 2.8 : priority < 55 ? 3.4 : 4.4) * tapScale;
     const deepT = smoothStep((k - 10) / 18);
-    const floorPx = overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT;
+    const floorPx = Math.max(compact ? 18 : 12, overviewFloorPx + (deepFloorPx - overviewFloorPx) * deepT);
     const overviewPadPx = compact ? (priority < 30 ? 2.4 : 3.4) : priority < 30 ? 1 : priority < 55 ? 1.5 : 2.4;
     const deepPadPx = compact ? (priority < 30 ? 0.8 : 1.2) : priority < 30 ? 0.35 : priority < 55 ? 0.55 : 0.8;
     const padPx = overviewPadPx + (deepPadPx - overviewPadPx) * deepT;
@@ -1985,9 +2005,8 @@ export function mountNercOrgMap(): void {
 
   function nudgeSelectedOrgIntoView(duration = 280): void {
     if (!zoomBehavior || focusPanPending || tourRunning || userPanning || !selectedOrg) return;
-    if (performance.now() - lastPanEndAt < 500) return;
+    if (performance.now() - lastPanEndAt < 160) return;
     const k = transform.k;
-    if (k < 8) return;
     const focused = selectedOrg;
     if (focused._sx == null || focused._sy == null) return;
     const r = renderedRadius(focused, k);
@@ -3217,8 +3236,8 @@ export function mountNercOrgMap(): void {
 
     // Geographic reference labels stay secondary: the more org bubbles are on
     // screen, the more these state/province names recede so organization labels
-    // remain the primary focus. They never disappear entirely (floor 0.35).
-    const landDensityOpacity = Math.max(0.35, 1 - shownCount / (compact ? 90 : 240));
+    // remain the primary focus. They never disappear entirely (floor 0.22).
+    const landDensityOpacity = Math.max(0.22, 1 - shownCount / (compact ? 68 : 190));
     gLand.selectAll<SVGTextElement, LandLabel>("text.land-label").each(function (L) {
       const node = this as SVGTextElement;
       const state = landState.get(L.name);
@@ -3539,10 +3558,12 @@ export function mountNercOrgMap(): void {
     tooltip.append(
       createEl("div", "tt-acronym", orgAcronym(o)),
       createEl("div", "tt-name", displayName(o)),
-      createEl("div", "tt-sub", `weight ${o.weight} · ${o.role_count} role${o.role_count === 1 ? "" : "s"}`),
+      createEl("div", "tt-sub", primaryRoleSummaryText(o, 4)),
     );
     const chips = createEl("div", "nerc-tt-pills");
-    o.roles.forEach((role) => chips.append(createRolePill(role)));
+    const roles = primaryRoles(o);
+    roles.slice(0, 4).forEach((role) => chips.append(createRolePill(role)));
+    if (roles.length > 4) chips.append(createEl("span", "nerc-rolepill nerc-rolepill-more", `+${roles.length - 4}`));
     tooltip.append(chips);
     tooltip.hidden = false;
   }
@@ -3559,6 +3580,10 @@ export function mountNercOrgMap(): void {
   }
 
   function showTooltip(o: Org, ev: MouseEvent): void {
+    if (selectedOrg) {
+      hideTooltip();
+      return;
+    }
     const request = ++tooltipRequest;
     const x = ev.clientX;
     const y = ev.clientY;
@@ -3576,6 +3601,10 @@ export function mountNercOrgMap(): void {
   }
 
   function showTooltipAt(o: Org, anchorX: number, anchorY: number): void {
+    if (selectedOrg) {
+      hideTooltip();
+      return;
+    }
     const request = ++tooltipRequest;
     renderTooltip(applyOrgDetails(o));
     placeTooltip(anchorX, anchorY);
@@ -3593,6 +3622,67 @@ export function mountNercOrgMap(): void {
   function hideTooltip(): void {
     tooltipRequest++;
     tooltip.hidden = true;
+  }
+
+  function primaryRoles(o: Org): string[] {
+    return o.roles
+      .map((role, index) => ({ role, index }))
+      .sort(
+        (a, b) =>
+          (PRIMARY_ROLE_RANK.get(a.role) ?? 999) - (PRIMARY_ROLE_RANK.get(b.role) ?? 999) ||
+          a.index - b.index,
+      )
+      .map((entry) => entry.role);
+  }
+
+  function primaryRoleSummaryText(o: Org, max = 3): string {
+    const roles = primaryRoles(o);
+    const shown = roles.slice(0, max);
+    const remaining = roles.length - shown.length;
+    if (!shown.length) return "No roles";
+    return `${shown.join(", ")}${remaining > 0 ? ` + ${remaining} more` : ""}`;
+  }
+
+  function createPanelRoleRows(roles: string[]): HTMLDivElement {
+    const rows = createEl("div", "p-roles");
+    roles.forEach((role) => {
+      const row = createEl("div", "p-role");
+      row.append(createRolePill(role), createEl("span", undefined, roleFullName(role)));
+      rows.append(row);
+    });
+    return rows;
+  }
+
+  function createPanelRoleBlock(o: Org): HTMLDivElement {
+    const roles = primaryRoles(o);
+    const block = createEl("div", "p-role-block");
+    const summary = createEl("div", "p-role-summary");
+    const shown = roles.slice(0, 3);
+    const remaining = roles.length - shown.length;
+    summary.append(createEl("span", "p-role-codes", shown.join(", ")));
+    if (remaining > 0) summary.append(createEl("span", "p-role-more", `+ ${remaining} more`));
+    block.append(summary);
+    if (remaining > 0) {
+      const details = createEl("details", "p-role-details");
+      details.append(createEl("summary", undefined, "Show all roles"), createPanelRoleRows(roles));
+      block.append(details);
+    } else {
+      block.append(createPanelRoleRows(roles));
+    }
+    return block;
+  }
+
+  function createMapPriorityScore(o: Org): HTMLDivElement {
+    const score = createEl("div", "p-priority-score");
+    score.append(
+      createEl("strong", undefined, String(o.weight)),
+      createEl(
+        "span",
+        undefined,
+        `Used for bubble size and display priority.${o.is_iso_rto ? " ISO/RTO scale included." : ""}`,
+      ),
+    );
+    return score;
   }
 
   function applyHighlights(): void {
@@ -3614,7 +3704,7 @@ export function mountNercOrgMap(): void {
       // Lift the focused label to the top of the label layer so it's never
       // hidden under a neighbour in a dense cluster. (Labels are few and only
       // the shown subset is visible, so a sticky reorder is harmless.)
-      .filter((d) => hot?.ncr_id === d.ncr_id)
+      .filter((d) => hot?.ncr_id === d.ncr_id || selectedOrg?.ncr_id === d.ncr_id)
       .raise();
   }
 
@@ -3711,17 +3801,11 @@ export function mountNercOrgMap(): void {
     );
 
     const dl = createEl("dl");
-    const roles = createEl("div", "p-roles");
-    o.roles.forEach((role) => {
-      const row = createEl("div", "p-role");
-      row.append(createRolePill(role), createEl("span", undefined, roleFullName(role)));
-      roles.append(row);
-    });
-    addDlRow(dl, `Roles (${o.role_count})`, roles);
-    addDlRow(dl, "Role weight", `${o.weight}${o.is_iso_rto ? " | ISO/RTO scale" : ""}`);
+    addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o));
     addDlRow(dl, "Regional Entity", regionLabel(o));
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
+    addDlRow(dl, "Map priority score", createMapPriorityScore(o));
     if (o.geo_notes) addDlRow(dl, "Notes", o.geo_notes);
 
     if (o.combined_members?.length) {
@@ -3832,7 +3916,7 @@ export function mountNercOrgMap(): void {
   // transition all stay consistent with a real gesture.
   function zoomByFactor(factor: number): void {
     if (!zoomBehavior) return;
-    stopTour();
+    if (tourRunning) stopTour(true);
     svg.interrupt();
     svg
       .transition()
@@ -3861,7 +3945,7 @@ export function mountNercOrgMap(): void {
   }
 
   function selectOrg(o: Org, opts: { center?: boolean } = {}): void {
-    stopTour();
+    if (tourRunning) stopTour(true);
     hoverOrg = null;
     selectedOrg = o;
     rememberOrg(o);
@@ -3896,24 +3980,42 @@ export function mountNercOrgMap(): void {
       .selectAll<SVGCircleElement, Org>("circle.org-hit")
       .filter((d) => d.ncr_id === o.ncr_id)
       .raise();
+    gLabels
+      .selectAll<SVGTextElement, Org>("text.olabel")
+      .filter((d) => d.ncr_id === o.ncr_id)
+      .raise();
   }
 
   function wireOrgPointer(selection: ReturnType<typeof gOverlay.selectAll<SVGCircleElement, Org>>): void {
     selection
       .on("mouseenter", (ev, o) => {
+        if (selectedOrg) {
+          hoverOrg = null;
+          hideTooltip();
+          clearHoverFocus();
+          return;
+        }
         hoverOrg = o;
         rememberOrg(o);
         showTooltip(o, ev as MouseEvent);
         applyHoverFocus();
       })
-      .on("mousemove", (ev) => placeTooltip((ev as MouseEvent).clientX, (ev as MouseEvent).clientY))
+      .on("mousemove", (ev) => {
+        if (selectedOrg || tooltip.hidden) return;
+        placeTooltip((ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
+      })
       .on("mouseleave", () => {
         hoverOrg = null;
         hideTooltip();
         clearHoverFocus();
       })
       .on("focus", function (_ev, o) {
-        if (selectedOrg?.ncr_id === o.ncr_id) return;
+        if (selectedOrg) {
+          hoverOrg = null;
+          hideTooltip();
+          clearHoverFocus();
+          return;
+        }
         hoverOrg = o;
         rememberOrg(o);
         const rect = (this as SVGCircleElement).getBoundingClientRect();
@@ -3977,7 +4079,7 @@ export function mountNercOrgMap(): void {
     byId<HTMLButtonElement>("nerc-zoom-in").addEventListener("click", () => zoomByFactor(1.55));
     byId<HTMLButtonElement>("nerc-zoom-out").addEventListener("click", () => zoomByFactor(1 / 1.55));
     byId<HTMLButtonElement>("nerc-zoom-home").addEventListener("click", () => {
-      stopTour();
+      if (tourRunning) stopTour(true);
       homeView(260);
     });
 
@@ -3992,47 +4094,15 @@ export function mountNercOrgMap(): void {
         const dx = ev.key === "ArrowLeft" ? step : ev.key === "ArrowRight" ? -step : 0;
         const dy = ev.key === "ArrowUp" ? step : ev.key === "ArrowDown" ? -step : 0;
         ev.preventDefault();
-        stopTour();
+        if (tourRunning) stopTour(true);
         animateTransform(zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k), 160);
       }
     });
   }
 
   function revealActionButtons(): void {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      infoToggle.textContent = "i";
-      metricsToggle.textContent = "M";
-      return;
-    }
-
-    const reveal = (btn: HTMLButtonElement, frames: string[], reset: string, delay: number) => {
-      btn.classList.add("nerc-letter-typing");
-      let i = 0;
-      const tick = (): void => {
-        if (i < frames.length) {
-          btn.textContent = frames[i++];
-          window.setTimeout(tick, 120);
-          return;
-        }
-        window.setTimeout(() => {
-          btn.textContent = reset;
-          btn.classList.remove("nerc-letter-typing");
-        }, 2800);
-      };
-      window.setTimeout(tick, delay);
-    };
-
-    const run = () => {
-      if (!document.contains(infoToggle) || !document.contains(metricsToggle)) return;
-      if (infoToggle.classList.contains("nerc-letter-typing") || metricsToggle.classList.contains("nerc-letter-typing")) {
-        return;
-      }
-      reveal(metricsToggle, ["M", "Me", "Met", "Metrics"], "M", 0);
-      reveal(infoToggle, ["I", "In", "Inf", "Info"], "i", 0);
-    };
-
-    window.setTimeout(run, 480);
-    window.setInterval(run, 8000);
+    metricsToggle.textContent = "Data";
+    infoToggle.textContent = "Info";
   }
 
   function setupZoom(): void {
@@ -4042,13 +4112,12 @@ export function mountNercOrgMap(): void {
       .tapDistance(compact ? 12 : 8)
       .wheelDelta(wheelDelta)
       .filter((event) => !event.ctrlKey && !event.button)
-      // The walkthrough keeps playing while the user pans/zooms (programmatic
-      // transitions have no sourceEvent). A real gesture just nudges the Stop
-      // control so they know they can take over.
+      // A real gesture stops the walkthrough. Programmatic transitions have no
+      // sourceEvent, so tour reset/step movement continues normally.
       .on("start", (ev) => {
         if (isPanSourceEvent(ev.sourceEvent)) userPanning = true;
         if (isWheelEvent(ev.sourceEvent)) wheelZooming = true;
-        if (ev.sourceEvent && tourRunning) nudgeStopAttention();
+        if (ev.sourceEvent && tourRunning) stopTour(true);
       })
       .on("end", (ev) => {
         if (isPanSourceEvent(ev.sourceEvent)) {
@@ -4080,45 +4149,48 @@ export function mountNercOrgMap(): void {
     svg.call(zoomBehavior);
     svg.on("dblclick.zoom", null);
     svg.on("click", () => {
+      if (tourRunning) stopTour(true);
       closePopovers();
     });
   }
 
   function setPlayState(running: boolean): void {
-    const label = running ? "■ Stop" : "▶ Tour";
     const aria = running ? "Stop walkthrough" : "Play walkthrough";
+    playBtn.textContent = running ? "Stop Tour" : "Take Tour";
+    fabBtn.textContent = running ? "Stop" : "Tour";
     for (const b of [playBtn, fabBtn]) {
-      b.textContent = label;
       b.setAttribute("aria-label", aria);
       b.classList.toggle("is-running", running);
-      if (!running) b.classList.remove("attention");
-    }
-    if (!running && attentionTimer) {
-      window.clearTimeout(attentionTimer);
-      attentionTimer = undefined;
     }
   }
 
-  // The tour keeps playing while the user pans/zooms; this makes the Stop
-  // control pulse for a few seconds so they know they can take over fully.
-  function nudgeStopAttention(): void {
-    if (!tourRunning) return;
-    for (const b of [playBtn, fabBtn]) b.classList.add("attention");
-    if (attentionTimer) window.clearTimeout(attentionTimer);
-    attentionTimer = window.setTimeout(() => {
-      for (const b of [playBtn, fabBtn]) b.classList.remove("attention");
-      attentionTimer = undefined;
-    }, 3200);
+  function showTourStoppedNotice(): void {
+    if (tourNoticeTimer) window.clearTimeout(tourNoticeTimer);
+    tourStatus.replaceChildren(
+      createEl("strong", "tour-title", "Tour stopped."),
+      createEl("span", "tour-progress", "Explore freely."),
+    );
+    tourStatus.hidden = false;
+    tourNoticeTimer = window.setTimeout(() => {
+      if (!tourRunning) tourStatus.hidden = true;
+      tourNoticeTimer = undefined;
+    }, 2200);
   }
 
-  function stopTour(): void {
+  function stopTour(showNotice = false): void {
     tourTimers.forEach((timer) => window.clearTimeout(timer));
     tourTimers = [];
     svg.interrupt(); // cancel any in-flight reset transition so nothing stacks
     tourIds = new Set();
     tourRunning = false;
     invalidateOrgLayout();
-    tourStatus.hidden = true;
+    if (showNotice) {
+      showTourStoppedNotice();
+    } else {
+      if (tourNoticeTimer) window.clearTimeout(tourNoticeTimer);
+      tourNoticeTimer = undefined;
+      tourStatus.hidden = true;
+    }
     setPlayState(false);
     if (placeableOrgs.length) redraw();
     else applyTourClasses();

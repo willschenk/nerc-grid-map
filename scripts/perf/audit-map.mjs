@@ -179,6 +179,14 @@ function formatMs(value) {
   return value == null ? "n/a" : `${Math.round(value)} ms`;
 }
 
+function removeDirQuietly(dir) {
+  try {
+    rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+  } catch (err) {
+    console.warn(`perf:audit warning: could not remove temp dir ${dir}: ${err.code ?? err.message}`);
+  }
+}
+
 function loadPreviousReport() {
   try {
     return JSON.parse(readFileSync(LAST_REPORT, "utf8"));
@@ -368,7 +376,7 @@ async function main() {
     if (ws) ws.close();
     chrome.kill("SIGKILL");
     server.close();
-    rmSync(userDataDir, { recursive: true, force: true });
+    removeDirQuietly(userDataDir);
   }
 }
 
