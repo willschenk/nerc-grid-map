@@ -3167,18 +3167,25 @@ export function mountNercOrgMap(): void {
     // box and every bubble into a keep-away region so place names only land in
     // genuinely free space (important in the dense Midwest/Northeast clusters).
     const labelMargin = (compact ? 3 : 3.5) * unitPerPx;
+    // Text keep-away: NERC org labels (and, as they place, the geo labels
+    // themselves). A geo label must never sit on top of other text.
     const placeBlockers: Box[] = placed.map((b) => ({
       x0: b.x0 - labelMargin,
       x1: b.x1 + labelMargin,
       y0: b.y0 - labelMargin,
       y1: b.y1 + labelMargin,
     }));
+    // Bubble keep-away — kept SEPARATE from the text blockers so a label that
+    // can't find an open spot near its feature can fall back to sitting *behind*
+    // the bubbles (the gLand group already paints under gOverlay) instead of
+    // being flung far from its true location or hidden entirely.
+    const bubbleBoxes: Box[] = [];
     for (const o of finalVisibleOrgs) {
       if (o._sx == null || o._sy == null) continue;
       // Tighter pad so geo labels can fill the gaps between bubbles, not just the
       // wide-open regions — they still never touch a bubble.
       const r = renderedRadius(o, k) + (compact ? 3 : 4) * unitPerPx;
-      placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
+      bubbleBoxes.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
     }
     // ── Geographic context labels: cities, water bodies, state/province names ──
     // Each shows ONLY where it fits in open space (clear of every bubble, every
@@ -3188,29 +3195,56 @@ export function mountNercOrgMap(): void {
     // bubble — that is what lets many more of them show. Filled in usefulness
     // order so the best label wins contested space.
     const placeDotState = new Map<string, { x: number; y: number; r: number }>();
-    const placeState = new Map<string, { x: number; y: number; font: number }>();
-    const landState = new Map<string, { x: number; y: number; font: number }>();
+    const placeState = new Map<string, { x: number; y: number; font: number; bg: boolean }>();
+    const landState = new Map<string, { x: number; y: number; font: number; bg: boolean }>();
     const ringOffsets = (R: number): Array<[number, number]> =>
       [0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
         const a = (i / 8) * 2 * Math.PI - Math.PI / 2;
         return [Math.cos(a) * R, Math.sin(a) * R] as [number, number];
       });
-    // Try the anchor, then each offset; place + reserve at the first open spot.
+    // When zoomed out the whole map is compressed, so a label that roams far for
+    // open space lands visibly far from its feature. Shrink the roam at low zoom
+    // (≈30% at overview, full reach by k≈5) so names stay near home, and let what
+    // no longer fits fall back to the background instead.
+    const roam = Math.min(1, 0.3 + Math.max(0, k - 1) * 0.18);
+    // Try the anchor, then each offset; place + reserve at the first OPEN spot
+    // (clear of all text and all bubbles). If none is open and background is
+    // allowed, drop the label at its anchor *behind* the bubbles — a faint,
+    // correctly-placed name beats a bold misplaced one or none at all — provided
+    // it still clears other text. bg=true marks the background placement so the
+    // caller can render it quieter.
     const fitGeoLabel = (
       baseSx: number,
       baseSy: number,
       w: number,
       h: number,
       offsets: Array<[number, number]>,
-    ): { x: number; y: number } | null => {
+      allowBackground = false,
+    ): { x: number; y: number; bg: boolean } | null => {
+      const boxAt = (sx: number, sy: number): Box | null => {
+        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
+        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe)
+          return null;
+        return box;
+      };
       for (const [ox, oy] of offsets) {
         const sx = baseSx + ox;
         const sy = baseSy + oy;
-        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
-        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
+        const box = boxAt(sx, sy);
+        if (!box) continue;
         if (placeBlockers.some((q) => boxesOverlap(box, q))) continue;
+        if (bubbleBoxes.some((q) => boxesOverlap(box, q))) continue;
         placeBlockers.push(box);
-        return { x: sx, y: sy };
+        return { x: sx, y: sy, bg: false };
+      }
+      if (allowBackground) {
+        // Background fallback: at the anchor, allowed to sit under bubbles but
+        // never on other text. Reserved so other geo labels still avoid it.
+        const box = boxAt(baseSx, baseSy);
+        if (box && !placeBlockers.some((q) => boxesOverlap(box, q))) {
+          placeBlockers.push(box);
+          return { x: baseSx, y: baseSy, bg: true };
+        }
       }
       return null;
     };
@@ -3231,7 +3265,11 @@ export function mountNercOrgMap(): void {
       // Offsets are in viewBox units (≈ geographic distance), NOT screen px, so a
       // label's wander is the same on phone and desktop — never flung across the
       // narrow mobile band into empty ocean/Arctic far from its true place.
-      const cityOffsets: Array<[number, number]> = [[0, 0], ...ringOffsets(11), ...ringOffsets(20)];
+      const cityOffsets: Array<[number, number]> = [
+        [0, 0],
+        ...ringOffsets(11 * roam),
+        ...ringOffsets(20 * roam),
+      ];
       for (const p of places) {
         if (placedPlaces >= placeCap) break;
         if (p._x == null || p._y == null) continue;
@@ -3242,10 +3280,10 @@ export function mountNercOrgMap(): void {
         const px = (p.tier === 1 ? 13.5 : p.tier === 2 ? 12 : 10.5) * unitPerPx;
         const w = p.name.length * px * 0.66 + (compact ? 10 : 9) * unitPerPx;
         const h = px + (compact ? 8 : 7) * unitPerPx;
-        const spot = fitGeoLabel(sx, sy, w, h, cityOffsets);
+        const spot = fitGeoLabel(sx, sy, w, h, cityOffsets, true);
         if (!spot) continue;
         placedPlaces++;
-        placeState.set(p.name, { x: spot.x, y: spot.y + px * 0.34, font: px });
+        placeState.set(p.name, { x: spot.x, y: spot.y + px * 0.34, font: px, bg: spot.bg });
       }
     }
 
@@ -3267,6 +3305,9 @@ export function mountNercOrgMap(): void {
       node.setAttribute("x", String(state.x));
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
+      // Background labels sit behind the bubbles near their true point — render
+      // them faint so they read as quiet context, not foreground data.
+      node.style.opacity = state.bg ? "0.5" : "";
     });
 
     // 2) Water bodies, then 3) state / province orientation names. Water first so
@@ -3302,11 +3343,11 @@ export function mountNercOrgMap(): void {
         // device. Water is capped so an ocean name can't drift across the map.
         const spread = L.kind === "water" ? [42, 80, 120] : L.small ? [12] : [24, 46, 70];
         const offsets: Array<[number, number]> = [[0, 0]];
-        for (const R of spread) offsets.push(...ringOffsets(R));
-        const spot = fitGeoLabel(baseSx, baseSy, w, h, offsets);
+        for (const R of spread) offsets.push(...ringOffsets(R * roam));
+        const spot = fitGeoLabel(baseSx, baseSy, w, h, offsets, true);
         if (!spot) continue;
         placedLand++;
-        landState.set(L.name, { x: spot.x, y: spot.y, font });
+        landState.set(L.name, { x: spot.x, y: spot.y, font, bg: spot.bg });
       }
     }
 
@@ -3321,7 +3362,9 @@ export function mountNercOrgMap(): void {
       node.setAttribute("x", String(state.x));
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
-      node.style.opacity = String(landOpacity);
+      // Background labels (under the bubbles, at their true point) are dimmed so
+      // they sit behind the data as quiet orientation context.
+      node.style.opacity = String(state.bg ? landOpacity * 0.6 : landOpacity);
     });
 
     // Territory region names ride the inset group's transform (so each label
