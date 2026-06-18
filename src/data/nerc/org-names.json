@@ -2521,7 +2521,7 @@
     {
       "ncr_id": "NCR13264",
       "entity_name": "Alexander Wind Farm LLC",
-      "shortest": "Alexander",
+      "shortest": "Alexander WF",
       "short": "Alexander Wind Farm",
       "normal": "Alexander Wind Farm",
       "tier": "normal"
@@ -2537,7 +2537,7 @@
     {
       "ncr_id": "NCR08039",
       "entity_name": "Allegheny Ridge Wind Farm, LLC",
-      "shortest": "Allegheny",
+      "shortest": "Allegny WF",
       "short": "Allegheny Ridge Wind Farm",
       "normal": "Allegheny Ridge Wind Farm",
       "tier": "normal"
@@ -2561,7 +2561,7 @@
     {
       "ncr_id": "NCR13324",
       "entity_name": "Altamont Winds LLC",
-      "shortest": "Altamont",
+      "shortest": "Altamont WF",
       "short": "Altamont Winds",
       "normal": "Altamont Winds",
       "tier": "normal"
@@ -2569,7 +2569,7 @@
     {
       "ncr_id": "NCR12051",
       "entity_name": "Amadeus Wind, LLC",
-      "shortest": "Amadeus",
+      "shortest": "Amadeus WF",
       "short": "Amadeus Wind",
       "normal": "Amadeus Wind",
       "tier": "normal"
@@ -4001,7 +4001,7 @@
     {
       "ncr_id": "NCR12038",
       "entity_name": "Crane Solar Project, LLC",
-      "shortest": "Crane",
+      "shortest": "Crane PV",
       "short": "Crane Solar",
       "normal": "Crane Solar Project",
       "tier": "normal"
@@ -4025,7 +4025,7 @@
     {
       "ncr_id": "NCR11965",
       "entity_name": "Cricket Valley Energy Center, LLC",
-      "shortest": "Cricket",
+      "shortest": "Cricket EC",
       "short": "Cricket Valley Energy Center",
       "normal": "Cricket Valley Energy Center",
       "tier": "normal"
@@ -4033,7 +4033,7 @@
     {
       "ncr_id": "NCR11964",
       "entity_name": "Crocker Wind Farm, LLC",
-      "shortest": "Crocker",
+      "shortest": "Crocker WF",
       "short": "Crocker Wind Farm",
       "normal": "Crocker Wind Farm",
       "tier": "normal"
@@ -4049,7 +4049,7 @@
     {
       "ncr_id": "NCR13078",
       "entity_name": "Crossover Wind, LLC",
-      "shortest": "Crossover",
+      "shortest": "Crossover WF",
       "short": "Crossover Wind",
       "normal": "Crossover Wind",
       "tier": "normal"
@@ -4065,7 +4065,7 @@
     {
       "ncr_id": "NCR13218",
       "entity_name": "Dairyland Power Cooperative - Elgin",
-      "shortest": "Elgin",
+      "shortest": "DPC Elgin",
       "short": "Dairyland Elgin",
       "normal": "Dairyland Power Cooperative - Elgin",
       "tier": "normal"
@@ -4073,7 +4073,7 @@
     {
       "ncr_id": "NCR13447",
       "entity_name": "Dairyland Power Cooperative - Elwood",
-      "shortest": "Elwood",
+      "shortest": "DPC Elwood",
       "short": "Dairyland Elwood",
       "normal": "Dairyland Power Cooperative - Elwood",
       "tier": "normal"
@@ -4081,7 +4081,7 @@
     {
       "ncr_id": "NCR12181",
       "entity_name": "Dairyland Power Cooperative - RockGen",
-      "shortest": "RockGen",
+      "shortest": "DPC RockGen",
       "short": "Dairyland RockGen",
       "normal": "Dairyland Power Cooperative - RockGen",
       "tier": "normal"
@@ -4089,7 +4089,7 @@
     {
       "ncr_id": "NCR13219",
       "entity_name": "Dairyland Power Cooperative - Rocky Road",
-      "shortest": "Rocky Rd",
+      "shortest": "DPC Rocky",
       "short": "Dairyland Rocky Road",
       "normal": "Dairyland Power Cooperative - Rocky Road",
       "tier": "normal"
@@ -4097,7 +4097,7 @@
     {
       "ncr_id": "NCR12105",
       "entity_name": "Dakota Range III, LLC",
-      "shortest": "Dakota",
+      "shortest": "Dakota III",
       "short": "Dakota Range III",
       "normal": "Dakota Range III",
       "tier": "normal"
@@ -4137,7 +4137,7 @@
     {
       "ncr_id": "NCR11481",
       "entity_name": "Decatur Energy Center, LLC",
-      "shortest": "Decatur",
+      "shortest": "Decatur EC",
       "short": "Decatur Energy Center",
       "normal": "Decatur Energy Center",
       "tier": "normal"
@@ -4169,7 +4169,7 @@
     {
       "ncr_id": "NCR11179",
       "entity_name": "Dempsey Ridge Wind Farm, LLC",
-      "shortest": "Dempsey",
+      "shortest": "Dempsey WF",
       "short": "Dempsey Ridge Wind Farm",
       "normal": "Dempsey Ridge Wind Farm",
       "tier": "normal"
@@ -4185,7 +4185,7 @@
     {
       "ncr_id": "NCR12358",
       "entity_name": "Desert Sky Wind Farm, LLC",
-      "shortest": "Desert Sky",
+      "shortest": "Desert WF",
       "short": "Desert Sky Wind Farm",
       "normal": "Desert Sky Wind Farm",
       "tier": "normal"
@@ -4201,7 +4201,7 @@
     {
       "ncr_id": "NCR12151",
       "entity_name": "Diablo Energy Storage, LLC",
-      "shortest": "Diablo",
+      "shortest": "Diablo ES",
       "short": "Diablo Energy Storage",
       "normal": "Diablo Energy Storage",
       "tier": "normal"
@@ -4281,7 +4281,7 @@
     {
       "ncr_id": "NCR12192",
       "entity_name": "DTE Sustainable Generation Holdings, LLC",
-      "shortest": "DTE",
+      "shortest": "DTE SG",
       "short": "DTE Sustainable Generation",
       "normal": "DTE Sustainable Generation",
       "tier": "major"
@@ -4289,7 +4289,7 @@
     {
       "ncr_id": "NCR12333",
       "entity_name": "Dunn's Bridge I Solar Generation LLC",
-      "shortest": "Dunn's",
+      "shortest": "Dunns PV1",
       "short": "Dunn's Bridge Solar",
       "normal": "Dunn's Bridge Solar",
       "tier": "normal"
@@ -5209,7 +5209,7 @@
     {
       "ncr_id": "NCR12545",
       "entity_name": "Hardin Solar Energy II LLC",
-      "shortest": "Hardin",
+      "shortest": "Hardin PV2",
       "short": "Hardin Solar II",
       "normal": "Hardin Solar Energy II",
       "tier": "normal"
@@ -5217,7 +5217,7 @@
     {
       "ncr_id": "NCR13012",
       "entity_name": "Hardin Solar Energy III LLC",
-      "shortest": "Hardin",
+      "shortest": "Hardin PV3",
       "short": "Hardin Solar III",
       "normal": "Hardin Solar Energy III",
       "tier": "normal"
@@ -5225,7 +5225,7 @@
     {
       "ncr_id": "NCR13301",
       "entity_name": "Hawtree Creek Farm Solar LLC",
-      "shortest": "Hawtree",
+      "shortest": "Hawtree PV",
       "short": "Hawtree Creek Solar",
       "normal": "Hawtree Creek Farm Solar",
       "tier": "normal"
@@ -5313,7 +5313,7 @@
     {
       "ncr_id": "NCR11744",
       "entity_name": "Hill County Electric Cooperative, Inc.",
-      "shortest": "HCE",
+      "shortest": "HCE TX",
       "short": "Hill County Electric Cooperative",
       "normal": "Hill County Electric Cooperative",
       "tier": "normal"
@@ -5321,7 +5321,7 @@
     {
       "ncr_id": "NCR13007",
       "entity_name": "Hobnail Solar, LLC",
-      "shortest": "Hobnail",
+      "shortest": "Hobnail PV",
       "short": "Hobnail Solar",
       "normal": "Hobnail Solar",
       "tier": "normal"
@@ -5329,7 +5329,7 @@
     {
       "ncr_id": "NCR11991",
       "entity_name": "Holstein Solar",
-      "shortest": "Holstein",
+      "shortest": "Holstein PV",
       "short": "Holstein Solar",
       "normal": "Holstein Solar",
       "tier": "normal"
@@ -5337,7 +5337,7 @@
     {
       "ncr_id": "NCR05190",
       "entity_name": "Holy Cross Energy",
-      "shortest": "HCE",
+      "shortest": "HCE CO",
       "short": "Holy Cross Energy",
       "normal": "Holy Cross Energy",
       "tier": "normal"
@@ -5345,7 +5345,7 @@
     {
       "ncr_id": "NCR11537",
       "entity_name": "Hoopeston Wind, LLC",
-      "shortest": "Hoopeston",
+      "shortest": "Hoopeston WF",
       "short": "Hoopeston Wind",
       "normal": "Hoopeston Wind",
       "tier": "normal"
@@ -5361,7 +5361,7 @@
     {
       "ncr_id": "NCR11690",
       "entity_name": "Horse Creek Wind, LLC",
-      "shortest": "Horse Creek",
+      "shortest": "Horse Crk WF",
       "short": "Horse Creek Wind",
       "normal": "Horse Creek Wind",
       "tier": "normal"
@@ -5369,7 +5369,7 @@
     {
       "ncr_id": "NCR13332",
       "entity_name": "Howard Wind, LLC",
-      "shortest": "Howard",
+      "shortest": "Howard WF",
       "short": "Howard Wind",
       "normal": "Howard Wind",
       "tier": "normal"
@@ -5401,7 +5401,7 @@
     {
       "ncr_id": "NCR11859",
       "entity_name": "Hunterstown Combined Cycle Generating Station",
-      "shortest": "Hunterstown",
+      "shortest": "Hunterstn CC",
       "short": "Hunterstown CC",
       "normal": "Hunterstown Combined Cycle Generating Station",
       "tier": "normal"
@@ -5417,7 +5417,7 @@
     {
       "ncr_id": "NCR10360",
       "entity_name": "Indeck - Corinth, LP",
-      "shortest": "Indeck",
+      "shortest": "Indeck Cor",
       "short": "Indeck Corinth",
       "normal": "Indeck Corinth",
       "tier": "normal"
@@ -5425,7 +5425,7 @@
     {
       "ncr_id": "NCR10361",
       "entity_name": "Indeck - Olean, LP",
-      "shortest": "Indeck",
+      "shortest": "Indeck Olean",
       "short": "Indeck Olean",
       "normal": "Indeck Olean",
       "tier": "normal"
@@ -5433,7 +5433,7 @@
     {
       "ncr_id": "NCR10363",
       "entity_name": "Indeck - Yerkes, LP",
-      "shortest": "Indeck",
+      "shortest": "Indeck Yerk",
       "short": "Indeck Yerkes",
       "normal": "Indeck Yerkes",
       "tier": "normal"
@@ -5441,7 +5441,7 @@
     {
       "ncr_id": "NCR10364",
       "entity_name": "Indeck Energy Services of Silver Springs, LP",
-      "shortest": "Indeck",
+      "shortest": "Indeck Silv",
       "short": "Indeck Silver Springs",
       "normal": "Indeck Silver Springs",
       "tier": "normal"
