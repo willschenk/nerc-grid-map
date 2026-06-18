@@ -15249,7 +15249,7 @@
     {
       "ncr_id": "NCR13541",
       "entity_name": "SR McKellar, LLC",
-      "shortest": "McKellar",
+      "shortest": "SR McKellar",
       "short": "SR McKellar",
       "normal": "SR McKellar",
       "tier": "normal"
@@ -15257,7 +15257,7 @@
     {
       "ncr_id": "NCR13292",
       "entity_name": "SR Meridian III, LLC",
-      "shortest": "Meridian",
+      "shortest": "SR Meridian 3",
       "short": "SR Meridian III",
       "normal": "SR Meridian III",
       "tier": "normal"
@@ -15265,7 +15265,7 @@
     {
       "ncr_id": "NCR13551",
       "entity_name": "SR Millington II, LLC",
-      "shortest": "Millington II",
+      "shortest": "SR Millingtn 2",
       "short": "SR Millington II",
       "normal": "SR Millington II",
       "tier": "normal"
@@ -15273,7 +15273,7 @@
     {
       "ncr_id": "NCR13293",
       "entity_name": "SR Millington, LLC",
-      "shortest": "Millington",
+      "shortest": "SR Millingtn",
       "short": "SR Millington",
       "normal": "SR Millington",
       "tier": "normal"
@@ -15281,7 +15281,7 @@
     {
       "ncr_id": "NCR12184",
       "entity_name": "SR Perry, LLC",
-      "shortest": "Perry",
+      "shortest": "SR Perry",
       "short": "SR Perry",
       "normal": "SR Perry",
       "tier": "normal"
@@ -15289,7 +15289,7 @@
     {
       "ncr_id": "NCR12071",
       "entity_name": "SR Snipesville, LLC",
-      "shortest": "Snipesville",
+      "shortest": "SR Snipes",
       "short": "SR Snipesville",
       "normal": "SR Snipesville",
       "tier": "normal"
@@ -15297,7 +15297,7 @@
     {
       "ncr_id": "NCR12039",
       "entity_name": "SR Terrell, LLC",
-      "shortest": "Terrell",
+      "shortest": "SR Terrell",
       "short": "SR Terrell",
       "normal": "SR Terrell",
       "tier": "normal"
@@ -15305,7 +15305,7 @@
     {
       "ncr_id": "NCR13025",
       "entity_name": "SR Toombs, LLC",
-      "shortest": "Toombs",
+      "shortest": "SR Toombs",
       "short": "SR Toombs",
       "normal": "SR Toombs",
       "tier": "normal"
@@ -15313,7 +15313,7 @@
     {
       "ncr_id": "NCR12438",
       "entity_name": "St. Gall Energy Storage I LLC",
-      "shortest": "St Gall",
+      "shortest": "St Gall ES1",
       "short": "St. Gall Energy Storage I",
       "normal": "St. Gall Energy Storage I",
       "tier": "normal"
@@ -15321,7 +15321,7 @@
     {
       "ncr_id": "NCR13147",
       "entity_name": "St. Gall Energy Storage II LLC",
-      "shortest": "St Gall",
+      "shortest": "St Gall ES2",
       "short": "St. Gall Energy Storage II",
       "normal": "St. Gall Energy Storage II",
       "tier": "normal"
@@ -15337,7 +15337,7 @@
     {
       "ncr_id": "NCR13454",
       "entity_name": "Stanly Solar, LLC",
-      "shortest": "Stanly",
+      "shortest": "Stanly PV",
       "short": "Stanly Solar",
       "normal": "Stanly Solar",
       "tier": "normal"
@@ -15345,7 +15345,7 @@
     {
       "ncr_id": "NCR13220",
       "entity_name": "Stillhouse Solar LLC",
-      "shortest": "Stillhouse",
+      "shortest": "Stillhouse PV",
       "short": "Stillhouse Solar",
       "normal": "Stillhouse Solar",
       "tier": "normal"
@@ -15353,7 +15353,7 @@
     {
       "ncr_id": "NCR11901",
       "entity_name": "Stoneray Power Partners, LLC",
-      "shortest": "Stoneray",
+      "shortest": "Stoneray Pwr",
       "short": "Stoneray Power Partners",
       "normal": "Stoneray Power Partners",
       "tier": "normal"
@@ -15361,7 +15361,7 @@
     {
       "ncr_id": "NCR13474",
       "entity_name": "Strata Solar Services",
-      "shortest": "Strata",
+      "shortest": "Strata Svc",
       "short": "Strata Solar Services",
       "normal": "Strata Solar Services",
       "tier": "normal"
@@ -15377,7 +15377,7 @@
     {
       "ncr_id": "NCR13455",
       "entity_name": "Sugar Solar, LLC",
-      "shortest": "Sugar",
+      "shortest": "Sugar PV",
       "short": "Sugar Solar",
       "normal": "Sugar Solar",
       "tier": "normal"
@@ -15401,7 +15401,7 @@
     {
       "ncr_id": "NCR13040",
       "entity_name": "Swift Air Solar, LLC",
-      "shortest": "Swift Air",
+      "shortest": "Swift Air PV",
       "short": "Swift Air Solar",
       "normal": "Swift Air Solar",
       "tier": "normal"
@@ -15409,7 +15409,7 @@
     {
       "ncr_id": "NCR13376",
       "entity_name": "Swiftwater Solar, LLC",
-      "shortest": "Swiftwater",
+      "shortest": "Swiftwtr PV",
       "short": "Swiftwater Solar",
       "normal": "Swiftwater Solar",
       "tier": "normal"
@@ -15417,7 +15417,7 @@
     {
       "ncr_id": "NCR12261",
       "entity_name": "Swoose II LLC",
-      "shortest": "Swoose",
+      "shortest": "Swoose II",
       "short": "Swoose II",
       "normal": "Swoose II",
       "tier": "normal"
@@ -15457,7 +15457,7 @@
     {
       "ncr_id": "NCR11384",
       "entity_name": "Taylor Electric Cooperative, Inc.",
-      "shortest": "Taylor EC",
+      "shortest": "Taylor Coop",
       "short": "Taylor Electric Cooperative",
       "normal": "Taylor Electric Cooperative",
       "tier": "normal"
@@ -15497,7 +15497,7 @@
     {
       "ncr_id": "NCR12481",
       "entity_name": "Three Corners Solar, LLC",
-      "shortest": "Three Corners",
+      "shortest": "Three Corn PV",
       "short": "Three Corners Solar",
       "normal": "Three Corners Solar",
       "tier": "normal"
@@ -15505,7 +15505,7 @@
     {
       "ncr_id": "NCR13076",
       "entity_name": "Tibbits Energy Storage LLC",
-      "shortest": "Tibbits",
+      "shortest": "Tibbits ES",
       "short": "Tibbits Energy Storage",
       "normal": "Tibbits Energy Storage",
       "tier": "normal"
@@ -15513,7 +15513,7 @@
     {
       "ncr_id": "NCR13231",
       "entity_name": "Tidwell Prairie IA LLC",
-      "shortest": "Tidwell",
+      "shortest": "Tidwell IA",
       "short": "Tidwell Prairie IA",
       "normal": "Tidwell Prairie IA",
       "tier": "normal"
@@ -15521,7 +15521,7 @@
     {
       "ncr_id": "NCR13393",
       "entity_name": "Tierra Seca BESS LLC",
-      "shortest": "Tierra Seca",
+      "shortest": "Tierra Seca ES",
       "short": "Tierra Seca BESS",
       "normal": "Tierra Seca BESS",
       "tier": "normal"
@@ -15529,7 +15529,7 @@
     {
       "ncr_id": "NCR13241",
       "entity_name": "Tilden Solar LLC",
-      "shortest": "Tilden",
+      "shortest": "Tilden PV",
       "short": "Tilden Solar",
       "normal": "Tilden Solar",
       "tier": "normal"
@@ -15537,7 +15537,7 @@
     {
       "ncr_id": "NCR13010",
       "entity_name": "Timbermill Wind, LLC",
-      "shortest": "Timbermill",
+      "shortest": "Timbermill WF",
       "short": "Timbermill Wind",
       "normal": "Timbermill Wind",
       "tier": "normal"
@@ -15545,7 +15545,7 @@
     {
       "ncr_id": "NCR12304",
       "entity_name": "TN Solar 1, LLC",
-      "shortest": "Skyhawk",
+      "shortest": "Skyhawk PV",
       "short": "TN Solar 1",
       "normal": "Skyhawk Solar",
       "tier": "normal"
@@ -15577,7 +15577,7 @@
     {
       "ncr_id": "NCR11925",
       "entity_name": "Transource East",
-      "shortest": "Transource",
+      "shortest": "Transource E",
       "short": "Transource East",
       "normal": "Transource East",
       "tier": "normal"
@@ -15585,7 +15585,7 @@
     {
       "ncr_id": "NCR13238",
       "entity_name": "Transource Midwest",
-      "shortest": "Transource",
+      "shortest": "Transource MW",
       "short": "Transource Midwest",
       "normal": "Transource Midwest",
       "tier": "normal"
@@ -15593,7 +15593,7 @@
     {
       "ncr_id": "NCR11539",
       "entity_name": "Transource Missouri, LLC",
-      "shortest": "Transource",
+      "shortest": "Transource MO",
       "short": "Transource Missouri",
       "normal": "Transource Missouri",
       "tier": "normal"
@@ -15601,7 +15601,7 @@
     {
       "ncr_id": "NCR12130",
       "entity_name": "Trent River Solar, LLC",
-      "shortest": "Trent River",
+      "shortest": "Trent Riv PV",
       "short": "Trent River Solar",
       "normal": "Trent River Solar",
       "tier": "normal"
@@ -15609,7 +15609,7 @@
     {
       "ncr_id": "NCR12451",
       "entity_name": "Tres Bahias Solar Power, LLC",
-      "shortest": "Tres Bahias",
+      "shortest": "TresBahias PV",
       "short": "Tres Bahias Solar",
       "normal": "Tres Bahias Solar Power",
       "tier": "normal"
@@ -15641,7 +15641,7 @@
     {
       "ncr_id": "NCR12008",
       "entity_name": "Twiggs County Solar, LLC",
-      "shortest": "Twiggs",
+      "shortest": "Twiggs PV",
       "short": "Twiggs County Solar",
       "normal": "Twiggs County Solar",
       "tier": "normal"
@@ -15649,7 +15649,7 @@
     {
       "ncr_id": "NCR13168",
       "entity_name": "Tyson Nick Solar, LLC",
-      "shortest": "Tyson Nick",
+      "shortest": "Tyson Nick PV",
       "short": "Tyson Nick Solar",
       "normal": "Tyson Nick Solar",
       "tier": "normal"
@@ -15657,7 +15657,7 @@
     {
       "ncr_id": "NCR12380",
       "entity_name": "Umbriel Solar, LLC",
-      "shortest": "Umbriel",
+      "shortest": "Umbriel PV",
       "short": "Umbriel Solar",
       "normal": "Umbriel Solar",
       "tier": "normal"
@@ -15681,7 +15681,7 @@
     {
       "ncr_id": "NCR12012",
       "entity_name": "Veolia Energy Operating Services, LLC",
-      "shortest": "Veolia",
+      "shortest": "Veolia Ops",
       "short": "Veolia Energy Operating Services",
       "normal": "Veolia Energy Operating Services",
       "tier": "major"
@@ -15761,7 +15761,7 @@
     {
       "ncr_id": "NCR12158",
       "entity_name": "Wagyu Solar, LLC",
-      "shortest": "Wagyu",
+      "shortest": "Wagyu PV",
       "short": "Wagyu Solar",
       "normal": "Wagyu Solar",
       "tier": "normal"
@@ -15777,7 +15777,7 @@
     {
       "ncr_id": "NCR12491",
       "entity_name": "Walnut Bend Solar",
-      "shortest": "Walnut Bend",
+      "shortest": "Walnut Bend PV",
       "short": "Walnut Bend Solar",
       "normal": "Walnut Bend Solar",
       "tier": "normal"
@@ -15785,7 +15785,7 @@
     {
       "ncr_id": "NCR12094",
       "entity_name": "Wapello Solar LLC",
-      "shortest": "Wapello",
+      "shortest": "Wapello PV",
       "short": "Wapello Solar",
       "normal": "Wapello Solar",
       "tier": "normal"
@@ -15793,7 +15793,7 @@
     {
       "ncr_id": "NCR11159",
       "entity_name": "Wapsipinicon Wind Project, LLC",
-      "shortest": "Wapsi",
+      "shortest": "Wapsi WF",
       "short": "Wapsipinicon Wind",
       "normal": "Wapsipinicon Wind Project",
       "tier": "normal"
@@ -15833,7 +15833,7 @@
     {
       "ncr_id": "NCR07233",
       "entity_name": "Westfield Gas & Electric Light Department",
-      "shortest": "Westfield",
+      "shortest": "Westfield G&E",
       "short": "Westfield G&E",
       "normal": "Westfield Gas & Electric",
       "tier": "normal"
@@ -15865,7 +15865,7 @@
     {
       "ncr_id": "NCR12539",
       "entity_name": "Wigeon Whistle BESS LLC",
-      "shortest": "Wigeon",
+      "shortest": "Wigeon ES",
       "short": "Wigeon Whistle BESS",
       "normal": "Wigeon Whistle BESS",
       "tier": "normal"
@@ -15921,7 +15921,7 @@
     {
       "ncr_id": "NCR13542",
       "entity_name": "Wizard Energy Storage, LLC",
-      "shortest": "Wizard",
+      "shortest": "Wizard ES",
       "short": "Wizard Energy Storage",
       "normal": "Wizard Energy Storage",
       "tier": "normal"
@@ -15937,7 +15937,7 @@
     {
       "ncr_id": "NCR12342",
       "entity_name": "Wolf Tank Storage LLC",
-      "shortest": "Wolf Tank",
+      "shortest": "Wolf Tank ES",
       "short": "Wolf Tank Storage",
       "normal": "Wolf Tank Storage",
       "tier": "normal"
@@ -15945,7 +15945,7 @@
     {
       "ncr_id": "NCR12476",
       "entity_name": "Zier Solar, LLC",
-      "shortest": "Zier",
+      "shortest": "Zier PV",
       "short": "Zier Solar",
       "normal": "Zier Solar",
       "tier": "normal"
