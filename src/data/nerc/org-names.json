@@ -3073,7 +3073,7 @@
     {
       "ncr_id": "NCR12406",
       "entity_name": "Bluestone Wind, LLC",
-      "shortest": "Bluestone",
+      "shortest": "Bluestone WF",
       "short": "Bluestone Wind",
       "normal": "Bluestone Wind",
       "tier": "normal"
@@ -3905,7 +3905,7 @@
     {
       "ncr_id": "NCR13272",
       "entity_name": "CPV Backbone Solar, LLC",
-      "shortest": "CPV",
+      "shortest": "CPV Bckbone",
       "short": "CPV Backbone Solar",
       "normal": "CPV Backbone Solar",
       "tier": "normal"
@@ -3921,7 +3921,7 @@
     {
       "ncr_id": "NCR11952",
       "entity_name": "CPV Fairview, LLC",
-      "shortest": "CPV",
+      "shortest": "CPV Fairvw",
       "short": "CPV Fairview",
       "normal": "CPV Fairview",
       "tier": "normal"
@@ -3937,7 +3937,7 @@
     {
       "ncr_id": "NCR12421",
       "entity_name": "CPV Maple Hill Solar, LLC",
-      "shortest": "CPV",
+      "shortest": "CPV Maple",
       "short": "CPV Maple Hill Solar",
       "normal": "CPV Maple Hill Solar",
       "tier": "normal"
@@ -3945,7 +3945,7 @@
     {
       "ncr_id": "NCR11706",
       "entity_name": "CPV Maryland, LLC",
-      "shortest": "CPV",
+      "shortest": "CPV MD",
       "short": "CPV Maryland",
       "normal": "CPV Maryland",
       "tier": "normal"
@@ -9249,7 +9249,7 @@
     {
       "ncr_id": "NCR13043",
       "entity_name": "AWAM - Big Elm Solar, LLC",
-      "shortest": "AWAM",
+      "shortest": "AWAM BigElm",
       "short": "AWAM Big Elm Solar",
       "normal": "AWAM Big Elm Solar",
       "tier": "normal"
@@ -9257,7 +9257,7 @@
     {
       "ncr_id": "NCR13281",
       "entity_name": "AWAM - Bowman Wind",
-      "shortest": "AWAM",
+      "shortest": "AWAM Bowman",
       "short": "AWAM Bowman Wind",
       "normal": "AWAM Bowman Wind",
       "tier": "normal"
@@ -9265,7 +9265,7 @@
     {
       "ncr_id": "NCR13259",
       "entity_name": "AWAM - Coldwater River Solar",
-      "shortest": "AWAM",
+      "shortest": "AWAM Coldwtr",
       "short": "AWAM Coldwater River Solar",
       "normal": "AWAM Coldwater River Solar",
       "tier": "normal"
@@ -9273,7 +9273,7 @@
     {
       "ncr_id": "NCR13026",
       "entity_name": "AWAM - Downeast Wind",
-      "shortest": "AWAM",
+      "shortest": "AWAM Downest",
       "short": "AWAM Downeast Wind",
       "normal": "AWAM Downeast Wind",
       "tier": "normal"
@@ -9281,7 +9281,7 @@
     {
       "ncr_id": "NCR12560",
       "entity_name": "AWAM - Great Kiskadee Storage",
-      "shortest": "AWAM",
+      "shortest": "AWAM Kisk ES",
       "short": "AWAM Great Kiskadee Storage",
       "normal": "AWAM Great Kiskadee Storage",
       "tier": "normal"
@@ -9289,7 +9289,7 @@
     {
       "ncr_id": "NCR12300",
       "entity_name": "AWAM - Great Pathfinder Wind",
-      "shortest": "AWAM",
+      "shortest": "AWAM Pathfnd",
       "short": "AWAM Great Pathfinder Wind",
       "normal": "AWAM Great Pathfinder Wind",
       "tier": "normal"
@@ -9297,7 +9297,7 @@
     {
       "ncr_id": "NCR13555",
       "entity_name": "AWAM - Lotus Wind",
-      "shortest": "AWAM",
+      "shortest": "AWAM Lotus",
       "short": "AWAM Lotus Wind",
       "normal": "AWAM Lotus Wind",
       "tier": "normal"
@@ -9305,7 +9305,7 @@
     {
       "ncr_id": "NCR13060",
       "entity_name": "AWAM - Prosperity Wind",
-      "shortest": "AWAM",
+      "shortest": "AWAM Prosp",
       "short": "AWAM Prosperity Wind",
       "normal": "AWAM Prosperity Wind",
       "tier": "normal"
@@ -9313,7 +9313,7 @@
     {
       "ncr_id": "NCR13011",
       "entity_name": "AWAM - Timbermill Wind",
-      "shortest": "AWAM",
+      "shortest": "AWAM Timber",
       "short": "AWAM Timbermill Wind",
       "normal": "AWAM Timbermill Wind",
       "tier": "normal"
@@ -9321,7 +9321,7 @@
     {
       "ncr_id": "NCR13101",
       "entity_name": "AWAM - Wheatsborough Solar",
-      "shortest": "AWAM",
+      "shortest": "AWAM Wheats",
       "short": "AWAM Wheatsborough Solar",
       "normal": "AWAM Wheatsborough Solar",
       "tier": "normal"
@@ -9329,7 +9329,7 @@
     {
       "ncr_id": "NCR13222",
       "entity_name": "Axium Modesto Solar, LLC",
-      "shortest": "Axium",
+      "shortest": "Axium Mod PV",
       "short": "Axium Modesto Solar",
       "normal": "Axium Modesto Solar",
       "tier": "normal"
@@ -9337,7 +9337,7 @@
     {
       "ncr_id": "NCR13321",
       "entity_name": "AZ Solar 1, LLC",
-      "shortest": "AZ Solar",
+      "shortest": "AZ PV 1",
       "short": "AZ Solar 1",
       "normal": "AZ Solar 1",
       "tier": "normal"
@@ -9345,7 +9345,7 @@
     {
       "ncr_id": "NCR13336",
       "entity_name": "Badger Wind, LLC",
-      "shortest": "Badger",
+      "shortest": "Badger WF",
       "short": "Badger Wind",
       "normal": "Badger Wind",
       "tier": "normal"
@@ -9353,7 +9353,7 @@
     {
       "ncr_id": "NCR11548",
       "entity_name": "Balko Wind, LLC",
-      "shortest": "Balko",
+      "shortest": "Balko WF",
       "short": "Balko Wind",
       "normal": "Balko Wind",
       "tier": "normal"
@@ -9377,7 +9377,7 @@
     {
       "ncr_id": "NCR13082",
       "entity_name": "Bartonsville Energy Facility, LLC",
-      "shortest": "Bartonsville",
+      "shortest": "Bartonsvl PV",
       "short": "Bartonsville Solar",
       "normal": "Bartonsville Solar",
       "tier": "normal"
@@ -9401,7 +9401,7 @@
     {
       "ncr_id": "NCR12170",
       "entity_name": "BayWa r.e. Operation Services LLC",
-      "shortest": "BayWa",
+      "shortest": "BayWa Ops",
       "short": "BayWa r.e. Operation Services",
       "normal": "BayWa r.e. Operation Services",
       "tier": "normal"
@@ -9417,7 +9417,7 @@
     {
       "ncr_id": "NCR07015",
       "entity_name": "Bear Swamp Power Company LLC",
-      "shortest": "Bear Swamp",
+      "shortest": "Bear Swmp",
       "short": "Bear Swamp Power",
       "normal": "Bear Swamp Power Company",
       "tier": "normal"
@@ -9425,7 +9425,7 @@
     {
       "ncr_id": "NCR12521",
       "entity_name": "Beaumont ESS, LLC",
-      "shortest": "Beaumont",
+      "shortest": "Beaumont ES",
       "short": "Beaumont ESS",
       "normal": "Beaumont ESS",
       "tier": "normal"
@@ -9433,7 +9433,7 @@
     {
       "ncr_id": "NCR12022",
       "entity_name": "Beech Ridge Energy II LLC",
-      "shortest": "Beech Ridge",
+      "shortest": "Beech Rdg II",
       "short": "Beech Ridge Energy II",
       "normal": "Beech Ridge Energy II",
       "tier": "normal"
@@ -9441,7 +9441,7 @@
     {
       "ncr_id": "NCR13540",
       "entity_name": "Beehive Energy Storage, LLC",
-      "shortest": "Beehive",
+      "shortest": "Beehive ES",
       "short": "Beehive Energy Storage",
       "normal": "Beehive Energy Storage",
       "tier": "normal"
@@ -9449,7 +9449,7 @@
     {
       "ncr_id": "NCR12313",
       "entity_name": "Bellflower Solar 1, LLC",
-      "shortest": "Bellflower",
+      "shortest": "Bellflwr PV1",
       "short": "Bellflower Solar",
       "normal": "Bellflower Solar",
       "tier": "normal"
@@ -9457,7 +9457,7 @@
     {
       "ncr_id": "NCR12502",
       "entity_name": "Ben Milam Solar 1 LLC",
-      "shortest": "Orion",
+      "shortest": "Ben Milam 1",
       "short": "Ben Milam Solar 1",
       "normal": "Ben Milam Solar 1",
       "tier": "normal"
@@ -9465,7 +9465,7 @@
     {
       "ncr_id": "NCR12510",
       "entity_name": "Ben Milam Solar 2 LLC",
-      "shortest": "Orion",
+      "shortest": "Ben Milam 2",
       "short": "Ben Milam Solar 2",
       "normal": "Ben Milam Solar 2",
       "tier": "normal"
@@ -9473,7 +9473,7 @@
     {
       "ncr_id": "NCR12503",
       "entity_name": "Ben Milam Solar 3 LLC",
-      "shortest": "Orion",
+      "shortest": "Ben Milam 3",
       "short": "Ben Milam Solar 3",
       "normal": "Ben Milam Solar 3",
       "tier": "normal"
@@ -9489,7 +9489,7 @@
     {
       "ncr_id": "NCR13463",
       "entity_name": "Bexar ESS LLC",
-      "shortest": "Bexar",
+      "shortest": "Bexar ES",
       "short": "Bexar ESS",
       "normal": "Bexar ESS",
       "tier": "normal"
@@ -9497,7 +9497,7 @@
     {
       "ncr_id": "NCR12018",
       "entity_name": "BHER Market Operations, LLC",
-      "shortest": "BHER",
+      "shortest": "BHER Mkt",
       "short": "BHER Market Operations",
       "normal": "BHER Market Operations",
       "tier": "normal"
@@ -9513,7 +9513,7 @@
     {
       "ncr_id": "NCR13042",
       "entity_name": "Big Elm Solar, LLC",
-      "shortest": "Big Elm",
+      "shortest": "Big Elm PV",
       "short": "Big Elm Solar",
       "normal": "Big Elm Solar",
       "tier": "normal"
@@ -9529,7 +9529,7 @@
     {
       "ncr_id": "NCR13071",
       "entity_name": "Big Rock ESS Assets, LLC",
-      "shortest": "Big Rock",
+      "shortest": "Big Rock ES",
       "short": "Big Rock ESS",
       "normal": "Big Rock ESS",
       "tier": "normal"
@@ -9545,7 +9545,7 @@
     {
       "ncr_id": "NCR12477",
       "entity_name": "BigBeau Solar, LLC",
-      "shortest": "BigBeau",
+      "shortest": "BigBeau PV",
       "short": "BigBeau Solar",
       "normal": "BigBeau Solar",
       "tier": "normal"
@@ -9553,7 +9553,7 @@
     {
       "ncr_id": "NCR12215",
       "entity_name": "Bighorn Solar 1, LLC",
-      "shortest": "Bighorn",
+      "shortest": "Bighorn PV1",
       "short": "Bighorn Solar",
       "normal": "Bighorn Solar",
       "tier": "normal"
@@ -9561,7 +9561,7 @@
     {
       "ncr_id": "NCR11910",
       "entity_name": "Birdsboro Power LLC",
-      "shortest": "Birdsboro",
+      "shortest": "Birdsboro Pwr",
       "short": "Birdsboro Power",
       "normal": "Birdsboro Power",
       "tier": "normal"
@@ -9569,7 +9569,7 @@
     {
       "ncr_id": "NCR13322",
       "entity_name": "Bison Solar LLC",
-      "shortest": "Bison",
+      "shortest": "Bison PV",
       "short": "Bison Solar",
       "normal": "Bison Solar",
       "tier": "normal"
@@ -9721,7 +9721,7 @@
     {
       "ncr_id": "NCR13341",
       "entity_name": "Boot Hill Solar LLC",
-      "shortest": "Boot Hill",
+      "shortest": "Boot Hill PV",
       "short": "Boot Hill Solar",
       "normal": "Boot Hill Solar",
       "tier": "normal"
@@ -9841,7 +9841,7 @@
     {
       "ncr_id": "NCR13304",
       "entity_name": "Broad River Solar, LLC",
-      "shortest": "Broad River",
+      "shortest": "Broad Riv PV",
       "short": "Broad River Solar",
       "normal": "Broad River Solar",
       "tier": "normal"
