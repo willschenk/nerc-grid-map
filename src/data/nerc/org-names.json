@@ -16422,7 +16422,13 @@
       "shortest": "Pend Oreille PUD",
       "short": "Pend Oreille County PUD",
       "normal": "Pend Oreille County PUD No. 1",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "alias_code",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.popud.org/",
+      "review_notes": "The utility consistently calls itself Pend Oreille PUD; retained as an unavoidable 16-character actual alias.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR05334",
@@ -16451,10 +16457,16 @@
     {
       "ncr_id": "NCR11708",
       "entity_name": "Western Interconnect LLC",
-      "shortest": "Western Interconnect",
+      "shortest": "WI",
       "short": "Western Interconnect",
       "normal": "Western Interconnect LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "alias_code",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://patternenergy.com/wp-content/uploads/2025/09/Pattern-Energy-Group-LP-SOC-Procedure.pdf",
+      "review_notes": "Pattern Energy's standards-of-conduct procedure explicitly defines Western Interconnect LLC as WI.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR05445",
@@ -16739,18 +16751,30 @@
     {
       "ncr_id": "NCR11296",
       "entity_name": "Rio Bravo  Rocklin",
-      "shortest": "Rio Bravo Rocklin",
+      "shortest": "Rio Bravo",
       "short": "Rio Bravo Rocklin",
       "normal": "Rio Bravo Rocklin",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/10772",
+      "review_notes": "Uses the distinctive project name and drops the Rocklin location suffix.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR13493",
       "entity_name": "San Jacinto Grid, LLC",
-      "shortest": "San Jacinto Grid",
+      "shortest": "San Jacinto",
       "short": "San Jacinto Grid",
       "normal": "San Jacinto Grid, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/65657",
+      "review_notes": "Uses the distinctive project/location name and drops the generic Grid suffix.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR13250",
@@ -16787,10 +16811,16 @@
     {
       "ncr_id": "NCR12252",
       "entity_name": "Spring Canyon Energy II LLC",
-      "shortest": "Spring Canyon II",
+      "shortest": "Spring Cyn II",
       "short": "Spring Canyon Energy II",
       "normal": "Spring Canyon Energy II LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.clearwayenergy.com/",
+      "review_notes": "Preserves the Spring Canyon project identity and phase while shortening Canyon.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR12253",
@@ -16867,18 +16897,30 @@
     {
       "ncr_id": "NCR05533",
       "entity_name": "TransAlta Centralia Generation, LLC",
-      "shortest": "TransAlta Centralia",
+      "shortest": "Centralia Gen",
       "short": "TransAlta Centralia Generation",
       "normal": "TransAlta Centralia Generation, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://transalta.com/contact/united-states/",
+      "review_notes": "Uses the distinctive Centralia generation-site identity without inventing a TransAlta code.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR11457",
       "entity_name": "TransAlta Wyoming Wind LLC",
-      "shortest": "TransAlta WY Wind",
+      "shortest": "TransAlta WY",
       "short": "TransAlta Wyoming Wind",
       "normal": "TransAlta Wyoming Wind LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/56093",
+      "review_notes": "Keeps the real TransAlta parent brand and the Wyoming project distinction.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR05431",
@@ -16923,10 +16965,16 @@
     {
       "ncr_id": "NCR05540",
       "entity_name": "USACE - Walla Walla District",
-      "shortest": "USACE Walla Walla",
+      "shortest": "USACE Walla",
       "short": "USACE - Walla Walla District",
       "normal": "USACE - Walla Walla District",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "alias_code",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nww.usace.army.mil/Contact/",
+      "review_notes": "Keeps the established USACE agency code and a compact district distinction.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR05446",
@@ -17051,10 +17099,16 @@
     {
       "ncr_id": "NCR10047",
       "entity_name": "Woodland Biomass Power LLC",
-      "shortest": "Woodland Biomass",
+      "shortest": "Woodland Bio",
       "short": "Woodland Biomass Power",
       "normal": "Woodland Biomass Power LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://dtevantage.com/project/woodland/",
+      "review_notes": "Uses the Woodland project name with a readable biomass abbreviation.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR11428",
@@ -17083,10 +17137,16 @@
     {
       "ncr_id": "NCR11694",
       "entity_name": "Invenergy Services LLC",
-      "shortest": "Invenergy Services",
+      "shortest": "Invenergy",
       "short": "Invenergy Services",
       "normal": "Invenergy Services LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "alias_code",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.invenergy.com/",
+      "review_notes": "Uses the company's established Invenergy brand and removes the generic Services suffix.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR04093",
@@ -17395,10 +17455,16 @@
     {
       "ncr_id": "NCR11578",
       "entity_name": "Red Horse Wind 2, LLC",
-      "shortest": "Red Horse Wind 2",
+      "shortest": "Red Horse 2",
       "short": "Red Horse Wind 2",
       "normal": "Red Horse Wind 2, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/58833",
+      "review_notes": "Preserves the distinctive project name and phase number; Wind is unnecessary here.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR13391",
@@ -17411,10 +17477,16 @@
     {
       "ncr_id": "NCR13390",
       "entity_name": "Roadrunner Solar LLC",
-      "shortest": "Roadrunner Solar",
+      "shortest": "Roadrunner PV",
       "short": "Roadrunner Solar",
       "normal": "Roadrunner Solar LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/67823",
+      "review_notes": "Uses the project name and standard PV abbreviation for solar.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR12479",
@@ -17430,7 +17502,13 @@
       "shortest": "Rocky Mountain Power",
       "short": "Rocky Mountain Power",
       "normal": "Rocky Mountain Power, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "alias_code",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.rockymountainpower.net",
+      "review_notes": "Retains the unavoidable actual customer-facing brand despite exceeding 15 characters.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR13248",
@@ -17475,10 +17553,16 @@
     {
       "ncr_id": "NCR13262",
       "entity_name": "San Isabel Solar LLC",
-      "shortest": "San Isabel Solar",
+      "shortest": "San Isabel PV",
       "short": "San Isabel Solar",
       "normal": "San Isabel Solar LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/60304",
+      "review_notes": "Uses the project name and standard PV abbreviation for solar.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR05524",
@@ -17603,10 +17687,16 @@
     {
       "ncr_id": "NCR13163",
       "entity_name": "Silver State Solar Power North LLC",
-      "shortest": "Silver State North",
+      "shortest": "Silver State N",
       "short": "Silver State Solar Power North",
       "normal": "Silver State Solar Power North LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/silver-state-solar-power-north",
+      "review_notes": "Preserves the Silver State project identity and the North distinction.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR12522",
@@ -17675,10 +17765,16 @@
     {
       "ncr_id": "NCR13251",
       "entity_name": "Solar Star Lost Hills LLC",
-      "shortest": "Lost Hills Solar",
+      "shortest": "Lost Hills PV",
       "short": "Solar Star Lost Hills",
       "normal": "Solar Star Lost Hills LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bherenewables.com/solar-star/",
+      "review_notes": "Uses the distinctive Lost Hills site name and standard PV abbreviation.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR12324",
@@ -17875,10 +17971,16 @@
     {
       "ncr_id": "NCR11090",
       "entity_name": "Top of the World Wind Energy LLC",
-      "shortest": "Top of the World",
+      "shortest": "Top World WF",
       "short": "Top of the World Wind Energy",
       "normal": "Top of the World Wind Energy LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/57327",
+      "review_notes": "Compresses the established project name and uses the standard WF abbreviation.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR12222",
@@ -17939,10 +18041,16 @@
     {
       "ncr_id": "NCR13548",
       "entity_name": "Upstream HC-1 LLC",
-      "shortest": "Centennial Flats",
+      "shortest": "Centennial",
       "short": "Upstream HC-1",
       "normal": "Upstream HC-1 LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.centennialflats.com/",
+      "review_notes": "Uses the distinctive Centennial project token from Centennial Flats.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR05444",
@@ -18067,18 +18175,30 @@
     {
       "ncr_id": "NCR13482",
       "entity_name": "Westlands Almond, LLC",
-      "shortest": "Westlands Almond",
+      "shortest": "Almond",
       "short": "Westlands Almond",
       "normal": "Westlands Almond, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/62546",
+      "review_notes": "The Almond project name is the clearest distinction within the Westlands project family.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR13476",
       "entity_name": "Westlands Cherry, LLC",
-      "shortest": "Westlands Cherry",
+      "shortest": "Cherry",
       "short": "Westlands Cherry",
       "normal": "Westlands Cherry, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/63850",
+      "review_notes": "The Cherry project name is the clearest distinction within the Westlands project family.",
+      "review_status": "approved",
+      "reviewed_at": "2026-06-18"
     },
     {
       "ncr_id": "NCR13041",
