@@ -9849,7 +9849,7 @@
     {
       "ncr_id": "NCR11647",
       "entity_name": "Brookfield Power US Asset Management LLC",
-      "shortest": "Brookfield",
+      "shortest": "Brookfield US",
       "short": "Brookfield Power US",
       "normal": "Brookfield Power US Asset Management",
       "tier": "major"
@@ -9865,7 +9865,7 @@
     {
       "ncr_id": "NCR11324",
       "entity_name": "Brookfield White Pine Hydro, LLC",
-      "shortest": "Brookfield",
+      "shortest": "White Pine",
       "short": "White Pine Hydro",
       "normal": "Brookfield White Pine Hydro",
       "tier": "major"
@@ -9881,7 +9881,7 @@
     {
       "ncr_id": "NCR12337",
       "entity_name": "Brotman Generating, LLC",
-      "shortest": "Brotman",
+      "shortest": "Brotman Gen",
       "short": "Brotman Generating",
       "normal": "Brotman Generating",
       "tier": "normal"
@@ -9889,7 +9889,7 @@
     {
       "ncr_id": "NCR12136",
       "entity_name": "BT Coniglio Solar, LLC",
-      "shortest": "BT",
+      "shortest": "BT Coniglio",
       "short": "BT Coniglio Solar",
       "normal": "BT Coniglio Solar",
       "tier": "normal"
@@ -9897,7 +9897,7 @@
     {
       "ncr_id": "NCR12515",
       "entity_name": "BT Connolly Storage, LLC",
-      "shortest": "BT",
+      "shortest": "BT Connolly",
       "short": "BT Connolly Storage",
       "normal": "BT Connolly Storage",
       "tier": "normal"
@@ -9905,7 +9905,7 @@
     {
       "ncr_id": "NCR13400",
       "entity_name": "BT Cooke Solar, LLC",
-      "shortest": "BT",
+      "shortest": "BT Cooke",
       "short": "BT Cooke Solar",
       "normal": "BT Cooke Solar",
       "tier": "normal"
@@ -9913,7 +9913,7 @@
     {
       "ncr_id": "NCR12345",
       "entity_name": "BT Cunningham Storage, LLC",
-      "shortest": "BT",
+      "shortest": "BT Cunning",
       "short": "BT Cunningham Storage",
       "normal": "BT Cunningham Storage",
       "tier": "normal"
@@ -9921,7 +9921,7 @@
     {
       "ncr_id": "NCR13425",
       "entity_name": "BT Jungmann, LLC",
-      "shortest": "BT",
+      "shortest": "BT Jungmann",
       "short": "BT Jungmann",
       "normal": "BT Jungmann",
       "tier": "normal"
@@ -9929,7 +9929,7 @@
     {
       "ncr_id": "NCR13229",
       "entity_name": "BT Kellam Solar LLC",
-      "shortest": "BT",
+      "shortest": "BT Kellam",
       "short": "BT Kellam Solar",
       "normal": "BT Kellam Solar",
       "tier": "normal"
@@ -9937,7 +9937,7 @@
     {
       "ncr_id": "NCR13152",
       "entity_name": "BT Signal Ranch, LLC",
-      "shortest": "BT",
+      "shortest": "BT Signal",
       "short": "BT Signal Ranch",
       "normal": "BT Signal Ranch",
       "tier": "normal"
@@ -9945,7 +9945,7 @@
     {
       "ncr_id": "NCR13528",
       "entity_name": "BT Smith Storage LLC",
-      "shortest": "BT",
+      "shortest": "BT Smith",
       "short": "BT Smith Storage",
       "normal": "BT Smith Storage",
       "tier": "normal"
@@ -9953,7 +9953,7 @@
     {
       "ncr_id": "NCR00700",
       "entity_name": "Buckeye Power, Inc.",
-      "shortest": "Buckeye",
+      "shortest": "Buckeye Pwr",
       "short": "Buckeye Power",
       "normal": "Buckeye Power",
       "tier": "major"
@@ -9993,7 +9993,7 @@
     {
       "ncr_id": "NCR13335",
       "entity_name": "Bynum Solar Project, LLC",
-      "shortest": "Bynum",
+      "shortest": "Bynum PV",
       "short": "Bynum Solar",
       "normal": "Bynum Solar Project",
       "tier": "normal"
@@ -10001,7 +10001,7 @@
     {
       "ncr_id": "NCR13403",
       "entity_name": "Bypass BESS, LLC",
-      "shortest": "Bypass",
+      "shortest": "Bypass ES",
       "short": "Bypass BESS",
       "normal": "Bypass BESS",
       "tier": "normal"
@@ -10009,7 +10009,7 @@
     {
       "ncr_id": "NCR13017",
       "entity_name": "Caballero CA Storage, LLC",
-      "shortest": "Caballero",
+      "shortest": "Caballero ES",
       "short": "Caballero CA Storage",
       "normal": "Caballero CA Storage",
       "tier": "normal"
@@ -10025,7 +10025,7 @@
     {
       "ncr_id": "NCR13492",
       "entity_name": "Caden Energix Axton LLC",
-      "shortest": "Axton",
+      "shortest": "Axton PV",
       "short": "Caden Energix Axton",
       "normal": "Axton Solar",
       "tier": "normal"
@@ -10033,7 +10033,7 @@
     {
       "ncr_id": "NCR13106",
       "entity_name": "Cald BESS LLC",
-      "shortest": "Cald",
+      "shortest": "Cald ES",
       "short": "Cald BESS",
       "normal": "Cald BESS",
       "tier": "normal"
@@ -10041,7 +10041,7 @@
     {
       "ncr_id": "NCR11801",
       "entity_name": "California Flats Solar, LLC",
-      "shortest": "Cal Flats",
+      "shortest": "Cal Flats PV",
       "short": "California Flats Solar",
       "normal": "California Flats Solar",
       "tier": "normal"
@@ -10049,7 +10049,7 @@
     {
       "ncr_id": "NCR12484",
       "entity_name": "Callisto I Energy Center LLC",
-      "shortest": "Callisto",
+      "shortest": "Callisto EC1",
       "short": "Callisto I Energy Center",
       "normal": "Callisto I Energy Center",
       "tier": "normal"
@@ -10073,7 +10073,7 @@
     {
       "ncr_id": "NCR05059",
       "entity_name": "Caprock Wind LLC",
-      "shortest": "Caprock",
+      "shortest": "Caprock WF",
       "short": "Caprock Wind",
       "normal": "Caprock Wind",
       "tier": "normal"
@@ -10089,7 +10089,7 @@
     {
       "ncr_id": "NCR12374",
       "entity_name": "Castle Gap Wind Power, LLC",
-      "shortest": "Castle Gap",
+      "shortest": "Castle Gap WF",
       "short": "Castle Gap Wind",
       "normal": "Castle Gap Wind Power",
       "tier": "normal"
@@ -10097,7 +10097,7 @@
     {
       "ncr_id": "NCR13202",
       "entity_name": "Castle Solar, LLC",
-      "shortest": "Castle",
+      "shortest": "Castle PV",
       "short": "Castle Solar",
       "normal": "Castle Solar",
       "tier": "normal"
@@ -10105,7 +10105,7 @@
     {
       "ncr_id": "NCR10382",
       "entity_name": "Castleton Power, LLC",
-      "shortest": "Castleton",
+      "shortest": "Castleton Pwr",
       "short": "Castleton Power",
       "normal": "Castleton Power",
       "tier": "normal"
@@ -10113,7 +10113,7 @@
     {
       "ncr_id": "NCR11680",
       "entity_name": "Catalina Solar 2, LLC",
-      "shortest": "Catalina 2",
+      "shortest": "Catalina PV2",
       "short": "Catalina Solar 2",
       "normal": "Catalina Solar 2",
       "tier": "normal"
@@ -10121,7 +10121,7 @@
     {
       "ncr_id": "NCR13169",
       "entity_name": "Catalina Solar, LLC",
-      "shortest": "Catalina",
+      "shortest": "Catalina PV",
       "short": "Catalina Solar",
       "normal": "Catalina Solar",
       "tier": "normal"
@@ -10137,7 +10137,7 @@
     {
       "ncr_id": "NCR11775",
       "entity_name": "CD Global Solar NC Sponsor, L.P.",
-      "shortest": "CD Global",
+      "shortest": "CD Global PV",
       "short": "CD Global Solar NC",
       "normal": "CD Global Solar NC Sponsor",
       "tier": "normal"
@@ -10153,7 +10153,7 @@
     {
       "ncr_id": "NCR13452",
       "entity_name": "Centerfield Solar, LLC",
-      "shortest": "Centerfield",
+      "shortest": "Centerfld PV",
       "short": "Centerfield Solar",
       "normal": "Centerfield Solar",
       "tier": "normal"
@@ -10185,7 +10185,7 @@
     {
       "ncr_id": "NCR13122",
       "entity_name": "Chaparral Springs, LLC",
-      "shortest": "Chaparral",
+      "shortest": "Chaparral Spg",
       "short": "Chaparral Springs",
       "normal": "Chaparral Springs",
       "tier": "normal"
@@ -10193,7 +10193,7 @@
     {
       "ncr_id": "NCR12165",
       "entity_name": "Cherry-Todd Electric Cooperative",
-      "shortest": "Cherry-Todd",
+      "shortest": "Cherry-Tod",
       "short": "Cherry-Todd Electric Cooperative",
       "normal": "Cherry-Todd Electric Cooperative",
       "tier": "normal"
@@ -10457,7 +10457,7 @@
     {
       "ncr_id": "NCR13333",
       "entity_name": "Clean Energy Future - Trumbull, LLC",
-      "shortest": "Trumbull",
+      "shortest": "CEF Trumbull",
       "short": "Clean Energy Future Trumbull",
       "normal": "Clean Energy Future - Trumbull",
       "tier": "normal"
@@ -10473,7 +10473,7 @@
     {
       "ncr_id": "NCR11883",
       "entity_name": "Clearway Energy Operating LLC - Fossil",
-      "shortest": "Clearway",
+      "shortest": "Clearway Fossil",
       "short": "Clearway Energy Fossil",
       "normal": "Clearway Energy Operating - Fossil",
       "tier": "major"
@@ -10489,7 +10489,7 @@
     {
       "ncr_id": "NCR13458",
       "entity_name": "Clinton Solar, LLC",
-      "shortest": "Clinton",
+      "shortest": "Clinton PV",
       "short": "Clinton Solar",
       "normal": "Clinton Solar",
       "tier": "normal"
@@ -10505,7 +10505,7 @@
     {
       "ncr_id": "NCR13325",
       "entity_name": "CO Buffalo Flats, LLC",
-      "shortest": "Buffalo Flats",
+      "shortest": "CO Buff PV",
       "short": "CO Buffalo Flats",
       "normal": "Buffalo Flats Solar",
       "tier": "normal"
@@ -10513,7 +10513,7 @@
     {
       "ncr_id": "NCR13370",
       "entity_name": "Coachella Wind Holdings, LLC",
-      "shortest": "Coachella",
+      "shortest": "Coachella WF",
       "short": "Coachella Wind",
       "normal": "Coachella Wind Holdings",
       "tier": "normal"
@@ -10545,7 +10545,7 @@
     {
       "ncr_id": "NCR13415",
       "entity_name": "ColGreen North Shore Solar Farm",
-      "shortest": "ColGreen",
+      "shortest": "ColGreen PV",
       "short": "ColGreen North Shore",
       "normal": "ColGreen North Shore Solar Farm",
       "tier": "normal"
@@ -10577,7 +10577,7 @@
     {
       "ncr_id": "NCR13260",
       "entity_name": "Columbia Solar Energy, LLC",
-      "shortest": "Columbia",
+      "shortest": "Columbia PV",
       "short": "Columbia Solar Energy",
       "normal": "Columbia Solar Energy",
       "tier": "normal"
@@ -10585,7 +10585,7 @@
     {
       "ncr_id": "NCR11665",
       "entity_name": "Comanche Solar PV, LLC",
-      "shortest": "Comanche",
+      "shortest": "Comanche PV",
       "short": "Comanche Solar",
       "normal": "Comanche Solar",
       "tier": "normal"
@@ -10593,7 +10593,7 @@
     {
       "ncr_id": "NCR10229",
       "entity_name": "Commonwealth Chesapeake Company, LLC",
-      "shortest": "Commonwealth",
+      "shortest": "Comm Ches",
       "short": "Commonwealth Chesapeake",
       "normal": "Commonwealth Chesapeake",
       "tier": "normal"
@@ -10617,7 +10617,7 @@
     {
       "ncr_id": "NCR12323",
       "entity_name": "Concho Valley Solar, LLC",
-      "shortest": "Concho",
+      "shortest": "Concho PV",
       "short": "Concho Valley Solar",
       "normal": "Concho Valley Solar",
       "tier": "normal"
@@ -10625,7 +10625,7 @@
     {
       "ncr_id": "NCR12498",
       "entity_name": "Condor Energy Storage, LLC",
-      "shortest": "Condor",
+      "shortest": "Condor ES",
       "short": "Condor Energy Storage",
       "normal": "Condor Energy Storage",
       "tier": "normal"
@@ -10665,7 +10665,7 @@
     {
       "ncr_id": "NCR11892",
       "entity_name": "Copenhagen Wind Farm, LLC",
-      "shortest": "Copenhagen",
+      "shortest": "Copenhagen WF",
       "short": "Copenhagen Wind Farm",
       "normal": "Copenhagen Wind Farm",
       "tier": "normal"
@@ -10681,7 +10681,7 @@
     {
       "ncr_id": "NCR13267",
       "entity_name": "Coso Battery Storage, LLC",
-      "shortest": "Coso",
+      "shortest": "Coso ES",
       "short": "Coso Battery Storage",
       "normal": "Coso Battery Storage",
       "tier": "normal"
@@ -10737,7 +10737,7 @@
     {
       "ncr_id": "NCR13354",
       "entity_name": "Cottonwood Bayou Storage, LLC",
-      "shortest": "Cottonwood",
+      "shortest": "Cottonwd ES",
       "short": "Cottonwood Bayou Storage",
       "normal": "Cottonwood Bayou Storage",
       "tier": "normal"
@@ -10761,7 +10761,7 @@
     {
       "ncr_id": "NCR12074",
       "entity_name": "Coyote Ridge Wind, LLC",
-      "shortest": "Coyote Ridge",
+      "shortest": "Coyote Rdg",
       "short": "Coyote Ridge Wind",
       "normal": "Coyote Ridge Wind",
       "tier": "normal"
@@ -10769,7 +10769,7 @@
     {
       "ncr_id": "NCR13058",
       "entity_name": "Cranberry Point Energy Storage, LLC",
-      "shortest": "Cranberry",
+      "shortest": "Cranberry ES",
       "short": "Cranberry Point Energy Storage",
       "normal": "Cranberry Point Energy Storage",
       "tier": "normal"
@@ -10777,7 +10777,7 @@
     {
       "ncr_id": "NCR12407",
       "entity_name": "Crane 2 BESS, LLC",
-      "shortest": "Crane 2",
+      "shortest": "Crane 2 ES",
       "short": "Crane 2 BESS",
       "normal": "Crane 2 BESS",
       "tier": "normal"
@@ -10785,7 +10785,7 @@
     {
       "ncr_id": "NCR13479",
       "entity_name": "Crooked Run Solar, LLC",
-      "shortest": "Crooked Run",
+      "shortest": "Crooked PV",
       "short": "Crooked Run Solar",
       "normal": "Crooked Run Solar",
       "tier": "normal"
