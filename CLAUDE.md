@@ -24,8 +24,8 @@ Do not encode naming policy in the renderer. Do not edit generated
 
 ## Batch 001: first 500 entries
 
-This batch is prepared but **not started**. Begin only after the user explicitly
-asks Claude to start updating names.
+This batch is in progress. Continue only when the user explicitly asks Claude
+to update the next names.
 
 Batch membership is pinned to the currently committed
 `src/data/nerc/name-queue.jsonl`:
@@ -64,7 +64,9 @@ For each Batch 001 row:
    - `review_notes`
    - `review_status: "approved"`
    - `reviewed_at` as `YYYY-MM-DD`
-10. Keep `shortest` recognizable and evidence-backed. Do not invent utility
+10. Remove the approved record's line from
+    `scripts/nerc/name-review-first-500.md`.
+11. Keep `shortest` recognizable and evidence-backed. Do not invent utility
     codes merely to fit the renderer's current compact-token limit.
 
 Allowed `shortest_type` values:
@@ -91,7 +93,9 @@ The map may derive a shorter rendered token. `current.shortest` and
 During Batch 001:
 
 - Edit `src/data/nerc/org-names.json` for rows 1-500 only.
-- Update the progress section in this file after every completed chunk.
+- Process only the next 20 lines in
+  `scripts/nerc/name-review-first-500.md` during each run.
+- Remove a worklist line only after that record is approved and validated.
 - Do not edit renderer TypeScript/CSS, coordinates, roles, weights, map combines,
   area aliases, or supplemental organization definitions.
 - Do not perform long-name spelling/capitalization corrections in source data;
@@ -102,37 +106,23 @@ During Batch 001:
 If evidence is inconclusive, do not guess. Leave the record unapproved, explain
 the blocker in `review_notes`, and count it under `Blocked` below.
 
-## Chunk and commit protocol
+## Batch and commit protocol
 
-Work in ten fixed chunks of 50 queue rows:
+For each run:
 
-| Chunk | Queue orders | Status | Approved | Blocked |
-| --- | ---: | --- | ---: | ---: |
-| 1 | 1-50 | Not started | 0 | 0 |
-| 2 | 51-100 | Not started | 0 | 0 |
-| 3 | 101-150 | Not started | 0 | 0 |
-| 4 | 151-200 | Not started | 0 | 0 |
-| 5 | 201-250 | Not started | 0 | 0 |
-| 6 | 251-300 | Not started | 0 | 0 |
-| 7 | 301-350 | Not started | 0 | 0 |
-| 8 | 351-400 | Not started | 0 | 0 |
-| 9 | 401-450 | Not started | 0 | 0 |
-| 10 | 451-500 | Not started | 0 | 0 |
-
-After each chunk:
-
-1. Update its row in the table.
-2. Update the batch summary below.
-3. Validate JSON parsing and duplicate IDs.
-4. Run the required checks.
-5. Commit and push that coherent 50-record change.
-
-Do not mark a chunk complete merely because 50 records were attempted. Its
-`Approved + Blocked` total must equal 50.
+1. Take the first 20 lines from
+   `scripts/nerc/name-review-first-500.md`.
+2. Review and update those 20 records only.
+3. Delete each approved record's line from the worklist.
+4. Leave blocked records in the worklist with the blocker documented in
+   `review_notes`.
+5. Validate JSON parsing and duplicate IDs.
+6. Run the required checks.
+7. Commit and push the coherent 20-record change.
 
 ## Validation
 
-After each 50-record chunk:
+After each 20-record batch:
 
 ```bash
 node -e 'const d=require("./src/data/nerc/org-names.json"); const ids=d.names.map(x=>x.ncr_id); if(ids.length!==new Set(ids).size) process.exit(1)'
@@ -155,11 +145,11 @@ After all 500 records are approved or explicitly blocked:
 
 ## Batch progress
 
-- Batch status: Not started
-- Completed records: 0 / 500
-- Approved records: 0
+- Batch status: In progress
+- Completed records: 20 / 500
+- Approved records: 20
 - Blocked records: 0
-- Next queue order: 1
-- Last completed `ncr_id`: None
+- Next queue order: 21
+- Last completed `ncr_id`: `NCR13476`
 - Last update: 2026-06-18
-- Notes: Batch manifest pinned; no organization names changed by this setup.
+- Notes: Orders 1-20 were approved in commit `4cb1501`.
