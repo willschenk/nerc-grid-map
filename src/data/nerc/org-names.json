@@ -16425,10 +16425,7 @@
       "tier": "normal",
       "shortest_type": "alias_code",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://www.popud.org/",
-      "review_notes": "The utility consistently calls itself Pend Oreille PUD; retained as an unavoidable 16-character actual alias.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.popud.org/"
     },
     {
       "ncr_id": "NCR05334",
@@ -16463,10 +16460,7 @@
       "tier": "normal",
       "shortest_type": "alias_code",
       "shortest_source": "public_filing",
-      "shortest_source_url": "https://patternenergy.com/wp-content/uploads/2025/09/Pattern-Energy-Group-LP-SOC-Procedure.pdf",
-      "review_notes": "Pattern Energy's standards-of-conduct procedure explicitly defines Western Interconnect LLC as WI.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://patternenergy.com/wp-content/uploads/2025/09/Pattern-Energy-Group-LP-SOC-Procedure.pdf"
     },
     {
       "ncr_id": "NCR05445",
@@ -16757,10 +16751,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/10772",
-      "review_notes": "Uses the distinctive project name and drops the Rocklin location suffix.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/10772"
     },
     {
       "ncr_id": "NCR13493",
@@ -16771,10 +16762,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/65657",
-      "review_notes": "Uses the distinctive project/location name and drops the generic Grid suffix.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/65657"
     },
     {
       "ncr_id": "NCR13250",
@@ -16817,10 +16805,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://www.clearwayenergy.com/",
-      "review_notes": "Preserves the Spring Canyon project identity and phase while shortening Canyon.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.clearwayenergy.com/"
     },
     {
       "ncr_id": "NCR12253",
@@ -16903,10 +16888,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://transalta.com/contact/united-states/",
-      "review_notes": "Uses the distinctive Centralia generation-site identity without inventing a TransAlta code.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://transalta.com/contact/united-states/"
     },
     {
       "ncr_id": "NCR11457",
@@ -16917,10 +16899,7 @@
       "tier": "normal",
       "shortest_type": "parent_project",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/56093",
-      "review_notes": "Keeps the real TransAlta parent brand and the Wyoming project distinction.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/56093"
     },
     {
       "ncr_id": "NCR05431",
@@ -16971,10 +16950,7 @@
       "tier": "normal",
       "shortest_type": "alias_code",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://www.nww.usace.army.mil/Contact/",
-      "review_notes": "Keeps the established USACE agency code and a compact district distinction.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.nww.usace.army.mil/Contact/"
     },
     {
       "ncr_id": "NCR05446",
@@ -17105,10 +17081,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://dtevantage.com/project/woodland/",
-      "review_notes": "Uses the Woodland project name with a readable biomass abbreviation.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://dtevantage.com/project/woodland/"
     },
     {
       "ncr_id": "NCR11428",
@@ -17143,10 +17116,7 @@
       "tier": "normal",
       "shortest_type": "alias_code",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://www.invenergy.com/",
-      "review_notes": "Uses the company's established Invenergy brand and removes the generic Services suffix.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.invenergy.com/"
     },
     {
       "ncr_id": "NCR04093",
@@ -17461,10 +17431,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/58833",
-      "review_notes": "Preserves the distinctive project name and phase number; Wind is unnecessary here.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/58833"
     },
     {
       "ncr_id": "NCR13391",
@@ -17483,10 +17450,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/67823",
-      "review_notes": "Uses the project name and standard PV abbreviation for solar.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/67823"
     },
     {
       "ncr_id": "NCR12479",
@@ -17505,10 +17469,7 @@
       "tier": "normal",
       "shortest_type": "alias_code",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://www.rockymountainpower.net",
-      "review_notes": "Retains the unavoidable actual customer-facing brand despite exceeding 15 characters.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.rockymountainpower.net"
     },
     {
       "ncr_id": "NCR13248",
@@ -17559,10 +17520,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/60304",
-      "review_notes": "Uses the project name and standard PV abbreviation for solar.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/60304"
     },
     {
       "ncr_id": "NCR05524",
@@ -17693,10 +17651,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.gridinfo.com/silver-state-solar-power-north",
-      "review_notes": "Preserves the Silver State project identity and the North distinction.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.gridinfo.com/silver-state-solar-power-north"
     },
     {
       "ncr_id": "NCR12522",
@@ -17771,10 +17726,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://www.bherenewables.com/solar-star/",
-      "review_notes": "Uses the distinctive Lost Hills site name and standard PV abbreviation.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.bherenewables.com/solar-star/"
     },
     {
       "ncr_id": "NCR12324",
@@ -17977,10 +17929,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/57327",
-      "review_notes": "Compresses the established project name and uses the standard WF abbreviation.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/57327"
     },
     {
       "ncr_id": "NCR12222",
@@ -18047,10 +17996,7 @@
       "tier": "normal",
       "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
-      "shortest_source_url": "https://www.centennialflats.com/",
-      "review_notes": "Uses the distinctive Centennial project token from Centennial Flats.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.centennialflats.com/"
     },
     {
       "ncr_id": "NCR05444",
@@ -18181,10 +18127,7 @@
       "tier": "normal",
       "shortest_type": "location",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/62546",
-      "review_notes": "The Almond project name is the clearest distinction within the Westlands project family.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/62546"
     },
     {
       "ncr_id": "NCR13476",
@@ -18195,10 +18138,7 @@
       "tier": "normal",
       "shortest_type": "location",
       "shortest_source": "eia_861",
-      "shortest_source_url": "https://www.interconnection.fyi/eia/project/63850",
-      "review_notes": "The Cherry project name is the clearest distinction within the Westlands project family.",
-      "review_status": "approved",
-      "reviewed_at": "2026-06-18"
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/63850"
     },
     {
       "ncr_id": "NCR13041",

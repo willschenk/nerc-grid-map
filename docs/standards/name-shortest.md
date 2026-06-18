@@ -63,9 +63,6 @@ Record the decision in `org-names.json` with:
   `nerc_record`, `oasis`, `iso_rto_material`, `public_filing`,
   `press_release`, `area_alias`, or `inferred`
 - `shortest_source_url`: evidence URL when available
-- `review_notes`: brief reasoning, especially for inferred labels and exceptions
-- `review_status`: `approved` only after the record has been checked
-- `reviewed_at`: ISO date (`YYYY-MM-DD`)
 
 An actual alias always wins, even if it is less obvious to a casual user.
 Examples: `ALTE`, `ALTW`, `DPC`, `OTP`, `MP`, `MHEB`, `GLH`, `SPA`, `WAUE`,
@@ -302,7 +299,7 @@ the separate source-data change.
 
 ## Final quality check
 
-Every reviewed `name_shortest` must be:
+Every `name_shortest` must be:
 
 - short
 - unique where nearby or related
@@ -319,17 +316,14 @@ taking too much map space?"
 
 ## Review workflow
 
-1. Run `npm run nerc:name-queue`.
-2. Open `src/data/nerc/name-queue.jsonl` or `.csv`.
-3. Review records in order. The queue includes published, zoom-hidden,
-   map-combined, retired-seed, and source-only records.
-4. Update the matching object in `src/data/nerc/org-names.json`.
-5. Set `review_status` to `approved` and add the evidence metadata above.
-6. Re-run `npm run nerc:name-queue`; approved records leave the default queue.
-7. Run `npm run nerc:name-queue-all` to inspect every source record, including
-   approved records.
-8. Before publishing name changes, run `npm run nerc:build`,
+1. Take the next records from the current batch worklist.
+2. Use `src/data/nerc/name-queue.jsonl` or `.csv` for context.
+3. Update the matching object in `src/data/nerc/org-names.json`.
+4. Delete each completed line from the batch worklist. Leave uncertain records
+   in place.
+5. Before publishing name changes, run `npm run nerc:build`,
    `npm run nerc:payload-check`, `npm run ux-check`, and `npm run check`, then
    compare the map at matched desktop and mobile zoom levels.
 
-Queue generation is an audit operation only. It never writes organization names.
+`npm run nerc:name-queue` rebuilds the complete reference queue. It never writes
+organization names and is not a progress tracker.

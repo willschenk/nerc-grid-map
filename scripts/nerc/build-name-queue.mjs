@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 // Build the name_shortest standards-review queue across every source record.
 // Queue generation is read-only with respect to organization names.
-//
-// Default: records without a complete approved review.
-// --all: include approved records too.
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { ROLE_WEIGHTS } from "../../src/lib/nerc/roles.mjs";
@@ -11,7 +8,6 @@ import {
   NAME_SHORTEST_BEST_MAX,
   NAME_SHORTEST_HARD_MAX,
   NAME_SHORTEST_PREFERRED_MAX,
-  isApprovedNameReview,
   nameShortestIssues,
   normalizedNameLabel,
 } from "../../src/lib/nerc/name-standards.mjs";
@@ -25,8 +21,6 @@ const PATHS = {
   jsonl: "src/data/nerc/name-queue.jsonl",
   csv: "src/data/nerc/name-queue.csv",
 };
-
-const includeApproved = process.argv.includes("--all");
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -127,9 +121,6 @@ const rows = records.map((record) => {
     shortest_type: nameEntry?.shortest_type ?? null,
     shortest_source: nameEntry?.shortest_source ?? null,
     shortest_source_url: nameEntry?.shortest_source_url ?? null,
-    review_notes: nameEntry?.review_notes ?? null,
-    review_status: nameEntry?.review_status ?? "pending",
-    reviewed_at: nameEntry?.reviewed_at ?? null,
   };
   const mapStatus = publishedIds.has(record.ncr_id)
     ? "published"
@@ -164,7 +155,6 @@ const rows = records.map((record) => {
     issues,
     collision_ids: [],
     nearby_collision_ids: [],
-    approved: nameEntry ? isApprovedNameReview(nameEntry) : false,
   };
 });
 
@@ -222,7 +212,6 @@ function priorityScore(row) {
 }
 
 const queue = rows
-  .filter((row) => includeApproved || !row.approved)
   .sort(
     (a, b) =>
       priorityScore(b) - priorityScore(a) ||
@@ -251,8 +240,6 @@ const csvHeaders = [
   "shortest_type",
   "shortest_source",
   "shortest_source_url",
-  "review_status",
-  "reviewed_at",
   "acronym",
   "acronym_source",
   "area_aliases",
@@ -282,8 +269,6 @@ for (const row of queue) {
     row.current.shortest_type,
     row.current.shortest_source,
     row.current.shortest_source_url,
-    row.current.review_status,
-    row.current.reviewed_at,
     row.acronym,
     row.acronym_source,
     row.area_aliases,
@@ -306,10 +291,9 @@ const statusCounts = Object.fromEntries(
   ]),
 );
 const withIssues = queue.filter((row) => row.issues.length).length;
-const approvedCount = rows.filter((row) => row.approved).length;
 
-console.log(`Name standards queue: ${queue.length} record(s)${includeApproved ? " (including approved)" : ""}`);
-console.log(`Source records: ${rows.length}; approved: ${approvedCount}; with issue flags: ${withIssues}`);
+console.log(`Name standards queue: ${queue.length} record(s)`);
+console.log(`Source records: ${rows.length}; with issue flags: ${withIssues}`);
 console.log(`Map status: ${JSON.stringify(statusCounts)}`);
 console.log(
   `Length targets: best <=${NAME_SHORTEST_BEST_MAX}, preferred <=${NAME_SHORTEST_PREFERRED_MAX}, hard <=${NAME_SHORTEST_HARD_MAX}`,

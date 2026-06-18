@@ -6,8 +6,6 @@ export const NAME_SHORTEST_BEST_MAX = 8;
 export const NAME_SHORTEST_PREFERRED_MAX = 12;
 export const NAME_SHORTEST_HARD_MAX = 15;
 
-export const NAME_REVIEW_STATUS_APPROVED = "approved";
-
 export const NAME_SHORTEST_TYPES = new Set([
   "alias_code",
   "acronym",
@@ -33,8 +31,6 @@ const GENERIC_LABELS = new Set([
 const LEGAL_WORD_RE =
   /\b(?:LLC|L\.L\.C\.?|INC(?:ORPORATED)?\.?|LP|L\.P\.?|COMPANY|CORPORATION|CORP\.?)\b/i;
 
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-
 export function normalizedNameLabel(label) {
   return String(label ?? "")
     .normalize("NFKC")
@@ -47,7 +43,7 @@ export function normalizedNameLabel(label) {
 export function nameShortestIssues(entry) {
   const label = String(entry?.shortest ?? "").trim();
   const shortestType = String(entry?.shortest_type ?? "").trim();
-  const notes = String(entry?.review_notes ?? "").trim();
+  const shortestSource = String(entry?.shortest_source ?? "").trim();
   const issues = [];
 
   if (!label) {
@@ -56,7 +52,7 @@ export function nameShortestIssues(entry) {
   }
 
   if (label.length > NAME_SHORTEST_HARD_MAX) {
-    if (shortestType !== "alias_code" || !notes) issues.push("over_15_characters");
+    if (shortestType !== "alias_code" || !shortestSource) issues.push("over_15_characters");
     else issues.push("documented_alias_over_15");
   } else if (label.length > NAME_SHORTEST_PREFERRED_MAX) {
     issues.push("length_13_to_15");
@@ -80,20 +76,4 @@ export function nameShortestIssues(entry) {
     issues.push("whitespace_cleanup");
   }
   return issues;
-}
-
-export function isApprovedNameReview(entry) {
-  if (entry?.review_status !== NAME_REVIEW_STATUS_APPROVED) return false;
-  if (!NAME_SHORTEST_TYPES.has(entry?.shortest_type)) return false;
-  if (!String(entry?.shortest_source ?? "").trim()) return false;
-  if (!ISO_DATE_RE.test(String(entry?.reviewed_at ?? ""))) return false;
-  return !nameShortestIssues(entry).some((issue) =>
-    issue === "missing_shortest" ||
-    issue === "over_15_characters" ||
-    issue === "under_3_without_alias_evidence" ||
-    issue === "two_letter_label_needs_alias_evidence" ||
-    issue === "generic_label" ||
-    issue === "legal_suffix_in_shortest" ||
-    issue === "whitespace_cleanup"
-  );
 }

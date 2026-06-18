@@ -1,7 +1,7 @@
 # Name review — Batch 001 (orders 1–500)
 
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
-Delete each line after its record is approved and validated.
+Delete each line after its name is updated and validated.
 
 21. SUP-albertville-municipal-utilities-board — Albertville Municipal Utilities Board
 22. SUP-alliance-municipal-electric-system — Alliance Municipal Electric System

@@ -110,11 +110,12 @@ is the hard practical maximum. The renderer currently derives a tighter
 `MAP_LABEL_MAX` token when required for bubble fit; do not confuse that render
 constraint with the researched-label standard.
 
-`npm run nerc:name-queue` builds the unapproved review queue across every source
+`npm run nerc:name-queue` builds a complete reference queue across every source
 record, including supplemental, combined, retired, source-only, and currently
-zoom-hidden organizations. `npm run nerc:name-queue-all` includes already
-approved records. Name research belongs in `src/data/nerc/org-names.json`; queue
-generation never changes names.
+zoom-hidden organizations. Name research belongs in
+`src/data/nerc/org-names.json`; queue generation never changes names. During a
+pinned batch, progress is tracked only by deleting completed lines from the
+batch worklist.
 
 **Known open bug:** some entities get filler tokens (`and`, `One`, `Water`, …) from the "prefer last word" rule in `tightenMapLabel()`. See [docs/bugs/map-label-filler-bug.md](docs/bugs/map-label-filler-bug.md) for examples, root cause, and rejected fix attempts. **Do not deploy label fixes without explicit user request** and verification against the production baseline (gh-pages `c0ca47b`). Prefer manual curation over bulk automated batches.
 
