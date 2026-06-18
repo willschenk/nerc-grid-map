@@ -13449,7 +13449,7 @@
     {
       "ncr_id": "NCR11990",
       "entity_name": "Miller Bros. Solar, LLC",
-      "shortest": "Miller Bros",
+      "shortest": "Miller PV",
       "short": "Miller Bros. Solar",
       "normal": "Miller Bros. Solar",
       "tier": "normal"
@@ -13457,7 +13457,7 @@
     {
       "ncr_id": "NCR12279",
       "entity_name": "Milligan Wind Farm, LLC",
-      "shortest": "Milligan",
+      "shortest": "Milligan WF",
       "short": "Milligan Wind Farm",
       "normal": "Milligan Wind Farm",
       "tier": "normal"
@@ -13473,7 +13473,7 @@
     {
       "ncr_id": "NCR11697",
       "entity_name": "Moapa Southern Paiute Solar, LLC",
-      "shortest": "Moapa",
+      "shortest": "Moapa SP PV",
       "short": "Moapa Southern Paiute Solar",
       "normal": "Moapa Southern Paiute Solar",
       "tier": "normal"
@@ -13489,7 +13489,7 @@
     {
       "ncr_id": "NCR11463",
       "entity_name": "Mojave 16/17/18, LLC",
-      "shortest": "Mojave",
+      "shortest": "Mojave 16-18",
       "short": "Mojave 16/17/18",
       "normal": "Mojave 16/17/18",
       "tier": "normal"
@@ -13497,7 +13497,7 @@
     {
       "ncr_id": "NCR13562",
       "entity_name": "Monte Cristo Windpower, LLC",
-      "shortest": "Monte Cristo",
+      "shortest": "Monte Cr WF",
       "short": "Monte Cristo Windpower",
       "normal": "Monte Cristo Windpower",
       "tier": "normal"
@@ -13505,7 +13505,7 @@
     {
       "ncr_id": "NCR13459",
       "entity_name": "Montpelier Solar, LLC",
-      "shortest": "Montpelier",
+      "shortest": "Montplr PV",
       "short": "Montpelier Solar",
       "normal": "Montpelier Solar",
       "tier": "normal"
@@ -13513,7 +13513,7 @@
     {
       "ncr_id": "NCR12537",
       "entity_name": "Moonshot Solar, LLC",
-      "shortest": "Moonshot",
+      "shortest": "Moonshot PV",
       "short": "Moonshot Solar",
       "normal": "Moonshot Solar",
       "tier": "normal"
@@ -13521,7 +13521,7 @@
     {
       "ncr_id": "NCR12546",
       "entity_name": "Morris Ridge Solar Energy Center, LLC",
-      "shortest": "Morris Ridge",
+      "shortest": "Morris Rdg PV",
       "short": "Morris Ridge Solar",
       "normal": "Morris Ridge Solar Energy Center",
       "tier": "normal"
@@ -13529,7 +13529,7 @@
     {
       "ncr_id": "NCR13316",
       "entity_name": "Morrow Lake Solar, LLC",
-      "shortest": "Morrow Lake",
+      "shortest": "Morrow Lk PV",
       "short": "Morrow Lake Solar",
       "normal": "Morrow Lake Solar",
       "tier": "normal"
@@ -13537,7 +13537,7 @@
     {
       "ncr_id": "NCR13412",
       "entity_name": "MS Solar 3, LLC",
-      "shortest": "MS Solar 3",
+      "shortest": "MS PV 3",
       "short": "MS Solar 3",
       "normal": "MS Solar 3",
       "tier": "normal"
@@ -13545,7 +13545,7 @@
     {
       "ncr_id": "NCR12553",
       "entity_name": "MS Solar 5, LLC",
-      "shortest": "MS Solar 5",
+      "shortest": "MS PV 5",
       "short": "MS Solar 5",
       "normal": "MS Solar 5",
       "tier": "normal"
@@ -13553,7 +13553,7 @@
     {
       "ncr_id": "NCR12449",
       "entity_name": "MS Solar 6, LLC",
-      "shortest": "MS Solar 6",
+      "shortest": "MS PV 6",
       "short": "MS Solar 6",
       "normal": "MS Solar 6",
       "tier": "normal"
@@ -13561,7 +13561,7 @@
     {
       "ncr_id": "NCR13434",
       "entity_name": "MS Solar 7, LLC",
-      "shortest": "MS Solar 7",
+      "shortest": "MS PV 7",
       "short": "MS Solar 7",
       "normal": "MS Solar 7",
       "tier": "normal"
@@ -13569,7 +13569,7 @@
     {
       "ncr_id": "NCR12266",
       "entity_name": "MS Sunflower Solar Project Company, LLC",
-      "shortest": "Sunflower",
+      "shortest": "MS Sunflwr PV",
       "short": "MS Sunflower Solar",
       "normal": "MS Sunflower Solar Project",
       "tier": "normal"
@@ -13577,7 +13577,7 @@
     {
       "ncr_id": "NCR13512",
       "entity_name": "Mt. Home Solar 1, LLC",
-      "shortest": "Mt Home",
+      "shortest": "Mt Home PV1",
       "short": "Mt. Home Solar 1",
       "normal": "Mt. Home Solar 1",
       "tier": "normal"
@@ -13585,7 +13585,7 @@
     {
       "ncr_id": "NCR12320",
       "entity_name": "MTSun Solar LLC",
-      "shortest": "MTSun",
+      "shortest": "MTSun PV",
       "short": "MTSun Solar",
       "normal": "MTSun Solar",
       "tier": "normal"
@@ -13601,7 +13601,7 @@
     {
       "ncr_id": "NCR00836",
       "entity_name": "Municipal Light and Power - City of Anderson",
-      "shortest": "Anderson",
+      "shortest": "Anderson MLP",
       "short": "Anderson Municipal Light & Power",
       "normal": "City of Anderson Municipal Light and Power",
       "tier": "normal"
@@ -13609,7 +13609,7 @@
     {
       "ncr_id": "NCR05257",
       "entity_name": "Murray City Corporation",
-      "shortest": "Murray",
+      "shortest": "Murray Pwr",
       "short": "Murray City Power",
       "normal": "Murray City Corporation",
       "tier": "normal"
@@ -13617,7 +13617,7 @@
     {
       "ncr_id": "NCR12150",
       "entity_name": "Muscle Shoals Solar, LLC",
-      "shortest": "Muscle Shoals",
+      "shortest": "Muscle PV",
       "short": "Muscle Shoals Solar",
       "normal": "Muscle Shoals Solar",
       "tier": "normal"
@@ -13625,7 +13625,7 @@
     {
       "ncr_id": "NCR13457",
       "entity_name": "Myrtle Storage, LLC",
-      "shortest": "Myrtle",
+      "shortest": "Myrtle ES",
       "short": "Myrtle Storage",
       "normal": "Myrtle Storage",
       "tier": "normal"
@@ -13641,7 +13641,7 @@
     {
       "ncr_id": "NCR13088",
       "entity_name": "NAES Corporation - Albemarle Beach Solar",
-      "shortest": "Albemarle",
+      "shortest": "Albemarle PV",
       "short": "Albemarle Beach Solar",
       "normal": "Albemarle Beach Solar",
       "tier": "normal"
@@ -13649,7 +13649,7 @@
     {
       "ncr_id": "NCR00839",
       "entity_name": "NAES Corporation - Big Sandy",
-      "shortest": "Big Sandy",
+      "shortest": "Big Sandy Pwr",
       "short": "NAES Big Sandy",
       "normal": "Big Sandy Power",
       "tier": "normal"
@@ -13657,7 +13657,7 @@
     {
       "ncr_id": "NCR11911",
       "entity_name": "NAES Corporation - Birdsboro Power",
-      "shortest": "Birdsboro",
+      "shortest": "Birdsboro Pwr",
       "short": "NAES Birdsboro Power",
       "normal": "Birdsboro Power",
       "tier": "normal"
@@ -13665,7 +13665,7 @@
     {
       "ncr_id": "NCR11705",
       "entity_name": "NAES Corporation - Castleton Power",
-      "shortest": "Castleton",
+      "shortest": "Castleton Pwr",
       "short": "NAES Castleton Power",
       "normal": "Castleton Power",
       "tier": "normal"
@@ -13673,7 +13673,7 @@
     {
       "ncr_id": "NCR10234",
       "entity_name": "NAES Corporation - Chesapeake",
-      "shortest": "Chesapeake",
+      "shortest": "Chesapeake EC",
       "short": "NAES Chesapeake",
       "normal": "Chesapeake Energy Center",
       "tier": "normal"
@@ -13681,7 +13681,7 @@
     {
       "ncr_id": "NCR11795",
       "entity_name": "NAES Corporation - Dighton",
-      "shortest": "Dighton",
+      "shortest": "Dighton Pwr",
       "short": "NAES Dighton",
       "normal": "Dighton Power",
       "tier": "normal"
@@ -13689,7 +13689,7 @@
     {
       "ncr_id": "NCR06054",
       "entity_name": "NAES Corporation - Dogwood",
-      "shortest": "Dogwood",
+      "shortest": "Dogwood Pwr",
       "short": "NAES Dogwood",
       "normal": "Dogwood Power",
       "tier": "normal"
@@ -13697,7 +13697,7 @@
     {
       "ncr_id": "NCR11729",
       "entity_name": "NAES Corporation - Empire",
-      "shortest": "Empire",
+      "shortest": "Empire GS",
       "short": "NAES Empire",
       "normal": "Empire Generating Station",
       "tier": "normal"
@@ -13705,7 +13705,7 @@
     {
       "ncr_id": "NCR11306",
       "entity_name": "NAES Corporation - Ferndale",
-      "shortest": "Ferndale",
+      "shortest": "Ferndale GS",
       "short": "NAES Ferndale",
       "normal": "Ferndale Generating Station",
       "tier": "normal"
@@ -13713,7 +13713,7 @@
     {
       "ncr_id": "NCR11970",
       "entity_name": "NAES Corporation - Hickory Run",
-      "shortest": "Hickory Run",
+      "shortest": "Hickory EC",
       "short": "NAES Hickory Run",
       "normal": "Hickory Run Energy Center",
       "tier": "normal"
@@ -13721,7 +13721,7 @@
     {
       "ncr_id": "NCR01283",
       "entity_name": "NAES Corporation - Holland",
-      "shortest": "Holland",
+      "shortest": "Holland En",
       "short": "NAES Holland",
       "normal": "Holland Energy Facility",
       "tier": "normal"
@@ -13729,7 +13729,7 @@
     {
       "ncr_id": "NCR12472",
       "entity_name": "NAES Corporation - Holloman Solar",
-      "shortest": "Holloman",
+      "shortest": "Holloman PV",
       "short": "NAES Holloman Solar",
       "normal": "Holloman Solar",
       "tier": "normal"
@@ -13737,7 +13737,7 @@
     {
       "ncr_id": "NCR13075",
       "entity_name": "NAES Corporation - Indeck Niles",
-      "shortest": "Niles",
+      "shortest": "Niles EC",
       "short": "NAES Indeck Niles",
       "normal": "Indeck Niles Energy Center",
       "tier": "normal"
@@ -13745,7 +13745,7 @@
     {
       "ncr_id": "NCR11017",
       "entity_name": "NAES Corporation - Lawrence",
-      "shortest": "Lawrence",
+      "shortest": "Lawrence EC",
       "short": "NAES Lawrence",
       "normal": "Lawrence Energy Center",
       "tier": "normal"
@@ -13761,7 +13761,7 @@
     {
       "ncr_id": "NCR12367",
       "entity_name": "NAES Corporation - Major Oak Power, LLC",
-      "shortest": "Major Oak",
+      "shortest": "Major Oak Pwr",
       "short": "NAES Major Oak Power",
       "normal": "Major Oak Power",
       "tier": "normal"
@@ -13769,7 +13769,7 @@
     {
       "ncr_id": "NCR11794",
       "entity_name": "NAES Corporation - Milford",
-      "shortest": "Milford",
+      "shortest": "Milford Pwr",
       "short": "NAES Milford",
       "normal": "Milford Power",
       "tier": "normal"
@@ -13777,7 +13777,7 @@
     {
       "ncr_id": "NCR07169",
       "entity_name": "NAES Corporation - North Tonawanda",
-      "shortest": "Tonawanda",
+      "shortest": "N Tonawanda",
       "short": "NAES North Tonawanda",
       "normal": "North Tonawanda Energy",
       "tier": "normal"
@@ -13785,7 +13785,7 @@
     {
       "ncr_id": "NCR11589",
       "entity_name": "NAES Corporation - Plains End",
-      "shortest": "Plains End",
+      "shortest": "Plains End Pwr",
       "short": "NAES Plains End",
       "normal": "Plains End Power",
       "tier": "normal"
@@ -13793,7 +13793,7 @@
     {
       "ncr_id": "NCR12473",
       "entity_name": "NAES Corporation - Ranchland Solar",
-      "shortest": "Ranchland",
+      "shortest": "Ranchland PV",
       "short": "NAES Ranchland Solar",
       "normal": "Ranchland Solar",
       "tier": "normal"
@@ -13953,7 +13953,7 @@
     {
       "ncr_id": "NCR11181",
       "entity_name": "NAES Corporation-Sandy Creek Energy Station",
-      "shortest": "Sandy Creek",
+      "shortest": "Sandy Crk",
       "short": "NAES Sandy Creek",
       "normal": "Sandy Creek Energy Station",
       "tier": "normal"
@@ -14049,7 +14049,7 @@
     {
       "ncr_id": "NCR13559",
       "entity_name": "NM 18 II LLC",
-      "shortest": "NM 18",
+      "shortest": "NM 18 II",
       "short": "NM 18 II",
       "normal": "NM 18 II",
       "tier": "normal"
@@ -14057,7 +14057,7 @@
     {
       "ncr_id": "NCR12040",
       "entity_name": "North Allegheny Wind, LLC",
-      "shortest": "Allegheny",
+      "shortest": "N Allegny WF",
       "short": "North Allegheny Wind",
       "normal": "North Allegheny Wind",
       "tier": "normal"
@@ -14073,7 +14073,7 @@
     {
       "ncr_id": "NCR12464",
       "entity_name": "North Fork Solar Project, LLC",
-      "shortest": "North Fork",
+      "shortest": "N Fork PV",
       "short": "North Fork Solar",
       "normal": "North Fork Solar Project",
       "tier": "normal"
@@ -14089,7 +14089,7 @@
     {
       "ncr_id": "NCR11927",
       "entity_name": "North Rosamond Solar, LLC",
-      "shortest": "Rosamond",
+      "shortest": "N Rosamond PV",
       "short": "North Rosamond Solar",
       "normal": "North Rosamond Solar",
       "tier": "normal"
@@ -14097,7 +14097,7 @@
     {
       "ncr_id": "NCR11684",
       "entity_name": "North Star Solar PV, LLC",
-      "shortest": "North Star",
+      "shortest": "N Star PV",
       "short": "North Star Solar",
       "normal": "North Star Solar",
       "tier": "normal"
@@ -14129,7 +14129,7 @@
     {
       "ncr_id": "NCR13477",
       "entity_name": "Northumberland Solar I, LLC",
-      "shortest": "Northumberland",
+      "shortest": "Northumb PV1",
       "short": "Northumberland Solar I",
       "normal": "Northumberland Solar I",
       "tier": "normal"
@@ -14137,7 +14137,7 @@
     {
       "ncr_id": "NCR10276",
       "entity_name": "Notrees Windpower, LP",
-      "shortest": "Notrees",
+      "shortest": "Notrees WF",
       "short": "Notrees Windpower",
       "normal": "Notrees Windpower",
       "tier": "normal"
@@ -14145,7 +14145,7 @@
     {
       "ncr_id": "NCR12096",
       "entity_name": "NovaSource Power Services",
-      "shortest": "NovaSource",
+      "shortest": "NovaSource Svc",
       "short": "NovaSource Power Services",
       "normal": "NovaSource Power Services",
       "tier": "normal"
@@ -14153,7 +14153,7 @@
     {
       "ncr_id": "NCR11642",
       "entity_name": "NRG Energy Services - Golden Spread",
-      "shortest": "NRG",
+      "shortest": "NRG Golden",
       "short": "NRG Golden Spread",
       "normal": "NRG Energy Services Golden Spread",
       "tier": "major"
@@ -14161,7 +14161,7 @@
     {
       "ncr_id": "NCR12371",
       "entity_name": "NRG Energy Services LLC - HCPP",
-      "shortest": "NRG",
+      "shortest": "NRG HCPP",
       "short": "NRG HCPP",
       "normal": "NRG Energy Services HCPP",
       "tier": "major"
@@ -14169,7 +14169,7 @@
     {
       "ncr_id": "NCR11584",
       "entity_name": "NRG Energy Services LLC - Plum Point",
-      "shortest": "NRG",
+      "shortest": "NRG Plum",
       "short": "NRG Plum Point",
       "normal": "NRG Energy Services Plum Point",
       "tier": "major"
@@ -14177,7 +14177,7 @@
     {
       "ncr_id": "NCR12273",
       "entity_name": "NRG Energy Services LLC-Petra Nova",
-      "shortest": "NRG",
+      "shortest": "NRG Petra",
       "short": "NRG Petra Nova",
       "normal": "NRG Energy Services Petra Nova",
       "tier": "major"
@@ -14185,7 +14185,7 @@
     {
       "ncr_id": "NCR11730",
       "entity_name": "NRG Energy Services-Panhandle Wind Ranch (GOP)",
-      "shortest": "NRG",
+      "shortest": "NRG Panhandle",
       "short": "NRG Panhandle Wind",
       "normal": "NRG Energy Services Panhandle Wind Ranch",
       "tier": "major"
@@ -14193,7 +14193,7 @@
     {
       "ncr_id": "NCR11854",
       "entity_name": "NRG Energy Services, LLC - Carlsbad",
-      "shortest": "NRG",
+      "shortest": "NRG Carlsbad",
       "short": "NRG Carlsbad",
       "normal": "NRG Energy Services Carlsbad",
       "tier": "major"
@@ -14201,7 +14201,7 @@
     {
       "ncr_id": "NCR05141",
       "entity_name": "NRG Energy Services, LLC - El Segundo",
-      "shortest": "NRG",
+      "shortest": "NRG El Seg",
       "short": "NRG El Segundo",
       "normal": "NRG Energy Services El Segundo",
       "tier": "major"
@@ -14209,7 +14209,7 @@
     {
       "ncr_id": "NCR11150",
       "entity_name": "NRG Energy Services, LLC - Marsh Landing",
-      "shortest": "NRG",
+      "shortest": "NRG Marsh",
       "short": "NRG Marsh Landing",
       "normal": "NRG Energy Services Marsh Landing",
       "tier": "major"
@@ -14217,7 +14217,7 @@
     {
       "ncr_id": "NCR11148",
       "entity_name": "NRG Energy Services, LLC - Walnut Creek",
-      "shortest": "NRG",
+      "shortest": "NRG Walnut",
       "short": "NRG Walnut Creek",
       "normal": "NRG Energy Services Walnut Creek",
       "tier": "major"
@@ -14225,7 +14225,7 @@
     {
       "ncr_id": "NCR12362",
       "entity_name": "Oak Trail Solar, LLC",
-      "shortest": "Oak Trail",
+      "shortest": "Oak Trail PV",
       "short": "Oak Trail Solar",
       "normal": "Oak Trail Solar",
       "tier": "normal"
@@ -14233,7 +14233,7 @@
     {
       "ncr_id": "NCR13423",
       "entity_name": "Oasis Power Partners",
-      "shortest": "Oasis",
+      "shortest": "Oasis Pwr",
       "short": "Oasis Power Partners",
       "normal": "Oasis Power Partners",
       "tier": "normal"
@@ -14241,7 +14241,7 @@
     {
       "ncr_id": "NCR12032",
       "entity_name": "Oberon Solar IA LLC",
-      "shortest": "Oberon",
+      "shortest": "Oberon PV IA",
       "short": "Oberon Solar IA",
       "normal": "Oberon Solar IA",
       "tier": "normal"
@@ -14257,7 +14257,7 @@
     {
       "ncr_id": "NCR13156",
       "entity_name": "Ocotillo Solar, LLC",
-      "shortest": "Ocotillo",
+      "shortest": "Ocotillo PV",
       "short": "Ocotillo Solar",
       "normal": "Ocotillo Solar",
       "tier": "normal"
@@ -14265,7 +14265,7 @@
     {
       "ncr_id": "NCR12355",
       "entity_name": "Onward Energy ROC LLC",
-      "shortest": "Onward",
+      "shortest": "Onward ROC",
       "short": "Onward Energy ROC",
       "normal": "Onward Energy ROC",
       "tier": "normal"
@@ -14273,7 +14273,7 @@
     {
       "ncr_id": "NCR13201",
       "entity_name": "Orchard Windfarm, LLC",
-      "shortest": "Orchard",
+      "shortest": "Orchard WF",
       "short": "Orchard Windfarm",
       "normal": "Orchard Windfarm",
       "tier": "normal"
@@ -14289,7 +14289,7 @@
     {
       "ncr_id": "NCR13360",
       "entity_name": "Oriana Solar LLC",
-      "shortest": "Oriana",
+      "shortest": "Oriana PV",
       "short": "Oriana Solar",
       "normal": "Oriana Solar",
       "tier": "normal"
@@ -14297,7 +14297,7 @@
     {
       "ncr_id": "NCR13179",
       "entity_name": "Origin Wind Energy LLC",
-      "shortest": "Origin",
+      "shortest": "Origin WF",
       "short": "Origin Wind Energy",
       "normal": "Origin Wind Energy",
       "tier": "normal"
@@ -14305,7 +14305,7 @@
     {
       "ncr_id": "NCR12161",
       "entity_name": "Origis Services, LLC",
-      "shortest": "Origis",
+      "shortest": "Origis Svc",
       "short": "Origis Services",
       "normal": "Origis Services",
       "tier": "normal"
@@ -14313,7 +14313,7 @@
     {
       "ncr_id": "NCR13352",
       "entity_name": "Orion Solar I",
-      "shortest": "Orion",
+      "shortest": "Orion PV1",
       "short": "Orion Solar I",
       "normal": "Orion Solar I",
       "tier": "normal"
@@ -14329,7 +14329,7 @@
     {
       "ncr_id": "NCR13337",
       "entity_name": "Orsted Wind Power North America, LLC",
-      "shortest": "Orsted",
+      "shortest": "Orsted Wind",
       "short": "Orsted Wind Power North America",
       "normal": "Orsted Wind Power North America",
       "tier": "major"
@@ -14337,7 +14337,7 @@
     {
       "ncr_id": "NCR12552",
       "entity_name": "Oxbow Solar Farm 1, LLC",
-      "shortest": "Oxbow",
+      "shortest": "Oxbow PV1",
       "short": "Oxbow Solar Farm 1",
       "normal": "Oxbow Solar Farm 1",
       "tier": "normal"
@@ -14353,7 +14353,7 @@
     {
       "ncr_id": "NCR11979",
       "entity_name": "Palmetto Plains Solar Project, LLC",
-      "shortest": "Palmetto",
+      "shortest": "Palmetto PV",
       "short": "Palmetto Plains Solar",
       "normal": "Palmetto Plains Solar Project",
       "tier": "normal"
@@ -14369,7 +14369,7 @@
     {
       "ncr_id": "NCR12383",
       "entity_name": "Paris Farm Solar, LLC",
-      "shortest": "Eiffel",
+      "shortest": "Eiffel PV",
       "short": "Paris Farm Solar",
       "normal": "Eiffel Solar",
       "tier": "normal"
@@ -14377,7 +14377,7 @@
     {
       "ncr_id": "NCR13270",
       "entity_name": "Parliament Solar, LLC",
-      "shortest": "Parliament",
+      "shortest": "Parliament PV",
       "short": "Parliament Solar",
       "normal": "Parliament Solar",
       "tier": "normal"
@@ -14385,7 +14385,7 @@
     {
       "ncr_id": "NCR13543",
       "entity_name": "Partin Solar, LLC",
-      "shortest": "Partin",
+      "shortest": "Partin PV",
       "short": "Partin Solar",
       "normal": "Partin Solar",
       "tier": "normal"
@@ -14393,7 +14393,7 @@
     {
       "ncr_id": "NCR13526",
       "entity_name": "Pattersonville Solar Facility, LLC",
-      "shortest": "Pattersonville",
+      "shortest": "Patterson PV",
       "short": "Pattersonville Solar",
       "normal": "Pattersonville Solar Facility",
       "tier": "normal"
