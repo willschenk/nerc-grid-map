@@ -6921,7 +6921,7 @@
     {
       "ncr_id": "NCR11974",
       "entity_name": "Palmas Wind, LLC",
-      "shortest": "Palmas",
+      "shortest": "Palmas WF",
       "short": "Palmas Wind",
       "normal": "Palmas Wind",
       "tier": "normal"
@@ -6929,7 +6929,7 @@
     {
       "ncr_id": "NCR13471",
       "entity_name": "Palmer's Creek Wind Farm, LLC",
-      "shortest": "Palmer's",
+      "shortest": "Palmer Crk WF",
       "short": "Palmer's Creek Wind",
       "normal": "Palmer's Creek Wind Farm",
       "tier": "normal"
@@ -6937,7 +6937,7 @@
     {
       "ncr_id": "NCR04138",
       "entity_name": "Paris Generation, LP",
-      "shortest": "Paris",
+      "shortest": "Paris Gen",
       "short": "Paris Generation",
       "normal": "Paris Generation",
       "tier": "normal"
@@ -6993,7 +6993,7 @@
     {
       "ncr_id": "NCR13544",
       "entity_name": "Platinum Energy Storage LLC",
-      "shortest": "Platinum",
+      "shortest": "Platinum ES",
       "short": "Platinum Energy Storage",
       "normal": "Platinum Energy Storage",
       "tier": "normal"
@@ -7001,7 +7001,7 @@
     {
       "ncr_id": "NCR13491",
       "entity_name": "Pleasant Hill Wind Energy LLC",
-      "shortest": "Pleasant Hill",
+      "shortest": "Pleas Hill WF",
       "short": "Pleasant Hill Wind",
       "normal": "Pleasant Hill Wind Energy",
       "tier": "normal"
@@ -7009,7 +7009,7 @@
     {
       "ncr_id": "NCR12030",
       "entity_name": "Plum Creek Wind, LLC",
-      "shortest": "Plum Creek",
+      "shortest": "Plum Crk WF",
       "short": "Plum Creek Wind",
       "normal": "Plum Creek Wind",
       "tier": "normal"
@@ -7033,7 +7033,7 @@
     {
       "ncr_id": "NCR13118",
       "entity_name": "PP Jaguar BESS LLC",
-      "shortest": "Jaguar",
+      "shortest": "Jaguar ES",
       "short": "PP Jaguar BESS",
       "normal": "PP Jaguar BESS",
       "tier": "normal"
@@ -7049,7 +7049,7 @@
     {
       "ncr_id": "NCR11953",
       "entity_name": "Prairie Breeze Wind Energy II LLC",
-      "shortest": "Prairie",
+      "shortest": "Prairie II",
       "short": "Prairie Breeze II",
       "normal": "Prairie Breeze Wind Energy II",
       "tier": "normal"
@@ -7057,7 +7057,7 @@
     {
       "ncr_id": "NCR11954",
       "entity_name": "Prairie Breeze Wind Energy III LLC",
-      "shortest": "Prairie",
+      "shortest": "Prairie III",
       "short": "Prairie Breeze III",
       "normal": "Prairie Breeze Wind Energy III",
       "tier": "normal"
@@ -7065,7 +7065,7 @@
     {
       "ncr_id": "NCR11460",
       "entity_name": "Prairie Breeze Wind Energy LLC",
-      "shortest": "Prairie",
+      "shortest": "Prairie WF",
       "short": "Prairie Breeze Wind",
       "normal": "Prairie Breeze Wind Energy",
       "tier": "normal"
@@ -7073,7 +7073,7 @@
     {
       "ncr_id": "NCR12065",
       "entity_name": "Prairie Hill Wind Project, LLC",
-      "shortest": "Prairie Hill",
+      "shortest": "Prairie Hill WF",
       "short": "Prairie Hill Wind",
       "normal": "Prairie Hill Wind Project",
       "tier": "normal"
@@ -7089,7 +7089,7 @@
     {
       "ncr_id": "NCR13068",
       "entity_name": "Prairie Switch Wind LLC",
-      "shortest": "Prairie Switch",
+      "shortest": "Prairie Sw WF",
       "short": "Prairie Switch Wind",
       "normal": "Prairie Switch Wind",
       "tier": "normal"
@@ -7097,7 +7097,7 @@
     {
       "ncr_id": "NCR12175",
       "entity_name": "Prairie Wolf Solar LLC",
-      "shortest": "Prairie Wolf",
+      "shortest": "Prairie W PV",
       "short": "Prairie Wolf Solar",
       "normal": "Prairie Wolf Solar",
       "tier": "normal"
@@ -7105,7 +7105,7 @@
     {
       "ncr_id": "NCR13480",
       "entity_name": "Prescott Wind Energy LLC",
-      "shortest": "Prescott",
+      "shortest": "Prescott WF",
       "short": "Prescott Wind Energy",
       "normal": "Prescott Wind Energy",
       "tier": "normal"
@@ -7129,7 +7129,7 @@
     {
       "ncr_id": "NCR12234",
       "entity_name": "Rainbow Energy Center, LLC",
-      "shortest": "Rainbow",
+      "shortest": "Rainbow EC",
       "short": "Rainbow Energy Center",
       "normal": "Rainbow Energy Center",
       "tier": "normal"
@@ -7137,7 +7137,7 @@
     {
       "ncr_id": "NCR11947",
       "entity_name": "Ranchero Wind Farm, LLC",
-      "shortest": "Ranchero",
+      "shortest": "Ranchero WF",
       "short": "Ranchero Wind Farm",
       "normal": "Ranchero Wind Farm",
       "tier": "normal"
@@ -7145,7 +7145,7 @@
     {
       "ncr_id": "NCR11838",
       "entity_name": "Rattlesnake Power, LLC",
-      "shortest": "Rattlesnake",
+      "shortest": "Rattlesnk Pwr",
       "short": "Rattlesnake Power",
       "normal": "Rattlesnake Power",
       "tier": "normal"
@@ -7153,7 +7153,7 @@
     {
       "ncr_id": "NCR11547",
       "entity_name": "Rattlesnake Wind I LLC",
-      "shortest": "Rattlesnake",
+      "shortest": "Rattlesnk WF1",
       "short": "Rattlesnake Wind I",
       "normal": "Rattlesnake Wind I",
       "tier": "normal"
@@ -7177,7 +7177,7 @@
     {
       "ncr_id": "NCR13355",
       "entity_name": "Record Hill Wind LLC",
-      "shortest": "Record Hill",
+      "shortest": "Record Hill WF",
       "short": "Record Hill Wind",
       "normal": "Record Hill Wind",
       "tier": "normal"
@@ -7193,7 +7193,7 @@
     {
       "ncr_id": "NCR10304",
       "entity_name": "Red Hills Wind Project, L.L.C.",
-      "shortest": "Red Hills",
+      "shortest": "Red Hills WF",
       "short": "Red Hills Wind",
       "normal": "Red Hills Wind Project",
       "tier": "normal"
@@ -7201,7 +7201,7 @@
     {
       "ncr_id": "NCR12490",
       "entity_name": "Red Tailed Hawk Solar LLC",
-      "shortest": "RTH Solar",
+      "shortest": "RTH PV",
       "short": "Red Tailed Hawk Solar",
       "normal": "Red Tailed Hawk Solar",
       "tier": "normal"
@@ -7209,7 +7209,7 @@
     {
       "ncr_id": "NCR11514",
       "entity_name": "ReEnergy Livermore Falls",
-      "shortest": "ReEnergy",
+      "shortest": "RE Livermre",
       "short": "ReEnergy Livermore Falls",
       "normal": "ReEnergy Livermore Falls",
       "tier": "normal"
@@ -7217,7 +7217,7 @@
     {
       "ncr_id": "NCR10352",
       "entity_name": "ReEnergy Stratton",
-      "shortest": "ReEnergy",
+      "shortest": "RE Stratton",
       "short": "ReEnergy Stratton",
       "normal": "ReEnergy Stratton",
       "tier": "normal"
@@ -7225,7 +7225,7 @@
     {
       "ncr_id": "NCR10371",
       "entity_name": "Rensselaer Generating LLC",
-      "shortest": "Rensselaer",
+      "shortest": "Rensselaer Gen",
       "short": "Rensselaer Generating",
       "normal": "Rensselaer Generating",
       "tier": "normal"
