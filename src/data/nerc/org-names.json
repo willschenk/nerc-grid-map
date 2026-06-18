@@ -43,7 +43,7 @@
     {
       "ncr_id": "NCR-SEED-020",
       "entity_name": "Duke Energy Carolinas, LLC",
-      "shortest": "DEC",
+      "shortest": "DUK",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
       "tier": "major"
@@ -83,7 +83,7 @@
     {
       "ncr_id": "NCR-SEED-028",
       "entity_name": "Duke Energy Florida, LLC",
-      "shortest": "Duke",
+      "shortest": "FPC",
       "short": "Duke Energy Florida",
       "normal": "Duke Energy Florida, LLC",
       "tier": "major"
@@ -409,7 +409,7 @@
     {
       "ncr_id": "NCR01320",
       "entity_name": "Southern Company Services, Inc. - Trans",
-      "shortest": "SCS",
+      "shortest": "SOCO",
       "short": "Southern Company Services - Trans",
       "normal": "Southern Company Services - Trans",
       "tier": "major"
@@ -441,7 +441,7 @@
     {
       "ncr_id": "NCR00915",
       "entity_name": "Dominion Energy South Carolina, Inc.",
-      "shortest": "DESC",
+      "shortest": "SCEG",
       "short": "Dominion Energy South Carolina",
       "normal": "Dominion Energy South Carolina, Inc.",
       "tier": "major"
@@ -497,7 +497,7 @@
     {
       "ncr_id": "NCR00068",
       "entity_name": "Seminole Electric Cooperative",
-      "shortest": "Seminole",
+      "shortest": "SEC",
       "short": "Seminole Electric",
       "normal": "Seminole Electric Cooperative",
       "tier": "major"
@@ -505,7 +505,7 @@
     {
       "ncr_id": "NCR01312",
       "entity_name": "South Carolina Public Service Authority",
-      "shortest": "Santee",
+      "shortest": "SC",
       "short": "Santee Cooper",
       "normal": "Santee Cooper",
       "tier": "major"
@@ -609,7 +609,7 @@
     {
       "ncr_id": "NCR01083",
       "entity_name": "Cleco Corporate Holdings LLC",
-      "shortest": "Cleco",
+      "shortest": "CLEC",
       "short": "Cleco",
       "normal": "Cleco",
       "tier": "normal"
@@ -617,7 +617,7 @@
     {
       "ncr_id": "NCR01315",
       "entity_name": "Cooperative Energy",
-      "shortest": "Cooperative",
+      "shortest": "SME",
       "short": "Cooperative Energy",
       "normal": "Cooperative Energy",
       "tier": "normal"
@@ -1009,7 +1009,7 @@
     {
       "ncr_id": "NCR00962",
       "entity_name": "Alliant Energy - West",
-      "shortest": "WPL",
+      "shortest": "ALTW",
       "short": "Alliant Energy West",
       "normal": "Alliant Energy",
       "tier": "normal"
@@ -1489,7 +1489,7 @@
     {
       "ncr_id": "NCR01142",
       "entity_name": "Sikeston Board Of Municipal Utilities",
-      "shortest": "Sikeston",
+      "shortest": "SBMU",
       "short": "Sikeston Municipal Utilities",
       "normal": "Sikeston Board of Municipal Utilities",
       "tier": "normal"
@@ -1537,7 +1537,7 @@
     {
       "ncr_id": "NCR11916",
       "entity_name": "City of Henderson, KY, Utility Commission, DBA Henderson Municipal Power & Light",
-      "shortest": "HMP&L",
+      "shortest": "HMPL",
       "short": "Henderson Municipal Power & Light",
       "normal": "Henderson Municipal Power & Light",
       "tier": "normal"
@@ -1777,7 +1777,7 @@
     {
       "ncr_id": "NCR01254",
       "entity_name": "Henderson Municipal Power & Light",
-      "shortest": "HMP&L",
+      "shortest": "HMPL",
       "short": "Henderson Municipal Power & Light",
       "normal": "Henderson Municipal Power & Light",
       "tier": "normal"
@@ -2369,7 +2369,7 @@
     {
       "ncr_id": "NCR01319",
       "entity_name": "Southern Company Services, Inc. - Gen",
-      "shortest": "SCS",
+      "shortest": "SOCO",
       "short": "Southern Company Services - Gen",
       "normal": "Southern Company Services - Gen",
       "tier": "major"
@@ -8121,7 +8121,7 @@
     {
       "ncr_id": "NCR00748",
       "entity_name": "The Dayton Power and Light Company d/b/a AES Ohio",
-      "shortest": "AES Ohio",
+      "shortest": "DAY",
       "short": "AES Ohio",
       "normal": "AES Ohio",
       "tier": "major"
@@ -9857,7 +9857,7 @@
     {
       "ncr_id": "NCR11286",
       "entity_name": "Brookfield Smoky Mountain Hydropower LLC",
-      "shortest": "Brookfield",
+      "shortest": "BSMH",
       "short": "Smoky Mountain Hydro",
       "normal": "Brookfield Smoky Mountain Hydropower",
       "tier": "major"
@@ -10481,7 +10481,7 @@
     {
       "ncr_id": "NCR13099",
       "entity_name": "Cleco Power LLC",
-      "shortest": "Cleco",
+      "shortest": "CLEC",
       "short": "Cleco Power",
       "normal": "Cleco Power",
       "tier": "major"
@@ -16073,7 +16073,7 @@
     {
       "ncr_id": "NCR01219",
       "entity_name": "Duke Energy Carolinas, LLC",
-      "shortest": "DEC",
+      "shortest": "DUK",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
       "tier": "major"
@@ -16124,7 +16124,7 @@
     {
       "ncr_id": "NCR00063",
       "entity_name": "Duke Energy Florida, LLC",
-      "shortest": "Duke",
+      "shortest": "FPC",
       "short": "Duke Energy Florida",
       "normal": "Duke Energy Florida, LLC",
       "tier": "major"
@@ -18209,7 +18209,7 @@
     {
       "ncr_id": "NCR-SEED-024",
       "entity_name": "Southern Company Services, Inc.",
-      "shortest": "Southern Co.",
+      "shortest": "SOCO",
       "short": "Southern Company Services",
       "normal": "Southern Company Services, Inc.",
       "tier": "major"
