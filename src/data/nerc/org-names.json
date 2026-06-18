@@ -2529,7 +2529,7 @@
     {
       "ncr_id": "NCR11387",
       "entity_name": "Allegany Generating Station LLC",
-      "shortest": "Allegany",
+      "shortest": "Allegany GS",
       "short": "Allegany Generating Station",
       "normal": "Allegany Generating Station",
       "tier": "normal"
@@ -2609,7 +2609,7 @@
     {
       "ncr_id": "NCR12103",
       "entity_name": "Anson Solar Center, LLC",
-      "shortest": "Anson",
+      "shortest": "Anson PV",
       "short": "Anson Solar Center",
       "normal": "Anson Solar Center",
       "tier": "normal"
@@ -2761,7 +2761,7 @@
     {
       "ncr_id": "NCR12409",
       "entity_name": "Ball Hill Wind, LLC",
-      "shortest": "Ball Hill",
+      "shortest": "Ball Hill WF",
       "short": "Ball Hill Wind",
       "normal": "Ball Hill Wind",
       "tier": "normal"
@@ -2969,7 +2969,7 @@
     {
       "ncr_id": "NCR13290",
       "entity_name": "BirdDog Solar, LLC",
-      "shortest": "BirdDog",
+      "shortest": "BirdDog PV",
       "short": "BirdDog Solar",
       "normal": "BirdDog Solar",
       "tier": "normal"
@@ -3017,7 +3017,7 @@
     {
       "ncr_id": "NCR13187",
       "entity_name": "Black Oak Wind, LLC",
-      "shortest": "Black Oak",
+      "shortest": "Black Oak WF",
       "short": "Black Oak Wind",
       "normal": "Black Oak Wind",
       "tier": "normal"
@@ -3025,7 +3025,7 @@
     {
       "ncr_id": "NCR13006",
       "entity_name": "Blackwater Solar, LLC",
-      "shortest": "Blackwater",
+      "shortest": "Blackwtr PV",
       "short": "Blackwater Solar",
       "normal": "Blackwater Solar",
       "tier": "normal"
@@ -3049,7 +3049,7 @@
     {
       "ncr_id": "NCR11886",
       "entity_name": "Blue Cloud Wind Energy, LLC",
-      "shortest": "Blue Cloud",
+      "shortest": "Blue Cloud WF",
       "short": "Blue Cloud Wind Energy",
       "normal": "Blue Cloud Wind Energy",
       "tier": "normal"
@@ -3057,7 +3057,7 @@
     {
       "ncr_id": "NCR12277",
       "entity_name": "Blue Hill Wind Energy",
-      "shortest": "Blue Hill",
+      "shortest": "Blue Hill WF",
       "short": "Blue Hill Wind Energy",
       "normal": "Blue Hill Wind Energy",
       "tier": "normal"
@@ -3065,7 +3065,7 @@
     {
       "ncr_id": "NCR13297",
       "entity_name": "Bluestone Farm Solar, LLC",
-      "shortest": "Bluestone",
+      "shortest": "Bluestn PV",
       "short": "Bluestone Farm Solar",
       "normal": "Bluestone Farm Solar",
       "tier": "normal"
@@ -3273,7 +3273,7 @@
     {
       "ncr_id": "NCR13405",
       "entity_name": "Buckleberry Solar, LLC",
-      "shortest": "Buckleberry",
+      "shortest": "Bucklbr PV",
       "short": "Buckleberry Solar",
       "normal": "Buckleberry Solar",
       "tier": "normal"
@@ -3401,7 +3401,7 @@
     {
       "ncr_id": "NCR11986",
       "entity_name": "Camilla Solar Energy LLC",
-      "shortest": "Camilla",
+      "shortest": "Camilla PV",
       "short": "Camilla Solar Energy",
       "normal": "Camilla Solar Energy",
       "tier": "normal"
@@ -4177,7 +4177,7 @@
     {
       "ncr_id": "NCR11750",
       "entity_name": "Dermott Wind, LLC",
-      "shortest": "Dermott",
+      "shortest": "Dermott WF",
       "short": "Dermott Wind",
       "normal": "Dermott Wind",
       "tier": "normal"
@@ -4321,7 +4321,7 @@
     {
       "ncr_id": "NCR11992",
       "entity_name": "East Fork Wind Project, LLC",
-      "shortest": "East Fork",
+      "shortest": "East Fork WF",
       "short": "East Fork Wind",
       "normal": "East Fork Wind Project",
       "tier": "normal"
@@ -4641,7 +4641,7 @@
     {
       "ncr_id": "NCR10312",
       "entity_name": "Flat Ridge Wind Energy, LLC",
-      "shortest": "Flat Ridge",
+      "shortest": "Flat Rdg WF",
       "short": "Flat Ridge Wind",
       "normal": "Flat Ridge Wind Energy",
       "tier": "normal"
@@ -4657,7 +4657,7 @@
     {
       "ncr_id": "NCR13235",
       "entity_name": "Flat Water Wind Farm LLC",
-      "shortest": "Flat Water",
+      "shortest": "Flat Water WF",
       "short": "Flat Water Wind",
       "normal": "Flat Water Wind Farm",
       "tier": "normal"
@@ -4929,7 +4929,7 @@
     {
       "ncr_id": "NCR12217",
       "entity_name": "Golden South Wind LP",
-      "shortest": "Golden South",
+      "shortest": "Golden S WF",
       "short": "Golden South Wind",
       "normal": "Golden South Wind",
       "tier": "normal"
@@ -4993,7 +4993,7 @@
     {
       "ncr_id": "NCR11682",
       "entity_name": "Grande Prairie Wind, LLC",
-      "shortest": "Grande Prairie",
+      "shortest": "Grande Pr WF",
       "short": "Grande Prairie Wind",
       "normal": "Grande Prairie Wind",
       "tier": "normal"
@@ -5241,7 +5241,7 @@
     {
       "ncr_id": "NCR12053",
       "entity_name": "Heart of Texas Wind, LLC",
-      "shortest": "HoT",
+      "shortest": "HoT WF",
       "short": "Heart of Texas Wind",
       "normal": "Heart of Texas Wind",
       "tier": "normal"
@@ -5297,7 +5297,7 @@
     {
       "ncr_id": "NCR12384",
       "entity_name": "High Point Solar LLC",
-      "shortest": "High Point",
+      "shortest": "High Pt PV",
       "short": "High Point Solar",
       "normal": "High Point Solar",
       "tier": "normal"
@@ -5457,7 +5457,7 @@
     {
       "ncr_id": "NCR04082",
       "entity_name": "Ingleside Cogeneration, LP",
-      "shortest": "Ingleside",
+      "shortest": "Ingleside Cogen",
       "short": "Ingleside Cogeneration",
       "normal": "Ingleside Cogeneration",
       "tier": "normal"
@@ -5497,7 +5497,7 @@
     {
       "ncr_id": "NCR12191",
       "entity_name": "Iron Star Wind Project, LLC",
-      "shortest": "Iron Star",
+      "shortest": "Iron Star WF",
       "short": "Iron Star Wind",
       "normal": "Iron Star Wind Project",
       "tier": "normal"
@@ -5545,7 +5545,7 @@
     {
       "ncr_id": "NCR12338",
       "entity_name": "Johnson County Power, LLC",
-      "shortest": "Johnson",
+      "shortest": "Johnson Cnty",
       "short": "Johnson County Power",
       "normal": "Johnson County Power",
       "tier": "normal"
@@ -5577,7 +5577,7 @@
     {
       "ncr_id": "NCR11497",
       "entity_name": "Keechi Wind, LLC",
-      "shortest": "Keechi",
+      "shortest": "Keechi WF",
       "short": "Keechi Wind",
       "normal": "Keechi Wind",
       "tier": "normal"
@@ -5713,7 +5713,7 @@
     {
       "ncr_id": "NCR00168",
       "entity_name": "Lakewood Cogeneration, LP",
-      "shortest": "Lakewood",
+      "shortest": "Lakewood Cogen",
       "short": "Lakewood Cogeneration",
       "normal": "Lakewood Cogeneration",
       "tier": "normal"
@@ -5969,7 +5969,7 @@
     {
       "ncr_id": "NCR12506",
       "entity_name": "Mammoth North, LLC",
-      "shortest": "Mammoth",
+      "shortest": "Mammoth N",
       "short": "Mammoth North Solar",
       "normal": "Mammoth North Solar",
       "tier": "normal"
@@ -6361,7 +6361,7 @@
     {
       "ncr_id": "NCR11261",
       "entity_name": "Mustang Hills, LLC",
-      "shortest": "Mustang",
+      "shortest": "Mustang Hills",
       "short": "Mustang Hills",
       "normal": "Mustang Hills",
       "tier": "normal"
@@ -6897,7 +6897,7 @@
     {
       "ncr_id": "NCR10396",
       "entity_name": "Otay Mesa Energy Center, LLC",
-      "shortest": "Otay Mesa",
+      "shortest": "Otay Mesa EC",
       "short": "Otay Mesa Energy Center",
       "normal": "Otay Mesa Energy Center",
       "tier": "normal"
@@ -8401,7 +8401,7 @@
     {
       "ncr_id": "NCR11890",
       "entity_name": "Walnut Ridge Wind, LLC",
-      "shortest": "Walnut Ridge",
+      "shortest": "Walnut WF",
       "short": "Walnut Ridge Wind",
       "normal": "Walnut Ridge Wind",
       "tier": "normal"
@@ -8545,7 +8545,7 @@
     {
       "ncr_id": "NCR13303",
       "entity_name": "Whitehorn Solar LLC",
-      "shortest": "Whitehorn",
+      "shortest": "Whitehrn PV",
       "short": "Whitehorn Solar",
       "normal": "Whitehorn Solar",
       "tier": "normal"
@@ -8617,7 +8617,7 @@
     {
       "ncr_id": "NCR13432",
       "entity_name": "Wolfskin Solar, LLC",
-      "shortest": "Wolfskin",
+      "shortest": "Wolfskin PV",
       "short": "Wolfskin Solar",
       "normal": "Wolfskin Solar",
       "tier": "normal"
@@ -8641,7 +8641,7 @@
     {
       "ncr_id": "NCR12326",
       "entity_name": "Yellowbud Solar, LLC",
-      "shortest": "Yellowbud",
+      "shortest": "Yellowbd PV",
       "short": "Yellowbud Solar",
       "normal": "Yellowbud Solar",
       "tier": "normal"
@@ -9001,7 +9001,7 @@
     {
       "ncr_id": "NCR13438",
       "entity_name": "Altona Solar, LLC",
-      "shortest": "Altona",
+      "shortest": "Altona PV",
       "short": "Altona Solar",
       "normal": "Altona Solar",
       "tier": "normal"
@@ -9033,7 +9033,7 @@
     {
       "ncr_id": "NCR13380",
       "entity_name": "American Beech Solar, LLC",
-      "shortest": "Beech",
+      "shortest": "Beech PV",
       "short": "American Beech Solar",
       "normal": "American Beech Solar",
       "tier": "normal"
@@ -9065,7 +9065,7 @@
     {
       "ncr_id": "NCR13047",
       "entity_name": "Angelo Solar, LLC",
-      "shortest": "Angelo",
+      "shortest": "Angelo PV",
       "short": "Angelo Solar",
       "normal": "Angelo Solar",
       "tier": "normal"
@@ -9073,7 +9073,7 @@
     {
       "ncr_id": "NCR13085",
       "entity_name": "Angelo Storage, LLC",
-      "shortest": "Angelo",
+      "shortest": "Angelo ES",
       "short": "Angelo Storage",
       "normal": "Angelo Storage",
       "tier": "normal"
@@ -9097,7 +9097,7 @@
     {
       "ncr_id": "NCR13472",
       "entity_name": "AP Solar 2, LLC",
-      "shortest": "AP Solar",
+      "shortest": "AP PV 2",
       "short": "AP Solar 2",
       "normal": "AP Solar 2",
       "tier": "normal"
@@ -9169,7 +9169,7 @@
     {
       "ncr_id": "NCR13079",
       "entity_name": "Ash Creek Solar LLC",
-      "shortest": "Ash Creek",
+      "shortest": "Ash Crk PV",
       "short": "Ash Creek Solar",
       "normal": "Ash Creek Solar",
       "tier": "normal"
@@ -9361,7 +9361,7 @@
     {
       "ncr_id": "NCR13151",
       "entity_name": "Barilla Solar",
-      "shortest": "Barilla",
+      "shortest": "Barilla PV",
       "short": "Barilla Solar",
       "normal": "Barilla Solar",
       "tier": "normal"
@@ -9369,7 +9369,7 @@
     {
       "ncr_id": "NCR13547",
       "entity_name": "Barrett Solar Project LLC",
-      "shortest": "Barrett",
+      "shortest": "Barrett PV",
       "short": "Barrett Solar",
       "normal": "Barrett Solar Project",
       "tier": "normal"
@@ -9393,7 +9393,7 @@
     {
       "ncr_id": "NCR13556",
       "entity_name": "Bay Tree Solar, LLC",
-      "shortest": "Bay Tree",
+      "shortest": "Bay Tree PV",
       "short": "Bay Tree Solar",
       "normal": "Bay Tree Solar",
       "tier": "normal"
@@ -9481,7 +9481,7 @@
     {
       "ncr_id": "NCR12236",
       "entity_name": "Beulah Solar, LLC",
-      "shortest": "Beulah",
+      "shortest": "Beulah PV",
       "short": "Beulah Solar",
       "normal": "Beulah Solar",
       "tier": "normal"
@@ -9521,7 +9521,7 @@
     {
       "ncr_id": "NCR12260",
       "entity_name": "Big River Solar, LLC",
-      "shortest": "BRS",
+      "shortest": "Big Riv PV",
       "short": "Big River Solar",
       "normal": "Big River Solar",
       "tier": "normal"
@@ -9609,7 +9609,7 @@
     {
       "ncr_id": "NCR13466",
       "entity_name": "Bladen Solar, LLC",
-      "shortest": "Bladen",
+      "shortest": "Bladen PV",
       "short": "Bladen Solar",
       "normal": "Bladen Solar",
       "tier": "normal"
@@ -9625,7 +9625,7 @@
     {
       "ncr_id": "NCR13054",
       "entity_name": "Blue Bird Solar, LLC",
-      "shortest": "Blue Bird",
+      "shortest": "BlueBird PV",
       "short": "Blue Bird Solar",
       "normal": "Blue Bird Solar",
       "tier": "normal"
@@ -9649,7 +9649,7 @@
     {
       "ncr_id": "NCR13437",
       "entity_name": "Bluebird Solar LLC",
-      "shortest": "Bluebird",
+      "shortest": "Bluebird PV",
       "short": "Bluebird Solar",
       "normal": "Bluebird Solar",
       "tier": "normal"
@@ -9961,7 +9961,7 @@
     {
       "ncr_id": "NCR12439",
       "entity_name": "Bulldog Solar, LLC",
-      "shortest": "Bulldog",
+      "shortest": "Bulldog PV",
       "short": "Bulldog Solar",
       "normal": "Bulldog Solar",
       "tier": "normal"
@@ -9969,7 +9969,7 @@
     {
       "ncr_id": "NCR13467",
       "entity_name": "Bullock Solar, LLC",
-      "shortest": "Bullock",
+      "shortest": "Bullock PV",
       "short": "Bullock Solar",
       "normal": "Bullock Solar",
       "tier": "normal"
@@ -10017,7 +10017,7 @@
     {
       "ncr_id": "NCR12307",
       "entity_name": "Cabin Creek Solar, LLC",
-      "shortest": "Cabin Creek",
+      "shortest": "Cabin Cr PV",
       "short": "Cabin Creek Solar",
       "normal": "Cabin Creek Solar",
       "tier": "normal"
@@ -10065,7 +10065,7 @@
     {
       "ncr_id": "NCR12457",
       "entity_name": "Cane Creek Solar, LLC",
-      "shortest": "Cane Creek",
+      "shortest": "Cane Cr PV",
       "short": "Cane Creek Solar",
       "normal": "Cane Creek Solar",
       "tier": "normal"
@@ -10529,7 +10529,7 @@
     {
       "ncr_id": "NCR13258",
       "entity_name": "Coldwater River Solar, LLC",
-      "shortest": "Coldwater",
+      "shortest": "Coldwtr PV",
       "short": "Coldwater River Solar",
       "normal": "Coldwater River Solar",
       "tier": "normal"
@@ -10689,7 +10689,7 @@
     {
       "ncr_id": "NCR13489",
       "entity_name": "Cottontail Solar 1, LLC",
-      "shortest": "Cottontail 1",
+      "shortest": "Cotntl PV1",
       "short": "Cottontail Solar 1",
       "normal": "Cottontail Solar 1",
       "tier": "normal"
@@ -10697,7 +10697,7 @@
     {
       "ncr_id": "NCR13488",
       "entity_name": "Cottontail Solar 2, LLC",
-      "shortest": "Cottontail 2",
+      "shortest": "Cotntl PV2",
       "short": "Cottontail Solar 2",
       "normal": "Cottontail Solar 2",
       "tier": "normal"
@@ -10705,7 +10705,7 @@
     {
       "ncr_id": "NCR13486",
       "entity_name": "Cottontail Solar 4, LLC",
-      "shortest": "Cottontail 4",
+      "shortest": "Cotntl PV4",
       "short": "Cottontail Solar 4",
       "normal": "Cottontail Solar 4",
       "tier": "normal"
@@ -10713,7 +10713,7 @@
     {
       "ncr_id": "NCR13484",
       "entity_name": "Cottontail Solar 5, LLC",
-      "shortest": "Cottontail 5",
+      "shortest": "Cotntl PV5",
       "short": "Cottontail Solar 5",
       "normal": "Cottontail Solar 5",
       "tier": "normal"
@@ -10721,7 +10721,7 @@
     {
       "ncr_id": "NCR13487",
       "entity_name": "Cottontail Solar 6, LLC",
-      "shortest": "Cottontail 6",
+      "shortest": "Cotntl PV6",
       "short": "Cottontail Solar 6",
       "normal": "Cottontail Solar 6",
       "tier": "normal"
@@ -10729,7 +10729,7 @@
     {
       "ncr_id": "NCR13485",
       "entity_name": "Cottontail Solar 8, LLC",
-      "shortest": "Cottontail 8",
+      "shortest": "Cotntl PV8",
       "short": "Cottontail Solar 8",
       "normal": "Cottontail Solar 8",
       "tier": "normal"
@@ -15737,7 +15737,7 @@
     {
       "ncr_id": "NCR13402",
       "entity_name": "Virginia Line Solar, LLC",
-      "shortest": "VA Line",
+      "shortest": "VA Line PV",
       "short": "Virginia Line Solar",
       "normal": "Virginia Line Solar",
       "tier": "normal"
@@ -15849,7 +15849,7 @@
     {
       "ncr_id": "NCR13102",
       "entity_name": "Wheatsborough Solar, LLC",
-      "shortest": "Wheatsboro",
+      "shortest": "Wheats PV",
       "short": "Wheatsborough Solar",
       "normal": "Wheatsborough Solar",
       "tier": "normal"
@@ -15857,7 +15857,7 @@
     {
       "ncr_id": "NCR13413",
       "entity_name": "White Tail Solar, LLC",
-      "shortest": "White Tail",
+      "shortest": "W Tail PV",
       "short": "White Tail Solar",
       "normal": "White Tail Solar",
       "tier": "normal"
@@ -15873,7 +15873,7 @@
     {
       "ncr_id": "NCR12570",
       "entity_name": "Wildflower Solar LLC",
-      "shortest": "Wildflower",
+      "shortest": "Wildflwr PV",
       "short": "Wildflower Solar",
       "normal": "Wildflower Solar",
       "tier": "normal"
@@ -15889,7 +15889,7 @@
     {
       "ncr_id": "NCR13320",
       "entity_name": "Wind Park Bear Creek",
-      "shortest": "Bear Creek",
+      "shortest": "Bear Crk WF",
       "short": "Wind Park Bear Creek",
       "normal": "Wind Park Bear Creek",
       "tier": "normal"
@@ -15897,7 +15897,7 @@
     {
       "ncr_id": "NCR13059",
       "entity_name": "Winfield Solar I LLC",
-      "shortest": "Winfield",
+      "shortest": "Winfield PV",
       "short": "Winfield Solar I",
       "normal": "Winfield Solar I",
       "tier": "normal"
