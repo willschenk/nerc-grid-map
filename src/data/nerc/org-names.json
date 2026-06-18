@@ -18463,6 +18463,28 @@
       "shortest_type": "acronym",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.seattle.gov/city-light"
+    },
+    {
+      "ncr_id": "SUP-duke-energy-ohio-kentucky",
+      "entity_name": "Duke Energy Ohio-Kentucky",
+      "shortest": "DEOK",
+      "short": "Duke Energy Ohio-Kentucky",
+      "normal": "Duke Energy Ohio-Kentucky",
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.pjm.com/-/media/markets-ops/energy/lmp-model-info/zones-and-hubs.ashx"
+    },
+    {
+      "ncr_id": "SUP-ameren-illinois",
+      "entity_name": "Ameren Illinois",
+      "shortest": "AMIL",
+      "short": "Ameren Illinois",
+      "normal": "Ameren Illinois",
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.misoenergy.org/markets-and-operations/"
     }
   ]
 }
