@@ -3240,8 +3240,11 @@ export function mountNercOrgMap(): void {
       if (allowBackground) {
         // Background fallback: at the anchor, allowed to sit under bubbles but
         // never on other text. Reserved so other geo labels still avoid it.
+        // Skip if a bubble (opaque) fully covers the box — it would be invisible,
+        // so placing it only wastes a slot and blocks a later label.
         const box = boxAt(baseSx, baseSy);
-        if (box && !placeBlockers.some((q) => boxesOverlap(box, q))) {
+        const buried = (q: Box) => q.x0 <= box!.x0 && q.x1 >= box!.x1 && q.y0 <= box!.y0 && q.y1 >= box!.y1;
+        if (box && !placeBlockers.some((q) => boxesOverlap(box, q)) && !bubbleBoxes.some(buried)) {
           placeBlockers.push(box);
           return { x: baseSx, y: baseSy, bg: true };
         }

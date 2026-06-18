@@ -396,6 +396,24 @@
   box-shadow: 0 10px 24px rgba(20, 31, 28, 0.12);
 }
 
+/* Idle chrome recedes so it doesn't compete with the map, then returns to full
+   strength on hover or keyboard focus. Pointer devices only: touch users have no
+   hover to reveal it, so for them it always stays legible. */
+@media (hover: hover) {
+  .nerc-topbar,
+  .nerc-zoom-controls {
+    opacity: 0.6;
+    transition: opacity 240ms ease;
+  }
+
+  .nerc-topbar:hover,
+  .nerc-topbar:focus-within,
+  .nerc-zoom-controls:hover,
+  .nerc-zoom-controls:focus-within {
+    opacity: 1;
+  }
+}
+
 .nerc-brand {
   min-width: 0;
 }
