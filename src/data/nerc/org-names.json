@@ -11649,7 +11649,7 @@
     {
       "ncr_id": "NCR13177",
       "entity_name": "Goodwell Wind Project LLC",
-      "shortest": "Goodwell",
+      "shortest": "Goodwell WF",
       "short": "Goodwell Wind",
       "normal": "Goodwell Wind Project",
       "tier": "normal"
@@ -11657,7 +11657,7 @@
     {
       "ncr_id": "NCR13019",
       "entity_name": "Goose Prairie Solar LLC",
-      "shortest": "Goose Prairie",
+      "shortest": "Goose Pr PV",
       "short": "Goose Prairie Solar",
       "normal": "Goose Prairie Solar",
       "tier": "normal"
@@ -11665,7 +11665,7 @@
     {
       "ncr_id": "NCR13210",
       "entity_name": "Grand View PV Solar Two, LLC",
-      "shortest": "Grand View II",
+      "shortest": "Grand View PV2",
       "short": "Grand View PV Solar Two",
       "normal": "Grand View PV Solar Two",
       "tier": "normal"
@@ -11673,7 +11673,7 @@
     {
       "ncr_id": "NCR07102",
       "entity_name": "Granite State Electric Company",
-      "shortest": "Liberty",
+      "shortest": "Liberty NH",
       "short": "Liberty Utilities New Hampshire",
       "normal": "Granite State Electric Company",
       "tier": "normal"
@@ -11681,7 +11681,7 @@
     {
       "ncr_id": "NCR13419",
       "entity_name": "Gransolar Texas One, LLC",
-      "shortest": "Gransolar",
+      "shortest": "Gransolar TX",
       "short": "Gransolar Texas One",
       "normal": "Gransolar Texas One",
       "tier": "normal"
@@ -11689,7 +11689,7 @@
     {
       "ncr_id": "NCR12254",
       "entity_name": "Graphite Solar I, LLC",
-      "shortest": "Graphite",
+      "shortest": "Graphite PV1",
       "short": "Graphite Solar I",
       "normal": "Graphite Solar I",
       "tier": "normal"
@@ -11697,7 +11697,7 @@
     {
       "ncr_id": "NCR13146",
       "entity_name": "Gravel Pit Solar, LLC",
-      "shortest": "Gravel Pit",
+      "shortest": "Gravel Pit PV",
       "short": "Gravel Pit Solar",
       "normal": "Gravel Pit Solar",
       "tier": "normal"
@@ -11705,7 +11705,7 @@
     {
       "ncr_id": "NCR13191",
       "entity_name": "Gray Hawk Solar, LLC",
-      "shortest": "Gray Hawk",
+      "shortest": "Gray Hawk PV",
       "short": "Gray Hawk Solar",
       "normal": "Gray Hawk Solar",
       "tier": "normal"
@@ -11713,7 +11713,7 @@
     {
       "ncr_id": "NCR12542",
       "entity_name": "Greasewood II LLC",
-      "shortest": "Greasewood",
+      "shortest": "Greasewd II",
       "short": "Greasewood II",
       "normal": "Greasewood II",
       "tier": "normal"
@@ -11721,7 +11721,7 @@
     {
       "ncr_id": "NCR13350",
       "entity_name": "Great Bend Solar, LLC",
-      "shortest": "Great Bend",
+      "shortest": "Great Bend PV",
       "short": "Great Bend Solar",
       "normal": "Great Bend Solar",
       "tier": "normal"
@@ -11729,7 +11729,7 @@
     {
       "ncr_id": "NCR12561",
       "entity_name": "Great Kiskadee Storage, LLC",
-      "shortest": "Kiskadee",
+      "shortest": "Kiskadee ES",
       "short": "Great Kiskadee Storage",
       "normal": "Great Kiskadee Storage",
       "tier": "normal"
@@ -11745,7 +11745,7 @@
     {
       "ncr_id": "NCR11687",
       "entity_name": "Great Western Wind Energy, LLC",
-      "shortest": "Great Western",
+      "shortest": "Great West WF",
       "short": "Great Western Wind Energy",
       "normal": "Great Western Wind Energy",
       "tier": "normal"
@@ -11769,7 +11769,7 @@
     {
       "ncr_id": "NCR13358",
       "entity_name": "Grimes County Solar Project, LLC",
-      "shortest": "Grimes",
+      "shortest": "Grimes PV",
       "short": "Grimes County Solar",
       "normal": "Grimes County Solar Project",
       "tier": "normal"
@@ -11777,7 +11777,7 @@
     {
       "ncr_id": "NCR13525",
       "entity_name": "Grissom Solar, LLC",
-      "shortest": "Grissom",
+      "shortest": "Grissom PV",
       "short": "Grissom Solar",
       "normal": "Grissom Solar",
       "tier": "normal"
@@ -11785,7 +11785,7 @@
     {
       "ncr_id": "NCR13521",
       "entity_name": "Grizzly Ridge Solar, LLC",
-      "shortest": "Grizzly Ridge",
+      "shortest": "Grizzly PV",
       "short": "Grizzly Ridge Solar",
       "normal": "Grizzly Ridge Solar",
       "tier": "normal"
@@ -11793,7 +11793,7 @@
     {
       "ncr_id": "NCR13318",
       "entity_name": "Guajillo Energy Storage, LLC",
-      "shortest": "Guajillo",
+      "shortest": "Guajillo ES",
       "short": "Guajillo Energy Storage",
       "normal": "Guajillo Energy Storage",
       "tier": "normal"
@@ -11825,7 +11825,7 @@
     {
       "ncr_id": "NCR12284",
       "entity_name": "Gunsight Solar, LLC",
-      "shortest": "Gunsight",
+      "shortest": "Gunsight PV",
       "short": "Gunsight Solar",
       "normal": "Gunsight Solar",
       "tier": "normal"
@@ -11833,7 +11833,7 @@
     {
       "ncr_id": "NCR13154",
       "entity_name": "Hancock Wind, LLC",
-      "shortest": "Hancock",
+      "shortest": "Hancock WF",
       "short": "Hancock Wind",
       "normal": "Hancock Wind",
       "tier": "normal"
@@ -11849,7 +11849,7 @@
     {
       "ncr_id": "NCR10265",
       "entity_name": "Happy Jack Windpower, LLC",
-      "shortest": "Happy Jack",
+      "shortest": "Happy Jack WF",
       "short": "Happy Jack Windpower",
       "normal": "Happy Jack Windpower",
       "tier": "normal"
@@ -11857,7 +11857,7 @@
     {
       "ncr_id": "NCR12446",
       "entity_name": "Happy Solar 1, LLC",
-      "shortest": "Happy Solar",
+      "shortest": "Happy PV1",
       "short": "Happy Solar 1",
       "normal": "Happy Solar 1",
       "tier": "normal"
@@ -11865,7 +11865,7 @@
     {
       "ncr_id": "NCR12127",
       "entity_name": "Harry Allen Solar Energy, LLC",
-      "shortest": "Harry Allen",
+      "shortest": "Harry PV",
       "short": "Harry Allen Solar",
       "normal": "Harry Allen Solar Energy",
       "tier": "normal"
@@ -11881,7 +11881,7 @@
     {
       "ncr_id": "NCR12083",
       "entity_name": "Harts Mill Solar, LLC",
-      "shortest": "Harts Mill",
+      "shortest": "Harts Mill PV",
       "short": "Harts Mill Solar",
       "normal": "Harts Mill Solar",
       "tier": "normal"
@@ -11889,7 +11889,7 @@
     {
       "ncr_id": "NCR12478",
       "entity_name": "Harvest Gold Solar Power, LLC",
-      "shortest": "Harvest Gold",
+      "shortest": "Harvest PV",
       "short": "Harvest Gold Solar",
       "normal": "Harvest Gold Solar Power",
       "tier": "normal"
@@ -11905,7 +11905,7 @@
     {
       "ncr_id": "NCR12201",
       "entity_name": "Haystack Wind Project, LLC",
-      "shortest": "Haystack",
+      "shortest": "Haystack WF",
       "short": "Haystack Wind",
       "normal": "Haystack Wind Project",
       "tier": "normal"
@@ -11913,7 +11913,7 @@
     {
       "ncr_id": "NCR10293",
       "entity_name": "Haywood Electric Membership Corporation",
-      "shortest": "Haywood",
+      "shortest": "Haywood EMC",
       "short": "Haywood EMC",
       "normal": "Haywood Electric Membership Corporation",
       "tier": "normal"
@@ -11929,7 +11929,7 @@
     {
       "ncr_id": "NCR13364",
       "entity_name": "Hecate Energy Albany 1 LLC",
-      "shortest": "Coeymans",
+      "shortest": "Hecate Alb 1",
       "short": "Hecate Energy Albany 1",
       "normal": "Hecate Energy Albany 1",
       "tier": "normal"
@@ -11937,7 +11937,7 @@
     {
       "ncr_id": "NCR13365",
       "entity_name": "Hecate Energy Albany 2 LLC",
-      "shortest": "Coeymans",
+      "shortest": "Hecate Alb 2",
       "short": "Hecate Energy Albany 2",
       "normal": "Hecate Energy Albany 2",
       "tier": "normal"
@@ -11945,7 +11945,7 @@
     {
       "ncr_id": "NCR12559",
       "entity_name": "Hecate Energy Highland, LLC",
-      "shortest": "Hecate",
+      "shortest": "Hecate High",
       "short": "Hecate Energy Highland",
       "normal": "Hecate Energy Highland",
       "tier": "normal"
@@ -11953,7 +11953,7 @@
     {
       "ncr_id": "NCR13091",
       "entity_name": "Hecate Energy Ramsey LLC",
-      "shortest": "Aktina",
+      "shortest": "Hecate Ramsey",
       "short": "Hecate Energy Ramsey",
       "normal": "Aktina Solar",
       "tier": "normal"
@@ -11961,7 +11961,7 @@
     {
       "ncr_id": "NCR12393",
       "entity_name": "Heritage  Mountain",
-      "shortest": "Heritage",
+      "shortest": "Heritage Mtn",
       "short": "Heritage Mountain",
       "normal": "Heritage Mountain",
       "tier": "normal"
@@ -11969,7 +11969,7 @@
     {
       "ncr_id": "NCR12395",
       "entity_name": "Heritage  Portland",
-      "shortest": "Heritage",
+      "shortest": "Heritage Port",
       "short": "Heritage Portland",
       "normal": "Heritage Portland",
       "tier": "normal"
@@ -11977,7 +11977,7 @@
     {
       "ncr_id": "NCR12396",
       "entity_name": "Heritage  Sayreville",
-      "shortest": "Heritage",
+      "shortest": "Heritage Sayr",
       "short": "Heritage Sayreville",
       "normal": "Heritage Sayreville",
       "tier": "normal"
@@ -11985,7 +11985,7 @@
     {
       "ncr_id": "NCR12397",
       "entity_name": "Heritage  Shawville",
-      "shortest": "Heritage",
+      "shortest": "Heritage Shaw",
       "short": "Heritage Shawville",
       "normal": "Heritage Shawville",
       "tier": "normal"
@@ -11993,7 +11993,7 @@
     {
       "ncr_id": "NCR12398",
       "entity_name": "Heritage  Titus",
-      "shortest": "Heritage",
+      "shortest": "Heritage Titus",
       "short": "Heritage Titus",
       "normal": "Heritage Titus",
       "tier": "normal"
@@ -12089,7 +12089,7 @@
     {
       "ncr_id": "NCR12528",
       "entity_name": "Honeysuckle Solar LLC",
-      "shortest": "Honeysuckle",
+      "shortest": "Honey PV",
       "short": "Honeysuckle Solar",
       "normal": "Honeysuckle Solar",
       "tier": "normal"
@@ -12193,7 +12193,7 @@
     {
       "ncr_id": "NCR12023",
       "entity_name": "Huntley Solar, LLC",
-      "shortest": "Huntley",
+      "shortest": "Huntley PV",
       "short": "Huntley Solar",
       "normal": "Huntley Solar",
       "tier": "normal"
@@ -12697,7 +12697,7 @@
     {
       "ncr_id": "NCR13217",
       "entity_name": "KCE NY 6, LLC",
-      "shortest": "KCE",
+      "shortest": "KCE NY 6",
       "short": "KCE NY 6",
       "normal": "KCE NY 6",
       "tier": "normal"
@@ -12721,7 +12721,7 @@
     {
       "ncr_id": "NCR12311",
       "entity_name": "KCE TX 12, LLC",
-      "shortest": "KCE",
+      "shortest": "KCE TX 12",
       "short": "KCE TX 12",
       "normal": "KCE TX 12",
       "tier": "normal"
@@ -12729,7 +12729,7 @@
     {
       "ncr_id": "NCR13345",
       "entity_name": "KCE TX 13, LLC",
-      "shortest": "KCE",
+      "shortest": "KCE TX 13",
       "short": "KCE TX 13",
       "normal": "KCE TX 13",
       "tier": "normal"
@@ -12817,7 +12817,7 @@
     {
       "ncr_id": "NCR13195",
       "entity_name": "Kingbird Solar A, LLC",
-      "shortest": "Kingbird A",
+      "shortest": "Kingbird PV",
       "short": "Kingbird Solar A",
       "normal": "Kingbird Solar A",
       "tier": "normal"
@@ -12825,7 +12825,7 @@
     {
       "ncr_id": "NCR13199",
       "entity_name": "Kingbird Solar B, LLC",
-      "shortest": "Kingbird B",
+      "shortest": "Kingbird PV B",
       "short": "Kingbird Solar B",
       "normal": "Kingbird Solar B",
       "tier": "normal"
