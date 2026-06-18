@@ -5449,7 +5449,7 @@
     {
       "ncr_id": "NCR13375",
       "entity_name": "Independence Wind Farm, LLC",
-      "shortest": "Independence",
+      "shortest": "Indep WF",
       "short": "Independence Wind Farm",
       "normal": "Independence Wind Farm",
       "tier": "normal"
@@ -5481,7 +5481,7 @@
     {
       "ncr_id": "NCR10244",
       "entity_name": "Invenergy Cannon Falls, LLC",
-      "shortest": "Invenergy",
+      "shortest": "Inv Cannon",
       "short": "Invenergy Cannon Falls",
       "normal": "Invenergy Cannon Falls",
       "tier": "major"
@@ -5489,7 +5489,7 @@
     {
       "ncr_id": "NCR11513",
       "entity_name": "Invenergy Nelson LLC",
-      "shortest": "Invenergy",
+      "shortest": "Inv Nelson",
       "short": "Invenergy Nelson",
       "normal": "Invenergy Nelson",
       "tier": "major"
@@ -5505,7 +5505,7 @@
     {
       "ncr_id": "NCR11421",
       "entity_name": "Ivanpah Master Holdings LLC",
-      "shortest": "Ivanpah",
+      "shortest": "Ivanpah PV",
       "short": "Ivanpah Solar",
       "normal": "Ivanpah Solar",
       "tier": "major"
@@ -5513,7 +5513,7 @@
     {
       "ncr_id": "NCR12336",
       "entity_name": "Jack County Power, LLC",
-      "shortest": "Jack County",
+      "shortest": "Jack Cnty",
       "short": "Jack County Power",
       "normal": "Jack County Power",
       "tier": "normal"
@@ -5521,7 +5521,7 @@
     {
       "ncr_id": "NCR12237",
       "entity_name": "Jackson Generation, LLC",
-      "shortest": "Jackson",
+      "shortest": "Jackson Gen",
       "short": "Jackson Generation",
       "normal": "Jackson Generation",
       "tier": "normal"
@@ -5529,7 +5529,7 @@
     {
       "ncr_id": "NCR12180",
       "entity_name": "Jayhawk Wind LLC",
-      "shortest": "Jayhawk",
+      "shortest": "Jayhawk WF",
       "short": "Jayhawk Wind",
       "normal": "Jayhawk Wind",
       "tier": "normal"
@@ -5561,7 +5561,7 @@
     {
       "ncr_id": "NCR12005",
       "entity_name": "Jumbo Hill Wind Project, LLC",
-      "shortest": "Jumbo Hill",
+      "shortest": "Jumbo WF",
       "short": "Jumbo Hill Wind",
       "normal": "Jumbo Hill Wind Project",
       "tier": "normal"
@@ -5569,7 +5569,7 @@
     {
       "ncr_id": "NCR12210",
       "entity_name": "Kearney Generating Station",
-      "shortest": "Kearney",
+      "shortest": "Kearney GS",
       "short": "Kearney Generating Station",
       "normal": "Kearney Generating Station",
       "tier": "normal"
@@ -5609,7 +5609,7 @@
     {
       "ncr_id": "NCR12211",
       "entity_name": "Keys Energy Center",
-      "shortest": "Keys",
+      "shortest": "Keys EC",
       "short": "Keys Energy Center",
       "normal": "Keys Energy Center",
       "tier": "normal"
@@ -5617,7 +5617,7 @@
     {
       "ncr_id": "NCR12454",
       "entity_name": "King Creek Wind Farm 1, LLC",
-      "shortest": "King Creek",
+      "shortest": "King Crk WF1",
       "short": "King Creek Wind 1",
       "normal": "King Creek Wind Farm 1",
       "tier": "normal"
@@ -5625,7 +5625,7 @@
     {
       "ncr_id": "NCR12455",
       "entity_name": "King Creek Wind Farm 2, LLC",
-      "shortest": "King Creek",
+      "shortest": "King Crk WF2",
       "short": "King Creek Wind 2",
       "normal": "King Creek Wind Farm 2",
       "tier": "normal"
@@ -5633,7 +5633,7 @@
     {
       "ncr_id": "NCR12049",
       "entity_name": "King Plains Wind Project, LLC",
-      "shortest": "King Plains",
+      "shortest": "King Plns",
       "short": "King Plains Wind",
       "normal": "King Plains Wind Project",
       "tier": "normal"
@@ -5641,7 +5641,7 @@
     {
       "ncr_id": "NCR11617",
       "entity_name": "Kingfisher Wind, LLC",
-      "shortest": "Kingfisher",
+      "shortest": "Kingfishr WF",
       "short": "Kingfisher Wind",
       "normal": "Kingfisher Wind",
       "tier": "normal"
@@ -5657,7 +5657,7 @@
     {
       "ncr_id": "NCR12525",
       "entity_name": "Kiowa County Solar Project, LLC",
-      "shortest": "Kiowa",
+      "shortest": "Kiowa PV",
       "short": "Kiowa County Solar",
       "normal": "Kiowa County Solar",
       "tier": "normal"
@@ -5665,7 +5665,7 @@
     {
       "ncr_id": "NCR01113",
       "entity_name": "Kiowa Power Partners, LLC",
-      "shortest": "Kiowa",
+      "shortest": "Kiowa Pwr",
       "short": "Kiowa Power Partners",
       "normal": "Kiowa Power Partners",
       "tier": "normal"
@@ -5681,7 +5681,7 @@
     {
       "ncr_id": "NCR12060",
       "entity_name": "La Chalupa, LLC",
-      "shortest": "Chalupa",
+      "shortest": "Chalupa WF",
       "short": "La Chalupa Wind",
       "normal": "La Chalupa Wind",
       "tier": "normal"
@@ -5697,7 +5697,7 @@
     {
       "ncr_id": "NCR11836",
       "entity_name": "Lackawanna Energy Center LLC",
-      "shortest": "Lackawanna",
+      "shortest": "Lackwna EC",
       "short": "Lackawanna Energy Center",
       "normal": "Lackawanna Energy Center",
       "tier": "normal"
@@ -5705,7 +5705,7 @@
     {
       "ncr_id": "NCR11180",
       "entity_name": "Lakefield Wind Project, LLC",
-      "shortest": "Lakefield",
+      "shortest": "Lakefield WF",
       "short": "Lakefield Wind",
       "normal": "Lakefield Wind Project",
       "tier": "normal"
@@ -5721,7 +5721,7 @@
     {
       "ncr_id": "NCR12099",
       "entity_name": "Lakota Ridge, LLC",
-      "shortest": "Lakota Ridge",
+      "shortest": "Lakota Rdg",
       "short": "Lakota Ridge Wind",
       "normal": "Lakota Ridge Wind",
       "tier": "normal"
@@ -5737,7 +5737,7 @@
     {
       "ncr_id": "NCR12067",
       "entity_name": "Las Lomas Wind Project, LLC",
-      "shortest": "Las Lomas",
+      "shortest": "Las Lomas WF",
       "short": "Las Lomas Wind",
       "normal": "Las Lomas Wind Project",
       "tier": "normal"
@@ -5769,7 +5769,7 @@
     {
       "ncr_id": "NCR12265",
       "entity_name": "LeConte Energy Storage, LLC",
-      "shortest": "LeConte",
+      "shortest": "LeConte ES",
       "short": "LeConte Energy Storage",
       "normal": "LeConte Energy Storage",
       "tier": "normal"
@@ -5777,7 +5777,7 @@
     {
       "ncr_id": "NCR11788",
       "entity_name": "Lee County Generating Station, LLC",
-      "shortest": "Lee County",
+      "shortest": "Lee Cnty GS",
       "short": "Lee County Generating Station",
       "normal": "Lee County Generating Station",
       "tier": "normal"
@@ -5785,7 +5785,7 @@
     {
       "ncr_id": "NCR12441",
       "entity_name": "Libra Storage LLC",
-      "shortest": "Libra",
+      "shortest": "Libra ES",
       "short": "Libra Storage",
       "normal": "Libra Storage",
       "tier": "normal"
@@ -5905,7 +5905,7 @@
     {
       "ncr_id": "NCR13339",
       "entity_name": "Louise Solar Project, LLC",
-      "shortest": "Louise",
+      "shortest": "Louise PV",
       "short": "Louise Solar",
       "normal": "Louise Solar",
       "tier": "normal"
@@ -5913,7 +5913,7 @@
     {
       "ncr_id": "NCR11107",
       "entity_name": "LSP University Park, LLC",
-      "shortest": "LSP",
+      "shortest": "LSP Univ Pk",
       "short": "LSP University Park",
       "normal": "LSP University Park",
       "tier": "normal"
@@ -5921,7 +5921,7 @@
     {
       "ncr_id": "NCR10022",
       "entity_name": "LSP-Cottage Grove, LP",
-      "shortest": "LSP",
+      "shortest": "LSP Cottage",
       "short": "LSP Cottage Grove",
       "normal": "LSP Cottage Grove",
       "tier": "normal"
@@ -5929,7 +5929,7 @@
     {
       "ncr_id": "NCR13139",
       "entity_name": "Macho Springs Power I LLC",
-      "shortest": "Macho Springs",
+      "shortest": "Macho Spgs",
       "short": "Macho Springs Power",
       "normal": "Macho Springs Power",
       "tier": "normal"
@@ -5977,7 +5977,7 @@
     {
       "ncr_id": "NCR12529",
       "entity_name": "Maple Flats Solar Energy Center LLC",
-      "shortest": "Maple Flats",
+      "shortest": "Maple PV",
       "short": "Maple Flats Solar",
       "normal": "Maple Flats Solar Energy Center",
       "tier": "normal"
@@ -6001,7 +6001,7 @@
     {
       "ncr_id": "NCR13121",
       "entity_name": "Markum Solar Farm, LLC",
-      "shortest": "Markum",
+      "shortest": "Markum PV",
       "short": "Markum Solar Farm",
       "normal": "Markum Solar Farm",
       "tier": "normal"
@@ -6009,7 +6009,7 @@
     {
       "ncr_id": "NCR13396",
       "entity_name": "Marshall Wind Energy, LLC",
-      "shortest": "Marshall",
+      "shortest": "Marshall WF",
       "short": "Marshall Wind Energy",
       "normal": "Marshall Wind Energy",
       "tier": "normal"
@@ -6025,7 +6025,7 @@
     {
       "ncr_id": "NCR12129",
       "entity_name": "Maryneal Windpower, LLC",
-      "shortest": "Maryneal",
+      "shortest": "Maryneal WF",
       "short": "Maryneal Windpower",
       "normal": "Maryneal Windpower",
       "tier": "normal"
@@ -6033,7 +6033,7 @@
     {
       "ncr_id": "NCR00087",
       "entity_name": "McAdoo Wind Energy, LLC",
-      "shortest": "McAdoo",
+      "shortest": "McAdoo WF",
       "short": "McAdoo Wind",
       "normal": "McAdoo Wind Energy",
       "tier": "normal"
@@ -6049,7 +6049,7 @@
     {
       "ncr_id": "NCR11303",
       "entity_name": "Meadow Creek Project Company LLC",
-      "shortest": "Meadow Creek",
+      "shortest": "Meadow Crk",
       "short": "Meadow Creek Wind",
       "normal": "Meadow Creek Wind",
       "tier": "normal"
@@ -6057,7 +6057,7 @@
     {
       "ncr_id": "NCR11893",
       "entity_name": "Meadowlark Wind I LLC (New Frontier)",
-      "shortest": "Meadowlark",
+      "shortest": "Meadow I",
       "short": "Meadowlark Wind",
       "normal": "Meadowlark Wind New Frontier",
       "tier": "normal"
@@ -6065,7 +6065,7 @@
     {
       "ncr_id": "NCR11984",
       "entity_name": "MEC Holdings, LLC",
-      "shortest": "MEC Holdings",
+      "shortest": "MEC Hldgs",
       "short": "MEC Holdings",
       "normal": "MEC Holdings",
       "tier": "normal"
@@ -6073,7 +6073,7 @@
     {
       "ncr_id": "NCR11311",
       "entity_name": "Mehoopany Wind Energy LLC",
-      "shortest": "Mehoopany",
+      "shortest": "Mehoopany WF",
       "short": "Mehoopany Wind",
       "normal": "Mehoopany Wind Energy",
       "tier": "normal"
@@ -6081,7 +6081,7 @@
     {
       "ncr_id": "NCR11909",
       "entity_name": "Mendota Hills, LLC",
-      "shortest": "Mendota",
+      "shortest": "Mendota WF",
       "short": "Mendota Hills Wind",
       "normal": "Mendota Hills Wind",
       "tier": "normal"
@@ -6089,7 +6089,7 @@
     {
       "ncr_id": "NCR11772",
       "entity_name": "Meridian Limited Partnership",
-      "shortest": "Meridian",
+      "shortest": "Meridian WF",
       "short": "Meridian Wind",
       "normal": "Meridian Wind",
       "tier": "normal"
@@ -6097,7 +6097,7 @@
     {
       "ncr_id": "NCR11273",
       "entity_name": "Mesquite Solar 1, LLC",
-      "shortest": "Mesquite",
+      "shortest": "Mesquite PV1",
       "short": "Mesquite Solar",
       "normal": "Mesquite Solar",
       "tier": "normal"
@@ -6105,7 +6105,7 @@
     {
       "ncr_id": "NCR11980",
       "entity_name": "Mesteño Windpower, LLC",
-      "shortest": "Mesteño",
+      "shortest": "Mesteño WF",
       "short": "Mesteño Windpower",
       "normal": "Mesteño Windpower",
       "tier": "normal"
@@ -6113,7 +6113,7 @@
     {
       "ncr_id": "NCR11478",
       "entity_name": "Miami Wind I, LLC",
-      "shortest": "Miami Wind",
+      "shortest": "Miami WF1",
       "short": "Miami Wind",
       "normal": "Miami Wind",
       "tier": "normal"
@@ -6145,7 +6145,7 @@
     {
       "ncr_id": "NCR11943",
       "entity_name": "Midway Peaking, LLC",
-      "shortest": "Midway",
+      "shortest": "Midway Peak",
       "short": "Midway Peaking",
       "normal": "Midway Peaking",
       "tier": "normal"
@@ -6153,7 +6153,7 @@
     {
       "ncr_id": "NCR05510",
       "entity_name": "Midway Sunset Cogeneration Company",
-      "shortest": "Midway",
+      "shortest": "Midway Cogen",
       "short": "Midway Sunset Cogen",
       "normal": "Midway Sunset Cogeneration",
       "tier": "normal"
@@ -6161,7 +6161,7 @@
     {
       "ncr_id": "NCR11894",
       "entity_name": "Midway Wind, LLC",
-      "shortest": "Midway",
+      "shortest": "Midway WF",
       "short": "Midway Wind",
       "normal": "Midway Wind",
       "tier": "normal"
@@ -6177,7 +6177,7 @@
     {
       "ncr_id": "NCR13135",
       "entity_name": "Millican Solar Energy LLC",
-      "shortest": "Millican",
+      "shortest": "Millican PV",
       "short": "Millican Solar",
       "normal": "Millican Solar Energy",
       "tier": "normal"
@@ -6185,7 +6185,7 @@
     {
       "ncr_id": "NCR13137",
       "entity_name": "Milo Wind Project, LLC",
-      "shortest": "Milo",
+      "shortest": "Milo WF",
       "short": "Milo Wind",
       "normal": "Milo Wind Project",
       "tier": "normal"
@@ -6201,7 +6201,7 @@
     {
       "ncr_id": "NCR12155",
       "entity_name": "Minonk Stewardship Wind, LLC",
-      "shortest": "Minonk",
+      "shortest": "Minonk WF",
       "short": "Minonk Stewardship Wind",
       "normal": "Minonk Stewardship Wind",
       "tier": "normal"
@@ -6217,7 +6217,7 @@
     {
       "ncr_id": "NCR11653",
       "entity_name": "Mojave 3/4/5",
-      "shortest": "Mojave",
+      "shortest": "Mojave PV",
       "short": "Mojave Solar 3/4/5",
       "normal": "Mojave Solar 3/4/5",
       "tier": "normal"
@@ -6225,7 +6225,7 @@
     {
       "ncr_id": "NCR11842",
       "entity_name": "Montpelier Generating Station, LLC",
-      "shortest": "Montpelier",
+      "shortest": "Montplr GS",
       "short": "Montpelier Generating Station",
       "normal": "Montpelier Generating Station",
       "tier": "normal"
