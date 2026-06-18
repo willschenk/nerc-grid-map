@@ -12257,7 +12257,7 @@
     {
       "ncr_id": "NCR12257",
       "entity_name": "Indeck Niles, LLC.",
-      "shortest": "Indeck",
+      "shortest": "Indeck Niles",
       "short": "Indeck Niles",
       "normal": "Indeck Niles",
       "tier": "normal"
@@ -12265,7 +12265,7 @@
     {
       "ncr_id": "NCR13558",
       "entity_name": "Indian Creek Solar Farm LLC",
-      "shortest": "Indian Creek",
+      "shortest": "Indian Cr PV",
       "short": "Indian Creek Solar Farm",
       "normal": "Indian Creek Solar Farm",
       "tier": "normal"
@@ -12273,7 +12273,7 @@
     {
       "ncr_id": "NCR05197",
       "entity_name": "Indigo Generation, LLC",
-      "shortest": "Indigo",
+      "shortest": "Indigo Gen",
       "short": "Indigo Generation",
       "normal": "Indigo Generation",
       "tier": "normal"
@@ -12329,7 +12329,7 @@
     {
       "ncr_id": "NCR11718",
       "entity_name": "Invenergy Services LLC",
-      "shortest": "Invenergy",
+      "shortest": "Inv Svc",
       "short": "Invenergy Services",
       "normal": "Invenergy Services",
       "tier": "major"
@@ -12337,7 +12337,7 @@
     {
       "ncr_id": "NCR12554",
       "entity_name": "Invenergy Services-7V",
-      "shortest": "Invenergy",
+      "shortest": "Inv 7V",
       "short": "Invenergy Services 7V",
       "normal": "Invenergy Services-7V",
       "tier": "major"
@@ -12345,7 +12345,7 @@
     {
       "ncr_id": "NCR12448",
       "entity_name": "Invenergy Services-Assembly",
-      "shortest": "Invenergy",
+      "shortest": "Inv Assembly",
       "short": "Invenergy Services Assembly",
       "normal": "Invenergy Services-Assembly",
       "tier": "major"
@@ -12353,7 +12353,7 @@
     {
       "ncr_id": "NCR12280",
       "entity_name": "Invenergy Services-Balko",
-      "shortest": "Invenergy",
+      "shortest": "Inv Balko",
       "short": "Invenergy Services Balko",
       "normal": "Invenergy Services-Balko",
       "tier": "major"
@@ -12361,7 +12361,7 @@
     {
       "ncr_id": "NCR13083",
       "entity_name": "Invenergy Services-Bartonsville",
-      "shortest": "Invenergy",
+      "shortest": "Inv Barton",
       "short": "Invenergy Services Bartonsville",
       "normal": "Invenergy Services-Bartonsville",
       "tier": "major"
@@ -12369,7 +12369,7 @@
     {
       "ncr_id": "NCR13055",
       "entity_name": "Invenergy Services-Blue Bird",
-      "shortest": "Invenergy",
+      "shortest": "Inv BlueBird",
       "short": "Invenergy Services Blue Bird",
       "normal": "Invenergy Services-Blue Bird",
       "tier": "major"
@@ -12377,7 +12377,7 @@
     {
       "ncr_id": "NCR12271",
       "entity_name": "Invenergy Services-Brazoria County",
-      "shortest": "Invenergy",
+      "shortest": "Inv Brazoria",
       "short": "Invenergy Services Brazoria County",
       "normal": "Invenergy Services-Brazoria County",
       "tier": "major"
@@ -12385,7 +12385,7 @@
     {
       "ncr_id": "NCR12075",
       "entity_name": "Invenergy Services-Coyote Ridge",
-      "shortest": "Invenergy",
+      "shortest": "Inv Coyote",
       "short": "Invenergy Services Coyote Ridge",
       "normal": "Invenergy Services-Coyote Ridge",
       "tier": "major"
@@ -12393,7 +12393,7 @@
     {
       "ncr_id": "NCR13193",
       "entity_name": "Invenergy Services-Cuyama",
-      "shortest": "Invenergy",
+      "shortest": "Inv Cuyama",
       "short": "Invenergy Services Cuyama",
       "normal": "Invenergy Services-Cuyama",
       "tier": "major"
@@ -12401,7 +12401,7 @@
     {
       "ncr_id": "NCR12550",
       "entity_name": "Invenergy Services-Diversion",
-      "shortest": "Invenergy",
+      "shortest": "Inv Diversion",
       "short": "Invenergy Services Diversion",
       "normal": "Invenergy Services-Diversion",
       "tier": "major"
@@ -12409,7 +12409,7 @@
     {
       "ncr_id": "NCR12128",
       "entity_name": "Invenergy Services-Dry Lake",
-      "shortest": "Invenergy",
+      "shortest": "Inv Dry Lake",
       "short": "Invenergy Services Dry Lake",
       "normal": "Invenergy Services-Dry Lake",
       "tier": "major"
@@ -12417,7 +12417,7 @@
     {
       "ncr_id": "NCR13073",
       "entity_name": "Invenergy Services-Fairbanks",
-      "shortest": "Invenergy",
+      "shortest": "Inv Fairbank",
       "short": "Invenergy Services Fairbanks",
       "normal": "Invenergy Services-Fairbanks",
       "tier": "major"
@@ -12425,7 +12425,7 @@
     {
       "ncr_id": "NCR13116",
       "entity_name": "Invenergy Services-Gibson Solar",
-      "shortest": "Invenergy",
+      "shortest": "Inv Gibson",
       "short": "Invenergy Services Gibson Solar",
       "normal": "Invenergy Services-Gibson Solar",
       "tier": "major"
@@ -12433,7 +12433,7 @@
     {
       "ncr_id": "NCR13359",
       "entity_name": "Invenergy Services-Grimes Solar",
-      "shortest": "Invenergy",
+      "shortest": "Inv Grimes",
       "short": "Invenergy Services Grimes Solar",
       "normal": "Invenergy Services-Grimes Solar",
       "tier": "major"
@@ -12441,7 +12441,7 @@
     {
       "ncr_id": "NCR13194",
       "entity_name": "Invenergy Services-Huntington",
-      "shortest": "Invenergy",
+      "shortest": "Inv Hunting",
       "short": "Invenergy Services Huntington",
       "normal": "Invenergy Services-Huntington",
       "tier": "major"
@@ -12449,7 +12449,7 @@
     {
       "ncr_id": "NCR12072",
       "entity_name": "Invenergy Services-Lamesa II",
-      "shortest": "Invenergy",
+      "shortest": "Inv Lamesa 2",
       "short": "Invenergy Services Lamesa II",
       "normal": "Invenergy Services-Lamesa II",
       "tier": "major"
@@ -12457,7 +12457,7 @@
     {
       "ncr_id": "NCR13032",
       "entity_name": "Invenergy Services-Long Lake",
-      "shortest": "Invenergy",
+      "shortest": "Inv Long Lk",
       "short": "Invenergy Services Long Lake",
       "normal": "Invenergy Services-Long Lake",
       "tier": "major"
@@ -12465,7 +12465,7 @@
     {
       "ncr_id": "NCR12329",
       "entity_name": "Invenergy Services-Meadow Lake",
-      "shortest": "Invenergy",
+      "shortest": "Inv Meadow",
       "short": "Invenergy Services Meadow Lake",
       "normal": "Invenergy Services-Meadow Lake",
       "tier": "major"
@@ -12473,7 +12473,7 @@
     {
       "ncr_id": "NCR13200",
       "entity_name": "Invenergy Services-Orchard",
-      "shortest": "Invenergy",
+      "shortest": "Inv Orchard",
       "short": "Invenergy Services Orchard",
       "normal": "Invenergy Services-Orchard",
       "tier": "major"
@@ -12481,7 +12481,7 @@
     {
       "ncr_id": "NCR13069",
       "entity_name": "Invenergy Services-Pixley",
-      "shortest": "Invenergy",
+      "shortest": "Inv Pixley",
       "short": "Invenergy Services Pixley",
       "normal": "Invenergy Services-Pixley",
       "tier": "major"
@@ -12489,7 +12489,7 @@
     {
       "ncr_id": "NCR13256",
       "entity_name": "Invenergy Services-Power County",
-      "shortest": "Invenergy",
+      "shortest": "Inv PowerCo",
       "short": "Invenergy Services Power County",
       "normal": "Invenergy Services-Power County",
       "tier": "major"
@@ -12497,7 +12497,7 @@
     {
       "ncr_id": "NCR12468",
       "entity_name": "Invenergy Services-Rancho Seco II",
-      "shortest": "Invenergy",
+      "shortest": "Inv Rancho 2",
       "short": "Invenergy Services Rancho Seco II",
       "normal": "Invenergy Services-Rancho Seco II",
       "tier": "major"
@@ -12505,7 +12505,7 @@
     {
       "ncr_id": "NCR12250",
       "entity_name": "Invenergy Services-Sherbino II",
-      "shortest": "Invenergy",
+      "shortest": "Inv Sherb 2",
       "short": "Invenergy Services Sherbino II",
       "normal": "Invenergy Services-Sherbino II",
       "tier": "major"
@@ -12513,7 +12513,7 @@
     {
       "ncr_id": "NCR13284",
       "entity_name": "Invenergy Services-Silver Star",
-      "shortest": "Invenergy",
+      "shortest": "Inv Silv Star",
       "short": "Invenergy Services Silver Star",
       "normal": "Invenergy Services-Silver Star",
       "tier": "major"
@@ -12521,7 +12521,7 @@
     {
       "ncr_id": "NCR13204",
       "entity_name": "Invenergy Services-SloughHouse",
-      "shortest": "Invenergy",
+      "shortest": "Inv Slough",
       "short": "Invenergy Services SloughHouse",
       "normal": "Invenergy Services-SloughHouse",
       "tier": "major"
@@ -12529,7 +12529,7 @@
     {
       "ncr_id": "NCR12076",
       "entity_name": "Invenergy Services-Tatanka",
-      "shortest": "Invenergy",
+      "shortest": "Inv Tatanka",
       "short": "Invenergy Services Tatanka",
       "normal": "Invenergy Services-Tatanka",
       "tier": "major"
@@ -12537,7 +12537,7 @@
     {
       "ncr_id": "NCR12203",
       "entity_name": "Invenergy Services-Traverse",
-      "shortest": "Invenergy",
+      "shortest": "Inv Traverse",
       "short": "Invenergy Services Traverse",
       "normal": "Invenergy Services-Traverse",
       "tier": "major"
@@ -12545,7 +12545,7 @@
     {
       "ncr_id": "NCR12251",
       "entity_name": "Invenergy Services-Trinity Hills",
-      "shortest": "Invenergy",
+      "shortest": "Inv Trinity",
       "short": "Invenergy Services Trinity Hills",
       "normal": "Invenergy Services-Trinity Hills",
       "tier": "major"
@@ -12553,7 +12553,7 @@
     {
       "ncr_id": "NCR13414",
       "entity_name": "Invenergy Services-White Tail",
-      "shortest": "Invenergy",
+      "shortest": "Inv WhiteTail",
       "short": "Invenergy Services White Tail",
       "normal": "Invenergy Services-White Tail",
       "tier": "major"
@@ -12561,7 +12561,7 @@
     {
       "ncr_id": "NCR12427",
       "entity_name": "IP Lumina II, LLC",
-      "shortest": "Lumina",
+      "shortest": "IP Lumina 2",
       "short": "IP Lumina II",
       "normal": "IP Lumina II",
       "tier": "normal"
@@ -12569,7 +12569,7 @@
     {
       "ncr_id": "NCR12415",
       "entity_name": "IP Lumina, LLC",
-      "shortest": "Lumina",
+      "shortest": "IP Lumina",
       "short": "IP Lumina",
       "normal": "IP Lumina",
       "tier": "normal"
@@ -12577,7 +12577,7 @@
     {
       "ncr_id": "NCR12453",
       "entity_name": "IP Oberon, LLC",
-      "shortest": "Oberon",
+      "shortest": "IP Oberon",
       "short": "IP Oberon",
       "normal": "IP Oberon",
       "tier": "normal"
@@ -12585,7 +12585,7 @@
     {
       "ncr_id": "NCR12321",
       "entity_name": "IP Radian, LLC",
-      "shortest": "Radian",
+      "shortest": "IP Radian",
       "short": "IP Radian",
       "normal": "IP Radian",
       "tier": "normal"
@@ -12857,7 +12857,7 @@
     {
       "ncr_id": "NCR13155",
       "entity_name": "Kumeyaay Wind",
-      "shortest": "Kumeyaay",
+      "shortest": "Kumeyaay WF",
       "short": "Kumeyaay Wind",
       "normal": "Kumeyaay Wind",
       "tier": "normal"
@@ -12865,7 +12865,7 @@
     {
       "ncr_id": "NCR13065",
       "entity_name": "Kuna BESS LLC",
-      "shortest": "Kuna",
+      "shortest": "Kuna ES",
       "short": "Kuna BESS",
       "normal": "Kuna BESS",
       "tier": "normal"
@@ -12889,7 +12889,7 @@
     {
       "ncr_id": "NCR11817",
       "entity_name": "Lamar County Electric Cooperative Association",
-      "shortest": "Lamar",
+      "shortest": "Lamar Coop",
       "short": "Lamar County Electric Cooperative",
       "normal": "Lamar County Electric Cooperative Association",
       "tier": "normal"
@@ -12897,7 +12897,7 @@
     {
       "ncr_id": "NCR11885",
       "entity_name": "Lamesa II Solar, LLC",
-      "shortest": "Lamesa II",
+      "shortest": "Lamesa PV2",
       "short": "Lamesa II Solar",
       "normal": "Lamesa II Solar",
       "tier": "normal"
@@ -12905,7 +12905,7 @@
     {
       "ncr_id": "NCR12186",
       "entity_name": "Lancaster Solar, LLC",
-      "shortest": "Lancaster",
+      "shortest": "Lancaster PV",
       "short": "Lancaster Solar",
       "normal": "Lancaster Solar",
       "tier": "normal"
@@ -12913,7 +12913,7 @@
     {
       "ncr_id": "NCR13398",
       "entity_name": "Landrace Solar, LLC",
-      "shortest": "Landrace",
+      "shortest": "Landrace PV",
       "short": "Landrace Solar",
       "normal": "Landrace Solar",
       "tier": "normal"
@@ -12937,7 +12937,7 @@
     {
       "ncr_id": "NCR12092",
       "entity_name": "Las Majadas Wind Project, LLC",
-      "shortest": "Las Majadas",
+      "shortest": "Las Maj WF",
       "short": "Las Majadas Wind",
       "normal": "Las Majadas Wind Project",
       "tier": "normal"
@@ -12953,7 +12953,7 @@
     {
       "ncr_id": "NCR13245",
       "entity_name": "Laurel Hill Wind Energy, LLC",
-      "shortest": "Laurel Hill",
+      "shortest": "Laurel WF",
       "short": "Laurel Hill Wind Energy",
       "normal": "Laurel Hill Wind Energy",
       "tier": "normal"
@@ -12961,7 +12961,7 @@
     {
       "ncr_id": "NCR12290",
       "entity_name": "Ledyard Windpower, LLC",
-      "shortest": "Ledyard",
+      "shortest": "Ledyard WF",
       "short": "Ledyard Windpower",
       "normal": "Ledyard Windpower",
       "tier": "normal"
@@ -12977,7 +12977,7 @@
     {
       "ncr_id": "NCR13317",
       "entity_name": "Liberty 1 Solar, LLC",
-      "shortest": "Liberty 1",
+      "shortest": "Liberty PV1",
       "short": "Liberty 1 Solar",
       "normal": "Liberty 1 Solar",
       "tier": "normal"
@@ -12985,7 +12985,7 @@
     {
       "ncr_id": "NCR13453",
       "entity_name": "Lick Creek Solar, LLC",
-      "shortest": "Lick Creek",
+      "shortest": "Lick Cr PV",
       "short": "Lick Creek Solar",
       "normal": "Lick Creek Solar",
       "tier": "normal"
@@ -12993,7 +12993,7 @@
     {
       "ncr_id": "NCR12467",
       "entity_name": "Lighthouse Renewables, Corp - Frye Solar",
-      "shortest": "Lighthouse",
+      "shortest": "LH Frye PV",
       "short": "Lighthouse Frye Solar",
       "normal": "Lighthouse Renewables Frye Solar",
       "tier": "normal"
@@ -13001,7 +13001,7 @@
     {
       "ncr_id": "NCR13126",
       "entity_name": "Lighthouse Renewables, Corp - Outpost",
-      "shortest": "Lighthouse",
+      "shortest": "LH Outpost",
       "short": "Lighthouse Outpost",
       "normal": "Lighthouse Renewables Outpost",
       "tier": "normal"
@@ -13009,7 +13009,7 @@
     {
       "ncr_id": "NCR12470",
       "entity_name": "Lighthouse Renewables, Corp. - Jicarilla Energy Center",
-      "shortest": "Lighthouse",
+      "shortest": "LH Jicarilla",
       "short": "Lighthouse Jicarilla",
       "normal": "Lighthouse Renewables Jicarilla Energy Center",
       "tier": "normal"
@@ -13017,7 +13017,7 @@
     {
       "ncr_id": "NCR13450",
       "entity_name": "Lily Solar LLC",
-      "shortest": "Lily",
+      "shortest": "Lily PV",
       "short": "Lily Solar",
       "normal": "Lily Solar",
       "tier": "normal"
@@ -13025,7 +13025,7 @@
     {
       "ncr_id": "NCR13178",
       "entity_name": "Lindahl Wind Project LLC",
-      "shortest": "Lindahl",
+      "shortest": "Lindahl WF",
       "short": "Lindahl Wind Project",
       "normal": "Lindahl Wind Project",
       "tier": "normal"
@@ -13033,7 +13033,7 @@
     {
       "ncr_id": "NCR12124",
       "entity_name": "Little Bear Solar 1, LLC",
-      "shortest": "Little Bear 1",
+      "shortest": "LittleBear PV1",
       "short": "Little Bear Solar 1",
       "normal": "Little Bear Solar 1",
       "tier": "normal"
@@ -13041,7 +13041,7 @@
     {
       "ncr_id": "NCR12125",
       "entity_name": "Little Bear Solar 3, LLC",
-      "shortest": "Little Bear 3",
+      "shortest": "LittleBear PV3",
       "short": "Little Bear Solar 3",
       "normal": "Little Bear Solar 3",
       "tier": "normal"
@@ -13057,7 +13057,7 @@
     {
       "ncr_id": "NCR12347",
       "entity_name": "Lockhart Solar PV ll, LLC (Lockhart ll)",
-      "shortest": "Lockhart II",
+      "shortest": "Lockhart PV2",
       "short": "Lockhart Solar II",
       "normal": "Lockhart Solar PV II",
       "tier": "normal"
@@ -13065,7 +13065,7 @@
     {
       "ncr_id": "NCR12346",
       "entity_name": "Lockhart Solar PV, LLC (Lockhart I)",
-      "shortest": "Lockhart I",
+      "shortest": "Lockhart PV1",
       "short": "Lockhart Solar I",
       "normal": "Lockhart Solar PV I",
       "tier": "normal"
@@ -13081,7 +13081,7 @@
     {
       "ncr_id": "NCR13342",
       "entity_name": "Lone Star Solar, LLC",
-      "shortest": "Lone Star",
+      "shortest": "Lone Star PV",
       "short": "Lone Star Solar",
       "normal": "Lone Star Solar",
       "tier": "normal"
@@ -13089,7 +13089,7 @@
     {
       "ncr_id": "NCR13024",
       "entity_name": "Long Lake Solar, LLC",
-      "shortest": "Long Lake",
+      "shortest": "Long Lake PV",
       "short": "Long Lake Solar",
       "normal": "Long Lake Solar",
       "tier": "normal"
@@ -13097,7 +13097,7 @@
     {
       "ncr_id": "NCR13050",
       "entity_name": "Longbow BESS, LLC",
-      "shortest": "Longbow",
+      "shortest": "Longbow ES",
       "short": "Longbow BESS",
       "normal": "Longbow BESS",
       "tier": "normal"
@@ -13105,7 +13105,7 @@
     {
       "ncr_id": "NCR12442",
       "entity_name": "Longbow Solar, LLC",
-      "shortest": "Longbow",
+      "shortest": "Longbow PV",
       "short": "Longbow Solar",
       "normal": "Longbow Solar",
       "tier": "normal"
@@ -13113,7 +13113,7 @@
     {
       "ncr_id": "NCR12569",
       "entity_name": "Longroad Energy Services",
-      "shortest": "Longroad",
+      "shortest": "Longroad Svc",
       "short": "Longroad Energy Services",
       "normal": "Longroad Energy Services",
       "tier": "major"
@@ -13121,7 +13121,7 @@
     {
       "ncr_id": "NCR11267",
       "entity_name": "Los Vientos Windpower IA, LLC",
-      "shortest": "Los Vientos",
+      "shortest": "Los Vientos IA",
       "short": "Los Vientos IA",
       "normal": "Los Vientos Windpower IA",
       "tier": "normal"
@@ -13129,7 +13129,7 @@
     {
       "ncr_id": "NCR11266",
       "entity_name": "Los Vientos Windpower IB, LLC",
-      "shortest": "Los Vientos",
+      "shortest": "Los Vientos IB",
       "short": "Los Vientos IB",
       "normal": "Los Vientos Windpower IB",
       "tier": "normal"
@@ -13137,7 +13137,7 @@
     {
       "ncr_id": "NCR11538",
       "entity_name": "Los Vientos Windpower III, LLC",
-      "shortest": "Los Vientos",
+      "shortest": "Los Vientos III",
       "short": "Los Vientos III",
       "normal": "Los Vientos Windpower III",
       "tier": "normal"
@@ -13145,7 +13145,7 @@
     {
       "ncr_id": "NCR11635",
       "entity_name": "Los Vientos Windpower IV, LLC",
-      "shortest": "Los Vientos",
+      "shortest": "Los Vientos IV",
       "short": "Los Vientos IV",
       "normal": "Los Vientos Windpower IV",
       "tier": "normal"
@@ -13153,7 +13153,7 @@
     {
       "ncr_id": "NCR11603",
       "entity_name": "Los Vientos Windpower V, LLC",
-      "shortest": "Los Vientos",
+      "shortest": "Los Vientos V",
       "short": "Los Vientos V",
       "normal": "Los Vientos Windpower V",
       "tier": "normal"
@@ -13161,7 +13161,7 @@
     {
       "ncr_id": "NCR13557",
       "entity_name": "Lotus Wind, LLC",
-      "shortest": "Lotus",
+      "shortest": "Lotus WF",
       "short": "Lotus Wind",
       "normal": "Lotus Wind",
       "tier": "normal"
@@ -13177,7 +13177,7 @@
     {
       "ncr_id": "NCR13288",
       "entity_name": "Lucky Bluff BESS LLC",
-      "shortest": "Lucky Bluff",
+      "shortest": "LuckyBluff ES",
       "short": "Lucky Bluff BESS",
       "normal": "Lucky Bluff BESS",
       "tier": "normal"
@@ -17122,7 +17122,7 @@
     {
       "ncr_id": "NCR11694",
       "entity_name": "Invenergy Services LLC",
-      "shortest": "Invenergy",
+      "shortest": "Inv Svc",
       "short": "Invenergy Services",
       "normal": "Invenergy Services LLC",
       "tier": "normal",
