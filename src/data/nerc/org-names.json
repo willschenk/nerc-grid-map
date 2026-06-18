@@ -4809,7 +4809,7 @@
     {
       "ncr_id": "NCR12088",
       "entity_name": "Frontier Windpower II, LLC",
-      "shortest": "Frontier",
+      "shortest": "Frontier II",
       "short": "Frontier Windpower II",
       "normal": "Frontier Windpower II",
       "tier": "normal"
@@ -5553,7 +5553,7 @@
     {
       "ncr_id": "NCR05503",
       "entity_name": "Judith Gap Energy LLC",
-      "shortest": "Judith Gap",
+      "shortest": "Judith Gap WF",
       "short": "Judith Gap Energy",
       "normal": "Judith Gap Energy",
       "tier": "normal"
@@ -11049,7 +11049,7 @@
     {
       "ncr_id": "NCR13027",
       "entity_name": "Downeast Wind, LLC",
-      "shortest": "Downeast",
+      "shortest": "Downeast WF",
       "short": "Downeast Wind",
       "normal": "Downeast Wind",
       "tier": "normal"
@@ -11057,7 +11057,7 @@
     {
       "ncr_id": "NCR12182",
       "entity_name": "Dressor Plains Solar, LLC",
-      "shortest": "Dressor",
+      "shortest": "Dressor PV",
       "short": "Dressor Plains Solar",
       "normal": "Dressor Plains Solar",
       "tier": "normal"
@@ -11065,7 +11065,7 @@
     {
       "ncr_id": "NCR12293",
       "entity_name": "Drew Solar LLC",
-      "shortest": "Drew",
+      "shortest": "Drew PV",
       "short": "Drew Solar",
       "normal": "Drew Solar",
       "tier": "normal"
@@ -11089,7 +11089,7 @@
     {
       "ncr_id": "NCR13445",
       "entity_name": "East Atmore Solar, LLC",
-      "shortest": "Atmore",
+      "shortest": "E Atmore PV",
       "short": "East Atmore Solar",
       "normal": "East Atmore Solar",
       "tier": "normal"
@@ -11097,7 +11097,7 @@
     {
       "ncr_id": "NCR12149",
       "entity_name": "East Blackland Solar Project 1 LLC",
-      "shortest": "Blackland",
+      "shortest": "E Blackland PV1",
       "short": "East Blackland Solar",
       "normal": "East Blackland Solar Project 1",
       "tier": "normal"
@@ -11121,7 +11121,7 @@
     {
       "ncr_id": "NCR12316",
       "entity_name": "Eastover Solar, LLC",
-      "shortest": "Eastover",
+      "shortest": "Eastover PV",
       "short": "Eastover Solar",
       "normal": "Eastover Solar",
       "tier": "normal"
@@ -11129,7 +11129,7 @@
     {
       "ncr_id": "NCR12462",
       "entity_name": "Ebony Energy Storage, LLC",
-      "shortest": "Ebony",
+      "shortest": "Ebony ES",
       "short": "Ebony Energy Storage",
       "normal": "Ebony Energy Storage",
       "tier": "normal"
@@ -11137,7 +11137,7 @@
     {
       "ncr_id": "NCR11757",
       "entity_name": "EDF RAH - Playa Solar, LLC",
-      "shortest": "EDF",
+      "shortest": "EDF Playa",
       "short": "EDF Playa Solar",
       "normal": "EDF RAH Playa Solar",
       "tier": "major"
@@ -11145,7 +11145,7 @@
     {
       "ncr_id": "NCR11441",
       "entity_name": "EDF Renewable Service",
-      "shortest": "EDF",
+      "shortest": "EDF Svc",
       "short": "EDF Renewable Service",
       "normal": "EDF Renewable Service",
       "tier": "major"
@@ -11153,7 +11153,7 @@
     {
       "ncr_id": "NCR13386",
       "entity_name": "Egypt Road Solar, LLC",
-      "shortest": "Egypt",
+      "shortest": "Egypt Rd PV",
       "short": "Egypt Road Solar",
       "normal": "Egypt Road Solar",
       "tier": "normal"
@@ -11161,7 +11161,7 @@
     {
       "ncr_id": "NCR11430",
       "entity_name": "EIF Channelview Cogeneration, LLC",
-      "shortest": "Channelview",
+      "shortest": "EIF Channel",
       "short": "EIF Channelview Cogeneration",
       "normal": "EIF Channelview Cogeneration",
       "tier": "normal"
@@ -11169,7 +11169,7 @@
     {
       "ncr_id": "NCR12110",
       "entity_name": "El Campo Wind, LLC",
-      "shortest": "El Campo",
+      "shortest": "El Campo WF",
       "short": "El Campo Wind",
       "normal": "El Campo Wind",
       "tier": "normal"
@@ -11185,7 +11185,7 @@
     {
       "ncr_id": "NCR12548",
       "entity_name": "Eldorado Solar Project,  LLC",
-      "shortest": "Eldorado",
+      "shortest": "Eldorado PV",
       "short": "Eldorado Solar Project",
       "normal": "Eldorado Solar Project",
       "tier": "normal"
@@ -11201,7 +11201,7 @@
     {
       "ncr_id": "NCR12567",
       "entity_name": "Elektron Solar, LLC",
-      "shortest": "Elektron",
+      "shortest": "Elektron PV",
       "short": "Elektron Solar",
       "normal": "Elektron Solar",
       "tier": "normal"
@@ -11209,7 +11209,7 @@
     {
       "ncr_id": "NCR12452",
       "entity_name": "Eleven-Mile Solar Center, LLC",
-      "shortest": "Eleven-Mile",
+      "shortest": "ElevenMile PV",
       "short": "Eleven-Mile Solar Center",
       "normal": "Eleven-Mile Solar Center",
       "tier": "normal"
@@ -11217,7 +11217,7 @@
     {
       "ncr_id": "NCR13448",
       "entity_name": "Elkhart County Solar Project, LLC",
-      "shortest": "Elkhart",
+      "shortest": "Elkhart PV",
       "short": "Elkhart County Solar",
       "normal": "Elkhart County Solar Project",
       "tier": "normal"
@@ -11225,7 +11225,7 @@
     {
       "ncr_id": "NCR12377",
       "entity_name": "Ellis Solar, LLC",
-      "shortest": "Ellis",
+      "shortest": "Ellis PV",
       "short": "Ellis Solar",
       "normal": "Ellis Solar",
       "tier": "normal"
@@ -11233,7 +11233,7 @@
     {
       "ncr_id": "NCR12291",
       "entity_name": "Elm Branch Solar 1, LLC",
-      "shortest": "Elm Branch",
+      "shortest": "Elm Br PV1",
       "short": "Elm Branch Solar 1",
       "normal": "Elm Branch Solar 1",
       "tier": "normal"
@@ -11241,7 +11241,7 @@
     {
       "ncr_id": "NCR13524",
       "entity_name": "ELP Stillwater Solar, LLC",
-      "shortest": "Stillwater",
+      "shortest": "ELP Stillwtr",
       "short": "ELP Stillwater Solar",
       "normal": "ELP Stillwater Solar",
       "tier": "normal"
@@ -11249,7 +11249,7 @@
     {
       "ncr_id": "NCR11061",
       "entity_name": "Empire Generating Co, LLC",
-      "shortest": "Empire",
+      "shortest": "Empire Gen",
       "short": "Empire Generating",
       "normal": "Empire Generating",
       "tier": "normal"
@@ -11265,7 +11265,7 @@
     {
       "ncr_id": "NCR13440",
       "entity_name": "Envoy Solar, LLC",
-      "shortest": "Envoy",
+      "shortest": "Envoy PV",
       "short": "Envoy Solar",
       "normal": "Envoy Solar",
       "tier": "normal"
@@ -11281,7 +11281,7 @@
     {
       "ncr_id": "NCR12471",
       "entity_name": "Escalante Solar, LLC",
-      "shortest": "Escalante",
+      "shortest": "Escalante PV",
       "short": "Escalante Solar",
       "normal": "Escalante Solar",
       "tier": "normal"
@@ -11289,7 +11289,7 @@
     {
       "ncr_id": "NCR13096",
       "entity_name": "Escape Solar, LLC",
-      "shortest": "Escape",
+      "shortest": "Escape PV",
       "short": "Escape Solar",
       "normal": "Escape Solar",
       "tier": "normal"
@@ -11305,7 +11305,7 @@
     {
       "ncr_id": "NCR11657",
       "entity_name": "ETEC - San Jacinto County Peaking Facility",
-      "shortest": "ETEC",
+      "shortest": "ETEC SanJac",
       "short": "ETEC San Jacinto Peaking",
       "normal": "ETEC San Jacinto County Peaking Facility",
       "tier": "normal"
@@ -11313,7 +11313,7 @@
     {
       "ncr_id": "NCR12410",
       "entity_name": "Ethos Energy Performance Center",
-      "shortest": "Ethos",
+      "shortest": "Ethos Perf",
       "short": "Ethos Energy Performance Center",
       "normal": "Ethos Energy Performance Center",
       "tier": "normal"
@@ -11321,7 +11321,7 @@
     {
       "ncr_id": "NCR11658",
       "entity_name": "EthosEnergy - Hardin County Peaking Facility",
-      "shortest": "Ethos",
+      "shortest": "Ethos Hardin",
       "short": "EthosEnergy Hardin County",
       "normal": "EthosEnergy Hardin County Peaking Facility",
       "tier": "normal"
@@ -11329,7 +11329,7 @@
     {
       "ncr_id": "NCR11993",
       "entity_name": "EthosEnergy - Louisiana Station - EMCF",
-      "shortest": "Ethos",
+      "shortest": "Ethos LA",
       "short": "EthosEnergy Louisiana Station",
       "normal": "EthosEnergy Louisiana Station EMCF",
       "tier": "normal"
@@ -11337,7 +11337,7 @@
     {
       "ncr_id": "NCR11655",
       "entity_name": "EthosEnergy - San Jacinto County Peaking Facility",
-      "shortest": "Ethos",
+      "shortest": "Ethos SanJac",
       "short": "EthosEnergy San Jacinto",
       "normal": "EthosEnergy San Jacinto County Peaking Facility",
       "tier": "normal"
@@ -11345,7 +11345,7 @@
     {
       "ncr_id": "NCR13129",
       "entity_name": "Evelyn Energy Storage, LLC",
-      "shortest": "Evelyn",
+      "shortest": "Evelyn ES",
       "short": "Evelyn Energy Storage",
       "normal": "Evelyn Energy Storage",
       "tier": "normal"
@@ -11353,7 +11353,7 @@
     {
       "ncr_id": "NCR11582",
       "entity_name": "Evergreen Wind Power II, LLC",
-      "shortest": "Oakfield",
+      "shortest": "Evergrn II",
       "short": "Oakfield Wind",
       "normal": "Evergreen Wind Power II",
       "tier": "normal"
@@ -11369,7 +11369,7 @@
     {
       "ncr_id": "NCR05154",
       "entity_name": "Fall River Rural Electric/PNGC",
-      "shortest": "Fall River",
+      "shortest": "Fall River REC",
       "short": "Fall River Rural Electric",
       "normal": "Fall River Rural Electric Cooperative",
       "tier": "normal"
@@ -11377,7 +11377,7 @@
     {
       "ncr_id": "NCR12370",
       "entity_name": "Fall River Solar, LLC",
-      "shortest": "Fall River",
+      "shortest": "Fall Riv PV",
       "short": "Fall River Solar",
       "normal": "Fall River Solar",
       "tier": "normal"
@@ -11385,7 +11385,7 @@
     {
       "ncr_id": "NCR13144",
       "entity_name": "Faraday Solar B LLC",
-      "shortest": "Faraday",
+      "shortest": "Faraday PV B",
       "short": "Faraday Solar B",
       "normal": "Faraday Solar B",
       "tier": "normal"
@@ -11609,7 +11609,7 @@
     {
       "ncr_id": "NCR11972",
       "entity_name": "Glacier's Edge Wind Project, LLC",
-      "shortest": "Glacier's Edge",
+      "shortest": "Glacier Edg",
       "short": "Glacier's Edge Wind",
       "normal": "Glacier's Edge Wind Project",
       "tier": "normal"
@@ -11737,7 +11737,7 @@
     {
       "ncr_id": "NCR12301",
       "entity_name": "Great Pathfinder Wind, LLC",
-      "shortest": "Pathfinder",
+      "shortest": "Pathfinder WF",
       "short": "Great Pathfinder Wind",
       "normal": "Great Pathfinder Wind",
       "tier": "normal"
