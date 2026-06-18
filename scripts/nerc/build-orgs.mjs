@@ -42,7 +42,7 @@ const normName = (s) =>
 
 // Read supplemental-orgs.json, enrich, and drop ones that lack coordinates or
 // duplicate an existing (NERC) org by normalized name.
-function loadSupplemental(existingNames) {
+function loadSupplemental(existingNames, names) {
   if (!existsSync(SUPPLEMENTAL)) return [];
   const list = JSON.parse(readFileSync(SUPPLEMENTAL, "utf8"));
   const out = [];
@@ -61,12 +61,12 @@ function loadSupplemental(existingNames) {
     if ((s.lat == null || s.lng == null) && !isTerritory) { ungeocoded++; continue; }
     if (existingNames.has(normName(s.entity_name))) { dupes++; continue; }
     if (isTerritory) territories++;
-    const org = enrichOrg({
+    const org = enrichOrg(applyNames({
       ...s,
       ncr_id: s.ncr_id || `SUP-${slug(s.entity_name)}`,
       nerc_registered: false,
       seed: false,
-    });
+    }, names));
     // Size by org_type (the NERC role weights are meaningless for non-registered
     // entities, and DP-only weight is tiny). Color by role mix when we have a
     // best-effort role, else by type.
@@ -339,7 +339,7 @@ function main() {
   }
 
   const existingNames = new Set(nercOrgs.map((o) => normName(o.entity_name)));
-  const supplemental = loadSupplemental(existingNames);
+  const supplemental = loadSupplemental(existingNames, names);
   const orgs = applyAreaAliases([...nercOrgs, ...supplemental]);
 
   mkdirSync(OUT_DIR, { recursive: true });

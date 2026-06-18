@@ -99,9 +99,22 @@ hand-delete a seed.
 - At low zoom, labels use acronyms or short names, not full legal names.
 - The renderer never recomputes weight, color, or flags; those are precomputed at build time in `enrich.mjs`. Change the math there, not in the client.
 
-### Short map labels (`name_shortest`, max 8 chars)
+### Short map labels (`name_shortest`)
 
 Build-time priority in `enrich.mjs` → `compactDisplayName()`: `SHORT_NAME_OVERRIDES` → `KNOWN_ACRONYMS` → `org-names.json` `shortest` → `tightenMapLabel()` in `display-names.mjs`. Runtime `NAME_RULES` in `nerc-org-map.ts` can prefer a shorter curated `tiny` label.
+
+The authoritative curation rules are in
+[docs/standards/name-shortest.md](docs/standards/name-shortest.md). Researched
+labels should be under 9 characters when practical, 9-12 is acceptable, and 15
+is the hard practical maximum. The renderer currently derives a tighter
+`MAP_LABEL_MAX` token when required for bubble fit; do not confuse that render
+constraint with the researched-label standard.
+
+`npm run nerc:name-queue` builds the unapproved review queue across every source
+record, including supplemental, combined, retired, source-only, and currently
+zoom-hidden organizations. `npm run nerc:name-queue-all` includes already
+approved records. Name research belongs in `src/data/nerc/org-names.json`; queue
+generation never changes names.
 
 **Known open bug:** some entities get filler tokens (`and`, `One`, `Water`, …) from the "prefer last word" rule in `tightenMapLabel()`. See [docs/bugs/map-label-filler-bug.md](docs/bugs/map-label-filler-bug.md) for examples, root cause, and rejected fix attempts. **Do not deploy label fixes without explicit user request** and verification against the production baseline (gh-pages `c0ca47b`). Prefer manual curation over bulk automated batches.
 

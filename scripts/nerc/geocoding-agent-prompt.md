@@ -72,6 +72,9 @@ ACRONYM RULES:
 - Acronyms should usually be 2 to 8 characters, unless an established name is longer.
 - Do not output null acronym. If inferred, set acronym_source to "name_initialism" and explain
   the inference briefly in notes.
+- Treat this acronym as a research candidate, not final approval of `name_shortest`.
+  Final labels are reviewed separately under `docs/standards/name-shortest.md` and
+  recorded in `src/data/nerc/org-names.json`.
 
 SEARCH ORDER (stop at first HIGH/MEDIUM):
 1. Official site: "<name>" headquarters address and acronym/short name (Contact/About/IR page).

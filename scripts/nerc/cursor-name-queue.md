@@ -1,61 +1,107 @@
-# Cursor research queue — three-tier display names, one entity at a time
+# Organization-label standards review queue
 
-This is the hand-off for researching short display names for NERC entities. Each
-entity gets THREE name tiers so the map can pick the right length for the zoom /
-dot size:
+Use this workflow to review `name_shortest` one organization at a time without
+changing map visibility, placement, or source coordinates.
 
-| tier        | what it is                          | examples                                   |
-|-------------|-------------------------------------|--------------------------------------------|
-| `shortest`  | the bare acronym                    | `PJM`, `CE`, `ERCOT`, `MISO`               |
-| `short`     | a short readable form               | `PJM Interconnection`, `Consumers`, `CAISO`|
-| `normal`    | the full brand / near-legal name    | `PJM Interconnection, LLC`, `Consumers Energy` |
+Read [the authoritative naming standard](../../docs/standards/name-shortest.md)
+before editing labels.
 
-Plus a `tier` flag: set it to `"major"` for the biggest, most recognizable
-entities (the ISOs/RTOs and the largest utilities). **A `"major"` entity is
-pinned to its `shortest` acronym at every zoom level** — e.g. PJM only ever
-renders as `PJM` on the map, never "PJM Interconnection". For everyone else use
-`tier: "normal"`; the map balances `shortest` vs `short` based on space.
+## Queue coverage
 
-## What to do (one entity per run — this prompt is queued ~100x)
+`npm run nerc:name-queue` writes:
 
-1. Open **`src/data/nerc/name-queue.jsonl`** — one entity per line, already in the
-   research input shape: `{ncr_id, entity_name, acronym, region, roles, weight, is_iso_rto}`.
-   It is ordered **biggest/most-important first**, so just take the FIRST entity
-   whose `ncr_id` is not already in `org-names.json`.
-2. Research that entity (its common acronym and brand name — name + region is
-   enough; 100% source accuracy is not required). Decide all three tiers:
-   - `shortest`: the tightest acronym people actually use. Keep it ≤ ~6 chars when
-     you can. If there's no real acronym, use the shortest recognizable token
-     (e.g. `Consumers` → `CE`? only if it's genuinely used; otherwise `Consumers`).
-   - `short`: short but readable, drop legal suffixes (`Inc.`, `LLC`, `Company`).
-   - `normal`: the full brand name (legal suffix optional, keep it natural).
-   - `tier`: `"major"` if `is_iso_rto` is true OR `weight >= 30` OR it's a
-     nationally-known utility; otherwise `"normal"`.
-3. Append ONE object to the `"names"` array in **`src/data/nerc/org-names.json`**:
-   ```json
-   {
-     "ncr_id": "NCR00879",
-     "entity_name": "PJM Interconnection, LLC",
-     "shortest": "PJM",
-     "short": "PJM Interconnection",
-     "normal": "PJM Interconnection, LLC",
-     "tier": "major"
-   }
-   ```
-   - **Echo `ncr_id` and `entity_name` exactly** from the queue line.
-   - Do not edit or reorder existing entries; only append.
-4. After every ~25–50 entities run `npm run nerc:build` to fold the names into
-   `public/nerc/orgs.json` and confirm the build is clean.
+- `src/data/nerc/name-queue.jsonl`
+- `src/data/nerc/name-queue.csv`
 
-## Re-generating the queue
+The queue contains every unapproved source record, including:
 
-`node scripts/nerc/build-name-queue.mjs` recomputes "geocoded minus already-named",
-so finished entities drop off automatically and the heaviest unnamed ones float to
-the top. `name-queue.csv` is the same list, human-readable.
+- published organizations
+- organizations currently hidden by zoom disclosure
+- registrations folded into a combined map bubble
+- retired seed records
+- supplemental and source-only records
 
-## IDs: use the queue's id, not a seed id
+Records are never deduplicated by entity name. Every `ncr_id` can be reviewed.
+Issue flags and high-weight published organizations sort first.
+`rendered_shortest` shows the currently published compact token when the record
+has its own map bubble; `current.shortest` is the researched/source value to edit.
 
-Some big entities (PJM, ERCOT, CAISO…) exist as both a placeholder `NCR-SEED-xxx`
-row and their real `NCRxxxxx` registry row. The queue already lists the **real**
-id and dedupes the seed away — always key `org-names.json` by the `ncr_id` printed
-in `name-queue.jsonl`. (The seed retires itself once the real row is present.)
+`npm run nerc:name-queue-all` includes approved records for a full audit.
+
+## Review one record
+
+1. Take the first queue row you want to review.
+2. Research the real alias/code or acronym using the sources in the standard.
+3. Find the matching `ncr_id` in `src/data/nerc/org-names.json`.
+4. Update or append one object. Keep `entity_name` exactly aligned with the source
+   record.
+5. Fill the review metadata and set `review_status` to `approved`.
+
+Example:
+
+```json
+{
+  "ncr_id": "NCR00879",
+  "entity_name": "PJM Interconnection, LLC",
+  "shortest": "PJM",
+  "short": "PJM Interconnection",
+  "normal": "PJM Interconnection, LLC",
+  "tier": "major",
+  "shortest_type": "alias_code",
+  "shortest_source": "official_website",
+  "shortest_source_url": "https://www.pjm.com/",
+  "review_notes": "PJM is the organization's established operating name.",
+  "review_status": "approved",
+  "reviewed_at": "2026-06-18"
+}
+```
+
+Allowed `shortest_type` values:
+
+- `alias_code`
+- `acronym`
+- `parent_project`
+- `meaningful_name`
+- `location`
+
+Suggested `shortest_source` values:
+
+- `official_website`
+- `nerc_record`
+- `oasis`
+- `iso_rto_material`
+- `public_filing`
+- `press_release`
+- `area_alias`
+- `inferred`
+
+Use `review_notes` for inferred labels, collision distinctions, parent/project
+patterns, and any actual alias longer than 15 characters.
+
+## Name tiers
+
+| Field | Purpose |
+| --- | --- |
+| `shortest` | Researched map label governed by the naming standard |
+| `short` | Short readable brand form |
+| `normal` | Full brand or near-legal name |
+| `tier` | `major` pins the organization to its shortest form; otherwise `normal` |
+
+The renderer may derive a tighter token when a researched label does not fit the
+current bubble. Do not replace a real alias with an invented code to satisfy that
+temporary render constraint.
+
+## Regenerate and verify
+
+After each coherent review batch:
+
+```bash
+npm run nerc:name-queue
+npm run nerc:build
+npm run nerc:payload-check
+npm run ux-check
+npm run check
+```
+
+Approved records with complete metadata leave the default queue. Queue generation
+does not edit `org-names.json` or any organization name.
