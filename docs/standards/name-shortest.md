@@ -1,162 +1,120 @@
 # `name_shortest` organization-label standard
 
-This is the authoritative standard for researching and reviewing organization
-labels. It applies to every source record, including organizations that are
-currently hidden by zoom disclosure, folded into a combined map bubble, excluded
-from the published map, or supplied through `supplemental-orgs.json`.
+This is the authoritative standard for `name_shortest`. It applies to every
+source record, including combined members, supplemental records, retired seeds,
+and organizations currently hidden by the renderer.
 
-The goal is a short, useful, map-friendly label:
+## Core rule
 
-1. Actual alias or code first.
-2. Actual acronym second.
-3. If neither exists, use the shortest meaningful label that helps the user.
-4. Do not invent utility codes.
-5. Do not make labels long merely to make them prettier.
+The map label is the shortest correct identifier, not the prettiest company
+nickname.
 
-## Length targets
+Use this order:
+
+1. Official or authoritative alias/code.
+2. Official acronym.
+3. Parent or project acronym plus a distinguishing suffix.
+4. Shortest meaningful readable label.
+
+An official acronym wins over a longer readable name. Do not replace `AMMO`,
+`DPC`, `SECI`, `MHEB`, `SPC`, `OTP`, `SMP`, `SPA`, `WR`, `WEC`, `BREC`, `HE`,
+`GLH`, `LGEE`, `NBSO`, `AECI`, or similar verified values merely because a
+company name looks friendlier.
+
+## Evidence and canonical forms
+
+Check the NERC record, OASIS, ISO/RTO material, the organization's website,
+public filings, project-owner material, and existing `area_aliases`.
+
+User-provided acronym tables are authoritative unless a value is explicitly
+marked uncertain, legacy/modelled, not found, likely combined, or requiring
+verification.
+
+When a legacy form maps to a better canonical public acronym, use the canonical
+form as `shortest` and retain the legacy form as an alias/reference. Examples:
+
+- `ISNE` -> `ISO-NE`
+- `NYIS` -> `NYISO`
+- `ONT` -> `IESO`
+- `NIPS` -> `NIPSCO`
+- `SIGE` -> `SIGECO`
+- `CE` -> `ComEd`
+- `DECO` -> `DTE`
+- `TEC` -> `TECO`
+- `OKGE` -> `OG&E`
+- `GVL` -> `GRU`
+- `HST` -> `HPS`
+- `TAL` -> `TLH`
+- `LAFA` -> `LUS`
+
+Do not promote an unverified legacy planning-area value such as `SMT`, `SPIF`,
+`LAGT`, `LEGN`, `CIN`, `MPS`, `MIUP`, `SEHA`, `SERU`, `SETH`, or `YAD` without
+evidence that it is the correct visible identifier for that record.
+
+## Length
 
 - Best: fewer than 9 characters.
 - Strong: 9-12 characters.
-- Avoid: 13-15 characters; make one more shortening pass.
-- Hard practical maximum: 15 characters.
-- More than 15 characters requires an unavoidable, documented actual alias.
-- Minimum: 3 characters unless the label is a real alias, code, or acronym.
+- Avoid: 13-15 characters.
+- Hard practical maximum: 15 characters, unless an unavoidable official
+  alias/code is longer.
+- Two-letter labels are allowed only when verified as official, for example
+  `FE`, `HE`, `MP`, `SC`, `CE`, and `WR`.
 
-These are curation limits for the researched `shortest` value in
-`src/data/nerc/org-names.json`. The current renderer may derive a tighter token
-for a bubble when the researched value does not fit. Do not shorten a researched,
-real alias merely to satisfy a temporary renderer limit.
+These limits apply to the researched `shortest` value in
+`src/data/nerc/org-names.json`. The renderer may derive a tighter token for
+bubble fit; do not weaken an authoritative researched value to satisfy a
+temporary render limit.
 
-## Decision tree
+## Collisions and project records
 
-1. Does the organization have an actual alias or code? Use it.
-2. If not, does it have an actual acronym? Use it.
-3. For a private GO/GOP/TO project, does the parent or project have an acronym?
-   Use the acronym plus the site or project.
-4. If there is a duplicate or conflict, add the shortest distinguishing word.
-5. If no alias or acronym exists, use the shortest meaningful organization,
-   project, or location label.
-6. If the result is over 12 characters, shorten common words.
-7. If it is still over 15 characters, remove filler words, then selected vowels.
+If an official acronym collides with a nearby or related record, keep the
+acronym and add the smallest useful suffix.
 
-## Research and evidence
+Suffix priority:
 
-Before changing a label, check what the entity calls itself when practical:
+1. State
+2. Region or district
+3. Unit number
+4. Project or site
+5. Function
 
-- NERC record
-- OASIS page
-- ISO/RTO material
-- Company website
-- Project owner page
-- Public filings
-- Press releases
-- Existing `area_aliases` in the data
+Examples: `USACE KC`, `USACE LR`, `WAPA RM`, `CPV Shore`, `CPV MD`,
+`GSP Newgtn`, `Indeck Olean`, `RE Stratton`, `NRG Golden`, `AMMO Gen`,
+`DOM Nuke`, `DOM Gen`, and `FPL NW`.
 
-Prefer the company's own branding, capitalization, acronym, and project naming.
-Do not replace a real company-used name merely because another label looks nicer.
+For private GO/GOP/TO entities, use `[parent acronym] + [site/project]` when a
+parent has multiple records. Do not collapse every CPV, GSP, Indeck, ReEnergy,
+or NRG record to the parent acronym alone, and do not discard the parent identity
+in favor of a location-only label.
 
-Record the decision in `org-names.json` with:
+Preserve distinguishing unit numbers, phases, and ordinals.
 
-- `shortest_type`: `alias_code`, `acronym`, `parent_project`,
-  `meaningful_name`, or `location`
-- `shortest_source`: the evidence category, such as `official_website`,
-  `nerc_record`, `oasis`, `iso_rto_material`, `public_filing`,
-  `press_release`, `area_alias`, or `inferred`
-- `shortest_source_url`: evidence URL when available
+## No invented acronyms
 
-An actual alias always wins, even if it is less obvious to a casual user.
-Examples: `ALTE`, `ALTW`, `DPC`, `OTP`, `MP`, `MHEB`, `GLH`, `SPA`, `WAUE`,
-and `WR`. Real aliases should usually be 2-8 characters, but a longer actual
-alias is acceptable.
+Do not invent compressed utility codes merely because they are short. Values
+such as `NVE`, `BOW`, `BCW`, `CRW`, `EFW`, `BLKOAK`, `CYTRDG`, `MNTPLR`,
+`SNFLWR`, `WHTSBR`, and `CLDWTR` require evidence; otherwise use a readable
+fallback.
 
-If there is no better alias, use the real acronym. Examples: `ATC`, `WAPA`,
-`GRDA`, `NIPSCO`, `OVEC`, `MMPA`, `NYPA`, `CEF`, `NBSO`, `NGG`, and `NGUSA`.
+Avoid generic labels such as `and`, `the`, `one`, `water`, `power`, `company`,
+`corporation`, `utility`, `department`, `city`, and `town`.
 
-## No fake codes
+## Readable fallback
 
-Do not invent compressed utility codes such as `NVE`, `BOW`, `BCW`, `CRW`,
-`EFW`, `CYTRDG`, or `BLKOAK`.
+Use a readable label only when no official alias/acronym or useful parent
+acronym exists. Examples: `Black Oak`, `Blue Cloud`, `Boot Hill`, `East Fork`,
+`Iron Star`, `River Fls`, `Cos Cob`, `Ravenswood`, and `Indian Pt 3`.
 
-If no real code exists, use a short meaningful label:
+Location-only labels are appropriate only when the location is the clearest
+identifier and does not create a collision.
 
-- `Black Oak`
-- `Apple Riv`
-- `Boot Hill`
-- `Coyote Rdg`
-- `North Star`
-- `River Fls`
-- `Cos Cob`
+For utilities, cooperatives, and municipals, use the official acronym when one
+exists. Otherwise use the shortest recognizable city or utility name.
 
-Readability beats fake compression. Prefer `Reedsburg` over `RDSBRG`,
-`Kingfisher` over `KNGFSH`, and `Cent Hudson` over `CHGE` unless `CHGE` is a
-real, preferred alias.
+## Fallback abbreviations
 
-## Short and generic labels
-
-Avoid two-letter labels unless they are real, recognized aliases. Labels that
-require evidence include `AR`, `BH`, `BC`, `CR`, `EF`, `ER`, `GE`, `GP`, `GW`,
-`IS`, `LR`, `NB`, `NF`, `NS`, `PC`, `PH`, `PR`, `RF`, `RR`, `SS`, `WC`, and
-`WS`.
-
-Avoid generic labels that do not identify the organization, including filler
-words such as `and`, `the`, `one`, `water`, `power`, `company`, `corporation`,
-`utility`, `department`, `city`, and `town`.
-
-## Collisions
-
-No two nearby, similar, or related organizations should share the same
-`name_shortest`. Add the smallest useful distinction:
-
-- `Astoria En` / `Astoria Gen`
-- `Prairie` / `Prairie II`
-- `Sunflower EC` / `Sunflower WF`
-- `Montpelier GS` / `Montpelier PV`
-
-Prefer the disambiguated result under 12 characters. Never exceed 15 unless an
-unavoidable actual alias requires it.
-
-Preserve a unit number, phase, or ordinal when it distinguishes records:
-`Flat Ridge 1`, `FR2`, `FR3`, `Prairie II`, `Indian Pt 3`, `Horus WV1`, and
-`Dakota III`.
-
-## Private projects and parent identity
-
-For private companies mainly engaged in GO, GOP, or TO, do not use only the
-location when company or project identity matters.
-
-Use:
-
-- `CEF - L`, not `Lordstown`
-- `RE Stratton`, not `Stratton`
-- `GSP Schiller`, not `Schiller`
-- `NRG Golden`, not `Golden`
-
-Preferred pattern: `[parent acronym] + [site/project]`.
-
-Examples:
-
-- `CEF - L`
-- `CPV Shore`
-- `GSP Newingtn`
-- `Indeck Oswego`
-- `RE Stratton`
-- `NRG Golden`
-- `Avangrid Svc`
-
-Target 5-12 characters, with 15 as the maximum.
-
-For a parent with many project records, do not label every record only by the
-parent. Use `CPV Shore`, `GSP Newingtn`, `Indeck Olean`, `RE Stratton`,
-`NRG Golden`, and `Avangrid Svc` instead of repeating only `CPV`, `GSP`,
-`Indeck`, `ReEnergy`, `NRG`, or `Avangrid`.
-
-Use a location-only label only when no real alias exists, no useful acronym
-exists, parent identity is unimportant, and the location is the clearest
-identifier. Examples: `Cos Cob`, `Ravenswood`, `Indian Pt 3`, and `Cannon Fls`.
-
-## Asset abbreviations
-
-Use standard asset words when they preserve meaning:
+Apply these only to non-acronym fallback labels:
 
 | Short form | Meaning |
 | --- | --- |
@@ -167,163 +125,74 @@ Use standard asset words when they preserve meaning:
 | `CC` | Combined Cycle |
 | `Cogen` | Cogeneration |
 | `Hydro` | Hydroelectric / Hydropower |
-| `Tx` | Transmission, only when clear |
-| `Trans` | Transmission when `Tx` is too cryptic |
-| `O&M` | Operations & Maintenance |
+| `Tx` / `Trans` | Transmission |
 | `Svc` | Service / Services |
 | `Ops` | Operations |
+| `O&M` | Operations & Maintenance |
 | `Gen` | Generation / Generating |
-| `Pwr` | Power, only when needed |
-| `Elec` | Electric, only when needed |
+| `ES` | Energy Storage |
 
-For solar records, use `PV` when helpful:
+Common directional and word forms include `NE`, `NW`, `SE`, `SW`, `Cent`, `N`,
+`S`, `E`, `W`, `Mun`, `Util`, `Elec`, `Coop`, `Cnty`, `Crk`, `Rdg`, `Riv`,
+`Fls`, `Spg`, and `St`.
 
-- `Montpelier Solar` -> `Montpelier PV`
-- `North Star Solar` -> `N Star PV`
-- `Rocking R Solar` -> `Rocking R PV`
-- `Northeast Texas Solar` -> `NE Texas PV`
-- `Prairie Rose Solar` -> `Prairie PV` when there is no conflict
+Shorten in this order:
 
-For wind records, use `WF` when helpful:
+1. Use the official alias/code or acronym.
+2. Apply an asset abbreviation.
+3. Shorten directions and common words.
+4. Remove legal suffixes and filler words.
+5. Remove selected vowels only if the result remains recognizable.
 
-- `Sunflower Wind` -> `Sunflower WF`
-- `Prairie Rose Wind` -> `Prairie WF`
-- `Black Oak Wind` -> `Black Oak`, or `Black Oak WF` when needed
-- `Coyote Ridge Wind` -> `Coyote Rdg`, or `Coyote WF` when needed
+Do not apply fallback beautification when an official acronym exists.
 
-If the project word alone is distinctive, the asset suffix may be omitted.
+## Long-name review
 
-## Direction and common-word shortening
+While reviewing a label, inspect `entity_name`, `short`, `normal`, `acronym`,
+and `area_aliases` for obvious spelling, capitalization, spacing, punctuation,
+stale-name, and alias-mapping problems.
 
-Use common directional abbreviations:
+Apply long-name corrections in a separately scoped data change. Do not mix them
+silently into a label-only batch.
 
-| Long form | Short form |
-| --- | --- |
-| Northeast | `NE` |
-| Northwest | `NW` |
-| Southeast | `SE` |
-| Southwest | `SW` |
-| Central | `Cent` |
-| Northern | `N` |
-| Southern | `S` |
-| Eastern | `E` |
-| Western | `W` |
+## Stored metadata
 
-Examples: `NE Texas`, `Cent Hudson`, `SW Power`, and `N Indiana` unless
-`NIPSCO` is the real acronym.
+`org-names.json` currently supports:
 
-Shorten common words before removing vowels:
+- `shortest_type`: `alias_code`, `acronym`, `parent_project`,
+  `meaningful_name`, or `location`
+- `shortest_source`: evidence category
+- `shortest_source_url`: evidence URL when available
 
-| Long form | Short form |
-| --- | --- |
-| Municipal | `Mun` |
-| Utilities | `Util` |
-| Electric | `Elec` |
-| Cooperative | `Coop` |
-| Generation / Generating | `Gen` |
-| Transmission | `Trans` or `Tx` |
-| Services | `Svc` |
-| Operations | `Ops` |
-| Energy Center | `EC` |
-| Generating Station | `GS` |
-| Combined Cycle | `CC` |
-
-## Shortening sequence
-
-When a label is too long, shorten it in this order:
-
-1. Use the actual alias or code.
-2. Use the actual acronym.
-3. Replace asset types (`Solar` -> `PV`, `Wind` -> `WF`, `Energy Center` ->
-   `EC`, `Generating Station` -> `GS`, `Combined Cycle` -> `CC`).
-4. Replace geography and directions (`Northeast` -> `NE`, `Central` -> `Cent`,
-   `Southwest` -> `SW`).
-5. Remove legal suffixes (`LLC`, `Inc.`, `LP`, `L.P.`, `Company`,
-   `Corporation`).
-6. Remove filler words (`Project`, `Energy`, `Power`, `The`, `Of`).
-7. Shorten common words (`Municipal` -> `Mun`, `Utilities` -> `Util`,
-   `Cooperative` -> `Coop`).
-8. Remove vowels only when the result is still too long.
-9. Do not exceed 15 characters.
-
-Only remove vowels after normal abbreviation leaves the label over 12
-characters, and only when the result remains recognizable.
-
-Prefer:
-
-- `Cent Hudson`, not `CNTR HDSN`
-- `NE Texas`, not `NRTHST TX`
-- `Montpelier PV`, not `MNTPLR PV`
-- `Prairie WF`
-
-## Organization-type guidance
-
-For public utilities, cooperatives, and municipals:
-
-1. Use the actual alias or acronym when known.
-2. Otherwise use the city or utility name.
-3. Shorten common words only when needed.
-
-Examples: `Paragould`, `Oconomowoc`, `Jefferson`, `McPherson`, `River Fls`,
-`Cent Hudson`, and `NE Texas`.
-
-For federal or regional entities with multiple sub-records, include the agency
-plus region or district: `USACE KC`, `USACE LR`, `USACE Omaha`, `WAPA RM`,
-and `WAUE`.
-
-## Long-name audit
-
-While reviewing `name_shortest`, also inspect:
-
-- `entity_name`
-- `name_short`
-- `name_normal`
-- `acronym`
-
-Look for spelling errors, capitalization, missing spaces, punctuation, stale
-company names, awkward legal ordering, grammar, duplicate labels, bad aliases,
-and labels that no longer match company branding.
-
-Fix obvious long-name errors in the source record during a later, explicitly
-scoped data-edit pass. Examples:
-
-- `Big Blue WInd Farm` -> `Big Blue Wind Farm`
-- `Canal Generating llc` -> `Canal Generating LLC`
-- `Horus West Virginia 1,LLC` -> `Horus West Virginia 1, LLC`
-- `Fairport Municipal Commision` -> `Fairport Municipal Commission`
-- User-facing `Board Of` -> `Board of`
-- User-facing `City Of` -> `City of`
-
-Do not mix these long-name corrections into a label-only batch without noting
-the separate source-data change.
-
-## Final quality check
-
-Every `name_shortest` must be:
-
-- short
-- unique where nearby or related
-- recognizable
-- real, not invented
-- not overly generic
-- not misleading
-- free of unnecessary legal words
-- no longer than needed
-- useful on a crowded map
-
-The final test is: "Can a user recognize this bubble quickly without the label
-taking too much map space?"
+Do not add review statuses, dates, or notes unless the schema and consumers are
+explicitly changed first.
 
 ## Review workflow
 
-1. Take the next records from the current batch worklist.
+1. Take the next records from `scripts/nerc/name-review-first-500.md`.
 2. Use `src/data/nerc/name-queue.jsonl` or `.csv` for context.
-3. Update the matching object in `src/data/nerc/org-names.json`.
-4. Delete each completed line from the batch worklist. Leave uncertain records
-   in place.
-5. Before publishing name changes, run `npm run nerc:build`,
-   `npm run nerc:payload-check`, `npm run ux-check`, and `npm run check`, then
-   compare the map at matched desktop and mobile zoom levels.
+3. Research and update the matching object in
+   `src/data/nerc/org-names.json`.
+4. Delete completed worklist lines; leave uncertain records in place.
+5. Keep label edits separate from renderer, coordinate, role, and weight changes.
+6. Validate before publishing:
 
-`npm run nerc:name-queue` rebuilds the complete reference queue. It never writes
-organization names and is not a progress tracker.
+```bash
+node -e 'const d=require("./src/data/nerc/org-names.json"); const ids=d.names.map(x=>x.ncr_id); if(ids.length!==new Set(ids).size) process.exit(1)'
+npm run nerc:build
+npm run nerc:payload-check
+npm run ux-check
+npm run check
+```
+
+Do not run `npm run nerc:name-queue` during a pinned batch; the queue is a
+reference export, not the progress tracker.
+
+## Final check
+
+Every `name_shortest` must be authoritative where possible, short, unique where
+needed, recognizable, non-generic, and free of unnecessary legal words.
+
+The prior practice of replacing verified official acronyms with prettier display
+names was wrong. Keep the official acronym in `name_shortest`; put the readable
+organization name in `short` or `normal`.
