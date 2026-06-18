@@ -8049,7 +8049,7 @@
     {
       "ncr_id": "NCR00633",
       "entity_name": "Tenaska Gateway Partners Ltd",
-      "shortest": "Tenaska",
+      "shortest": "Tenaska Gate",
       "short": "Tenaska Gateway",
       "normal": "Tenaska Gateway Partners",
       "tier": "major"
@@ -8057,7 +8057,7 @@
     {
       "ncr_id": "NCR04137",
       "entity_name": "Tenaska Gateway Partners LTD",
-      "shortest": "Tenaska",
+      "shortest": "Tenaska Gate",
       "short": "Tenaska Gateway",
       "normal": "Tenaska Gateway Partners",
       "tier": "major"
@@ -8065,7 +8065,7 @@
     {
       "ncr_id": "NCR01337",
       "entity_name": "Tenaska Georgia Partners, L.P.",
-      "shortest": "Tenaska",
+      "shortest": "Tenaska GA",
       "short": "Tenaska Georgia",
       "normal": "Tenaska Georgia Partners",
       "tier": "major"
@@ -8073,7 +8073,7 @@
     {
       "ncr_id": "NCR11882",
       "entity_name": "Tenaska Pennsylvania Partners, LLC",
-      "shortest": "Tenaska",
+      "shortest": "Tenaska PA",
       "short": "Tenaska Pennsylvania",
       "normal": "Tenaska Pennsylvania Partners",
       "tier": "major"
@@ -8081,7 +8081,7 @@
     {
       "ncr_id": "NCR01339",
       "entity_name": "Tenaska Virginia Partners, L.P.",
-      "shortest": "Tenaska",
+      "shortest": "Tenaska VA",
       "short": "Tenaska Virginia",
       "normal": "Tenaska Virginia Partners",
       "tier": "major"
@@ -8105,7 +8105,7 @@
     {
       "ncr_id": "NCR12283",
       "entity_name": "TG East Wind Project, LLC",
-      "shortest": "TG East",
+      "shortest": "TG East WF",
       "short": "TG East Wind",
       "normal": "TG East Wind Project",
       "tier": "normal"
@@ -8129,7 +8129,7 @@
     {
       "ncr_id": "NCR12289",
       "entity_name": "Thunderhead Wind Energy, LLC",
-      "shortest": "Thunderhead",
+      "shortest": "Thunderhd WF",
       "short": "Thunderhead Wind Energy",
       "normal": "Thunderhead Wind Energy",
       "tier": "normal"
@@ -8145,7 +8145,7 @@
     {
       "ncr_id": "NCR11129",
       "entity_name": "Tiverton Power LLC",
-      "shortest": "Tiverton",
+      "shortest": "Tiverton Pwr",
       "short": "Tiverton Power",
       "normal": "Tiverton Power",
       "tier": "normal"
@@ -8153,7 +8153,7 @@
     {
       "ncr_id": "NCR12308",
       "entity_name": "Top of Iowa Wind LLC",
-      "shortest": "Top of Iowa",
+      "shortest": "Top Iowa WF",
       "short": "Top of Iowa Wind",
       "normal": "Top of Iowa Wind",
       "tier": "normal"
@@ -8169,7 +8169,7 @@
     {
       "ncr_id": "NCR13234",
       "entity_name": "TPW Petersburg, LLC",
-      "shortest": "Petersburg",
+      "shortest": "TPW Peters",
       "short": "TPW Petersburg",
       "normal": "TPW Petersburg",
       "tier": "normal"
@@ -8185,7 +8185,7 @@
     {
       "ncr_id": "NCR12359",
       "entity_name": "Trent Wind Farm, LLC",
-      "shortest": "Trent",
+      "shortest": "Trent WF",
       "short": "Trent Wind Farm",
       "normal": "Trent Wind Farm",
       "tier": "normal"
@@ -8193,7 +8193,7 @@
     {
       "ncr_id": "NCR12220",
       "entity_name": "Tres City Power, LLC",
-      "shortest": "Tres City",
+      "shortest": "Tres City Pwr",
       "short": "Tres City Power",
       "normal": "Tres City Power",
       "tier": "normal"
@@ -8201,7 +8201,7 @@
     {
       "ncr_id": "NCR12221",
       "entity_name": "Tres Port Power, LLC",
-      "shortest": "Tres Port",
+      "shortest": "Tres Port Pwr",
       "short": "Tres Port Power",
       "normal": "Tres Port Power",
       "tier": "normal"
@@ -8209,7 +8209,7 @@
     {
       "ncr_id": "NCR12048",
       "entity_name": "Triple H Wind Project, LLC",
-      "shortest": "Triple H",
+      "shortest": "Triple H WF",
       "short": "Triple H Wind",
       "normal": "Triple H Wind Project",
       "tier": "normal"
@@ -8225,7 +8225,7 @@
     {
       "ncr_id": "NCR10277",
       "entity_name": "Turkey Track Wind Energy Center",
-      "shortest": "Turkey Track",
+      "shortest": "Turkey WF",
       "short": "Turkey Track Wind",
       "normal": "Turkey Track Wind Energy Center",
       "tier": "normal"
@@ -8233,7 +8233,7 @@
     {
       "ncr_id": "NCR12534",
       "entity_name": "Twin Lakes Solar LLC",
-      "shortest": "Twin Lakes",
+      "shortest": "Twin Lakes PV",
       "short": "Twin Lakes Solar",
       "normal": "Twin Lakes Solar",
       "tier": "normal"
@@ -8241,7 +8241,7 @@
     {
       "ncr_id": "NCR11280",
       "entity_name": "Twin Ridges Wind Farm",
-      "shortest": "Twin Ridges",
+      "shortest": "Twin Rdg WF",
       "short": "Twin Ridges Wind Farm",
       "normal": "Twin Ridges Wind Farm",
       "tier": "normal"
@@ -8249,7 +8249,7 @@
     {
       "ncr_id": "NCR11495",
       "entity_name": "TX Hereford Wind, LLC",
-      "shortest": "Hereford",
+      "shortest": "TX Hereford",
       "short": "Hereford Wind",
       "normal": "Hereford Wind",
       "tier": "normal"
@@ -8257,7 +8257,7 @@
     {
       "ncr_id": "NCR11519",
       "entity_name": "TX Jumbo Road Wind, LLC",
-      "shortest": "Jumbo Road",
+      "shortest": "TX Jumbo",
       "short": "Jumbo Road Wind",
       "normal": "Jumbo Road Wind",
       "tier": "normal"
@@ -8273,7 +8273,7 @@
     {
       "ncr_id": "NCR13035",
       "entity_name": "Unbridled Solar LLC",
-      "shortest": "Unbridled",
+      "shortest": "Unbridled PV",
       "short": "Unbridled Solar",
       "normal": "Unbridled Solar",
       "tier": "normal"
@@ -8305,7 +8305,7 @@
     {
       "ncr_id": "NCR11880",
       "entity_name": "Upstream Wind Energy, LLC",
-      "shortest": "Upstream",
+      "shortest": "Upstream WF",
       "short": "Upstream Wind Energy",
       "normal": "Upstream Wind Energy",
       "tier": "normal"
@@ -8313,7 +8313,7 @@
     {
       "ncr_id": "NCR00078",
       "entity_name": "Vandolah Power Company, LLC",
-      "shortest": "Vandolah",
+      "shortest": "Vandolah Pwr",
       "short": "Vandolah Power",
       "normal": "Vandolah Power Company",
       "tier": "normal"
@@ -8321,7 +8321,7 @@
     {
       "ncr_id": "NCR11917",
       "entity_name": "Vermillion Power, L.L.C.",
-      "shortest": "Vermillion",
+      "shortest": "Vermilln Pwr",
       "short": "Vermillion Power",
       "normal": "Vermillion Power",
       "tier": "normal"
@@ -8337,7 +8337,7 @@
     {
       "ncr_id": "NCR12328",
       "entity_name": "VESI Upton County BESS, LLC",
-      "shortest": "VESI",
+      "shortest": "VESI Upton",
       "short": "VESI Upton County BESS",
       "normal": "VESI Upton County BESS",
       "tier": "normal"
@@ -8353,7 +8353,7 @@
     {
       "ncr_id": "NCR01214",
       "entity_name": "Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Electric Transmission",
-      "shortest": "Dominion",
+      "shortest": "DOM Tx",
       "short": "Dominion Virginia Transmission",
       "normal": "Dominion Energy Virginia Transmission",
       "tier": "major"
@@ -8385,7 +8385,7 @@
     {
       "ncr_id": "NCR11876",
       "entity_name": "Walleye Power, LLC",
-      "shortest": "Walleye",
+      "shortest": "Walleye Pwr",
       "short": "Walleye Power",
       "normal": "Walleye Power",
       "tier": "normal"
@@ -8393,7 +8393,7 @@
     {
       "ncr_id": "NCR11102",
       "entity_name": "Wallingford Energy LLC",
-      "shortest": "Wallingford",
+      "shortest": "Wallingfrd En",
       "short": "Wallingford Energy",
       "normal": "Wallingford Energy",
       "tier": "normal"
