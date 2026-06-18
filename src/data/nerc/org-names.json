@@ -8649,7 +8649,7 @@
     {
       "ncr_id": "NCR13535",
       "entity_name": "Zephyr Wind, LLC",
-      "shortest": "Zephyr",
+      "shortest": "Zephyr WF",
       "short": "Zephyr Wind",
       "normal": "Zephyr Wind",
       "tier": "normal"
@@ -8825,7 +8825,7 @@
     {
       "ncr_id": "NCR12555",
       "entity_name": "7V Solar Ranch, LLC",
-      "shortest": "7V Solar",
+      "shortest": "7V Ranch",
       "short": "7V Solar Ranch",
       "normal": "7V Solar Ranch",
       "tier": "normal"
@@ -8849,7 +8849,7 @@
     {
       "ncr_id": "NCR12082",
       "entity_name": "ACT Power Services, LLC",
-      "shortest": "ACT",
+      "shortest": "ACT Svc",
       "short": "ACT Power Services",
       "normal": "ACT Power Services",
       "tier": "normal"
@@ -8857,7 +8857,7 @@
     {
       "ncr_id": "NCR13208",
       "entity_name": "Adams East, LLC",
-      "shortest": "Adams East",
+      "shortest": "Adams E PV",
       "short": "Adams East Solar",
       "normal": "Adams East Solar",
       "tier": "normal"
@@ -8865,7 +8865,7 @@
     {
       "ncr_id": "NCR12432",
       "entity_name": "Adams Solar LLC",
-      "shortest": "Adams",
+      "shortest": "Adams PV",
       "short": "Adams Solar",
       "normal": "Adams Solar",
       "tier": "normal"
@@ -8881,7 +8881,7 @@
     {
       "ncr_id": "NCR11401",
       "entity_name": "AEP Generation Resources Inc.",
-      "shortest": "AEP",
+      "shortest": "AEP Gen",
       "short": "AEP Generation Resources",
       "normal": "AEP Generation Resources",
       "tier": "major"
@@ -8889,7 +8889,7 @@
     {
       "ncr_id": "NCR12527",
       "entity_name": "AEP Renewables - Central Region",
-      "shortest": "AEP",
+      "shortest": "AEP Renew C",
       "short": "AEP Renewables Central",
       "normal": "AEP Renewables Central Region",
       "tier": "major"
@@ -8897,7 +8897,7 @@
     {
       "ncr_id": "NCR13230",
       "entity_name": "AEP Renewables - East Region",
-      "shortest": "AEP",
+      "shortest": "AEP Renew E",
       "short": "AEP Renewables East",
       "normal": "AEP Renewables East Region",
       "tier": "major"
@@ -8905,7 +8905,7 @@
     {
       "ncr_id": "NCR11209",
       "entity_name": "Agua Caliente Solar LLC",
-      "shortest": "Agua Caliente",
+      "shortest": "Agua Cal PV",
       "short": "Agua Caliente Solar",
       "normal": "Agua Caliente Solar",
       "tier": "normal"
@@ -8913,7 +8913,7 @@
     {
       "ncr_id": "NCR13330",
       "entity_name": "Airport Solar, LLC",
-      "shortest": "Airport",
+      "shortest": "Airport PV",
       "short": "Airport Solar",
       "normal": "Airport Solar",
       "tier": "normal"
@@ -8921,7 +8921,7 @@
     {
       "ncr_id": "NCR12516",
       "entity_name": "Al Pastor BESS LLC",
-      "shortest": "Al Pastor",
+      "shortest": "Al Pastor ES",
       "short": "Al Pastor BESS",
       "normal": "Al Pastor BESS",
       "tier": "normal"
@@ -8929,7 +8929,7 @@
     {
       "ncr_id": "NCR11833",
       "entity_name": "AL Solar A, LLC",
-      "shortest": "AL Solar",
+      "shortest": "AL PV A",
       "short": "AL Solar A",
       "normal": "AL Solar A",
       "tier": "normal"
@@ -8937,7 +8937,7 @@
     {
       "ncr_id": "NCR12312",
       "entity_name": "AL Solar D, LLC",
-      "shortest": "AL Solar",
+      "shortest": "AL PV D",
       "short": "AL Solar D",
       "normal": "AL Solar D",
       "tier": "normal"
@@ -8945,7 +8945,7 @@
     {
       "ncr_id": "NCR13549",
       "entity_name": "AL Solar G, LLC",
-      "shortest": "AL Solar",
+      "shortest": "AL PV G",
       "short": "AL Solar G",
       "normal": "AL Solar G",
       "tier": "normal"
@@ -8953,7 +8953,7 @@
     {
       "ncr_id": "NCR13550",
       "entity_name": "AL Solar H, LLC",
-      "shortest": "AL Solar",
+      "shortest": "AL PV H",
       "short": "AL Solar H",
       "normal": "AL Solar H",
       "tier": "normal"
@@ -8985,7 +8985,7 @@
     {
       "ncr_id": "NCR12297",
       "entity_name": "Allora Solar, LLC",
-      "shortest": "Allora",
+      "shortest": "Allora PV",
       "short": "Allora Solar",
       "normal": "Allora Solar",
       "tier": "normal"
