@@ -7905,7 +7905,7 @@
     {
       "ncr_id": "NCR12381",
       "entity_name": "Sweetland Wind Farm, LLC",
-      "shortest": "Sweetland",
+      "shortest": "Sweetland WF",
       "short": "Sweetland Wind Farm",
       "normal": "Sweetland Wind Farm",
       "tier": "normal"
@@ -7969,7 +7969,7 @@
     {
       "ncr_id": "NCR11844",
       "entity_name": "Tait Electric Generating Station, LLC",
-      "shortest": "Tait",
+      "shortest": "Tait GS",
       "short": "Tait Electric Generating Station",
       "normal": "Tait Electric Generating Station",
       "tier": "normal"
@@ -14649,7 +14649,7 @@
     {
       "ncr_id": "NCR12162",
       "entity_name": "RE Maplewood LLC",
-      "shortest": "Maplewood",
+      "shortest": "RE Maplewood",
       "short": "RE Maplewood",
       "normal": "RE Maplewood",
       "tier": "normal"
@@ -14657,7 +14657,7 @@
     {
       "ncr_id": "NCR12043",
       "entity_name": "RE Rambler LLC",
-      "shortest": "Rambler",
+      "shortest": "RE Rambler",
       "short": "RE Rambler",
       "normal": "RE Rambler",
       "tier": "normal"
@@ -14673,7 +14673,7 @@
     {
       "ncr_id": "NCR11823",
       "entity_name": "Red Pine Wind Project, LLC",
-      "shortest": "Red Pine",
+      "shortest": "Red Pine WF",
       "short": "Red Pine Wind",
       "normal": "Red Pine Wind Project",
       "tier": "normal"
@@ -14689,7 +14689,7 @@
     {
       "ncr_id": "NCR13527",
       "entity_name": "Regan Solar, LLC",
-      "shortest": "Regan",
+      "shortest": "Regan PV",
       "short": "Regan Solar",
       "normal": "Regan Solar",
       "tier": "normal"
@@ -14697,7 +14697,7 @@
     {
       "ncr_id": "NCR12156",
       "entity_name": "RES America Asset Management - Chisholm",
-      "shortest": "RES",
+      "shortest": "RES Chisholm",
       "short": "RES Chisholm",
       "normal": "RES America Asset Management Chisholm",
       "tier": "major"
@@ -14705,7 +14705,7 @@
     {
       "ncr_id": "NCR12469",
       "entity_name": "RES Americas - Frye Solar",
-      "shortest": "RES",
+      "shortest": "RES Frye PV",
       "short": "RES Frye Solar",
       "normal": "RES Americas Frye Solar",
       "tier": "major"
@@ -14713,7 +14713,7 @@
     {
       "ncr_id": "NCR12497",
       "entity_name": "RES Energy Services - Crossett",
-      "shortest": "RES",
+      "shortest": "RES Crossett",
       "short": "RES Crossett",
       "normal": "RES Energy Services Crossett",
       "tier": "major"
@@ -14721,7 +14721,7 @@
     {
       "ncr_id": "NCR13127",
       "entity_name": "RES Energy Services - Outpost Solar",
-      "shortest": "RES",
+      "shortest": "RES Outpost",
       "short": "RES Outpost Solar",
       "normal": "RES Energy Services Outpost Solar",
       "tier": "major"
@@ -14729,7 +14729,7 @@
     {
       "ncr_id": "NCR13538",
       "entity_name": "RES Energy Services Inc.",
-      "shortest": "RES",
+      "shortest": "RES Svc",
       "short": "RES Energy Services",
       "normal": "RES Energy Services",
       "tier": "major"
@@ -14737,7 +14737,7 @@
     {
       "ncr_id": "NCR13443",
       "entity_name": "Richland Township Solar II, LLC",
-      "shortest": "Richland II",
+      "shortest": "Richland PV2",
       "short": "Richland Township Solar II",
       "normal": "Richland Township Solar II",
       "tier": "normal"
@@ -14745,7 +14745,7 @@
     {
       "ncr_id": "NCR13442",
       "entity_name": "Richland Township Solar, LLC",
-      "shortest": "Richland",
+      "shortest": "Richland PV",
       "short": "Richland Township Solar",
       "normal": "Richland Township Solar",
       "tier": "normal"
@@ -14785,7 +14785,7 @@
     {
       "ncr_id": "NCR12532",
       "entity_name": "River Fork Solar, LLC",
-      "shortest": "River Fork",
+      "shortest": "River Fork PV",
       "short": "River Fork Solar",
       "normal": "River Fork Solar",
       "tier": "normal"
@@ -14801,7 +14801,7 @@
     {
       "ncr_id": "NCR13181",
       "entity_name": "Rocking R Solar, LLC",
-      "shortest": "Rocking R",
+      "shortest": "Rocking PV",
       "short": "Rocking R Solar",
       "normal": "Rocking R Solar",
       "tier": "normal"
@@ -14809,7 +14809,7 @@
     {
       "ncr_id": "NCR13176",
       "entity_name": "Rocky Ridge Wind Project LLC",
-      "shortest": "Rocky Ridge",
+      "shortest": "Rocky Rdg WF",
       "short": "Rocky Ridge Wind",
       "normal": "Rocky Ridge Wind Project",
       "tier": "normal"
@@ -14817,7 +14817,7 @@
     {
       "ncr_id": "NCR12418",
       "entity_name": "Rodeo Ranch Energy Storage, LLC",
-      "shortest": "Rodeo Ranch",
+      "shortest": "Rodeo ES",
       "short": "Rodeo Ranch Energy Storage",
       "normal": "Rodeo Ranch Energy Storage",
       "tier": "normal"
@@ -14825,7 +14825,7 @@
     {
       "ncr_id": "NCR12153",
       "entity_name": "Rosebud Electric Cooperative",
-      "shortest": "Rosebud",
+      "shortest": "Rosebud Coop",
       "short": "Rosebud Electric Cooperative",
       "normal": "Rosebud Electric Cooperative",
       "tier": "normal"
@@ -14833,7 +14833,7 @@
     {
       "ncr_id": "NCR11544",
       "entity_name": "Route 66 Wind Power, LLC",
-      "shortest": "Route 66",
+      "shortest": "Route 66 WF",
       "short": "Route 66 Wind Power",
       "normal": "Route 66 Wind Power",
       "tier": "normal"
@@ -14841,7 +14841,7 @@
     {
       "ncr_id": "NCR13008",
       "entity_name": "Russellville Solar, LLC",
-      "shortest": "Russellville",
+      "shortest": "Russellvl PV",
       "short": "Russellville Solar",
       "normal": "Russellville Solar",
       "tier": "normal"
@@ -14865,7 +14865,7 @@
     {
       "ncr_id": "NCR13444",
       "entity_name": "Salt Creek Township Solar, LLC",
-      "shortest": "Salt Creek",
+      "shortest": "Salt Crk PV",
       "short": "Salt Creek Township Solar",
       "normal": "Salt Creek Township Solar",
       "tier": "normal"
@@ -14873,7 +14873,7 @@
     {
       "ncr_id": "NCR11182",
       "entity_name": "Sandy Creek Services, LLC",
-      "shortest": "Sandy Creek",
+      "shortest": "Sandy Crk",
       "short": "Sandy Creek Services",
       "normal": "Sandy Creek Services",
       "tier": "normal"
@@ -14881,7 +14881,7 @@
     {
       "ncr_id": "NCR12189",
       "entity_name": "SE Aragorn, LLC",
-      "shortest": "Aragorn",
+      "shortest": "SE Aragorn",
       "short": "SE Aragorn",
       "normal": "SE Aragorn",
       "tier": "normal"
@@ -14889,7 +14889,7 @@
     {
       "ncr_id": "NCR12109",
       "entity_name": "SE Juno, LLC",
-      "shortest": "Juno",
+      "shortest": "SE Juno",
       "short": "SE Juno",
       "normal": "SE Juno",
       "tier": "normal"
@@ -14897,7 +14897,7 @@
     {
       "ncr_id": "NCR12177",
       "entity_name": "SE Titan, LLC",
-      "shortest": "Titan",
+      "shortest": "SE Titan",
       "short": "SE Titan",
       "normal": "SE Titan",
       "tier": "normal"
@@ -14905,7 +14905,7 @@
     {
       "ncr_id": "NCR13221",
       "entity_name": "Sealy Power LLC",
-      "shortest": "Sealy",
+      "shortest": "Sealy Pwr",
       "short": "Sealy Power",
       "normal": "Sealy Power",
       "tier": "normal"
@@ -14921,7 +14921,7 @@
     {
       "ncr_id": "NCR13411",
       "entity_name": "Seven Flags BESS LLC",
-      "shortest": "7 Flags",
+      "shortest": "7 Flags ES",
       "short": "Seven Flags BESS",
       "normal": "Seven Flags BESS",
       "tier": "normal"
@@ -14929,7 +14929,7 @@
     {
       "ncr_id": "NCR12487",
       "entity_name": "Shakes Solar, LLC",
-      "shortest": "Shakes",
+      "shortest": "Shakes PV",
       "short": "Shakes Solar",
       "normal": "Shakes Solar",
       "tier": "normal"
@@ -14937,7 +14937,7 @@
     {
       "ncr_id": "NCR11206",
       "entity_name": "Sherbino II Wind Farm LLC",
-      "shortest": "Sherbino II",
+      "shortest": "Sherbino WF2",
       "short": "Sherbino II Wind Farm",
       "normal": "Sherbino II Wind Farm",
       "tier": "normal"
@@ -14945,7 +14945,7 @@
     {
       "ncr_id": "NCR11742",
       "entity_name": "Sheridan Electric Cooperative, Inc.",
-      "shortest": "Sheridan",
+      "shortest": "Sheridan Coop",
       "short": "Sheridan Electric Cooperative",
       "normal": "Sheridan Electric Cooperative",
       "tier": "normal"
@@ -14953,7 +14953,7 @@
     {
       "ncr_id": "NCR13465",
       "entity_name": "Shoe Creek Solar, LLC",
-      "shortest": "Shoe Creek",
+      "shortest": "Shoe Crk PV",
       "short": "Shoe Creek Solar",
       "normal": "Shoe Creek Solar",
       "tier": "normal"
@@ -14961,7 +14961,7 @@
     {
       "ncr_id": "NCR13334",
       "entity_name": "Siemens Energy, Inc-TEC",
-      "shortest": "Siemens",
+      "shortest": "Siemens TEC",
       "short": "Siemens Energy TEC",
       "normal": "Siemens Energy TEC",
       "tier": "major"
@@ -14969,7 +14969,7 @@
     {
       "ncr_id": "NCR12282",
       "entity_name": "Siemens Energy, Inc. - EIFC",
-      "shortest": "Siemens",
+      "shortest": "Siemens EIFC",
       "short": "Siemens Energy EIFC",
       "normal": "Siemens Energy EIFC",
       "tier": "major"
@@ -14977,7 +14977,7 @@
     {
       "ncr_id": "NCR12178",
       "entity_name": "Siemens Energy, Inc. - PEC",
-      "shortest": "Siemens",
+      "shortest": "Siemens PEC",
       "short": "Siemens Energy PEC",
       "normal": "Siemens Energy PEC",
       "tier": "major"
@@ -14985,7 +14985,7 @@
     {
       "ncr_id": "NCR12264",
       "entity_name": "Siemens Energy, Inc. - STJ",
-      "shortest": "Siemens",
+      "shortest": "Siemens STJ",
       "short": "Siemens Energy STJ",
       "normal": "Siemens Energy STJ",
       "tier": "major"
@@ -15017,7 +15017,7 @@
     {
       "ncr_id": "NCR11586",
       "entity_name": "Slate Creek Wind, LLC",
-      "shortest": "Slate Creek",
+      "shortest": "Slate Crk WF",
       "short": "Slate Creek Wind",
       "normal": "Slate Creek Wind",
       "tier": "normal"
@@ -15073,7 +15073,7 @@
     {
       "ncr_id": "NCR13356",
       "entity_name": "South Fork Wind",
-      "shortest": "South Fork",
+      "shortest": "South Fork WF",
       "short": "South Fork Wind",
       "normal": "South Fork Wind",
       "tier": "normal"
@@ -15225,7 +15225,7 @@
     {
       "ncr_id": "NCR11987",
       "entity_name": "SR Hazlehurst III, LLC",
-      "shortest": "Hazlehurst",
+      "shortest": "Hazlehrst 3",
       "short": "SR Hazlehurst III",
       "normal": "SR Hazlehurst III",
       "tier": "normal"
@@ -15385,7 +15385,7 @@
     {
       "ncr_id": "NCR11702",
       "entity_name": "Sunflower Wind Project, LLC",
-      "shortest": "Sunflower",
+      "shortest": "Sunflwr WF",
       "short": "Sunflower Wind",
       "normal": "Sunflower Wind Project",
       "tier": "normal"
@@ -15441,7 +15441,7 @@
     {
       "ncr_id": "NCR12077",
       "entity_name": "Tatanka Ridge Wind, LLC",
-      "shortest": "Tatanka",
+      "shortest": "Tatanka Rdg",
       "short": "Tatanka Ridge Wind",
       "normal": "Tatanka Ridge Wind",
       "tier": "normal"
@@ -15617,7 +15617,7 @@
     {
       "ncr_id": "NCR11205",
       "entity_name": "Trinity Hills Wind Farm LLC",
-      "shortest": "Trinity Hills",
+      "shortest": "Trinity WF",
       "short": "Trinity Hills Wind Farm",
       "normal": "Trinity Hills Wind Farm",
       "tier": "normal"
@@ -15625,7 +15625,7 @@
     {
       "ncr_id": "NCR13294",
       "entity_name": "Turkey Creek Solar, LLC",
-      "shortest": "Turkey Creek",
+      "shortest": "Turkey Crk PV",
       "short": "Turkey Creek Solar",
       "normal": "Turkey Creek Solar",
       "tier": "normal"
@@ -15633,7 +15633,7 @@
     {
       "ncr_id": "NCR12024",
       "entity_name": "TWE Bowman Solar Project, LLC",
-      "shortest": "Bowman",
+      "shortest": "Bowman PV",
       "short": "TWE Bowman Solar",
       "normal": "TWE Bowman Solar Project",
       "tier": "normal"
@@ -17657,7 +17657,7 @@
     {
       "ncr_id": "NCR13163",
       "entity_name": "Silver State Solar Power North LLC",
-      "shortest": "Silver State N",
+      "shortest": "Silver St PV",
       "short": "Silver State Solar Power North",
       "normal": "Silver State Solar Power North LLC",
       "tier": "normal",
@@ -17855,7 +17855,7 @@
     {
       "ncr_id": "NCR12164",
       "entity_name": "Sun Streams 2",
-      "shortest": "Sun Streams 2",
+      "shortest": "SunStrm 2",
       "short": "Sun Streams 2",
       "normal": "Sun Streams 2",
       "tier": "normal"
@@ -17863,7 +17863,7 @@
     {
       "ncr_id": "NCR13016",
       "entity_name": "Sun Streams Expansion, LLC",
-      "shortest": "Sun Streams 4",
+      "shortest": "SunStrm Exp",
       "short": "Sun Streams Expansion",
       "normal": "Sun Streams Expansion, LLC",
       "tier": "normal"
@@ -17871,7 +17871,7 @@
     {
       "ncr_id": "NCR12463",
       "entity_name": "Sun Streams PVS, LLC",
-      "shortest": "Sun Streams 3",
+      "shortest": "SunStrm 3",
       "short": "Sun Streams PVS",
       "normal": "Sun Streams PVS, LLC",
       "tier": "normal"
@@ -17927,7 +17927,7 @@
     {
       "ncr_id": "NCR13378",
       "entity_name": "Titan Solar 1, LLC",
-      "shortest": "Titan Solar 1",
+      "shortest": "Titan PV1",
       "short": "Titan Solar 1",
       "normal": "Titan Solar 1, LLC",
       "tier": "normal"
@@ -17946,7 +17946,7 @@
     {
       "ncr_id": "NCR12222",
       "entity_name": "Townsite Solar, LLC",
-      "shortest": "Townsite",
+      "shortest": "Townsite PV",
       "short": "Townsite Solar",
       "normal": "Townsite Solar, LLC",
       "tier": "normal"
