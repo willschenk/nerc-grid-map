@@ -130,7 +130,14 @@ type Org = {
   };
 };
 
-type LandLabel = { name: string; x: number; y: number; small: boolean; _node?: SVGTextElement };
+type LandLabel = {
+  name: string;
+  x: number;
+  y: number;
+  small: boolean;
+  kind: "state" | "province" | "water";
+  _node?: SVGTextElement;
+};
 // An offshore territory's layout region. x/y/w/h bound where its cluster of dots
 // is laid out; lx/ly is the anchor for the region name, centred above the dots.
 type TerritoryBox = { code: string; label: string; x: number; y: number; w: number; h: number; lx: number; ly: number; landPath?: string | null };
@@ -220,6 +227,10 @@ const PUBLIC_UTILITY_NAME = /\b(Public Power|Public Utility|Utility District|PUD
 
 // Out-of-footprint U.S. territories rendered as labelled inset clusters (geoAlbersUsa
 // cannot plot them on the mainland canvas).
+// Territory insets (Puerto Rico / U.S. Virgin Islands) are hidden for now (user
+// request): their orgs drop out and the reserved Atlantic lane is reclaimed so
+// the lower-48 map fills the full canvas width.
+const SHOW_TERRITORIES = false;
 const TERRITORY_STATES = new Set(["PR", "VI"]);
 const TERRITORY_LABELS: Record<string, string> = {
   PR: "Puerto Rico",
@@ -293,6 +304,18 @@ const PROVINCE_LABELS: Array<{ name: string; lat: number; lng: number }> = [
   { name: "New Brunswick", lat: 46.7, lng: -66.4 },
   { name: "Nova Scotia", lat: 45.1, lng: -62.9 },
   { name: "Newfoundland & Labrador", lat: 48.7, lng: -56.2 },
+];
+
+// Water-body labels filling the big open ocean/lake gaps around the footprint —
+// always-open space, so they give the map geographic context without ever
+// crowding the data. Projected with the lower-48 albersUsa like the states.
+const WATER_LABELS: Array<{ name: string; lat: number; lng: number }> = [
+  { name: "Gulf of Mexico", lat: 26, lng: -91 },
+  { name: "Atlantic Ocean", lat: 31, lng: -75 },
+  { name: "Pacific Ocean", lat: 38, lng: -125 },
+  { name: "Gulf of Maine", lat: 43, lng: -67.8 },
+  { name: "Lake Superior", lat: 47.7, lng: -87.7 },
+  { name: "Lake Michigan", lat: 43.6, lng: -87.1 },
 ];
 
 // Tiny states whose centroid label would clutter the eastern seaboard; held
@@ -1590,10 +1613,12 @@ export function mountNercOrgMap(): void {
     // Background city context. Desktop carries more of it for a higher-resolution
     // backdrop; city names still yield to NERC org labels/bubbles via blockers,
     // so they never crowd out the data. Mobile stays modest (small screen).
-    if (compact) return 10;
-    if (k < 1.8) return 16;
-    if (k < 4.8) return 34;
-    return 60;
+    // Caps are generous; the open-space test does the real limiting, so these only
+    // bound the work, not the look. More city names fill the open gaps now.
+    if (compact) return 16;
+    if (k < 1.8) return 30;
+    if (k < 4.8) return 54;
+    return 88;
   }
 
   function placeDotMinK(tier: number): number {
@@ -1601,7 +1626,9 @@ export function mountNercOrgMap(): void {
   }
 
   function placeLabelMinK(tier: number): number {
-    return tier === 1 ? 0.72 : tier === 2 ? 1.6 : 3.4;
+    // Tier-2 includes the isolated Mountain-West / Northern cities that fill the
+    // big open gaps, so let them appear right from the national view.
+    return tier === 1 ? 0.72 : tier === 2 ? 0.9 : 2.7;
   }
 
   function placeDotRadius(p: Place): number {
@@ -1617,7 +1644,7 @@ export function mountNercOrgMap(): void {
     const weight = Math.max(1, o.weight ?? 1);
     const weightT = Math.max(0, Math.min(1, (weight - 1) / 40));
     const minPx = compact ? 4.4 : 6.2;
-    const maxPx = compact ? (topTier ? 21 : 18) : Math.min(topTier ? 46 : 40, MAX_RADIUS);
+    const maxPx = compact ? (topTier ? 19 : 17) : Math.min(topTier ? 40 : 36, MAX_RADIUS);
     const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.7);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
     // Overview bubble size: at the outermost bucket, top-tier bubbles are smaller
@@ -2115,11 +2142,16 @@ export function mountNercOrgMap(): void {
     invalidateOrgLayout();
     const fitPadX = (compact ? 30 : 18) * unitPerPx;
     const fitPadY = (compact ? 12 : 8) * unitPerPx;
-    const territoryLane = territoryLayoutMetrics(compact, unitPerPx, W, H).laneW;
+    const territoryLane = SHOW_TERRITORIES ? territoryLayoutMetrics(compact, unitPerPx, W, H).laneW : 0;
+    // With the territory lane reclaimed, keep a small ocean margin on each side of
+    // the lower-48 (desktop) so the coastal water labels — Pacific / Atlantic —
+    // have open sea to sit in and frame the map, instead of the coast jamming the
+    // canvas edge. The phone already has ample ocean above/below its narrow band.
+    const oceanInset = SHOW_TERRITORIES || compact ? 0 : 52 * unitPerPx;
     projection.fitExtent(
       [
-        [fitPadX, fitPadY],
-        [W - fitPadX - territoryLane, H - fitPadY],
+        [fitPadX + oceanInset, fitPadY],
+        [W - fitPadX - territoryLane - oceanInset, H - fitPadY],
       ],
       nationFeature as never,
     );
@@ -2584,12 +2616,17 @@ export function mountNercOrgMap(): void {
       if (!name) continue;
       const c = path.centroid(f as never);
       if (!c || Number.isNaN(c[0]) || Number.isNaN(c[1])) continue;
-      landLabels.push({ name, x: c[0], y: c[1], small: SMALL_STATES.has(name) });
+      landLabels.push({ name, x: c[0], y: c[1], small: SMALL_STATES.has(name), kind: "state" });
+    }
+    for (const w of WATER_LABELS) {
+      const xy = projection([w.lng, w.lat]);
+      if (!xy || Number.isNaN(xy[0]) || Number.isNaN(xy[1])) continue;
+      landLabels.push({ name: w.name, x: xy[0], y: xy[1], small: false, kind: "water" });
     }
     for (const p of PROVINCE_LABELS) {
       const xy = canadaProj([p.lng, p.lat]);
       if (!xy) continue;
-      landLabels.push({ name: p.name, x: xy[0], y: xy[1], small: false });
+      landLabels.push({ name: p.name, x: xy[0], y: xy[1], small: false, kind: "province" });
     }
   }
 
@@ -3164,13 +3201,45 @@ export function mountNercOrgMap(): void {
     }));
     for (const o of finalVisibleOrgs) {
       if (o._sx == null || o._sy == null) continue;
-      const r = renderedRadius(o, k) + (compact ? 6 : 7) * unitPerPx;
+      // Tighter pad so geo labels can fill the gaps between bubbles, not just the
+      // wide-open regions — they still never touch a bubble.
+      const r = renderedRadius(o, k) + (compact ? 3 : 4) * unitPerPx;
       placeBlockers.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
     }
-    // City context. Dots can appear before labels, but every city mark stays
-    // visually below NERC data and city labels only fit into leftover space.
+    // ── Geographic context labels: cities, water bodies, state/province names ──
+    // Each shows ONLY where it fits in open space (clear of every bubble, every
+    // NERC label, and every other geo label). Crucially, each label tries its
+    // anchor first, then a ring of nearby offsets, so a name slides into the open
+    // part of its region instead of vanishing when its exact point sits near a
+    // bubble — that is what lets many more of them show. Filled in usefulness
+    // order so the best label wins contested space.
     const placeDotState = new Map<string, { x: number; y: number; r: number }>();
     const placeState = new Map<string, { x: number; y: number; font: number }>();
+    const landState = new Map<string, { x: number; y: number; font: number }>();
+    const ringOffsets = (R: number): Array<[number, number]> =>
+      [0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
+        const a = (i / 8) * 2 * Math.PI - Math.PI / 2;
+        return [Math.cos(a) * R, Math.sin(a) * R] as [number, number];
+      });
+    // Try the anchor, then each offset; place + reserve at the first open spot.
+    const fitGeoLabel = (
+      baseSx: number,
+      baseSy: number,
+      w: number,
+      h: number,
+      offsets: Array<[number, number]>,
+    ): { x: number; y: number } | null => {
+      for (const [ox, oy] of offsets) {
+        const sx = baseSx + ox;
+        const sy = baseSy + oy;
+        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
+        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
+        if (placeBlockers.some((q) => boxesOverlap(box, q))) continue;
+        placeBlockers.push(box);
+        return { x: sx, y: sy };
+      }
+      return null;
+    };
     if (!tourRunning) {
       for (const p of places) {
         if (p._x == null || p._y == null) continue;
@@ -3181,8 +3250,14 @@ export function mountNercOrgMap(): void {
         placeDotState.set(p.name, { x: sx, y: sy, r: placeDotRadius(p) });
       }
 
+      // 1) Cities — most specific context; bigger metros first, zoom-gated by tier.
+      // A city name may nudge slightly to dodge a bubble but stays near its point.
       let placedPlaces = 0;
       const placeCap = placeLabelLimit(k);
+      // Offsets are in viewBox units (≈ geographic distance), NOT screen px, so a
+      // label's wander is the same on phone and desktop — never flung across the
+      // narrow mobile band into empty ocean/Arctic far from its true place.
+      const cityOffsets: Array<[number, number]> = [[0, 0], ...ringOffsets(11), ...ringOffsets(20)];
       for (const p of places) {
         if (placedPlaces >= placeCap) break;
         if (p._x == null || p._y == null) continue;
@@ -3193,12 +3268,10 @@ export function mountNercOrgMap(): void {
         const px = (p.tier === 1 ? 13.5 : p.tier === 2 ? 12 : 10.5) * unitPerPx;
         const w = p.name.length * px * 0.66 + (compact ? 10 : 9) * unitPerPx;
         const h = px + (compact ? 8 : 7) * unitPerPx;
-        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
-        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
-        if (placeBlockers.some((q) => boxesOverlap(box, q))) continue;
-        placeBlockers.push(box);
+        const spot = fitGeoLabel(sx, sy, w, h, cityOffsets);
+        if (!spot) continue;
         placedPlaces++;
-        placeState.set(p.name, { x: sx, y: sy + px * 0.34, font: px });
+        placeState.set(p.name, { x: spot.x, y: spot.y + px * 0.34, font: px });
       }
     }
 
@@ -3222,55 +3295,50 @@ export function mountNercOrgMap(): void {
       node.setAttribute("font-size", String(state.font));
     });
 
-    // Land labels (state / province names): faint context that yields to NERC
-    // org labels, city labels, and large NERC bubbles. Small dot bodies are not
-    // blockers; otherwise the packed national view would hide every name.
-    const landState = new Map<string, { x: number; y: number; font: number }>();
+    // 2) Water bodies, then 3) state / province orientation names. Water first so
+    // the big ocean gaps always read, then large state names, tiny coastal states
+    // (zoom-gated), and finally Canadian provinces. Each roams a ring of offsets to
+    // find its region's open space (big regions roam farther; tiny states barely
+    // move). They never sit on the data, so they stay crisp instead of ghosting.
     if (!tourRunning) {
-      const landBlockers: Box[] = [...placed];
-      placeState.forEach((s, name) => {
-        const cw = name.length * s.font * 0.66 + (compact ? 10 : 9) * unitPerPx;
-        const ch = s.font + (compact ? 8 : 7) * unitPerPx;
-        landBlockers.push({ x0: s.x - cw / 2, x1: s.x + cw / 2, y0: s.y - ch * 0.9, y1: s.y + ch * 0.1 });
-      });
-      for (const o of finalVisibleOrgs) {
-        if (o._sx == null || o._sy == null) continue;
-        const r = renderedRadius(o, k);
-        // Org bubbles take precedence: a land name yields to any bubble it would
-        // sit on, so state/province names fade behind the NERC data.
-        if (r < (compact ? 6 : 7) * unitPerPx) continue;
-        const pad = (compact ? 5.5 : 5) * unitPerPx;
-        landBlockers.push({ x0: o._sx - r - pad, x1: o._sx + r + pad, y0: o._sy - r - pad, y1: o._sy + r + pad });
-      }
+      const kindRank = (L: LandLabel) =>
+        L.kind === "water" ? 0 : L.kind === "province" ? 3 : L.small ? 2 : 1;
+      const landOrder = [...landLabels].sort((a, b) => kindRank(a) - kindRank(b));
       let placedLand = 0;
-      // Thin out the orientation labels as you zoom in — by deep zoom the state
-      // name has done its job and would only clutter the view.
+      // Thin out orientation labels as you zoom in — by deep zoom they would only
+      // clutter the view, and the city names carry the local context.
       const deepLandT = smoothStep((k - 5) / 8);
-      const landCap = Math.max(4, Math.round((compact ? 12 : 34) * (1 - 0.5 * deepLandT)));
-      for (const L of landLabels) {
+      const landCap = Math.max(6, Math.round((compact ? 16 : 46) * (1 - 0.4 * deepLandT)));
+      for (const L of landOrder) {
         if (placedLand >= landCap) break;
-        if (L.small && k < 3.2) continue; // tiny states only once zoomed in
-        if (!L.small && k >= 14) continue; // large state names drop out at deep zoom
-        const sx = transform.applyX(L.x);
-        const sy = transform.applyY(L.y);
-        if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
+        if (L.kind === "state" && L.small && k < 3.2) continue; // tiny states only once zoomed in
+        if (L.kind === "state" && !L.small && k >= 16) continue; // big state names fade at deep zoom
+        if (L.kind === "water" && k >= 9) continue; // ocean/lake context only at out/mid zoom
+        if (L.kind === "province" && k >= 12) continue;
+        const baseSx = transform.applyX(L.x);
+        const baseSy = transform.applyY(L.y);
+        if (baseSx < -margin || baseSx > W + margin || baseSy < -margin || baseSy > H + margin) continue;
         const grow = Math.max(0.85, 1.28 - Math.max(0, k - 1) * 0.06);
-        const font = (L.small ? 11 : 15) * grow * unitPerPx;
+        const base = L.kind === "water" ? 16.5 : L.small ? 11 : 15;
+        const font = base * grow * unitPerPx;
         const w = L.name.length * font * 0.64 + (compact ? 10 : 9) * unitPerPx;
         const h = font + (compact ? 8 : 7) * unitPerPx;
-        const box: Box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h * 0.6, y1: sy + h * 0.4 };
-        if (box.x0 < edgeSafe || box.x1 > W - edgeSafe || box.y0 < topSafe || box.y1 > H - edgeSafe) continue;
-        if (landBlockers.some((q) => boxesOverlap(box, q))) continue;
-        landBlockers.push(box);
+        // viewBox-unit offsets (≈ geographic distance): big regions roam farther
+        // for open space, tiny states barely move, so labels stay near home on any
+        // device. Water is capped so an ocean name can't drift across the map.
+        const spread = L.kind === "water" ? [42, 80, 120] : L.small ? [12] : [24, 46, 70];
+        const offsets: Array<[number, number]> = [[0, 0]];
+        for (const R of spread) offsets.push(...ringOffsets(R));
+        const spot = fitGeoLabel(baseSx, baseSy, w, h, offsets);
+        if (!spot) continue;
         placedLand++;
-        landState.set(L.name, { x: sx, y: sy, font });
+        landState.set(L.name, { x: spot.x, y: spot.y, font });
       }
     }
 
-    // Geographic reference labels stay secondary: the more org bubbles are on
-    // screen, the more these state/province names recede so organization labels
-    // remain the primary focus. They never disappear entirely (floor 0.22).
-    const landDensityOpacity = Math.max(0.22, 1 - shownCount / (compact ? 68 : 190));
+    // Geo labels only ever sit in open space, so they stay clearly readable — a
+    // gentle density fade keeps them quiet on busy screens without ghosting them.
+    const landOpacity = Math.max(0.74, 1 - shownCount / (compact ? 240 : 560));
     gLand.selectAll<SVGTextElement, LandLabel>("text.land-label").each(function (L) {
       const node = this as SVGTextElement;
       const state = landState.get(L.name);
@@ -3279,7 +3347,7 @@ export function mountNercOrgMap(): void {
       node.setAttribute("x", String(state.x));
       node.setAttribute("y", String(state.y));
       node.setAttribute("font-size", String(state.font));
-      node.style.opacity = String(landDensityOpacity);
+      node.style.opacity = String(landOpacity);
     });
 
     // Territory region names ride the inset group's transform (so each label
@@ -3302,6 +3370,9 @@ export function mountNercOrgMap(): void {
   // ungeocoded orgs fall into a centred grid.
   function layoutTerritoryInsets(): void {
     territoryBoxes = [];
+    // Territories hidden: leave terr orgs with undefined _x/_y so they fall out of
+    // placeableOrgs (never rendered), and draw no inset.
+    if (!SHOW_TERRITORIES) return;
     const terrProj = geoMercator();
     const terrPath = geoPath(terrProj);
     // The real island outline (PR/VI) from the states topojson, found by FIPS id.
@@ -4386,7 +4457,7 @@ export function mountNercOrgMap(): void {
       .selectAll("text.land-label")
       .data(landLabels, (d: unknown) => (d as LandLabel).name)
       .join("text")
-      .attr("class", "land-label")
+      .attr("class", (d) => "land-label " + d.kind)
       .text((d) => d.name);
     // Paint weak/low-priority dots first so regulated and high-authority orgs
     // stay on top visually and for hit-testing.

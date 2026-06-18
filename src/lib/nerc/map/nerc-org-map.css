@@ -307,15 +307,32 @@
 /* Land labels: state / province names sitting faintly on the map. Below NERC
    marks and labels in the stacking order, so NERC information reads on top. */
 #nerc-svg .land-label {
-  fill: rgba(86, 100, 94, 0.66);
+  fill: rgba(72, 86, 80, 0.92);
   font-weight: 750;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.72);
-  stroke-width: 3;
+  stroke: rgba(248, 251, 249, 0.85);
+  stroke-width: 3.2;
   pointer-events: none;
   text-anchor: middle;
+}
+
+/* Canadian provinces: same orientation role as states, a touch quieter. */
+#nerc-svg .land-label.province {
+  fill: rgba(96, 110, 103, 0.82);
+  font-weight: 700;
+}
+
+/* Water bodies: muted blue-grey italics in the open ocean/lake gaps, so they
+   read as geography, not data. */
+#nerc-svg .land-label.water {
+  fill: rgba(95, 120, 140, 0.82);
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.16em;
+  stroke: rgba(248, 251, 252, 0.8);
+  stroke-width: 2.8;
 }
 
 #nerc-svg .land-label.dim {
