@@ -131,7 +131,7 @@
     {
       "ncr_id": "NCR-SEED-048",
       "entity_name": "Evergy Kansas Central, Inc.",
-      "shortest": "Evergy KC",
+      "shortest": "WR",
       "short": "Evergy Kansas Central",
       "normal": "Evergy Kansas Central, Inc.",
       "tier": "major"
@@ -179,7 +179,7 @@
     {
       "ncr_id": "NCR-SEED-059",
       "entity_name": "Sunflower Electric Power Corporation",
-      "shortest": "Sunflower",
+      "shortest": "SECI",
       "short": "Sunflower Electric",
       "normal": "Sunflower Electric Power Corporation",
       "tier": "major"
@@ -195,7 +195,7 @@
     {
       "ncr_id": "NCR-SEED-035",
       "entity_name": "Consumers Energy Company",
-      "shortest": "Consumers",
+      "shortest": "CONS",
       "short": "Consumers",
       "normal": "Consumers Energy Company",
       "tier": "major"
@@ -259,7 +259,7 @@
     {
       "ncr_id": "NCR-SEED-023",
       "entity_name": "Alabama Power Company",
-      "shortest": "APC",
+      "shortest": "Alabama",
       "short": "Alabama Power",
       "normal": "Alabama Power Company",
       "tier": "major"
@@ -374,7 +374,7 @@
     {
       "ncr_id": "NCR01029",
       "entity_name": "Saskatchewan Power Corporation",
-      "shortest": "SaskPower",
+      "shortest": "SPC",
       "short": "Saskatchewan Power",
       "normal": "Saskatchewan Power Corporation",
       "tier": "major"
@@ -382,7 +382,7 @@
     {
       "ncr_id": "NCR07155",
       "entity_name": "New Brunswick Power Corporation",
-      "shortest": "NB Power",
+      "shortest": "NBSO",
       "short": "New Brunswick Power",
       "normal": "New Brunswick Power Corporation",
       "tier": "major"
@@ -457,7 +457,7 @@
     {
       "ncr_id": "NCR01223",
       "entity_name": "LG&E and KU Services Company as agent for Louisville Gas and Electric Company and Kentucky Utilities Company",
-      "shortest": "LG&E-KU",
+      "shortest": "LGEE",
       "short": "LG&E and KU",
       "normal": "LG&E and KU",
       "tier": "major"
@@ -593,7 +593,7 @@
     {
       "ncr_id": "NCR01180",
       "entity_name": "Big Rivers Electric Corporation",
-      "shortest": "Big Rivers",
+      "shortest": "BREC",
       "short": "Big Rivers Electric",
       "normal": "Big Rivers Electric",
       "tier": "normal"
@@ -641,7 +641,7 @@
     {
       "ncr_id": "NCR00794",
       "entity_name": "Hoosier Energy REC, Inc.",
-      "shortest": "Hoosier",
+      "shortest": "HE",
       "short": "Hoosier Energy",
       "normal": "Hoosier Energy",
       "tier": "normal"
@@ -649,7 +649,7 @@
     {
       "ncr_id": "NCR00798",
       "entity_name": "Indianapolis Power & Light Company d/b/a AES Indiana",
-      "shortest": "AES",
+      "shortest": "IPL",
       "short": "AES Indiana",
       "normal": "AES Indiana",
       "tier": "normal"
@@ -657,7 +657,7 @@
     {
       "ncr_id": "NCR00824",
       "entity_name": "MidAmerican Energy Company",
-      "shortest": "MidAm",
+      "shortest": "MEC",
       "short": "MidAmerican Energy",
       "normal": "MidAmerican Energy",
       "tier": "major"
@@ -665,7 +665,7 @@
     {
       "ncr_id": "NCR00674",
       "entity_name": "Minnesota Power (Allete, Inc.)",
-      "shortest": "MN Power",
+      "shortest": "MP",
       "short": "Minnesota Power",
       "normal": "Minnesota Power",
       "tier": "normal"
@@ -705,7 +705,7 @@
     {
       "ncr_id": "NCR01023",
       "entity_name": "Otter Tail Power Company",
-      "shortest": "Otter Tail",
+      "shortest": "OTP",
       "short": "Otter Tail Power",
       "normal": "Otter Tail Power",
       "tier": "normal"
@@ -761,7 +761,7 @@
     {
       "ncr_id": "NCR01196",
       "entity_name": "City of Columbia, MO",
-      "shortest": "Columbia",
+      "shortest": "CWLD",
       "short": "Columbia Water & Light",
       "normal": "Columbia Water & Light",
       "tier": "normal"
@@ -785,7 +785,7 @@
     {
       "ncr_id": "NCR01144",
       "entity_name": "Southwestern Power Administration",
-      "shortest": "SWPA",
+      "shortest": "SPA",
       "short": "Southwestern Power Administration",
       "normal": "Southwestern Power Administration",
       "tier": "normal"
@@ -889,7 +889,7 @@
     {
       "ncr_id": "NCR01081",
       "entity_name": "City Utilities Of Springfield, MO",
-      "shortest": "CU",
+      "shortest": "SPRM",
       "short": "City Utilities of Springfield",
       "normal": "City Utilities of Springfield",
       "tier": "normal"
@@ -913,7 +913,7 @@
     {
       "ncr_id": "NCR01072",
       "entity_name": "Independence Power & Light (Independence,Missouri)",
-      "shortest": "Independence",
+      "shortest": "INDN",
       "short": "Independence Power & Light",
       "normal": "Independence Power & Light",
       "tier": "normal"
@@ -953,7 +953,7 @@
     {
       "ncr_id": "NCR01155",
       "entity_name": "The Empire District Electric Company",
-      "shortest": "Empire",
+      "shortest": "EDE",
       "short": "Empire District Electric",
       "normal": "Empire District Electric",
       "tier": "normal"
@@ -985,7 +985,7 @@
     {
       "ncr_id": "NCR01030",
       "entity_name": "Southern Minnesota Municipal Power Agency",
-      "shortest": "SMMPA",
+      "shortest": "SMP",
       "short": "Southern Minnesota Municipal Power Agency",
       "normal": "Southern Minnesota Municipal Power Agency",
       "tier": "normal"
@@ -1153,7 +1153,7 @@
     {
       "ncr_id": "NCR01036",
       "entity_name": "Western Area Power Administration - Upper Great Plains East",
-      "shortest": "WAPA UGP E",
+      "shortest": "WAUE",
       "short": "WAPA Upper Great Plains East",
       "normal": "Western Area Power Administration",
       "tier": "major"
@@ -1169,7 +1169,7 @@
     {
       "ncr_id": "NCR01033",
       "entity_name": "Upper Peninsula Power Company",
-      "shortest": "UPPCO",
+      "shortest": "UPPC",
       "short": "Upper Peninsula Power",
       "normal": "Upper Peninsula Power Company",
       "tier": "normal"
@@ -2017,7 +2017,7 @@
     {
       "ncr_id": "NCR11783",
       "entity_name": "GridLiance Holdco, LLC",
-      "shortest": "GridLiance",
+      "shortest": "GLH",
       "short": "GridLiance",
       "normal": "GridLiance",
       "tier": "normal"
@@ -2577,7 +2577,7 @@
     {
       "ncr_id": "NCR10248",
       "entity_name": "Ameren Missouri",
-      "shortest": "Ameren MO",
+      "shortest": "AMMO",
       "short": "Ameren Missouri",
       "normal": "Ameren Missouri",
       "tier": "major"
@@ -4297,7 +4297,7 @@
     {
       "ncr_id": "NCR00762",
       "entity_name": "Duquesne Light Company",
-      "shortest": "DLC",
+      "shortest": "DUQ",
       "short": "Duquesne Light",
       "normal": "Duquesne Light",
       "tier": "major"
@@ -8361,7 +8361,7 @@
     {
       "ncr_id": "NCR09006",
       "entity_name": "Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Nuclear",
-      "shortest": "Dom Nuke",
+      "shortest": "DOM Nuke",
       "short": "Dominion Virginia Nuclear",
       "normal": "Dominion Energy Virginia Nuclear",
       "tier": "major"
@@ -8369,7 +8369,7 @@
     {
       "ncr_id": "NCR09028",
       "entity_name": "Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Power Generation",
-      "shortest": "Dom Gen",
+      "shortest": "DOM Gen",
       "short": "Dominion Virginia Generation",
       "normal": "Dominion Energy Virginia Generation",
       "tier": "major"
@@ -8377,7 +8377,7 @@
     {
       "ncr_id": "NCR12287",
       "entity_name": "Virginia Electric and Power Company - Power Generation (RF)",
-      "shortest": "Dom RF Gen",
+      "shortest": "DOM RF Gen",
       "short": "Dominion Generation RF",
       "normal": "Dominion Energy Virginia Generation",
       "tier": "major"
@@ -8593,7 +8593,7 @@
     {
       "ncr_id": "NCR00951",
       "entity_name": "Wisconsin Electric Power Company",
-      "shortest": "WEPCO",
+      "shortest": "WEC",
       "short": "We Energies",
       "normal": "We Energies",
       "tier": "major"
@@ -16097,7 +16097,7 @@
     {
       "ncr_id": "NCR01166",
       "entity_name": "Alabama Power Company",
-      "shortest": "APC",
+      "shortest": "Alabama",
       "short": "Alabama Power",
       "normal": "Alabama Power Company",
       "tier": "major"
@@ -16164,7 +16164,7 @@
     {
       "ncr_id": "NCR00740",
       "entity_name": "Consumers Energy Company",
-      "shortest": "Consumers",
+      "shortest": "CONS",
       "short": "Consumers",
       "normal": "Consumers Energy Company",
       "tier": "major"
@@ -16260,7 +16260,7 @@
     {
       "ncr_id": "NCR01148",
       "entity_name": "Sunflower Electric Power Corporation",
-      "shortest": "Sunflower",
+      "shortest": "SECI",
       "short": "Sunflower Electric",
       "normal": "Sunflower Electric Power Corporation",
       "tier": "major"
