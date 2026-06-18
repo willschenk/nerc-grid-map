@@ -1,11 +1,9 @@
 // NERC functional role tables. Single source of truth for weights, colors, names,
 // and normalization. Imported by build scripts (Node ESM) and the map page (Vite).
-// Spec: nerc-map-instructions.md Parts 2 and 3.
 
 // Data role weight: used for the role-weight field, color centroid weighting,
 // and legacy ISO/RTO scale checks. Visual priority and bubble sizing live in the
 // map renderer so GO/GOP/PSE can be kept visually low without breaking color/QA.
-// (Spec Part 3.2. The source spec listed GOP twice; deduplicated here.)
 /** @type {Record<string, number>} */
 export const ROLE_WEIGHTS = {
   RC: 10, // Reliability Coordinator - rarest, widest authority
@@ -27,7 +25,7 @@ export const ROLE_WEIGHTS = {
 };
 
 // Each role's fixed point in HSL space. An org's color is the weighted centroid
-// of its roles' points, so similar role sets land at nearby colors. (Spec Part 3.3.2.)
+// of its roles' points, so similar role sets land at nearby colors.
 /** @type {Record<string, number[]>} */
 export const ROLE_ANCHORS = {
   RC: [260, 68, 54], // lighter violet - rarest, most authoritative; stands alone
@@ -68,7 +66,7 @@ export const ROLE_FULL_NAMES = {
   PSE: "Purchasing-Selling Entity",
 };
 
-// Tier grouping for reference and optional UI ordering. (Spec Part 3.2.)
+// Tier grouping for reference and optional UI ordering.
 /** @type {Record<string, number>} */
 export const ROLE_TIER = {
   RC: 1, BA: 1, PC: 1, TOP: 1, TSP: 1,
@@ -77,10 +75,10 @@ export const ROLE_TIER = {
 };
 
 // Roles that make an org a "public" grid participant. An org holding none of
-// these is private (asset-owner / market only). (Spec Part 5 is_private check.)
+// these is private (asset-owner / market only).
 export const PUBLIC_ROLES = ["RC", "BA", "TOP", "PC", "TSP", "TP", "LSE", "DP"];
 
-// Raw NCR Matrix column labels -> normalized role tag. (Spec Part 2.1.)
+// Raw NCR Matrix column labels -> normalized role tag.
 // Category and suffix variants are also handled procedurally in normalizeRoles.
 /** @type {Record<string, string>} */
 export const RAW_ROLE_MAP = {
@@ -157,7 +155,6 @@ export function normalizeRegion(region) {
 }
 
 // Current NERC Regional Entity centroids for last-resort geocoding estimation.
-// (Spec Part 1.5 step 8.)
 /** @type {Record<string, number[]>} */
 export const REGION_CENTROIDS = {
   WECC: [40.5, -114.0],

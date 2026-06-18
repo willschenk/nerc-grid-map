@@ -1,6 +1,6 @@
 // Build-time enrichment. Turns a geocoded NCR record into a render-ready org:
 // normalized roles, weight, precomputed color, and classification flags.
-// The map renderer never recomputes these. (Spec Parts 2.2, 3.2, 3.3.)
+// The map renderer never recomputes these.
 
 import {
   ROLE_WEIGHTS,
@@ -16,7 +16,6 @@ const PUBLIC = new Set(PUBLIC_ROLES);
 
 // Raw role label -> normalized tag. Handles the NCR Matrix column names plus
 // the "GO-1", "GO Category 2", "GOP2" style variants. Unknown tags are dropped.
-// (Spec Part 2.1: GO Category 1 + GO Category 2 collapse to a single "GO".)
 export function normalizeRoles(rawRoles) {
   if (!Array.isArray(rawRoles)) return [];
   const out = [];
@@ -38,14 +37,14 @@ export function normalizeRoles(rawRoles) {
   return out;
 }
 
-// Sum of role weights. (Spec Part 3.2.)
+// Sum of role weights.
 export function orgWeight(roles) {
   return roles.reduce((sum, r) => sum + (ROLE_WEIGHTS[r] ?? 1), 0);
 }
 
 // Weighted centroid of role anchors in HSL space. Identical role sets always
 // yield the identical string; nearby role sets yield nearby colors. Hue is
-// averaged on the circle to avoid wrap-around artifacts. (Spec Part 3.3.3.)
+// averaged on the circle to avoid wrap-around artifacts.
 export function roleSetColor(roles) {
   if (!roles || roles.length === 0) return "hsl(0, 0%, 60%)";
 
@@ -72,12 +71,12 @@ export function roleSetColor(roles) {
   return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
 }
 
-// ISO/RTO scale: RC or BA at full authority pushes weight to ~35+. (Spec Part 3.2.)
+// ISO/RTO scale: RC or BA at full authority pushes weight to ~35+.
 export function isIsoRto(weight) {
   return weight >= 35;
 }
 
-// Private = holds no public grid role; only asset-owner / market roles. (Spec Part 5.)
+// Private = holds no public grid role; only asset-owner / market roles.
 export function isPrivate(roles) {
   return !roles.some((r) => PUBLIC.has(r));
 }
@@ -322,7 +321,7 @@ export function inferAcronymSource(entityName) {
 }
 
 // Best-effort org type from name + roles. Seed records may set org_type explicitly;
-// this is the fallback for ingested data. (Spec Part 2.2 org_type.)
+// this is the fallback for ingested data.
 export function inferOrgType(entityName, roles, weight) {
   const name = entityName || "";
   if (isIsoRto(weight) || ISO_RTO_NAME.test(name)) return "ISO_RTO";
@@ -459,7 +458,6 @@ export function validateLocations(orgs) {
 }
 
 // Geocoded record -> final NERCOrg. Accepts raw or already-normalized roles.
-// (Spec Part 2.2 schema + Part 3.2/3.3 precompute step.)
 export function enrichOrg(rec) {
   const roles = normalizeRoles(rec.roles);
   const weight = orgWeight(roles);

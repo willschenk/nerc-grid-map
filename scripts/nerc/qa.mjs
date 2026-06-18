@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-// QA pipeline for the enriched org dataset. Runs the automated checks from
-// Spec Part 5 against public/nerc/orgs.json. Hard failures exit non-zero;
-// soft findings print as warnings for the manual review queue.
+// QA pipeline for the enriched org dataset. Hard failures exit non-zero; soft
+// findings print as warnings for the manual review queue.
 //
 // Usage:  node scripts/nerc/qa.mjs [public/nerc/orgs.json]
 

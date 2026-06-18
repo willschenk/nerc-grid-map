@@ -1,5 +1,5 @@
-// NERC org data model. (Spec Part 2.2.) The runtime data lives in public/orgs.json,
-// produced by scripts/nerc/build-orgs.mjs via enrichOrg().
+// NERC org data model. Runtime data is produced by
+// scripts/nerc/build-orgs.mjs via enrichOrg().
 
 export type NERCRegion = "MRO" | "WECC" | "SERC" | "RF" | "NPCC" | "Texas RE";
 
@@ -81,7 +81,7 @@ export type NERCOrg = {
   seed?: boolean; // true for hand-curated seed records (placeholder NCR ID)
 };
 
-// The raw geocoding-agent output, before enrichOrg(). (Spec Part 1.2.)
+// The raw geocoding-agent output, before enrichOrg().
 export type GeoRecord = {
   ncr_id: string;
   entity_name: string;

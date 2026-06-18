@@ -160,11 +160,7 @@ type OrgDetailsPayload = {
 // viewBox aspect ratio matches the screen (no letterbox bands on tall phones).
 let W = 960;
 let H = 600;
-// Vestigial spider-fan constants. spiderFanScale fades the fan at deep zoom but
-// coincident origins still get ring offsets via assignSpiderOffsets.
 const SPIDER_CLUSTER_EPSILON = 0.35;
-const SPIDER_START_K = 4;
-const SPIDER_FULL_K = 10;
 const SPIDER_RING_STEP_PX = 28;
 // Full-size (priority-100, fully-zoomed) bubble radius in CSS px on desktop.
 // Drives visualRadius's desktop maxPx, so raising it enlarges every bubble.
@@ -255,24 +251,12 @@ const US_INSET_STATES = new Set(["AK", "HI"]);
 // slightly earlier label tries without changing the placement algorithm.
 const MIDWEST_STATES = new Set(["NE", "IA", "MN", "WI"]);
 
-// Coastal and international-border states: keep declutter leashes tight so dots
-// do not drift offshore or away from their true geography.
-const COASTAL_BORDER_STATES = new Set([
-  "AK", "AL", "AZ", "CA", "CT", "DE", "FL", "GA", "HI", "LA", "MA", "MD", "ME",
-  "MI", "MN", "MS", "MT", "NC", "ND", "NH", "NJ", "NM", "NY", "OR", "RI", "SC",
-  "TX", "VA", "VT", "WA",
-]);
-
 function isUsInsetOrg(o: { state?: string | null }): boolean {
   return US_INSET_STATES.has(o.state ?? "");
 }
 
 function isMidwestOrg(o: { state?: string | null }): boolean {
   return MIDWEST_STATES.has(o.state ?? "");
-}
-
-function isCoastalOrBorderOrg(o: { state?: string | null }): boolean {
-  return COASTAL_BORDER_STATES.has(o.state ?? "");
 }
 
 function territoryLayoutMetrics(compact: boolean, u: number, viewW: number, viewH: number) {
@@ -770,9 +754,6 @@ export function mountNercOrgMap(): void {
   const places = PLACES as Place[];
   let selectedOrg: Org | null = null;
   let hoverOrg: Org | null = null;
-  let recentOrg: Org | null = null;
-  let recentOrgAt = 0;
-  let lastUserZoomAt = 0;
   let userPanning = false;
   let lastPanEndAt = 0;
   let wheelZooming = false;
@@ -852,11 +833,6 @@ export function mountNercOrgMap(): void {
     orgLayoutBucket = NaN;
     orgSim?.stop();
     simNodes = [];
-  }
-
-  function rememberOrg(o: Org): void {
-    recentOrg = o;
-    recentOrgAt = performance.now();
   }
 
   function applyOrgDetails(o: Org): Org {
@@ -2006,8 +1982,6 @@ export function mountNercOrgMap(): void {
   function redrawWhileWheeling(): void {
     const k = transform.k;
     syncZoomGroups();
-    const fanScale = spiderFanScale(k);
-    const declScale = declutterScale(k);
     positionOrgMarks(k);
     gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
       const node = this as SVGCircleElement;
@@ -4113,7 +4087,6 @@ export function mountNercOrgMap(): void {
     if (tourRunning) stopTour(true);
     hoverOrg = null;
     selectedOrg = o;
-    rememberOrg(o);
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
     renderPanel(o);
@@ -4161,7 +4134,6 @@ export function mountNercOrgMap(): void {
           return;
         }
         hoverOrg = o;
-        rememberOrg(o);
         showTooltip(o, ev as MouseEvent);
         applyHoverFocus();
       })
@@ -4182,7 +4154,6 @@ export function mountNercOrgMap(): void {
           return;
         }
         hoverOrg = o;
-        rememberOrg(o);
         const rect = (this as SVGCircleElement).getBoundingClientRect();
         showTooltipAt(o, rect.right, rect.top);
         applyHoverFocus();
@@ -4202,7 +4173,6 @@ export function mountNercOrgMap(): void {
       .on("click", (ev, o) => {
         (ev as MouseEvent).stopPropagation();
         const picked = nearestOrgAtPointer(ev as MouseEvent, o);
-        rememberOrg(picked);
         raiseVisibleOrg(picked);
         selectOrg(picked);
       });
@@ -4295,7 +4265,6 @@ export function mountNercOrgMap(): void {
         if (isWheelEvent(ev.sourceEvent)) finishWheelZoom();
       })
       .on("zoom", (ev) => {
-        if (ev.sourceEvent) lastUserZoomAt = performance.now();
         const prevK = transform.k;
         transform = ev.transform;
         const kChanged = Math.abs(transform.k - prevK) > 0.001;

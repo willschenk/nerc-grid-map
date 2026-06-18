@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Build step: read geocoded NCR records, enrich them (weight, color, flags), and
 // write the canonical public/orgs.json plus split runtime payloads. Also stage
-// the US basemap into public/nerc/. Runs from npm "prebuild" so the data is fresh.
-// (Spec Part 3.1: coordinates pre-baked into a static JSON at build time.)
+// the US basemap into public/nerc/. Runs from npm "prebuild" so coordinates are
+// baked into static JSON before the site build.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";

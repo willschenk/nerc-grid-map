@@ -2,7 +2,7 @@
 // Phase 1 ingester. Reads an exported NERC Compliance Registry file (CSV/TSV),
 // validates headers, normalizes each row to {ncr_id, entity_name, region, roles},
 // and emits a reviewable JSON file plus dashboard stats. Does NOT geocode and does
-// NOT model compliance duties. (AGENTS.md Phase 1; backlog "NERC Registry Batch".)
+// NOT model compliance duties.
 //
 // Usage:  node scripts/nerc/ingest.mjs <path-to-registry.csv> [out.json]
 // The official registry ships as .xlsx; export it to CSV first (Save As > CSV).
