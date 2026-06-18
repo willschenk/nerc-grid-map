@@ -1001,7 +1001,7 @@
     {
       "ncr_id": "NCR00961",
       "entity_name": "Alliant Energy - East",
-      "shortest": "Alliant",
+      "shortest": "Alliant E",
       "short": "Alliant Energy East",
       "normal": "Alliant Energy",
       "tier": "normal"
@@ -16506,7 +16506,7 @@
     {
       "ncr_id": "NCR10337",
       "entity_name": "Alliant Energy - East",
-      "shortest": "Alliant",
+      "shortest": "Alliant E",
       "short": "Alliant Energy East",
       "normal": "Alliant Energy - East",
       "tier": "normal"
@@ -16570,7 +16570,7 @@
     {
       "ncr_id": "NCR11170",
       "entity_name": "Shepherds Flat Wind, LLC",
-      "shortest": "Shepherds Flat",
+      "shortest": "Shepherds WF",
       "short": "Shepherds Flat Wind",
       "normal": "Shepherds Flat Wind, LLC",
       "tier": "normal"
@@ -16578,7 +16578,7 @@
     {
       "ncr_id": "NCR12425",
       "entity_name": "Strauss Wind, LLC",
-      "shortest": "Strauss",
+      "shortest": "Strauss WF",
       "short": "Strauss Wind",
       "normal": "Strauss Wind, LLC",
       "tier": "normal"
@@ -16586,7 +16586,7 @@
     {
       "ncr_id": "NCR11214",
       "entity_name": "Rockland Wind Farm LLC",
-      "shortest": "Rockland",
+      "shortest": "Rockland WF",
       "short": "Rockland Wind Farm",
       "normal": "Rockland Wind Farm LLC",
       "tier": "normal"
@@ -16594,7 +16594,7 @@
     {
       "ncr_id": "NCR11347",
       "entity_name": "Pinyon Pines Wind I, LLC",
-      "shortest": "Pinyon I",
+      "shortest": "Pinyon WF1",
       "short": "Pinyon Pines Wind I",
       "normal": "Pinyon Pines Wind I, LLC",
       "tier": "normal"
@@ -16602,7 +16602,7 @@
     {
       "ncr_id": "NCR11350",
       "entity_name": "Pinyon Pines Wind II, LLC",
-      "shortest": "Pinyon II",
+      "shortest": "Pinyon WF2",
       "short": "Pinyon Pines Wind II",
       "normal": "Pinyon Pines Wind II, LLC",
       "tier": "normal"
@@ -16610,7 +16610,7 @@
     {
       "ncr_id": "NCR11652",
       "entity_name": "Pio Pico Energy Center, LLC",
-      "shortest": "Pio Pico",
+      "shortest": "Pio Pico EC",
       "short": "Pio Pico Energy Center",
       "normal": "Pio Pico Energy Center, LLC",
       "tier": "normal"
@@ -16618,7 +16618,7 @@
     {
       "ncr_id": "NCR11450",
       "entity_name": "Shiloh IV Wind Project, LLC",
-      "shortest": "Shiloh IV",
+      "shortest": "Shiloh WF4",
       "short": "Shiloh IV Wind",
       "normal": "Shiloh IV Wind Project, LLC",
       "tier": "normal"
@@ -16626,7 +16626,7 @@
     {
       "ncr_id": "NCR11307",
       "entity_name": "Sentinel Energy Center, LLC",
-      "shortest": "Sentinel",
+      "shortest": "Sentinel EC",
       "short": "Sentinel Energy Center",
       "normal": "Sentinel Energy Center, LLC",
       "tier": "normal"
@@ -16634,7 +16634,7 @@
     {
       "ncr_id": "NCR11471",
       "entity_name": "Sunrise Power Company, LLC",
-      "shortest": "Sunrise",
+      "shortest": "Sunrise Pwr",
       "short": "Sunrise Power",
       "normal": "Sunrise Power Company, LLC",
       "tier": "normal"
@@ -16642,7 +16642,7 @@
     {
       "ncr_id": "NCR11054",
       "entity_name": "South Feather Power Project",
-      "shortest": "South Feather",
+      "shortest": "S Feather Pwr",
       "short": "South Feather Power",
       "normal": "South Feather Power Project",
       "tier": "normal"
@@ -16650,7 +16650,7 @@
     {
       "ncr_id": "NCR05369",
       "entity_name": "Saguaro Power Company, A Limited Partnership",
-      "shortest": "Saguaro",
+      "shortest": "Saguaro Pwr",
       "short": "Saguaro Power",
       "normal": "Saguaro Power Company",
       "tier": "normal"
@@ -16674,7 +16674,7 @@
     {
       "ncr_id": "NCR11424",
       "entity_name": "Solar Star California XIX, LLC",
-      "shortest": "Solar Star XIX",
+      "shortest": "Solar Star 19",
       "short": "Solar Star California XIX",
       "normal": "Solar Star California XIX, LLC",
       "tier": "normal"
@@ -16682,7 +16682,7 @@
     {
       "ncr_id": "NCR11432",
       "entity_name": "Solar Star California XX, LLC",
-      "shortest": "Solar Star XX",
+      "shortest": "Solar Star 20",
       "short": "Solar Star California XX",
       "normal": "Solar Star California XX, LLC",
       "tier": "normal"
@@ -16690,7 +16690,7 @@
     {
       "ncr_id": "NCR13136",
       "entity_name": "Prineville Solar Energy LLC",
-      "shortest": "Prineville",
+      "shortest": "Prineville PV",
       "short": "Prineville Solar",
       "normal": "Prineville Solar Energy LLC",
       "tier": "normal"
@@ -16698,7 +16698,7 @@
     {
       "ncr_id": "NCR12335",
       "entity_name": "Rabbitbrush Solar, LLC",
-      "shortest": "Rabbitbrush",
+      "shortest": "Rabbit PV",
       "short": "Rabbitbrush Solar",
       "normal": "Rabbitbrush Solar, LLC",
       "tier": "normal"
@@ -16706,7 +16706,7 @@
     {
       "ncr_id": "NCR12268",
       "entity_name": "Panorama Wind, LLC",
-      "shortest": "Panorama",
+      "shortest": "Panorama WF",
       "short": "Panorama Wind",
       "normal": "Panorama Wind, LLC",
       "tier": "normal"
@@ -16722,7 +16722,7 @@
     {
       "ncr_id": "NCR05413",
       "entity_name": "Sunnyside Cogeneration Associates - GO",
-      "shortest": "Sunnyside",
+      "shortest": "Sunnyside Cogen",
       "short": "Sunnyside Cogen",
       "normal": "Sunnyside Cogeneration Associates",
       "tier": "normal"
@@ -16730,7 +16730,7 @@
     {
       "ncr_id": "NCR04088",
       "entity_name": "Kiowa Power Partners, LLC",
-      "shortest": "Kiowa",
+      "shortest": "Kiowa Pwr",
       "short": "Kiowa Power Partners",
       "normal": "Kiowa Power Partners, LLC",
       "tier": "normal"
@@ -16776,7 +16776,7 @@
     {
       "ncr_id": "NCR13250",
       "entity_name": "Solar Alpine LLC",
-      "shortest": "Alpine Solar",
+      "shortest": "Alpine PV",
       "short": "Solar Alpine",
       "normal": "Solar Alpine LLC",
       "tier": "normal"
@@ -16784,7 +16784,7 @@
     {
       "ncr_id": "NCR13481",
       "entity_name": "Solar of Alamosa LLC",
-      "shortest": "Alamosa Solar",
+      "shortest": "Alamosa PV",
       "short": "Solar of Alamosa",
       "normal": "Solar of Alamosa LLC",
       "tier": "normal"
@@ -16830,7 +16830,7 @@
     {
       "ncr_id": "NCR11529",
       "entity_name": "Spring Canyon Energy LLC",
-      "shortest": "Spring Canyon",
+      "shortest": "Spring Cyn",
       "short": "Spring Canyon Energy",
       "normal": "Spring Canyon Energy LLC",
       "tier": "normal"
@@ -16862,7 +16862,7 @@
     {
       "ncr_id": "NCR05043",
       "entity_name": "Terra-Gen Dixie Valley, LLC",
-      "shortest": "Dixie Valley",
+      "shortest": "Dixie Vly",
       "short": "Terra-Gen Dixie Valley",
       "normal": "Terra-Gen Dixie Valley, LLC",
       "tier": "normal"
@@ -16886,7 +16886,7 @@
     {
       "ncr_id": "NCR11342",
       "entity_name": "Topaz Solar Farms LLC",
-      "shortest": "Topaz",
+      "shortest": "Topaz PV",
       "short": "Topaz Solar Farms",
       "normal": "Topaz Solar Farms LLC",
       "tier": "normal"
@@ -16924,7 +16924,7 @@
     {
       "ncr_id": "NCR12488",
       "entity_name": "Tumbleweed Energy Storage, LLC",
-      "shortest": "Tumbleweed",
+      "shortest": "Tumblewd ES",
       "short": "Tumbleweed Energy Storage",
       "normal": "Tumbleweed Energy Storage, LLC",
       "tier": "normal"
@@ -16975,7 +16975,7 @@
     {
       "ncr_id": "NCR10216",
       "entity_name": "Valencia Power, LLC",
-      "shortest": "Valencia",
+      "shortest": "Valencia Pwr",
       "short": "Valencia Power",
       "normal": "Valencia Power, LLC",
       "tier": "normal"
@@ -16983,7 +16983,7 @@
     {
       "ncr_id": "NCR11078",
       "entity_name": "Vantage Wind Energy LLC",
-      "shortest": "Vantage",
+      "shortest": "Vantage WF",
       "short": "Vantage Wind Energy",
       "normal": "Vantage Wind Energy LLC",
       "tier": "normal"
@@ -16999,7 +16999,7 @@
     {
       "ncr_id": "NCR11989",
       "entity_name": "Voyager Wind I, LLC",
-      "shortest": "Voyager I",
+      "shortest": "Voyager WF1",
       "short": "Voyager Wind I",
       "normal": "Voyager Wind I, LLC",
       "tier": "normal"
@@ -17007,7 +17007,7 @@
     {
       "ncr_id": "NCR13066",
       "entity_name": "Washington Wind LLC",
-      "shortest": "Washington Wind",
+      "shortest": "Washington WF",
       "short": "Washington Wind",
       "normal": "Washington Wind LLC",
       "tier": "normal"
@@ -17047,7 +17047,7 @@
     {
       "ncr_id": "NCR13503",
       "entity_name": "Whitewater Hill Wind Partner, LLC",
-      "shortest": "Whitewater Hill",
+      "shortest": "Whitewtr WF",
       "short": "Whitewater Hill Wind Partner",
       "normal": "Whitewater Hill Wind Partner, LLC",
       "tier": "normal"
@@ -17055,7 +17055,7 @@
     {
       "ncr_id": "NCR12013",
       "entity_name": "Willow Creek Energy LLC",
-      "shortest": "Willow Creek",
+      "shortest": "Willow Crk",
       "short": "Willow Creek Energy",
       "normal": "Willow Creek Energy LLC",
       "tier": "normal"
@@ -17079,7 +17079,7 @@
     {
       "ncr_id": "NCR13138",
       "entity_name": "Wolverine Creek Energy, LLC",
-      "shortest": "Wolverine Creek",
+      "shortest": "Wolverine Crk",
       "short": "Wolverine Creek Energy",
       "normal": "Wolverine Creek Energy, LLC",
       "tier": "normal"
@@ -17106,7 +17106,7 @@
     {
       "ncr_id": "NCR13134",
       "entity_name": "Yuma Solar Energy LLC",
-      "shortest": "Yuma Solar",
+      "shortest": "Yuma PV",
       "short": "Yuma Solar Energy",
       "normal": "Yuma Solar Energy LLC",
       "tier": "normal"
