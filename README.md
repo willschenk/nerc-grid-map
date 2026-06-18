@@ -36,14 +36,17 @@ npm run deploy     # deploy to GitHub Pages
 ## Data flow
 
 ```text
+NERC registry .xlsx
+  -> export as CSV/TSV
 data/*.csv
   -> scripts/nerc/ingest.mjs
 src/data/nerc/ingested-records.json
   -> researched location and label data
 src/data/nerc/geocoded-orgs.json
   -> scripts/nerc/build-orgs.mjs
-public/nerc/orgs.json
-  -> browser map
+  -> public/nerc/orgs.json          canonical QA output
+  -> public/nerc/orgs-render.json   first-paint browser payload
+  -> public/nerc/org-details.json   lazy browser detail payload
 ```
 
 ## Key files
@@ -58,3 +61,7 @@ scripts/nerc/                      ingest, build, QA, research prompt
 src/data/nerc/                     source and researched records
 public/nerc/                       generated map JSON and basemap
 ```
+
+Contributor and pipeline rules live in [AGENTS.md](AGENTS.md). Organization
+label policy lives only in
+[docs/standards/name-shortest.md](docs/standards/name-shortest.md).

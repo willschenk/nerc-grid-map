@@ -1,10 +1,9 @@
 # NERC Geocoding Agent - Production Prompt
 
-Generated per Spec Part 4. Paste the **System Prompt** as the system message for a
-low-cost batch model (Haiku, GPT-4o-mini, Gemini Flash). Wrap each ingested record
-with the **User Template**. The agent returns one raw JSON object per record; collect
-them as JSONL, then convert to `src/data/nerc/geocoded-orgs.json` (`{ "orgs": [...] }`)
-for `build-orgs.mjs`.
+Use the **System Prompt** as the system message for a batch model and wrap each
+ingested record with the **User Template**. The model returns one raw JSON object
+per record; collect them as JSONL, then convert the results to
+`src/data/nerc/geocoded-orgs.json` (`{ "orgs": [...] }`) for `build-orgs.mjs`.
 
 ---
 
@@ -156,5 +155,5 @@ Geocode this record. Output the JSON object only, no prose.
 4. `node scripts/nerc/build-orgs.mjs` (auto-prefers geocoded-orgs.json over the seed).
 5. `node scripts/nerc/qa.mjs` to review warnings, fix, rebuild.
 
-Batch summary line every 100 records (optional, per Spec Part 1.9):
+Optional batch summary line every 100 records:
 `{"batch_summary":true,"records_processed":100,"high_confidence":72,"medium_confidence":18,"low_confidence":5,"estimated":5}`
