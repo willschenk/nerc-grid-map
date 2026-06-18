@@ -1377,7 +1377,7 @@
     {
       "ncr_id": "NCR11171",
       "entity_name": "National Grid USA",
-      "shortest": "NatGrid",
+      "shortest": "NGUSA",
       "short": "National Grid USA",
       "normal": "National Grid",
       "tier": "major"
@@ -6353,7 +6353,7 @@
     {
       "ncr_id": "NCR12259",
       "entity_name": "Mulligan Solar, LLC",
-      "shortest": "Mulligan",
+      "shortest": "Mulligan PV",
       "short": "Mulligan Solar",
       "normal": "Mulligan Solar",
       "tier": "normal"
@@ -6369,7 +6369,7 @@
     {
       "ncr_id": "NCR12435",
       "entity_name": "NAES - Goodnight I",
-      "shortest": "Goodnight",
+      "shortest": "Goodnight WF1",
       "short": "Goodnight Wind",
       "normal": "Goodnight Wind I",
       "tier": "normal"
@@ -6377,7 +6377,7 @@
     {
       "ncr_id": "NCR12159",
       "entity_name": "NAES Corporation - Aquamarine",
-      "shortest": "Aquamarine",
+      "shortest": "Aquamar PV",
       "short": "Aquamarine Solar",
       "normal": "Aquamarine Solar",
       "tier": "normal"
@@ -6385,7 +6385,7 @@
     {
       "ncr_id": "NCR11561",
       "entity_name": "NAES Corporation - Cogen Technologies Linden Venture",
-      "shortest": "Linden",
+      "shortest": "Linden Cogen",
       "short": "Linden Cogen",
       "normal": "Linden Cogeneration",
       "tier": "normal"
@@ -6393,7 +6393,7 @@
     {
       "ncr_id": "NCR13266",
       "entity_name": "NAES Corporation - Cross Trails",
-      "shortest": "Cross Trails",
+      "shortest": "CrossTrls WF",
       "short": "Cross Trails Wind",
       "normal": "Cross Trails Wind",
       "tier": "normal"
@@ -6401,7 +6401,7 @@
     {
       "ncr_id": "NCR11562",
       "entity_name": "NAES Corporation - East Coast Power Linden Holdings",
-      "shortest": "Linden",
+      "shortest": "Linden ECP",
       "short": "East Coast Power Linden",
       "normal": "East Coast Power Linden",
       "tier": "normal"
@@ -6409,7 +6409,7 @@
     {
       "ncr_id": "NCR11236",
       "entity_name": "NAES Corporation - Goodman Energy Center",
-      "shortest": "Goodman",
+      "shortest": "Goodman EC",
       "short": "Goodman Energy Center",
       "normal": "Goodman Energy Center",
       "tier": "normal"
@@ -6417,7 +6417,7 @@
     {
       "ncr_id": "NCR11104",
       "entity_name": "NAES Corporation - Harvest Wind Project",
-      "shortest": "Harvest",
+      "shortest": "Harvest WF",
       "short": "Harvest Wind",
       "normal": "Harvest Wind Project",
       "tier": "normal"
@@ -6425,7 +6425,7 @@
     {
       "ncr_id": "NCR11929",
       "entity_name": "NAES Corporation - Kern River",
-      "shortest": "Kern River",
+      "shortest": "Kern Cogen",
       "short": "Kern River Cogen",
       "normal": "Kern River Cogeneration",
       "tier": "normal"
@@ -6441,7 +6441,7 @@
     {
       "ncr_id": "NCR12168",
       "entity_name": "NAES Corporation - Long Ridge Energy Generation",
-      "shortest": "Long Ridge",
+      "shortest": "Long Rdg Gen",
       "short": "Long Ridge Energy",
       "normal": "Long Ridge Energy Generation",
       "tier": "normal"
@@ -6465,7 +6465,7 @@
     {
       "ncr_id": "NCR11928",
       "entity_name": "NAES Corporation - Sycamore",
-      "shortest": "Sycamore",
+      "shortest": "Sycamore Cogen",
       "short": "Sycamore Cogeneration",
       "normal": "Sycamore Cogeneration",
       "tier": "normal"
@@ -6473,7 +6473,7 @@
     {
       "ncr_id": "NCR11932",
       "entity_name": "NAES Corporation - Wansley #9",
-      "shortest": "Wansley",
+      "shortest": "Wansley 9",
       "short": "Wansley Unit 9",
       "normal": "Wansley Unit 9",
       "tier": "normal"
@@ -6481,7 +6481,7 @@
     {
       "ncr_id": "NCR13340",
       "entity_name": "NAES Corporation - Whirlwind Energy",
-      "shortest": "Whirlwind",
+      "shortest": "Whirlwind WF",
       "short": "Whirlwind Energy",
       "normal": "Whirlwind Energy",
       "tier": "normal"
@@ -6489,7 +6489,7 @@
     {
       "ncr_id": "NCR00418",
       "entity_name": "NAES Corporation - White Creek Wind 1",
-      "shortest": "White Creek",
+      "shortest": "White Crk WF1",
       "short": "White Creek Wind",
       "normal": "White Creek Wind",
       "tier": "normal"
@@ -6497,7 +6497,7 @@
     {
       "ncr_id": "NCR12339",
       "entity_name": "NAES Corporation-Rayburn Energy Station",
-      "shortest": "Rayburn",
+      "shortest": "Rayburn ES",
       "short": "Rayburn Energy Station",
       "normal": "Rayburn Energy Station",
       "tier": "normal"
@@ -6505,7 +6505,7 @@
     {
       "ncr_id": "NCR12360",
       "entity_name": "NAES Frontera Energy Center",
-      "shortest": "Frontera",
+      "shortest": "Frontera EC",
       "short": "Frontera Energy Center",
       "normal": "Frontera Energy Center",
       "tier": "normal"
@@ -6513,7 +6513,7 @@
     {
       "ncr_id": "NCR07128",
       "entity_name": "National Grid Generation LLC",
-      "shortest": "NatGrid",
+      "shortest": "NGG",
       "short": "National Grid Generation",
       "normal": "National Grid Generation",
       "tier": "major"
@@ -6529,7 +6529,7 @@
     {
       "ncr_id": "NCR11555",
       "entity_name": "NC Renewable Power Lumberton LLC",
-      "shortest": "Lumberton",
+      "shortest": "NC Lumbertn",
       "short": "NC Renewable Power Lumberton",
       "normal": "NC Renewable Power Lumberton",
       "tier": "normal"
@@ -6537,7 +6537,7 @@
     {
       "ncr_id": "NCR10342",
       "entity_name": "NE Renewable Power Tamworth, LLC",
-      "shortest": "Tamworth",
+      "shortest": "NE Tamworth",
       "short": "NE Renewable Power Tamworth",
       "normal": "NE Renewable Power Tamworth",
       "tier": "normal"
@@ -6545,7 +6545,7 @@
     {
       "ncr_id": "NCR10298",
       "entity_name": "NE Renewable Power West Enfield, LLC",
-      "shortest": "Enfield",
+      "shortest": "NE Enfield",
       "short": "NE Renewable Power West Enfield",
       "normal": "NE Renewable Power West Enfield",
       "tier": "normal"
@@ -6577,7 +6577,7 @@
     {
       "ncr_id": "NCR07154",
       "entity_name": "New Athens Generating Company, LLC",
-      "shortest": "Athens",
+      "shortest": "Athens Gen",
       "short": "New Athens Generating",
       "normal": "New Athens Generating Company",
       "tier": "normal"
@@ -6585,7 +6585,7 @@
     {
       "ncr_id": "NCR10295",
       "entity_name": "New Covert Generating Company, LLC",
-      "shortest": "Covert",
+      "shortest": "Covert Gen",
       "short": "New Covert Generating",
       "normal": "New Covert Generating Company",
       "tier": "normal"
@@ -6593,7 +6593,7 @@
     {
       "ncr_id": "NCR11700",
       "entity_name": "New Creek Wind LLC",
-      "shortest": "New Creek",
+      "shortest": "New Crk WF",
       "short": "New Creek Wind",
       "normal": "New Creek Wind",
       "tier": "normal"
@@ -6617,7 +6617,7 @@
     {
       "ncr_id": "NCR12366",
       "entity_name": "Newport Solar, LLC",
-      "shortest": "Newport",
+      "shortest": "Newport PV",
       "short": "Newport Solar",
       "normal": "Newport Solar",
       "tier": "normal"
@@ -6633,7 +6633,7 @@
     {
       "ncr_id": "NCR12059",
       "entity_name": "Nobles 2 Energy Center",
-      "shortest": "Nobles",
+      "shortest": "Nobles 2 EC",
       "short": "Nobles 2 Energy Center",
       "normal": "Nobles 2 Energy Center",
       "tier": "normal"
@@ -6649,7 +6649,7 @@
     {
       "ncr_id": "NCR12428",
       "entity_name": "North Bend Wind Project, LLC",
-      "shortest": "North Bend",
+      "shortest": "N Bend WF",
       "short": "North Bend Wind",
       "normal": "North Bend Wind Project",
       "tier": "normal"
@@ -6657,7 +6657,7 @@
     {
       "ncr_id": "NCR12368",
       "entity_name": "North Valley Geothermal",
-      "shortest": "North Valley",
+      "shortest": "N Valley Geo",
       "short": "North Valley Geothermal",
       "normal": "North Valley Geothermal",
       "tier": "normal"
@@ -6665,7 +6665,7 @@
     {
       "ncr_id": "NCR00852",
       "entity_name": "Northampton Generating Company, LP",
-      "shortest": "Northampton",
+      "shortest": "Northamptn Gen",
       "short": "Northampton Generating",
       "normal": "Northampton Generating Company",
       "tier": "normal"
