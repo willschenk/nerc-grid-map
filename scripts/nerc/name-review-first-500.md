@@ -3,26 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-21. SUP-albertville-municipal-utilities-board — Albertville Municipal Utilities Board
-22. SUP-alliance-municipal-electric-system — Alliance Municipal Electric System
-23. SUP-brownfield-municipal-light-power — Brownfield Municipal Light & Power
-24. SUP-city-of-green-cove-springs — City of Green Cove Springs
-25. SUP-city-of-natchitoches-utility-department — City of Natchitoches Utility Department
-26. SUP-city-of-olive-hill-utility-department — City of Olive Hill Utility Department
-27. SUP-kbr-rural-public-power-district — KBR Rural Public Power District
-28. SUP-public-utility-district-no-1-of-jefferson-county — Public Utility District No. 1 of Jefferson County
-29. SUP-public-utility-district-no-1-of-wahkiakum-county — Public Utility District No. 1 of Wahkiakum County
-30. SUP-town-of-boyce-electric-utility — Town of Boyce Electric Utility
-31. SUP-town-of-erath-electric-utility — Town of Erath Electric Utility
-32. SUP-town-of-gueydan-electric-utility — Town of Gueydan Electric Utility
-33. SUP-town-of-welsh-electric-utility — Town of Welsh Electric Utility
-34. NCR12253 — Spring Canyon Energy III LLC
-35. NCR05456 — Wellhead Power Panoche, LLC
-36. NCR05457 — Wellhead Services, Inc
-37. SUP-seattle-city-light — Seattle City Light
-38. NCR00024 — Florida Power & Light Co.
-39. NCR01151 — Tennessee Valley Authority
-40. NCR07124 — ISO-NE
 41. NCR07160 — New York Independent System Operator
 42. NCR00879 — PJM Interconnection, LLC
 43. NCR01320 — Southern Company Services, Inc. - Trans

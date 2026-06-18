@@ -366,7 +366,10 @@
       "shortest": "FPL",
       "short": "Florida Power & Light",
       "normal": "Florida Power & Light Co.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.fpl.com/"
     },
     {
       "ncr_id": "NCR01029",
@@ -390,7 +393,10 @@
       "shortest": "ISO-NE",
       "short": "ISO New England",
       "normal": "ISO-NE",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.iso-ne.com/"
     },
     {
       "ncr_id": "NCR07184",
@@ -16102,7 +16108,10 @@
       "shortest": "TVA",
       "short": "Tennessee Valley Authority",
       "normal": "Tennessee Valley Authority",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tva.com/"
     },
     {
       "ncr_id": "NCR01177",
@@ -16810,10 +16819,13 @@
     {
       "ncr_id": "NCR12253",
       "entity_name": "Spring Canyon Energy III LLC",
-      "shortest": "Spring Canyon III",
+      "shortest": "Spring Cyn III",
       "short": "Spring Canyon Energy III",
       "normal": "Spring Canyon Energy III LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.clearwayenergy.com/"
     },
     {
       "ncr_id": "NCR11529",
@@ -18097,18 +18109,24 @@
     {
       "ncr_id": "NCR05456",
       "entity_name": "Wellhead Power Panoche, LLC",
-      "shortest": "Wellhead Panoche",
+      "shortest": "Panoche",
       "short": "Wellhead Power Panoche",
       "normal": "Wellhead Power Panoche, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
     },
     {
       "ncr_id": "NCR05457",
       "entity_name": "Wellhead Services, Inc",
-      "shortest": "Wellhead Services",
+      "shortest": "WH Services",
       "short": "Wellhead Services",
       "normal": "Wellhead Services, Inc",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
     },
     {
       "ncr_id": "NCR11825",
@@ -18291,6 +18309,160 @@
       "short": "Luminant Generation",
       "normal": "Luminant Generation Company LLC",
       "tier": "normal"
+    },
+    {
+      "ncr_id": "SUP-albertville-municipal-utilities-board",
+      "entity_name": "Albertville Municipal Utilities Board",
+      "shortest": "Albertville",
+      "short": "Albertville MUB",
+      "normal": "Albertville Municipal Utilities Board",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.mub-albertville.com/"
+    },
+    {
+      "ncr_id": "SUP-alliance-municipal-electric-system",
+      "entity_name": "Alliance Municipal Electric System",
+      "shortest": "Alliance",
+      "short": "Alliance Municipal",
+      "normal": "Alliance Municipal Electric System",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-brownfield-municipal-light-power",
+      "entity_name": "Brownfield Municipal Light & Power",
+      "shortest": "Brownfield",
+      "short": "Brownfield Municipal",
+      "normal": "Brownfield Municipal Light & Power",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-green-cove-springs",
+      "entity_name": "City of Green Cove Springs",
+      "shortest": "Green Cove",
+      "short": "Green Cove Springs",
+      "normal": "City of Green Cove Springs",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-natchitoches-utility-department",
+      "entity_name": "City of Natchitoches Utility Department",
+      "shortest": "Natchitoches",
+      "short": "Natchitoches Utility",
+      "normal": "City of Natchitoches Utility Department",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-olive-hill-utility-department",
+      "entity_name": "City of Olive Hill Utility Department",
+      "shortest": "Olive Hill",
+      "short": "Olive Hill Utility",
+      "normal": "City of Olive Hill Utility Department",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-kbr-rural-public-power-district",
+      "entity_name": "KBR Rural Public Power District",
+      "shortest": "KBR",
+      "short": "KBR Rural Public Power",
+      "normal": "KBR Rural Public Power District",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://kbrpower.com/"
+    },
+    {
+      "ncr_id": "SUP-public-utility-district-no-1-of-jefferson-county",
+      "entity_name": "Public Utility District No. 1 of Jefferson County",
+      "shortest": "Jefferson PUD",
+      "short": "Jefferson County PUD",
+      "normal": "Public Utility District No. 1 of Jefferson County",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-public-utility-district-no-1-of-wahkiakum-county",
+      "entity_name": "Public Utility District No. 1 of Wahkiakum County",
+      "shortest": "Wahkiakum",
+      "short": "Wahkiakum County PUD",
+      "normal": "Public Utility District No. 1 of Wahkiakum County",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-boyce-electric-utility",
+      "entity_name": "Town of Boyce Electric Utility",
+      "shortest": "Boyce",
+      "short": "Boyce Electric",
+      "normal": "Town of Boyce Electric Utility",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-erath-electric-utility",
+      "entity_name": "Town of Erath Electric Utility",
+      "shortest": "Erath",
+      "short": "Erath Electric",
+      "normal": "Town of Erath Electric Utility",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-gueydan-electric-utility",
+      "entity_name": "Town of Gueydan Electric Utility",
+      "shortest": "Gueydan",
+      "short": "Gueydan Electric",
+      "normal": "Town of Gueydan Electric Utility",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-welsh-electric-utility",
+      "entity_name": "Town of Welsh Electric Utility",
+      "shortest": "Welsh",
+      "short": "Welsh Electric",
+      "normal": "Town of Welsh Electric Utility",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "inferred",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-seattle-city-light",
+      "entity_name": "Seattle City Light",
+      "shortest": "SCL",
+      "short": "Seattle City Light",
+      "normal": "Seattle City Light",
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.seattle.gov/city-light"
     }
   ]
 }
