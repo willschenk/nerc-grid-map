@@ -224,7 +224,7 @@
 
 #nerc-svg .olabel {
   fill: #ffffff;
-  font-weight: 760;
+  font-weight: 800;
   paint-order: stroke fill;
   stroke: rgba(7, 17, 14, 0.88);
   stroke-width: 3.2;
@@ -241,10 +241,10 @@
    in redraw() refine stroke width by name length; these are fallbacks. */
 #nerc-svg .olabel.inside {
   fill: #ffffff;
-  font-weight: 740;
+  font-weight: 800;
   paint-order: stroke fill;
   stroke: rgba(7, 17, 14, 0.84);
-  stroke-width: 2.6;
+  stroke-width: 2.1;
   dominant-baseline: central;
 }
 

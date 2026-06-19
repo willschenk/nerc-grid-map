@@ -171,7 +171,7 @@ const MAX_ZOOM = 1600;
 const ORG_CONTENT_SCALE = 0.92;
 const BUBBLE_WIDTH_FACTOR = 1.08;
 const BUBBLE_HEIGHT_FACTOR = 0.92;
-const BUBBLE_PACKING_FACTOR = 1.11;
+const BUBBLE_PACKING_FACTOR = 1.1;
 // Quiet dots for orgs that could not earn a non-overlapping bubble slot.
 // Background-tier dots: present on the map but not yet promoted to a bubble.
 const FALLBACK_TINY_RADIUS_PX = { desktop: 1.35, compact: 1.2 };
@@ -1110,6 +1110,10 @@ export function mountNercOrgMap(): void {
     return declutterBucket(k) <= 0.75;
   }
 
+  function isHomeOverviewZoom(k: number): boolean {
+    return declutterBucket(k) <= 1;
+  }
+
   function isAuthorityColorOrg(o: Org): boolean {
     return hasAnyRole(o, AUTHORITY_ROLES);
   }
@@ -1141,12 +1145,12 @@ export function mountNercOrgMap(): void {
     const vp = visualPriority(o);
     const weight = o.weight ?? 0;
     if (isGridLeadershipOrg(o) && weight >= 6) return true;
-    if (lp >= 68 && weight >= 8) return true;
-    if (lp >= 52 && weight >= 9) return true;
-    if (vp >= 50 && weight >= 10) return true;
-    if (o.name_major && weight >= 12) return true;
-    if (typePriority(o) >= 66 && weight >= 12) return true;
-    if (meaningfulRoleCount(o) >= 2 && weight >= 12 && typePriority(o) >= 42) return true;
+    if (lp >= 66 && weight >= 7) return true;
+    if (lp >= 50 && weight >= 8) return true;
+    if (vp >= 48 && weight >= 9) return true;
+    if (o.name_major && weight >= 10) return true;
+    if (typePriority(o) >= 66 && weight >= 10) return true;
+    if (meaningfulRoleCount(o) >= 2 && weight >= 10 && typePriority(o) >= 42) return true;
     return false;
   }
 
@@ -1496,6 +1500,10 @@ export function mountNercOrgMap(): void {
       (compact ? 0.74 : 0.68) +
       (compact ? 0.24 : 0.3) * smoothStep((k - 0.7) / 2.2) +
       (compact ? 0.34 : 0.42) * smoothStep((k - 3.2) / 7.5);
+    const overviewReadabilityBoost =
+      1 +
+      (compact ? 0.1 : 0.22) *
+        (1 - smoothStep((k - 1) / 0.55));
     // Mid/high-zoom readability: an extra ramp that kicks in past the overview so
     // labels keep getting bigger (and more legible) the further you zoom in. The
     // inside-label path still clamps to the bubble chord and long names fall back
@@ -1513,7 +1521,16 @@ export function mountNercOrgMap(): void {
     const smallOrgCloseBoost =
       priority >= 80 ? 1 : 1 + (priority < 50 ? 0.28 : 0.16) * smoothStep((k - 3) / 4);
     // Narrow phones: scale every label up so names stay readable on a small handset.
-    return base * zoomFontScale * growth * microLabelBoost * smallOrgCloseBoost * phoneSizeScale() * ORG_CONTENT_SCALE;
+    return (
+      base *
+      zoomFontScale *
+      overviewReadabilityBoost *
+      growth *
+      microLabelBoost *
+      smallOrgCloseBoost *
+      phoneSizeScale() *
+      ORG_CONTENT_SCALE
+    );
   }
 
   // ── Inside-label fit (the disclosure gate) ─────────────────────────────────
@@ -1526,14 +1543,12 @@ export function mountNercOrgMap(): void {
   function insideLabelMinFont(o: Org, k: number, brandLen: number): number {
     const lp = labelPriority(o);
     const deepLabelT = smoothStep((k - 9) / 13);
-    const overviewInsideScale = k < 1.2 ? (compact ? 0.88 : 0.9) : 1;
     return (
-      (compact ? 5 : 5.4) *
-      overviewInsideScale *
+      6 *
       (1 - 0.9 * deepLabelT) *
       (isMidwestOrg(o) ? 0.9 : 1) *
-      (lp >= 88 ? 0.9 : lp >= 68 ? 0.95 : 1) *
-      (!compact && brandLen <= 5 ? 0.95 : 1) *
+      (lp >= 88 ? 0.94 : lp >= 68 ? 0.97 : 1) *
+      (brandLen <= 4 ? (compact ? 0.92 : 0.9) : !compact && brandLen <= 5 ? 0.96 : 1) *
       unitPerPx
     );
   }
@@ -1543,11 +1558,15 @@ export function mountNercOrgMap(): void {
     return isMidwestOrg(o) ? 1.94 : 1.86;
   }
 
+  function insideLabelGlyphWidth(brandLen: number): number {
+    return brandLen > 5 ? 0.57 : 0.56;
+  }
+
   // The inside-label font a bubble of radius r would use for its short name.
   function insideLabelFont(o: Org, k: number, r: number, brandLen: number): number {
     return Math.min(
       labelFontPx(o, k) * unitPerPx,
-      (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, brandLen) / 0.56,
+      (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, brandLen) / insideLabelGlyphWidth(brandLen),
       r * BUBBLE_HEIGHT_FACTOR * 1.2,
     );
   }
@@ -1561,7 +1580,7 @@ export function mountNercOrgMap(): void {
     const font = insideLabelFont(o, k, r, brand.length);
     return (
       font >= insideLabelMinFont(o, k, brand.length) &&
-      font * 0.56 * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o)
+      font * insideLabelGlyphWidth(brand.length) * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o)
     );
   }
 
@@ -1574,10 +1593,10 @@ export function mountNercOrgMap(): void {
     const len = state.text.length;
     const scale = state.inside
       ? len > 13
-        ? 0.36
+        ? 0.32
         : len > 8
-          ? 0.32
-          : 0.28
+          ? 0.28
+          : 0.24
       : len > 18
         ? 0.26
         : len > 12
@@ -1585,9 +1604,9 @@ export function mountNercOrgMap(): void {
           : len > 7
             ? 0.21
             : 0.19;
-    const minPx = state.inside ? (compact ? 2.4 : 2.35) : compact ? 2.65 : 2.5;
+    const minPx = state.inside ? (compact ? 1.95 : 1.9) : compact ? 2.3 : 2.2;
     let strokeWidth = Math.max(minPx * unitPerPx, state.font * scale);
-    if (state.inside && state.font < 8.5 * unitPerPx) strokeWidth *= compact ? 1.18 : 1.14;
+    if (state.inside && state.font < 8.5 * unitPerPx) strokeWidth *= 1.05;
     if (emphasis === "selected") strokeWidth *= 1.14;
     else if (emphasis === "hot") strokeWidth *= 1.08;
     const alpha =
@@ -1640,8 +1659,8 @@ export function mountNercOrgMap(): void {
     // consume the map.
     const outerTopScaleT = smoothStep((k - 0.75) / (compact ? 0.22 : 0.2));
     const topOverviewScale = compact
-      ? 0.36 + 0.22 * outerTopScaleT
-      : 0.34 + 0.46 * outerTopScaleT;
+      ? 0.38 + 0.26 * outerTopScaleT
+      : 0.36 + 0.48 * outerTopScaleT;
     const overviewScale = compact ? (topTier ? topOverviewScale : 0.5) : (topTier ? topOverviewScale : 0.72);
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
@@ -1708,10 +1727,15 @@ export function mountNercOrgMap(): void {
     );
     const discloseT = topTier ? 1 : bubbleDisclosureT(o, k);
     const scaledPx = (minPx + (targetPx - minPx) * discloseT) * phoneSizeScale() * ORG_CONTENT_SCALE;
-    const outerCapPx = isOuterOverviewZoom(k) && isOuterOverviewMajor(o)
-      ? (compact ? 11.4 : 15.2)
+    const overviewFloorPx = isHomeOverviewZoom(k)
+      ? compact
+        ? 4.8 * phoneSizeScale()
+        : 8.8
+      : 0;
+    const outerCapPx = isHomeOverviewZoom(k) && isNationalFillOrg(o)
+      ? (compact ? 12.2 : 16.2)
       : maxPx;
-    return Math.max(minPx, Math.min(maxPx, outerCapPx, scaledPx)) * unitPerPx;
+    return Math.max(minPx, overviewFloorPx, Math.min(maxPx, outerCapPx, scaledPx)) * unitPerPx;
   }
 
   // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
@@ -1857,7 +1881,7 @@ export function mountNercOrgMap(): void {
     // local-fill allowance so eligible orgs can use nearby whitespace instead of
     // disappearing from roomy views.
     const t = declutterZoomT(k);
-    const overviewPx = compact ? 48 : 74;
+    const overviewPx = compact ? 58 : 84;
     const deepPx = compact ? 34 : 50;
     const regionalFillPx =
       (compact ? 16 : 34) *
@@ -2825,7 +2849,7 @@ export function mountNercOrgMap(): void {
       y1: box.y1 + pad,
     });
     const labelBox = (x: number, y: number, text: string, font: number, inside: boolean): Box => {
-      const w = Math.max(8 * unitPerPx, text.length * font * (inside ? 0.56 : 0.58));
+      const w = Math.max(8 * unitPerPx, text.length * font * (inside ? insideLabelGlyphWidth(text.length) : 0.58));
       const h = font * (inside ? 1.05 : 1.15);
       return inside
         ? { x0: x - w / 2, x1: x + w / 2, y0: y - h / 2, y1: y + h / 2 }
@@ -2869,12 +2893,12 @@ export function mountNercOrgMap(): void {
       for (const text of textOptions) {
         const insideFont = Math.min(
           baseFont,
-          (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, text.length) / 0.56,
+          (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, text.length) / insideLabelGlyphWidth(text.length),
           r * BUBBLE_HEIGHT_FACTOR * 1.2,
         );
         if (
           insideFont >= hoverInsideMin &&
-          insideFont * 0.56 * text.length <= r * BUBBLE_WIDTH_FACTOR * insideChord
+          insideFont * insideLabelGlyphWidth(text.length) * text.length <= r * BUBBLE_WIDTH_FACTOR * insideChord
         ) {
           return { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, text), inside: true };
         }
