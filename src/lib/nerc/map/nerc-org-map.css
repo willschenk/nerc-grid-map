@@ -263,6 +263,43 @@
   }
 }
 
+/* MISO control-area threads: a SUPER-thin live line tying each control area to
+   the MISO hub. The squiggle is baked into the path geometry (see syncMisoLinks);
+   the only thing that animates is stroke-dashoffset, so a slow "current" appears
+   to flow toward the hub at zero per-frame JS cost. non-scaling-stroke keeps the
+   width and dash pattern a constant hairline at every zoom. */
+#nerc-svg .miso-link {
+  fill: none;
+  stroke: hsl(224, 62%, 51%);
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-dasharray: 2.4 3.6;
+  opacity: 0.5;
+  pointer-events: none;
+  animation: nerc-miso-flow 1.2s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+#nerc-svg .miso-link.hide {
+  display: none;
+}
+
+@keyframes nerc-miso-flow {
+  to {
+    /* One full dash period (2.4 + 3.6) for a seamless loop. */
+    stroke-dashoffset: -6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nerc-svg .miso-link {
+    animation: none;
+    stroke-dasharray: none;
+    opacity: 0.3;
+  }
+}
+
 #nerc-svg .olabel {
   fill: #ffffff;
   font-weight: 800;
@@ -287,26 +324,6 @@
   stroke: rgba(7, 17, 14, 0.84);
   stroke-width: 2.1;
   dominant-baseline: central;
-}
-
-/* MISO control-area sublabel: a small, fancy italic "MISO CA" under the main
-   bubble label, with a dark halo so it reads on any role colour. */
-#nerc-svg .misoca {
-  fill: #fff7e6;
-  font-family: ui-serif, Georgia, "Times New Roman", serif;
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: 0.035em;
-  text-anchor: middle;
-  dominant-baseline: central;
-  paint-order: stroke fill;
-  stroke: rgba(7, 17, 14, 0.85);
-  stroke-width: 1.5;
-  pointer-events: none;
-}
-
-#nerc-svg .misoca.dim {
-  display: none;
 }
 
 #nerc-svg .olabel.hover-on-dot {
@@ -1056,13 +1073,13 @@
   line-height: 1.35;
 }
 
-/* MISO control-area callout. */
+/* MISO control-area callout — sits right at the top of the panel. */
 .nerc-panel .p-misoca {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.4rem 0.5rem;
-  margin: 0;
+  margin: 0 0 0.7rem;
   padding: 0.5rem 0.6rem;
   border: 1px solid rgba(43, 92, 152, 0.38);
   border-left: 3px solid #2b5c98;

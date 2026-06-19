@@ -1,7 +1,8 @@
 import { geoAlbersUsa, geoConicEqualArea, geoMercator, geoPath } from "d3-geo";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zoom";
-import { forceSimulation, forceCollide, forceX, forceY, type Simulation } from "d3-force";
+import { forceSimulation, forceX, forceY, type Simulation } from "d3-force";
+import { quadtree } from "d3-quadtree";
 import "d3-transition";
 import { feature, mesh } from "topojson-client";
 import { ROLE_FULL_NAMES } from "../roles.mjs";
@@ -170,8 +171,101 @@ const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
 const ORG_CONTENT_SCALE = 0.92;
 const BUBBLE_WIDTH_FACTOR = 1.08;
-const BUBBLE_HEIGHT_FACTOR = 0.92;
+const BUBBLE_HEIGHT_FACTOR = 0.74;
 const BUBBLE_PACKING_FACTOR = 1.1;
+// Bubbles are wider than they are tall, so packing them as circles (sized to the
+// width) wastes vertical space. Treat each reserved slot as an ellipse instead:
+// horizontal half = packing radius, vertical half = packing radius ÷ this factor.
+// Both the capacity gate and the force collide stretch the y-axis by this amount
+// so rows can sit closer together — more bubbles fit on screen. The 0.9 safety
+// factor keeps a little vertical breathing room (perfectly box-tight packing
+// leaves rounded-corner neighbours touching) so the no-overlap backstop holds.
+const BUBBLE_PACK_Y_STRETCH = (BUBBLE_WIDTH_FACTOR / BUBBLE_HEIGHT_FACTOR) * 0.9;
+
+// Anisotropic drop-in for d3-force's forceCollide: resolves each node pair as an
+// axis-aligned ELLIPSE (vertical half-extent = radius ÷ yStretch) rather than a
+// circle, so wider-than-tall bubbles pack tightly on both axes. Mirrors the
+// d3-force@3 collide internals (quadtree + visitAfter bounding radii); the only
+// change is that y-distances are multiplied by yStretch before the circular
+// overlap test and the resulting y-push is divided back out.
+type CollideNode = { index?: number; x: number; y: number; vx: number; vy: number };
+function forceCollideAniso<N extends CollideNode>(
+  radius: (n: N) => number,
+  yStretch: number,
+  iterations = 1,
+  strength = 1,
+): ((alpha: number) => void) & { initialize: (nodes: N[]) => void } {
+  let nodes: N[] = [];
+  let radii: number[] = [];
+
+  // visitAfter callback: stamp each quadtree cell with the largest radius beneath
+  // it so the descent in force() can prune whole branches.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function prepare(quad: any): void {
+    if (quad.data) {
+      quad.r = radii[quad.data.index];
+      return;
+    }
+    quad.r = 0;
+    for (let i = 0; i < 4; ++i) {
+      if (quad[i] && quad[i].r > quad.r) quad.r = quad[i].r;
+    }
+  }
+
+  function force(): void {
+    const n = nodes.length;
+    for (let k = 0; k < iterations; ++k) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const tree = quadtree(nodes, (d: N) => d.x, (d: N) => d.y).visitAfter(prepare as any);
+      for (let i = 0; i < n; ++i) {
+        const node = nodes[i];
+        const ri = radii[node.index as number];
+        const ri2 = ri * ri;
+        const xi = node.x + node.vx;
+        const yi = node.y + node.vy;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        tree.visit((quad: any, x0: number, y0: number, x1: number, y1: number): boolean | void => {
+          const data = quad.data as N | undefined;
+          const rj = quad.r as number;
+          const r = ri + rj;
+          if (data) {
+            if ((data.index as number) > (node.index as number)) {
+              let x = xi - data.x - data.vx;
+              let y = (yi - data.y - data.vy) * yStretch; // stretch y → circular test
+              let l = x * x + y * y;
+              if (l < r * r) {
+                if (x === 0) { x = 1e-6; l += x * x; }
+                if (y === 0) { y = 1e-6; l += y * y; }
+                const dist = Math.sqrt(l);
+                l = ((r - dist) / dist) * strength;
+                const rj2 = rj * rj;
+                const m = rj2 / (ri2 + rj2);
+                const md = 1 - m;
+                node.vx += (x *= l) * m;
+                node.vy += ((y *= l) * m) / yStretch; // un-stretch the y push
+                data.vx -= x * md;
+                data.vy -= (y * md) / yStretch;
+              }
+            }
+            return;
+          }
+          // Prune cells that cannot reach node i (use r, the stretched bound, as a
+          // safe superset of the real elliptical reach).
+          return x0 > xi + r || x1 < xi - r || y0 > yi + r || y1 < yi - r;
+        });
+      }
+    }
+  }
+
+  force.initialize = (n: N[]): void => {
+    nodes = n;
+    radii = new Array(n.length);
+    for (const node of n) radii[node.index as number] = radius(node);
+  };
+
+  return force;
+}
+
 // Quiet dots for orgs that could not earn a non-overlapping bubble slot.
 // Background-tier dots: present on the map but not yet promoted to a bubble.
 const FALLBACK_TINY_RADIUS_PX = { desktop: 1.35, compact: 1.2 };
@@ -224,6 +318,9 @@ const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnec
 const ISO_RTO_OPERATOR_NAME =
   /PJM Interconnection|Midcontinent Independent System Operator|Southwest Power Pool|Electric Reliability Council of Texas|California Independent System Operator|ISO New England|ISO-NE|New York Independent System Operator|Ontario IESO|Independent Electricity System Operator|Alberta Electric System Operator/i;
 
+// The MISO hub org (Midcontinent ISO) — the anchor every control-area thread
+// connects to.
+const MISO_HUB_ID = "NCR00826";
 // MISO Local Balancing Authorities — the "control areas" that make up MISO.
 // Source: MISO Tariff Attachment VV, effective October 26, 2025. The tariff
 // lists 38 current LBA codes; two pairs share one map organization here:
@@ -771,6 +868,10 @@ export function mountNercOrgMap(): void {
   // Area context is even quieter than city context and must paint below the
   // NERC overlay, not over it.
   const gLand = svg.append("g").attr("class", "land");
+  // Super-thin animated threads tying each MISO control area to the MISO hub.
+  // Painted under the bubbles (background) and riding the zoom transform so the
+  // ends stay glued to their bubbles as you pan/zoom.
+  const gMisoLink = svg.append("g").attr("class", "miso-links");
   const gOverlay = svg.append("g").attr("class", "overlay");
   // Animated orange "saber" outlines for the ISO/RTO bubbles — painted just above
   // the bubbles (so the light reads on top) but below the hit + label layers.
@@ -1617,40 +1718,13 @@ export function mountNercOrgMap(): void {
     return brandLen > 5 ? 0.57 : 0.56;
   }
 
-  function misoCaSubLabelFont(mainFont: number): number {
-    return Math.max(5 * unitPerPx, Math.min(7.2 * unitPerPx, mainFont * 0.5));
-  }
-
-  function misoCaLineGap(): number {
-    return 0.75 * unitPerPx;
-  }
-
-  function misoCaVerticalSpace(r: number): number {
-    // Serif italic glyphs extend slightly beyond their nominal font box. Keep a
-    // conservative inset so the second line never grazes the rounded edge.
-    return 2 * bubbleHalfExtents(r).hh * 0.76;
-  }
-
-  function misoCaSubLabelWidth(font: number): number {
-    return font * 0.7 * "MISO CA".length;
-  }
-
   // The inside-label font a bubble of radius r would use for its short name.
   function insideLabelFont(o: Org, k: number, r: number, brandLen: number): number {
-    let font = Math.min(
+    return Math.min(
       labelFontPx(o, k) * unitPerPx,
       (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, brandLen) / insideLabelGlyphWidth(brandLen),
       r * BUBBLE_HEIGHT_FACTOR * 1.2,
     );
-    if (isMisoControlArea(o)) {
-      const available = misoCaVerticalSpace(r);
-      const gap = misoCaLineGap();
-      const minSub = 5 * unitPerPx;
-      let fitted = Math.min(font, (available - gap) / 1.5);
-      if (fitted * 0.5 < minSub) fitted = Math.min(font, available - gap - minSub);
-      font = Math.max(0, fitted);
-    }
-    return font;
   }
 
   // THE disclosure gate: does o's short name fit legibly inside its bubble at k?
@@ -1660,19 +1734,9 @@ export function mountNercOrgMap(): void {
     if (!brand) return false;
     const r = visualRadius(o, k);
     const font = insideLabelFont(o, k, r, brand.length);
-    const verticalFit =
-      !isMisoControlArea(o) ||
-      font + misoCaSubLabelFont(font) + misoCaLineGap() <=
-        misoCaVerticalSpace(r);
-    const subLabelWidthFit =
-      !isMisoControlArea(o) ||
-      misoCaSubLabelWidth(misoCaSubLabelFont(font)) <=
-        r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o);
     return (
       font >= insideLabelMinFont(o, k, brand.length) &&
-      font * insideLabelGlyphWidth(brand.length) * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o) &&
-      verticalFit &&
-      subLabelWidthFit
+      font * insideLabelGlyphWidth(brand.length) * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o)
     );
   }
 
@@ -2139,6 +2203,70 @@ export function mountNercOrgMap(): void {
     });
   }
 
+  // The MISO hub that every control-area thread points to. Cached after the org
+  // payload loads (see MISO_HUB_ID).
+  let misoHub: Org | null = null;
+  function getMisoHub(): Org | null {
+    if (misoHub) return misoHub;
+    misoHub = orgs.find((o) => o.ncr_id === MISO_HUB_ID) ?? null;
+    return misoHub;
+  }
+
+  // Build a gently-waving polyline from a control area to the MISO hub. The wave
+  // is baked into the geometry (amplitude/wavelength fixed in SCREEN px, so it
+  // looks the same at every zoom); the "live" motion is a CSS dash flow. The
+  // amplitude tapers to zero at both ends so each thread meets its bubble cleanly.
+  const MISO_LINK_AMP_PX = 2.1; // squiggle height on screen
+  const MISO_LINK_WAVE_PX = 16; // squiggle wavelength on screen
+  function misoLinkPath(x0: number, y0: number, x1: number, y1: number, k: number): string {
+    const dx = x1 - x0;
+    const dy = y1 - y0;
+    const len = Math.hypot(dx, dy) || 1;
+    const px = -dy / len; // unit perpendicular
+    const py = dx / len;
+    const amp = MISO_LINK_AMP_PX / k; // world units (group is scaled by k)
+    const lenPx = len * k;
+    const waves = Math.max(1, Math.round(lenPx / MISO_LINK_WAVE_PX));
+    const steps = Math.max(10, waves * 6);
+    let d = "";
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const env = Math.sin(Math.PI * t); // 0 at the ends, 1 in the middle
+      const off = Math.sin(t * waves * 2 * Math.PI) * amp * env;
+      const x = x0 + dx * t + px * off;
+      const y = y0 + dy * t + py * off;
+      d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+    }
+    return d;
+  }
+
+  // Re-thread every visible control-area link to the MISO hub. Cheap: at most a
+  // few dozen short polylines, only the `d` attribute is rewritten, and the
+  // animation itself is pure CSS (no per-frame JS), so it never taxes the page.
+  function syncMisoLinks(k = transform.k): void {
+    const links = gMisoLink.selectAll<SVGPathElement, Org>("path.miso-link");
+    const hub = getMisoHub();
+    const fanScale = spiderFanScale(k);
+    const declScale = declutterScale(k);
+    const hubShown = !!hub && hub._x != null && hub._vis !== false;
+    if (!hubShown) {
+      links.classed("hide", true);
+      return;
+    }
+    const hx = orgRenderX(hub as Org, fanScale, declScale);
+    const hy = orgRenderY(hub as Org, fanScale, declScale);
+    links.each(function (o) {
+      const node = this as SVGPathElement;
+      // Hide a thread whose control area isn't currently a visible bubble.
+      const shown = o._vis !== false && o._x != null;
+      node.classList.toggle("hide", !shown);
+      if (!shown) return;
+      const cx = orgRenderX(o, fanScale, declScale);
+      const cy = orgRenderY(o, fanScale, declScale);
+      node.setAttribute("d", misoLinkPath(cx, cy, hx, hy, k));
+    });
+  }
+
   function positionOrgMarks(k = transform.k, force = false): void {
     computePlacements(k, force);
     // Render positions only depend on k (panning is handled by the group
@@ -2161,6 +2289,7 @@ export function mountNercOrgMap(): void {
       .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
       .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
     syncSabers(k);
+    syncMisoLinks(k);
   }
 
   function isPanSourceEvent(event: Event | null | undefined): boolean {
@@ -2203,6 +2332,7 @@ export function mountNercOrgMap(): void {
     const tStr = transform.toString();
     gMap.attr("transform", tStr);
     gInsets.attr("transform", tStr);
+    gMisoLink.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
     gSaber.attr("transform", tStr);
     gHit.attr("transform", tStr);
@@ -2817,7 +2947,9 @@ export function mountNercOrgMap(): void {
           if (!arr) continue;
           for (const p of arr) {
             const ddx = p.x - cx;
-            const ddy = p.y - cy;
+            // Stretch y to match the elliptical bubble slot: rows pack closer than
+            // columns, mirroring forceCollideAniso so the gate and the sim agree.
+            const ddy = (p.y - cy) * BUBBLE_PACK_Y_STRETCH;
             const min = p.r + r + gap;
             if (ddx * ddx + ddy * ddy < min * min) return false;
           }
@@ -2943,7 +3075,7 @@ export function mountNercOrgMap(): void {
     // Collide (full strength) guarantees no overlap; the positional force pulls
     // each bubble to its space-filling target slot. Both agree (the slot is
     // non-overlapping), so the field settles filled AND clean.
-    orgSim.force("collide", forceCollide<SimNode>((n) => n.r).strength(1).iterations(5));
+    orgSim.force("collide", forceCollideAniso<SimNode>((n) => n.r, BUBBLE_PACK_Y_STRETCH, 5, 1));
     orgSim.force("x", forceX<SimNode>((n) => n.tx).strength((n) => n.anchor));
     orgSim.force("y", forceY<SimNode>((n) => n.ty).strength((n) => n.anchor));
     // Reheat with energy then settle snappily (~1.1s) onto the filled slot layout
@@ -3279,11 +3411,8 @@ export function mountNercOrgMap(): void {
       // floating label below from sitting on top of it.)
       if (o._frame !== "terr") {
         const insideFont = insideLabelFont(o, k, r, brand.length);
-        const mainY = isMisoControlArea(o)
-          ? sy - (misoCaSubLabelFont(insideFont) + misoCaLineGap()) * 0.46
-          : sy;
-        labelState.set(o.ncr_id, { x: sx, y: mainY, font: insideFont, text: displayMapLabel(o, brand), inside: true });
-        reserveLabel(labelBox(sx, mainY, brand, insideFont, true));
+        labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, brand), inside: true });
+        reserveLabel(labelBox(sx, sy, brand, insideFont, true));
         addBubbleBlocker(o);
         continue;
       }
@@ -3460,6 +3589,8 @@ export function mountNercOrgMap(): void {
     // force-sim nudges bubbles at constant k as it settles, and the rings must
     // track that or they drift off to one side of their bubble.
     syncSabers(k);
+    // Likewise re-thread the MISO control-area links as bubbles settle/move.
+    syncMisoLinks(k);
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
       const node = this as SVGCircleElement;
@@ -3592,25 +3723,6 @@ export function mountNercOrgMap(): void {
         node.classList.toggle("selected-label", (flags & 4) !== 0);
         node.classList.toggle("tour-flash", (flags & 8) !== 0);
       }
-    });
-
-    // "MISO CA" sublabels: the disclosure gate reserves room for this second
-    // line, so every visible MISO control-area bubble carries it.
-    gLabels.selectAll<SVGTextElement, Org>("text.misoca").each(function (o) {
-      const node = this as SVGTextElement;
-      const state = labelState.get(o.ncr_id);
-      const show = !!state?.inside;
-      node.classList.toggle("dim", !show);
-      if (!show || !state) return;
-      const subFont = misoCaSubLabelFont(state.font);
-      const sy =
-        state.y +
-        state.font * 0.48 +
-        misoCaLineGap() +
-        subFont * 0.48;
-      node.setAttribute("x", String(state.x));
-      node.setAttribute("y", String(sy));
-      node.setAttribute("font-size", String(subFont));
     });
 
     // City labels yield to NERC org labels AND bubbles: inflate every org-label
@@ -4452,17 +4564,19 @@ export function mountNercOrgMap(): void {
       );
       panelBody.append(note);
     } else {
+      // MISO control areas lead with a prominent "MISO Control Area (CA)" badge
+      // at the very top of the panel, then their plain-language description.
+      if (isMisoControlArea(o)) {
+        const note = createEl("p", "p-misoca");
+        note.append(
+          createEl("span", "p-misoca-badge", "MISO Control Area (CA)"),
+          createEl("span", "p-misoca-text", misoControlAreaNote(o)),
+        );
+        panelBody.append(note);
+      }
       panelBody.append(createEl("p", "p-desc", describeOrg(o)));
     }
     const dl = createEl("dl");
-    if (isMisoControlArea(o)) {
-      const note = createEl("div", "p-misoca");
-      note.append(
-        createEl("span", "p-misoca-badge", `MISO CA · ${misoControlAreaCodeLabel(o)}`),
-        createEl("span", "p-misoca-text", misoControlAreaNote(o)),
-      );
-      addDlRow(dl, "Notes", note);
-    }
     addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o));
     addDlRow(dl, "Regional Entity", regionLabel(o));
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
@@ -5082,15 +5196,16 @@ export function mountNercOrgMap(): void {
       .attr("class", "olabel")
       .text((o) => orgAcronym(o));
 
-    // Italic "MISO CA" sublabel for MISO control areas. The disclosure fit gate
-    // reserves room for this second line before the bubble is allowed to render.
-    gLabels
-      .selectAll("text.misoca")
+    // Background threads tying each visible MISO control area to the MISO hub.
+    // The squiggle geometry is written by syncMisoLinks; the flowing animation is
+    // pure CSS, so a few dozen of these cost effectively nothing per frame.
+    gMisoLink
+      .selectAll("path.miso-link")
       .data(visibleOrder.filter(isMisoControlArea), (o: unknown) => (o as Org).ncr_id)
-      .join("text")
-      .attr("class", "misoca dim")
-      .attr("aria-hidden", "true")
-      .text("MISO CA");
+      .join("path")
+      .attr("class", "miso-link")
+      .attr("aria-hidden", "true");
+    syncMisoLinks(transform.k);
 
     gPlaces
       .selectAll("text.place")
