@@ -169,6 +169,9 @@ const SPIDER_RING_STEP_PX = 28;
 const MAX_RADIUS = 58;
 const MAX_ZOOM = 1600;
 const ORG_CONTENT_SCALE = 0.92;
+const BUBBLE_WIDTH_FACTOR = 1.08;
+const BUBBLE_HEIGHT_FACTOR = 0.92;
+const BUBBLE_PACKING_FACTOR = 1.11;
 // Quiet dots for orgs that could not earn a non-overlapping bubble slot.
 // Background-tier dots: present on the map but not yet promoted to a bubble.
 const FALLBACK_TINY_RADIUS_PX = { desktop: 1.35, compact: 1.2 };
@@ -906,9 +909,8 @@ export function mountNercOrgMap(): void {
     // Rank by how deep the pointer is INSIDE each bubble relative to that bubble's
     // own size (normalized distance), not raw distance to centre. In a dense
     // cluster this picks the dot you actually clicked into rather than a larger
-    // neighbour whose centre happens to be nearer. A pointer inside a bubble's
-    // *drawn* circle always beats one only inside the padded hit ring, so the
-    // selection matches the circle you clicked.
+    // neighbour whose centre happens to be nearer. A pointer inside a drawn
+    // bubble always beats one only inside the padded hit ring.
     let bestNorm = Number.POSITIVE_INFINITY;
     let bestInVisual = false;
     let bestVisual = Number.POSITIVE_INFINITY;
@@ -923,13 +925,13 @@ export function mountNercOrgMap(): void {
       const hit = hitTargetRadius(o, k) + unitPerPx;
       if (d2 > hit * hit) continue;
       const visual = renderedRadius(o, k);
-      const inVisual = d2 <= visual * visual;
+      const inVisual = bubbleContainsOffset(dx, dy, visual);
       const focusBoost =
         (hoverOrg?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id ? 5000 : 0) +
         (tourIds.has(o.ncr_id) ? 4000 : 0);
       const norm = d2 / (hit * hit);
       // Selection order in dense clusters:
-      //   1. A pointer inside a bubble's *drawn* circle always beats one only in
+      //   1. A pointer inside a drawn bubble always beats one only in
       //      the padded hit ring.
       //   2. When the pointer is inside more than one drawn circle, the INNERMOST
       //      (smallest-radius) bubble wins — a small dot stacked under a larger
@@ -972,7 +974,11 @@ export function mountNercOrgMap(): void {
         if (best.ncr_id === fallback.ncr_id) return fallback;
         const d2best = (best._sx! - point.x) ** 2 + (best._sy! - point.y) ** 2;
         const visBest = renderedRadius(best, k);
-        const bestInsideVis = d2best <= visBest * visBest;
+        const bestInsideVis = bubbleContainsOffset(
+          (best._sx as number) - point.x,
+          (best._sy as number) - point.y,
+          visBest,
+        );
         // Keep the tapped tiny dot unless the pointer is clearly inside another
         // bubble's drawn circle and nearer that neighbour's centre.
         if (!bestInsideVis || d2fb <= d2best) return fallback;
@@ -1539,7 +1545,11 @@ export function mountNercOrgMap(): void {
 
   // The inside-label font a bubble of radius r would use for its short name.
   function insideLabelFont(o: Org, k: number, r: number, brandLen: number): number {
-    return Math.min(labelFontPx(o, k) * unitPerPx, (r * 1.74) / Math.max(1, brandLen) / 0.56);
+    return Math.min(
+      labelFontPx(o, k) * unitPerPx,
+      (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, brandLen) / 0.56,
+      r * BUBBLE_HEIGHT_FACTOR * 1.2,
+    );
   }
 
   // THE disclosure gate: does o's short name fit legibly inside its bubble at k?
@@ -1551,7 +1561,7 @@ export function mountNercOrgMap(): void {
     const font = insideLabelFont(o, k, r, brand.length);
     return (
       font >= insideLabelMinFont(o, k, brand.length) &&
-      font * 0.56 * brand.length <= r * insideLabelChord(o)
+      font * 0.56 * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o)
     );
   }
 
@@ -1740,12 +1750,12 @@ export function mountNercOrgMap(): void {
   function hitTargetRadius(o: Org, k: number): number {
     if (o._frame === "terr") return territoryHitRadiusPx() * unitPerPx;
     if (o._renderFallback) {
-      const visual = renderedRadius(o, k);
+      const visual = bubblePackingRadius(renderedRadius(o, k));
       return Math.max(visual + 2 * unitPerPx, (compact ? 18 : 12) * unitPerPx);
     }
     // Every shown bubble is fully placed, so tap targets track the visible radius
     // plus a small pad and a floor — no per-dot reveal strength to fold in.
-    const visual = renderedRadius(o, k);
+    const visual = bubblePackingRadius(renderedRadius(o, k));
     const priority = visualPriority(o);
     // Floors keep even modest mid-priority utilities (e.g. western irrigation /
     // municipal districts like TID, IID, LADWP) comfortably clickable when their
@@ -1917,6 +1927,50 @@ export function mountNercOrgMap(): void {
     }
   }
 
+  // Every bubble is a subtly horizontal rounded rectangle: 8% wider and 8%
+  // shorter than the former circle, preserving almost exactly the same area.
+  function bubbleHalfExtents(r: number): { hw: number; hh: number } {
+    return { hw: r * BUBBLE_WIDTH_FACTOR, hh: r * BUBBLE_HEIGHT_FACTOR };
+  }
+
+  function bubbleContainsOffset(dx: number, dy: number, r: number): boolean {
+    const { hw, hh } = bubbleHalfExtents(r);
+    return Math.abs(dx) <= hw && Math.abs(dy) <= hh;
+  }
+
+  // The force solver is circular, so reserve the wider half-extent to preserve
+  // the no-overlap invariant after circles become rounded rectangles. This
+  // factor encloses the 44%-radius rounded corners without reserving a square's
+  // full diagonal.
+  function bubblePackingRadius(r: number): number {
+    return r * BUBBLE_PACKING_FACTOR;
+  }
+
+  function setOrgBoxPosition(node: SVGRectElement, cx: number, cy: number): void {
+    const w = Number(node.getAttribute("width") || 0);
+    const h = Number(node.getAttribute("height") || 0);
+    node.setAttribute("x", String(cx - w / 2));
+    node.setAttribute("y", String(cy - h / 2));
+  }
+
+  // Preserve the current center while changing size so hover/zoom never makes a
+  // rectangle jump. Position stays in x/y so the tour's CSS scale pulse composes
+  // safely instead of replacing an SVG translate.
+  function setOrgBoxSize(node: SVGRectElement, r: number): void {
+    const oldW = Number(node.getAttribute("width") || 0);
+    const oldH = Number(node.getAttribute("height") || 0);
+    const cx = Number(node.getAttribute("x") || 0) + oldW / 2;
+    const cy = Number(node.getAttribute("y") || 0) + oldH / 2;
+    const { hw, hh } = bubbleHalfExtents(r);
+    const w = 2 * hw;
+    const h = 2 * hh;
+    node.setAttribute("x", String(cx - w / 2));
+    node.setAttribute("y", String(cy - h / 2));
+    node.setAttribute("width", String(w));
+    node.setAttribute("height", String(h));
+    node.setAttribute("rx", String(Math.min(w, h) * 0.44));
+  }
+
   function positionOrgMarks(k = transform.k, force = false): void {
     computePlacements(k, force);
     // Render positions only depend on k (panning is handled by the group
@@ -1926,9 +1980,14 @@ export function mountNercOrgMap(): void {
     const fanScale = spiderFanScale(k);
     const declScale = declutterScale(k);
     gOverlay
-      .selectAll<SVGCircleElement, Org>("circle.org")
-      .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
-      .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
+      .selectAll<SVGRectElement, Org>("rect.org")
+      .each(function (o) {
+        setOrgBoxPosition(
+          this as SVGRectElement,
+          orgRenderX(o, fanScale, declScale),
+          orgRenderY(o, fanScale, declScale),
+        );
+      });
     gHit
       .selectAll<SVGCircleElement, Org>("circle.org-hit")
       .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
@@ -1983,12 +2042,12 @@ export function mountNercOrgMap(): void {
     const k = transform.k;
     syncZoomGroups();
     positionOrgMarks(k);
-    gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
-      const node = this as SVGCircleElement;
+    gOverlay.selectAll<SVGRectElement, Org>("rect.org").each(function (o) {
+      const node = this as SVGRectElement;
       if (node.classList.contains("hide")) return;
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
-        node.setAttribute("r", String(rr / k));
+        setOrgBoxSize(node, rr / k);
         o._rk = k;
         o._rr = rr;
       }
@@ -2322,7 +2381,7 @@ export function mountNercOrgMap(): void {
     if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o)) return;
     const bucket = declutterBucket(k);
     const frame = orgLandFrame(o);
-    const r = renderedRadius(o, k);
+    const r = bubblePackingRadius(renderedRadius(o, k));
     const { cx, cy } = bubbleScreenCenter(o, bucket);
     if (placementLandValid(cx, cy, r, bucket, frame, false)) return;
     o._placed = false;
@@ -2369,7 +2428,8 @@ export function mountNercOrgMap(): void {
     // ceiling: the largest k that still maps to this bucket.
     let bucketTop = bucket;
     while (declutterBucket(bucketTop + 0.02) === bucket) bucketTop += 0.02;
-    const reserveR = (o: Org): number => renderedRadius(o, bucketTop) + gap * 0.5;
+    const reserveR = (o: Org): number =>
+      bubblePackingRadius(renderedRadius(o, bucketTop)) + gap * 0.5;
 
     // Gather orgs eligible at this zoom (label fits inside), most-important first.
     const eligible: Org[] = [];
@@ -2742,7 +2802,11 @@ export function mountNercOrgMap(): void {
     const bubbleBlockers: Array<{ id: string; x: number; y: number; r: number }> = [];
     const bubbleCircle = (o: Org): { x: number; y: number; r: number } | null => {
       if (o._sx == null || o._sy == null) return null;
-      return { x: o._sx, y: o._sy, r: renderedRadius(o, k) + bubblePad };
+      return {
+        x: o._sx,
+        y: o._sy,
+        r: bubblePackingRadius(renderedRadius(o, k)) + bubblePad,
+      };
     };
     const circlesOverlap = (
       a: { x: number; y: number; r: number },
@@ -2805,9 +2869,13 @@ export function mountNercOrgMap(): void {
       for (const text of textOptions) {
         const insideFont = Math.min(
           baseFont,
-          (r * 1.74) / Math.max(1, text.length) / 0.56,
+          (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, text.length) / 0.56,
+          r * BUBBLE_HEIGHT_FACTOR * 1.2,
         );
-        if (insideFont >= hoverInsideMin && insideFont * 0.56 * text.length <= r * insideChord) {
+        if (
+          insideFont >= hoverInsideMin &&
+          insideFont * 0.56 * text.length <= r * BUBBLE_WIDTH_FACTOR * insideChord
+        ) {
           return { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, text), inside: true };
         }
       }
@@ -2968,8 +3036,8 @@ export function mountNercOrgMap(): void {
       }
     }
 
-    gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
-      const node = this as SVGCircleElement;
+    gOverlay.selectAll<SVGRectElement, Org>("rect.org").each(function (o) {
+      const node = this as SVGRectElement;
       if (!o._vis) {
         if (o._wasVis !== false) {
           node.classList.add("hide");
@@ -2983,20 +3051,17 @@ export function mountNercOrgMap(): void {
       }
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
-      if (o._wox !== cx) {
-        node.setAttribute("cx", String(cx));
+      if (o._wox !== cx || o._woy !== cy) {
+        setOrgBoxPosition(node, cx, cy);
         o._wox = cx;
-      }
-      if (o._woy !== cy) {
-        node.setAttribute("cy", String(cy));
         o._woy = cy;
       }
-      // Radius is set in transform-space (divided by the group scale). It changes
+      // Size is set in transform-space (divided by the group scale). It changes
       // with zoom and, for isolated dots, with pan (the boost tracks neighbours),
       // so write only when the resolved radius actually moved — cheap, no storm.
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
-        node.setAttribute("r", String(rr / k));
+        setOrgBoxSize(node, rr / k);
         o._rk = k;
         o._rr = rr;
       }
@@ -3184,8 +3249,15 @@ export function mountNercOrgMap(): void {
       if (o._sx == null || o._sy == null) continue;
       // Tighter pad so geo labels can fill the gaps between bubbles, not just the
       // wide-open regions — they still never touch a bubble.
-      const r = renderedRadius(o, k) + (compact ? 3 : 4) * unitPerPx;
-      bubbleBoxes.push({ x0: o._sx - r, x1: o._sx + r, y0: o._sy - r, y1: o._sy + r });
+      const r = renderedRadius(o, k);
+      const { hw, hh } = bubbleHalfExtents(r);
+      const pad = (compact ? 3 : 4) * unitPerPx;
+      bubbleBoxes.push({
+        x0: o._sx - hw - pad,
+        x1: o._sx + hw + pad,
+        y0: o._sy - hh - pad,
+        y1: o._sy + hh + pad,
+      });
     }
     // ── Geographic context labels: cities, water bodies, state/province names ──
     // Each shows ONLY where it fits in open space (clear of every bubble, every
@@ -3778,28 +3850,18 @@ export function mountNercOrgMap(): void {
   }
 
   function createPanelRoleBlock(o: Org): HTMLDivElement {
-    const roles = primaryRoles(o);
+    // The role tags (pill + full name per role) already list every role, so we
+    // skip the redundant bold comma-separated code summary that used to sit on
+    // top — just the term title and the tags remain.
     const block = createEl("div", "p-role-block");
-    const summary = createEl("div", "p-role-summary");
-    const shown = roles.slice(0, 3);
-    const remaining = roles.length - shown.length;
-    summary.append(createEl("span", "p-role-codes", shown.join(", ")));
-    if (remaining > 0) summary.append(createEl("span", "p-role-more", `+ ${remaining} more`));
-    block.append(summary);
-    if (remaining > 0) {
-      const details = createEl("details", "p-role-details");
-      details.append(createEl("summary", undefined, "Show all roles"), createPanelRoleRows(roles));
-      block.append(details);
-    } else {
-      block.append(createPanelRoleRows(roles));
-    }
+    block.append(createPanelRoleRows(primaryRoles(o)));
     return block;
   }
 
   function createMapPriorityScore(o: Org): HTMLDivElement {
     const score = createEl("div", "p-priority-score");
     score.append(
-      createEl("strong", undefined, String(o.weight)),
+      createEl("span", "p-priority-num", String(o.weight)),
       createEl(
         "span",
         undefined,
@@ -3812,7 +3874,7 @@ export function mountNercOrgMap(): void {
   function applyHighlights(): void {
     const hot = hoverOrg;
     gOverlay
-      .selectAll<SVGCircleElement, Org>("circle.org")
+      .selectAll<SVGRectElement, Org>("rect.org")
       .classed("hot", (d) => hot?.ncr_id === d.ncr_id)
       .classed("selected", (d) => selectedOrg?.ncr_id === d.ncr_id);
 
@@ -3838,8 +3900,8 @@ export function mountNercOrgMap(): void {
     const hot = hoverOrg;
     const k = transform.k;
     applyHighlights();
-    gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
-      const node = this as SVGCircleElement;
+    gOverlay.selectAll<SVGRectElement, Org>("rect.org").each(function (o) {
+      const node = this as SVGRectElement;
       if (node.classList.contains("hide")) return;
       const forced = hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id;
       const labeled = lastLabelState?.has(o.ncr_id) ?? false;
@@ -3847,7 +3909,7 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("org-promoted", promoted);
       node.classList.toggle("org-background", rendersAsBackgroundDot(o, labeled, forced));
       const rr = promoted ? promotedBackgroundRadius(o, k) : renderedRadius(o, k);
-      node.setAttribute("r", String(rr / k));
+      setOrgBoxSize(node, rr / k);
     });
     if (hot) raiseVisibleOrg(hot);
   }
@@ -3855,8 +3917,8 @@ export function mountNercOrgMap(): void {
   function clearHoverFocus(): void {
     const k = transform.k;
     applyHighlights();
-    gOverlay.selectAll<SVGCircleElement, Org>("circle.org").each(function (o) {
-      const node = this as SVGCircleElement;
+    gOverlay.selectAll<SVGRectElement, Org>("rect.org").each(function (o) {
+      const node = this as SVGRectElement;
       if (node.classList.contains("hide")) return;
       const forced = selectedOrg?.ncr_id === o.ncr_id;
       const labeled = lastLabelState?.has(o.ncr_id) ?? false;
@@ -3865,7 +3927,7 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("org-background", rendersAsBackgroundDot(o, labeled, forced));
       node.classList.toggle("hot", false);
       const rr = promoted ? promotedBackgroundRadius(o, k) : renderedRadius(o, k);
-      node.setAttribute("r", String(rr / k));
+      setOrgBoxSize(node, rr / k);
     });
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").classed("hot", false);
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").classed("hot-label", false);
@@ -3874,7 +3936,7 @@ export function mountNercOrgMap(): void {
   function applyTourClasses(): void {
     const active = tourIds.size > 0;
     gOverlay
-      .selectAll<SVGCircleElement, Org>("circle.org")
+      .selectAll<SVGRectElement, Org>("rect.org")
       .classed("tour-flash", (d) => active && tourIds.has(d.ncr_id))
       .classed("tour-dim", (d) => active && !tourIds.has(d.ncr_id));
 
@@ -4100,7 +4162,6 @@ export function mountNercOrgMap(): void {
   // into empty national-center whitespace.
   function zoomByFactor(factor: number): void {
     if (!zoomBehavior) return;
-    if (tourRunning) stopTour(true);
     svg.interrupt();
     const focus = buttonZoomFocusPoint(factor);
     svg
@@ -4157,7 +4218,7 @@ export function mountNercOrgMap(): void {
 
   function raiseVisibleOrg(o: Org): void {
     gOverlay
-      .selectAll<SVGCircleElement, Org>("circle.org")
+      .selectAll<SVGRectElement, Org>("rect.org")
       .filter((d) => d.ncr_id === o.ncr_id)
       .raise();
     gHit
@@ -4260,7 +4321,6 @@ export function mountNercOrgMap(): void {
     byId<HTMLButtonElement>("nerc-zoom-in").addEventListener("click", () => zoomByFactor(1.55));
     byId<HTMLButtonElement>("nerc-zoom-out").addEventListener("click", () => zoomByFactor(1 / 1.55));
     byId<HTMLButtonElement>("nerc-zoom-home").addEventListener("click", () => {
-      if (tourRunning) stopTour(true);
       homeView(260);
     });
 
@@ -4275,7 +4335,6 @@ export function mountNercOrgMap(): void {
         const dx = ev.key === "ArrowLeft" ? step : ev.key === "ArrowRight" ? -step : 0;
         const dy = ev.key === "ArrowUp" ? step : ev.key === "ArrowDown" ? -step : 0;
         ev.preventDefault();
-        if (tourRunning) stopTour(true);
         animateTransform(zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k), 160);
       }
     });
@@ -4293,12 +4352,13 @@ export function mountNercOrgMap(): void {
       .tapDistance(compact ? 12 : 8)
       .wheelDelta(wheelDelta)
       .filter((event) => !event.ctrlKey && !event.button)
-      // A real gesture stops the walkthrough. Programmatic transitions have no
-      // sourceEvent, so tour reset/step movement continues normally.
+      // Pan/zoom gestures are allowed DURING a walkthrough so you can explore
+      // while it plays — the tour only highlights, it never drives the camera per
+      // step, so a manual move just changes what you're looking at. (The Stop
+      // Tour button and a tap on empty map still end it.)
       .on("start", (ev) => {
         if (isPanSourceEvent(ev.sourceEvent)) userPanning = true;
         if (isWheelEvent(ev.sourceEvent)) wheelZooming = true;
-        if (ev.sourceEvent && tourRunning) stopTour(true);
       })
       .on("end", (ev) => {
         if (isPanSourceEvent(ev.sourceEvent)) {
@@ -4484,10 +4544,10 @@ export function mountNercOrgMap(): void {
     );
     const hitOrder = visibleOrder;
 
-    const visibleCircles = gOverlay
-      .selectAll("circle.org")
+    const visibleBubbles = gOverlay
+      .selectAll("rect.org")
       .data(visibleOrder, (o: unknown) => (o as Org).ncr_id)
-      .join("circle")
+      .join("rect")
       .attr(
         "class",
         (o) =>
@@ -4496,14 +4556,17 @@ export function mountNercOrgMap(): void {
           (o.nerc_registered === false ? " unregistered" : ""),
       )
       .attr("fill", (o) => safeColor(o.color))
-      .attr("cx", (o) => orgRenderX(o))
-      .attr("cy", (o) => orgRenderY(o))
-      .attr("r", (o) => renderedRadius(o, transform.k) / Math.max(transform.k, 0.001))
+      .attr("transform", null)
+      .each(function (o) {
+        const node = this as SVGRectElement;
+        setOrgBoxSize(node, renderedRadius(o, transform.k) / Math.max(transform.k, 0.001));
+        setOrgBoxPosition(node, orgRenderX(o), orgRenderY(o));
+      })
       .attr("tabindex", 0)
       .attr("role", "button")
       .attr("aria-label", (o) => `${orgAcronym(o)} ${displayName(o)}`);
 
-    wireOrgPointer(visibleCircles as never);
+    wireOrgPointer(visibleBubbles as never);
 
     const hitCircles = gHit
       .selectAll("circle.org-hit")

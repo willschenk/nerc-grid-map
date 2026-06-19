@@ -978,34 +978,6 @@
   gap: 0.34rem;
 }
 
-.nerc-panel .p-role-summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  align-items: baseline;
-  color: #13241f;
-  font-weight: 790;
-}
-
-.nerc-panel .p-role-more {
-  color: #62706c;
-  font-size: 0.78rem;
-  font-weight: 720;
-}
-
-.nerc-panel .p-role-details summary {
-  cursor: pointer;
-  width: max-content;
-  max-width: 100%;
-  color: #123c36;
-  font-size: 0.78rem;
-  font-weight: 780;
-}
-
-.nerc-panel .p-role-details[open] summary {
-  margin-bottom: 0.34rem;
-}
-
 .nerc-panel .p-role {
   display: flex;
   align-items: baseline;
@@ -1017,10 +989,11 @@
   gap: 0.12rem;
 }
 
-.nerc-panel .p-priority-score strong {
+.nerc-panel .p-priority-score .p-priority-num {
   color: #0d1714;
   font-size: 1.05rem;
   line-height: 1;
+  font-weight: 400;
   font-variant-numeric: tabular-nums;
 }
 

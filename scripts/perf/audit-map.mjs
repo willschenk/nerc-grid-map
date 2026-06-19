@@ -197,14 +197,13 @@ function loadPreviousReport() {
 
 const perfProbe = `
 (() => {
-  const state = window.__nercPerf = { firstCircle: 0, loadingHidden: 0, longTasks: [] };
-  const circleVisible = () => {
-    for (const node of document.querySelectorAll("svg circle.org")) {
+  const state = window.__nercPerf = { firstBubble: 0, loadingHidden: 0, longTasks: [] };
+  const bubbleVisible = () => {
+    for (const node of document.querySelectorAll("svg .org")) {
       if (node.classList.contains("hide")) continue;
       const style = getComputedStyle(node);
       const rect = node.getBoundingClientRect();
-      const r = Number(node.getAttribute("r") || 0);
-      if (style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity || 1) > 0 && r > 0 && rect.width > 0 && rect.height > 0) {
+      if (style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity || 1) > 0 && rect.width > 0 && rect.height > 0) {
         return true;
       }
     }
@@ -217,7 +216,7 @@ const perfProbe = `
     return node.hidden || style.display === "none" || style.visibility === "hidden" || Number(style.opacity || 1) === 0;
   };
   const tick = () => {
-    if (!state.firstCircle && circleVisible()) state.firstCircle = performance.now();
+    if (!state.firstBubble && bubbleVisible()) state.firstBubble = performance.now();
     if (!state.loadingHidden && loadingHidden()) state.loadingHidden = performance.now();
   };
   try {
@@ -228,11 +227,16 @@ const perfProbe = `
     }).observe({ entryTypes: ["longtask"] });
   } catch {}
   const observer = new MutationObserver(tick);
-  observer.observe(document, { subtree: true, childList: true, attributes: true, attributeFilter: ["class", "style", "hidden", "r"] });
+  observer.observe(document, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ["class", "style", "hidden", "width", "height"],
+  });
   document.addEventListener("DOMContentLoaded", tick);
   requestAnimationFrame(function loop() {
     tick();
-    if (!state.firstCircle || !state.loadingHidden) requestAnimationFrame(loop);
+    if (!state.firstBubble || !state.loadingHidden) requestAnimationFrame(loop);
     else observer.disconnect();
   });
 })();
@@ -300,7 +304,7 @@ async function main() {
       `(() => { const nav = performance.getEntriesByType("navigation")[0]; return nav && nav.loadEventEnd > 0 ? nav.loadEventEnd : 0; })()`,
       "page load",
     );
-    const firstCircle = await waitForValue(conn, sessionId, "window.__nercPerf?.firstCircle || 0", "first visible org circle");
+    const firstBubble = await waitForValue(conn, sessionId, "window.__nercPerf?.firstBubble || 0", "first visible org bubble");
     const loadingHidden = await waitForValue(conn, sessionId, "window.__nercPerf?.loadingHidden || 0", "loading overlay hidden");
     await sleep(600);
 
@@ -308,7 +312,7 @@ async function main() {
       conn,
       sessionId,
       `(() => {
-        const cutoff = window.__nercPerf?.firstCircle || performance.now();
+        const cutoff = window.__nercPerf?.firstBubble || performance.now();
         let bytes = 0;
         const nav = performance.getEntriesByType("navigation")[0];
         if (nav && nav.responseEnd <= cutoff) bytes += nav.transferSize || nav.encodedBodySize || 0;
@@ -322,7 +326,7 @@ async function main() {
       conn,
       sessionId,
       `(() => {
-        const cutoff = window.__nercPerf?.firstCircle || performance.now();
+        const cutoff = window.__nercPerf?.firstBubble || performance.now();
         let count = 0;
         const nav = performance.getEntriesByType("navigation")[0];
         if (nav && nav.responseEnd <= cutoff) count++;
@@ -334,7 +338,7 @@ async function main() {
     const report = {
       url,
       pageLoaded,
-      firstCircle,
+      firstBubble,
       loadingHidden,
       bytesBeforeFirstRender,
       requestCountBeforeFirstRender,
@@ -353,7 +357,7 @@ async function main() {
 
     console.log(`perf:audit ${url}`);
     console.log(`  page loaded:              ${formatMs(report.pageLoaded)}`);
-    console.log(`  first org circle visible: ${formatMs(report.firstCircle)}`);
+    console.log(`  first org bubble visible: ${formatMs(report.firstBubble)}`);
     console.log(`  loading hidden:           ${formatMs(report.loadingHidden)}`);
     console.log(`  bytes before first render: ${formatBytes(report.bytesBeforeFirstRender)} across ${report.requestCountBeforeFirstRender} request(s)`);
     console.log(`  long tasks:               ${report.longTaskCount} (${formatMs(report.longTaskTotal)} total)`);
@@ -362,8 +366,9 @@ async function main() {
       `(${Math.round((1 - report.payloadBytes.render / report.payloadBytes.full) * 100)}% smaller before details)`,
     );
     if (previous) {
-      const delta = report.firstCircle - previous.firstCircle;
-      console.log(`  previous first circle:    ${formatMs(previous.firstCircle)} (${delta >= 0 ? "+" : ""}${Math.round(delta)} ms)`);
+      const previousFirst = previous.firstBubble ?? previous.firstCircle;
+      const delta = report.firstBubble - previousFirst;
+      console.log(`  previous first bubble:    ${formatMs(previousFirst)} (${delta >= 0 ? "+" : ""}${Math.round(delta)} ms)`);
     }
     if (report.consoleErrors.length) {
       console.error(`\nconsole errors (${report.consoleErrors.length}):`);
