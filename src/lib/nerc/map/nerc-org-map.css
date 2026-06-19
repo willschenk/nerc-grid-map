@@ -990,6 +990,18 @@
   font-size: 0.75rem;
 }
 
+/* Plain-language "what is this org" description, shown right under the title. */
+.nerc-panel .p-desc {
+  margin: 0 0 0.7rem;
+  padding: 0.5rem 0.6rem;
+  border-left: 3px solid var(--org-color, #1d6f62);
+  border-radius: 4px;
+  background: rgba(31, 47, 42, 0.045);
+  color: #2a3733;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
 /* ISO/RTO callout — ties the panel to the orange saber on the bubble. */
 .nerc-panel .p-isorto {
   display: flex;

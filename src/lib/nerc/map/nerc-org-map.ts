@@ -2447,6 +2447,108 @@ export function mountNercOrgMap(): void {
   // Mid-frame safety: a bubble placed at the zoom bucket is re-checked against the
   // land mask at the live zoom. If it can no longer sit legally, hide it rather
   // than show it unlabeled — placement re-solves on the next bucket change.
+  // Final render-time guarantee that no two bubble rectangles visibly overlap.
+  // The capacity gate aims for this upstream, but co-located/duplicate records and
+  // forced reveals can still collide; this is the backstop. Walk most-important
+  // first (ISOs/RTOs, then visual rank), keep a screen-space grid of accepted
+  // boxes, and hide any lower-priority bubble that would overlap one already kept.
+  // ISOs/RTOs and the hovered/selected/tour focus are never hidden.
+  function resolveBubbleOverlaps(cands: Org[], k: number): void {
+    const order = [...cands].sort((a, b) => {
+      const ia = isIsoRtoOperator(a) ? 0 : 1;
+      const ib = isIsoRtoOperator(b) ? 0 : 1;
+      return ia - ib || (a._visRank ?? 0) - (b._visRank ?? 0);
+    });
+    let maxExt = 8;
+    for (const o of cands) {
+      const { hw, hh } = bubbleHalfExtents(renderedRadius(o, k));
+      if (hw > maxExt) maxExt = hw;
+      if (hh > maxExt) maxExt = hh;
+    }
+    const cell = 2 * maxExt + 4;
+    const grid = new Map<string, Array<{ x0: number; y0: number; x1: number; y1: number }>>();
+    const THRESH = 2.5; // px of real overlap on BOTH axes before it counts (rounded corners clear small touches)
+    const hits = (b: { x0: number; y0: number; x1: number; y1: number }): boolean => {
+      const gx = Math.floor((b.x0 + b.x1) / 2 / cell);
+      const gy = Math.floor((b.y0 + b.y1) / 2 / cell);
+      for (let ix = -1; ix <= 1; ix++)
+        for (let iy = -1; iy <= 1; iy++) {
+          const arr = grid.get(`${gx + ix}:${gy + iy}`);
+          if (!arr) continue;
+          for (const q of arr) {
+            const ox = Math.min(b.x1, q.x1) - Math.max(b.x0, q.x0);
+            const oy = Math.min(b.y1, q.y1) - Math.max(b.y0, q.y0);
+            if (ox > THRESH && oy > THRESH) return true;
+          }
+        }
+      return false;
+    };
+    const keep = (b: { x0: number; y0: number; x1: number; y1: number }): void => {
+      const key = `${Math.floor((b.x0 + b.x1) / 2 / cell)}:${Math.floor((b.y0 + b.y1) / 2 / cell)}`;
+      const arr = grid.get(key);
+      if (arr) arr.push(b);
+      else grid.set(key, [b]);
+    };
+    // Sum the minimum-translation push that separates box b from every accepted
+    // box it overlaps (push along the shallower axis, away from each neighbour).
+    const pushOut = (b: { x0: number; y0: number; x1: number; y1: number }): { x: number; y: number } | null => {
+      const gx = Math.floor((b.x0 + b.x1) / 2 / cell);
+      const gy = Math.floor((b.y0 + b.y1) / 2 / cell);
+      let px = 0, py = 0, any = false;
+      for (let ix = -1; ix <= 1; ix++)
+        for (let iy = -1; iy <= 1; iy++) {
+          const arr = grid.get(`${gx + ix}:${gy + iy}`);
+          if (!arr) continue;
+          for (const q of arr) {
+            const ox = Math.min(b.x1, q.x1) - Math.max(b.x0, q.x0);
+            const oy = Math.min(b.y1, q.y1) - Math.max(b.y0, q.y0);
+            if (ox <= THRESH || oy <= THRESH) continue;
+            any = true;
+            const bcx = (b.x0 + b.x1) / 2, bcy = (b.y0 + b.y1) / 2;
+            const qcx = (q.x0 + q.x1) / 2, qcy = (q.y0 + q.y1) / 2;
+            if (ox < oy) px += (bcx >= qcx ? 1 : -1) * (ox + 3);
+            else py += (bcy >= qcy ? 1 : -1) * (oy + 3);
+          }
+        }
+      return any ? { x: px, y: py } : null;
+    };
+    for (const o of order) {
+      if (o._sx == null || o._sy == null) continue;
+      const { hw, hh } = bubbleHalfExtents(renderedRadius(o, k));
+      let b = { x0: o._sx - hw, y0: o._sy - hh, x1: o._sx + hw, y1: o._sy + hh };
+      const exempt =
+        isIsoRtoOperator(o) ||
+        selectedOrg?.ncr_id === o.ncr_id ||
+        hoverOrg?.ncr_id === o.ncr_id ||
+        tourIds.has(o.ncr_id);
+      if (hits(b)) {
+        if (!exempt) {
+          o._vis = false;
+          continue;
+        }
+        // Exempt (ISO/RTO/focus): never hide — nudge it clear of its neighbours so
+        // two close headline bubbles (e.g. NYISO and ISO-NE) separate instead of
+        // stacking. The screen shift is folded into the declutter offset so the
+        // bubble, its hit target, and its saber all render at the nudged spot.
+        let sx = o._sx, sy = o._sy;
+        for (let iter = 0; iter < 24; iter++) {
+          const push = pushOut(b);
+          if (!push) break;
+          // Damp the step so two mutually-overlapping exempt bubbles converge to a
+          // gap instead of oscillating past each other in a tight cluster.
+          sx += push.x * 0.6;
+          sy += push.y * 0.6;
+          b = { x0: sx - hw, y0: sy - hh, x1: sx + hw, y1: sy + hh };
+        }
+        o._dx = (o._dx ?? 0) + (sx - o._sx);
+        o._dy = (o._dy ?? 0) + (sy - o._sy);
+        o._sx = sx;
+        o._sy = sy;
+      }
+      keep(b);
+    }
+  }
+
   function guardVisiblePlacement(o: Org, k: number, forced: boolean): void {
     if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o) || isIsoRtoOperator(o)) return;
     const bucket = declutterBucket(k);
@@ -2599,15 +2701,19 @@ export function mountNercOrgMap(): void {
       // radius-multiple would shove it much farther in real geography.
       const outerMajor = isOuterOverviewZoom(bucket) && isOuterOverviewMajor(o);
       const regionalLeashT = smoothStep((bucket - 3.5) / 5.5);
-      const leashR = outerMajor
-        ? isTopTierOrg(o)
-          ? (compact ? 0.85 : 1.2)
-          : (compact ? 1.45 : 2.0)
-        : isTopTierOrg(o)
-          ? (compact ? 0.6 : 0.8)
-          : (compact ? 1.1 : 1.7) +
-            (compact ? 1.25 : 2.25) * (1 - bigT) +
-            (compact ? 0.55 : 0.95) * regionalLeashT * (1 - 0.45 * bigT);
+      const leashR = isIsoRtoOperator(o)
+        ? // ISOs/RTOs must always be shown AND never overlap, so give them enough
+          // room to slide apart when two sit close (e.g. NYISO and ISO-NE).
+          (compact ? 2.4 : 3.0)
+        : outerMajor
+          ? isTopTierOrg(o)
+            ? (compact ? 0.85 : 1.2)
+            : (compact ? 1.45 : 2.0)
+          : isTopTierOrg(o)
+            ? (compact ? 0.6 : 0.8)
+            : (compact ? 1.1 : 1.7) +
+              (compact ? 1.25 : 2.25) * (1 - bigT) +
+              (compact ? 0.55 : 0.95) * regionalLeashT * (1 - 0.45 * bigT);
       const leash = Math.min(capBase, r * leashR);
       // Ring-search outward from home for the NEAREST non-overlapping on-land slot
       // within the leash; admit the org there and anchor the sim to that slot.
@@ -2823,9 +2929,16 @@ export function mountNercOrgMap(): void {
       if (!vis) continue;
       guardVisiblePlacement(o, k, forced);
       if (!o._vis) continue;
-      shownCount++;
       visibleOrgs.push(o);
     }
+
+    // Backstop: drop any bubble that would still visibly overlap a more important
+    // one, so the rendered field never shows two rectangles on top of each other.
+    resolveBubbleOverlaps(visibleOrgs, k);
+    for (let i = visibleOrgs.length - 1; i >= 0; i--) {
+      if (!visibleOrgs[i]._vis) visibleOrgs.splice(i, 1);
+    }
+    shownCount = visibleOrgs.length;
 
     for (const o of visibleOrgs) {
       const isTerr = o._frame === "terr";
@@ -3947,6 +4060,68 @@ export function mountNercOrgMap(): void {
     return block;
   }
 
+  // A plain-language noun for the org's type. NOTE: org_type is "ISO_RTO" for any
+  // high-weight org (a sizing bucket), so it is NOT a reliable type — when it says
+  // ISO_RTO but this isn't one of the real operators, infer the type from the name.
+  function orgTypeNoun(o: Org): string {
+    switch (o.org_type) {
+      case "IOU":
+        return "investor-owned electric utility";
+      case "municipal":
+        return "municipal (public power) utility";
+      case "cooperative":
+        return "electric cooperative";
+      case "federal":
+        return "federal power agency";
+      case "merchant":
+        return "merchant power producer";
+      case "cca":
+        return "community choice aggregator";
+    }
+    const n = o.entity_name ?? "";
+    if (FEDERAL_NAME.test(n)) return "federal power agency";
+    if (/cooperative|co-?op\b|electric membership|\bg&t\b/i.test(n)) return "electric cooperative";
+    if (
+      /municipal|public utility district|public power|\bcity of\b|\btown of\b|\bvillage of\b|utilities (board|commission|district)|water and power|light (department|& power|and power)|electric (board|department|system)|irrigation district|power authority|river authority/i.test(
+        n,
+      )
+    )
+      return "municipal / public power utility";
+    if (isGenerationOnly(o)) return "merchant power producer";
+    if (o.is_private) return "investor-owned electric utility";
+    return "electric utility";
+  }
+
+  // Build a readable "what is this?" description from the org's registered roles,
+  // type, and region — far more useful on click than the raw geocoding note.
+  function describeOrg(o: Org): string {
+    const roles = new Set(o.roles ?? []);
+    const fns: string[] = [];
+    if (roles.has("RC")) fns.push("reliability coordinator");
+    if (roles.has("BA")) fns.push("balancing authority");
+    if (roles.has("PC") || roles.has("TP")) fns.push("planning coordinator");
+    if (roles.has("TO") || roles.has("TOP")) fns.push("transmission owner/operator");
+    if (roles.has("TSP")) fns.push("transmission service provider");
+    if (roles.has("GO") || roles.has("GOP")) fns.push("generator owner/operator");
+    if (roles.has("DP") || roles.has("LSE")) fns.push("distribution and load-serving provider");
+    if (!fns.length && roles.has("PSE")) fns.push("wholesale market participant");
+
+    const noun = orgTypeNoun(o);
+    const article = /^[aeiou]/i.test(noun) ? "an" : "a";
+    let s = `${displayName(o)} is ${article} ${noun}`;
+    const reg = regionLabel(o);
+    if (reg && reg !== "—") s += ` in the ${reg} footprint`;
+    s += ".";
+    if (fns.length) {
+      // Lead with the most significant functions; the Roles section lists them all.
+      const top = fns.slice(0, 3);
+      const list = top.length === 1 ? top[0] : `${top.slice(0, -1).join(", ")} and ${top[top.length - 1]}`;
+      s += ` Registered as a ${list}`;
+      s += fns.length > top.length ? `, among ${o.role_count ?? o.roles?.length ?? fns.length} reliability roles.` : ".";
+    }
+    return s;
+  }
+
   function createMapPriorityScore(o: Org): HTMLDivElement {
     const score = createEl("div", "p-priority-score");
     score.append(
@@ -4067,6 +4242,7 @@ export function mountNercOrgMap(): void {
       collapse.setAttribute("aria-expanded", String(!collapsed));
     });
     panelBody.append(close, collapse);
+    panelBody.style.setProperty("--org-color", safeColor(o.color));
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
     title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, displayName(o)));
@@ -4074,7 +4250,8 @@ export function mountNercOrgMap(): void {
       title,
       createEl("p", "p-sub", `${idLabel(o)}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`),
     );
-    // Call out the real ISOs/RTOs (the ones wearing the saber outline).
+    // Call out the real ISOs/RTOs (the ones wearing the saber outline); for
+    // everyone else, lead with a plain-language description of what they are.
     if (isIsoRtoOperator(o)) {
       const note = createEl("p", "p-isorto");
       note.append(
@@ -4082,10 +4259,12 @@ export function mountNercOrgMap(): void {
         createEl(
           "span",
           "p-isorto-text",
-          "Independent System Operator / Regional Transmission Organization — operates the bulk-power grid and wholesale market for its region.",
+          `${displayName(o)} is an Independent System Operator / Regional Transmission Organization — it runs the bulk-power grid and wholesale electricity market across its region, balancing supply and demand in real time and coordinating transmission.`,
         ),
       );
       panelBody.append(note);
+    } else {
+      panelBody.append(createEl("p", "p-desc", describeOrg(o)));
     }
 
     const dl = createEl("dl");
@@ -4094,7 +4273,7 @@ export function mountNercOrgMap(): void {
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     addDlRow(dl, "Map priority score", createMapPriorityScore(o));
-    if (o.geo_notes) addDlRow(dl, "Notes", o.geo_notes);
+    if (o.geo_notes) addDlRow(dl, "Location notes", o.geo_notes);
 
     if (o.combined_members?.length) {
       if (o.map_combine_summary) {
