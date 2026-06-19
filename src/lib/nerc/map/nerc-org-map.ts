@@ -210,14 +210,19 @@ const GENERATION_ONLY_REVEAL_K = 50;
 const GENERATION_ONLY_REVEAL_K_COMPACT = 48;
 // PSE-market entities stay the deepest tier. (GO/GOP-only companies are excluded
 // from the map entirely, so they have no display anchor.)
-const PSE_MARKET_DISPLAY_K = 14;
-const PSE_MARKET_DISPLAY_K_COMPACT = 20;
-const TO_ONLY_REVEAL_K = 8.5;
-const TO_ONLY_REVEAL_K_COMPACT = 10;
-// Regional dev view (k≈7.5) and deeper: every non-generation-only org may appear.
-const FULL_REGISTRY_REVEAL_K = 4.6;
-const FULL_REGISTRY_REVEAL_K_COMPACT = 5.0;
+const PSE_MARKET_DISPLAY_K = 10;
+const PSE_MARKET_DISPLAY_K_COMPACT = 14;
+const TO_ONLY_REVEAL_K = 6.5;
+const TO_ONLY_REVEAL_K_COMPACT = 7.5;
+// Regional dev view and deeper: every non-generation-only org may appear.
+const FULL_REGISTRY_REVEAL_K = 3.8;
+const FULL_REGISTRY_REVEAL_K_COMPACT = 4.2;
 const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnection|Transmission System Operator|Electric Reliability Council)\b/i;
+// The actual North-American ISOs / RTOs (market + grid operators). Narrower than
+// the weight-based `is_iso_rto` sizing flag — these eight are the real ones, and
+// they get the animated saber outline plus an explicit panel note.
+const ISO_RTO_OPERATOR_NAME =
+  /PJM Interconnection|Midcontinent Independent System Operator|Southwest Power Pool|Electric Reliability Council of Texas|California Independent System Operator|ISO New England|ISO-NE|New York Independent System Operator|Ontario IESO|Independent Electricity System Operator|Alberta Electric System Operator/i;
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const REGIONAL_ENTITY_NAME = /\b(NERC|SERC|WECC|MRO|NPCC|ReliabilityFirst|Texas Reliability Entity|Midwest Reliability Organization|Northeast Power Coordinating Council|Western Electricity Coordinating Council|Regional Entity)\b/i;
 const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation|USACE|U\.S\. Army Corps)\b/i;
@@ -723,6 +728,9 @@ export function mountNercOrgMap(): void {
   // NERC overlay, not over it.
   const gLand = svg.append("g").attr("class", "land");
   const gOverlay = svg.append("g").attr("class", "overlay");
+  // Animated orange "saber" outlines for the ISO/RTO bubbles — painted just above
+  // the bubbles (so the light reads on top) but below the hit + label layers.
+  const gSaber = svg.append("g").attr("class", "saber");
   const gHit = svg.append("g").attr("class", "hit");
   const gLabels = svg.append("g").attr("class", "labels");
 
@@ -1101,9 +1109,9 @@ export function mountNercOrgMap(): void {
     const w = o.weight ?? 0;
     if (isGridLeadershipOrg(o) || pri >= 50 || labelPriority(o) >= 68) return 0;
     if (pri >= 42) return w >= 12 ? (compact ? 0.24 : 0.16) : compact ? 0.44 : 0.34;
-    if (pri >= 28) return compact ? 0.54 : 0.44;
-    if (pri >= 18) return compact ? 0.66 : 0.56;
-    return compact ? 0.88 : 0.76;
+    if (pri >= 28) return compact ? 0.46 : 0.36;
+    if (pri >= 18) return compact ? 0.56 : 0.46;
+    return compact ? 0.76 : 0.62;
   }
 
   function isOuterOverviewZoom(k: number): boolean {
@@ -1157,6 +1165,9 @@ export function mountNercOrgMap(): void {
   function canDisplayOrg(o: Org, k: number): boolean {
     // Generation-only (GO/GOP) companies are excluded from the map entirely.
     if (isGenerationOnly(o)) return false;
+    // The real ISOs/RTOs are headline orgs: always eligible at every zoom so they
+    // are visible whenever their area is on screen (incl. the zoomed-out overview).
+    if (isIsoRtoOperator(o)) return true;
     // The fully zoomed-out view is a major-org overview: smaller eligible orgs
     // wait until the next zoom bucket so they do not take slots from high-ranked
     // regulated entities.
@@ -1190,9 +1201,9 @@ export function mountNercOrgMap(): void {
     if (lp >= 78) return 0.52 + 0.48 * smoothStep((k - 0.55) / (compact ? 0.95 : 0.8));
     if (lp >= 68) return 0.46 + 0.54 * smoothStep((k - 0.72) / (compact ? 1.1 : 0.95));
     if (lp >= 52) return 0.44 + 0.56 * smoothStep((k - 0.82) / (compact ? 1.25 : 1.1));
-    if (lp >= 38) return 0.34 + 0.66 * smoothStep((k - 1.08) / (compact ? 1.55 : 1.35));
-    if (lp >= 16) return 0.2 + 0.8 * smoothStep((k - 1.8) / (compact ? 2.2 : 2.0));
-    return 0.13 + 0.87 * smoothStep((k - 2.3) / (compact ? 2.8 : 2.6));
+    if (lp >= 38) return 0.34 + 0.66 * smoothStep((k - 0.92) / (compact ? 1.35 : 1.15));
+    if (lp >= 16) return 0.22 + 0.78 * smoothStep((k - 1.45) / (compact ? 1.85 : 1.65));
+    return 0.16 + 0.84 * smoothStep((k - 1.9) / (compact ? 2.4 : 2.2));
   }
 
   // Disclosure tier for rendering: background dot → small bubble → full bubble (+ label).
@@ -1357,7 +1368,7 @@ export function mountNercOrgMap(): void {
     if (isDeferredMarketOrg(o)) return 0.12 + 0.88 * postRevealBoostT(o, k);
     const pri = visualPriority(o);
     const lowPriT = smoothStep((48 - pri) / 40);
-    const deepCatchUpT = smoothStep((k - 8) / 5);
+    const deepCatchUpT = smoothStep((k - 5) / 4);
     return 1 - 0.52 * lowPriT * (1 - deepCatchUpT);
   }
 
@@ -1542,7 +1553,7 @@ export function mountNercOrgMap(): void {
   // Smallest legible inside-label font in viewBox units for this org at zoom k.
   function insideLabelMinFont(o: Org, k: number, brandLen: number): number {
     const lp = labelPriority(o);
-    const deepLabelT = smoothStep((k - 9) / 13);
+    const deepLabelT = smoothStep((k - 7) / 11);
     return (
       6 *
       (1 - 0.9 * deepLabelT) *
@@ -1675,7 +1686,7 @@ export function mountNercOrgMap(): void {
       : 0;
     // Deep-zoom boost, weighted toward the smallest orgs: if you keep zooming
     // into a low-priority entity it grows so its name can finally read.
-    const deepT = smoothStep((k - (compact ? 6 : 7)) / (compact ? 22 : 26));
+    const deepT = smoothStep((k - (compact ? 4.5 : 5)) / (compact ? 18 : 22));
     const smallOrgT = smoothStep((72 - rawPriority) / 62);
     const dominance = growthDominanceFactor(o, k);
     const deepBoostMaxPx = 15;
@@ -1699,7 +1710,7 @@ export function mountNercOrgMap(): void {
     // floor never reintroduces overlap (placement re-solves per bucket).
     const deepMinPx =
       (compact ? 6.5 : 7.5) *
-      smoothStep((k - 8) / 16) *
+      smoothStep((k - 6) / 14) *
       (isGridLeadershipOrg(o) ? 1 : smoothStep((rawPriority - 22) / 38));
     // Overview floor for AK/HI inset dots — lift the smallest utilities in the
     // tiny projection inset without changing mainland sizing.
@@ -1995,6 +2006,39 @@ export function mountNercOrgMap(): void {
     node.setAttribute("rx", String(Math.min(w, h) * 0.44));
   }
 
+  // The eight real ISOs/RTOs (see ISO_RTO_OPERATOR_NAME) — these get the saber
+  // outline and an explicit "ISO/RTO" note in their detail panel.
+  function isIsoRtoOperator(o: Org): boolean {
+    return ISO_RTO_OPERATOR_NAME.test(o.entity_name);
+  }
+
+  // Keep each saber ring matched to its bubble: same center and rounded-rect
+  // shape, sitting a hair outside the fill edge. Only a handful of always-visible
+  // ISO/RTO bubbles carry one, so resyncing them all per zoom frame is cheap.
+  // (Panning rides the group transform, so this only needs to track size/center
+  // changes, which are driven by k.)
+  const SABER_OUTSET = 1.6; // screen px the ring sits beyond the bubble edge
+  function syncSabers(k = transform.k): void {
+    const fanScale = spiderFanScale(k);
+    const declScale = declutterScale(k);
+    const out = SABER_OUTSET / k;
+    gSaber.selectAll<SVGRectElement, Org>("rect.org-saber").each(function (o) {
+      const node = this as SVGRectElement;
+      // Defensive: never leave a ring floating without its bubble.
+      node.classList.toggle("hide", o._vis === false);
+      const cx = orgRenderX(o, fanScale, declScale);
+      const cy = orgRenderY(o, fanScale, declScale);
+      const { hw, hh } = bubbleHalfExtents(renderedRadius(o, k) / k);
+      const w = 2 * hw + 2 * out;
+      const h = 2 * hh + 2 * out;
+      node.setAttribute("x", String(cx - w / 2));
+      node.setAttribute("y", String(cy - h / 2));
+      node.setAttribute("width", String(w));
+      node.setAttribute("height", String(h));
+      node.setAttribute("rx", String(Math.min(w, h) * 0.44));
+    });
+  }
+
   function positionOrgMarks(k = transform.k, force = false): void {
     computePlacements(k, force);
     // Render positions only depend on k (panning is handled by the group
@@ -2016,6 +2060,7 @@ export function mountNercOrgMap(): void {
       .selectAll<SVGCircleElement, Org>("circle.org-hit")
       .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
       .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
+    syncSabers(k);
   }
 
   function isPanSourceEvent(event: Event | null | undefined): boolean {
@@ -2059,6 +2104,7 @@ export function mountNercOrgMap(): void {
     gMap.attr("transform", tStr);
     gInsets.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
+    gSaber.attr("transform", tStr);
     gHit.attr("transform", tStr);
   }
 
@@ -2402,7 +2448,7 @@ export function mountNercOrgMap(): void {
   // land mask at the live zoom. If it can no longer sit legally, hide it rather
   // than show it unlabeled — placement re-solves on the next bucket change.
   function guardVisiblePlacement(o: Org, k: number, forced: boolean): void {
-    if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o)) return;
+    if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o) || isIsoRtoOperator(o)) return;
     const bucket = declutterBucket(k);
     const frame = orgLandFrame(o);
     const r = bubblePackingRadius(renderedRadius(o, k));
@@ -2480,11 +2526,18 @@ export function mountNercOrgMap(): void {
       }
       eligible.push(o);
     }
-    eligible.sort(
+    const baseSort =
       (isNationalFillZoom(bucket) || bucket <= 1.5)
         ? outerOverviewPlacementSort
-        : (a, b) => (a._visRank ?? 0) - (b._visRank ?? 0),
-    );
+        : (a: Org, b: Org) => (a._visRank ?? 0) - (b._visRank ?? 0);
+    // The real ISOs/RTOs are the headline orgs — admit them to the capacity gate
+    // first so they always claim their home slot (otherwise a denser neighbour can
+    // crowd one out, as happened to MISO near Indianapolis).
+    eligible.sort((a, b) => {
+      const ia = isIsoRtoOperator(a) ? 0 : 1;
+      const ib = isIsoRtoOperator(b) ? 0 : 1;
+      return ia - ib || baseSort(a, b);
+    });
 
     // CAPACITY GATE: a spatial grid greedily admits each eligible org (highest
     // priority first) only if a non-overlapping, on-land slot exists near its true
@@ -2545,7 +2598,7 @@ export function mountNercOrgMap(): void {
       // band, so a bubble's radius is a big fraction of the screen and the same
       // radius-multiple would shove it much farther in real geography.
       const outerMajor = isOuterOverviewZoom(bucket) && isOuterOverviewMajor(o);
-      const regionalLeashT = smoothStep((bucket - 4.5) / 6.5);
+      const regionalLeashT = smoothStep((bucket - 3.5) / 5.5);
       const leashR = outerMajor
         ? isTopTierOrg(o)
           ? (compact ? 0.85 : 1.2)
@@ -2756,7 +2809,14 @@ export function mountNercOrgMap(): void {
       // tiny dot when placement failed. Panning never changes the set.
       const displayable = canDisplayOrg(o, k);
       const due = displayable && (o._frame === "terr" || o._placed === true);
-      const forced = displayable && (hot?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id || tourIds.has(o.ncr_id));
+      // ISOs/RTOs are always shown when on screen, even if the capacity gate held
+      // their slot back — they are the headline orgs the map must never drop.
+      const forced =
+        displayable &&
+        (isIsoRtoOperator(o) ||
+          hot?.ncr_id === o.ncr_id ||
+          selectedOrg?.ncr_id === o.ncr_id ||
+          tourIds.has(o.ncr_id));
       o._promoteBackground = isBackgroundPromoted(o, forced);
       const vis = onScreen && (due || forced);
       o._vis = vis;
@@ -3118,6 +3178,11 @@ export function mountNercOrgMap(): void {
         node.classList.toggle("tour-dim", (mask & 256) !== 0);
       }
     });
+
+    // Re-sync the saber rings every redraw (not just on zoom): the declutter
+    // force-sim nudges bubbles at constant k as it settles, and the rings must
+    // track that or they drift off to one side of their bubble.
+    syncSabers(k);
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
       const node = this as SVGCircleElement;
@@ -4009,6 +4074,19 @@ export function mountNercOrgMap(): void {
       title,
       createEl("p", "p-sub", `${idLabel(o)}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`),
     );
+    // Call out the real ISOs/RTOs (the ones wearing the saber outline).
+    if (isIsoRtoOperator(o)) {
+      const note = createEl("p", "p-isorto");
+      note.append(
+        createEl("span", "p-isorto-badge", "ISO / RTO"),
+        createEl(
+          "span",
+          "p-isorto-text",
+          "Independent System Operator / Regional Transmission Organization — operates the bulk-power grid and wholesale market for its region.",
+        ),
+      );
+      panelBody.append(note);
+    }
 
     const dl = createEl("dl");
     addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o));
@@ -4591,6 +4669,19 @@ export function mountNercOrgMap(): void {
       .attr("aria-label", (o) => `${orgAcronym(o)} ${displayName(o)}`);
 
     wireOrgPointer(visibleBubbles as never);
+
+    // Saber outlines for the ISO/RTO bubbles. pathLength=100 normalizes the dash
+    // pattern so one CSS keyframe runs the light cleanly around every ring
+    // regardless of its size or the zoom level; syncSabers() keeps each ring on
+    // its bubble. They never take pointer events (the bubble underneath does).
+    gSaber
+      .selectAll("rect.org-saber")
+      .data(visibleOrder.filter(isIsoRtoOperator), (o: unknown) => (o as Org).ncr_id)
+      .join("rect")
+      .attr("class", "org-saber")
+      .attr("pathLength", 100)
+      .attr("aria-hidden", "true");
+    syncSabers(transform.k);
 
     const hitCircles = gHit
       .selectAll("circle.org-hit")

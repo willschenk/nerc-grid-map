@@ -222,6 +222,47 @@
   transform-origin: center;
 }
 
+/* ISO/RTO "saber" outline: a single thin orange light tracing the rounded
+   rectangle. pathLength=100 on the rect normalizes the dash pattern, so this one
+   keyframe runs the segment cleanly around every ring at any size or zoom. */
+#nerc-svg .org-saber {
+  fill: none;
+  stroke: #ff7a1a;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-dasharray: 17 83;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 0 1.5px rgba(255, 150, 40, 0.95))
+    drop-shadow(0 0 3.5px rgba(255, 110, 0, 0.7));
+  animation: nerc-saber 2.6s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+#nerc-svg .org-saber.hide {
+  display: none;
+}
+
+@keyframes nerc-saber {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nerc-svg .org-saber {
+    animation: none;
+    /* Hold a steady glowing ring instead of a moving light. */
+    stroke-dasharray: none;
+    stroke: #ff7a1a;
+    opacity: 0.85;
+  }
+}
+
 #nerc-svg .olabel {
   fill: #ffffff;
   font-weight: 800;
@@ -947,6 +988,40 @@
   color: #66736f;
   margin: 0.4rem 1.8rem 0.65rem 0;
   font-size: 0.75rem;
+}
+
+/* ISO/RTO callout — ties the panel to the orange saber on the bubble. */
+.nerc-panel .p-isorto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.5rem;
+  margin: 0 0 0.7rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(255, 122, 26, 0.4);
+  border-left: 3px solid #ff7a1a;
+  border-radius: 6px;
+  background: rgba(255, 122, 26, 0.08);
+}
+
+.nerc-panel .p-isorto-badge {
+  flex: none;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: #ff7a1a;
+  color: #2a1402;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nerc-panel .p-isorto-text {
+  flex: 1 1 12rem;
+  min-width: 0;
+  color: #5a3a1c;
+  font-size: 0.76rem;
+  line-height: 1.35;
 }
 
 .nerc-panel dl {

@@ -18485,6 +18485,14 @@
       "shortest_type": "alias_code",
       "shortest_source": "iso_rto_material",
       "shortest_source_url": "https://www.misoenergy.org/markets-and-operations/"
+    },
+    {
+      "ncr_id": "NCR-SEED-101",
+      "entity_name": "Alberta Electric System Operator",
+      "shortest": "AESO",
+      "short": "Alberta ESO",
+      "normal": "Alberta Electric System Operator",
+      "tier": "major"
     }
   ]
 }

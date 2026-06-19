@@ -152320,6 +152320,50 @@
           "geo_notes": null
         }
       ]
+    },
+    {
+      "ncr_id": "NCR-SEED-101",
+      "entity_name": "Alberta Electric System Operator",
+      "region": "WECC",
+      "roles": [
+        "RC",
+        "BA",
+        "TOP",
+        "TP",
+        "PC",
+        "TSP",
+        "RP"
+      ],
+      "lat": 51.0461,
+      "lng": -114.0712,
+      "headquarters_address": "2500, 330-5th Avenue SW, Calgary, AB T2P 0L4",
+      "city": "Calgary",
+      "state": "AB",
+      "country": "CA",
+      "confidence": "HIGH",
+      "source": "official_website",
+      "source_url": "https://www.aeso.ca",
+      "org_type": "ISO_RTO",
+      "notes": "ISO for the Alberta Interconnected Electric System.",
+      "seed": true,
+      "acronym": "AESO",
+      "acronym_source": "common_market_name",
+      "locations": [
+        {
+          "rank": 1,
+          "role": "headquarters",
+          "lat": 51.0461,
+          "lng": -114.0712,
+          "headquarters_address": "2500, 330-5th Avenue SW, Calgary, AB T2P 0L4",
+          "city": "Calgary",
+          "state": "AB",
+          "country": "CA",
+          "geo_confidence": "HIGH",
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.aeso.ca",
+          "geo_notes": "ISO for the Alberta Interconnected Electric System."
+        }
+      ]
     }
   ]
 }
