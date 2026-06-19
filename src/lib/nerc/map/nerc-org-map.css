@@ -289,6 +289,26 @@
   dominant-baseline: central;
 }
 
+/* MISO control-area sublabel: a small, fancy italic "MISO CA" under the main
+   bubble label, with a dark halo so it reads on any role colour. */
+#nerc-svg .misoca {
+  fill: #fff7e6;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke fill;
+  stroke: rgba(7, 17, 14, 0.85);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+#nerc-svg .misoca.dim {
+  display: none;
+}
+
 #nerc-svg .olabel.hover-on-dot {
   dominant-baseline: central;
 }
@@ -1034,6 +1054,49 @@
   color: #5a3a1c;
   font-size: 0.76rem;
   line-height: 1.35;
+}
+
+/* MISO control-area callout. */
+.nerc-panel .p-misoca {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.5rem;
+  margin: 0;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(43, 92, 152, 0.38);
+  border-left: 3px solid #2b5c98;
+  border-radius: 6px;
+  background: rgba(43, 92, 152, 0.08);
+}
+
+.nerc-panel .p-misoca-badge {
+  flex: none;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: #2b5c98;
+  color: #eef4fb;
+  font-size: 0.66rem;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.nerc-panel .p-misoca-text {
+  flex: 1 1 12rem;
+  min-width: 0;
+  color: #244463;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.nerc-tooltip .tt-misoca {
+  margin-top: 0.3rem;
+  color: #2b5c98;
+  font-family: ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 0.74rem;
 }
 
 .nerc-panel dl {

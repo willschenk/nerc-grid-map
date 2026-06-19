@@ -223,6 +223,50 @@ const SYSTEM_OPERATOR_NAME = /\b(ISO|RTO|Independent System Operator|Interconnec
 // they get the animated saber outline plus an explicit panel note.
 const ISO_RTO_OPERATOR_NAME =
   /PJM Interconnection|Midcontinent Independent System Operator|Southwest Power Pool|Electric Reliability Council of Texas|California Independent System Operator|ISO New England|ISO-NE|New York Independent System Operator|Ontario IESO|Independent Electricity System Operator|Alberta Electric System Operator/i;
+
+// MISO Local Balancing Authorities — the "control areas" that make up MISO.
+// Source: MISO Tariff Attachment VV, effective October 26, 2025. The tariff
+// lists 38 current LBA codes; two pairs share one map organization here:
+// EAI/EES -> Entergy and MIUP/WEC -> Wisconsin Electric.
+// https://docs.misoenergy.org/miso12-legalcontent/Attachment_VV_-_MAP_of_Local_Resource_Zone_Boundaries.pdf
+const MISO_CONTROL_AREA_CODES = new Map<string, readonly string[]>([
+  ["NCR00961", ["ALTE"]], // Alliant East
+  ["NCR00962", ["ALTW"]], // Alliant West
+  ["SUP-ameren-illinois", ["AMIL"]], // Ameren Illinois
+  ["NCR10248", ["AMMO"]], // Ameren Missouri
+  ["NCR01180", ["BREC"]], // Big Rivers Electric
+  ["SUP-duke-energy-ohio-kentucky", ["CIN"]], // Cinergy
+  ["NCR01083", ["CLEC"]], // Central Louisiana Electric / Cleco
+  ["NCR00740", ["CONS"]], // Consumers Energy
+  ["NCR01196", ["CWLD"]], // Columbia Water & Light
+  ["NCR01328", ["CWLP"]], // City Water, Light & Power
+  ["NCR00753", ["DECO"]], // Detroit Edison / DTE
+  ["NCR00979", ["DPC"]], // Dairyland Power Cooperative
+  ["NCR01234", ["EAI", "EES"]], // Entergy Arkansas / Entergy Electric System
+  ["NCR11783", ["GLH"]], // GridLiance Heartland
+  ["NCR00992", ["GRE"]], // Great River Energy
+  ["NCR00794", ["HE"]], // Hoosier Energy
+  ["NCR01254", ["HMPL"]], // Henderson Municipal Power & Light
+  ["NCR00798", ["IPL"]], // Indianapolis Power & Light / AES Indiana
+  ["NCR01114", ["LAFA"]], // Lafayette Utilities
+  ["NCR12543", ["LAGT"]], // 1803 Electric Cooperative
+  ["NCR01116", ["LEPA"]], // Louisiana Energy & Power Authority
+  ["NCR01015", ["MDU"]], // Montana-Dakota Utilities
+  ["NCR00824", ["MEC"]], // MidAmerican Energy
+  ["NCR00818", ["MGE"]], // Madison Gas & Electric
+  ["NCR00951", ["MIUP", "WEC"]], // Michigan Upper Peninsula / Wisconsin Electric
+  ["NCR00674", ["MP"]], // Minnesota Power
+  ["NCR00967", ["MPW"]], // Muscatine Power & Water
+  ["NCR02611", ["NIPS"]], // Northern Indiana Public Service
+  ["NCR01020", ["NSP"]], // Northern States Power
+  ["NCR01023", ["OTP"]], // Otter Tail Power
+  ["NCR00917", ["SIGE"]], // Southern Indiana Gas & Electric
+  ["NCR01321", ["SIPC"]], // Southern Illinois Power Cooperative
+  ["NCR01315", ["SME"]], // South Mississippi Electric / Cooperative Energy
+  ["NCR01030", ["SMP"]], // Southern Minnesota Municipal Power Agency
+  ["NCR01033", ["UPPC"]], // Upper Peninsula Power
+  ["NCR00952", ["WPS"]], // Wisconsin Public Service
+]);
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const REGIONAL_ENTITY_NAME = /\b(NERC|SERC|WECC|MRO|NPCC|ReliabilityFirst|Texas Reliability Entity|Midwest Reliability Organization|Northeast Power Coordinating Council|Western Electricity Coordinating Council|Regional Entity)\b/i;
 const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation|USACE|U\.S\. Army Corps)\b/i;
@@ -1573,13 +1617,40 @@ export function mountNercOrgMap(): void {
     return brandLen > 5 ? 0.57 : 0.56;
   }
 
+  function misoCaSubLabelFont(mainFont: number): number {
+    return Math.max(5 * unitPerPx, Math.min(7.2 * unitPerPx, mainFont * 0.5));
+  }
+
+  function misoCaLineGap(): number {
+    return 0.75 * unitPerPx;
+  }
+
+  function misoCaVerticalSpace(r: number): number {
+    // Serif italic glyphs extend slightly beyond their nominal font box. Keep a
+    // conservative inset so the second line never grazes the rounded edge.
+    return 2 * bubbleHalfExtents(r).hh * 0.76;
+  }
+
+  function misoCaSubLabelWidth(font: number): number {
+    return font * 0.7 * "MISO CA".length;
+  }
+
   // The inside-label font a bubble of radius r would use for its short name.
   function insideLabelFont(o: Org, k: number, r: number, brandLen: number): number {
-    return Math.min(
+    let font = Math.min(
       labelFontPx(o, k) * unitPerPx,
       (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, brandLen) / insideLabelGlyphWidth(brandLen),
       r * BUBBLE_HEIGHT_FACTOR * 1.2,
     );
+    if (isMisoControlArea(o)) {
+      const available = misoCaVerticalSpace(r);
+      const gap = misoCaLineGap();
+      const minSub = 5 * unitPerPx;
+      let fitted = Math.min(font, (available - gap) / 1.5);
+      if (fitted * 0.5 < minSub) fitted = Math.min(font, available - gap - minSub);
+      font = Math.max(0, fitted);
+    }
+    return font;
   }
 
   // THE disclosure gate: does o's short name fit legibly inside its bubble at k?
@@ -1589,9 +1660,19 @@ export function mountNercOrgMap(): void {
     if (!brand) return false;
     const r = visualRadius(o, k);
     const font = insideLabelFont(o, k, r, brand.length);
+    const verticalFit =
+      !isMisoControlArea(o) ||
+      font + misoCaSubLabelFont(font) + misoCaLineGap() <=
+        misoCaVerticalSpace(r);
+    const subLabelWidthFit =
+      !isMisoControlArea(o) ||
+      misoCaSubLabelWidth(misoCaSubLabelFont(font)) <=
+        r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o);
     return (
       font >= insideLabelMinFont(o, k, brand.length) &&
-      font * insideLabelGlyphWidth(brand.length) * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o)
+      font * insideLabelGlyphWidth(brand.length) * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o) &&
+      verticalFit &&
+      subLabelWidthFit
     );
   }
 
@@ -2010,6 +2091,25 @@ export function mountNercOrgMap(): void {
   // outline and an explicit "ISO/RTO" note in their detail panel.
   function isIsoRtoOperator(o: Org): boolean {
     return ISO_RTO_OPERATOR_NAME.test(o.entity_name);
+  }
+
+  function isMisoControlArea(o: Org): boolean {
+    return MISO_CONTROL_AREA_CODES.has(o.ncr_id);
+  }
+
+  function misoControlAreaCodes(o: Org): readonly string[] {
+    return MISO_CONTROL_AREA_CODES.get(o.ncr_id) ?? [];
+  }
+
+  function misoControlAreaCodeLabel(o: Org): string {
+    return misoControlAreaCodes(o).join(" / ");
+  }
+
+  function misoControlAreaNote(o: Org): string {
+    const codes = misoControlAreaCodes(o);
+    const codeLabel = codes.join(" and ");
+    const codeNoun = codes.length === 1 ? "LBA code" : "LBA codes";
+    return `${displayName(o)} is a MISO Control Area (MISO CA), identified by ${codeNoun} ${codeLabel}. It serves as a local balancing authority within the Midcontinent ISO footprint.`;
   }
 
   // Keep each saber ring matched to its bubble: same center and rounded-rect
@@ -2447,6 +2547,64 @@ export function mountNercOrgMap(): void {
   // Mid-frame safety: a bubble placed at the zoom bucket is re-checked against the
   // land mask at the live zoom. If it can no longer sit legally, hide it rather
   // than show it unlabeled — placement re-solves on the next bucket change.
+  // The PJM / NYISO / ISO-NE cluster is unavoidably tight in the Northeast. When
+  // they crowd, spread them the way the user asked: lift NYISO and ISO-NE up,
+  // give that pair a clean left/right gap, and drop PJM down below them. Runs
+  // before the overlap guard so the rest of the field defers to these positions.
+  function separateNeIsos(vis: Org[], k: number): void {
+    let pjm: Org | undefined, ny: Org | undefined, ne: Org | undefined;
+    for (const o of vis) {
+      if (o.ncr_id === "NCR00879") pjm = o;
+      else if (o.ncr_id === "NCR07160") ny = o;
+      else if (o.ncr_id === "NCR07124") ne = o;
+    }
+    if (!ny || !ne || ny._sx == null || ny._sy == null || ne._sx == null || ne._sy == null) return;
+    const half = (o: Org) => bubbleHalfExtents(renderedRadius(o, k));
+    const GAP = 6;
+    const shift = (o: Org, dx: number, dy: number): void => {
+      o._dx = (o._dx ?? 0) + dx;
+      o._dy = (o._dy ?? 0) + dy;
+      o._sx = (o._sx as number) + dx;
+      o._sy = (o._sy as number) + dy;
+    };
+
+    // Give NYISO and ISO-NE a deterministic horizontal gap. Unlike the former
+    // "close" test, this only changes offsets while the requested gap is absent,
+    // so repeated animation redraws cannot walk the pair off the top of the map.
+    const hny = half(ny), hne = half(ne);
+    const nyLeftOfNe = (ny._sx as number) <= (ne._sx as number);
+    const left = nyLeftOfNe ? ny : ne;
+    const right = nyLeftOfNe ? ne : ny;
+    const hLeft = nyLeftOfNe ? hny : hne;
+    const hRight = nyLeftOfNe ? hne : hny;
+    const horizontalNeed =
+      hLeft.hw + hRight.hw + GAP - ((right._sx as number) - (left._sx as number));
+    if (horizontalNeed > 0) {
+      shift(left, -horizontalNeed / 2, 0);
+      shift(right, horizontalNeed / 2, 0);
+    }
+
+    // When PJM crowds the pair, move NYISO and ISO-NE up a little and PJM down,
+    // preserving geography while creating the requested vertical separation.
+    if (pjm && pjm._sx != null && pjm._sy != null) {
+      const hp = half(pjm);
+      const pairLeft = Math.min((ny._sx as number) - hny.hw, (ne._sx as number) - hne.hw);
+      const pairRight = Math.max((ny._sx as number) + hny.hw, (ne._sx as number) + hne.hw);
+      const pjmLeft = (pjm._sx as number) - hp.hw;
+      const pjmRight = (pjm._sx as number) + hp.hw;
+      const overlapsHorizontally = pjmRight + GAP > pairLeft && pjmLeft - GAP < pairRight;
+      const pairBottom = Math.max((ny._sy as number) + hny.hh, (ne._sy as number) + hne.hh);
+      const pjmTop = (pjm._sy as number) - hp.hh;
+      const verticalNeed = pairBottom + GAP - pjmTop;
+      if (overlapsHorizontally && verticalNeed > 0) {
+        const lift = verticalNeed * 0.4;
+        shift(ny, 0, -lift);
+        shift(ne, 0, -lift);
+        shift(pjm, 0, verticalNeed - lift);
+      }
+    }
+  }
+
   // Final render-time guarantee that no two bubble rectangles visibly overlap.
   // The capacity gate aims for this upstream, but co-located/duplicate records and
   // forced reveals can still collide; this is the backstop. Walk most-important
@@ -2932,6 +3090,9 @@ export function mountNercOrgMap(): void {
       visibleOrgs.push(o);
     }
 
+    // Spread the tight Northeast ISO cluster first, then run the overlap guard so
+    // the rest of the field defers to those positions.
+    separateNeIsos(visibleOrgs, k);
     // Backstop: drop any bubble that would still visibly overlap a more important
     // one, so the rendered field never shows two rectangles on top of each other.
     resolveBubbleOverlaps(visibleOrgs, k);
@@ -3118,8 +3279,11 @@ export function mountNercOrgMap(): void {
       // floating label below from sitting on top of it.)
       if (o._frame !== "terr") {
         const insideFont = insideLabelFont(o, k, r, brand.length);
-        labelState.set(o.ncr_id, { x: sx, y: sy, font: insideFont, text: displayMapLabel(o, brand), inside: true });
-        reserveLabel(labelBox(sx, sy, brand, insideFont, true));
+        const mainY = isMisoControlArea(o)
+          ? sy - (misoCaSubLabelFont(insideFont) + misoCaLineGap()) * 0.46
+          : sy;
+        labelState.set(o.ncr_id, { x: sx, y: mainY, font: insideFont, text: displayMapLabel(o, brand), inside: true });
+        reserveLabel(labelBox(sx, mainY, brand, insideFont, true));
         addBubbleBlocker(o);
         continue;
       }
@@ -3428,6 +3592,25 @@ export function mountNercOrgMap(): void {
         node.classList.toggle("selected-label", (flags & 4) !== 0);
         node.classList.toggle("tour-flash", (flags & 8) !== 0);
       }
+    });
+
+    // "MISO CA" sublabels: the disclosure gate reserves room for this second
+    // line, so every visible MISO control-area bubble carries it.
+    gLabels.selectAll<SVGTextElement, Org>("text.misoca").each(function (o) {
+      const node = this as SVGTextElement;
+      const state = labelState.get(o.ncr_id);
+      const show = !!state?.inside;
+      node.classList.toggle("dim", !show);
+      if (!show || !state) return;
+      const subFont = misoCaSubLabelFont(state.font);
+      const sy =
+        state.y +
+        state.font * 0.48 +
+        misoCaLineGap() +
+        subFont * 0.48;
+      node.setAttribute("x", String(state.x));
+      node.setAttribute("y", String(sy));
+      node.setAttribute("font-size", String(subFont));
     });
 
     // City labels yield to NERC org labels AND bubbles: inflate every org-label
@@ -3963,6 +4146,11 @@ export function mountNercOrgMap(): void {
     roles.slice(0, 4).forEach((role) => chips.append(createRolePill(role)));
     if (roles.length > 4) chips.append(createEl("span", "nerc-rolepill nerc-rolepill-more", `+${roles.length - 4}`));
     tooltip.append(chips);
+    if (isMisoControlArea(o)) {
+      tooltip.append(
+        createEl("div", "tt-misoca", `MISO Control Area · ${misoControlAreaCodeLabel(o)}`),
+      );
+    }
     tooltip.hidden = false;
   }
 
@@ -4266,8 +4454,15 @@ export function mountNercOrgMap(): void {
     } else {
       panelBody.append(createEl("p", "p-desc", describeOrg(o)));
     }
-
     const dl = createEl("dl");
+    if (isMisoControlArea(o)) {
+      const note = createEl("div", "p-misoca");
+      note.append(
+        createEl("span", "p-misoca-badge", `MISO CA · ${misoControlAreaCodeLabel(o)}`),
+        createEl("span", "p-misoca-text", misoControlAreaNote(o)),
+      );
+      addDlRow(dl, "Notes", note);
+    }
     addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o));
     addDlRow(dl, "Regional Entity", regionLabel(o));
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
@@ -4886,6 +5081,16 @@ export function mountNercOrgMap(): void {
       .join("text")
       .attr("class", "olabel")
       .text((o) => orgAcronym(o));
+
+    // Italic "MISO CA" sublabel for MISO control areas. The disclosure fit gate
+    // reserves room for this second line before the bubble is allowed to render.
+    gLabels
+      .selectAll("text.misoca")
+      .data(visibleOrder.filter(isMisoControlArea), (o: unknown) => (o as Org).ncr_id)
+      .join("text")
+      .attr("class", "misoca dim")
+      .attr("aria-hidden", "true")
+      .text("MISO CA");
 
     gPlaces
       .selectAll("text.place")
