@@ -43,7 +43,7 @@
     {
       "ncr_id": "NCR-SEED-020",
       "entity_name": "Duke Energy Carolinas, LLC",
-      "shortest": "DUK",
+      "shortest": "DEC",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
       "tier": "major"
@@ -625,7 +625,7 @@
     {
       "ncr_id": "NCR00979",
       "entity_name": "Dairyland Power Cooperative",
-      "shortest": "Dairyland",
+      "shortest": "DPC",
       "short": "Dairyland Power",
       "normal": "Dairyland Power Cooperative",
       "tier": "normal"
@@ -16073,7 +16073,7 @@
     {
       "ncr_id": "NCR01219",
       "entity_name": "Duke Energy Carolinas, LLC",
-      "shortest": "DUK",
+      "shortest": "DEC",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
       "tier": "major"
