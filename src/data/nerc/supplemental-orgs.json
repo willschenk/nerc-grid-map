@@ -17329,5 +17329,109 @@
         "geo_notes": null
       }
     ]
+  },
+  {
+    "ncr_id": "SUP-pjm-aps-zone",
+    "entity_name": "Allegheny Power",
+    "acronym": "APS",
+    "region": "RF",
+    "state": "PA",
+    "city": "Greensburg",
+    "lat": 40.3015,
+    "lng": -79.5389,
+    "roles": [
+      "TO",
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "PJM 2026 Network Service Peak Loads",
+    "geo_source_url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-service-peak-loads-2026.pdf",
+    "geo_notes": "City-level reference placement for PJM's Allegheny Power (APS) transmission zone; this is not Arizona Public Service or a separate NERC registration."
+  },
+  {
+    "ncr_id": "SUP-pjm-atsi-zone",
+    "entity_name": "American Transmission Systems, Incorporated",
+    "acronym": "ATSI",
+    "region": "RF",
+    "state": "OH",
+    "city": "Akron",
+    "lat": 41.0814,
+    "lng": -81.519,
+    "roles": [
+      "TO"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "PJM 2026 Network Service Peak Loads",
+    "geo_source_url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-service-peak-loads-2026.pdf",
+    "geo_notes": "City-level reference placement for the American Transmission Systems, Inc. (ATSI) PJM transmission zone; this is not a separate NERC registration."
+  },
+  {
+    "ncr_id": "SUP-pjm-jcpl-zone",
+    "entity_name": "Jersey Central Power & Light Company",
+    "acronym": "JCP&L",
+    "region": "RF",
+    "state": "NJ",
+    "city": "Morristown",
+    "lat": 40.7968,
+    "lng": -74.4815,
+    "roles": [
+      "TO",
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "PJM 2026 Network Service Peak Loads",
+    "geo_source_url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-service-peak-loads-2026.pdf",
+    "geo_notes": "City-level reference placement for the Jersey Central Power & Light (JCPL) PJM transmission zone; this is not a separate NERC registration."
+  },
+  {
+    "ncr_id": "SUP-pjm-meted-zone",
+    "entity_name": "Metropolitan Edison Company",
+    "acronym": "MetEd",
+    "region": "RF",
+    "state": "PA",
+    "city": "Reading",
+    "lat": 40.3356,
+    "lng": -75.9269,
+    "roles": [
+      "TO",
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "PJM 2026 Network Service Peak Loads",
+    "geo_source_url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-service-peak-loads-2026.pdf",
+    "geo_notes": "City-level reference placement for the Metropolitan Edison (METED) PJM transmission zone; this is not a separate NERC registration."
+  },
+  {
+    "ncr_id": "SUP-pjm-penelec-zone",
+    "entity_name": "Pennsylvania Electric Company",
+    "acronym": "Penelec",
+    "region": "RF",
+    "state": "PA",
+    "city": "Erie",
+    "lat": 42.1292,
+    "lng": -80.0851,
+    "roles": [
+      "TO",
+      "DP"
+    ],
+    "org_type": "IOU",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "PJM 2026 Network Service Peak Loads",
+    "geo_source_url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-service-peak-loads-2026.pdf",
+    "geo_notes": "City-level reference placement for the Pennsylvania Electric Company (PENELEC) PJM transmission zone; this is not a separate NERC registration."
   }
 ]

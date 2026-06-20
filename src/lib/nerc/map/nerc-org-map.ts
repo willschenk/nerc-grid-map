@@ -364,6 +364,37 @@ const MISO_CONTROL_AREA_CODES = new Map<string, readonly string[]>([
   ["NCR01033", ["UPPC"]], // Upper Peninsula Power
   ["NCR00952", ["WPS"]], // Wisconsin Public Service
 ]);
+
+// The PJM hub org (PJM Interconnection) — the anchor every PJM transmission-zone
+// thread connects to.
+const PJM_HUB_ID = "NCR00879";
+// PJM transmission-zone codes from PJM's 2026 Network Service Peak Loads.
+// Organizations receive these codes through area-aliases.json at build time, so
+// the renderer does not duplicate the code-to-org mapping. WESTERN HUB is a
+// pricing hub rather than an organization and remains an area interface only.
+const PJM_TRANSMISSION_ZONE_CODES = new Set([
+  "AECO",
+  "AEP",
+  "APS",
+  "ATSI",
+  "BGE",
+  "COMED",
+  "DAY",
+  "DEOK",
+  "DOM",
+  "DPL",
+  "DUQ",
+  "EKPC",
+  "JCPL",
+  "METED",
+  "OVEC",
+  "PECO",
+  "PENELEC",
+  "PEPCO",
+  "PPL",
+  "PSEG",
+  "RECO",
+]);
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const REGIONAL_ENTITY_NAME = /\b(NERC|SERC|WECC|MRO|NPCC|ReliabilityFirst|Texas Reliability Entity|Midwest Reliability Organization|Northeast Power Coordinating Council|Western Electricity Coordinating Council|Regional Entity)\b/i;
 const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation|USACE|U\.S\. Army Corps)\b/i;
@@ -868,10 +899,12 @@ export function mountNercOrgMap(): void {
   // Area context is even quieter than city context and must paint below the
   // NERC overlay, not over it.
   const gLand = svg.append("g").attr("class", "land");
-  // Super-thin animated threads tying each MISO control area to the MISO hub.
-  // Painted under the bubbles (background) and riding the zoom transform so the
-  // ends stay glued to their bubbles as you pan/zoom.
+  // Super-thin animated threads tying each RTO area org back to its hub. Painted
+  // under the bubbles (background) and riding the zoom transform so the ends stay
+  // glued to their bubbles as you pan/zoom. One group per RTO so they layer and
+  // colour independently (MISO control areas, PJM transmission zones).
   const gMisoLink = svg.append("g").attr("class", "miso-links");
+  const gPjmLink = svg.append("g").attr("class", "pjm-links");
   const gOverlay = svg.append("g").attr("class", "overlay");
   // Animated orange "saber" outlines for the ISO/RTO bubbles — painted just above
   // the bubbles (so the light reads on top) but below the hit + label layers.
@@ -1715,7 +1748,11 @@ export function mountNercOrgMap(): void {
   }
 
   function insideLabelGlyphWidth(brandLen: number): number {
-    return brandLen > 5 ? 0.57 : 0.56;
+    // The map labels are bold, mostly-uppercase abbreviations. Their measured
+    // width in the UI font averages about two-thirds of an em per character;
+    // using a normal-body-text estimate here lets short labels visibly spill
+    // beyond the rounded rectangle even though the disclosure gate says they fit.
+    return brandLen > 5 ? 0.69 : 0.67;
   }
 
   // The inside-label font a bubble of radius r would use for its short name.
@@ -2151,7 +2188,7 @@ export function mountNercOrgMap(): void {
     node.setAttribute("rx", String(Math.min(w, h) * 0.44));
   }
 
-  // The eight real ISOs/RTOs (see ISO_RTO_OPERATOR_NAME) — these get the saber
+  // The real ISOs/RTOs (see ISO_RTO_OPERATOR_NAME) — these get the saber
   // outline and an explicit "ISO/RTO" note in their detail panel.
   function isIsoRtoOperator(o: Org): boolean {
     return ISO_RTO_OPERATOR_NAME.test(o.entity_name);
@@ -2203,30 +2240,31 @@ export function mountNercOrgMap(): void {
     });
   }
 
-  // The MISO hub that every control-area thread points to. Cached after the org
-  // payload loads (see MISO_HUB_ID).
-  let misoHub: Org | null = null;
-  function getMisoHub(): Org | null {
-    if (misoHub) return misoHub;
-    misoHub = orgs.find((o) => o.ncr_id === MISO_HUB_ID) ?? null;
-    return misoHub;
+  // RTO hub lookup (MISO, PJM, …) by ncr_id. Cached once the org payload loads.
+  let orgByIdCache: Map<string, Org> | null = null;
+  function orgById(id: string): Org | null {
+    if (!orgByIdCache) orgByIdCache = new Map(orgs.map((o) => [o.ncr_id, o]));
+    return orgByIdCache.get(id) ?? null;
+  }
+  function isPjmZone(o: Org): boolean {
+    return o.area_aliases?.some((code) => PJM_TRANSMISSION_ZONE_CODES.has(code)) ?? false;
   }
 
-  // Build a gently-waving polyline from a control area to the MISO hub. The wave
-  // is baked into the geometry (amplitude/wavelength fixed in SCREEN px, so it
-  // looks the same at every zoom); the "live" motion is a CSS dash flow. The
-  // amplitude tapers to zero at both ends so each thread meets its bubble cleanly.
-  const MISO_LINK_AMP_PX = 2.1; // squiggle height on screen
-  const MISO_LINK_WAVE_PX = 16; // squiggle wavelength on screen
-  function misoLinkPath(x0: number, y0: number, x1: number, y1: number, k: number): string {
+  // Build a gently-waving polyline from an RTO area org to its hub. The wave is
+  // baked into the geometry (amplitude/wavelength fixed in SCREEN px, so it looks
+  // the same at every zoom); the "live" motion is a CSS dash flow. The amplitude
+  // tapers to zero at both ends so each thread meets its bubble cleanly.
+  const RTO_LINK_AMP_PX = 2.1; // squiggle height on screen
+  const RTO_LINK_WAVE_PX = 16; // squiggle wavelength on screen
+  function rtoLinkPath(x0: number, y0: number, x1: number, y1: number, k: number): string {
     const dx = x1 - x0;
     const dy = y1 - y0;
     const len = Math.hypot(dx, dy) || 1;
     const px = -dy / len; // unit perpendicular
     const py = dx / len;
-    const amp = MISO_LINK_AMP_PX / k; // world units (group is scaled by k)
+    const amp = RTO_LINK_AMP_PX / k; // world units (group is scaled by k)
     const lenPx = len * k;
-    const waves = Math.max(1, Math.round(lenPx / MISO_LINK_WAVE_PX));
+    const waves = Math.max(1, Math.round(lenPx / RTO_LINK_WAVE_PX));
     const steps = Math.max(10, waves * 6);
     let d = "";
     for (let i = 0; i <= steps; i++) {
@@ -2240,12 +2278,18 @@ export function mountNercOrgMap(): void {
     return d;
   }
 
-  // Re-thread every visible control-area link to the MISO hub. Cheap: at most a
-  // few dozen short polylines, only the `d` attribute is rewritten, and the
-  // animation itself is pure CSS (no per-frame JS), so it never taxes the page.
-  function syncMisoLinks(k = transform.k): void {
-    const links = gMisoLink.selectAll<SVGPathElement, Org>("path.miso-link");
-    const hub = getMisoHub();
+  // Re-thread every visible area link in `group` back to `hubId`. Reused for MISO
+  // and PJM. Cheap: at most a few dozen short polylines, only the `d` attribute is
+  // rewritten, and the animation is pure CSS (no per-frame JS), so it never taxes
+  // the page. Threads hide when either endpoint isn't a currently-projected bubble.
+  function syncRtoAreaLinks(
+    group: typeof gMisoLink,
+    hubId: string,
+    className: string,
+    k = transform.k,
+  ): void {
+    const links = group.selectAll<SVGPathElement, Org>(`path.${className}`);
+    const hub = orgById(hubId);
     const fanScale = spiderFanScale(k);
     const declScale = declutterScale(k);
     const hubShown = !!hub && hub._x != null && hub._vis !== false;
@@ -2257,14 +2301,20 @@ export function mountNercOrgMap(): void {
     const hy = orgRenderY(hub as Org, fanScale, declScale);
     links.each(function (o) {
       const node = this as SVGPathElement;
-      // Hide a thread whose control area isn't currently a visible bubble.
+      // Hide a thread whose area org isn't currently a visible bubble.
       const shown = o._vis !== false && o._x != null;
       node.classList.toggle("hide", !shown);
       if (!shown) return;
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
-      node.setAttribute("d", misoLinkPath(cx, cy, hx, hy, k));
+      node.setAttribute("d", rtoLinkPath(cx, cy, hx, hy, k));
     });
+  }
+
+  // Re-thread both RTO link layers (MISO control areas + PJM transmission zones).
+  function syncRtoLinks(k = transform.k): void {
+    syncRtoAreaLinks(gMisoLink, MISO_HUB_ID, "miso-link", k);
+    syncRtoAreaLinks(gPjmLink, PJM_HUB_ID, "pjm-area-link", k);
   }
 
   function positionOrgMarks(k = transform.k, force = false): void {
@@ -2289,7 +2339,7 @@ export function mountNercOrgMap(): void {
       .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
       .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
     syncSabers(k);
-    syncMisoLinks(k);
+    syncRtoLinks(k);
   }
 
   function isPanSourceEvent(event: Event | null | undefined): boolean {
@@ -2333,6 +2383,7 @@ export function mountNercOrgMap(): void {
     gMap.attr("transform", tStr);
     gInsets.attr("transform", tStr);
     gMisoLink.attr("transform", tStr);
+    gPjmLink.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
     gSaber.attr("transform", tStr);
     gHit.attr("transform", tStr);
@@ -2742,6 +2793,41 @@ export function mountNercOrgMap(): void {
   // boxes, and hide any lower-priority bubble that would overlap one already kept.
   // ISOs/RTOs and the hovered/selected/tour focus are never hidden.
   function resolveBubbleOverlaps(cands: Org[], k: number): void {
+    type BubbleBox = {
+      x0: number;
+      y0: number;
+      x1: number;
+      y1: number;
+      cx: number;
+      cy: number;
+      coreX: number;
+      coreY: number;
+      corner: number;
+    };
+    const bubbleBox = (cx: number, cy: number, hw: number, hh: number): BubbleBox => {
+      // SVG rounded rects are a core rectangle expanded by a circular corner.
+      // Keeping that decomposition lets the backstop distinguish harmless
+      // overlapping bounding-box corners from an actual painted intersection.
+      const corner = Math.min(hw, hh) * 0.88;
+      return {
+        x0: cx - hw,
+        y0: cy - hh,
+        x1: cx + hw,
+        y1: cy + hh,
+        cx,
+        cy,
+        coreX: hw - corner,
+        coreY: hh - corner,
+        corner,
+      };
+    };
+    const roundedBoxesOverlap = (a: BubbleBox, b: BubbleBox): boolean => {
+      const dx = Math.max(0, Math.abs(a.cx - b.cx) - a.coreX - b.coreX);
+      const dy = Math.max(0, Math.abs(a.cy - b.cy) - a.coreY - b.coreY);
+      // A fractional-pixel buffer avoids anti-aliased edge blending while still
+      // allowing rounded bounding-box corners to occupy the same empty space.
+      return Math.hypot(dx, dy) < a.corner + b.corner + 0.35;
+    };
     const order = [...cands].sort((a, b) => {
       const ia = isIsoRtoOperator(a) ? 0 : 1;
       const ib = isIsoRtoOperator(b) ? 0 : 1;
@@ -2754,9 +2840,8 @@ export function mountNercOrgMap(): void {
       if (hh > maxExt) maxExt = hh;
     }
     const cell = 2 * maxExt + 4;
-    const grid = new Map<string, Array<{ x0: number; y0: number; x1: number; y1: number }>>();
-    const THRESH = 2.5; // px of real overlap on BOTH axes before it counts (rounded corners clear small touches)
-    const hits = (b: { x0: number; y0: number; x1: number; y1: number }): boolean => {
+    const grid = new Map<string, BubbleBox[]>();
+    const hits = (b: BubbleBox): boolean => {
       const gx = Math.floor((b.x0 + b.x1) / 2 / cell);
       const gy = Math.floor((b.y0 + b.y1) / 2 / cell);
       for (let ix = -1; ix <= 1; ix++)
@@ -2764,14 +2849,12 @@ export function mountNercOrgMap(): void {
           const arr = grid.get(`${gx + ix}:${gy + iy}`);
           if (!arr) continue;
           for (const q of arr) {
-            const ox = Math.min(b.x1, q.x1) - Math.max(b.x0, q.x0);
-            const oy = Math.min(b.y1, q.y1) - Math.max(b.y0, q.y0);
-            if (ox > THRESH && oy > THRESH) return true;
+            if (roundedBoxesOverlap(b, q)) return true;
           }
         }
       return false;
     };
-    const keep = (b: { x0: number; y0: number; x1: number; y1: number }): void => {
+    const keep = (b: BubbleBox): void => {
       const key = `${Math.floor((b.x0 + b.x1) / 2 / cell)}:${Math.floor((b.y0 + b.y1) / 2 / cell)}`;
       const arr = grid.get(key);
       if (arr) arr.push(b);
@@ -2779,7 +2862,7 @@ export function mountNercOrgMap(): void {
     };
     // Sum the minimum-translation push that separates box b from every accepted
     // box it overlaps (push along the shallower axis, away from each neighbour).
-    const pushOut = (b: { x0: number; y0: number; x1: number; y1: number }): { x: number; y: number } | null => {
+    const pushOut = (b: BubbleBox): { x: number; y: number } | null => {
       const gx = Math.floor((b.x0 + b.x1) / 2 / cell);
       const gy = Math.floor((b.y0 + b.y1) / 2 / cell);
       let px = 0, py = 0, any = false;
@@ -2788,9 +2871,9 @@ export function mountNercOrgMap(): void {
           const arr = grid.get(`${gx + ix}:${gy + iy}`);
           if (!arr) continue;
           for (const q of arr) {
+            if (!roundedBoxesOverlap(b, q)) continue;
             const ox = Math.min(b.x1, q.x1) - Math.max(b.x0, q.x0);
             const oy = Math.min(b.y1, q.y1) - Math.max(b.y0, q.y0);
-            if (ox <= THRESH || oy <= THRESH) continue;
             any = true;
             const bcx = (b.x0 + b.x1) / 2, bcy = (b.y0 + b.y1) / 2;
             const qcx = (q.x0 + q.x1) / 2, qcy = (q.y0 + q.y1) / 2;
@@ -2803,7 +2886,7 @@ export function mountNercOrgMap(): void {
     for (const o of order) {
       if (o._sx == null || o._sy == null) continue;
       const { hw, hh } = bubbleHalfExtents(renderedRadius(o, k));
-      let b = { x0: o._sx - hw, y0: o._sy - hh, x1: o._sx + hw, y1: o._sy + hh };
+      let b = bubbleBox(o._sx, o._sy, hw, hh);
       const exempt =
         isIsoRtoOperator(o) ||
         selectedOrg?.ncr_id === o.ncr_id ||
@@ -2826,7 +2909,7 @@ export function mountNercOrgMap(): void {
           // gap instead of oscillating past each other in a tight cluster.
           sx += push.x * 0.6;
           sy += push.y * 0.6;
-          b = { x0: sx - hw, y0: sy - hh, x1: sx + hw, y1: sy + hh };
+          b = bubbleBox(sx, sy, hw, hh);
         }
         o._dx = (o._dx ?? 0) + (sx - o._sx);
         o._dy = (o._dy ?? 0) + (sy - o._sy);
@@ -3589,8 +3672,8 @@ export function mountNercOrgMap(): void {
     // force-sim nudges bubbles at constant k as it settles, and the rings must
     // track that or they drift off to one side of their bubble.
     syncSabers(k);
-    // Likewise re-thread the MISO control-area links as bubbles settle/move.
-    syncMisoLinks(k);
+    // Likewise re-thread the RTO area links (MISO + PJM) as bubbles settle/move.
+    syncRtoLinks(k);
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
       const node = this as SVGCircleElement;
@@ -5196,16 +5279,23 @@ export function mountNercOrgMap(): void {
       .attr("class", "olabel")
       .text((o) => orgAcronym(o));
 
-    // Background threads tying each visible MISO control area to the MISO hub.
-    // The squiggle geometry is written by syncMisoLinks; the flowing animation is
-    // pure CSS, so a few dozen of these cost effectively nothing per frame.
+    // Background threads tying each visible RTO area org back to its hub: MISO
+    // control areas to MISO, PJM transmission zones to PJM. The squiggle geometry
+    // is written by syncRtoLinks; the flowing animation is pure CSS, so a few dozen
+    // of these cost effectively nothing per frame.
     gMisoLink
       .selectAll("path.miso-link")
       .data(visibleOrder.filter(isMisoControlArea), (o: unknown) => (o as Org).ncr_id)
       .join("path")
       .attr("class", "miso-link")
       .attr("aria-hidden", "true");
-    syncMisoLinks(transform.k);
+    gPjmLink
+      .selectAll("path.pjm-area-link")
+      .data(visibleOrder.filter(isPjmZone), (o: unknown) => (o as Org).ncr_id)
+      .join("path")
+      .attr("class", "pjm-area-link")
+      .attr("aria-hidden", "true");
+    syncRtoLinks(transform.k);
 
     gPlaces
       .selectAll("text.place")

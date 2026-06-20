@@ -61,11 +61,17 @@ export function validateAreaAliases(orgs, aliases = loadAreaAliases()) {
   const errors = [];
   const orgIds = new Set(orgs.map((o) => o.ncr_id));
   const acronymOwners = new Map();
+  const addAcronymOwner = (code, ncrId) => {
+    if (!code) return;
+    const owners = acronymOwners.get(code);
+    if (owners) owners.add(ncrId);
+    else acronymOwners.set(code, new Set([ncrId]));
+  };
   for (const o of orgs) {
     const ac = String(o.acronym ?? "").trim().toUpperCase();
-    if (ac) acronymOwners.set(ac, o.ncr_id);
+    addAcronymOwner(ac, o.ncr_id);
     const ns = String(o.name_shortest ?? "").trim().toUpperCase();
-    if (ns) acronymOwners.set(ns, o.ncr_id);
+    addAcronymOwner(ns, o.ncr_id);
   }
 
   const seen = new Map();
@@ -89,9 +95,38 @@ export function validateAreaAliases(orgs, aliases = loadAreaAliases()) {
       errors.push(`area alias ${code} targets missing org ${ncr_id}`);
       continue;
     }
-    const owner = acronymOwners.get(code);
-    if (owner && owner !== ncr_id) {
-      errors.push(`area alias ${code} conflicts with org acronym on ${owner}`);
+    if (
+      Object.prototype.hasOwnProperty.call(row, "allow_acronym_conflict") &&
+      typeof row.allow_acronym_conflict !== "boolean"
+    ) {
+      errors.push(`area alias ${code} allow_acronym_conflict must be boolean`);
+    }
+    if (
+      Object.prototype.hasOwnProperty.call(row, "market") &&
+      (typeof row.market !== "string" || !row.market.trim())
+    ) {
+      errors.push(`area alias ${code} market must be a non-empty string`);
+    }
+    if (
+      Object.prototype.hasOwnProperty.call(row, "kind") &&
+      (typeof row.kind !== "string" || !row.kind.trim())
+    ) {
+      errors.push(`area alias ${code} kind must be a non-empty string`);
+    }
+    if (row.kind === "transmission_zone" && !String(row.market ?? "").trim()) {
+      errors.push(`area alias ${code} transmission_zone is missing market`);
+    }
+    const owners = acronymOwners.get(code) ?? new Set();
+    const conflicts = [...owners].filter((owner) => owner !== ncr_id);
+    // An alias may legitimately share a code with a different org's acronym (e.g.
+    // PJM "APS" = Allegheny Power vs. Arizona Public Service). Rows that
+    // declare allow_acronym_conflict explicitly opt out of this guard; everything
+    // else still errors so accidental mis-targets are caught.
+    if (conflicts.length && row.allow_acronym_conflict !== true) {
+      errors.push(`area alias ${code} conflicts with org acronym on ${conflicts.join(", ")}`);
+    }
+    if (!conflicts.length && row.allow_acronym_conflict === true) {
+      errors.push(`area alias ${code} has unnecessary allow_acronym_conflict`);
     }
   }
   return errors;
@@ -103,11 +138,17 @@ export function validateAreaInterfaces(orgs, aliases = loadAreaAliases(), interf
     aliases.map((row) => String(row.code ?? "").trim().toUpperCase()).filter(Boolean),
   );
   const acronymOwners = new Map();
+  const addAcronymOwner = (code, ncrId) => {
+    if (!code) return;
+    const owners = acronymOwners.get(code);
+    if (owners) owners.add(ncrId);
+    else acronymOwners.set(code, new Set([ncrId]));
+  };
   for (const o of orgs) {
     const ac = String(o.acronym ?? "").trim().toUpperCase();
-    if (ac) acronymOwners.set(ac, o.ncr_id);
+    addAcronymOwner(ac, o.ncr_id);
     const ns = String(o.name_shortest ?? "").trim().toUpperCase();
-    if (ns) acronymOwners.set(ns, o.ncr_id);
+    addAcronymOwner(ns, o.ncr_id);
   }
 
   const seen = new Map();
@@ -125,8 +166,9 @@ export function validateAreaInterfaces(orgs, aliases = loadAreaAliases(), interf
     if (aliasCodes.has(code)) {
       errors.push(`area interface ${code} conflicts with org alias`);
     }
-    if (acronymOwners.has(code)) {
-      errors.push(`area interface ${code} conflicts with org acronym on ${acronymOwners.get(code)}`);
+    const owners = acronymOwners.get(code);
+    if (owners?.size) {
+      errors.push(`area interface ${code} conflicts with org acronym on ${[...owners].join(", ")}`);
     }
   }
   return errors;

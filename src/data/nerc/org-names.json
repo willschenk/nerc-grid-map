@@ -18493,6 +18493,46 @@
       "short": "Alberta ESO",
       "normal": "Alberta Electric System Operator",
       "tier": "major"
+    },
+    {
+      "ncr_id": "SUP-pjm-aps-zone",
+      "entity_name": "Allegheny Power",
+      "shortest": "APS",
+      "short": "Allegheny Power",
+      "normal": "Allegheny Power / PJM APS Zone",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "SUP-pjm-atsi-zone",
+      "entity_name": "American Transmission Systems, Incorporated",
+      "shortest": "ATSI",
+      "short": "American Transmission Systems",
+      "normal": "American Transmission Systems, Incorporated",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "SUP-pjm-jcpl-zone",
+      "entity_name": "Jersey Central Power & Light Company",
+      "shortest": "JCPL",
+      "short": "Jersey Central P&L",
+      "normal": "Jersey Central Power & Light Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "SUP-pjm-meted-zone",
+      "entity_name": "Metropolitan Edison Company",
+      "shortest": "METED",
+      "short": "Met-Ed",
+      "normal": "Metropolitan Edison Company",
+      "tier": "major"
+    },
+    {
+      "ncr_id": "SUP-pjm-penelec-zone",
+      "entity_name": "Pennsylvania Electric Company",
+      "shortest": "PENELEC",
+      "short": "Penelec",
+      "normal": "Pennsylvania Electric Company",
+      "tier": "major"
     }
   ]
 }

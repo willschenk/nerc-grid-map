@@ -264,7 +264,7 @@
 }
 
 /* MISO control-area threads: a SUPER-thin live line tying each control area to
-   the MISO hub. The squiggle is baked into the path geometry (see syncMisoLinks);
+   the MISO hub. The squiggle is baked into the path geometry (see syncRtoLinks);
    the only thing that animates is stroke-dashoffset, so a slow "current" appears
    to flow toward the hub at zero per-frame JS cost. non-scaling-stroke keeps the
    width and dash pattern a constant hairline at every zoom. */
@@ -277,7 +277,7 @@
   stroke-dasharray: 2.4 3.6;
   opacity: 0.5;
   pointer-events: none;
-  animation: nerc-miso-flow 1.2s linear infinite;
+  animation: nerc-rto-area-flow 1.2s linear infinite;
   will-change: stroke-dashoffset;
 }
 
@@ -285,7 +285,7 @@
   display: none;
 }
 
-@keyframes nerc-miso-flow {
+@keyframes nerc-rto-area-flow {
   to {
     /* One full dash period (2.4 + 3.6) for a seamless loop. */
     stroke-dashoffset: -6;
@@ -294,6 +294,35 @@
 
 @media (prefers-reduced-motion: reduce) {
   #nerc-svg .miso-link {
+    animation: none;
+    stroke-dasharray: none;
+    opacity: 0.3;
+  }
+}
+
+/* PJM transmission-zone threads: same hairline treatment as the MISO links, but a
+   faint teal so the two RTO webs read apart where they overlap in the Ohio Valley
+   (PJM's own blue is nearly identical to MISO's). Kept subtle and underneath the
+   org bubbles; the flow is the same pure-CSS dash so it adds no per-frame JS. */
+#nerc-svg .pjm-area-link {
+  fill: none;
+  stroke: hsl(187, 62%, 40%);
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-dasharray: 2.4 3.6;
+  opacity: 0.48;
+  pointer-events: none;
+  animation: nerc-rto-area-flow 1.2s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+#nerc-svg .pjm-area-link.hide {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nerc-svg .pjm-area-link {
     animation: none;
     stroke-dasharray: none;
     opacity: 0.3;

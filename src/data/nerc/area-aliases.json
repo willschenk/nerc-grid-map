@@ -33,7 +33,9 @@
     {
       "code": "DAY",
       "ncr_id": "NCR00748",
-      "meaning": "Dayton Power & Light / AES Ohio"
+      "meaning": "PJM transmission zone: Dayton Power & Light / AES Ohio",
+      "market": "PJM",
+      "kind": "transmission_zone"
     },
     {
       "code": "SIGE",
@@ -43,12 +45,16 @@
     {
       "code": "DEOK",
       "ncr_id": "SUP-duke-energy-ohio-kentucky",
-      "meaning": "Duke Energy Ohio-Kentucky"
+      "meaning": "PJM transmission zone: Duke Energy Ohio/Kentucky",
+      "market": "PJM",
+      "kind": "transmission_zone"
     },
     {
       "code": "DUQ",
       "ncr_id": "NCR00762",
-      "meaning": "Duquesne Light Company"
+      "meaning": "PJM transmission zone: Duquesne Light",
+      "market": "PJM",
+      "kind": "transmission_zone"
     },
     {
       "code": "IPL",
@@ -73,7 +79,8 @@
     {
       "code": "CE",
       "ncr_id": "NCR08013",
-      "meaning": "Commonwealth Edison"
+      "meaning": "Commonwealth Edison",
+      "allow_acronym_conflict": true
     },
     {
       "code": "WEC",
@@ -148,7 +155,9 @@
     {
       "code": "DOM",
       "ncr_id": "NCR09028",
-      "meaning": "Dominion Energy Virginia / Virginia Electric and Power"
+      "meaning": "PJM transmission zone: Dominion Energy Virginia",
+      "market": "PJM",
+      "kind": "transmission_zone"
     },
     {
       "code": "SOCO",
@@ -293,7 +302,8 @@
     {
       "code": "MP",
       "ncr_id": "NCR00674",
-      "meaning": "Minnesota Power"
+      "meaning": "Minnesota Power",
+      "allow_acronym_conflict": true
     },
     {
       "code": "SMP",
@@ -303,7 +313,8 @@
     {
       "code": "OTP",
       "ncr_id": "NCR01023",
-      "meaning": "Otter Tail Power Company"
+      "meaning": "Otter Tail Power Company",
+      "allow_acronym_conflict": true
     },
     {
       "code": "ALTW",
@@ -394,6 +405,128 @@
       "code": "ERCE",
       "ncr_id": "NCR04056",
       "meaning": "ERCOT East modeled equivalent area"
+    },
+    {
+      "code": "AECO",
+      "ncr_id": "NCR00688",
+      "meaning": "PJM transmission zone: Atlantic City Electric",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "AEP",
+      "ncr_id": "NCR00682",
+      "meaning": "PJM transmission zone: AEP East Zone",
+      "market": "PJM",
+      "kind": "transmission_zone",
+      "allow_acronym_conflict": true
+    },
+    {
+      "code": "APS",
+      "ncr_id": "SUP-pjm-aps-zone",
+      "meaning": "PJM transmission zone: Allegheny Power",
+      "market": "PJM",
+      "kind": "transmission_zone",
+      "allow_acronym_conflict": true
+    },
+    {
+      "code": "ATSI",
+      "ncr_id": "SUP-pjm-atsi-zone",
+      "meaning": "PJM transmission zone: American Transmission Systems, Inc.",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "BGE",
+      "ncr_id": "NCR00689",
+      "meaning": "PJM transmission zone: Baltimore Gas and Electric",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "COMED",
+      "ncr_id": "NCR08013",
+      "meaning": "PJM transmission zone: Commonwealth Edison",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "DPL",
+      "ncr_id": "NCR00752",
+      "meaning": "PJM transmission zone: Delmarva Power & Light",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "EKPC",
+      "ncr_id": "NCR01225",
+      "meaning": "PJM transmission zone: East Kentucky Power Cooperative",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "JCPL",
+      "ncr_id": "SUP-pjm-jcpl-zone",
+      "meaning": "PJM transmission zone: Jersey Central Power & Light",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "METED",
+      "ncr_id": "SUP-pjm-meted-zone",
+      "meaning": "PJM transmission zone: Metropolitan Edison / Met-Ed",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "OVEC",
+      "ncr_id": "NCR00857",
+      "meaning": "PJM transmission zone: Ohio Valley Electric Corporation",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "PECO",
+      "ncr_id": "NCR08026",
+      "meaning": "PJM transmission zone: PECO Energy",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "PEPCO",
+      "ncr_id": "NCR00881",
+      "meaning": "PJM transmission zone: Potomac Electric Power Company",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "PPL",
+      "ncr_id": "NCR00884",
+      "meaning": "PJM transmission zone: PPL Electric Utilities",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "PSEG",
+      "ncr_id": "NCR00896",
+      "meaning": "PJM transmission zone: Public Service Electric and Gas",
+      "market": "PJM",
+      "kind": "transmission_zone",
+      "allow_acronym_conflict": true
+    },
+    {
+      "code": "PENELEC",
+      "ncr_id": "SUP-pjm-penelec-zone",
+      "meaning": "PJM transmission zone: Pennsylvania Electric Company / Penelec",
+      "market": "PJM",
+      "kind": "transmission_zone"
+    },
+    {
+      "code": "RECO",
+      "ncr_id": "NCR00863",
+      "meaning": "PJM transmission zone: Rockland Electric Company",
+      "market": "PJM",
+      "kind": "transmission_zone"
     }
   ],
   "interfaces": [
@@ -441,6 +574,12 @@
       "code": "WSC8",
       "kind": "equivalent",
       "meaning": "WECC modeled equivalent area 8"
+    },
+    {
+      "code": "WESTERN HUB",
+      "kind": "hub",
+      "market": "PJM",
+      "meaning": "PJM Western Hub pricing/trading hub; not an organization"
     }
   ]
 }
