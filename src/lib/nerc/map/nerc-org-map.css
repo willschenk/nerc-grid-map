@@ -263,26 +263,63 @@
   }
 }
 
-/* MISO control-area threads: a SUPER-thin live line tying each control area to
-   the MISO hub. The squiggle is baked into the path geometry (see syncRtoLinks);
-   the only thing that animates is stroke-dashoffset, so a slow "current" appears
-   to flow toward the hub at zero per-frame JS cost. non-scaling-stroke keeps the
-   width and dash pattern a constant hairline at every zoom. */
-#nerc-svg .miso-link {
+/* ── RTO relationship overlays ───────────────────────────────────────────────
+   Two dedicated overlay colours, each used for ONE system only and for BOTH the
+   animated area links and the matching bubble outlines, so the two networks read
+   apart at a glance and never look like a role fill:
+     • MISO  — Local Balancing Authority (LBA) links + LBA bubble outlines
+     • PJM   — transmission-zone links + zone bubble outlines
+   The colours live in variables so the link stroke and the bubble outline match
+   EXACTLY. These are saturated, non-role hues; the bubble fill stays the role
+   colour and only gains an outline/glow. */
+:root {
+  --miso-area-color: hsl(205, 90%, 50%); /* azure — MISO only */
+  --miso-area-glow: hsla(205, 90%, 50%, 0.6);
+  --pjm-area-color: hsl(322, 82%, 53%); /* magenta — PJM only */
+  --pjm-area-glow: hsla(322, 82%, 53%, 0.6);
+}
+
+/* The live area links. The squiggle is baked into the path geometry (see
+   syncRtoLinks); only stroke-dashoffset (a flowing "current" toward the hub) and a
+   gentle opacity pulse animate, both pure CSS, so the relationship reads as alive
+   at zero per-frame JS cost. non-scaling-stroke keeps the hairline constant at any
+   zoom. Painted in their own groups beneath the bubbles and labels. */
+#nerc-svg .miso-control-area-link,
+#nerc-svg .pjm-area-link {
   fill: none;
-  stroke: hsl(224, 62%, 51%);
-  stroke-width: 0.6;
+  stroke-width: 0.85;
   vector-effect: non-scaling-stroke;
   stroke-linecap: round;
   stroke-dasharray: 2.4 3.6;
-  opacity: 0.5;
   pointer-events: none;
-  animation: nerc-rto-area-flow 1.2s linear infinite;
-  will-change: stroke-dashoffset;
+  animation:
+    nerc-rto-area-flow 1.2s linear infinite,
+    nerc-rto-area-pulse 2.6s ease-in-out infinite;
+  will-change: stroke-dashoffset, opacity;
 }
 
-#nerc-svg .miso-link.hide {
+#nerc-svg .miso-control-area-link {
+  stroke: var(--miso-area-color);
+}
+
+#nerc-svg .pjm-area-link {
+  stroke: var(--pjm-area-color);
+}
+
+#nerc-svg .miso-control-area-link.hide,
+#nerc-svg .pjm-area-link.hide {
   display: none;
+}
+
+/* Hover/selection focus: bump the one active thread so it stands out from its
+   siblings — quicker flow, full opacity, a touch heavier. */
+#nerc-svg .miso-control-area-link.is-hovered,
+#nerc-svg .miso-control-area-link.is-selected,
+#nerc-svg .pjm-area-link.is-hovered,
+#nerc-svg .pjm-area-link.is-selected {
+  stroke-width: 1.5;
+  opacity: 1;
+  animation: nerc-rto-area-flow 0.8s linear infinite;
 }
 
 @keyframes nerc-rto-area-flow {
@@ -292,40 +329,57 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  #nerc-svg .miso-link {
-    animation: none;
-    stroke-dasharray: none;
-    opacity: 0.3;
+@keyframes nerc-rto-area-pulse {
+  0%,
+  100% {
+    opacity: 0.42;
+  }
+  50% {
+    opacity: 0.72;
   }
 }
 
-/* PJM transmission-zone threads: same hairline treatment as the MISO links, but a
-   faint teal so the two RTO webs read apart where they overlap in the Ohio Valley
-   (PJM's own blue is nearly identical to MISO's). Kept subtle and underneath the
-   org bubbles; the flow is the same pure-CSS dash so it adds no per-frame JS. */
-#nerc-svg .pjm-area-link {
-  fill: none;
-  stroke: hsl(187, 62%, 40%);
-  stroke-width: 0.6;
-  vector-effect: non-scaling-stroke;
-  stroke-linecap: round;
-  stroke-dasharray: 2.4 3.6;
-  opacity: 0.48;
-  pointer-events: none;
-  animation: nerc-rto-area-flow 1.2s linear infinite;
-  will-change: stroke-dashoffset;
+/* Bubble outlines for the linked orgs — SAME colour as that system's links, so the
+   eye ties the dot to its thread. Only the outline/glow is added; the role fill is
+   untouched. Drawn with paint-order so the coloured ring sits outside the fill. */
+#nerc-svg .org.miso-control-area-linked-org {
+  stroke: var(--miso-area-color);
+  stroke-width: 1.3;
+  stroke-dasharray: none;
+  paint-order: stroke fill;
 }
 
-#nerc-svg .pjm-area-link.hide {
-  display: none;
+#nerc-svg .org.pjm-area-linked-org {
+  stroke: var(--pjm-area-color);
+  stroke-width: 1.3;
+  stroke-dasharray: none;
+  paint-order: stroke fill;
+}
+
+/* Hover/selection focus: strengthen the linked bubble's own outline + add a soft
+   colour glow so the active relationship pops without changing the fill. */
+#nerc-svg .org.miso-control-area-linked-org.is-hovered,
+#nerc-svg .org.miso-control-area-linked-org.is-selected {
+  stroke: var(--miso-area-color);
+  stroke-width: 2.4;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 0 2.4px var(--miso-area-glow));
+}
+
+#nerc-svg .org.pjm-area-linked-org.is-hovered,
+#nerc-svg .org.pjm-area-linked-org.is-selected {
+  stroke: var(--pjm-area-color);
+  stroke-width: 2.4;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 0 2.4px var(--pjm-area-glow));
 }
 
 @media (prefers-reduced-motion: reduce) {
+  #nerc-svg .miso-control-area-link,
   #nerc-svg .pjm-area-link {
     animation: none;
     stroke-dasharray: none;
-    opacity: 0.3;
+    opacity: 0.55;
   }
 }
 
@@ -1102,7 +1156,9 @@
   line-height: 1.35;
 }
 
-/* MISO control-area callout — sits right at the top of the panel. */
+/* MISO Local Balancing Authority callout — sits at the top of the panel. Uses the
+   MISO overlay colour so the badge matches the map's MISO links and bubble
+   outlines exactly (shared CSS variable). */
 .nerc-panel .p-misoca {
   display: flex;
   flex-wrap: wrap;
@@ -1110,38 +1166,76 @@
   gap: 0.4rem 0.5rem;
   margin: 0 0 0.7rem;
   padding: 0.5rem 0.6rem;
-  border: 1px solid rgba(43, 92, 152, 0.38);
-  border-left: 3px solid #2b5c98;
+  border: 1px solid color-mix(in srgb, var(--miso-area-color) 40%, transparent);
+  border-left: 3px solid var(--miso-area-color);
   border-radius: 6px;
-  background: rgba(43, 92, 152, 0.08);
+  background: color-mix(in srgb, var(--miso-area-color) 9%, transparent);
 }
 
 .nerc-panel .p-misoca-badge {
   flex: none;
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
-  background: #2b5c98;
-  color: #eef4fb;
+  background: var(--miso-area-color);
+  color: #fff;
   font-size: 0.66rem;
   font-weight: 800;
-  font-style: italic;
   letter-spacing: 0.04em;
 }
 
 .nerc-panel .p-misoca-text {
   flex: 1 1 12rem;
   min-width: 0;
-  color: #244463;
+  color: color-mix(in srgb, var(--miso-area-color) 62%, #0c1a24);
   font-size: 0.76rem;
   line-height: 1.35;
 }
 
 .nerc-tooltip .tt-misoca {
   margin-top: 0.3rem;
-  color: #2b5c98;
-  font-family: ui-serif, Georgia, serif;
-  font-style: italic;
-  font-weight: 600;
+  color: var(--miso-area-color);
+  font-weight: 700;
+  font-size: 0.74rem;
+}
+
+/* PJM transmission-zone callout — mirrors the MISO callout but in the PJM overlay
+   colour, matching the map's PJM links and zone outlines exactly. */
+.nerc-panel .p-pjmzone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.5rem;
+  margin: 0 0 0.7rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--pjm-area-color) 40%, transparent);
+  border-left: 3px solid var(--pjm-area-color);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--pjm-area-color) 9%, transparent);
+}
+
+.nerc-panel .p-pjmzone-badge {
+  flex: none;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--pjm-area-color);
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.nerc-panel .p-pjmzone-text {
+  flex: 1 1 12rem;
+  min-width: 0;
+  color: color-mix(in srgb, var(--pjm-area-color) 60%, #1a0c16);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.nerc-tooltip .tt-pjmzone {
+  margin-top: 0.3rem;
+  color: var(--pjm-area-color);
+  font-weight: 700;
   font-size: 0.74rem;
 }
 

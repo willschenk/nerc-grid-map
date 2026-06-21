@@ -90,6 +90,12 @@ type Org = {
   _vrGen?: number;
   _vrFallback?: boolean;
   _vrPromoted?: boolean;
+  // Memoized orgWidthFactor (label-aware rectangle width multiple) and the
+  // (zoom, size-generation, fallback) it was computed for.
+  _wf?: number;
+  _wfk?: number;
+  _wfGen?: number;
+  _wfFallback?: boolean;
   // Last viewBox hit radius written to the invisible target. It follows the
   // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
   _hr?: number;
@@ -105,6 +111,7 @@ type Org = {
   _topTier?: boolean;   // isTopTierOrg(o)
   _vp?: number;         // visualPriority(o)
   _lpv?: number;        // labelPriority(o)
+  _sizeTier?: number;   // sizeTier(o)
   _visRank?: number;    // position in visual-priority-descending sort
   _labelRank?: number;  // position in label-priority-descending sort
   // Last-written DOM state — skip redundant attribute/class writes when unchanged.
@@ -163,8 +170,9 @@ let W = 960;
 let H = 600;
 const SPIDER_CLUSTER_EPSILON = 0.35;
 const SPIDER_RING_STEP_PX = 28;
-// Full-size (priority-100, fully-zoomed) bubble radius in CSS px on desktop.
-// Drives visualRadius's desktop maxPx, so raising it enlarges every bubble.
+// Absolute safety ceiling (CSS px) on any bubble radius — a backstop above every
+// size tier so a stacked floor/boost can never produce a runaway bubble. Per-tier
+// full-zoom sizes live in tierBaseRadiusPx.
 // Bubbles only ever move in render space (_dx/_dy nudges); the true projected
 // _x/_y are never mutated, so geography stays exact.
 const MAX_RADIUS = 58;
@@ -704,6 +712,38 @@ function coreFromAcronym(acr: string): string {
   return s || acr.trim();
 }
 
+// Conservative text-width measurement for inside labels. The bubble inside label
+// is bold (font-weight 800) Inter; estimating its width from a glyph average lets
+// short bold abbreviations spill past the rounded rectangle. Measure the real
+// rendered width with a canvas, cached by text (width scales linearly with font
+// size, so one reference measurement covers every zoom). Falls back to the glyph
+// estimate when canvas is unavailable (SSR / older browsers).
+let _measureCtx: CanvasRenderingContext2D | null | undefined;
+const _measureRefWidth = new Map<string, number>();
+const TEXT_MEASURE_REF_PX = 100;
+function measuredTextWidth(text: string, fontPx: number): number {
+  if (fontPx <= 0 || !text) return 0;
+  let refW = _measureRefWidth.get(text);
+  if (refW == null) {
+    if (_measureCtx === undefined) {
+      try {
+        _measureCtx = document.createElement("canvas").getContext("2d");
+      } catch {
+        _measureCtx = null;
+      }
+    }
+    if (_measureCtx) {
+      _measureCtx.font = `800 ${TEXT_MEASURE_REF_PX}px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+      refW = _measureCtx.measureText(text).width;
+    } else {
+      // Glyph-average fallback (matches insideLabelGlyphWidth's scale).
+      refW = text.length * TEXT_MEASURE_REF_PX * (text.length > 5 ? 0.69 : 0.67);
+    }
+    _measureRefWidth.set(text, refW);
+  }
+  return (refW / TEXT_MEASURE_REF_PX) * fontPx;
+}
+
 function tinyName(o: Org): string {
   if (o._tiny != null) return o._tiny;
   return (o._tiny = _computeTinyName(o));
@@ -902,7 +942,7 @@ export function mountNercOrgMap(): void {
   // Super-thin animated threads tying each RTO area org back to its hub. Painted
   // under the bubbles (background) and riding the zoom transform so the ends stay
   // glued to their bubbles as you pan/zoom. One group per RTO so they layer and
-  // colour independently (MISO control areas, PJM transmission zones).
+  // colour independently (MISO LBAs, PJM transmission zones).
   const gMisoLink = svg.append("g").attr("class", "miso-links");
   const gPjmLink = svg.append("g").attr("class", "pjm-links");
   const gOverlay = svg.append("g").attr("class", "overlay");
@@ -1111,7 +1151,7 @@ export function mountNercOrgMap(): void {
       const hit = hitTargetRadius(o, k) + unitPerPx;
       if (d2 > hit * hit) continue;
       const visual = renderedRadius(o, k);
-      const inVisual = bubbleContainsOffset(dx, dy, visual);
+      const inVisual = orgBubbleContainsOffset(o, k, dx, dy, visual);
       const focusBoost =
         (hoverOrg?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id ? 5000 : 0) +
         (tourIds.has(o.ncr_id) ? 4000 : 0);
@@ -1160,7 +1200,9 @@ export function mountNercOrgMap(): void {
         if (best.ncr_id === fallback.ncr_id) return fallback;
         const d2best = (best._sx! - point.x) ** 2 + (best._sy! - point.y) ** 2;
         const visBest = renderedRadius(best, k);
-        const bestInsideVis = bubbleContainsOffset(
+        const bestInsideVis = orgBubbleContainsOffset(
+          best,
+          k,
           (best._sx as number) - point.x,
           (best._sy as number) - point.y,
           visBest,
@@ -1510,10 +1552,6 @@ export function mountNercOrgMap(): void {
     return (o._lpv = v);
   }
 
-  function canGrowAtZoom(o: Org): boolean {
-    return meaningfulRoleCount(o) > 0 || isDeferredMarketOrg(o);
-  }
-
   function isGridLeadershipOrg(o: Org): boolean {
     if (o._gridLead != null) return o._gridLead;
     return (o._gridLead =
@@ -1539,16 +1577,6 @@ export function mountNercOrgMap(): void {
     return (o._topTier = false);
   }
 
-  // Scale small-org catch-up growth so RC/BA/PC/TOP/TSP stay visually ahead of
-  // GO/GOP and minor utilities at overview and mid zoom; catch-up ramps only deep in.
-  function growthDominanceFactor(o: Org, k: number): number {
-    if (isGridLeadershipOrg(o)) return 1;
-    if (isDeferredMarketOrg(o)) return 0.12 + 0.88 * postRevealBoostT(o, k);
-    const pri = visualPriority(o);
-    const lowPriT = smoothStep((48 - pri) / 40);
-    const deepCatchUpT = smoothStep((k - 5) / 4);
-    return 1 - 0.52 * lowPriT * (1 - deepCatchUpT);
-  }
 
   function visualPrioritySort(a: Org, b: Org): number {
     return (
@@ -1742,11 +1770,6 @@ export function mountNercOrgMap(): void {
     );
   }
 
-  // How wide (as a multiple of radius) an inside label may span the chord.
-  function insideLabelChord(o: Org): number {
-    return isMidwestOrg(o) ? 1.94 : 1.86;
-  }
-
   function insideLabelGlyphWidth(brandLen: number): number {
     // The map labels are bold, mostly-uppercase abbreviations. Their measured
     // width in the UI font averages about two-thirds of an em per character;
@@ -1755,26 +1778,26 @@ export function mountNercOrgMap(): void {
     return brandLen > 5 ? 0.69 : 0.67;
   }
 
-  // The inside-label font a bubble of radius r would use for its short name.
-  function insideLabelFont(o: Org, k: number, r: number, brandLen: number): number {
-    return Math.min(
-      labelFontPx(o, k) * unitPerPx,
-      (r * BUBBLE_WIDTH_FACTOR * 1.74) / Math.max(1, brandLen) / insideLabelGlyphWidth(brandLen),
-      r * BUBBLE_HEIGHT_FACTOR * 1.2,
-    );
+  // The inside-label font a bubble of radius r would use for its short name. The
+  // font is now HEIGHT-driven only (capped to the bubble height); horizontal room
+  // is no longer a constraint here because the rectangle WIDENS to fit the label
+  // (see orgBubbleHalfExtents). brandLen is kept for call-site compatibility.
+  function insideLabelFont(o: Org, k: number, r: number, _brandLen: number): number {
+    return Math.min(labelFontPx(o, k) * unitPerPx, r * BUBBLE_HEIGHT_FACTOR * 1.2);
   }
 
-  // THE disclosure gate: does o's short name fit legibly inside its bubble at k?
+  // THE disclosure gate: is o's short name legible inside its bubble at k? Width
+  // is NOT a gate anymore — a wide label widens the rectangle, and whether the
+  // widened rectangle can actually be placed without overlap is decided by the
+  // capacity gate in computePlacements. Here we only reject when the label would
+  // be smaller than the readable floor.
   function labelFitsInside(o: Org, k: number): boolean {
     if (o._frame === "terr") return true;
     const brand = tinyName(o);
     if (!brand) return false;
     const r = visualRadius(o, k);
     const font = insideLabelFont(o, k, r, brand.length);
-    return (
-      font >= insideLabelMinFont(o, k, brand.length) &&
-      font * insideLabelGlyphWidth(brand.length) * brand.length <= r * BUBBLE_WIDTH_FACTOR * insideLabelChord(o)
-    );
+    return font >= insideLabelMinFont(o, k, brand.length);
   }
 
   // White label ink with a length-aware dark halo — keeps long names readable
@@ -1833,102 +1856,136 @@ export function mountNercOrgMap(): void {
     return (p.tier === 1 ? 2.8 : p.tier === 2 ? 2.3 : 1.9) * unitPerPx;
   }
 
+  // ── Standardized role/type SIZE TIER (1..6) ────────────────────────────────
+  // The single source of truth for bubble HEIGHT. Two orgs in the same tier draw
+  // at the same height at the same zoom; text length may widen them horizontally
+  // but never changes their tier. Tier is role/type driven only — never ncr_id,
+  // entity_name length, city, state, or geography.
+  //   6 Headline grid operators / reliability bodies (ISO/RTO, NERC/REs, RC, federal)
+  //   5 Grid authorities (BA, PC)
+  //   4 Transmission / planning operators (TOP, TSP, TP)
+  //   3 Major utilities / wires companies (TO+DP, TO+LSE, DP+LSE, IOU)
+  //   2 Local utilities / supporting entities (DP-only, TO-only, muni/co-op, RP/RSG…)
+  //   1 Market / generation / minor supplemental entities (PSE/merchant, GO/GOP)
+  function sizeTier(o: Org): number {
+    if (o._sizeTier != null) return o._sizeTier;
+    let t: number;
+    if (isDeferredMarketOrg(o)) {
+      t = 1;
+    } else {
+      const roles = o.roles;
+      const isIso =
+        o.is_iso_rto || o.org_type === "ISO_RTO" || isIsoRtoOperator(o) || isMajorSystemOperator(o);
+      const isReliabilityBody =
+        RELIABILITY_ORG_NAME.test(o.entity_name) || REGIONAL_ENTITY_NAME.test(o.entity_name);
+      const isFederal = o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name);
+      if (isIso || isReliabilityBody || roles.includes("RC") || isFederal) {
+        t = 6;
+      } else if (roles.includes("BA") || roles.includes("PC")) {
+        t = 5;
+      } else if (roles.includes("TOP") || roles.includes("TSP") || roles.includes("TP")) {
+        t = 4;
+      } else if (
+        (roles.includes("TO") && (roles.includes("DP") || roles.includes("LSE"))) ||
+        (roles.includes("DP") && roles.includes("LSE")) ||
+        o.org_type === "IOU"
+      ) {
+        t = 3;
+      } else if (
+        roles.includes("DP") ||
+        roles.includes("TO") ||
+        o.org_type === "municipal" ||
+        o.org_type === "cooperative" ||
+        hasAnyRole(o, SUPPORT_ROLES)
+      ) {
+        t = 2;
+      } else {
+        t = 1;
+      }
+    }
+    return (o._sizeTier = t);
+  }
+
+  function sizeTierLabel(o: Org): string {
+    switch (sizeTier(o)) {
+      case 6:
+        return "Headline grid operator";
+      case 5:
+        return "Grid authority";
+      case 4:
+        return "Transmission operator";
+      case 3:
+        return "Major utility";
+      case 2:
+        return "Local utility";
+      default:
+        return "Market / supplemental";
+    }
+  }
+
+  // Standardized full-zoom radius (CSS px) for a size tier. Monotonic, no
+  // weight/priority continuous curve — equal tiers get equal radii. Lower tiers
+  // are deliberately larger than the old curve so a promoted low-rank bubble is
+  // still readable/clickable.
+  function tierBaseRadiusPx(tier: number, isCompact: boolean, _isPhone: boolean): number {
+    const desktop: Record<number, number> = { 6: 40, 5: 32, 4: 26, 3: 21, 2: 17, 1: 13 };
+    const mobile: Record<number, number> = { 6: 22, 5: 19, 4: 16, 3: 13.5, 2: 11, 1: 9 };
+    const table = isCompact ? mobile : desktop;
+    return table[tier] ?? table[1];
+  }
+
   function visualRadius(o: Org, k: number): number {
-    // Role weight is the primary size signal; priority affects disclosure and
-    // placement, but cannot make bubbles escape these visual bounds.
-    const rawPriority = visualPriority(o);
-    const priority = rawPriority / 100;
+    // Height is standardized by size tier; zoom, compact/phone scaling, the
+    // disclosure ramp, and readability floors are the only modifiers. No
+    // weight/priority continuous boosts (those made equal-tier orgs differ).
+    const tier = sizeTier(o);
+    const tierT = (tier - 1) / 5; // 0 (tier 1) .. 1 (tier 6)
     const topTier = isTopTierOrg(o);
-    const weight = Math.max(1, o.weight ?? 1);
-    const weightT = Math.max(0, Math.min(1, (weight - 1) / 40));
     const minPx = compact ? 4.4 : 6.2;
-    const maxPx = compact ? (topTier ? 19 : 17) : Math.min(topTier ? 40 : 36, MAX_RADIUS);
-    const fullPx = minPx + (maxPx - minPx) * Math.pow(weightT, 0.7);
+    // Standardized full-zoom target radius for this tier.
+    const fullPx = tierBaseRadiusPx(tier, compact, phone);
     const zoomT = smoothStep((k - 0.72) / (compact ? 3.5 : 12));
-    // Overview bubble size: at the outermost bucket, top-tier bubbles are smaller
-    // so more high-ranked blue/purple authority orgs fit before smaller orgs enter
-    // on the next zoom bucket. They ramp back to the fuller overview size as soon
-    // as the user zooms in, preserving hierarchy without letting a few giants
-    // consume the map.
+    // Overview: shrink the largest tiers at the outermost bucket so more high-rank
+    // authority orgs fit before smaller orgs enter on the next bucket; ramp back
+    // to full as soon as the user zooms in.
     const outerTopScaleT = smoothStep((k - 0.75) / (compact ? 0.22 : 0.2));
-    const topOverviewScale = compact
-      ? 0.38 + 0.26 * outerTopScaleT
-      : 0.36 + 0.48 * outerTopScaleT;
-    const overviewScale = compact ? (topTier ? topOverviewScale : 0.5) : (topTier ? topOverviewScale : 0.72);
+    const topOverviewScale = compact ? 0.4 + 0.26 * outerTopScaleT : 0.4 + 0.48 * outerTopScaleT;
+    const overviewScale = tier >= 5 ? topOverviewScale : compact ? 0.56 : 0.72;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
-    const weightLiftPx = weightT * (compact ? 5 : 8.5) * (0.3 + 0.7 * zoomT);
-    const closeT = smoothStep((k - 2.1) / (compact ? 7.5 : 8.5));
-    const priorityT = smoothStep((rawPriority - 42) / 58);
-    const weightCloseT = smoothStep((weightT - 0.35) / 0.65);
-    const boostPx = canGrowAtZoom(o) ? (compact ? 7 : 11.5) * Math.max(priorityT, weightCloseT) * closeT : 0;
-    // Mid-zoom lift for grid leadership so BA/RC/PC/TOP/TSP stay ahead after the
-    // small-org growth pass; fades once deep-zoom catch-up kicks in.
-    const leadershipMidBoost = isGridLeadershipOrg(o)
-      ? (compact ? 4.5 : 7.2) * smoothStep((k - 0.85) / 2.4) * (1 - smoothStep((k - 7.5) / 3.5))
-      : 0;
-    // Deep-zoom boost, weighted toward the smallest orgs: if you keep zooming
-    // into a low-priority entity it grows so its name can finally read.
-    const deepT = smoothStep((k - (compact ? 4.5 : 5)) / (compact ? 18 : 22));
-    const smallOrgT = smoothStep((72 - rawPriority) / 62);
-    const dominance = growthDominanceFactor(o, k);
-    const deepBoostMaxPx = 15;
-    const deepBoostPx = canGrowAtZoom(o)
-      ? deepBoostMaxPx * deepT * (0.25 + 0.75 * smallOrgT) * (isDeferredMarketOrg(o) ? 0.55 : 1) * dominance
-      : 0;
-    // Continuous growth applied to every bubble across the whole zoom range, so
-    // that going one step deeper always yields visibly larger circles instead of
-    // plateauing once basePx saturates. Ramps smoothly from the overview to deep
-    // zoom, scaled by priority so important orgs grow the most.
-    const wideT = smoothStep((k - 1) / 36);
-    const zoomGrowthPx = (compact ? 14 : 21) * wideT * (0.18 + 0.82 * priority) * dominance;
-    const zoomMaxPx =
-      maxPx +
-      (canGrowAtZoom(o) ? (compact ? 6 : 10) : 0) +
-      (canGrowAtZoom(o) ? deepBoostMaxPx : 0) +
-      (compact ? 14 : 21);
-    // Deep-zoom minimum: once you are zoomed right in, no visible org should stay
-    // tiny when there is clearly room — every bubble reaches a readable floor so
-    // its label can show. Screen coords are spread far apart at this zoom, so the
-    // floor never reintroduces overlap (placement re-solves per bucket).
-    const deepMinPx =
-      (compact ? 6.5 : 7.5) *
-      smoothStep((k - 6) / 14) *
-      (isGridLeadershipOrg(o) ? 1 : smoothStep((rawPriority - 22) / 38));
-    // Overview floor for AK/HI inset dots — lift the smallest utilities in the
-    // tiny projection inset without changing mainland sizing.
-    const insetOverviewMinPx = isUsInsetOrg(o)
-      ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2)
-      : 0;
-    const topTierOverviewMinPx = topTier
-      ? (compact ? 10.5 : 13.5) * (1 - smoothStep((k - 1.25) / 2.75))
-      : 0;
+    // A small, tier-scaled deep-zoom lift so zooming further still grows bubbles a
+    // little — kept modest so the tiers never converge to one size.
+    const deepGrowPx = (compact ? 4.5 : 7) * smoothStep((k - 3) / 16) * (0.4 + 0.6 * tierT);
+    const capPx = fullPx + deepGrowPx + (compact ? 2 : 3);
+    // Deep-zoom readability floor: once zoomed right in, no visible bubble stays
+    // tiny — every one reaches a legible floor (placement re-solves per bucket so
+    // this never reintroduces overlap).
+    const deepMinPx = (compact ? 7 : 8.5) * smoothStep((k - 6) / 14) * (0.55 + 0.45 * tierT);
+    // Overview floor for AK/HI inset dots.
+    const insetOverviewMinPx = isUsInsetOrg(o) ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2) : 0;
+    const topTierOverviewMinPx =
+      tier >= 6 ? (compact ? 10.5 : 13.5) * (1 - smoothStep((k - 1.25) / 2.75)) : 0;
     const postRevealT = postRevealBoostT(o, k);
-    const postRevealPx = postRevealT
-      * (isDeferredMarketOrg(o) ? (compact ? 18 : 22) : isTransmissionOwnerOnly(o) ? (compact ? 10 : 12) : 0);
+    const postRevealPx =
+      postRevealT *
+      (isDeferredMarketOrg(o) ? (compact ? 12 : 15) : isTransmissionOwnerOnly(o) ? (compact ? 7 : 9) : 0);
     const microRevealMinPx =
-      postRevealT * (isDeferredMarketOrg(o) ? (compact ? 9 : 11) : (compact ? 6.5 : 7.5));
+      postRevealT * (isDeferredMarketOrg(o) ? (compact ? 9 : 11) : compact ? 6.5 : 7.5);
     const targetPx = Math.max(
       minPx,
       deepMinPx,
       insetOverviewMinPx,
       topTierOverviewMinPx,
       microRevealMinPx,
-      Math.min(
-        zoomMaxPx,
-        basePx + weightLiftPx + boostPx + leadershipMidBoost + deepBoostPx + zoomGrowthPx + postRevealPx,
-      ),
+      Math.min(capPx, basePx + deepGrowPx + postRevealPx),
     );
-    const discloseT = topTier ? 1 : bubbleDisclosureT(o, k);
+    const discloseT = tier >= 6 || topTier ? 1 : bubbleDisclosureT(o, k);
     const scaledPx = (minPx + (targetPx - minPx) * discloseT) * phoneSizeScale() * ORG_CONTENT_SCALE;
-    const overviewFloorPx = isHomeOverviewZoom(k)
-      ? compact
-        ? 4.8 * phoneSizeScale()
-        : 8.8
-      : 0;
-    const outerCapPx = isHomeOverviewZoom(k) && isNationalFillOrg(o)
-      ? (compact ? 12.2 : 16.2)
-      : maxPx;
-    return Math.max(minPx, overviewFloorPx, Math.min(maxPx, outerCapPx, scaledPx)) * unitPerPx;
+    const overviewFloorPx = isHomeOverviewZoom(k) ? (compact ? 4.8 * phoneSizeScale() : 8.8) : 0;
+    const outerCapPx =
+      isHomeOverviewZoom(k) && isNationalFillOrg(o) ? (compact ? 12.2 : 16.2) : capPx;
+    return (
+      Math.min(MAX_RADIUS, Math.max(minPx, overviewFloorPx, Math.min(outerCapPx, scaledPx))) * unitPerPx
+    );
   }
 
   // Puerto Rico / U.S. Virgin Islands inset dots are schematic (uniform, not
@@ -1971,8 +2028,9 @@ export function mountNercOrgMap(): void {
       return Math.max(visual + 2 * unitPerPx, (compact ? 18 : 12) * unitPerPx);
     }
     // Every shown bubble is fully placed, so tap targets track the visible radius
-    // plus a small pad and a floor — no per-dot reveal strength to fold in.
-    const visual = bubblePackingRadius(renderedRadius(o, k));
+    // plus a small pad and a floor — no per-dot reveal strength to fold in. Uses
+    // the org-aware packing radius so the hit ring covers the widened rectangle.
+    const visual = orgPackingRadius(o, k);
     const priority = visualPriority(o);
     // Floors keep even modest mid-priority utilities (e.g. western irrigation /
     // municipal districts like TID, IID, LADWP) comfortably clickable when their
@@ -2144,14 +2202,56 @@ export function mountNercOrgMap(): void {
     }
   }
 
-  // Every bubble is a subtly horizontal rounded rectangle: 8% wider and 8%
-  // shorter than the former circle, preserving almost exactly the same area.
-  function bubbleHalfExtents(r: number): { hw: number; hh: number } {
-    return { hw: r * BUBBLE_WIDTH_FACTOR, hh: r * BUBBLE_HEIGHT_FACTOR };
+  // Horizontal padding (per side) reserved inside the rectangle so the inside
+  // label never touches the rounded edge.
+  function insideLabelPadX(): number {
+    return (compact ? 5 : 6) * unitPerPx;
+  }
+  // SVG bold text renders a little wider than the canvas measurement; pad the
+  // measured width so the label never spills.
+  const INSIDE_LABEL_SAFETY = 1.12;
+
+  // Per-org WIDTH multiple of the radius. Returns BUBBLE_WIDTH_FACTOR unless the
+  // org's inside label needs more horizontal room, in which case it grows so the
+  // measured label width + padding fits. Computed from the full-units rendered
+  // radius (the same radius the label font is derived from), so the resulting
+  // factor is scale-invariant: callers can apply it to a radius in any units.
+  function orgWidthFactor(o: Org, k: number): number {
+    const fallback = !!o._renderFallback;
+    if (o._wfk === k && o._wfGen === radiusGen && o._wf != null && o._wfFallback === fallback) {
+      return o._wf;
+    }
+    let factor = BUBBLE_WIDTH_FACTOR;
+    const brand = o._frame === "terr" || fallback ? "" : tinyName(o);
+    if (brand) {
+      const rFull = renderedRadius(o, k);
+      if (rFull > 0) {
+        const font = insideLabelFont(o, k, rFull, brand.length);
+        const text = displayMapLabel(o, brand);
+        const needHw = (measuredTextWidth(text, font) * INSIDE_LABEL_SAFETY) / 2 + insideLabelPadX();
+        factor = Math.max(BUBBLE_WIDTH_FACTOR, needHw / rFull);
+      }
+    }
+    o._wf = factor;
+    o._wfk = k;
+    o._wfGen = radiusGen;
+    o._wfFallback = fallback;
+    return factor;
   }
 
-  function bubbleContainsOffset(dx: number, dy: number, r: number): boolean {
-    const { hw, hh } = bubbleHalfExtents(r);
+  // The SINGLE SOURCE OF TRUTH for an org's rectangle extents. Height stays
+  // tier-driven (BUBBLE_HEIGHT_FACTOR · r); width is whichever is larger of the
+  // base width and the room the inside label needs.
+  function orgBubbleHalfExtents(
+    o: Org,
+    k: number,
+    r = renderedRadius(o, k),
+  ): { hw: number; hh: number } {
+    return { hw: r * orgWidthFactor(o, k), hh: r * BUBBLE_HEIGHT_FACTOR };
+  }
+
+  function orgBubbleContainsOffset(o: Org, k: number, dx: number, dy: number, r: number): boolean {
+    const { hw, hh } = orgBubbleHalfExtents(o, k, r);
     return Math.abs(dx) <= hw && Math.abs(dy) <= hh;
   }
 
@@ -2161,6 +2261,15 @@ export function mountNercOrgMap(): void {
   // full diagonal.
   function bubblePackingRadius(r: number): number {
     return r * BUBBLE_PACKING_FACTOR;
+  }
+
+  // Org-aware packing radius: a bounding circle big enough to reserve the WIDENED
+  // rectangle (so wide labels reserve enough horizontal room in the capacity gate,
+  // the force collide, hover targets, and the overlap backstop). Matches
+  // bubblePackingRadius exactly for un-widened bubbles.
+  function orgPackingRadius(o: Org, k: number, r = renderedRadius(o, k)): number {
+    const { hw, hh } = orgBubbleHalfExtents(o, k, r);
+    return Math.max(hw, hh) * (BUBBLE_PACKING_FACTOR / BUBBLE_WIDTH_FACTOR);
   }
 
   function setOrgBoxPosition(node: SVGRectElement, cx: number, cy: number): void {
@@ -2173,12 +2282,12 @@ export function mountNercOrgMap(): void {
   // Preserve the current center while changing size so hover/zoom never makes a
   // rectangle jump. Position stays in x/y so the tour's CSS scale pulse composes
   // safely instead of replacing an SVG translate.
-  function setOrgBoxSize(node: SVGRectElement, r: number): void {
+  function setOrgBoxSize(node: SVGRectElement, o: Org, k: number, r: number): void {
     const oldW = Number(node.getAttribute("width") || 0);
     const oldH = Number(node.getAttribute("height") || 0);
     const cx = Number(node.getAttribute("x") || 0) + oldW / 2;
     const cy = Number(node.getAttribute("y") || 0) + oldH / 2;
-    const { hw, hh } = bubbleHalfExtents(r);
+    const { hw, hh } = orgBubbleHalfExtents(o, k, r);
     const w = 2 * hw;
     const h = 2 * hh;
     node.setAttribute("x", String(cx - w / 2));
@@ -2210,7 +2319,25 @@ export function mountNercOrgMap(): void {
     const codes = misoControlAreaCodes(o);
     const codeLabel = codes.join(" and ");
     const codeNoun = codes.length === 1 ? "LBA code" : "LBA codes";
-    return `${displayName(o)} is a MISO Control Area (MISO CA), identified by ${codeNoun} ${codeLabel}. It serves as a local balancing authority within the Midcontinent ISO footprint.`;
+    return `${displayName(o)} is a MISO Local Balancing Authority (LBA), identified by ${codeNoun} ${codeLabel}. MISO LBAs are the local control areas that make up the Midcontinent ISO (MISO) footprint.`;
+  }
+
+  // PJM transmission zones attach to their org via area-aliases.json (PJM-market
+  // codes); read them straight off the enriched org's area_aliases. WESTERN HUB is
+  // a PJM pricing hub, not an organization, so it never lands here.
+  function pjmZoneCodes(o: Org): string[] {
+    return o.area_aliases?.filter((code) => PJM_TRANSMISSION_ZONE_CODES.has(code)) ?? [];
+  }
+
+  function pjmZoneCodeLabel(o: Org): string {
+    return pjmZoneCodes(o).join(" / ");
+  }
+
+  function pjmZoneNote(o: Org): string {
+    const codes = pjmZoneCodes(o);
+    const codeLabel = codes.join(" and ");
+    const codeNoun = codes.length === 1 ? "zone code" : "zone codes";
+    return `${displayName(o)} maps to the PJM transmission zone ${codeLabel} (${codeNoun}). PJM uses transmission zones to settle locational prices across the PJM Interconnection footprint.`;
   }
 
   // Keep each saber ring matched to its bubble: same center and rounded-rect
@@ -2229,7 +2356,7 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("hide", o._vis === false);
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
-      const { hw, hh } = bubbleHalfExtents(renderedRadius(o, k) / k);
+      const { hw, hh } = orgBubbleHalfExtents(o, k, renderedRadius(o, k) / k);
       const w = 2 * hw + 2 * out;
       const h = 2 * hh + 2 * out;
       node.setAttribute("x", String(cx - w / 2));
@@ -2305,15 +2432,20 @@ export function mountNercOrgMap(): void {
       const shown = o._vis !== false && o._x != null;
       node.classList.toggle("hide", !shown);
       if (!shown) return;
+      // Strengthen the thread that belongs to the hover/selection focus so it
+      // reads as the active relationship (CSS handles the visual bump).
+      node.classList.toggle("is-hovered", hoverOrg?.ncr_id === o.ncr_id);
+      node.classList.toggle("is-selected", selectedOrg?.ncr_id === o.ncr_id);
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
       node.setAttribute("d", rtoLinkPath(cx, cy, hx, hy, k));
     });
   }
 
-  // Re-thread both RTO link layers (MISO control areas + PJM transmission zones).
+  // Re-thread both RTO area-link layers: MISO Local Balancing Authorities (LBAs)
+  // back to MISO, PJM transmission zones back to PJM.
   function syncRtoLinks(k = transform.k): void {
-    syncRtoAreaLinks(gMisoLink, MISO_HUB_ID, "miso-link", k);
+    syncRtoAreaLinks(gMisoLink, MISO_HUB_ID, "miso-control-area-link", k);
     syncRtoAreaLinks(gPjmLink, PJM_HUB_ID, "pjm-area-link", k);
   }
 
@@ -2398,7 +2530,7 @@ export function mountNercOrgMap(): void {
       if (node.classList.contains("hide")) return;
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
-        setOrgBoxSize(node, rr / k);
+        setOrgBoxSize(node, o, k, rr / k);
         o._rk = k;
         o._rr = rr;
       }
@@ -2740,7 +2872,7 @@ export function mountNercOrgMap(): void {
       else if (o.ncr_id === "NCR07124") ne = o;
     }
     if (!ny || !ne || ny._sx == null || ny._sy == null || ne._sx == null || ne._sy == null) return;
-    const half = (o: Org) => bubbleHalfExtents(renderedRadius(o, k));
+    const half = (o: Org) => orgBubbleHalfExtents(o, k);
     const GAP = 6;
     const shift = (o: Org, dx: number, dy: number): void => {
       o._dx = (o._dx ?? 0) + dx;
@@ -2835,7 +2967,7 @@ export function mountNercOrgMap(): void {
     });
     let maxExt = 8;
     for (const o of cands) {
-      const { hw, hh } = bubbleHalfExtents(renderedRadius(o, k));
+      const { hw, hh } = orgBubbleHalfExtents(o, k);
       if (hw > maxExt) maxExt = hw;
       if (hh > maxExt) maxExt = hh;
     }
@@ -2885,7 +3017,7 @@ export function mountNercOrgMap(): void {
     };
     for (const o of order) {
       if (o._sx == null || o._sy == null) continue;
-      const { hw, hh } = bubbleHalfExtents(renderedRadius(o, k));
+      const { hw, hh } = orgBubbleHalfExtents(o, k);
       let b = bubbleBox(o._sx, o._sy, hw, hh);
       const exempt =
         isIsoRtoOperator(o) ||
@@ -2924,7 +3056,7 @@ export function mountNercOrgMap(): void {
     if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o) || isIsoRtoOperator(o)) return;
     const bucket = declutterBucket(k);
     const frame = orgLandFrame(o);
-    const r = bubblePackingRadius(renderedRadius(o, k));
+    const r = orgPackingRadius(o, k);
     const { cx, cy } = bubbleScreenCenter(o, bucket);
     if (placementLandValid(cx, cy, r, bucket, frame, false)) return;
     o._placed = false;
@@ -2972,7 +3104,7 @@ export function mountNercOrgMap(): void {
     let bucketTop = bucket;
     while (declutterBucket(bucketTop + 0.02) === bucket) bucketTop += 0.02;
     const reserveR = (o: Org): number =>
-      bubblePackingRadius(renderedRadius(o, bucketTop)) + gap * 0.5;
+      orgPackingRadius(o, bucketTop) + gap * 0.5;
 
     // Gather orgs eligible at this zoom (label fits inside), most-important first.
     const eligible: Org[] = [];
@@ -3378,7 +3510,7 @@ export function mountNercOrgMap(): void {
       return {
         x: o._sx,
         y: o._sy,
-        r: bubblePackingRadius(renderedRadius(o, k)) + bubblePad,
+        r: orgPackingRadius(o, k) + bubblePad,
       };
     };
     const circlesOverlap = (
@@ -3634,7 +3766,7 @@ export function mountNercOrgMap(): void {
       // so write only when the resolved radius actually moved — cheap, no storm.
       const rr = renderedRadius(o, k);
       if (o._rk !== k || o._rr !== rr) {
-        setOrgBoxSize(node, rr / k);
+        setOrgBoxSize(node, o, k, rr / k);
         o._rk = k;
         o._rr = rr;
       }
@@ -3665,6 +3797,11 @@ export function mountNercOrgMap(): void {
         node.classList.toggle("tour-flash", (mask & 64) !== 0);
         node.classList.toggle("tour-pick", (mask & 128) !== 0);
         node.classList.toggle("tour-dim", (mask & 256) !== 0);
+        // Strengthen the RTO relationship outline when a linked bubble is the
+        // hover/selection focus (CSS only acts on the *-linked-org variants).
+        const areaLinked = isPjmZone(o) || isMisoControlArea(o);
+        node.classList.toggle("is-hovered", areaLinked && (mask & 16) !== 0);
+        node.classList.toggle("is-selected", areaLinked && (mask & 32) !== 0);
       }
     });
 
@@ -3829,8 +3966,7 @@ export function mountNercOrgMap(): void {
       if (o._sx == null || o._sy == null) continue;
       // Tighter pad so geo labels can fill the gaps between bubbles, not just the
       // wide-open regions — they still never touch a bubble.
-      const r = renderedRadius(o, k);
-      const { hw, hh } = bubbleHalfExtents(r);
+      const { hw, hh } = orgBubbleHalfExtents(o, k);
       const pad = (compact ? 3 : 4) * unitPerPx;
       bubbleBoxes.push({
         x0: o._sx - hw - pad,
@@ -4343,7 +4479,12 @@ export function mountNercOrgMap(): void {
     tooltip.append(chips);
     if (isMisoControlArea(o)) {
       tooltip.append(
-        createEl("div", "tt-misoca", `MISO Control Area · ${misoControlAreaCodeLabel(o)}`),
+        createEl("div", "tt-misoca", `MISO LBA · ${misoControlAreaCodeLabel(o)}`),
+      );
+    }
+    if (isPjmZone(o)) {
+      tooltip.append(
+        createEl("div", "tt-pjmzone", `PJM transmission zone · ${pjmZoneCodeLabel(o)}`),
       );
     }
     tooltip.hidden = false;
@@ -4505,14 +4646,14 @@ export function mountNercOrgMap(): void {
     return s;
   }
 
-  function createMapPriorityScore(o: Org): HTMLDivElement {
+  function createMapSizeTier(o: Org): HTMLDivElement {
     const score = createEl("div", "p-priority-score");
     score.append(
-      createEl("span", "p-priority-num", String(o.weight)),
+      createEl("span", "p-priority-num", sizeTierLabel(o)),
       createEl(
         "span",
         undefined,
-        `Used for bubble size and display priority.${o.is_iso_rto ? " ISO/RTO scale included." : ""}`,
+        "Size shows role tier; color shows the role mix. See the roles below.",
       ),
     );
     return score;
@@ -4556,7 +4697,7 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("org-promoted", promoted);
       node.classList.toggle("org-background", rendersAsBackgroundDot(o, labeled, forced));
       const rr = promoted ? promotedBackgroundRadius(o, k) : renderedRadius(o, k);
-      setOrgBoxSize(node, rr / k);
+      setOrgBoxSize(node, o, k, rr / k);
     });
     if (hot) raiseVisibleOrg(hot);
   }
@@ -4574,7 +4715,7 @@ export function mountNercOrgMap(): void {
       node.classList.toggle("org-background", rendersAsBackgroundDot(o, labeled, forced));
       node.classList.toggle("hot", false);
       const rr = promoted ? promotedBackgroundRadius(o, k) : renderedRadius(o, k);
-      setOrgBoxSize(node, rr / k);
+      setOrgBoxSize(node, o, k, rr / k);
     });
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").classed("hot", false);
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").classed("hot-label", false);
@@ -4647,13 +4788,22 @@ export function mountNercOrgMap(): void {
       );
       panelBody.append(note);
     } else {
-      // MISO control areas lead with a prominent "MISO Control Area (CA)" badge
-      // at the very top of the panel, then their plain-language description.
+      // MISO Local Balancing Authorities and PJM transmission zones lead with a
+      // prominent relationship badge at the top of the panel, then the plain-
+      // language description. An org can carry both (e.g. straddling utilities).
       if (isMisoControlArea(o)) {
         const note = createEl("p", "p-misoca");
         note.append(
-          createEl("span", "p-misoca-badge", "MISO Control Area (CA)"),
+          createEl("span", "p-misoca-badge", "MISO Local Balancing Authority (LBA)"),
           createEl("span", "p-misoca-text", misoControlAreaNote(o)),
+        );
+        panelBody.append(note);
+      }
+      if (isPjmZone(o)) {
+        const note = createEl("p", "p-pjmzone");
+        note.append(
+          createEl("span", "p-pjmzone-badge", "PJM transmission zone"),
+          createEl("span", "p-pjmzone-text", pjmZoneNote(o)),
         );
         panelBody.append(note);
       }
@@ -4664,7 +4814,7 @@ export function mountNercOrgMap(): void {
     addDlRow(dl, "Regional Entity", regionLabel(o));
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
-    addDlRow(dl, "Map priority score", createMapPriorityScore(o));
+    addDlRow(dl, "Map size / priority", createMapSizeTier(o));
     if (o.geo_notes) addDlRow(dl, "Location notes", o.geo_notes);
 
     if (o.combined_members?.length) {
@@ -5226,13 +5376,19 @@ export function mountNercOrgMap(): void {
         (o) =>
           "org" +
           (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : "") +
-          (o.nerc_registered === false ? " unregistered" : ""),
+          (o.nerc_registered === false ? " unregistered" : "") +
+          // Relationship-overlay marker: a matching-colour outline tying the bubble
+          // to its RTO hub link. Static per org (membership never changes with zoom),
+          // so it is set once here rather than in the per-frame class pass.
+          (isPjmZone(o) ? " pjm-area-linked-org" : "") +
+          (isMisoControlArea(o) ? " miso-control-area-linked-org" : ""),
       )
       .attr("fill", (o) => safeColor(o.color))
       .attr("transform", null)
       .each(function (o) {
         const node = this as SVGRectElement;
-        setOrgBoxSize(node, renderedRadius(o, transform.k) / Math.max(transform.k, 0.001));
+        const k = transform.k;
+        setOrgBoxSize(node, o, k, renderedRadius(o, k) / Math.max(k, 0.001));
         setOrgBoxPosition(node, orgRenderX(o), orgRenderY(o));
       })
       .attr("tabindex", 0)
@@ -5280,14 +5436,14 @@ export function mountNercOrgMap(): void {
       .text((o) => orgAcronym(o));
 
     // Background threads tying each visible RTO area org back to its hub: MISO
-    // control areas to MISO, PJM transmission zones to PJM. The squiggle geometry
-    // is written by syncRtoLinks; the flowing animation is pure CSS, so a few dozen
-    // of these cost effectively nothing per frame.
+    // Local Balancing Authorities (LBAs) to MISO, PJM transmission zones to PJM.
+    // The squiggle geometry is written by syncRtoLinks; the flowing animation is
+    // pure CSS, so a few dozen of these cost effectively nothing per frame.
     gMisoLink
-      .selectAll("path.miso-link")
+      .selectAll("path.miso-control-area-link")
       .data(visibleOrder.filter(isMisoControlArea), (o: unknown) => (o as Org).ncr_id)
       .join("path")
-      .attr("class", "miso-link")
+      .attr("class", "miso-control-area-link")
       .attr("aria-hidden", "true");
     gPjmLink
       .selectAll("path.pjm-area-link")
