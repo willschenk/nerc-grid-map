@@ -374,12 +374,107 @@
   filter: drop-shadow(0 0 2.4px var(--pjm-area-glow));
 }
 
+/* ── Regional-family constellation ───────────────────────────────────────────
+   Builds on the overlay colours above to make PJM and MISO read as two distinct
+   energy families: each hub is a glowing gravitational centre, its members carry
+   a matching halo, and the threads disclose progressively / on focus. */
+
+/* The two hubs trade the generic orange saber for their family colour, so PJM and
+   MISO stand out as the centres of their constellations. Every other ISO/RTO keeps
+   the orange light. */
+#nerc-svg .org-saber.miso-saber {
+  stroke: var(--miso-area-color);
+  filter:
+    drop-shadow(0 0 1.6px hsla(205, 90%, 58%, 0.95))
+    drop-shadow(0 0 4px hsla(205, 90%, 50%, 0.7));
+}
+#nerc-svg .org-saber.pjm-saber {
+  stroke: var(--pjm-area-color);
+  filter:
+    drop-shadow(0 0 1.6px hsla(322, 82%, 62%, 0.95))
+    drop-shadow(0 0 4px hsla(322, 82%, 53%, 0.7));
+}
+
+/* A soft, persistent family halo on the hub bubble itself; it intensifies when the
+   family is the hover/selection focus. paint-order keeps the thin colour ring
+   outside the role fill. */
+#nerc-svg .org.market-hub {
+  stroke-width: 1.3;
+  paint-order: stroke fill;
+}
+#nerc-svg .org.miso-hub {
+  stroke: var(--miso-area-color);
+  filter: drop-shadow(0 0 3px var(--miso-area-glow));
+}
+#nerc-svg .org.pjm-hub {
+  stroke: var(--pjm-area-color);
+  filter: drop-shadow(0 0 3px var(--pjm-area-glow));
+}
+#nerc-svg .org.miso-hub.family-on {
+  stroke-width: 2.2;
+  filter: drop-shadow(0 0 6.5px hsla(205, 90%, 52%, 0.85));
+}
+#nerc-svg .org.pjm-hub.family-on {
+  stroke-width: 2.2;
+  filter: drop-shadow(0 0 6.5px hsla(322, 82%, 55%, 0.85));
+}
+
+/* Member bubble glow when its family is lit (i.e. its hub is the focus), reusing
+   the hover/selection glow so "focus the hub → the whole family lights up" reads
+   instantly. Only the focused family's members carry a filter at once. */
+#nerc-svg .org.miso-control-area-linked-org.family-on {
+  stroke-width: 2.4;
+  filter: drop-shadow(0 0 2.4px var(--miso-area-glow));
+}
+#nerc-svg .org.pjm-area-linked-org.family-on {
+  stroke-width: 2.4;
+  filter: drop-shadow(0 0 2.4px var(--pjm-area-glow));
+}
+
+/* A lit thread (focused member OR focused hub's whole family) gets the same bump
+   as a directly hovered one. */
+#nerc-svg .miso-control-area-link.family-on,
+#nerc-svg .pjm-area-link.family-on {
+  stroke-width: 1.5;
+  opacity: 1;
+  animation: nerc-rto-area-flow 0.8s linear infinite;
+}
+
+/* Progressive disclosure: the full thread web is hidden at the overview so it never
+   reads as a tangled subway map; it reveals once zoomed in (`.market-links-on`, set
+   in syncRtoLinks) or for the currently focused family (`.family-on`). */
+#nerc-svg .miso-control-area-link,
+#nerc-svg .pjm-area-link {
+  display: none;
+}
+#nerc-svg.market-links-on .miso-control-area-link,
+#nerc-svg.market-links-on .pjm-area-link,
+#nerc-svg .miso-control-area-link.family-on,
+#nerc-svg .pjm-area-link.family-on {
+  display: block;
+}
+/* Re-asserted last: a thread whose endpoint isn't a visible bubble has no geometry. */
+#nerc-svg .miso-control-area-link.hide,
+#nerc-svg .pjm-area-link.hide {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #nerc-svg .miso-control-area-link,
   #nerc-svg .pjm-area-link {
     animation: none;
     stroke-dasharray: none;
     opacity: 0.55;
+  }
+  /* No moving light on the hub sabers or focused threads. */
+  #nerc-svg .org-saber.miso-saber,
+  #nerc-svg .org-saber.pjm-saber {
+    animation: none;
+    stroke-dasharray: none;
+  }
+  #nerc-svg .miso-control-area-link.family-on,
+  #nerc-svg .pjm-area-link.family-on {
+    animation: none;
   }
 }
 

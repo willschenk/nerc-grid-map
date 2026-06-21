@@ -112,6 +112,7 @@ type Org = {
   _vp?: number;         // visualPriority(o)
   _lpv?: number;        // labelPriority(o)
   _sizeTier?: number;   // sizeTier(o)
+  _mf?: "PJM" | "MISO" | null; // marketFamily(o)
   _visRank?: number;    // position in visual-priority-descending sort
   _labelRank?: number;  // position in label-priority-descending sort
   // Last-written DOM state — skip redundant attribute/class writes when unchanged.
@@ -2307,6 +2308,24 @@ export function mountNercOrgMap(): void {
     return MISO_CONTROL_AREA_CODES.has(o.ncr_id);
   }
 
+  // The two market hubs that anchor a regional family.
+  function isMarketHub(o: Org): boolean {
+    return o.ncr_id === PJM_HUB_ID || o.ncr_id === MISO_HUB_ID;
+  }
+
+  // Regional-family affiliation, the single source of truth for the PJM/MISO
+  // "constellation" overlay. Derived ONLY from existing, curated membership
+  // metadata (PJM transmission-zone codes via area_aliases; MISO LBA codes), plus
+  // the hubs themselves. An org with no clear membership stays neutral (null) — we
+  // never force an org into a family. Mirrors `marketFamily` on the data side.
+  function marketFamily(o: Org): "PJM" | "MISO" | null {
+    if (o._mf !== undefined) return o._mf;
+    let v: "PJM" | "MISO" | null = null;
+    if (o.ncr_id === PJM_HUB_ID || isPjmZone(o)) v = "PJM";
+    else if (o.ncr_id === MISO_HUB_ID || isMisoControlArea(o)) v = "MISO";
+    return (o._mf = v);
+  }
+
   function misoControlAreaCodes(o: Org): readonly string[] {
     return MISO_CONTROL_AREA_CODES.get(o.ncr_id) ?? [];
   }
@@ -2432,19 +2451,27 @@ export function mountNercOrgMap(): void {
       const shown = o._vis !== false && o._x != null;
       node.classList.toggle("hide", !shown);
       if (!shown) return;
-      // Strengthen the thread that belongs to the hover/selection focus so it
-      // reads as the active relationship (CSS handles the visual bump).
-      node.classList.toggle("is-hovered", hoverOrg?.ncr_id === o.ncr_id);
-      node.classList.toggle("is-selected", selectedOrg?.ncr_id === o.ncr_id);
+      // Focus/family emphasis classes are managed centrally by applyFamilyFocus
+      // (they persist on the node between geometry syncs); here we only rewrite the
+      // thread geometry.
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
       node.setAttribute("d", rtoLinkPath(cx, cy, hx, hy, k));
     });
   }
 
+  // Below this zoom the whole web of family threads is hidden to keep the overview
+  // clean (the hubs still glow); a hovered/selected family's threads are exempt and
+  // always show via the `.family-on` CSS escape hatch.
+  function linkRevealK(): number {
+    return compact ? 2.0 : 1.6;
+  }
+
   // Re-thread both RTO area-link layers: MISO Local Balancing Authorities (LBAs)
   // back to MISO, PJM transmission zones back to PJM.
   function syncRtoLinks(k = transform.k): void {
+    // Progressive disclosure: reveal the full thread web only once zoomed in.
+    svg.classed("market-links-on", k >= linkRevealK());
     syncRtoAreaLinks(gMisoLink, MISO_HUB_ID, "miso-control-area-link", k);
     syncRtoAreaLinks(gPjmLink, PJM_HUB_ID, "pjm-area-link", k);
   }
@@ -3797,11 +3824,8 @@ export function mountNercOrgMap(): void {
         node.classList.toggle("tour-flash", (mask & 64) !== 0);
         node.classList.toggle("tour-pick", (mask & 128) !== 0);
         node.classList.toggle("tour-dim", (mask & 256) !== 0);
-        // Strengthen the RTO relationship outline when a linked bubble is the
-        // hover/selection focus (CSS only acts on the *-linked-org variants).
-        const areaLinked = isPjmZone(o) || isMisoControlArea(o);
-        node.classList.toggle("is-hovered", areaLinked && (mask & 16) !== 0);
-        node.classList.toggle("is-selected", areaLinked && (mask & 32) !== 0);
+        // The RTO relationship outline / family emphasis (is-hovered/is-selected/
+        // family-on) is managed centrally by applyFamilyFocus, called below.
       }
     });
 
@@ -4659,6 +4683,56 @@ export function mountNercOrgMap(): void {
     return score;
   }
 
+  // PJM/MISO regional-family emphasis. Bidirectional & additive (never dims the
+  // rest of the map):
+  //   • focus a HUB  → light its whole family (every member bubble + every thread)
+  //   • focus a MEMBER → light its own thread back to the hub + glow the hub
+  // The classes persist on nodes between geometry syncs, so this only needs to run
+  // when focus changes or after a redraw re-joins the nodes. Cheap: it touches only
+  // the ~60 family nodes (selected by class), not every bubble.
+  function applyFamilyFocus(): void {
+    const whole = new Set<string>(); // families whose HUB is focused → light all
+    const touched = new Set<string>(); // families with any focus → glow the hub
+    for (const f of [hoverOrg, selectedOrg]) {
+      if (!f) continue;
+      const fam = marketFamily(f);
+      if (!fam) continue;
+      touched.add(fam);
+      if (isMarketHub(f)) whole.add(fam);
+    }
+    const focusId = (o: Org): { hov: boolean; sel: boolean } => ({
+      hov: hoverOrg?.ncr_id === o.ncr_id,
+      sel: selectedOrg?.ncr_id === o.ncr_id,
+    });
+    const syncLinks = (group: typeof gMisoLink, fam: "PJM" | "MISO"): void => {
+      group.selectAll<SVGPathElement, Org>("path").each(function (o) {
+        const node = this as SVGPathElement;
+        const { hov, sel } = focusId(o);
+        node.classList.toggle("is-hovered", hov);
+        node.classList.toggle("is-selected", sel);
+        // A thread lights when its own member is focused OR its hub is focused.
+        node.classList.toggle("family-on", hov || sel || whole.has(fam));
+      });
+    };
+    syncLinks(gMisoLink, "MISO");
+    syncLinks(gPjmLink, "PJM");
+    gOverlay
+      .selectAll<SVGRectElement, Org>(
+        "rect.market-hub, rect.pjm-area-linked-org, rect.miso-control-area-linked-org",
+      )
+      .each(function (o) {
+        const node = this as SVGRectElement;
+        const fam = marketFamily(o);
+        if (!fam) return;
+        const { hov, sel } = focusId(o);
+        node.classList.toggle("is-hovered", hov);
+        node.classList.toggle("is-selected", sel);
+        // Hub glows whenever its family is touched; a member glows when its whole
+        // family is lit (hub focused) so "hover the hub → see the family" reads.
+        node.classList.toggle("family-on", isMarketHub(o) ? touched.has(fam) : whole.has(fam));
+      });
+  }
+
   function applyHighlights(): void {
     const hot = hoverOrg;
     gOverlay
@@ -4680,6 +4754,7 @@ export function mountNercOrgMap(): void {
       // the shown subset is visible, so a sticky reorder is harmless.)
       .filter((d) => hot?.ncr_id === d.ncr_id || selectedOrg?.ncr_id === d.ncr_id)
       .raise();
+    applyFamilyFocus();
   }
 
   // Hover preview: highlight the dot and show the tooltip without relayout —
@@ -5381,7 +5456,9 @@ export function mountNercOrgMap(): void {
           // to its RTO hub link. Static per org (membership never changes with zoom),
           // so it is set once here rather than in the per-frame class pass.
           (isPjmZone(o) ? " pjm-area-linked-org" : "") +
-          (isMisoControlArea(o) ? " miso-control-area-linked-org" : ""),
+          (isMisoControlArea(o) ? " miso-control-area-linked-org" : "") +
+          // The PJM/MISO hubs themselves: the gravitational centre of each family.
+          (isMarketHub(o) ? ` market-hub ${marketFamily(o) === "PJM" ? "pjm-hub" : "miso-hub"}` : ""),
       )
       .attr("fill", (o) => safeColor(o.color))
       .attr("transform", null)
@@ -5405,7 +5482,13 @@ export function mountNercOrgMap(): void {
       .selectAll("rect.org-saber")
       .data(visibleOrder.filter(isIsoRtoOperator), (o: unknown) => (o as Org).ncr_id)
       .join("rect")
-      .attr("class", "org-saber")
+      // The two market hubs trade the generic orange saber for their own family
+      // colour, so PJM and MISO read as distinct gravitational centres; every
+      // other ISO/RTO keeps the orange light.
+      .attr(
+        "class",
+        (o) => "org-saber" + (marketFamily(o) === "PJM" ? " pjm-saber" : marketFamily(o) === "MISO" ? " miso-saber" : ""),
+      )
       .attr("pathLength", 100)
       .attr("aria-hidden", "true");
     syncSabers(transform.k);
