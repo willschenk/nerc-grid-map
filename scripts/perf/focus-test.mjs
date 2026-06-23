@@ -149,7 +149,7 @@ async function main() {
     assert(pjm.related >= 5, `PJM has related areas shown (got ${pjm.related})`);
     assert(pjm.dimmed > 20, `unrelated orgs dimmed (got ${pjm.dimmed})`);
     assert(pjm.ringsVisible, "signal rings visible for PJM");
-    assert(pjm.statusShown && pjm.statusTitle === "PJM selected", `status chip shows 'PJM selected' (got ${pjm.statusTitle})`);
+    assert(!pjm.statusShown, "focus status chip stays hidden (temporarily removed)");
     const shotPjm = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "1-pjm.png"), Buffer.from(shotPjm.data, "base64"));
 
@@ -160,7 +160,7 @@ async function main() {
     assert(miso.focusMode && miso.focusMiso && !miso.focusPjm, "clicking MISO switches focus to MISO");
     assert(miso.parents === 1, `exactly one focus-parent for MISO (got ${miso.parents})`);
     assert(miso.related >= 5, `MISO has related areas shown (got ${miso.related})`);
-    assert(miso.statusTitle === "MISO selected", `status chip shows 'MISO selected' (got ${miso.statusTitle})`);
+    assert(!miso.statusShown, "focus status chip stays hidden for MISO too");
     const shotMiso = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "2-miso.png"), Buffer.from(shotMiso.data, "base64"));
 

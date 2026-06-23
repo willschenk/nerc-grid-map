@@ -892,6 +892,13 @@
   display: none;
 }
 
+/* TEMPORARY: the walkthrough/Tour control is hidden while we iterate on other
+   features. Remove this block to bring it back (desktop button + mobile FAB). */
+#nerc-play-tour,
+.nerc-tour-fab {
+  display: none !important;
+}
+
 .nerc-icon-btn:focus-visible,
 .nerc-action-btn:focus-visible,
 .nerc-pill:focus-visible,
@@ -1109,13 +1116,25 @@
   top: var(--nerc-panel-top);
   /* Compact floating card tucked into the top-right corner — never a full panel.
      Width stays in the 280–340px band and clamps inside the viewport; a modest
-     max-height with internal scroll keeps it from growing tall and covering the
-     map (the selected org stays visible to its left). */
+     max-height keeps it from growing tall and covering the map. The card itself
+     does NOT scroll — its body does — so the close/collapse buttons (absolute,
+     out of flow) stay pinned to the card's top-right while the body scrolls. */
   width: min(20rem, calc(100vw - 1.5rem));
   max-height: min(52dvh, calc(100dvh - var(--nerc-panel-top) - 0.85rem));
   padding: 0.6rem 0.7rem;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-size: 0.82rem;
+}
+
+/* The scrolling region of the detail card. */
+#nerc-panel-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .nerc-info-panel {
@@ -1239,7 +1258,7 @@
   padding-bottom: 0.6rem;
 }
 
-.nerc-panel.collapsed #nerc-panel-body > *:not(.nerc-panel-close):not(.nerc-panel-collapse):not(.p-title) {
+.nerc-panel.collapsed #nerc-panel-body > *:not(.p-title) {
   display: none;
 }
 
@@ -1801,9 +1820,11 @@
     max-height: min(40dvh, 16rem);
   }
 
-  /* Detail panel: shorter bottom sheet above the tour fab so the map stays usable. */
+  /* Detail panel: compact bottom sheet. Sits near the bottom edge — the zoom
+     controls hide while it is open (see below), so it no longer needs to reserve
+     a band for them. */
   .nerc-panel {
-    bottom: calc(max(0.55rem, env(safe-area-inset-bottom, 0px)) + 3.85rem);
+    bottom: max(0.55rem, env(safe-area-inset-bottom, 0px));
     max-height: min(44dvh, 21rem);
     padding: 1.05rem 0.95rem 1rem;
     font-size: 0.88rem;
@@ -1987,18 +2008,28 @@
   outline-offset: 2px;
 }
 
-/* On phones the tour control owns the bottom-right corner, so the zoom stack
-   moves to the bottom-left and clears the bottom-sheet panels. */
+/* On phones the zoom stack sits in the bottom-left corner. */
 @media (max-width: 760px) {
   .nerc-zoom-controls {
     right: auto;
     left: max(0.75rem, env(safe-area-inset-left, 0px));
     bottom: calc(max(0.75rem, env(safe-area-inset-bottom, 0px)) + 0.2rem);
+    transition: opacity 0.2s ease;
   }
 
   .nerc-zoom-btn {
     width: 2.85rem;
     height: 2.85rem;
+  }
+
+  /* A bottom-sheet card/popover and the zoom stack both live at the bottom on a
+     phone, so an open sheet would cover the zoom buttons. Hide them while a sheet
+     is open (pinch-to-zoom still works); they return when it closes. */
+  .nerc-stage:has(#nerc-panel:not([hidden])) .nerc-zoom-controls,
+  .nerc-stage:has(#nerc-info-panel:not([hidden])) .nerc-zoom-controls,
+  .nerc-stage:has(#nerc-metrics-panel:not([hidden])) .nerc-zoom-controls {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -2058,7 +2089,9 @@
 }
 
 /* ── Scroll affordance for the overlay/detail panels ──────────────────────── */
-.nerc-panel,
+/* The detail card scrolls its body, not the card itself (so the close/collapse
+   buttons stay pinned), hence #nerc-panel-body here rather than .nerc-panel. */
+#nerc-panel-body,
 .nerc-info-panel,
 .nerc-metrics-panel {
   scrollbar-width: thin;
@@ -2078,13 +2111,13 @@
   background-attachment: local, local, scroll, scroll;
 }
 
-.nerc-panel::-webkit-scrollbar,
+#nerc-panel-body::-webkit-scrollbar,
 .nerc-info-panel::-webkit-scrollbar,
 .nerc-metrics-panel::-webkit-scrollbar {
   width: 9px;
 }
 
-.nerc-panel::-webkit-scrollbar-thumb,
+#nerc-panel-body::-webkit-scrollbar-thumb,
 .nerc-info-panel::-webkit-scrollbar-thumb,
 .nerc-metrics-panel::-webkit-scrollbar-thumb {
   background: rgba(31, 47, 42, 0.36);
@@ -2093,7 +2126,7 @@
   background-clip: padding-box;
 }
 
-.nerc-panel::-webkit-scrollbar-thumb:hover,
+#nerc-panel-body::-webkit-scrollbar-thumb:hover,
 .nerc-info-panel::-webkit-scrollbar-thumb:hover,
 .nerc-metrics-panel::-webkit-scrollbar-thumb:hover {
   background: rgba(31, 47, 42, 0.55);

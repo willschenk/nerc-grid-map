@@ -974,6 +974,10 @@ export function mountNercOrgMap(): void {
   const tooltip = byId<HTMLElement>("nerc-tooltip");
   const panel = byId<HTMLElement>("nerc-panel");
   const panelBody = byId<HTMLElement>("nerc-panel-body");
+  // Static close/collapse buttons — siblings of the scrolling body so they stay
+  // pinned to the card's top-right while the body scrolls.
+  const panelCloseBtn = byId<HTMLButtonElement>("nerc-panel-close");
+  const panelCollapseBtn = byId<HTMLButtonElement>("nerc-panel-collapse");
   const infoPanel = byId<HTMLElement>("nerc-info-panel");
   const metricsPanel = byId<HTMLElement>("nerc-metrics-panel");
   const playBtn = byId<HTMLButtonElement>("nerc-play-tour");
@@ -1876,7 +1880,9 @@ export function mountNercOrgMap(): void {
     // so they never crowd out the data. Mobile stays modest (small screen).
     // Caps are generous; the open-space test does the real limiting, so these only
     // bound the work, not the look. More city names fill the open gaps now.
-    if (compact) return 16;
+    // Phones keep the overview calm — only a few big metros for orientation — and
+    // admit more city context as the user zooms in (where there is room for it).
+    if (compact) return k < 2.2 ? 4 : k < 5 ? 9 : 14;
     if (k < 1.8) return 30;
     if (k < 4.8) return 54;
     return 88;
@@ -2405,8 +2411,10 @@ export function mountNercOrgMap(): void {
   }
 
   function showFocusStatus(group: "PJM" | "MISO"): void {
-    focusTitle.textContent = `${group} selected`;
-    focusStatus.hidden = false;
+    // Status chip temporarily disabled — keep it hidden. Focus still clears via
+    // background click / Escape / selecting another org. (group kept for the API.)
+    void group;
+    focusStatus.hidden = true;
   }
   function hideFocusStatus(): void {
     focusStatus.hidden = true;
@@ -2770,35 +2778,14 @@ export function mountNercOrgMap(): void {
     const bottomSafe = (compact ? 84 : 48) * unitPerPx + r;
     let dx = 0;
     let dy = 0;
+    // Only ensure the selected org sits inside the viewport (a gentle edge nudge).
+    // We deliberately do NOT pan it clear of the detail card: the card is a compact
+    // corner card now, and panning to dodge it threw the whole map off-centre on
+    // half-screen / narrow layouts. Let the card overlap the org if it must.
     if (focused._sx < sideSafe) dx = sideSafe - focused._sx;
     else if (focused._sx > W - sideSafe) dx = W - sideSafe - focused._sx;
     if (focused._sy < topSafe) dy = topSafe - focused._sy;
     else if (focused._sy > H - bottomSafe) dy = H - bottomSafe - focused._sy;
-    if (!panel.hidden) {
-      const svgRect = svgNode.getBoundingClientRect();
-      const panelRect = panel.getBoundingClientRect();
-      const gap = (compact ? 18 : 20) * unitPerPx;
-      const panelBox = {
-        x0: (panelRect.left - svgRect.left) * unitPerPx - gap,
-        x1: (panelRect.right - svgRect.left) * unitPerPx + gap,
-        y0: (panelRect.top - svgRect.top) * unitPerPx - gap,
-        y1: (panelRect.bottom - svgRect.top) * unitPerPx + gap,
-      };
-      const overlapsPanel =
-        focused._sx + r > panelBox.x0 &&
-        focused._sx - r < panelBox.x1 &&
-        focused._sy + r > panelBox.y0 &&
-        focused._sy - r < panelBox.y1;
-      if (overlapsPanel) {
-        if (compact) {
-          const targetY = Math.max(topSafe, panelBox.y0 - r);
-          dy = Math.min(dy, targetY - focused._sy);
-        } else {
-          const targetX = Math.max(sideSafe, panelBox.x0 - r);
-          dx = Math.min(dx, targetX - focused._sx);
-        }
-      }
-    }
     if (Math.abs(dx) < 0.5 * unitPerPx && Math.abs(dy) < 0.5 * unitPerPx) return;
     focusPanPending = true;
     requestAnimationFrame(() => {
@@ -5000,31 +4987,24 @@ export function mountNercOrgMap(): void {
     dl.append(dt, dd);
   }
 
+  // Collapse shrinks the card to its title bar so it stops covering the map without
+  // losing the selection. The button is static markup; this keeps its label/aria in
+  // sync with the panel state.
+  function setPanelCollapsed(collapsed: boolean): void {
+    panel.classList.toggle("collapsed", collapsed);
+    panelCollapseBtn.textContent = collapsed ? "+" : "–";
+    panelCollapseBtn.setAttribute("aria-label", collapsed ? "Expand" : "Collapse");
+    panelCollapseBtn.setAttribute("aria-expanded", String(!collapsed));
+  }
+
   function renderPanel(o: Org): void {
     o = applyOrgDetails(o);
     panelBody.replaceChildren();
-    panel.classList.remove("collapsed");
-    const close = createEl("button", "nerc-panel-close", "×");
-    close.type = "button";
-    close.setAttribute("aria-label", "Close");
-    close.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      closePanel();
-    });
-    // Collapse icon: shrinks the card to its title bar so it stops covering the
-    // map, without losing the selection. Click again to expand.
-    const collapse = createEl("button", "nerc-panel-collapse", "\u2013");
-    collapse.type = "button";
-    collapse.setAttribute("aria-label", "Collapse");
-    collapse.setAttribute("aria-expanded", "true");
-    collapse.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      const collapsed = panel.classList.toggle("collapsed");
-      collapse.textContent = collapsed ? "+" : "\u2013";
-      collapse.setAttribute("aria-label", collapsed ? "Expand" : "Collapse");
-      collapse.setAttribute("aria-expanded", String(!collapsed));
-    });
-    panelBody.append(close, collapse);
+    panelBody.scrollTop = 0;
+    // The close/collapse buttons are static siblings of the scrolling body (see
+    // index.astro) so they stay pinned while the body scrolls. Just reset the
+    // collapse state for the freshly-selected org.
+    setPanelCollapsed(false);
     panelBody.style.setProperty("--org-color", safeColor(o.color));
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
@@ -5398,6 +5378,16 @@ export function mountNercOrgMap(): void {
     });
     byId<HTMLButtonElement>("nerc-info-close").addEventListener("click", closeInfo);
     byId<HTMLButtonElement>("nerc-metrics-close").addEventListener("click", closeMetrics);
+    // Detail-card close/collapse (static markup; wired once). The buttons sit
+    // outside the scrolling body so they stay pinned as the card scrolls.
+    panelCloseBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      closePanel();
+    });
+    panelCollapseBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      setPanelCollapsed(!panel.classList.contains("collapsed"));
+    });
     // Clear focus → back to the calm default map (also closes the detail panel).
     focusClearBtn.addEventListener("click", (ev) => {
       ev.stopPropagation();
