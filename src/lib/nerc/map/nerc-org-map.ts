@@ -491,6 +491,9 @@ const WATER_LABELS: Array<{ name: string; lat: number; lng: number }> = [
   { name: "Gulf of Maine", lat: 43, lng: -67.8 },
   { name: "Lake Superior", lat: 47.7, lng: -87.7 },
   { name: "Lake Michigan", lat: 43.6, lng: -87.1 },
+  { name: "Lake Huron", lat: 44.8, lng: -82.2 },
+  { name: "Lake Erie", lat: 42.2, lng: -81.2 },
+  { name: "Lake Ontario", lat: 43.7, lng: -77.9 },
 ];
 
 // Oversized geographic labels (big water bodies, Canadian provinces, Maine) that
@@ -1592,10 +1595,10 @@ export function mountNercOrgMap(): void {
     // bound the work, not the look. More city names fill the open gaps now.
     // Phones keep the overview calm — only a few big metros for orientation — and
     // admit more city context as the user zooms in (where there is room for it).
-    if (compact) return k < 2.2 ? 4 : k < 5 ? 9 : 14;
-    if (k < 1.8) return 30;
-    if (k < 4.8) return 54;
-    return 88;
+    if (compact) return k < 2.2 ? 5 : k < 5 ? 11 : 16;
+    if (k < 1.8) return 40;
+    if (k < 4.8) return 66;
+    return 100;
   }
 
   function placeDotMinK(tier: number): number {
@@ -3989,7 +3992,7 @@ export function mountNercOrgMap(): void {
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
-        const px = (p.tier === 1 ? 13.5 : p.tier === 2 ? 12 : 10.5) * unitPerPx;
+        const px = (p.tier === 1 ? 11.5 : p.tier === 2 ? 10 : 9) * unitPerPx;
         const w = p.name.length * px * 0.66 + (compact ? 10 : 9) * unitPerPx;
         const h = px + (compact ? 8 : 7) * unitPerPx;
         const spot = fitGeoLabel(sx, sy, w, h, cityOffsets, true);
@@ -4035,7 +4038,7 @@ export function mountNercOrgMap(): void {
       // Thin out orientation labels as you zoom in — by deep zoom they would only
       // clutter the view, and the city names carry the local context.
       const deepLandT = smoothStep((k - 5) / 8);
-      const landCap = Math.max(6, Math.round((compact ? 16 : 46) * (1 - 0.4 * deepLandT)));
+      const landCap = Math.max(8, Math.round((compact ? 20 : 56) * (1 - 0.4 * deepLandT)));
       for (const L of landOrder) {
         if (placedLand >= landCap) break;
         if (L.kind === "state" && L.small && k < 3.2) continue; // tiny states only once zoomed in
@@ -4045,11 +4048,13 @@ export function mountNercOrgMap(): void {
         const baseSx = transform.applyX(L.x);
         const baseSy = transform.applyY(L.y);
         if (baseSx < -margin || baseSx > W + margin || baseSy < -margin || baseSy > H + margin) continue;
-        const grow = Math.max(0.85, 1.28 - Math.max(0, k - 1) * 0.06);
+        // Keep overview labels close to their base size (gentle boost only) so the
+        // orientation layer stays small and map-like instead of shouting.
+        const grow = Math.max(0.82, 1.12 - Math.max(0, k - 1) * 0.05);
         const quiet = QUIET_LAND_LABELS.has(L.name);
-        const base = L.kind === "water" ? 16.5 : L.small ? 11 : 15;
-        // Quiet labels render much smaller so they stop dominating the map.
-        const font = base * grow * unitPerPx * (quiet ? 0.58 : 1);
+        const base = L.kind === "water" ? 13 : L.small ? 9 : 11.5;
+        // Quiet labels render smaller so they stop dominating the map.
+        const font = base * grow * unitPerPx * (quiet ? 0.64 : 1);
         const w = L.name.length * font * 0.64 + (compact ? 10 : 9) * unitPerPx;
         const h = font + (compact ? 8 : 7) * unitPerPx;
         // viewBox-unit offsets (≈ geographic distance): big regions roam farther
