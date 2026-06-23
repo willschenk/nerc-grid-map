@@ -5,10 +5,28 @@ import { forceSimulation, forceX, forceY, type Simulation } from "d3-force";
 import { quadtree } from "d3-quadtree";
 import "d3-transition";
 import { feature, mesh } from "topojson-client";
-import { ROLE_FULL_NAMES } from "../roles.mjs";
-import { MAP_LABEL_MAX, compressSpacedBrand, tightenMapLabel } from "../display-names.mjs";
+import { tightenMapLabel } from "../display-names.mjs";
 import { PLACES } from "../places.mjs";
 import { isExcludedTerritoryFips } from "../excluded-territories.mjs";
+import {
+  CONFIDENCE_LABELS,
+  confidenceLabel,
+  displayMapLabel,
+  displayName,
+  idLabel,
+  locationLabel,
+  memberDisplayName,
+  midName,
+  orgAcronym,
+  primaryRoles,
+  primaryRoleSummaryText,
+  regionLabel,
+  roleFullName,
+  safeColor,
+  safeHttpUrl,
+  tinyName,
+  typeLabel,
+} from "./org-display";
 
 type Place = { name: string; lat: number; lng: number; tier: number; _x?: number; _y?: number };
 
@@ -18,7 +36,7 @@ type Org = {
   acronym: string;
   acronym_source: string | null;
   area_aliases?: string[];
-  // Researched three-tier display names; null until Cursor fills org-names.json.
+  // Researched three-tier display names; null until name review fills org-names.json.
   // name_major entities are pinned to name_shortest at every zoom.
   name_shortest?: string | null;
   name_short?: string | null;
@@ -167,6 +185,7 @@ type OrgDetailsPayload = {
   details: Record<string, Partial<Org>>;
 };
 
+// Map geometry and disclosure constants.
 // Viewbox dimensions. These are recomputed from the live element size so the
 // viewBox aspect ratio matches the screen (no letterbox bands on tall phones).
 let W = 960;
@@ -290,25 +309,6 @@ const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
 const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
-const PRIMARY_ROLE_ORDER = [
-  "RC",
-  "BA",
-  "PC",
-  "TOP",
-  "TSP",
-  "TP",
-  "TO",
-  "DP",
-  "LSE",
-  "RP",
-  "RSG",
-  "FRSG",
-  "RRSG",
-  "GO",
-  "GOP",
-  "PSE",
-];
-const PRIMARY_ROLE_RANK = new Map(PRIMARY_ROLE_ORDER.map((role, i) => [role, i]));
 // Growth anchor for generation-only micro-orgs: how deep before their post-reveal
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 50;
@@ -414,9 +414,9 @@ const PUBLIC_UTILITY_NAME = /\b(Public Power|Public Utility|Utility District|PUD
 
 // Out-of-footprint U.S. territories rendered as labelled inset clusters (geoAlbersUsa
 // cannot plot them on the mainland canvas).
-// Territory insets (Puerto Rico / U.S. Virgin Islands) are hidden for now (user
-// request): their orgs drop out and the reserved Atlantic lane is reclaimed so
-// the lower-48 map fills the full canvas width.
+// Territory insets (Puerto Rico / U.S. Virgin Islands) are disabled by product
+// choice. Their orgs drop out and the Atlantic lane is reclaimed so the lower-48
+// map fills the canvas width.
 const SHOW_TERRITORIES = false;
 const TERRITORY_STATES = new Set(["PR", "VI"]);
 const TERRITORY_LABELS: Record<string, string> = {
@@ -509,24 +509,6 @@ const SMALL_STATES = new Set([
   "Vermont", "Massachusetts", "Maryland", "District of Columbia", "Hawaii",
 ]);
 
-const TYPE_LABELS: Record<string, string> = {
-  ISO_RTO: "ISO / RTO",
-  IOU: "Investor-owned utility",
-  cooperative: "Electric cooperative",
-  municipal: "Municipal / public power",
-  federal: "Federal power authority",
-  merchant: "Merchant / IPP",
-  cca: "Community choice (CCA)",
-  other: "Other",
-};
-
-const CONFIDENCE_LABELS: Record<string, string> = {
-  HIGH: "High",
-  MEDIUM: "Medium",
-  LOW: "Low",
-  ESTIMATED: "Estimated",
-};
-
 const ROLE_TOUR_LABELS: Record<string, string> = {
   BA: "Balancing Authorities (BA)",
   RC: "Reliability Coordinators (RC)",
@@ -568,162 +550,6 @@ function createEl<K extends keyof HTMLElementTagNameMap>(
   return el;
 }
 
-function shortName(name: string): string {
-  return name
-    .replace(/,?\s+(LLC|Inc\.?|L\.?P\.?|Corporation|Company|Co\.?|Services?)$/i, "")
-    .replace(/^The\s+/i, "")
-    .trim();
-}
-
-function fallbackAcronym(name: string): string {
-  const cleaned = shortName(name).replace(/&/g, " and ").replace(/[.,-]/g, " ");
-  const words = cleaned
-    .split(/\s+/)
-    .filter((w) => w && !/^(the|of|and|for|a|an)$/i.test(w));
-  if (words.length === 1) return words[0].length <= 8 ? words[0] : words[0].slice(0, 6).toUpperCase();
-  return words.map((w) => w[0]).join("").toUpperCase().slice(0, 8);
-}
-
-const WEAK_MAP_LABELS = new Set([
-  "A",
-  "AN",
-  "AND",
-  "AT",
-  "BY",
-  "CO",
-  "COMPANY",
-  "COOP",
-  "COOPERATIVE",
-  "CORP",
-  "CORPORATION",
-  "EAST",
-  "ELECTRIC",
-  "ENERGY",
-  "FOR",
-  "GAS",
-  "GENERATION",
-  "GENERATING",
-  "LIGHT",
-  "NEW",
-  "NORTH",
-  "OF",
-  "OLD",
-  "ONE",
-  "POWER",
-  "SOUTH",
-  "THE",
-  "TO",
-  "UTILITY",
-  "UTILITIES",
-  "WATER",
-  "WEST",
-]);
-function isWeakMapLabel(text: string | null | undefined): boolean {
-  const token = String(text ?? "").trim();
-  if (!token) return true;
-  const clean = token.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-  if (!clean || /\d/.test(clean)) return false;
-  return WEAK_MAP_LABELS.has(clean);
-}
-function compactMapLabel(text: string | null | undefined, maxLen = MAP_LABEL_MAX): string | null {
-  const raw = String(text ?? "").trim();
-  if (!raw) return null;
-  if (raw.length <= maxLen && !isWeakMapLabel(raw)) return raw;
-  const tightened = tightenMapLabel(raw, maxLen);
-  if (tightened && tightened.length <= maxLen && !isWeakMapLabel(tightened)) {
-    return tightened;
-  }
-  const words = raw.split(/\s+/).filter(Boolean);
-  if (words.length >= 2) {
-    const first = tightenMapLabel(words[0], maxLen);
-    if (first && first.length <= maxLen && !isWeakMapLabel(first)) return first;
-    const initials = words.map((w) => w[0]).join("").toUpperCase().slice(0, maxLen);
-    if (initials.length >= 2 && !isWeakMapLabel(initials)) return initials;
-  }
-  return null;
-}
-
-// Three-tier names. tiny = super-short (zoomed out / tight spots), mid =
-// shortened (zoomed in), and the full legal entity_name is reserved for the
-// detail panel. Curated rules cover recognizable brands and the awkward
-// "… as agent for …" registry names; everything else is derived algorithmically.
-const NAME_RULES: Array<[RegExp, { tiny: string; mid: string }]> = [
-  [/^consolidated edison/i, { tiny: "ConEd", mid: "Con Edison" }],
-  [/^american electric power/i, { tiny: "AEP", mid: "AEP" }],
-  [/^firstenergy/i, { tiny: "FE", mid: "FirstEnergy" }],
-  [/^(public service enterprise group|pseg|p\.?s\.?e\.?&?g)/i, { tiny: "PSEG", mid: "PSEG" }],
-  [/^northern states power|\bxcel energy\b/i, { tiny: "Xcel", mid: "Xcel" }],
-  [/^pacificorp/i, { tiny: "PacCorp", mid: "PacifiCorp" }],
-  [/^next\s?era/i, { tiny: "NextEra", mid: "NextEra" }],
-  [/^duke energy/i, { tiny: "Duke", mid: "Duke" }],
-  [/^dominion/i, { tiny: "Dominion", mid: "Dominion" }],
-  [/^southern (company|co\b)/i, { tiny: "Southern", mid: "Southern Co" }],
-  [/^entergy/i, { tiny: "Entergy", mid: "Entergy" }],
-  [/^ameren/i, { tiny: "Ameren", mid: "Ameren" }],
-  [/^exelon/i, { tiny: "Exelon", mid: "Exelon" }],
-  [/^berkshire hathaway energy|^midamerican/i, { tiny: "MidAm", mid: "MidAmerican" }],
-  [/^national grid/i, { tiny: "NatGrid", mid: "Nat. Grid" }],
-  [/^tennessee valley/i, { tiny: "TVA", mid: "TVA" }],
-  [/^bonneville power/i, { tiny: "BPA", mid: "Bonneville (BPA)" }],
-  [/^los angeles department of water/i, { tiny: "LADWP", mid: "LADWP" }],
-  [/^salt river project/i, { tiny: "SRP", mid: "Salt River Project" }],
-  [/^arizona public service/i, { tiny: "APS", mid: "Arizona Public Svc" }],
-  [/^public service company of colorado/i, { tiny: "PSCo", mid: "PSCo (Xcel)" }],
-  [/^puget sound energy/i, { tiny: "PSE", mid: "Puget Sound" }],
-  [/^portland general electric/i, { tiny: "PGE", mid: "Portland General" }],
-  [/^pacific gas and electric/i, { tiny: "PG&E", mid: "PG&E" }],
-  [/^southern california edison/i, { tiny: "SCE", mid: "SoCal Edison" }],
-  [/^potomac edison/i, { tiny: "Potomac", mid: "Potomac Ed" }],
-  [/^ohio edison/i, { tiny: "Ohio", mid: "Ohio Ed" }],
-  [/^toledo edison/i, { tiny: "Toledo", mid: "Toledo Ed" }],
-  [/^potomac electric power|^pepco\b/i, { tiny: "PEPCO", mid: "PEPCO" }],
-  [/^jersey central power/i, { tiny: "JCP&L", mid: "JCP&L" }],
-  [/^monongahela power/i, { tiny: "Mon Power", mid: "Mon Power" }],
-  [/^san diego gas/i, { tiny: "SDG&E", mid: "SDG&E" }],
-  [/^commonwealth edison/i, { tiny: "ComEd", mid: "ComEd" }],
-  [/^baltimore gas/i, { tiny: "BGE", mid: "BGE" }],
-  [/^georgia power/i, { tiny: "GA Pwr", mid: "GA Power" }],
-  [/^florida power & light/i, { tiny: "FPL", mid: "FP&L" }],
-  [/^tampa electric/i, { tiny: "TECO", mid: "Tampa Electric" }],
-  [/^idaho power/i, { tiny: "Idaho", mid: "Idaho Pwr" }],
-  [/^nevada power|^sierra pacific power|^nv energy/i, { tiny: "NV", mid: "NV Energy" }],
-  [/^oncor/i, { tiny: "Oncor", mid: "Oncor" }],
-  [/^centerpoint|d\/b\/a centerpoint/i, { tiny: "CNP", mid: "CenterPoint" }],
-  [/^consumers energy/i, { tiny: "CE", mid: "Consumers" }],
-  [/^dte electric|^detroit edison/i, { tiny: "DTE", mid: "DTE" }],
-  [/^rocky mountain power/i, { tiny: "RM", mid: "Rocky Mtn" }],
-  [/^minnesota power/i, { tiny: "MN Pwr", mid: "MN Power" }],
-  [/^cleveland electric illuminating/i, { tiny: "CEI", mid: "CEI" }],
-  [/^wheelabrator/i, { tiny: "Wheel", mid: "Wheelabrator" }],
-  [/^invenergy/i, { tiny: "InvEnrg", mid: "Invenergy" }],
-  [/^constellation/i, { tiny: "CEG", mid: "Constellation" }],
-  [/^clearway/i, { tiny: "Clearwy", mid: "Clearway" }],
-  [/^avangrid/i, { tiny: "Avgird", mid: "Avangrid" }],
-  [/^tenaska/i, { tiny: "Tenaska", mid: "Tenaska" }],
-  [/^brookfield/i, { tiny: "Brookfld", mid: "Brookfield" }],
-  [/^hydro[- ]?qu[eé]bec/i, { tiny: "Hydro-Québec", mid: "Hydro-Québec" }],
-  [/^hydro one/i, { tiny: "Hydro One", mid: "Hydro One" }],
-  [/ontario.*ieso|^ieso\b/i, { tiny: "IESO", mid: "Ontario IESO" }],
-  [/^new brunswick power/i, { tiny: "NB Power", mid: "NB Power" }],
-  [/^nova scotia power/i, { tiny: "NS Pwr", mid: "NS Power" }],
-  [/^manitoba hydro/i, { tiny: "MB Hydro", mid: "Manitoba Hydro" }],
-  [/^saskatchewan power|^saskpower/i, { tiny: "SaskPower", mid: "SaskPower" }],
-];
-
-function curate(name: string): { tiny: string; mid: string } | null {
-  for (const [re, v] of NAME_RULES) if (re.test(name)) return v;
-  return null;
-}
-
-// Strip trailing corporate filler from a short token: "AEP Service Corp" -> "AEP".
-function coreFromAcronym(acr: string): string {
-  let s = acr.trim();
-  for (let i = 0; i < 2; i++) {
-    s = s.replace(/[\s,]+(service\s+corp\w*|corp\w*|holdings?|utilities|company|co|inc|llc|l\.?p\.?)\.?$/i, "").trim();
-  }
-  return s || acr.trim();
-}
-
 // Conservative text-width measurement for inside labels. The bubble inside label
 // is bold (font-weight 800) Inter; estimating its width from a glyph average lets
 // short bold abbreviations spill past the rounded rectangle. Measure the real
@@ -756,180 +582,14 @@ function measuredTextWidth(text: string, fontPx: number): number {
   return (refW / TEXT_MEASURE_REF_PX) * fontPx;
 }
 
-function tinyName(o: Org): string {
-  if (o._tiny != null) return o._tiny;
-  return (o._tiny = _computeTinyName(o));
-}
-function _computeTinyName(o: Org): string {
-  // Curated brand rules beat researched shortest when they compress further
-  // (e.g. org-names "Wheelabrator" -> Wheel). Researched shortest still wins
-  // when it is already the tightest label we have.
-  const curated = curate(o.entity_name);
-  const fromShortest = o.name_shortest
-    ? tightenMapLabel(o.name_shortest, MAP_LABEL_MAX)
-    : null;
-  if (curated) {
-    const tiny = tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
-    if (!fromShortest || tiny.length < fromShortest.length) return tiny;
-  }
-  if (fromShortest) return fromShortest;
-  if (curated) return tightenMapLabel(curated.tiny, MAP_LABEL_MAX);
-  if (o.acronym) {
-    const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
-    if (compressed.length <= MAP_LABEL_MAX) return compressed;
-    const core = coreFromAcronym(o.acronym);
-    return tightenMapLabel(core, MAP_LABEL_MAX);
-  }
-  return tightenMapLabel(fallbackAcronym(o.entity_name), MAP_LABEL_MAX);
-}
-
-// A shortened-but-readable brand: cut "… as agent for …", "d/b/a", trailing
-// lists/clauses, and legal suffixes; fall back to the tiny token if still long.
-function midName(o: Org): string {
-  // Researched "short" name wins (e.g. "Consumers", "PJM Interconnection").
-  if (o.name_short) return tightenMapLabel(o.name_short, 14);
-  const c = curate(o.entity_name);
-  if (c) return c.mid;
-  let s = o.entity_name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0];
-  s = shortName(s).replace(/,.*$/, "").trim();
-  if (s.length >= 3 && s.length <= 22) return s;
-  return tinyName(o);
-}
-
-function compactAcronymLabel(o: Org): string | null {
-  if (!o.acronym) return null;
-  const compressed = compressSpacedBrand(o.acronym, MAP_LABEL_MAX);
-  if (compressed.length <= MAP_LABEL_MAX && !isWeakMapLabel(compressed)) {
-    return compressed;
-  }
-  const core = coreFromAcronym(o.acronym);
-  const tightened = tightenMapLabel(core, MAP_LABEL_MAX);
-  if (tightened.length <= MAP_LABEL_MAX && !isWeakMapLabel(tightened)) {
-    return tightened;
-  }
-  return null;
-}
-
-// Display-only: swap weak placement tokens for a real acronym. Placement, dedup,
-// and bubble-vs-dot decisions still use tinyName()/midName() unchanged.
-function displayMapLabel(o: Org, placementText: string, maxLen = MAP_LABEL_MAX): string {
-  if (!isWeakMapLabel(placementText)) return placementText;
-  const fromAcronym = compactAcronymLabel(o);
-  if (fromAcronym && fromAcronym.length <= maxLen) return fromAcronym;
-  const curated = curate(o.entity_name);
-  if (curated) {
-    const curatedTiny = compactMapLabel(curated.tiny, maxLen);
-    if (curatedTiny) return curatedTiny;
-  }
-  const fromShort = compactMapLabel(o.name_short, maxLen);
-  if (fromShort) return fromShort;
-  const fromShortest = compactMapLabel(o.name_shortest, maxLen);
-  if (fromShortest) return fromShortest;
-  if (o.acronym) {
-    const compressed = compressSpacedBrand(o.acronym, maxLen);
-    if (compressed.length <= maxLen && !isWeakMapLabel(compressed)) return compressed;
-    const core = coreFromAcronym(o.acronym);
-    const tightened = tightenMapLabel(core, maxLen);
-    if (tightened.length <= maxLen && !isWeakMapLabel(tightened)) return tightened;
-  }
-  const fallback = tightenMapLabel(fallbackAcronym(o.entity_name), maxLen);
-  if (!isWeakMapLabel(fallback)) return fallback;
-  return fallbackAcronym(o.entity_name);
-}
-
-// "Acronym"-style token used in chips / tooltips / aria: the super-short name.
-function orgAcronym(o: Org): string {
-  return displayMapLabel(o, tinyName(o));
-}
-
-function memberDisplayName(name: string): string {
-  let s = name.split(/\s+as agent\b|\bd\/b\/a\b|;/i)[0].replace(/,.*$/, "").trim();
-  if (s.length > 72) s = `${s.slice(0, 69)}…`;
-  return s;
-}
-
-function combinedRegions(o: Org): string | null {
-  const regions = new Set<string>();
-  if (o.regions?.length) for (const r of o.regions) regions.add(r);
-  else if (o.region) regions.add(o.region);
-  for (const m of o.combined_members ?? []) {
-    if (m.region) regions.add(m.region);
-  }
-  const list = [...regions].sort();
-  if (list.length <= 1) return list[0] ?? null;
-  return list.join(", ");
-}
-
-// Human-facing title: combined orgs use a short brand, not the full agent string.
-function displayName(o: Org): string {
-  if (o.map_combine_label) return o.map_combine_label;
-  if (o.combined_members?.length) {
-    const c = curate(o.entity_name);
-    if (c) return c.mid;
-    return o.name_normal ?? midName(o);
-  }
-  // Long legal names collapse to a shorter readable tier for titles/labels:
-  // researched short name, then shortest, then the algorithmic acronym fallback
-  // (midName -> tinyName -> acronym). The full entity_name is still shown in the
-  // detail panel (see renderPanel) and so stays available on inspect.
-  if (o.entity_name.length > 40) {
-    return o.name_short ?? o.name_shortest ?? midName(o);
-  }
-  return o.entity_name;
-}
-
-function idLabel(o: Org): string {
-  if (o.nerc_registered === false) return "No NERC ID";
-  if (o.combined_members?.length) {
-    const n = o.combined_members.length;
-    return `${o.ncr_id} + ${n} co-located registration${n === 1 ? "" : "s"}`;
-  }
-  return o.ncr_id;
-}
-
-function regionLabel(o: Org): string {
-  return combinedRegions(o) ?? o.region ?? "No Regional Entity";
-}
-
-function typeLabel(value: string | null): string {
-  return TYPE_LABELS[value ?? "other"] ?? value ?? "Other";
-}
-
-function confidenceLabel(value: string | null): string {
-  const label = CONFIDENCE_LABELS[value ?? ""] ?? value ?? "Unknown";
-  return `Confidence: ${label}`;
-}
-
-function locationLabel(o: Org): string {
-  const place = [o.city, o.state].filter(Boolean).join(", ");
-  return place || o.headquarters_address || o.country || "Location unknown";
-}
-
-function safeColor(color: string | null | undefined): string {
-  const value = String(color ?? "").trim();
-  return /^hsl\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*\)$/i.test(value) ? value : "hsl(0, 0%, 45%)";
-}
-
-function safeHttpUrl(value: string | null | undefined): string | null {
-  if (!value) return null;
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:" ? url.href : null;
-  } catch {
-    return null;
-  }
-}
-
-function roleFullName(role: string): string {
-  return (ROLE_FULL_NAMES as Record<string, string>)[role] ?? role;
-}
-
 async function loadJson<T>(url: string): Promise<T> {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${url} returned ${res.status}`);
   return (await res.json()) as T;
 }
 
+// Runtime map client: D3 state, viewport-dependent layout, and interaction wiring
+// live in one mount closure. Pure display text lives in org-display.ts.
 export function mountNercOrgMap(): void {
   const root = document.querySelector<HTMLElement>("[data-nerc-map]");
   if (!root || root.dataset.mounted === "true") return;
@@ -986,7 +646,6 @@ export function mountNercOrgMap(): void {
   const loadingEl = byId<HTMLElement>("nerc-loading");
   const tourStatus = byId<HTMLElement>("nerc-tour-status");
   const focusStatus = byId<HTMLElement>("nerc-focus-status");
-  const focusTitle = byId<HTMLElement>("nerc-focus-title");
   const focusClearBtn = byId<HTMLButtonElement>("nerc-focus-clear");
   const infoToggle = byId<HTMLButtonElement>("nerc-info-toggle");
   const metricsToggle = byId<HTMLButtonElement>("nerc-metrics-toggle");
@@ -1258,6 +917,8 @@ export function mountNercOrgMap(): void {
     return pill;
   }
 
+  // Disclosure text: placement tries compact labels first and only admits longer
+  // labels after zoom gives them enough room.
   function labelTextOptions(o: Org, k: number): string[] {
     // Super-short token first; once zoomed in, try the short brand too. The full
     // legal name only ever appears in the detail panel.
@@ -2376,9 +2037,8 @@ export function mountNercOrgMap(): void {
   // becomes the brightest object, its members light up a beat later as the pulse
   // reaches them, and everything else greys out. The relationship is read straight
   // from the existing curated membership (marketFamily) — the hub plus its PJM
-  // transmission zones / MISO Local Balancing Authorities. INTENTIONALLY limited to
-  // these two hubs for now; to add another ISO/RTO later, give it a marketFamily
-  // value and the same visuals apply — no new rendering code needed.
+  // transmission zones / MISO Local Balancing Authorities. The focus surface is
+  // intentionally limited to these two curated families.
   function isFocusParent(o: Org): boolean {
     return activeFocusGroup != null && isMarketHub(o) && marketFamily(o) === activeFocusGroup;
   }
@@ -2411,8 +2071,8 @@ export function mountNercOrgMap(): void {
   }
 
   function showFocusStatus(group: "PJM" | "MISO"): void {
-    // Status chip temporarily disabled — keep it hidden. Focus still clears via
-    // background click / Escape / selecting another org. (group kept for the API.)
+    // Status chip is intentionally hidden. Focus still clears via background
+    // click / Escape / selecting another org. (group kept for the API.)
     void group;
     focusStatus.hidden = true;
   }
@@ -2797,6 +2457,7 @@ export function mountNercOrgMap(): void {
   // Size the viewBox to match the element's aspect ratio so a tall phone gets a
   // tall viewBox (no letterboxed top/bottom bands where nothing rendered). The
   // base dimension stays fixed so the map's physical scale is stable.
+  // Projection and land masks.
   function measure(): void {
     const rect = svgNode.getBoundingClientRect();
     const elW = rect.width || 960;
@@ -4645,6 +4306,7 @@ export function mountNercOrgMap(): void {
     return counts;
   }
 
+  // Dashboard, tooltip, and detail panel rendering.
   function renderStats(): void {
     const onMap = placeableOrgs.length;
     const total = orgs.length;
@@ -4781,25 +4443,6 @@ export function mountNercOrgMap(): void {
   function hideTooltip(): void {
     tooltipRequest++;
     tooltip.hidden = true;
-  }
-
-  function primaryRoles(o: Org): string[] {
-    return o.roles
-      .map((role, index) => ({ role, index }))
-      .sort(
-        (a, b) =>
-          (PRIMARY_ROLE_RANK.get(a.role) ?? 999) - (PRIMARY_ROLE_RANK.get(b.role) ?? 999) ||
-          a.index - b.index,
-      )
-      .map((entry) => entry.role);
-  }
-
-  function primaryRoleSummaryText(o: Org, max = 3): string {
-    const roles = primaryRoles(o);
-    const shown = roles.slice(0, max);
-    const remaining = roles.length - shown.length;
-    if (!shown.length) return "No roles";
-    return `${shown.join(", ")}${remaining > 0 ? ` + ${remaining} more` : ""}`;
   }
 
   function createPanelRoleRows(roles: string[]): HTMLDivElement {
@@ -5354,6 +4997,7 @@ export function mountNercOrgMap(): void {
     renderStats();
   }
 
+  // Controls, zoom, and tour wiring.
   function wireControls(): void {
     const toggleTour = (): void => {
       if (tourRunning) stopTour();

@@ -104,8 +104,8 @@ const INGESTED = resolve(root, "src/data/nerc/ingested-records.json");
 // Maps placeholder seeds to their authoritative registry twin(s). A seed is
 // dropped once any twin is geocoded, so seeds auto-retire without leaving a gap.
 const SEED_TWINS = resolve(root, "src/data/nerc/seed-twins.json");
-// Researched three-tier display names, keyed by ncr_id (Cursor fills this in
-// one entity at a time). Merged onto records before enrichOrg().
+// Researched three-tier display names, keyed by ncr_id. Merged onto records
+// before enrichOrg().
 const ORG_NAMES = resolve(root, "src/data/nerc/org-names.json");
 const MAP_COMBINES = resolve(root, "src/data/nerc/map-combines.json");
 

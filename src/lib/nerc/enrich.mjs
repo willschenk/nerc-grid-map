@@ -474,7 +474,7 @@ export function enrichOrg(rec) {
     entity_name: rec.entity_name,
     acronym,
     acronym_source: acronymSource,
-    // Researched three-tier display names (Cursor fills src/data/nerc/org-names.json).
+    // Researched three-tier display names from src/data/nerc/org-names.json.
     // The shortest tier is guaranteed and compact enough to fit early; longer
     // researched tiers remain available as bubbles grow.
     name_shortest: compactDisplayName(rec, acronym),

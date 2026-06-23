@@ -8,9 +8,9 @@
 // best-effort (not official) functional roles.
 //
 // This script is IDEMPOTENT and MERGE-ONLY: it never overwrites an entry that
-// already exists in supplemental-orgs.json (matched by name). So a human/Cursor
-// can fill in lat/lng + refine roles in the JSON, and re-running this only APPENDS
-// newly-added CSV rows. Edit the JSON for data; edit the CSV to queue new names.
+// already exists in supplemental-orgs.json (matched by name). Reviewers can fill
+// in lat/lng + refine roles in the JSON, and re-running this only APPENDS newly
+// added CSV rows. Edit the JSON for data; edit the CSV to queue new names.
 //
 // Usage:  node scripts/nerc/build-supplemental.mjs
 

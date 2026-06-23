@@ -347,7 +347,7 @@
      • the selected hub becomes the brightest object — a slow orange heartbeat halo;
      • its members light up a beat later as an outward-radiating pulse reaches them;
      • everything else desaturates into quiet grey background context.
-   Limited to PJM and MISO for now (see the focus helpers / marketFamily in the TS).
+   Limited to the curated PJM and MISO families (see marketFamily in the TS).
    The colour is orange throughout — the one focus colour. */
 
 :root {
@@ -892,8 +892,8 @@
   display: none;
 }
 
-/* TEMPORARY: the walkthrough/Tour control is hidden while we iterate on other
-   features. Remove this block to bring it back (desktop button + mobile FAB). */
+/* Tour controls are intentionally hidden. Re-enable both selectors together if
+   the walkthrough returns to the active product surface. */
 #nerc-play-tour,
 .nerc-tour-fab {
   display: none !important;

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Builds the manual-research queue: every ingested NERC record that has NOT yet
 // been geocoded (i.e. is missing from geocoded-orgs.json). This is the work list
-// for a human-in-the-loop agent (Cursor) that researches entities one at a time
+// for a human-in-the-loop reviewer that researches entities one at a time
 // using scripts/nerc/geocoding-agent-prompt.md.
 //
 // Emits two artifacts:
