@@ -913,6 +913,7 @@ export function mountNercOrgMap(): void {
 
   function createRolePill(role: string, full = false): HTMLSpanElement {
     const pill = createEl("span", "nerc-rolepill", full ? `${role} - ${roleFullName(role)}` : role);
+    pill.title = roleFullName(role);
     pill.style.backgroundColor = colorFor(role);
     return pill;
   }
@@ -1614,20 +1615,14 @@ export function mountNercOrgMap(): void {
   }
 
   function sizeTierLabel(o: Org): string {
-    switch (sizeTier(o)) {
-      case 6:
-        return "Headline grid operator";
-      case 5:
-        return "Grid authority";
-      case 4:
-        return "Transmission operator";
-      case 3:
-        return "Major utility";
-      case 2:
-        return "Local utility";
-      default:
-        return "Market / supplemental";
+    if (isIsoRtoOperator(o)) return "ISO/RTO operator";
+    if (RELIABILITY_ORG_NAME.test(o.entity_name) || REGIONAL_ENTITY_NAME.test(o.entity_name)) {
+      return "Reliability organization";
     }
+    if (o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name)) return "Federal power authority";
+    const strongestRole = primaryRoles(o)[0];
+    if (strongestRole) return roleFullName(strongestRole);
+    return typeLabel(o.org_type);
   }
 
   // Standardized full-zoom radius (CSS px) for a size tier. Monotonic, no
@@ -2154,13 +2149,6 @@ export function mountNercOrgMap(): void {
     return misoControlAreaCodes(o).join(" / ");
   }
 
-  function misoControlAreaNote(o: Org): string {
-    const codes = misoControlAreaCodes(o);
-    const codeLabel = codes.join(" and ");
-    const codeNoun = codes.length === 1 ? "LBA code" : "LBA codes";
-    return `${displayName(o)} is a MISO Local Balancing Authority (LBA), identified by ${codeNoun} ${codeLabel}. MISO LBAs are the local control areas that make up the Midcontinent ISO (MISO) footprint.`;
-  }
-
   // PJM transmission zones attach to their org via area-aliases.json (PJM-market
   // codes); read them straight off the enriched org's area_aliases. WESTERN HUB is
   // a PJM pricing hub, not an organization, so it never lands here.
@@ -2170,13 +2158,6 @@ export function mountNercOrgMap(): void {
 
   function pjmZoneCodeLabel(o: Org): string {
     return pjmZoneCodes(o).join(" / ");
-  }
-
-  function pjmZoneNote(o: Org): string {
-    const codes = pjmZoneCodes(o);
-    const codeLabel = codes.join(" and ");
-    const codeNoun = codes.length === 1 ? "zone code" : "zone codes";
-    return `${displayName(o)} maps to the PJM transmission zone ${codeLabel} (${codeNoun}). PJM uses transmission zones to settle locational prices across the PJM Interconnection footprint.`;
   }
 
   // Keep each saber ring matched to its bubble: same center and rounded-rect
@@ -4464,68 +4445,6 @@ export function mountNercOrgMap(): void {
     return block;
   }
 
-  // A plain-language noun for the org's type. NOTE: org_type is "ISO_RTO" for any
-  // high-weight org (a sizing bucket), so it is NOT a reliable type — when it says
-  // ISO_RTO but this isn't one of the real operators, infer the type from the name.
-  function orgTypeNoun(o: Org): string {
-    switch (o.org_type) {
-      case "IOU":
-        return "investor-owned electric utility";
-      case "municipal":
-        return "municipal (public power) utility";
-      case "cooperative":
-        return "electric cooperative";
-      case "federal":
-        return "federal power agency";
-      case "merchant":
-        return "merchant power producer";
-      case "cca":
-        return "community choice aggregator";
-    }
-    const n = o.entity_name ?? "";
-    if (FEDERAL_NAME.test(n)) return "federal power agency";
-    if (/cooperative|co-?op\b|electric membership|\bg&t\b/i.test(n)) return "electric cooperative";
-    if (
-      /municipal|public utility district|public power|\bcity of\b|\btown of\b|\bvillage of\b|utilities (board|commission|district)|water and power|light (department|& power|and power)|electric (board|department|system)|irrigation district|power authority|river authority/i.test(
-        n,
-      )
-    )
-      return "municipal / public power utility";
-    if (isGenerationOnly(o)) return "merchant power producer";
-    if (o.is_private) return "investor-owned electric utility";
-    return "electric utility";
-  }
-
-  // Build a readable "what is this?" description from the org's registered roles,
-  // type, and region — far more useful on click than the raw geocoding note.
-  function describeOrg(o: Org): string {
-    const roles = new Set(o.roles ?? []);
-    const fns: string[] = [];
-    if (roles.has("RC")) fns.push("reliability coordinator");
-    if (roles.has("BA")) fns.push("balancing authority");
-    if (roles.has("PC") || roles.has("TP")) fns.push("planning coordinator");
-    if (roles.has("TO") || roles.has("TOP")) fns.push("transmission owner/operator");
-    if (roles.has("TSP")) fns.push("transmission service provider");
-    if (roles.has("GO") || roles.has("GOP")) fns.push("generator owner/operator");
-    if (roles.has("DP") || roles.has("LSE")) fns.push("distribution and load-serving provider");
-    if (!fns.length && roles.has("PSE")) fns.push("wholesale market participant");
-
-    const noun = orgTypeNoun(o);
-    const article = /^[aeiou]/i.test(noun) ? "an" : "a";
-    let s = `${displayName(o)} is ${article} ${noun}`;
-    const reg = regionLabel(o);
-    if (reg && reg !== "—") s += ` in the ${reg} footprint`;
-    s += ".";
-    if (fns.length) {
-      // Lead with the most significant functions; the Roles section lists them all.
-      const top = fns.slice(0, 3);
-      const list = top.length === 1 ? top[0] : `${top.slice(0, -1).join(", ")} and ${top[top.length - 1]}`;
-      s += ` Registered as a ${list}`;
-      s += fns.length > top.length ? `, among ${o.role_count ?? o.roles?.length ?? fns.length} reliability roles.` : ".";
-    }
-    return s;
-  }
-
   function createMapSizeTier(o: Org): HTMLDivElement {
     const score = createEl("div", "p-priority-score");
     score.append(
@@ -4533,7 +4452,7 @@ export function mountNercOrgMap(): void {
       createEl(
         "span",
         undefined,
-        "Size shows role tier; color shows the role mix. See the roles below.",
+        "Size follows strongest role tier.",
       ),
     );
     return score;
@@ -4630,6 +4549,12 @@ export function mountNercOrgMap(): void {
     dl.append(dt, dd);
   }
 
+  function createPanelTag(className: string, text: string, title: string): HTMLSpanElement {
+    const tag = createEl("span", className, text);
+    tag.title = title;
+    return tag;
+  }
+
   // Collapse shrinks the card to its title bar so it stops covering the map without
   // losing the selection. The button is static markup; this keeps its label/aria in
   // sync with the panel state.
@@ -4651,39 +4576,34 @@ export function mountNercOrgMap(): void {
     panelBody.style.setProperty("--org-color", safeColor(o.color));
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
-    title.append(createEl("span", "p-acronym", orgAcronym(o)), createEl("h2", undefined, displayName(o)));
+    const acronym = createEl("span", "p-acronym", orgAcronym(o));
+    acronym.title = displayName(o);
+    title.append(acronym, createEl("h2", undefined, displayName(o)));
     panelBody.append(
       title,
       createEl("p", "p-sub", `${idLabel(o)}${o.seed ? " | seed record" : ""} | ${typeLabel(o.org_type)}`),
     );
-    // Call out the real ISOs/RTOs (the ones wearing the saber outline); for
-    // everyone else, lead with a plain-language description of what they are.
+    // Compact classification tags. Details stay in the rows below.
     if (isIsoRtoOperator(o)) {
-      // Just the orange chip — no explanatory paragraph (keeps the card compact).
       const note = createEl("p", "p-isorto");
-      note.append(createEl("span", "p-isorto-badge", "ISO / RTO"));
+      note.append(
+        createPanelTag(
+          "p-isorto-badge",
+          "ISO / RTO",
+          "Independent System Operator / Regional Transmission Organization",
+        ),
+      );
       panelBody.append(note);
-    } else {
-      // MISO Local Balancing Authorities and PJM transmission zones lead with a
-      // prominent relationship badge at the top of the panel, then the plain-
-      // language description. An org can carry both (e.g. straddling utilities).
-      if (isMisoControlArea(o)) {
-        const note = createEl("p", "p-misoca");
-        note.append(
-          createEl("span", "p-misoca-badge", "MISO Local Balancing Authority (LBA)"),
-          createEl("span", "p-misoca-text", misoControlAreaNote(o)),
-        );
-        panelBody.append(note);
-      }
-      if (isPjmZone(o)) {
-        const note = createEl("p", "p-pjmzone");
-        note.append(
-          createEl("span", "p-pjmzone-badge", "PJM transmission zone"),
-          createEl("span", "p-pjmzone-text", pjmZoneNote(o)),
-        );
-        panelBody.append(note);
-      }
-      panelBody.append(createEl("p", "p-desc", describeOrg(o)));
+    }
+    if (isMisoControlArea(o)) {
+      const note = createEl("p", "p-misoca");
+      note.append(createPanelTag("p-misoca-badge", "LBA", "Local Balancing Authority"));
+      panelBody.append(note);
+    }
+    if (isPjmZone(o)) {
+      const note = createEl("p", "p-pjmzone");
+      note.append(createPanelTag("p-pjmzone-badge", "PJM Zone", "PJM Transmission Zone"));
+      panelBody.append(note);
     }
     const dl = createEl("dl");
     addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o));
@@ -4691,7 +4611,8 @@ export function mountNercOrgMap(): void {
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     addDlRow(dl, "Map size / priority", createMapSizeTier(o));
-    if (o.geo_notes) addDlRow(dl, "Location notes", o.geo_notes);
+    const notes = String(o.geo_notes ?? "").trim();
+    if (notes) addDlRow(dl, "Notes", notes);
 
     if (o.combined_members?.length) {
       if (o.map_combine_summary) {

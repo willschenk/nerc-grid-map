@@ -125,8 +125,7 @@
   stroke-width: 0.65;
 }
 
-#nerc-svg .org.org-promoted.hot,
-#nerc-svg .org.org-promoted.selected {
+#nerc-svg .org.org-promoted.hot {
   stroke: #07110e;
   stroke-width: 1.4;
 }
@@ -185,19 +184,8 @@
   }
 }
 
-#nerc-svg .org.selected {
-  fill-opacity: 1;
-  stroke: #061610;
-  /* Tight non-scaling ring on the bubble itself; static so selection does not pulse. */
-  stroke-width: 2.6;
-  paint-order: stroke fill;
-  filter:
-    drop-shadow(0 0 1px rgba(255, 255, 255, 0.95))
-    drop-shadow(0 0 3.5px rgba(7, 17, 14, 0.55));
-}
-
 #nerc-svg .org-hit.selected:not(.hide) {
-  /* Keep hit target size for clicks; selection ring lives on .org only. */
+  /* Keep hit target size for clicks without drawing a second selection mark. */
   fill: transparent;
   stroke: transparent;
 }
@@ -242,6 +230,13 @@
 
 #nerc-svg .org-saber.hide {
   display: none;
+}
+
+#nerc-svg.focus-pjm .org-saber:not(.pjm-saber),
+#nerc-svg.focus-miso .org-saber:not(.miso-saber) {
+  opacity: 0.16;
+  filter: none;
+  animation: none;
 }
 
 @keyframes nerc-saber {
@@ -543,9 +538,9 @@
 
 #nerc-svg .olabel.selected-label {
   fill: #ffffff;
-  font-weight: 880;
+  font-weight: 850;
   stroke: rgba(3, 8, 7, 0.96);
-  stroke-width: 4.6;
+  stroke-width: 3.6;
 }
 
 #nerc-svg .olabel.tour-flash {
@@ -1307,18 +1302,6 @@
   font-size: 0.75rem;
 }
 
-/* Plain-language "what is this org" description, shown right under the title. */
-.nerc-panel .p-desc {
-  margin: 0 0 0.7rem;
-  padding: 0.5rem 0.6rem;
-  border-left: 3px solid var(--org-color, #1d6f62);
-  border-radius: 4px;
-  background: rgba(31, 47, 42, 0.045);
-  color: #2a3733;
-  font-size: 0.82rem;
-  line-height: 1.45;
-}
-
 /* ISO/RTO chip — ties the panel to the orange saber on the bubble. Just the tag,
    no explanatory copy, so it stays a lightweight marker. */
 .nerc-panel .p-isorto {
@@ -1338,20 +1321,11 @@
   text-transform: uppercase;
 }
 
-/* MISO Local Balancing Authority callout — sits at the top of the panel. Uses the
-   MISO overlay colour so the badge matches the map's MISO links and bubble
-   outlines exactly (shared CSS variable). */
+/* Compact relationship tags for PJM/MISO child areas. */
 .nerc-panel .p-misoca {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 0.5rem;
-  margin: 0 0 0.7rem;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--miso-area-color) 40%, transparent);
-  border-left: 3px solid var(--miso-area-color);
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--miso-area-color) 9%, transparent);
+  gap: 0.35rem;
+  margin: 0 0 0.5rem;
 }
 
 .nerc-panel .p-misoca-badge {
@@ -1365,14 +1339,6 @@
   letter-spacing: 0.04em;
 }
 
-.nerc-panel .p-misoca-text {
-  flex: 1 1 12rem;
-  min-width: 0;
-  color: color-mix(in srgb, var(--miso-area-color) 62%, #0c1a24);
-  font-size: 0.76rem;
-  line-height: 1.35;
-}
-
 .nerc-tooltip .tt-misoca {
   margin-top: 0.3rem;
   color: var(--miso-area-color);
@@ -1380,19 +1346,10 @@
   font-size: 0.74rem;
 }
 
-/* PJM transmission-zone callout — mirrors the MISO callout but in the PJM overlay
-   colour, matching the map's PJM links and zone outlines exactly. */
 .nerc-panel .p-pjmzone {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 0.5rem;
-  margin: 0 0 0.7rem;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--pjm-area-color) 40%, transparent);
-  border-left: 3px solid var(--pjm-area-color);
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--pjm-area-color) 9%, transparent);
+  gap: 0.35rem;
+  margin: 0 0 0.5rem;
 }
 
 .nerc-panel .p-pjmzone-badge {
@@ -1404,14 +1361,6 @@
   font-size: 0.66rem;
   font-weight: 800;
   letter-spacing: 0.04em;
-}
-
-.nerc-panel .p-pjmzone-text {
-  flex: 1 1 12rem;
-  min-width: 0;
-  color: color-mix(in srgb, var(--pjm-area-color) 60%, #1a0c16);
-  font-size: 0.76rem;
-  line-height: 1.35;
 }
 
 .nerc-tooltip .tt-pjmzone {
@@ -1463,10 +1412,9 @@
 
 .nerc-panel .p-priority-score .p-priority-num {
   color: #0d1714;
-  font-size: 1.05rem;
-  line-height: 1;
-  font-weight: 400;
-  font-variant-numeric: tabular-nums;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  font-weight: 720;
 }
 
 .nerc-panel .p-priority-score span {
