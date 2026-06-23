@@ -4,7 +4,7 @@
   height: 100dvh;
   overflow: hidden;
   color: #18211f;
-  background: #eaf2ef;
+  background: #d7e3ec;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -32,30 +32,38 @@
   width: 100%;
   height: 100%;
   display: block;
+  /* Soft cool "sea" gradient with a faint overhead light. The clearly blue water
+     gives the land a crisp coastline and lets the saturated role bubbles pop. */
   background:
-    radial-gradient(circle at 18% 16%, rgba(83, 161, 156, 0.14), transparent 30%),
-    linear-gradient(180deg, #edf5f3 0%, #f4f2ec 100%);
+    radial-gradient(135% 95% at 50% -12%, rgba(232, 242, 248, 0.7), transparent 58%),
+    linear-gradient(180deg, #dde9f0 0%, #d2e1ec 52%, #cbdce8 100%);
   touch-action: none;
 }
 
+/* Land: a warm-neutral near-white so every role hue reads cleanly on top. Borders
+   are non-scaling hairlines so they stay crisp (never balloon) at deep zoom. */
 #nerc-svg .state {
-  fill: #d8e2dc;
-  stroke: rgba(255, 255, 255, 0.94);
-  stroke-width: 0.72;
+  fill: #e7e8e3;
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 0.4;
+  vector-effect: non-scaling-stroke;
 }
 
+/* National outline: the main frame + coastline. A cool slate that ties to the
+   sea, kept thin so it reads as a clean edge, not a heavy border. */
 #nerc-svg .nation {
   fill: none;
-  stroke: rgba(63, 78, 72, 0.58);
-  stroke-width: 1;
+  stroke: rgba(74, 92, 98, 0.5);
+  stroke-width: 0.55;
+  vector-effect: non-scaling-stroke;
 }
 
-/* Canada: faint background context north of the border, quieter than the U.S.
-   states so the U.S. footprint stays the focus. */
+/* Canada: faint background context north of the border, quieter and cooler than
+   the U.S. states so the U.S. footprint stays the focus. */
 #nerc-svg .canada {
-  fill: #e2e8e3;
-  stroke: rgba(120, 134, 128, 0.45);
-  stroke-width: 0.7;
+  fill: #dde4e2;
+  stroke: rgba(120, 134, 128, 0.42);
+  stroke-width: 0.4;
   vector-effect: non-scaling-stroke;
   pointer-events: none;
 }
@@ -583,13 +591,13 @@
 }
 
 #nerc-svg .place {
-  fill: #545f5a;
-  font-weight: 650;
+  fill: #5b665f;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.06em;
   paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.9);
-  stroke-width: 2.8;
+  stroke: rgba(247, 250, 250, 0.85);
+  stroke-width: 2;
   pointer-events: none;
   text-anchor: middle;
 }
@@ -598,35 +606,37 @@
   display: none;
 }
 
-/* Land labels: state / province names sitting faintly on the map. Below NERC
-   marks and labels in the stacking order, so NERC information reads on top. */
+/* Land labels: state / province names sitting faintly on the map as a quiet
+   orientation layer. Below NERC marks and labels in the stacking order, so NERC
+   information always reads on top. Light weight + a slim halo keeps them elegant
+   and map-like rather than competing with the data. */
 #nerc-svg .land-label {
-  fill: rgba(72, 86, 80, 0.92);
-  font-weight: 750;
+  fill: rgba(86, 99, 95, 0.82);
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.11em;
   paint-order: stroke;
-  stroke: rgba(248, 251, 249, 0.85);
-  stroke-width: 3.2;
+  stroke: rgba(247, 250, 250, 0.78);
+  stroke-width: 2.1;
   pointer-events: none;
   text-anchor: middle;
 }
 
 /* Canadian provinces: same orientation role as states, a touch quieter. */
 #nerc-svg .land-label.province {
-  fill: rgba(96, 110, 103, 0.82);
-  font-weight: 700;
+  fill: rgba(108, 121, 114, 0.74);
+  font-weight: 550;
 }
 
-/* Water bodies: muted blue-grey italics in the open ocean/lake gaps, so they
-   read as geography, not data. */
+/* Water bodies: muted blue italics in the open ocean/lake gaps, so they read as
+   geography, not data. Tuned to sit on the cool sea. */
 #nerc-svg .land-label.water {
-  fill: rgba(95, 120, 140, 0.82);
-  font-weight: 600;
+  fill: rgba(96, 124, 146, 0.78);
+  font-weight: 500;
   font-style: italic;
-  letter-spacing: 0.16em;
-  stroke: rgba(248, 251, 252, 0.8);
-  stroke-width: 2.8;
+  letter-spacing: 0.17em;
+  stroke: rgba(244, 250, 252, 0.62);
+  stroke-width: 1.9;
 }
 
 #nerc-svg .land-label.dim {
@@ -637,9 +647,9 @@
    projected into the inset by its own mercator fit. Styled like the mainland
    states with a crisp non-scaling outline so the coast stays clean at any zoom. */
 #nerc-svg .terr-land {
-  fill: #d8e2dc;
-  stroke: rgba(255, 255, 255, 0.94);
-  stroke-width: 0.9;
+  fill: #e7e8e3;
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 0.45;
   vector-effect: non-scaling-stroke;
   pointer-events: none;
 }
