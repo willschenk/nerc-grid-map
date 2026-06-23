@@ -339,142 +339,156 @@
   }
 }
 
-/* Bubble outlines for the linked orgs — SAME colour as that system's links, so the
-   eye ties the dot to its thread. Only the outline/glow is added; the role fill is
-   untouched. Drawn with paint-order so the coloured ring sits outside the fill. */
-#nerc-svg .org.miso-control-area-linked-org {
-  stroke: var(--miso-area-color);
-  stroke-width: 1.3;
-  stroke-dasharray: none;
+/* ── PJM / MISO focus mode ────────────────────────────────────────────────────
+   The default map is intentionally CALM: members carry no persistent constellation
+   outline and the thread web never paints, so the overview reads cleanly. The PJM
+   and MISO relationships are expressed ONLY after the user clicks one of those two
+   hubs, when the map simplifies around the choice:
+     • the selected hub becomes the brightest object — a slow orange heartbeat halo;
+     • its members light up a beat later as an outward-radiating pulse reaches them;
+     • everything else desaturates into quiet grey background context.
+   Limited to PJM and MISO for now (see the focus helpers / marketFamily in the TS).
+   The colour is orange throughout — the one focus colour. */
+
+:root {
+  /* A slightly less saturated orange so the focus state reads as a refined accent
+     rather than a loud strobe (see the subtle parent/related/ripple tuning below). */
+  --focus-orange: hsl(30, 82%, 57%);
+  --focus-orange-strong: hsl(28, 90%, 60%);
+  --focus-orange-soft: hsla(30, 82%, 57%, 0.4);
+}
+
+/* No thread web, ever — the relationship is shown by the focus glow, not lines. */
+#nerc-svg .miso-links,
+#nerc-svg .pjm-links {
+  display: none;
+}
+
+/* Unrelated organizations: faded grey context while a focus is active. Still
+   visible enough to keep the geography legible, but clearly the background layer.
+   Muted bubbles never carry a stroke/glow, so they can't compete with the family. */
+#nerc-svg.focus-mode .org.focus-dim {
+  filter: grayscale(0.85);
+  opacity: 0.3;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+#nerc-svg.focus-mode .olabel.focus-dim {
+  opacity: 0.26;
+  transition: opacity 0.4s ease;
+}
+
+/* Related areas: a soft orange outline + glow that pulses a beat AFTER the parent.
+   Each member's animation-delay is set in JS from its distance to the hub, so the
+   light visibly sweeps outward from the centre rather than blinking at random. */
+#nerc-svg.focus-mode .org.focus-related {
+  stroke: var(--focus-orange-soft);
+  stroke-width: 1.1;
   paint-order: stroke fill;
+  animation: nerc-focus-related 3.6s ease-in-out infinite;
+  will-change: filter;
+}
+@keyframes nerc-focus-related {
+  0%, 100% {
+    stroke: var(--focus-orange-soft);
+    filter: drop-shadow(0 0 0.8px var(--focus-orange-soft));
+  }
+  42% {
+    stroke: var(--focus-orange);
+    filter: drop-shadow(0 0 2.6px var(--focus-orange-soft));
+  }
 }
 
-#nerc-svg .org.pjm-area-linked-org {
-  stroke: var(--pjm-area-color);
-  stroke-width: 1.3;
-  stroke-dasharray: none;
+/* The selected hub: the strongest, top-most object on the map. It leads the pulse
+   (no delay → it fires first), with a heavy slow orange heartbeat halo. */
+#nerc-svg.focus-mode .org.focus-parent {
+  stroke: var(--focus-orange);
+  stroke-width: 1.8;
   paint-order: stroke fill;
+  animation: nerc-focus-parent 3.6s ease-in-out infinite;
+  will-change: filter;
+}
+@keyframes nerc-focus-parent {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 1.6px var(--focus-orange))
+      drop-shadow(0 0 3px var(--focus-orange-soft));
+  }
+  42% {
+    filter:
+      drop-shadow(0 0 3px var(--focus-orange))
+      drop-shadow(0 0 7px var(--focus-orange-soft));
+  }
 }
 
-/* Hover/selection focus: strengthen the linked bubble's own outline + add a soft
-   colour glow so the active relationship pops without changing the fill. */
-#nerc-svg .org.miso-control-area-linked-org.is-hovered,
-#nerc-svg .org.miso-control-area-linked-org.is-selected {
-  stroke: var(--miso-area-color);
-  stroke-width: 2.4;
-  paint-order: stroke fill;
-  filter: drop-shadow(0 0 2.4px var(--miso-area-glow));
-}
+/* The selected hub keeps its generic orange saber; no per-family hue (orange is the
+   one focus colour). The .pjm-saber/.miso-saber classes are left unstyled so every
+   ISO/RTO ring stays the same calm orange in the default view. */
 
-#nerc-svg .org.pjm-area-linked-org.is-hovered,
-#nerc-svg .org.pjm-area-linked-org.is-selected {
-  stroke: var(--pjm-area-color);
-  stroke-width: 2.4;
-  paint-order: stroke fill;
-  filter: drop-shadow(0 0 2.4px var(--pjm-area-glow));
-}
-
-/* ── Regional-family constellation ───────────────────────────────────────────
-   Builds on the overlay colours above to make PJM and MISO read as two distinct
-   energy families: each hub is a glowing gravitational centre, its members carry
-   a matching halo, and the threads disclose progressively / on focus. */
-
-/* The two hubs trade the generic orange saber for their family colour, so PJM and
-   MISO stand out as the centres of their constellations. Every other ISO/RTO keeps
-   the orange light. */
-#nerc-svg .org-saber.miso-saber {
-  stroke: var(--miso-area-color);
-  filter:
-    drop-shadow(0 0 1.6px hsla(205, 90%, 58%, 0.95))
-    drop-shadow(0 0 4px hsla(205, 90%, 50%, 0.7));
-}
-#nerc-svg .org-saber.pjm-saber {
-  stroke: var(--pjm-area-color);
-  filter:
-    drop-shadow(0 0 1.6px hsla(322, 82%, 62%, 0.95))
-    drop-shadow(0 0 4px hsla(322, 82%, 53%, 0.7));
-}
-
-/* A soft, persistent family halo on the hub bubble itself; it intensifies when the
-   family is the hover/selection focus. paint-order keeps the thin colour ring
-   outside the role fill. */
-#nerc-svg .org.market-hub {
-  stroke-width: 1.3;
-  paint-order: stroke fill;
-}
-#nerc-svg .org.miso-hub {
-  stroke: var(--miso-area-color);
-  filter: drop-shadow(0 0 3px var(--miso-area-glow));
-}
-#nerc-svg .org.pjm-hub {
-  stroke: var(--pjm-area-color);
-  filter: drop-shadow(0 0 3px var(--pjm-area-glow));
-}
-#nerc-svg .org.miso-hub.family-on {
-  stroke-width: 2.2;
-  filter: drop-shadow(0 0 6.5px hsla(205, 90%, 52%, 0.85));
-}
-#nerc-svg .org.pjm-hub.family-on {
-  stroke-width: 2.2;
-  filter: drop-shadow(0 0 6.5px hsla(322, 82%, 55%, 0.85));
-}
-
-/* Member bubble glow when its family is lit (i.e. its hub is the focus), reusing
-   the hover/selection glow so "focus the hub → the whole family lights up" reads
-   instantly. Only the focused family's members carry a filter at once. */
-#nerc-svg .org.miso-control-area-linked-org.family-on {
-  stroke-width: 2.4;
-  filter: drop-shadow(0 0 2.4px var(--miso-area-glow));
-}
-#nerc-svg .org.pjm-area-linked-org.family-on {
-  stroke-width: 2.4;
-  filter: drop-shadow(0 0 2.4px var(--pjm-area-glow));
-}
-
-/* A lit thread (focused member OR focused hub's whole family) gets the same bump
-   as a directly hovered one. */
-#nerc-svg .miso-control-area-link.family-on,
-#nerc-svg .pjm-area-link.family-on {
-  stroke-width: 1.5;
+/* Keep focused labels crisp white; the dimming above fades the rest. */
+#nerc-svg.focus-mode .olabel.focus-on-label {
   opacity: 1;
-  animation: nerc-rto-area-flow 0.8s linear infinite;
 }
 
-/* Progressive disclosure: the full thread web is hidden at the overview so it never
-   reads as a tangled subway map; it reveals once zoomed in (`.market-links-on`, set
-   in syncRtoLinks) or for the currently focused family (`.family-on`). */
-#nerc-svg .miso-control-area-link,
-#nerc-svg .pjm-area-link {
+/* Expanding "signal" rings radiating from the selected hub — the visible pulse
+   travelling outward to the related areas. The group is re-centred on the hub in
+   screen space each redraw (syncFocusRings); the rings expand + fade purely in CSS,
+   staggered so a new ring leaves the hub before the last one fades. */
+#nerc-svg .focus-rings {
+  pointer-events: none;
+}
+#nerc-svg .focus-rings.hide {
   display: none;
 }
-#nerc-svg.market-links-on .miso-control-area-link,
-#nerc-svg.market-links-on .pjm-area-link,
-#nerc-svg .miso-control-area-link.family-on,
-#nerc-svg .pjm-area-link.family-on {
-  display: block;
+#nerc-svg .focus-rings circle {
+  fill: none;
+  stroke: var(--focus-orange-soft);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  /* Anchor scale() to the circle's OWN centre (0,0 in the hub-translated group),
+     NOT the SVG view-box centre. Without fill-box the default transform-box scales
+     the ring about the viewport centre, so it visibly drifts up-and-right as it
+     grows. fill-box pins it to the hub. */
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nerc-focus-ripple 3.4s ease-out infinite;
 }
-/* Re-asserted last: a thread whose endpoint isn't a visible bubble has no geometry. */
-#nerc-svg .miso-control-area-link.hide,
-#nerc-svg .pjm-area-link.hide {
+#nerc-svg .focus-rings circle:nth-child(2) {
+  animation-delay: 1.7s;
+}
+/* Two staggered rings is calmer than three — the third is retired for a more
+   refined, less strobe-like pulse. */
+#nerc-svg .focus-rings circle:nth-child(3) {
   display: none;
+}
+@keyframes nerc-focus-ripple {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.45;
+  }
+  70% {
+    opacity: 0.07;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #nerc-svg .miso-control-area-link,
-  #nerc-svg .pjm-area-link {
+  /* Hold steady glows instead of animating; the colour hierarchy still reads. */
+  #nerc-svg.focus-mode .org.focus-parent,
+  #nerc-svg.focus-mode .org.focus-related {
     animation: none;
-    stroke-dasharray: none;
-    opacity: 0.55;
   }
-  /* No moving light on the hub sabers or focused threads. */
-  #nerc-svg .org-saber.miso-saber,
-  #nerc-svg .org-saber.pjm-saber {
-    animation: none;
-    stroke-dasharray: none;
+  #nerc-svg.focus-mode .org.focus-parent {
+    filter: drop-shadow(0 0 5px var(--focus-orange-strong));
   }
-  #nerc-svg .miso-control-area-link.family-on,
-  #nerc-svg .pjm-area-link.family-on {
-    animation: none;
+  #nerc-svg.focus-mode .org.focus-related {
+    stroke: var(--focus-orange);
+    filter: drop-shadow(0 0 3px var(--focus-orange-soft));
+  }
+  #nerc-svg .focus-rings {
+    display: none;
   }
 }
 
@@ -1010,6 +1024,71 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* PJM/MISO focus status chip — a small, quiet pill that names the selection and
+   offers a clear control. Bottom-centre, matching the tour-status placement. */
+.nerc-focus-status {
+  position: absolute;
+  left: 50%;
+  bottom: calc(max(0.75rem, env(safe-area-inset-bottom, 0px)) + 0.6rem);
+  z-index: 18;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  border: 1px solid color-mix(in srgb, var(--focus-orange) 45%, rgba(31, 47, 42, 0.2));
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  padding: 0.5rem 0.6rem 0.5rem 1rem;
+  box-shadow: 0 14px 38px rgba(20, 31, 28, 0.18);
+  animation: nerc-title-in 320ms ease-out both;
+}
+
+.nerc-focus-status[hidden] {
+  display: none;
+}
+
+.nerc-focus-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.12;
+}
+
+.nerc-focus-text strong {
+  color: #0b1512;
+  font-size: 0.96rem;
+  font-weight: 800;
+}
+
+.nerc-focus-sub {
+  color: #8a5a23;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.nerc-focus-clear {
+  flex: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--focus-orange);
+  transition: background 0.15s ease;
+}
+
+.nerc-focus-clear:hover {
+  background: var(--focus-orange-strong);
+}
+
+.nerc-focus-clear:active {
+  transform: translateY(0.5px);
+}
+
 .nerc-panel,
 .nerc-info-panel {
   position: absolute;
@@ -1028,11 +1107,15 @@
 
 .nerc-panel {
   top: var(--nerc-panel-top);
-  width: min(23rem, calc(100vw - 1.5rem));
-  max-height: min(68dvh, calc(100dvh - var(--nerc-panel-top) - 0.85rem));
-  padding: 0.78rem 0.85rem;
+  /* Compact floating card tucked into the top-right corner — never a full panel.
+     Width stays in the 280–340px band and clamps inside the viewport; a modest
+     max-height with internal scroll keeps it from growing tall and covering the
+     map (the selected org stays visible to its left). */
+  width: min(20rem, calc(100vw - 1.5rem));
+  max-height: min(52dvh, calc(100dvh - var(--nerc-panel-top) - 0.85rem));
+  padding: 0.6rem 0.7rem;
   overflow-y: auto;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
 }
 
 .nerc-info-panel {
@@ -1201,7 +1284,7 @@
 
 .nerc-panel .p-sub {
   color: #66736f;
-  margin: 0.4rem 1.8rem 0.65rem 0;
+  margin: 0.3rem 1.8rem 0.5rem 0;
   font-size: 0.75rem;
 }
 
@@ -1217,23 +1300,16 @@
   line-height: 1.45;
 }
 
-/* ISO/RTO callout — ties the panel to the orange saber on the bubble. */
+/* ISO/RTO chip — ties the panel to the orange saber on the bubble. Just the tag,
+   no explanatory copy, so it stays a lightweight marker. */
 .nerc-panel .p-isorto {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 0.5rem;
-  margin: 0 0 0.7rem;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid rgba(255, 122, 26, 0.4);
-  border-left: 3px solid #ff7a1a;
-  border-radius: 6px;
-  background: rgba(255, 122, 26, 0.08);
+  margin: 0 0 0.55rem;
 }
 
 .nerc-panel .p-isorto-badge {
   flex: none;
-  padding: 0.1rem 0.4rem;
+  padding: 0.14rem 0.5rem;
   border-radius: 999px;
   background: #ff7a1a;
   color: #2a1402;
@@ -1241,14 +1317,6 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.nerc-panel .p-isorto-text {
-  flex: 1 1 12rem;
-  min-width: 0;
-  color: #5a3a1c;
-  font-size: 0.76rem;
-  line-height: 1.35;
 }
 
 /* MISO Local Balancing Authority callout — sits at the top of the panel. Uses the
@@ -1339,7 +1407,7 @@
 }
 
 .nerc-panel dt {
-  margin-top: 0.68rem;
+  margin-top: 0.5rem;
   color: #485852;
   font-weight: 820;
   font-size: 0.68rem;

@@ -36,6 +36,13 @@ const base = import.meta.env.BASE_URL;
         <div id="nerc-loading" class="nerc-loading">Loading map...</div>
         <div id="nerc-tooltip" class="nerc-tooltip" hidden></div>
         <div id="nerc-tour-status" class="nerc-tour-status" hidden></div>
+        <div id="nerc-focus-status" class="nerc-focus-status" hidden>
+          <span class="nerc-focus-text">
+            <strong id="nerc-focus-title">PJM selected</strong>
+            <span class="nerc-focus-sub">Showing related areas</span>
+          </span>
+          <button id="nerc-focus-clear" type="button" class="nerc-focus-clear" aria-label="Clear focus">Clear focus</button>
+        </div>
 
         <header class="nerc-topbar" aria-label="Map controls and summary">
           <div class="nerc-brand">

@@ -113,6 +113,8 @@ type Org = {
   _lpv?: number;        // labelPriority(o)
   _sizeTier?: number;   // sizeTier(o)
   _mf?: "PJM" | "MISO" | null; // marketFamily(o)
+  _focusDist?: number;  // geo distance to its family hub (focus-mode pulse stagger)
+  _focusDelay?: number; // animation-delay (s) so the focus pulse sweeps outward
   _visRank?: number;    // position in visual-priority-descending sort
   _labelRank?: number;  // position in label-priority-descending sort
   // Last-written DOM state — skip redundant attribute/class writes when unchanged.
@@ -490,6 +492,15 @@ const WATER_LABELS: Array<{ name: string; lat: number; lng: number }> = [
   { name: "Lake Superior", lat: 47.7, lng: -87.7 },
   { name: "Lake Michigan", lat: 43.6, lng: -87.1 },
 ];
+
+// Oversized geographic labels (big water bodies, Canadian provinces, Maine) that
+// otherwise compete with the organization labels. Rendered noticeably smaller and
+// quieter so NERC bubbles and short names stay the visual priority.
+const QUIET_LAND_LABELS = new Set([
+  "Gulf of Mexico", "Gulf of America",
+  "Manitoba", "Ontario", "Québec", "Quebec",
+  "New Brunswick", "Maine",
+]);
 
 // Tiny states whose centroid label would clutter the eastern seaboard; held
 // back until the map is zoomed in.
@@ -952,6 +963,13 @@ export function mountNercOrgMap(): void {
   const gSaber = svg.append("g").attr("class", "saber");
   const gHit = svg.append("g").attr("class", "hit");
   const gLabels = svg.append("g").attr("class", "labels");
+  // Expanding orange "signal" rings for PJM/MISO focus mode. Lives in SCREEN space
+  // (NOT the zoom transform) and is re-centred on the focused hub each redraw; the
+  // rings expand + fade purely in CSS. Hidden until a hub is focused.
+  const gFocusRings = svg.append("g").attr("class", "focus-rings hide");
+  gFocusRings.append("circle");
+  gFocusRings.append("circle");
+  gFocusRings.append("circle");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
   const panel = byId<HTMLElement>("nerc-panel");
@@ -963,6 +981,9 @@ export function mountNercOrgMap(): void {
   const metricsBody = byId<HTMLElement>("nerc-metrics-body");
   const loadingEl = byId<HTMLElement>("nerc-loading");
   const tourStatus = byId<HTMLElement>("nerc-tour-status");
+  const focusStatus = byId<HTMLElement>("nerc-focus-status");
+  const focusTitle = byId<HTMLElement>("nerc-focus-title");
+  const focusClearBtn = byId<HTMLButtonElement>("nerc-focus-clear");
   const infoToggle = byId<HTMLButtonElement>("nerc-info-toggle");
   const metricsToggle = byId<HTMLButtonElement>("nerc-metrics-toggle");
 
@@ -984,6 +1005,12 @@ export function mountNercOrgMap(): void {
   const places = PLACES as Place[];
   let selectedOrg: Org | null = null;
   let hoverOrg: Org | null = null;
+  // PJM/MISO focus mode. `null` = normal map; "PJM"/"MISO" = that hub is the
+  // centre of attention (its family lights up, everything else greys out). This is
+  // the ONLY state the focus feature adds; it is deliberately limited to the two
+  // market hubs (see marketFamily / the focus helpers below). Set whenever a hub
+  // is selected, cleared on background-click / Escape / the Clear control.
+  let activeFocusGroup: "PJM" | "MISO" | null = null;
   let userPanning = false;
   let lastPanEndAt = 0;
   let wheelZooming = false;
@@ -1383,7 +1410,11 @@ export function mountNercOrgMap(): void {
     return false;
   }
 
-  function canDisplayOrg(o: Org, k: number): boolean {
+  // The normal, zoom-driven eligibility rule. This is what drives PLACEMENT
+  // (computePlacements / the force sim) — focus mode deliberately does NOT widen it,
+  // so the selected family's overlay sub-areas never enter the shared packing and
+  // therefore never push the gray background organizations around.
+  function canDisplayOrgBase(o: Org, k: number): boolean {
     // Generation-only (GO/GOP) companies are excluded from the map entirely.
     if (isGenerationOnly(o)) return false;
     // The real ISOs/RTOs are headline orgs: always eligible at every zoom so they
@@ -1402,6 +1433,14 @@ export function mountNercOrgMap(): void {
     if (isTransmissionOwnerOnly(o)) return k >= transmissionOwnerOnlyRevealK();
     if (isDeferredMarketOrg(o)) return k >= pseMarketDisplayK();
     return k >= overviewRevealK(o);
+  }
+
+  // Visibility rule used by the renderer. In focus mode every PJM/MISO family member
+  // is shown as a priority overlay even if the base zoom rules would hide it — but
+  // placement still uses canDisplayOrgBase, so these overlay members ride on top of
+  // the static background instead of joining (and disturbing) its layout.
+  function canDisplayOrg(o: Org, k: number): boolean {
+    return canDisplayOrgBase(o, k) || isFocusMember(o);
   }
 
   // 0–1 ramp: how fully an org promotes from background dot to readable bubble.
@@ -2326,6 +2365,119 @@ export function mountNercOrgMap(): void {
     return (o._mf = v);
   }
 
+  // ── PJM/MISO focus mode ──────────────────────────────────────────────────────
+  // Clicking the PJM or MISO bubble calms the map around that choice: the hub
+  // becomes the brightest object, its members light up a beat later as the pulse
+  // reaches them, and everything else greys out. The relationship is read straight
+  // from the existing curated membership (marketFamily) — the hub plus its PJM
+  // transmission zones / MISO Local Balancing Authorities. INTENTIONALLY limited to
+  // these two hubs for now; to add another ISO/RTO later, give it a marketFamily
+  // value and the same visuals apply — no new rendering code needed.
+  function isFocusParent(o: Org): boolean {
+    return activeFocusGroup != null && isMarketHub(o) && marketFamily(o) === activeFocusGroup;
+  }
+  function isFocusRelated(o: Org): boolean {
+    return activeFocusGroup != null && !isMarketHub(o) && marketFamily(o) === activeFocusGroup;
+  }
+  function isFocusMember(o: Org): boolean {
+    return activeFocusGroup != null && marketFamily(o) === activeFocusGroup;
+  }
+
+  // Give every related member a staggered animation delay so the orange pulse
+  // visibly sweeps OUTWARD from the hub (nearer members light up first). Distance
+  // is geographic (lat/lng) so the ordering is stable across pan/zoom; the parent
+  // keeps delay 0 and always fires first.
+  function assignFocusDelays(group: "PJM" | "MISO"): void {
+    const hub = orgById(group === "PJM" ? PJM_HUB_ID : MISO_HUB_ID);
+    const members = placeableOrgs.filter((o) => !isMarketHub(o) && marketFamily(o) === group);
+    let maxD = 0;
+    const hlat = hub?.lat ?? 0;
+    const hlng = hub?.lng ?? 0;
+    for (const o of members) {
+      const d = hub ? Math.hypot((o.lat ?? hlat) - hlat, (o.lng ?? hlng) - hlng) : 0;
+      o._focusDist = d;
+      if (d > maxD) maxD = d;
+    }
+    const span = 0.85; // seconds the wave takes to reach the farthest member
+    for (const o of members) {
+      o._focusDelay = 0.12 + (maxD > 0 ? (o._focusDist ?? 0) / maxD : 0) * span;
+    }
+  }
+
+  function showFocusStatus(group: "PJM" | "MISO"): void {
+    focusTitle.textContent = `${group} selected`;
+    focusStatus.hidden = false;
+  }
+  function hideFocusStatus(): void {
+    focusStatus.hidden = true;
+  }
+
+  function setFocusGroup(group: "PJM" | "MISO"): void {
+    if (activeFocusGroup === group) return;
+    // Switching straight from one family to the other (PJM ⇄ MISO): re-solve so the
+    // previous family's screen-space nudges are dropped and nothing is left
+    // displaced. Entering focus from the normal map does NOT invalidate — the
+    // background packing is identical with or without focus (overlay sub-areas never
+    // join it), so the gray background stays perfectly fixed when focus turns on.
+    const switchingFamily = activeFocusGroup != null;
+    activeFocusGroup = group;
+    assignFocusDelays(group);
+    showFocusStatus(group);
+    if (switchingFamily) invalidateOrgLayout();
+    raiseFocusMembers();
+  }
+
+  // Lift the whole focused family (bubbles, sabers, hit targets, labels) to the top
+  // of their layers so a sub-area always paints ABOVE the grayed-out inactive map.
+  function raiseFocusMembers(): void {
+    if (activeFocusGroup == null) return;
+    const inFamily = (d: Org) => marketFamily(d) === activeFocusGroup;
+    gOverlay.selectAll<SVGRectElement, Org>("rect.org").filter(inFamily).raise();
+    gSaber.selectAll<SVGRectElement, Org>("rect.org-saber").filter(inFamily).raise();
+    gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").filter(inFamily).raise();
+    gLabels.selectAll<SVGTextElement, Org>("text.olabel").filter(inFamily).raise();
+  }
+
+  function clearFocus(): boolean {
+    if (activeFocusGroup == null) return false;
+    activeFocusGroup = null;
+    hideFocusStatus();
+    // Re-solve so the family drops back to normal visibility/collision/opacity and
+    // the rest of the map returns to its standard layout.
+    invalidateOrgLayout();
+    return true;
+  }
+
+  // Re-centre the screen-space ripple group on the focused hub and toggle the
+  // svg-root focus classes. Cheap; called from every redraw + applyHighlights.
+  function syncFocusRings(): void {
+    const on = activeFocusGroup != null;
+    svg.classed("focus-mode", on);
+    svg.classed("focus-pjm", activeFocusGroup === "PJM");
+    svg.classed("focus-miso", activeFocusGroup === "MISO");
+    if (!on) {
+      gFocusRings.classed("hide", true);
+      return;
+    }
+    const hub = orgById(activeFocusGroup === "PJM" ? PJM_HUB_ID : MISO_HUB_ID);
+    if (!hub || hub._x == null || hub._y == null || hub._vis === false) {
+      gFocusRings.classed("hide", true);
+      return;
+    }
+    // Project the hub to screen space here (the rings live OUTSIDE the zoom
+    // transform). Computing it directly — rather than reading hub._sx/_sy — means
+    // this stays correct even on the wheel-zoom path, where the full redraw loop
+    // that sets _sx/_sy does not run.
+    const sx = transform.applyX(orgRenderX(hub));
+    const sy = transform.applyY(orgRenderY(hub));
+    const baseR = Math.max(12, renderedRadius(hub, transform.k));
+    gFocusRings
+      .classed("hide", false)
+      .attr("transform", `translate(${sx},${sy})`)
+      .selectAll<SVGCircleElement, unknown>("circle")
+      .attr("r", baseR);
+  }
+
   function misoControlAreaCodes(o: Org): readonly string[] {
     return MISO_CONTROL_AREA_CODES.get(o.ncr_id) ?? [];
   }
@@ -2572,6 +2724,9 @@ export function mountNercOrgMap(): void {
       }
     });
     hitK = k;
+    // Keep the focus rings glued to the hub during the wheel gesture too (the full
+    // redraw loop that normally re-centres them does not run while wheeling).
+    syncFocusRings();
     gLabels.style("opacity", "0.55");
   }
 
@@ -2999,13 +3154,19 @@ export function mountNercOrgMap(): void {
       if (hh > maxExt) maxExt = hh;
     }
     const cell = 2 * maxExt + 4;
+    // Two independent collision grids. `grid` is the normal map. `focusGrid` holds
+    // only the selected PJM/MISO family: family members collide against each other
+    // (so they never stack), but are invisible to `grid` — they may freely sit over
+    // the grayed-out inactive bubbles as a priority overlay, and inactive bubbles
+    // are likewise not dropped just because a family member lands on them.
     const grid = new Map<string, BubbleBox[]>();
-    const hits = (b: BubbleBox): boolean => {
+    const focusGrid = new Map<string, BubbleBox[]>();
+    const hits = (b: BubbleBox, g: Map<string, BubbleBox[]>): boolean => {
       const gx = Math.floor((b.x0 + b.x1) / 2 / cell);
       const gy = Math.floor((b.y0 + b.y1) / 2 / cell);
       for (let ix = -1; ix <= 1; ix++)
         for (let iy = -1; iy <= 1; iy++) {
-          const arr = grid.get(`${gx + ix}:${gy + iy}`);
+          const arr = g.get(`${gx + ix}:${gy + iy}`);
           if (!arr) continue;
           for (const q of arr) {
             if (roundedBoxesOverlap(b, q)) return true;
@@ -3013,21 +3174,21 @@ export function mountNercOrgMap(): void {
         }
       return false;
     };
-    const keep = (b: BubbleBox): void => {
+    const keep = (b: BubbleBox, g: Map<string, BubbleBox[]>): void => {
       const key = `${Math.floor((b.x0 + b.x1) / 2 / cell)}:${Math.floor((b.y0 + b.y1) / 2 / cell)}`;
-      const arr = grid.get(key);
+      const arr = g.get(key);
       if (arr) arr.push(b);
-      else grid.set(key, [b]);
+      else g.set(key, [b]);
     };
     // Sum the minimum-translation push that separates box b from every accepted
     // box it overlaps (push along the shallower axis, away from each neighbour).
-    const pushOut = (b: BubbleBox): { x: number; y: number } | null => {
+    const pushOut = (b: BubbleBox, g: Map<string, BubbleBox[]>): { x: number; y: number } | null => {
       const gx = Math.floor((b.x0 + b.x1) / 2 / cell);
       const gy = Math.floor((b.y0 + b.y1) / 2 / cell);
       let px = 0, py = 0, any = false;
       for (let ix = -1; ix <= 1; ix++)
         for (let iy = -1; iy <= 1; iy++) {
-          const arr = grid.get(`${gx + ix}:${gy + iy}`);
+          const arr = g.get(`${gx + ix}:${gy + iy}`);
           if (!arr) continue;
           for (const q of arr) {
             if (!roundedBoxesOverlap(b, q)) continue;
@@ -3044,38 +3205,64 @@ export function mountNercOrgMap(): void {
     };
     for (const o of order) {
       if (o._sx == null || o._sy == null) continue;
+      const focusMember = isFocusMember(o);
+      // TWO COLLISION CLASSES in focus mode:
+      //   • Focus family members pack ONLY against each other (focusGrid). They are
+      //     invisible to — and never tested against — the gray background, so a
+      //     sub-area may freely sit over inactive orgs and the background never moves
+      //     or hides to make room for it.
+      //   • Everyone else packs against the normal grid exactly as in normal mode;
+      //     the focus overlay is not in that grid, so background↔background
+      //     resolution is unchanged.
+      const g = focusMember ? focusGrid : grid;
       const { hw, hh } = orgBubbleHalfExtents(o, k);
       let b = bubbleBox(o._sx, o._sy, hw, hh);
-      const exempt =
+      // Headliners (real ISO/RTO incl. the focus hub) and the selected/hovered/tour
+      // bubble are never dropped — they nudge as needed and always stay.
+      const neverHide =
         isIsoRtoOperator(o) ||
         selectedOrg?.ncr_id === o.ncr_id ||
         hoverOrg?.ncr_id === o.ncr_id ||
         tourIds.has(o.ncr_id);
-      if (hits(b)) {
-        if (!exempt) {
+      if (hits(b, g)) {
+        // An ordinary background bubble that overlaps a kept neighbour is dropped.
+        if (!neverHide && !focusMember) {
           o._vis = false;
           continue;
         }
-        // Exempt (ISO/RTO/focus): never hide — nudge it clear of its neighbours so
-        // two close headline bubbles (e.g. NYISO and ISO-NE) separate instead of
-        // stacking. The screen shift is folded into the declutter offset so the
-        // bubble, its hit target, and its saber all render at the nudged spot.
+        // Nudge clear of already-kept neighbours in the SAME class. The screen shift
+        // is folded into the declutter offset so the bubble, its hit target, and its
+        // saber all render at the nudged spot.
         let sx = o._sx, sy = o._sy;
-        for (let iter = 0; iter < 24; iter++) {
-          const push = pushOut(b);
-          if (!push) break;
-          // Damp the step so two mutually-overlapping exempt bubbles converge to a
-          // gap instead of oscillating past each other in a tight cluster.
+        // Family members get more iterations so a dense sub-area cluster (e.g. all
+        // of PJM's zones) can fully separate; others keep the cheaper budget.
+        const iters = focusMember ? 48 : 24;
+        let separated = false;
+        for (let iter = 0; iter < iters; iter++) {
+          const push = pushOut(b, g);
+          if (!push) {
+            separated = true;
+            break;
+          }
+          // Damp the step so two mutually-overlapping bubbles converge to a gap
+          // instead of oscillating past each other in a tight cluster.
           sx += push.x * 0.6;
           sy += push.y * 0.6;
           b = bubbleBox(sx, sy, hw, hh);
+        }
+        // A focus sub-area that could not find a gap is hidden rather than left
+        // stacked (lowest-priority first, since `order` is priority-sorted) — every
+        // shown sub-area stays readable. Headliners hold their ground regardless.
+        if (focusMember && !neverHide && !separated) {
+          o._vis = false;
+          continue;
         }
         o._dx = (o._dx ?? 0) + (sx - o._sx);
         o._dy = (o._dy ?? 0) + (sy - o._sy);
         o._sx = sx;
         o._sy = sy;
       }
-      keep(b);
+      keep(b, g);
     }
   }
 
@@ -3145,10 +3332,14 @@ export function mountNercOrgMap(): void {
         o.placementMode = "bubble";
         continue;
       }
+      // Use the BASE rule (not the focus-widened one): focus overlay sub-areas must
+      // stay out of the force sim so they never displace the static gray background.
+      // They are still forced visible in redraw and separated only against their own
+      // family in resolveBubbleOverlaps.
       if (
         o._x == null ||
         o._y == null ||
-        !canDisplayOrg(o, bucket) ||
+        !canDisplayOrgBase(o, bucket) ||
         !labelFitsInside(o, bucket)
       ) {
         o._placed = false;
@@ -3454,7 +3645,11 @@ export function mountNercOrgMap(): void {
         (isIsoRtoOperator(o) ||
           hot?.ncr_id === o.ncr_id ||
           selectedOrg?.ncr_id === o.ncr_id ||
-          tourIds.has(o.ncr_id));
+          tourIds.has(o.ncr_id) ||
+          // Focus mode: every member of the focused PJM/MISO family is forced
+          // visible (and rendered above the muted background, see the raise pass
+          // below) even if the current zoom would normally hold it back.
+          isFocusMember(o));
       o._promoteBackground = isBackgroundPromoted(o, forced);
       const vis = onScreen && (due || forced);
       o._vis = vis;
@@ -3767,6 +3962,13 @@ export function mountNercOrgMap(): void {
         raiseVisibleOrg(o);
       }
     }
+    // Focus-mode layering: related areas above the muted background, the focused
+    // hub on top of everything (raised last). Muted orgs keep their natural order
+    // underneath. Only runs while a hub is focused, so the default map is untouched.
+    if (activeFocusGroup != null) {
+      for (const o of finalVisibleOrgs) if (isFocusRelated(o)) raiseVisibleOrg(o);
+      for (const o of finalVisibleOrgs) if (isFocusParent(o)) raiseVisibleOrg(o);
+    }
 
     gOverlay.selectAll<SVGRectElement, Org>("rect.org").each(function (o) {
       const node = this as SVGRectElement;
@@ -3800,6 +4002,9 @@ export function mountNercOrgMap(): void {
       const labeled = labelState.has(o.ncr_id);
       const tier = disclosureTier(o, k, labeled);
       const inTour = tourActive && tourIds.has(o.ncr_id);
+      const focusParent = isFocusParent(o);
+      const focusRelated = isFocusRelated(o);
+      const focusDim = activeFocusGroup != null && !focusParent && !focusRelated;
       const mask =
         (labeled ? 1 : 0) |
         (tier === "background" ? 2 : 0) |
@@ -3809,7 +4014,10 @@ export function mountNercOrgMap(): void {
         (selectedOrg?.ncr_id === o.ncr_id ? 32 : 0) |
         (inTour && labeled ? 64 : 0) |
         (inTour && !labeled ? 128 : 0) |
-        (tourRunning && !inTour ? 256 : 0);
+        (tourRunning && !inTour ? 256 : 0) |
+        (focusParent ? 512 : 0) |
+        (focusRelated ? 1024 : 0) |
+        (focusDim ? 2048 : 0);
       if (o._clsMask !== mask) {
         o._clsMask = mask;
         node.classList.toggle("labeled", labeled);
@@ -3824,8 +4032,13 @@ export function mountNercOrgMap(): void {
         node.classList.toggle("tour-flash", (mask & 64) !== 0);
         node.classList.toggle("tour-pick", (mask & 128) !== 0);
         node.classList.toggle("tour-dim", (mask & 256) !== 0);
-        // The RTO relationship outline / family emphasis (is-hovered/is-selected/
-        // family-on) is managed centrally by applyFamilyFocus, called below.
+        // PJM/MISO focus mode: the hub (parent) gets the strong orange heartbeat,
+        // its members the softer outward-sweeping glow, everyone else greys out.
+        node.classList.toggle("focus-parent", focusParent);
+        node.classList.toggle("focus-related", focusRelated);
+        node.classList.toggle("focus-dim", focusDim);
+        // Stagger the related glow so the pulse radiates from the hub outward.
+        node.style.animationDelay = focusRelated ? `${o._focusDelay ?? 0}s` : "";
       }
     });
 
@@ -3955,17 +4168,24 @@ export function mountNercOrgMap(): void {
         lw.strokeWidth = strokeWidth;
       }
       node.style.paintOrder = "stroke fill";
+      const focusRelatedLabel = isFocusRelated(o) || isFocusParent(o);
+      const focusDimLabel = activeFocusGroup != null && !focusRelatedLabel;
       const flags =
         (state.centered ? 1 : 0) |
         (hot?.ncr_id === o.ncr_id ? 2 : 0) |
         (selectedOrg?.ncr_id === o.ncr_id ? 4 : 0) |
-        (tourActive && !!state ? 8 : 0);
+        (tourActive && !!state ? 8 : 0) |
+        (focusRelatedLabel ? 16 : 0) |
+        (focusDimLabel ? 32 : 0);
       if (lw.flags !== flags) {
         lw.flags = flags;
         node.classList.toggle("hover-on-dot", !!state.centered);
         node.classList.toggle("hot-label", (flags & 2) !== 0);
         node.classList.toggle("selected-label", (flags & 4) !== 0);
         node.classList.toggle("tour-flash", (flags & 8) !== 0);
+        // Keep focused labels crisp; fade the rest into background context.
+        node.classList.toggle("focus-on-label", (flags & 16) !== 0);
+        node.classList.toggle("focus-dim", (flags & 32) !== 0);
       }
     });
 
@@ -4008,7 +4228,7 @@ export function mountNercOrgMap(): void {
     // order so the best label wins contested space.
     const placeDotState = new Map<string, { x: number; y: number; r: number }>();
     const placeState = new Map<string, { x: number; y: number; font: number; bg: boolean }>();
-    const landState = new Map<string, { x: number; y: number; font: number; bg: boolean }>();
+    const landState = new Map<string, { x: number; y: number; font: number; bg: boolean; quiet: boolean }>();
     const ringOffsets = (R: number): Array<[number, number]> =>
       [0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
         const a = (i / 8) * 2 * Math.PI - Math.PI / 2;
@@ -4149,8 +4369,10 @@ export function mountNercOrgMap(): void {
         const baseSy = transform.applyY(L.y);
         if (baseSx < -margin || baseSx > W + margin || baseSy < -margin || baseSy > H + margin) continue;
         const grow = Math.max(0.85, 1.28 - Math.max(0, k - 1) * 0.06);
+        const quiet = QUIET_LAND_LABELS.has(L.name);
         const base = L.kind === "water" ? 16.5 : L.small ? 11 : 15;
-        const font = base * grow * unitPerPx;
+        // Quiet labels render much smaller so they stop dominating the map.
+        const font = base * grow * unitPerPx * (quiet ? 0.58 : 1);
         const w = L.name.length * font * 0.64 + (compact ? 10 : 9) * unitPerPx;
         const h = font + (compact ? 8 : 7) * unitPerPx;
         // viewBox-unit offsets (≈ geographic distance): big regions roam farther
@@ -4162,7 +4384,7 @@ export function mountNercOrgMap(): void {
         const spot = fitGeoLabel(baseSx, baseSy, w, h, offsets, true);
         if (!spot) continue;
         placedLand++;
-        landState.set(L.name, { x: spot.x, y: spot.y, font, bg: spot.bg });
+        landState.set(L.name, { x: spot.x, y: spot.y, font, bg: spot.bg, quiet });
       }
     }
 
@@ -4179,7 +4401,9 @@ export function mountNercOrgMap(): void {
       node.setAttribute("font-size", String(state.font));
       // Background labels (under the bubbles, at their true point) are dimmed so
       // they sit behind the data as quiet orientation context.
-      node.style.opacity = String(state.bg ? landOpacity * 0.6 : landOpacity);
+      node.style.opacity = String(
+        (state.bg ? landOpacity * 0.6 : landOpacity) * (state.quiet ? 0.62 : 1),
+      );
     });
 
     // Territory region names ride the inset group's transform (so each label
@@ -4195,6 +4419,8 @@ export function mountNercOrgMap(): void {
       .attr("font-size", terrFontPx / Math.max(k, 0.001))
       .classed("dim", tourRunning);
     lastLabelState = labelState;
+    // Re-centre the focus "signal" rings on the hub for the new viewport.
+    syncFocusRings();
   }
 
   // Lay out-of-footprint territory orgs
@@ -4683,54 +4909,12 @@ export function mountNercOrgMap(): void {
     return score;
   }
 
-  // PJM/MISO regional-family emphasis. Bidirectional & additive (never dims the
-  // rest of the map):
-  //   • focus a HUB  → light its whole family (every member bubble + every thread)
-  //   • focus a MEMBER → light its own thread back to the hub + glow the hub
-  // The classes persist on nodes between geometry syncs, so this only needs to run
-  // when focus changes or after a redraw re-joins the nodes. Cheap: it touches only
-  // the ~60 family nodes (selected by class), not every bubble.
+  // PJM/MISO focus emphasis. The per-bubble parent/related/dim classes are applied
+  // in redraw's class pass (so panned-in bubbles get them too); this just keeps the
+  // screen-space signal rings centred on the hub when applyHighlights runs without a
+  // full redraw (e.g. the async detail-load path after a selection).
   function applyFamilyFocus(): void {
-    const whole = new Set<string>(); // families whose HUB is focused → light all
-    const touched = new Set<string>(); // families with any focus → glow the hub
-    for (const f of [hoverOrg, selectedOrg]) {
-      if (!f) continue;
-      const fam = marketFamily(f);
-      if (!fam) continue;
-      touched.add(fam);
-      if (isMarketHub(f)) whole.add(fam);
-    }
-    const focusId = (o: Org): { hov: boolean; sel: boolean } => ({
-      hov: hoverOrg?.ncr_id === o.ncr_id,
-      sel: selectedOrg?.ncr_id === o.ncr_id,
-    });
-    const syncLinks = (group: typeof gMisoLink, fam: "PJM" | "MISO"): void => {
-      group.selectAll<SVGPathElement, Org>("path").each(function (o) {
-        const node = this as SVGPathElement;
-        const { hov, sel } = focusId(o);
-        node.classList.toggle("is-hovered", hov);
-        node.classList.toggle("is-selected", sel);
-        // A thread lights when its own member is focused OR its hub is focused.
-        node.classList.toggle("family-on", hov || sel || whole.has(fam));
-      });
-    };
-    syncLinks(gMisoLink, "MISO");
-    syncLinks(gPjmLink, "PJM");
-    gOverlay
-      .selectAll<SVGRectElement, Org>(
-        "rect.market-hub, rect.pjm-area-linked-org, rect.miso-control-area-linked-org",
-      )
-      .each(function (o) {
-        const node = this as SVGRectElement;
-        const fam = marketFamily(o);
-        if (!fam) return;
-        const { hov, sel } = focusId(o);
-        node.classList.toggle("is-hovered", hov);
-        node.classList.toggle("is-selected", sel);
-        // Hub glows whenever its family is touched; a member glows when its whole
-        // family is lit (hub focused) so "hover the hub → see the family" reads.
-        node.classList.toggle("family-on", isMarketHub(o) ? touched.has(fam) : whole.has(fam));
-      });
+    syncFocusRings();
   }
 
   function applyHighlights(): void {
@@ -4852,15 +5036,9 @@ export function mountNercOrgMap(): void {
     // Call out the real ISOs/RTOs (the ones wearing the saber outline); for
     // everyone else, lead with a plain-language description of what they are.
     if (isIsoRtoOperator(o)) {
+      // Just the orange chip — no explanatory paragraph (keeps the card compact).
       const note = createEl("p", "p-isorto");
-      note.append(
-        createEl("span", "p-isorto-badge", "ISO / RTO"),
-        createEl(
-          "span",
-          "p-isorto-text",
-          `${displayName(o)} is an Independent System Operator / Regional Transmission Organization — it runs the bulk-power grid and wholesale electricity market across its region, balancing supply and demand in real time and coordinating transmission.`,
-        ),
-      );
+      note.append(createEl("span", "p-isorto-badge", "ISO / RTO"));
       panelBody.append(note);
     } else {
       // MISO Local Balancing Authorities and PJM transmission zones lead with a
@@ -4955,6 +5133,7 @@ export function mountNercOrgMap(): void {
     panel.hidden = true;
     selectedOrg = null;
     hoverOrg = null;
+    clearFocus();
     clearOrgPointerFocus();
     invalidateOrgLayout();
     redraw();
@@ -5092,6 +5271,12 @@ export function mountNercOrgMap(): void {
     if (tourRunning) stopTour(true);
     hoverOrg = null;
     selectedOrg = o;
+    // Focus mode (PJM/MISO only). Clicking a hub focuses its family; clicking one
+    // of that family's related areas keeps the focus (and selects it); clicking
+    // anything else clears focus. Must run before redraw so the focus visuals are
+    // applied in the same pass.
+    if (isMarketHub(o)) setFocusGroup(marketFamily(o) as "PJM" | "MISO");
+    else if (!(activeFocusGroup != null && marketFamily(o) === activeFocusGroup)) clearFocus();
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
     renderPanel(o);
@@ -5213,6 +5398,11 @@ export function mountNercOrgMap(): void {
     });
     byId<HTMLButtonElement>("nerc-info-close").addEventListener("click", closeInfo);
     byId<HTMLButtonElement>("nerc-metrics-close").addEventListener("click", closeMetrics);
+    // Clear focus → back to the calm default map (also closes the detail panel).
+    focusClearBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      closePanel();
+    });
 
     // On-screen zoom controls. These only change zoom — they never open a panel —
     // so re: changing zoom is clearly separate from the Metrics/Info popovers.
@@ -5349,6 +5539,7 @@ export function mountNercOrgMap(): void {
   function startTour(): void {
     stopTour();
     selectedOrg = null;
+    clearFocus();
     panel.hidden = true;
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
