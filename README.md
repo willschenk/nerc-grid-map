@@ -15,6 +15,14 @@ This is not an official NERC product and should not be used as a compliance sour
 - Adds researched locations from public sources, with confidence notes for review.
 - Builds static JSON for an Astro + D3 map hosted on GitHub Pages.
 
+## Project aim
+
+Phase 1 is the product: a deterministic, reviewable registry-to-map workflow.
+Prefer improving ingest, normalization, researched location data, QA, payload
+health, dashboard statistics, and the existing map over adding new features.
+Compliance-duty modeling and other downstream interpretations are out of scope
+until the registry data and map workflow are consistently trustworthy.
+
 ## Run locally
 
 Requires Node.js `>=20.3.0`.

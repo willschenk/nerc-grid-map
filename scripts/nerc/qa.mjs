@@ -120,7 +120,7 @@ for (const o of orgs) {
   }
 }
 
-// 9. Map combines: absorbed member ids must not appear as standalone dots.
+// 13. Map combines: absorbed member ids must not appear as standalone dots.
 try {
   const combinePath = resolve(process.cwd(), "src/data/nerc/map-combines.json");
   const combineRaw = JSON.parse(readFileSync(combinePath, "utf8"));
@@ -142,13 +142,13 @@ try {
   // map-combines.json optional
 }
 
-// 13. Area aliases: unique codes, valid targets, no acronym conflicts.
+// 14. Area aliases: unique codes, valid targets, no acronym conflicts.
 for (const e of validateAreaAliases(orgs)) errors.push(e);
 
-// 14. Area interfaces: non-org planning/interface codes excluded from the map.
+// 15. Area interfaces: non-org planning/interface codes excluded from the map.
 for (const e of validateAreaInterfaces(orgs)) errors.push(e);
 
-// 15. Locations: three-slot schema; rank 1 must match lat/lng.
+// 16. Locations: three-slot schema; rank 1 must match lat/lng.
 const locCheck = validateLocations(orgs);
 for (const e of locCheck.errors) errors.push(e);
 for (const w of locCheck.warnings) warnings.push(w);

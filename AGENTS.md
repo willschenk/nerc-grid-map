@@ -8,6 +8,8 @@ from the NERC Compliance Registry.
 - Prioritize Phase 1: registry ingest, normalization, reviewable outputs, data
   quality, and dashboard/map statistics.
 - Do not add compliance-duty or compliance-modeling features.
+- Treat Phase 1 as the project aim: improve the existing registry-to-map
+  workflow before considering new functionality.
 - Prefer deterministic pipelines, stable schemas, explicit failures, and
   lightweight dependencies.
 - Treat registry files and researched external data as untrusted input.
