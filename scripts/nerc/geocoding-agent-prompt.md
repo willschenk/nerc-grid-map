@@ -1,9 +1,12 @@
-# NERC Geocoding Agent - Production Prompt
+# NERC Geocoding Agent Prompt
 
-Use the **System Prompt** as the system message for a batch model and wrap each
-ingested record with the **User Template**. The model returns one raw JSON object
-per record; collect them as JSONL, then convert the results to
-`src/data/nerc/geocoded-orgs.json` (`{ "orgs": [...] }`) for `build-orgs.mjs`.
+Use this only for missing registry locations.
+
+- Use **System Prompt** as the batch model system message.
+- Wrap each ingested record with **User Template**.
+- Collect one raw JSON object per record as JSONL.
+- Convert the JSONL to `src/data/nerc/geocoded-orgs.json`
+  (`{ "orgs": [...] }`) before running `build-orgs.mjs`.
 
 ---
 

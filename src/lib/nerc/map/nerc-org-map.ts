@@ -649,6 +649,11 @@ export function mountNercOrgMap(): void {
   const focusClearBtn = byId<HTMLButtonElement>("nerc-focus-clear");
   const infoToggle = byId<HTMLButtonElement>("nerc-info-toggle");
   const metricsToggle = byId<HTMLButtonElement>("nerc-metrics-toggle");
+  const tagHelp = createEl("div", "nerc-tag-help");
+  tagHelp.hidden = true;
+  tagHelp.setAttribute("role", "tooltip");
+  root.append(tagHelp);
+  let activeTagHelp: HTMLElement | null = null;
 
   const projection = geoAlbersUsa();
   const path = geoPath(projection);
@@ -916,6 +921,49 @@ export function mountNercOrgMap(): void {
     pill.title = roleFullName(role);
     pill.style.backgroundColor = colorFor(role);
     return pill;
+  }
+
+  function showTagHelp(target: HTMLElement): void {
+    const text = target.dataset.tagHelp?.trim();
+    if (!text) return;
+    activeTagHelp = target;
+    tagHelp.textContent = text;
+    tagHelp.hidden = false;
+    const targetRect = target.getBoundingClientRect();
+    const helpRect = tagHelp.getBoundingClientRect();
+    const gap = 8;
+    let left = targetRect.left + targetRect.width / 2 - helpRect.width / 2;
+    let top = targetRect.top - helpRect.height - gap;
+    if (top < gap) top = targetRect.bottom + gap;
+    left = Math.min(window.innerWidth - helpRect.width - gap, Math.max(gap, left));
+    top = Math.min(window.innerHeight - helpRect.height - gap, Math.max(gap, top));
+    tagHelp.style.left = `${left}px`;
+    tagHelp.style.top = `${top}px`;
+  }
+
+  function hideTagHelp(target?: HTMLElement): void {
+    if (target && activeTagHelp && activeTagHelp !== target) return;
+    activeTagHelp = null;
+    tagHelp.hidden = true;
+  }
+
+  function wireTagHelp<T extends HTMLElement>(target: T, text: string): T {
+    const help = text.trim();
+    if (!help) return target;
+    target.dataset.tagHelp = help;
+    target.title = help;
+    target.setAttribute("aria-label", `${target.textContent?.trim() ?? "Tag"}: ${help}`);
+    if (target.tabIndex < 0) target.tabIndex = 0;
+    target.addEventListener("pointerenter", () => showTagHelp(target));
+    target.addEventListener("pointerleave", () => hideTagHelp(target));
+    target.addEventListener("focus", () => showTagHelp(target));
+    target.addEventListener("blur", () => hideTagHelp(target));
+    target.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      if (activeTagHelp === target && !tagHelp.hidden) hideTagHelp(target);
+      else showTagHelp(target);
+    });
+    return target;
   }
 
   // Disclosure text: placement tries compact labels first and only admits longer
@@ -4430,7 +4478,7 @@ export function mountNercOrgMap(): void {
     const rows = createEl("div", "p-roles");
     roles.forEach((role) => {
       const row = createEl("div", "p-role");
-      row.append(createRolePill(role), createEl("span", undefined, roleFullName(role)));
+      row.append(wireTagHelp(createRolePill(role), roleFullName(role)), createEl("span", undefined, roleFullName(role)));
       rows.append(row);
     });
     return rows;
@@ -4447,15 +4495,28 @@ export function mountNercOrgMap(): void {
 
   function createMapSizeTier(o: Org): HTMLDivElement {
     const score = createEl("div", "p-priority-score");
-    score.append(
-      createEl("span", "p-priority-num", sizeTierLabel(o)),
-      createEl(
-        "span",
-        undefined,
-        "Size follows strongest role tier.",
-      ),
-    );
+    score.append(createEl("span", "p-priority-num", sizeTierLabel(o)));
     return score;
+  }
+
+  function cleanNotePart(value: string): string {
+    const note = value
+      .replace(/\s+/g, " ")
+      .replace(/\s+([,.;:])/g, "$1")
+      .trim()
+      .replace(/[.;]+$/g, "");
+    if (!note) return "";
+    return `${note.charAt(0).toUpperCase()}${note.slice(1)}`;
+  }
+
+  function formatPanelNotes(value: string | null | undefined): string {
+    const raw = String(value ?? "").trim();
+    if (!raw) return "";
+    const normalized = raw.replace(/\s*\n+\s*/g, "; ").replace(/\s+/g, " ").trim();
+    const splitter = /https?:\/\//i.test(normalized) || /\bwww\./i.test(normalized) ? /\s*;\s*/ : /\s*(?:;|\.\s+)\s*/;
+    const parts = normalized.split(splitter).map(cleanNotePart).filter(Boolean);
+    if (!parts.length) return "";
+    return `${parts.join("; ")}.`;
   }
 
   // PJM/MISO focus emphasis. The per-bubble parent/related/dim classes are applied
@@ -4549,10 +4610,10 @@ export function mountNercOrgMap(): void {
     dl.append(dt, dd);
   }
 
-  function createPanelTag(className: string, text: string, title: string): HTMLSpanElement {
-    const tag = createEl("span", className, text);
-    tag.title = title;
-    return tag;
+  function createPanelTag(className: string, text: string, title: string): HTMLButtonElement {
+    const tag = createEl("button", `${className} nerc-panel-tag`, text);
+    tag.type = "button";
+    return wireTagHelp(tag, title);
   }
 
   // Collapse shrinks the card to its title bar so it stops covering the map without
@@ -4567,6 +4628,7 @@ export function mountNercOrgMap(): void {
 
   function renderPanel(o: Org): void {
     o = applyOrgDetails(o);
+    hideTagHelp();
     panelBody.replaceChildren();
     panelBody.scrollTop = 0;
     // The close/collapse buttons are static siblings of the scrolling body (see
@@ -4577,7 +4639,7 @@ export function mountNercOrgMap(): void {
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
     const acronym = createEl("span", "p-acronym", orgAcronym(o));
-    acronym.title = displayName(o);
+    wireTagHelp(acronym, displayName(o));
     title.append(acronym, createEl("h2", undefined, displayName(o)));
     panelBody.append(
       title,
@@ -4611,7 +4673,7 @@ export function mountNercOrgMap(): void {
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     addDlRow(dl, "Map size / priority", createMapSizeTier(o));
-    const notes = String(o.geo_notes ?? "").trim();
+    const notes = formatPanelNotes(o.geo_notes);
     if (notes) addDlRow(dl, "Notes", notes);
 
     if (o.combined_members?.length) {
@@ -4675,6 +4737,7 @@ export function mountNercOrgMap(): void {
 
   function closePanel(): void {
     panel.hidden = true;
+    hideTagHelp();
     selectedOrg = null;
     hoverOrg = null;
     clearFocus();
@@ -4953,6 +5016,15 @@ export function mountNercOrgMap(): void {
       ev.stopPropagation();
       setPanelCollapsed(!panel.classList.contains("collapsed"));
     });
+    document.addEventListener(
+      "pointerdown",
+      (ev) => {
+        const target = ev.target;
+        if (target instanceof Element && (target.closest("[data-tag-help]") || target.closest(".nerc-tag-help"))) return;
+        hideTagHelp();
+      },
+      true,
+    );
     // Clear focus → back to the calm default map (also closes the detail panel).
     focusClearBtn.addEventListener("click", (ev) => {
       ev.stopPropagation();
@@ -5096,6 +5168,7 @@ export function mountNercOrgMap(): void {
     selectedOrg = null;
     clearFocus();
     panel.hidden = true;
+    hideTagHelp();
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
     tourRunning = true;
