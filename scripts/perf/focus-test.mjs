@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Headless verification of the PJM/MISO focus interaction. Serves dist/, opens
 // Chrome via CDP, clicks the PJM hub then the MISO hub, asserts the focus state
-// (one parent, ≥1 related, dimmed background, visible rings + status chip), clears
+// (one parent, ≥1 related, dimmed background), clears
 // it, and confirms the map returns to normal. Writes before/after screenshots.
 // Usage: npm run build && node scripts/perf/focus-test.mjs
 
@@ -80,7 +80,6 @@ const STATE = `(() => {
     parents: shown('rect.org.focus-parent').length,
     related: shown('rect.org.focus-related').length,
     dimmed: shown('rect.org.focus-dim').length,
-    ringsVisible: !document.querySelector('.focus-rings').classList.contains('hide'),
     statusShown: status && !status.hidden,
     statusTitle: document.querySelector('#nerc-focus-title')?.textContent,
   };
@@ -128,7 +127,6 @@ async function main() {
     const { sessionId } = await conn.send("Target.attachToTarget", { targetId, flatten: true });
     await conn.send("Page.enable", {}, sessionId);
     await conn.send("Runtime.enable", {}, sessionId);
-    const errors = [];
     conn.send("Log.enable", {}, sessionId);
     await conn.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false }, sessionId);
     await conn.send("Page.navigate", { url }, sessionId);
@@ -148,7 +146,6 @@ async function main() {
     assert(pjm.parents === 1, `exactly one focus-parent (got ${pjm.parents})`);
     assert(pjm.related >= 5, `PJM has related areas shown (got ${pjm.related})`);
     assert(pjm.dimmed > 20, `unrelated orgs dimmed (got ${pjm.dimmed})`);
-    assert(pjm.ringsVisible, "signal rings visible for PJM");
     assert(!pjm.statusShown, "focus status chip stays hidden (temporarily removed)");
     const shotPjm = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "1-pjm.png"), Buffer.from(shotPjm.data, "base64"));
@@ -170,7 +167,6 @@ async function main() {
     console.log("cleared state:", JSON.stringify(cleared));
     assert(!cleared.focusMode, "background click clears focus-mode");
     assert(cleared.parents === 0 && cleared.related === 0 && cleared.dimmed === 0, "no focus classes after clear");
-    assert(!cleared.ringsVisible, "signal rings hidden after clear");
     assert(!cleared.statusShown, "status chip hidden after clear");
     const shotClear = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "3-cleared.png"), Buffer.from(shotClear.data, "base64"));

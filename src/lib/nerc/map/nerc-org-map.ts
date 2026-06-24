@@ -2030,11 +2030,11 @@ export function mountNercOrgMap(): void {
     return o.ncr_id === PJM_HUB_ID || o.ncr_id === MISO_HUB_ID;
   }
 
-  // Regional-family affiliation, the single source of truth for the PJM/MISO
-  // "constellation" overlay. Derived ONLY from existing, curated membership
-  // metadata (PJM transmission-zone codes via area_aliases; MISO LBA codes), plus
-  // the hubs themselves. An org with no clear membership stays neutral (null) — we
-  // never force an org into a family. Mirrors `marketFamily` on the data side.
+  // Regional-family affiliation, the single source of truth for PJM/MISO focus
+  // mode. Derived ONLY from existing, curated membership metadata (PJM
+  // transmission-zone codes via area_aliases; MISO LBA codes), plus the hubs
+  // themselves. An org with no clear membership stays neutral (null) — we never
+  // force an org into a family. Mirrors `marketFamily` on the data side.
   function marketFamily(o: Org): "PJM" | "MISO" | null {
     if (o._mf !== undefined) return o._mf;
     let v: "PJM" | "MISO" | null = null;
@@ -5271,9 +5271,7 @@ export function mountNercOrgMap(): void {
         (o) =>
           "org" +
           (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : "") +
-          (o.nerc_registered === false ? " unregistered" : "") +
-          // The PJM/MISO hubs themselves: the gravitational centre of each family.
-          (isMarketHub(o) ? ` market-hub ${marketFamily(o) === "PJM" ? "pjm-hub" : "miso-hub"}` : ""),
+          (o.nerc_registered === false ? " unregistered" : ""),
       )
       .attr("fill", (o) => safeColor(o.color))
       .attr("transform", null)

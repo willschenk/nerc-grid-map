@@ -290,110 +290,36 @@
     opacity: 0.85;
   }
 
-  #nerc-svg .org.selected {
+  #nerc-svg .org.selected,
+  #nerc-svg .org.focus-ping {
     animation: none;
   }
 }
 
-/* ── RTO relationship overlays ───────────────────────────────────────────────
-   Two dedicated overlay colours, each used for ONE system only and for BOTH the
-   animated area links and the matching bubble outlines, so the two networks read
-   apart at a glance and never look like a role fill:
-     • MISO  — Local Balancing Authority (LBA) links + LBA bubble outlines
-     • PJM   — transmission-zone links + zone bubble outlines
-   The colours live in variables so the link stroke and the bubble outline match
-   EXACTLY. These are saturated, non-role hues; the bubble fill stays the role
-   colour and only gains an outline/glow. */
+/* ── PJM / MISO family colours ────────────────────────────────────────────────
+   One saturated, non-role hue per system, used by the classification pills (hover
+   tooltip) and panel badges so MISO and PJM read apart at a glance. The bubble
+   fill always stays the role colour. */
 :root {
   --miso-area-color: hsl(205, 90%, 50%); /* azure — MISO only */
-  --miso-area-glow: hsla(205, 90%, 50%, 0.6);
   --pjm-area-color: hsl(322, 82%, 53%); /* magenta — PJM only */
-  --pjm-area-glow: hsla(322, 82%, 53%, 0.6);
-}
-
-/* The live area links. The squiggle is baked into the path geometry (see
-   syncRtoLinks); only stroke-dashoffset (a flowing "current" toward the hub) and a
-   gentle opacity pulse animate, both pure CSS, so the relationship reads as alive
-   at zero per-frame JS cost. non-scaling-stroke keeps the hairline constant at any
-   zoom. Painted in their own groups beneath the bubbles and labels. */
-#nerc-svg .miso-control-area-link,
-#nerc-svg .pjm-area-link {
-  fill: none;
-  stroke-width: 0.85;
-  vector-effect: non-scaling-stroke;
-  stroke-linecap: round;
-  stroke-dasharray: 2.4 3.6;
-  pointer-events: none;
-  animation:
-    nerc-rto-area-flow 1.2s linear infinite,
-    nerc-rto-area-pulse 2.6s ease-in-out infinite;
-  will-change: stroke-dashoffset, opacity;
-}
-
-#nerc-svg .miso-control-area-link {
-  stroke: var(--miso-area-color);
-}
-
-#nerc-svg .pjm-area-link {
-  stroke: var(--pjm-area-color);
-}
-
-#nerc-svg .miso-control-area-link.hide,
-#nerc-svg .pjm-area-link.hide {
-  display: none;
-}
-
-/* Hover/selection focus: bump the one active thread so it stands out from its
-   siblings — quicker flow, full opacity, a touch heavier. */
-#nerc-svg .miso-control-area-link.is-hovered,
-#nerc-svg .miso-control-area-link.is-selected,
-#nerc-svg .pjm-area-link.is-hovered,
-#nerc-svg .pjm-area-link.is-selected {
-  stroke-width: 1.5;
-  opacity: 1;
-  animation: nerc-rto-area-flow 0.8s linear infinite;
-}
-
-@keyframes nerc-rto-area-flow {
-  to {
-    /* One full dash period (2.4 + 3.6) for a seamless loop. */
-    stroke-dashoffset: -6;
-  }
-}
-
-@keyframes nerc-rto-area-pulse {
-  0%,
-  100% {
-    opacity: 0.42;
-  }
-  50% {
-    opacity: 0.72;
-  }
 }
 
 /* ── PJM / MISO focus mode ────────────────────────────────────────────────────
-   The default map is intentionally CALM: members carry no persistent constellation
-   outline and the thread web never paints, so the overview reads cleanly. The PJM
-   and MISO relationships are expressed ONLY after the user clicks one of those two
-   hubs, when the map simplifies around the choice:
-     • the selected hub becomes the brightest object — a slow orange heartbeat halo;
-     • its members light up a beat later as an outward-radiating pulse reaches them;
+   The default map is calm: no thread web, no persistent member outlines. The PJM
+   and MISO relationships appear ONLY after the user clicks one of those two hubs:
+     • the selected hub gets a slow orange glow (the brightest object on the map);
+     • its members light up with a softer glow, staggered so it sweeps outward;
      • everything else desaturates into quiet grey background context.
    Limited to the curated PJM and MISO families (see marketFamily in the TS).
    The colour is orange throughout — the one focus colour. */
 
 :root {
   /* A slightly less saturated orange so the focus state reads as a refined accent
-     rather than a loud strobe (see the subtle parent/related/ripple tuning below). */
+     rather than a loud strobe. */
   --focus-orange: hsl(30, 82%, 57%);
   --focus-orange-strong: hsl(28, 90%, 60%);
   --focus-orange-soft: hsla(30, 82%, 57%, 0.4);
-}
-
-/* No thread web, ever — the relationship is shown by the focus glow, not lines. */
-#nerc-svg .miso-links,
-#nerc-svg .pjm-links {
-  display: none;
 }
 
 /* Unrelated organizations: faded grey context while a focus is active. Still
@@ -430,6 +356,34 @@
   }
 }
 
+/* Last-clicked subarea while the parent hub stays in the panel. */
+#nerc-svg.focus-mode .org.focus-picked {
+  stroke: rgba(255, 255, 255, 0.98);
+  stroke-width: 1.1;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 0 3px var(--focus-orange-soft));
+}
+
+/* One-shot pulse when a focused subarea is (re)clicked. The panel stays on the
+   parent hub, so this quick scale-up-and-back is what acknowledges the click. */
+#nerc-svg .org.focus-ping {
+  animation: nerc-focus-ping 480ms ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes nerc-focus-ping {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.16);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* The selected hub leads the family pulse, but the selected mark is a glow, not a
    large orange rectangle around the bubble. */
 #nerc-svg.focus-mode .org.focus-parent {
@@ -461,51 +415,6 @@
   opacity: 1;
 }
 
-/* Expanding "signal" rings radiating from the selected hub — the visible pulse
-   travelling outward to the related areas. The group is re-centred on the hub in
-   screen space each redraw (syncFocusRings); the rings expand + fade purely in CSS,
-   staggered so a new ring leaves the hub before the last one fades. */
-#nerc-svg .focus-rings {
-  pointer-events: none;
-}
-#nerc-svg .focus-rings.hide {
-  display: none;
-}
-#nerc-svg .focus-rings circle {
-  fill: none;
-  stroke: var(--focus-orange-soft);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  /* Anchor scale() to the circle's OWN centre (0,0 in the hub-translated group),
-     NOT the SVG view-box centre. Without fill-box the default transform-box scales
-     the ring about the viewport centre, so it visibly drifts up-and-right as it
-     grows. fill-box pins it to the hub. */
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: nerc-focus-ripple 3.4s ease-out infinite;
-}
-#nerc-svg .focus-rings circle:nth-child(2) {
-  animation-delay: 1.7s;
-}
-/* Two staggered rings is calmer than three — the third is retired for a more
-   refined, less strobe-like pulse. */
-#nerc-svg .focus-rings circle:nth-child(3) {
-  display: none;
-}
-@keyframes nerc-focus-ripple {
-  0% {
-    transform: scale(0.5);
-    opacity: 0.45;
-  }
-  70% {
-    opacity: 0.07;
-  }
-  100% {
-    transform: scale(2.6);
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* Hold steady glows instead of animating; the colour hierarchy still reads. */
   #nerc-svg.focus-mode .org.focus-parent,
@@ -518,9 +427,6 @@
   #nerc-svg.focus-mode .org.focus-related {
     stroke: var(--focus-orange);
     filter: drop-shadow(0 0 3px var(--focus-orange-soft));
-  }
-  #nerc-svg .focus-rings {
-    display: none;
   }
 }
 
@@ -938,9 +844,7 @@
 .nerc-pill:focus-visible,
 .nerc-panel-close:focus-visible,
 .nerc-panel-collapse:focus-visible,
-.nerc-panel-tag:focus-visible,
-.nerc-rolepill[data-tag-help]:focus-visible,
-.p-acronym[data-tag-help]:focus-visible {
+.nerc-panel-tag:focus-visible {
   outline: 2px solid #1d6f62;
   outline-offset: 2px;
 }
@@ -990,6 +894,35 @@
   margin-bottom: 0.12rem;
 }
 
+.nerc-tooltip .tt-head-text {
+  min-width: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nerc-tooltip .tt-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .nerc-tooltip .tt-head-text {
+    flex: 1 1 auto;
+  }
+
+  .nerc-tooltip .tt-head .nerc-tt-special {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    align-self: flex-start;
+    margin: 0;
+    max-width: 46%;
+  }
+}
+
+.nerc-tooltip .tt-head + .nerc-tt-pills {
+  margin-top: 0.34rem;
+}
+
 .nerc-tooltip .tt-sub,
 .nerc-tooltip .tt-meta {
   color: #5a6965;
@@ -1020,11 +953,6 @@
   white-space: nowrap;
 }
 
-.nerc-rolepill[data-tag-help],
-.p-acronym[data-tag-help] {
-  cursor: help;
-}
-
 .nerc-tooltip .nerc-rolepill {
   font-size: 0.62rem;
   line-height: 1.25;
@@ -1035,24 +963,24 @@
   background: rgba(31, 47, 42, 0.7);
 }
 
-.nerc-tag-help {
-  position: fixed;
-  z-index: 60;
-  max-width: min(18rem, calc(100vw - 1rem));
-  padding: 0.34rem 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 7px;
-  background: rgba(13, 23, 20, 0.94);
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(20, 31, 28, 0.28);
-  font-size: 0.72rem;
-  font-weight: 700;
-  line-height: 1.25;
-  pointer-events: none;
+.nerc-rolepill.nerc-iso-area-pill {
+  background: #ff7a1a;
+  color: #2a1402;
+  font-weight: 750;
 }
 
-.nerc-tag-help[hidden] {
-  display: none;
+.nerc-rolepill.nerc-miso-area-pill {
+  background: var(--miso-area-color);
+}
+
+.nerc-rolepill.nerc-pjm-area-pill {
+  background: var(--pjm-area-color);
+}
+
+/* Special classification tags stack under the title on touch; desktop hovers pin
+   them to the tooltip's top-right via .tt-head (see above). */
+.nerc-tooltip .tt-head .nerc-tt-special {
+  margin-top: 0.08rem;
 }
 
 .nerc-tour-status {
@@ -1179,15 +1107,15 @@
   top: auto;
   left: max(0.75rem, env(safe-area-inset-left, 0px));
   right: max(0.75rem, env(safe-area-inset-right, 0px));
-  bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+  bottom: max(0.6rem, env(safe-area-inset-bottom, 0px));
   width: auto;
-  max-height: min(34dvh, 18.5rem);
-  padding: 0.72rem 0.82rem 0.78rem;
+  max-height: min(31dvh, 16rem);
+  padding: 0.56rem 0.72rem 0.6rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font-size: 0.8rem;
-  border-radius: 10px;
+  font-size: 0.75rem;
+  border-radius: 9px;
   box-shadow:
     0 -8px 24px rgba(20, 31, 28, 0.1),
     0 18px 44px rgba(20, 31, 28, 0.16);
@@ -1355,6 +1283,11 @@
   letter-spacing: 0;
 }
 
+/* The detail dock runs a touch smaller than the info/metrics popovers. */
+.p-title h2 {
+  font-size: 0.92rem;
+}
+
 .nerc-info-panel h2,
 .nerc-metrics-panel h2 {
   padding-right: 2.4rem;
@@ -1363,20 +1296,20 @@
 .p-acronym {
   display: inline-grid;
   place-items: center;
-  min-width: 2.25rem;
-  height: 2rem;
-  padding: 0 0.45rem;
+  min-width: 2rem;
+  height: 1.72rem;
+  padding: 0 0.42rem;
   border-radius: 7px;
   background: var(--org-color, #1d6f62);
   color: #fff;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 850;
 }
 
 .nerc-panel .p-sub {
   color: #66736f;
-  margin: 0.24rem 4.2rem 0.38rem 0;
-  font-size: 0.75rem;
+  margin: 0.18rem 4.2rem 0.3rem 0;
+  font-size: 0.7rem;
 }
 
 /* ISO/RTO chip — ties the panel to the orange saber on the bubble. Just the tag,
@@ -1387,16 +1320,11 @@
 }
 
 .nerc-panel-tag {
-  appearance: none;
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  border: 0;
-  cursor: help;
-  font: inherit;
   line-height: 1.2;
   white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .nerc-panel .p-isorto-badge {
@@ -1429,13 +1357,6 @@
   letter-spacing: 0.04em;
 }
 
-.nerc-tooltip .tt-misoca {
-  margin-top: 0.3rem;
-  color: var(--miso-area-color);
-  font-weight: 700;
-  font-size: 0.74rem;
-}
-
 .nerc-panel .p-pjmzone {
   display: inline-flex;
   gap: 0.35rem;
@@ -1453,62 +1374,51 @@
   letter-spacing: 0.04em;
 }
 
-.nerc-tooltip .tt-pjmzone {
-  margin-top: 0.3rem;
-  color: var(--pjm-area-color);
-  font-weight: 700;
-  font-size: 0.74rem;
-}
-
+/* Detail fields as a column grid of self-contained blocks (label above value),
+   each separated from the row above by a thin divider — clearly grouped without
+   being spread far apart. Roles + Regional Entity span the full width. */
 .nerc-panel dl {
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  gap: 0.34rem 0.58rem;
-  align-items: start;
-  margin: 0.12rem 0 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 0.85rem;
+  row-gap: 0;
+  align-items: stretch;
+  margin: 0.1rem 0 0;
+}
+
+.nerc-panel .p-field {
+  min-width: 0;
+  padding: 0.28rem 0 0.3rem;
+  border-top: 1px solid rgba(31, 47, 42, 0.11);
+}
+
+.nerc-panel .p-field-wide {
+  grid-column: 1 / -1;
 }
 
 .nerc-panel dt {
-  margin: 0;
-  padding-top: 0.06rem;
-  color: #485852;
+  margin: 0 0 0.1rem;
+  color: #5b6b64;
   font-weight: 820;
-  font-size: 0.68rem;
+  font-size: 0.61rem;
   text-transform: uppercase;
-  letter-spacing: 0;
-  white-space: nowrap;
+  letter-spacing: 0.02em;
 }
 
 .nerc-panel dd {
   min-width: 0;
   margin: 0;
   color: #1d2925;
-  line-height: 1.38;
+  font-size: 0.78rem;
+  line-height: 1.34;
   overflow-wrap: anywhere;
 }
 
-@media (min-width: 680px) {
-  .nerc-panel dl {
-    grid-template-columns: max-content minmax(8rem, 1fr) max-content minmax(8rem, 1fr);
-    column-gap: 0.75rem;
-    row-gap: 0.38rem;
-  }
-}
-
 .nerc-panel .p-roles {
-  display: grid;
-  gap: 0.28rem;
-}
-
-.nerc-panel .p-role-block {
-  display: grid;
-  gap: 0.34rem;
-}
-
-.nerc-panel .p-role {
   display: flex;
-  align-items: baseline;
-  gap: 0.42rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.26rem;
 }
 
 .nerc-panel .p-priority-score {
@@ -1517,8 +1427,8 @@
 
 .nerc-panel .p-priority-score .p-priority-num {
   color: #0d1714;
-  font-size: 0.84rem;
-  line-height: 1.35;
+  font-size: 0.78rem;
+  line-height: 1.32;
   font-weight: 720;
 }
 
@@ -1761,6 +1671,37 @@
   .nerc-stage {
     --nerc-panel-top: calc(var(--nerc-chrome-top) + var(--nerc-topbar-block) + 0.65rem);
   }
+
+  /* Desktop: tuck the detail panel into the bottom-right as a compact card rather
+     than a full-width dock, so it covers far less of the map and reads as a quiet
+     aside. Mobile keeps its bottom-sheet (see the max-width: 760px block). The
+     bottom-right zoom controls already fade out while a panel is open, so the card
+     sits in that corner without colliding. */
+  .nerc-panel {
+    left: auto;
+    right: max(0.55rem, env(safe-area-inset-right, 0px));
+    bottom: max(0.6rem, env(safe-area-inset-bottom, 0px));
+    width: min(25.5rem, calc(100vw - 1.4rem));
+    max-height: min(42dvh, 15.25rem);
+    padding: 0.46rem 0.62rem 0.5rem;
+    font-size: 0.735rem;
+  }
+
+  /* Trim the per-field and header spacing a touch so the card stays vertically
+     compact without losing legibility. */
+  .nerc-panel .p-field {
+    padding: 0.22rem 0 0.24rem;
+  }
+
+  .nerc-panel .p-acronym {
+    min-width: 1.85rem;
+    height: 1.58rem;
+    font-size: 0.74rem;
+  }
+
+  .nerc-panel .p-sub {
+    margin-bottom: 0.24rem;
+  }
 }
 
 @media (max-width: 1120px) {
@@ -1870,9 +1811,9 @@
   /* Detail panel: compact bottom sheet with the same content model as desktop. */
   .nerc-panel {
     bottom: max(0.55rem, env(safe-area-inset-bottom, 0px));
-    max-height: min(44dvh, 20rem);
-    padding: 0.86rem 0.78rem 0.82rem;
-    font-size: 0.84rem;
+    max-height: min(40dvh, 17rem);
+    padding: 0.68rem 0.72rem 0.66rem;
+    font-size: 0.79rem;
     border-radius: 12px 12px 10px 10px;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
@@ -1899,23 +1840,23 @@
   }
 
   .nerc-panel .p-sub {
-    font-size: 0.76rem;
-    line-height: 1.42;
-    margin-bottom: 0.46rem;
+    font-size: 0.71rem;
+    line-height: 1.4;
+    margin-bottom: 0.34rem;
   }
 
   .nerc-panel dt {
-    font-size: 0.68rem;
+    font-size: 0.63rem;
   }
 
   .nerc-panel dd {
-    font-size: 0.84rem;
-    line-height: 1.45;
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
 
   .nerc-panel .p-title h2 {
-    font-size: 1rem;
-    line-height: 1.22;
+    font-size: 0.95rem;
+    line-height: 1.2;
   }
 
   .nerc-panel .p-combined-note,
