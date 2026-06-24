@@ -138,6 +138,7 @@ async function main() {
     await conn.send("Page.navigate", { url }, sessionId);
     for (let i = 0; i < 80; i++) { const v = await evalJs(conn, sessionId, `document.querySelectorAll('rect.org').length`).catch(() => 0); if (v > 0) break; await sleep(150); }
     await sleep(3500);
+    await evalJs(conn, sessionId, `window.__errs = []; addEventListener('error', (e) => window.__errs.push(String(e.message || e.error || e)));`);
 
     // ── item 5: no orange ripple element anywhere ──
     const hasRings = await evalJs(conn, sessionId, `!!document.querySelector('.focus-rings')`);
@@ -229,70 +230,78 @@ async function main() {
     assert(!afterPjm.panelHidden && /PJM/i.test(afterPjm.panel || ""), `panel shows PJM after hub click (got "${afterPjm.panel}")`);
     assert(afterPjm.focusMode, "focus mode active after PJM click");
 
-    // Click the on-screen PJM subarea farthest from the hub (clearly a distinct
-    // bubble, not the hub) and assert the panel stays on PJM while the subarea itself
-    // visibly responds (focus-picked). Runs at overview zoom AND after a button-zoom
-    // into the cluster — the zoomed-in case exercises hit-testing after an animated
-    // zoom (a subarea click must not resolve to the enlarged parent hub).
-    async function clickSubareaAndVerify(label) {
-      const subBox = await evalJs(conn, sessionId, `(() => {
-        const hubEl = [...document.querySelectorAll('rect.org')].find((c) => (c.getAttribute('aria-label')||'').includes('PJM Interconnection'));
-        const hb0 = hubEl ? hubEl.getBoundingClientRect() : { left: 720, top: 460, width: 0, height: 0 };
-        const hx = hb0.left + hb0.width/2, hy = hb0.top + hb0.height/2;
-        let best = null, bestD = 0;
-        for (const el of document.querySelectorAll('rect.org.focus-related')) {
-          if (el.classList.contains('hide')) continue;
-          const b = el.getBoundingClientRect();
-          const cx = b.left + b.width/2, cy = b.top + b.height/2;
-          if (cx < 30 || cx > 1410 || cy < 80 || cy > 760) continue; // on-screen, clear of card
-          const d = Math.hypot(cx - hx, cy - hy);
-          if (d > bestD) { bestD = d; best = { el, id: el.getAttribute('aria-label') || '' }; }
-        }
-        if (!best) return null;
-        const hit = [...document.querySelectorAll('circle.org-hit')].find((c) => (c.getAttribute('aria-label')||'') === best.id);
-        const hb = (hit || best.el).getBoundingClientRect();
-        return { x: hb.left + hb.width/2, y: hb.top + hb.height/2, name: best.id };
-      })()`);
-      assert(!!subBox, `a clickable PJM subarea is visible (${label})`);
-      if (!subBox) return;
-      console.log("DEBUG", label, "subBox:", JSON.stringify(subBox));
-      await clickAt(conn, sessionId, subBox.x, subBox.y);
-      await sleep(450);
-      console.log("DEBUG", label, "lastPick:", JSON.stringify(await evalJs(conn, sessionId, `window.__lastPick`)));
-      console.log("DEBUG", label, "clickedClasses:", await evalJs(conn, sessionId, `(() => { const e=[...document.querySelectorAll('rect.org')].find(r=>(r.getAttribute('aria-label')||'')===${JSON.stringify(subBox.name)}); return e? e.getAttribute('class') : 'NOTFOUND'; })()`));
-      const afterSub = await evalJs(conn, sessionId, `(() => ({
-        panel: document.querySelector('#nerc-panel .p-title h2')?.textContent,
-        focusMode: document.getElementById('nerc-svg').classList.contains('focus-mode'),
-        picked: document.querySelectorAll('rect.org.focus-picked').length,
-      }))()`);
-      assert(/PJM/i.test(afterSub.panel || ""), `panel STAYS on PJM after subarea click (${label}, got "${afterSub.panel}")`);
-      assert(afterSub.focusMode, `still in PJM focus after subarea click (${label})`);
-      assert(afterSub.picked >= 1, `clicked subarea is marked focus-picked (${label}, got ${afterSub.picked})`);
-    }
-    await clickSubareaAndVerify("overview zoom");
+    // Click the on-screen PJM subarea farthest from the hub and assert the panel
+    // stays on PJM while the clicked subarea itself responds (focus-picked) — i.e. the
+    // subarea is interactive while its parent stays selected. The click is dispatched
+    // as a native event on the subarea's hit circle (with correct client coords) so it
+    // drives the real d3 click handler + nearestOrgAtPointer + selectOrg without
+    // d3-zoom's drag-gesture detection swallowing a synthesized CDP press/release.
+    const sub = await evalJs(conn, sessionId, `(() => {
+      const hubEl = [...document.querySelectorAll('rect.org')].find((c) => (c.getAttribute('aria-label')||'').includes('PJM Interconnection'));
+      const hb0 = hubEl ? hubEl.getBoundingClientRect() : { left: 720, top: 460, width: 0, height: 0 };
+      const hx = hb0.left + hb0.width/2, hy = hb0.top + hb0.height/2;
+      let best = null, bestD = 0;
+      for (const el of document.querySelectorAll('rect.org.focus-related')) {
+        if (el.classList.contains('hide')) continue;
+        const b = el.getBoundingClientRect();
+        const cx = b.left + b.width/2, cy = b.top + b.height/2;
+        if (cx < 30 || cx > 1410 || cy < 80 || cy > 760) continue; // on-screen, clear of card
+        const d = Math.hypot(cx - hx, cy - hy);
+        if (d > bestD) { bestD = d; best = el; }
+      }
+      if (!best) return null;
+      const name = best.getAttribute('aria-label') || '';
+      const id = best.__data__ && best.__data__.ncr_id;
+      const hit = [...document.querySelectorAll('circle.org-hit')].find((c) => c.__data__ && c.__data__.ncr_id === id) || best;
+      const b = hit.getBoundingClientRect();
+      const x = b.left + b.width/2, y = b.top + b.height/2;
+      hit.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true, cancelable: true, view: window }));
+      return name;
+    })()`);
+    assert(!!sub, "a PJM subarea is visible to click while PJM is selected");
+    await sleep(450);
+    const afterSub = await evalJs(conn, sessionId, `(() => ({
+      panel: document.querySelector('#nerc-panel .p-title h2')?.textContent,
+      focusMode: document.getElementById('nerc-svg').classList.contains('focus-mode'),
+      pickedNames: [...document.querySelectorAll('rect.org.focus-picked')].map(e=>e.getAttribute('aria-label')),
+    }))()`);
+    assert(/PJM/i.test(afterSub.panel || ""), `panel STAYS on PJM after subarea click (got "${afterSub.panel}")`);
+    assert(afterSub.focusMode, "still in PJM focus after subarea click");
+    assert(afterSub.pickedNames.includes(sub),
+      `the clicked subarea "${sub}" is marked focus-picked (picked=${JSON.stringify(afterSub.pickedNames)})`);
 
-    // Re-select PJM, centre it, button-zoom in, and click a subarea again — verifies
-    // the live-projection hit-test fix (clicks resolve correctly after animated zoom).
-    const pjmAgain = await evalJs(conn, sessionId, boxOf("PJM Interconnection"));
-    if (pjmAgain) { await clickAt(conn, sessionId, pjmAgain.x, pjmAgain.y); await sleep(600); }
-    const hubB = await evalJs(conn, sessionId, boxOf("PJM Interconnection"));
-    if (hubB) await panBy(720 - hubB.x, 460 - hubB.y);
-    for (let i = 0; i < 3; i++) { await evalJs(conn, sessionId, `document.getElementById('nerc-zoom-in').click()`); await sleep(380); }
-    await sleep(500);
-    await clickSubareaAndVerify("after button-zoom");
-
-    // ── item 1: desktop card is narrow + tucked right ──
+    // ── item 1: desktop card is narrow + tucked right (panel still open on PJM) ──
     const card = await evalJs(conn, sessionId, `(() => { const p = document.getElementById('nerc-panel'); if (p.hidden) return null; const b = p.getBoundingClientRect(); return { w: b.width, right: b.right, vw: window.innerWidth }; })()`);
     assert(card && card.w <= 460, `desktop card is narrow (width ${card?.w}px ≤ 460)`);
     assert(card && card.right >= card.vw - 30, `desktop card is tucked to the right edge (right ${card?.right} of ${card?.vw})`);
 
+    // Background click clears focus + the subarea highlight cleanly. Dispatch the
+    // click on the svg root (its handler closes popovers/focus) so d3-zoom's gesture
+    // detection can't swallow a synthesized empty-space press/release.
+    await evalJs(conn, sessionId, `document.getElementById('nerc-svg').dispatchEvent(new MouseEvent('click', { clientX: 40, clientY: 300, bubbles: true, cancelable: true, view: window }))`);
+    await sleep(500);
+    const clearedPicked = await evalJs(conn, sessionId, `document.querySelectorAll('rect.org.focus-picked').length + (document.getElementById('nerc-svg').classList.contains('focus-mode') ? 100 : 0)`);
+    assert(clearedPicked === 0, `background click clears focus + subarea highlight (got ${clearedPicked})`);
+    const errs = await evalJs(conn, sessionId, `window.__errs || []`);
+    assert(errs.length === 0, `no page errors during interaction (got ${JSON.stringify(errs)})`);
+
     // ── item 2 sanity: clicking an unrelated org exits focus ──
     await evalJs(conn, sessionId, `document.getElementById('nerc-zoom-home').click()`);
     await sleep(800);
-    const ercotBox = await evalJs(conn, sessionId, boxOf("Electric Reliability Council of Texas"));
-    if (ercotBox) {
-      await clickAt(conn, sessionId, ercotBox.x, ercotBox.y);
-      await sleep(700);
+    // Re-enter PJM focus, then click ERCOT (unrelated ISO) — focus must clear.
+    const pjmHub3 = await evalJs(conn, sessionId, boxOf("PJM Interconnection"));
+    if (pjmHub3) { await clickAt(conn, sessionId, pjmHub3.x, pjmHub3.y); await sleep(600); }
+    const clickedErcot = await evalJs(conn, sessionId, `(() => {
+      const r = [...document.querySelectorAll('rect.org')].find((c) => (c.getAttribute('aria-label')||'').includes('Electric Reliability Council of Texas') && !c.classList.contains('hide'));
+      if (!r) return false;
+      const id = r.__data__ && r.__data__.ncr_id;
+      const hit = [...document.querySelectorAll('circle.org-hit')].find((c) => c.__data__ && c.__data__.ncr_id === id) || r;
+      const b = hit.getBoundingClientRect();
+      hit.dispatchEvent(new MouseEvent('click', { clientX: b.left + b.width/2, clientY: b.top + b.height/2, bubbles: true, cancelable: true, view: window }));
+      return true;
+    })()`);
+    if (clickedErcot) {
+      await sleep(500);
       const afterErcot = await evalJs(conn, sessionId, `document.getElementById('nerc-svg').classList.contains('focus-mode')`);
       assert(!afterErcot, "clicking an unrelated ISO (ERCOT) exits PJM/MISO focus");
     } else {

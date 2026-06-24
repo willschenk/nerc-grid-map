@@ -4365,6 +4365,35 @@ export function mountNercOrgMap(): void {
     );
   }
 
+  // Special classification pills (oval tags, same format as the role pills) shown at
+  // the top-right of the tooltip, above the roles: ISO/RTO for a market hub, PJM Zone
+  // for a PJM transmission zone, MISO LBA for a MISO local balancing authority. Most
+  // orgs carry none or one, but a dual-market utility (e.g. Duke Energy Ohio-Kentucky)
+  // can legitimately be both a PJM zone and a MISO LBA, so these are independent.
+  function specialClassTags(o: Org): HTMLSpanElement[] {
+    const tags: HTMLSpanElement[] = [];
+    if (isIsoRtoOperator(o)) {
+      tags.push(
+        createAreaPill(
+          "ISO / RTO",
+          "nerc-iso-area-pill",
+          "Independent System Operator / Regional Transmission Organization",
+        ),
+      );
+    }
+    if (isPjmZone(o)) tags.push(createAreaPill("PJM Zone", "nerc-pjm-area-pill", "PJM Transmission Zone"));
+    if (isMisoControlArea(o)) tags.push(createAreaPill("MISO LBA", "nerc-miso-area-pill", "MISO Local Balancing Authority"));
+    return tags;
+  }
+
+  // Hover tooltip layout:
+  //   ┌ tt-head ─────────────────────────────────┐
+  //   │ acronym + name        [special class tags] │
+  //   ├────────────────────────────────────────────┤
+  //   │ role pills (BA, RC, TOP…)  +N overflow      │
+  //   └────────────────────────────────────────────┘
+  // Roles render once, as colourful oval pills — no plain-text role summary.
+  const TOOLTIP_ROLE_LIMIT = 4;
   function renderTooltip(o: Org): void {
     tooltip.replaceChildren();
     tooltip.setAttribute("role", "tooltip");
@@ -4377,31 +4406,23 @@ export function mountNercOrgMap(): void {
     );
     head.append(headText);
 
-    const special = createEl("div", "nerc-tt-pills nerc-tt-special");
-    if (isIsoRtoOperator(o)) {
-      special.append(
-        createAreaPill(
-          "ISO / RTO",
-          "nerc-iso-area-pill",
-          "Independent System Operator / Regional Transmission Organization",
-        ),
-      );
+    const tags = specialClassTags(o);
+    if (tags.length) {
+      const special = createEl("div", "nerc-tt-pills nerc-tt-special");
+      special.append(...tags);
+      head.append(special);
     }
-    if (isPjmZone(o)) {
-      special.append(createAreaPill("PJM Zone", "nerc-pjm-area-pill", "PJM Transmission Zone"));
-    }
-    if (isMisoControlArea(o)) {
-      special.append(createAreaPill("MISO LBA", "nerc-miso-area-pill", "MISO Local Balancing Authority"));
-    }
-    if (special.childElementCount > 0) head.append(special);
-
     tooltip.append(head);
 
-    const chips = createEl("div", "nerc-tt-pills");
     const roles = primaryRoles(o);
-    roles.slice(0, 4).forEach((role) => chips.append(createRolePill(role)));
-    if (roles.length > 4) chips.append(createEl("span", "nerc-rolepill nerc-rolepill-more", `+${roles.length - 4}`));
-    tooltip.append(chips);
+    if (roles.length) {
+      const chips = createEl("div", "nerc-tt-pills");
+      roles.slice(0, TOOLTIP_ROLE_LIMIT).forEach((role) => chips.append(createRolePill(role)));
+      if (roles.length > TOOLTIP_ROLE_LIMIT) {
+        chips.append(createEl("span", "nerc-rolepill nerc-rolepill-more", `+${roles.length - TOOLTIP_ROLE_LIMIT}`));
+      }
+      tooltip.append(chips);
+    }
     tooltip.hidden = false;
   }
 
@@ -4416,27 +4437,11 @@ export function mountNercOrgMap(): void {
     tooltip.style.top = `${Math.max(8, y)}px`;
   }
 
-  function showTooltip(o: Org, ev: MouseEvent): void {
-    if (selectedOrg) {
-      hideTooltip();
-      return;
-    }
-    const request = ++tooltipRequest;
-    const x = ev.clientX;
-    const y = ev.clientY;
-    renderTooltip(applyOrgDetails(o));
-    placeTooltip(x, y);
-    if (!hasOrgDetails(o)) {
-      void ensureOrgDetails(o)
-        .then((fullOrg) => {
-          if (request !== tooltipRequest || hoverOrg?.ncr_id !== fullOrg.ncr_id) return;
-          renderTooltip(fullOrg);
-          placeTooltip(x, y);
-        })
-        .catch(() => {});
-    }
-  }
-
+  // Show the hover tooltip for `o`, anchored at the given screen point. Renders
+  // immediately from whatever data is loaded, then re-renders once lazy details
+  // arrive (guarded by tooltipRequest + the still-hovered check so a stale async
+  // resolve can't overwrite a newer hover). showTooltip is the pointer-event entry;
+  // both share this one implementation.
   function showTooltipAt(o: Org, anchorX: number, anchorY: number): void {
     if (selectedOrg) {
       hideTooltip();
@@ -4454,6 +4459,10 @@ export function mountNercOrgMap(): void {
         })
         .catch(() => {});
     }
+  }
+
+  function showTooltip(o: Org, ev: MouseEvent): void {
+    showTooltipAt(o, ev.clientX, ev.clientY);
   }
 
   function hideTooltip(): void {
@@ -4877,6 +4886,64 @@ export function mountNercOrgMap(): void {
     animateTransform(next, duration);
   }
 
+  // Frame the whole PJM or MISO family in view — zooms out when needed so every
+  // member fits in the area the detail card leaves clear.
+  function fitFocusGroup(group: "PJM" | "MISO", duration = 380): void {
+    const members = orgs.filter((o) => marketFamily(o) === group && o._x != null && o._y != null);
+    if (members.length === 0) return;
+
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    for (const o of members) {
+      minX = Math.min(minX, o._x as number);
+      maxX = Math.max(maxX, o._x as number);
+      minY = Math.min(minY, o._y as number);
+      maxY = Math.max(maxY, o._y as number);
+    }
+
+    const span = Math.max(maxX - minX, maxY - minY, 24 * unitPerPx);
+    const pad = span * 0.16 + 28 * unitPerPx;
+    minX -= pad;
+    maxX += pad;
+    minY -= pad;
+    maxY += pad;
+    const dataCx = (minX + maxX) / 2;
+    const dataCy = (minY + maxY) / 2;
+    const bboxW = maxX - minX;
+    const bboxH = maxY - minY;
+
+    let mL = (compact ? 24 : 32) * unitPerPx;
+    let mT = (compact ? 68 : 48) * unitPerPx;
+    let mR = (compact ? 24 : 32) * unitPerPx;
+    let mB = (compact ? 36 : 28) * unitPerPx;
+    const card = panelRectVB();
+    if (card) {
+      if (card.left > W * 0.35) {
+        mR = Math.max(mR, W - card.left + 14 * unitPerPx);
+        mB = Math.max(mB, H - card.top + 10 * unitPerPx);
+      } else {
+        mB = Math.max(mB, H - card.top + 8 * unitPerPx);
+      }
+    }
+    const viewW = Math.max(W * 0.35, W - mL - mR);
+    const viewH = Math.max(H * 0.35, H - mT - mB);
+    const viewCx = mL + viewW / 2;
+    const viewCy = mT + viewH / 2;
+
+    const k = Math.max(
+      0.72,
+      Math.min(MAX_ZOOM, Math.min(viewW / bboxW, viewH / bboxH) * 0.94),
+    );
+    focusPanPending = true;
+    const next = zoomIdentity.translate(viewCx, viewCy).scale(k).translate(-dataCx, -dataCy);
+    requestAnimationFrame(() => {
+      focusPanPending = false;
+      animateTransform(next, duration);
+    });
+  }
+
   // Brief one-shot pulse on a bubble — used to acknowledge a subarea click when the
   // panel stays anchored to its parent hub, so the click still feels responsive.
   function pingSubarea(o: Org): void {
@@ -4918,6 +4985,10 @@ export function mountNercOrgMap(): void {
       clearOrgPointerFocus();
       raiseVisibleOrg(o);
       if (focusedSubareaOrg) pingSubarea(o);
+      if (isMarketHub(o)) {
+        centerSelection = true;
+        fitFocusGroup(marketFamily(o) as "PJM" | "MISO");
+      }
       redraw(); // refresh the focus-picked highlight onto the newly clicked subarea
       applyHighlights();
       return;
@@ -4945,12 +5016,16 @@ export function mountNercOrgMap(): void {
       raiseVisibleOrg(focusedSubareaOrg);
       pingSubarea(focusedSubareaOrg);
     }
+    // Hub click: zoom out to frame the whole PJM/MISO family in clear view.
+    if (isMarketHub(o)) {
+      centerSelection = true;
+      requestAnimationFrame(() => fitFocusGroup(marketFamily(o) as "PJM" | "MISO"));
+      applyHighlights();
+      return;
+    }
     // Only deliberate navigations (search / tour, opts.center) hard-centre + zoom on
-    // a pick. A plain click — including clicking a PJM/MISO hub to enter focus mode —
-    // stays at the current zoom and just gently edge-nudges the pick into clear view
-    // (via renderPanel). That keeps the move small (item: "no excessive jump") and,
-    // crucially, leaves the OTHER hub on screen so PJM⇄MISO stays switchable.
-    // centerSelection stands the nudge down so the two pans never fight.
+    // a pick. Subarea and ordinary org clicks stay at the current zoom and just
+    // gently edge-nudge the pick into clear view (via renderPanel).
     centerSelection = opts.center === true;
     if (centerSelection) centerOnOrg(panelOrg);
     else redraw();

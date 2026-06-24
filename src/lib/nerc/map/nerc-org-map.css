@@ -923,22 +923,7 @@
   margin-top: 0.34rem;
 }
 
-.nerc-tooltip .tt-sub,
-.nerc-tooltip .tt-meta {
-  color: #5a6965;
-  line-height: 1.35;
-}
-
-.nerc-tooltip .tt-sub {
-  margin: 0.12rem 0 0.38rem;
-}
-
-.nerc-tooltip .tt-meta {
-  margin-top: 0.5rem;
-}
-
-.nerc-tt-pills,
-.nerc-row-roles {
+.nerc-tt-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 0.22rem;
@@ -1477,13 +1462,6 @@
 
 .nerc-panel .p-combined-name {
   color: #33433e;
-}
-
-#nerc-tooltip .tt-combined {
-  margin-top: 0.28rem;
-  color: #485852;
-  font-size: 0.72rem;
-  line-height: 1.35;
 }
 
 .nerc-panel .p-links {

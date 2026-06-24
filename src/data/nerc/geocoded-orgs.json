@@ -9652,8 +9652,8 @@
         "TO",
         "DP"
       ],
-      "lat": 44.0061,
-      "lng": -96.1947,
+      "lat": 44,
+      "lng": -97.1125,
       "headquarters_address": "211 South Harth Avenue, Madison, SD 57042",
       "city": "Madison",
       "state": "SD",
@@ -9663,14 +9663,14 @@
       "source_url": "https://eastriver.coop/",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "South Dakota G&T cooperative; wholesale power for 24 distribution co-ops and one municipal utility.",
+      "notes": "HQ at 211 South Harth Avenue, Madison SD; corrected longitude from an east-of-state coordinate typo.",
       "seed": false,
       "locations": [
         {
           "rank": 1,
           "role": "headquarters",
-          "lat": 44.0061,
-          "lng": -96.1947,
+          "lat": 44,
+          "lng": -97.1125,
           "headquarters_address": "211 South Harth Avenue, Madison, SD 57042",
           "city": "Madison",
           "state": "SD",
@@ -9678,7 +9678,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://eastriver.coop/",
-          "geo_notes": "South Dakota G&T cooperative; wholesale power for 24 distribution co-ops and one municipal utility."
+          "geo_notes": "HQ at 211 South Harth Avenue, Madison SD; corrected longitude from an east-of-state coordinate typo."
         },
         {
           "rank": 2,
@@ -14185,16 +14185,16 @@
         {
           "rank": 2,
           "role": "alternate",
-          "lat": 29,
-          "lng": -90,
+          "lat": null,
+          "lng": null,
           "headquarters_address": null,
-          "city": "New Orleans",
-          "state": "LA",
-          "country": "CA",
-          "geo_confidence": "LOW",
-          "geo_source": "sparse_territory_placement",
+          "city": null,
+          "state": null,
+          "country": null,
+          "geo_confidence": null,
+          "geo_source": null,
           "geo_source_url": null,
-          "geo_notes": "Sparse map placement in MN/WI/IA/IL/IN service territory (cell density 0, 2400 km from HQ). Nearest reference: New Orleans."
+          "geo_notes": null
         },
         {
           "rank": 3,
@@ -15424,16 +15424,16 @@
         {
           "rank": 2,
           "role": "alternate",
-          "lat": 29,
-          "lng": -89,
+          "lat": null,
+          "lng": null,
           "headquarters_address": null,
           "city": null,
-          "state": "LA",
-          "country": "CA",
-          "geo_confidence": "LOW",
-          "geo_source": "sparse_territory_placement",
+          "state": null,
+          "country": null,
+          "geo_confidence": null,
+          "geo_source": null,
           "geo_source_url": null,
-          "geo_notes": "Sparse map placement in MN/WI/IA/IL/IN service territory (cell density 0, 2440 km from HQ). Rural area."
+          "geo_notes": null
         },
         {
           "rank": 3,
@@ -19454,16 +19454,16 @@
         {
           "rank": 2,
           "role": "alternate",
-          "lat": 29,
-          "lng": -89.5,
+          "lat": null,
+          "lng": null,
           "headquarters_address": null,
-          "city": "New Orleans",
-          "state": "LA",
-          "country": "CA",
-          "geo_confidence": "LOW",
-          "geo_source": "sparse_territory_placement",
+          "city": null,
+          "state": null,
+          "country": null,
+          "geo_confidence": null,
+          "geo_source": null,
           "geo_source_url": null,
-          "geo_notes": "Sparse map placement in MN/WI/IA/IL/IN service territory (cell density 0, 2701 km from HQ). Nearest reference: New Orleans."
+          "geo_notes": null
         },
         {
           "rank": 3,
@@ -32701,16 +32701,16 @@
         {
           "rank": 2,
           "role": "alternate",
-          "lat": 41,
-          "lng": -79,
+          "lat": null,
+          "lng": null,
           "headquarters_address": null,
           "city": null,
-          "state": "NY",
-          "country": "CA",
-          "geo_confidence": "LOW",
-          "geo_source": "sparse_territory_placement",
+          "state": null,
+          "country": null,
+          "geo_confidence": null,
+          "geo_source": null,
           "geo_source_url": null,
-          "geo_notes": "Sparse map placement in NY/ME/NH/VT/MA service territory (cell density 0, 1138 km from HQ). Rural area."
+          "geo_notes": null
         },
         {
           "rank": 3,
@@ -124755,7 +124755,7 @@
       "headquarters_address": null,
       "city": "Tecate",
       "state": "BC",
-      "country": "US",
+      "country": "MX",
       "confidence": "MEDIUM",
       "source": "ferc_filing",
       "source_url": "https://www.sempra.com/",
@@ -124770,7 +124770,7 @@
           "headquarters_address": null,
           "city": "Tecate",
           "state": "BC",
-          "country": "US",
+          "country": "MX",
           "geo_confidence": "MEDIUM",
           "geo_source": "ferc_filing",
           "geo_source_url": "https://www.sempra.com/",
