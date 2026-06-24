@@ -6114,7 +6114,7 @@
       "source_url": "https://www.gridinfo.com/bethel-wind-energy-llc",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "37.5 MW Bethel Wind Energy Center; PPA seller to Central Iowa Power Cooperative.",
+      "notes": "37.5 MW Bethel Wind Energy Center, Hawkeye IA — not Bethel AK. PPA seller to Central Iowa Power Cooperative.",
       "seed": false,
       "locations": [
         {
@@ -6129,7 +6129,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/bethel-wind-energy-llc",
-          "geo_notes": "37.5 MW Bethel Wind Energy Center; PPA seller to Central Iowa Power Cooperative."
+          "geo_notes": "Iowa wind project; name is Bethel Wind Energy Center, not the Alaska city of Bethel."
         },
         {
           "rank": 2,
@@ -27999,7 +27999,7 @@
       "source_url": "https://unitil.com/contact",
       "org_type": "IOU",
       "parent_org": "Unitil Corporation",
-      "notes": "Unitil electric and gas utility serving Fitchburg and surrounding Massachusetts communities.",
+      "notes": "Unitil electric and gas utility serving Fitchburg MA — not Hawaii Electric Light (HELCO).",
       "seed": false,
       "locations": [
         {
@@ -28014,7 +28014,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://unitil.com/contact",
-          "geo_notes": "Unitil electric and gas utility serving Fitchburg and surrounding Massachusetts communities."
+          "geo_notes": "Massachusetts mainland utility; fuzzy-match twin for HELCO in supplemental-candidates.csv only."
         },
         {
           "rank": 2,
@@ -51064,7 +51064,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "",
+      "notes": "Invenergy Fairbanks Wind Energy Center (Indiana). Sullivan IN HQ — not Fairbanks AK.",
       "seed": false,
       "locations": [
         {
@@ -51079,7 +51079,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": ""
+          "geo_notes": "Fairbanks in the entity name is the Indiana wind project, not Alaska."
         },
         {
           "rank": 2,

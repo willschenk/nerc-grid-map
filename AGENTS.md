@@ -40,6 +40,29 @@ Decide whether a task changes source data or presentation before editing.
 For display-only work, do not modify source data. The renderer must not recompute
 role weights, colors, or flags; change that logic in `enrich.mjs`.
 
+## Geographic scope
+
+Canonical rules live in `src/lib/nerc/geography-scope.mjs`. Do not treat Alaska
+or Hawaii like excluded or out-of-footprint territories.
+
+| Area | In NERC extract? | On map? | How |
+|------|------------------|---------|-----|
+| Lower 48 + Canada context | Yes (registry) | Yes | Main Albers projection |
+| Alaska & Hawaii | No (supplemental only) | Yes | geoAlbersUsa AK/HI insets; real lat/lng |
+| Puerto Rico & U.S. Virgin Islands | No (supplemental) | Yes | `out_of_footprint` offshore inset boxes |
+| Guam, American Samoa, N. Mariana Islands | No | No | Excluded from data and basemap |
+
+Alaska and Hawaii utilities belong in `supplemental-orgs.json` with
+`state: "AK"` or `"HI"`, `out_of_footprint: false`, and HQ coordinates inside
+their state. They are not NERC-registered and must not be marked
+`out_of_footprint` (that flag is PR/VI only).
+
+**Renderer:** Alaska/Hawaii land always draws on the geoAlbersUsa insets.
+Supplemental inset utilities defer until ~k 1.5–2.5 so the tiny overview inset
+stays clean; mainland bubble packing is fenced out of the inset bounds so dots
+never drift across regions. City dots, city names, and inset state labels inside
+AK/HI defer until ~k 3.2 so the inset reads as land-only context at overview.
+
 ## Key files
 
 - Page: `src/pages/index.astro`

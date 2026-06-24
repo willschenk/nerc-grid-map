@@ -18,17 +18,18 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { inferOrgType, orgWeight } from "../../src/lib/nerc/enrich.mjs";
-import { isExcludedTerritoryCode } from "../../src/lib/nerc/excluded-territories.mjs";
+import {
+  isExcludedTerritoryCode,
+  isOutOfFootprintCode,
+} from "../../src/lib/nerc/geography-scope.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "../..");
 const CSV = resolve(root, "src/data/nerc/supplemental-candidates.csv");
 const OUT = resolve(root, "src/data/nerc/supplemental-orgs.json");
 
-// geoAlbersUsa only projects the 50 states (with AK/HI insets). Puerto Rico and
-// the U.S. Virgin Islands are rendered as labelled offshore insets instead; no
-// other U.S. territories are carried.
-const OUT_OF_FOOTPRINT = new Set(["PR", "VI"]);
+// geoAlbersUsa projects the 50 states (AK/HI in native insets). PR/VI are
+// labelled offshore insets; GU/AS/MP are excluded — see geography-scope.mjs.
 
 // Starter coordinates (approx HQ city) so a useful batch renders immediately.
 // Everything else lands with lat/lng = null and is geocoded later (see
@@ -183,7 +184,7 @@ function main() {
       org_type,
       nerc_registered: false,
       geo_confidence: coords ? "MEDIUM" : "ESTIMATED",
-      out_of_footprint: OUT_OF_FOOTPRINT.has(state || ""),
+      out_of_footprint: isOutOfFootprintCode(state || ""),
       priority: (rows[r][iPriority] || "").trim() || null,
       geo_source: "EIA-861 / public utility records",
       geo_source_url: (rows[r][iUrl] || "").trim() || null,

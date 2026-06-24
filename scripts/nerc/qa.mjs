@@ -6,6 +6,14 @@
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import {
+  isCoordInScope,
+  isExcludedTerritoryCode,
+  isInsetStateCoordConsistent,
+  isOutOfFootprintCode,
+  isUsInsetState,
+  US_INSET_STATE_CODES,
+} from "../../src/lib/nerc/geography-scope.mjs";
 import { orgWeight, roleSetColor, isPrivate, validateLocations } from "../../src/lib/nerc/enrich.mjs";
 import { validateAreaAliases, validateAreaInterfaces } from "../../src/lib/nerc/area-aliases.mjs";
 import { CURRENT_REGIONAL_ENTITIES } from "../../src/lib/nerc/roles.mjs";
@@ -26,10 +34,10 @@ const validRegions = new Set(CURRENT_REGIONAL_ENTITIES);
 const nullCoords = orgs.filter((o) => (o.lat == null || o.lng == null) && !isTerritoryInset(o));
 if (nullCoords.length) errors.push(`${nullCoords.length} records with null lat/lng`);
 
-// 2. Coordinates inside the North America bounding box.
+// 2. Coordinates inside the map's geographic scope (mainland, AK/HI insets, PR/VI).
 for (const o of orgs) {
   if (o.lat == null || o.lng == null) continue;
-  if (o.lat < 24 || o.lat > 72 || o.lng < -180 || o.lng > -50) {
+  if (!isCoordInScope(o.lat, o.lng, o.state, { outOfFootprint: isTerritoryInset(o) })) {
     warnings.push(`out-of-range coords: ${o.ncr_id} ${o.entity_name} (${o.lat}, ${o.lng})`);
   }
 }
@@ -118,6 +126,48 @@ for (const o of orgs) {
       errors.push(`invalid Regional Entity: ${o.ncr_id} ${o.entity_name} regions includes "${r}"`);
     }
   }
+}
+
+// 12b. Geographic scope — AK/HI insets, PR/VI offshore insets, excluded territories.
+for (const o of orgs) {
+  const state = o.state ?? "";
+  if (isExcludedTerritoryCode(state)) {
+    errors.push(`excluded territory in output: ${o.ncr_id} ${state}`);
+  }
+  if (o.out_of_footprint !== isOutOfFootprintCode(state)) {
+    errors.push(`out_of_footprint mismatch: ${o.ncr_id} state=${state} flag=${!!o.out_of_footprint}`);
+  }
+  if (o.out_of_footprint && isUsInsetState(state)) {
+    errors.push(`AK/HI must not be out_of_footprint: ${o.ncr_id} ${o.entity_name}`);
+  }
+  if (o.lat != null && o.lng != null && !isTerritoryInset(o) && isUsInsetState(state)) {
+    if (!isInsetStateCoordConsistent(state, o.lat, o.lng)) {
+      warnings.push(`AK/HI coords outside state bbox: ${o.ncr_id} ${o.entity_name} (${o.lat}, ${o.lng})`);
+    }
+  }
+  if (o.lat != null && o.lng != null && !isTerritoryInset(o) && state && !isUsInsetState(state) && !isOutOfFootprintCode(state)) {
+    for (const inset of US_INSET_STATE_CODES) {
+      if (isInsetStateCoordConsistent(inset, o.lat, o.lng)) {
+        warnings.push(`mainland org coords in ${inset} bbox: ${o.ncr_id} state=${state} (${o.lat}, ${o.lng})`);
+        break;
+      }
+    }
+  }
+}
+
+// 12c. Hawaii inventory — supplemental-only; no accidental mainland mapping.
+const EXPECTED_HI_SUPPLEMENTAL = 21;
+const hiOrgs = orgs.filter((o) => o.state === "HI");
+const geocodedHi = orgs.filter((o) => o.state === "HI" && o.nerc_registered !== false);
+if (hiOrgs.length !== EXPECTED_HI_SUPPLEMENTAL) {
+  errors.push(`Hawaii supplemental count ${hiOrgs.length} (expected ${EXPECTED_HI_SUPPLEMENTAL})`);
+}
+if (geocodedHi.length > 0) {
+  errors.push(`NERC-registered Hawaii rows in output: ${geocodedHi.map((o) => o.ncr_id).join(", ")}`);
+}
+for (const o of hiOrgs) {
+  if (!isSupplemental(o)) errors.push(`Hawaii org must be supplemental: ${o.ncr_id} ${o.entity_name}`);
+  if (o.out_of_footprint) errors.push(`Hawaii must not be out_of_footprint: ${o.ncr_id}`);
 }
 
 // 13. Map combines: absorbed member ids must not appear as standalone dots.

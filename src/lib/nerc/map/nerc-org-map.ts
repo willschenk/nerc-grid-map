@@ -511,6 +511,19 @@ const SMALL_STATES = new Set([
   "Vermont", "Massachusetts", "Maryland", "District of Columbia", "Alaska", "Hawaii",
 ]);
 
+// Curated label anchors for multi-island / inset states (centroids sit in open water).
+const INSET_STATE_LABEL_LNG_LAT: Record<string, [number, number]> = {
+  Alaska: [-152.5, 63.5],
+  Hawaii: [-157.5, 20.3],
+};
+
+// City dots/names inside the AK/HI inset boxes defer until this zoom — same band as
+// the inset state labels — so the tiny overview inset stays land-only until zoomed in.
+const INSET_AMBIENT_CONTEXT_MIN_K = 3.2;
+
+// Extra clearance (screen px) when fencing mainland bubbles out of AK/HI insets.
+const INSET_MAINLAND_FENCE_PAD_PX = 4;
+
 const ROLE_TOUR_LABELS: Record<string, string> = {
   BA: "Balancing Authorities (BA)",
   RC: "Reliability Coordinators (RC)",
@@ -821,6 +834,16 @@ export function mountNercOrgMap(): void {
     const point = pointerViewPoint(ev);
     if (!point) return fallback;
     const k = transform.k;
+    // Project each org to screen space LIVE rather than reading cached o._sx/_sy:
+    // the wheel/animated-zoom fast path updates the group transform without rerunning
+    // the redraw loop that refreshes _sx/_sy, so the cache can lag the actual bubble
+    // position right after a zoom — which would mis-resolve clicks (e.g. a subarea
+    // click landing on the zoomed-in parent hub). Clicks are infrequent, so the
+    // per-pick reprojection is cheap.
+    const fanScale = spiderFanScale(k);
+    const declScale = declutterScale(k);
+    const sxOf = (o: Org) => transform.applyX(orgRenderX(o, fanScale, declScale));
+    const syOf = (o: Org) => transform.applyY(orgRenderY(o, fanScale, declScale));
     let best = fallback;
     // Rank by how deep the pointer is INSIDE each bubble relative to that bubble's
     // own size (normalized distance), not raw distance to centre. In a dense
@@ -834,16 +857,17 @@ export function mountNercOrgMap(): void {
     // size" before falling back to normalized distance / draw priority.
     const radiusTol = 0.75 * unitPerPx;
     for (const o of placeableOrgs) {
-      if (!o._vis || o._sx == null || o._sy == null) continue;
-      const dx = o._sx - point.x;
-      const dy = o._sy - point.y;
+      if (!o._vis || o._x == null || o._y == null) continue;
+      const dx = sxOf(o) - point.x;
+      const dy = syOf(o) - point.y;
       const d2 = dx * dx + dy * dy;
       const hit = hitTargetRadius(o, k) + unitPerPx;
       if (d2 > hit * hit) continue;
       const visual = renderedRadius(o, k);
       const inVisual = orgBubbleContainsOffset(o, k, dx, dy, visual);
       const focusBoost =
-        (hoverOrg?.ncr_id === o.ncr_id || selectedOrg?.ncr_id === o.ncr_id ? 5000 : 0) +
+        (hoverOrg?.ncr_id === o.ncr_id ? 5000 : 0) +
+        (selectedOrg?.ncr_id === o.ncr_id && activeFocusGroup == null ? 5000 : 0) +
         (tourIds.has(o.ncr_id) ? 4000 : 0);
       const norm = d2 / (hit * hit);
       // Selection order in dense clusters:
@@ -866,8 +890,9 @@ export function mountNercOrgMap(): void {
           norm < bestNorm - 0.02 ||
           (Math.abs(norm - bestNorm) <= 0.02 &&
             drawPriority(o, k) + focusBoost > drawPriority(best, k) +
-              ((hoverOrg?.ncr_id === best.ncr_id || selectedOrg?.ncr_id === best.ncr_id ? 5000 : 0) +
-                (tourIds.has(best.ncr_id) ? 4000 : 0)));
+              ((hoverOrg?.ncr_id === best.ncr_id ? 5000 : 0) +
+                (tourIds.has(best.ncr_id) ? 4000 : 0) +
+                (selectedOrg?.ncr_id === best.ncr_id && activeFocusGroup == null ? 5000 : 0)));
       }
       if (better) {
         best = o;
@@ -880,21 +905,21 @@ export function mountNercOrgMap(): void {
     // whose visual radius is tiny but whose padded target is easy to tap.
     if (
       fallback._vis &&
-      fallback._sx != null &&
-      fallback._sy != null &&
+      fallback._x != null &&
+      fallback._y != null &&
       (fallback.placementMode === "fallbackTiny" || fallback._promoteBackground)
     ) {
-      const d2fb = (fallback._sx - point.x) ** 2 + (fallback._sy - point.y) ** 2;
+      const d2fb = (sxOf(fallback) - point.x) ** 2 + (syOf(fallback) - point.y) ** 2;
       const hitFb = hitTargetRadius(fallback, k) + unitPerPx;
       if (d2fb <= hitFb * hitFb) {
         if (best.ncr_id === fallback.ncr_id) return fallback;
-        const d2best = (best._sx! - point.x) ** 2 + (best._sy! - point.y) ** 2;
+        const d2best = (sxOf(best) - point.x) ** 2 + (syOf(best) - point.y) ** 2;
         const visBest = renderedRadius(best, k);
         const bestInsideVis = orgBubbleContainsOffset(
           best,
           k,
-          (best._sx as number) - point.x,
-          (best._sy as number) - point.y,
+          sxOf(best) - point.x,
+          syOf(best) - point.y,
           visBest,
         );
         // Keep the tapped tiny dot unless the pointer is clearly inside another
@@ -2507,19 +2532,35 @@ export function mountNercOrgMap(): void {
     x: number,
     y: number,
     bounds: [[number, number], [number, number]] | null,
+    pad = 0,
   ): boolean {
     if (!bounds) return false;
-    return x >= bounds[0][0] && x <= bounds[1][0] && y >= bounds[0][1] && y <= bounds[1][1];
+    return (
+      x >= bounds[0][0] - pad &&
+      x <= bounds[1][0] + pad &&
+      y >= bounds[0][1] - pad &&
+      y <= bounds[1][1] + pad
+    );
+  }
+
+  function insetMainlandFencePad(): number {
+    return INSET_MAINLAND_FENCE_PAD_PX * unitPerPx;
+  }
+
+  function pointInAnyInset(x: number, y: number, pad = 0): boolean {
+    return (
+      pointInInsetBounds(x, y, akInsetBounds, pad) || pointInInsetBounds(x, y, hiInsetBounds, pad)
+    );
+  }
+
+  function placeInUsInsetViewBox(x: number, y: number): boolean {
+    return pointInAnyInset(x, y);
   }
 
   function insetHomeForOrg(o: Org, x: number, y: number): boolean {
     if (o.state === "AK") return pointInInsetBounds(x, y, akInsetBounds);
     if (o.state === "HI") return pointInInsetBounds(x, y, hiInsetBounds);
     return false;
-  }
-
-  function pointInAnyInset(x: number, y: number): boolean {
-    return pointInInsetBounds(x, y, akInsetBounds) || pointInInsetBounds(x, y, hiInsetBounds);
   }
 
   function buildLandMask(): void {
@@ -2602,7 +2643,7 @@ export function mountNercOrgMap(): void {
     if (o) {
       if (isUsInsetOrg(o)) {
         if (!insetHomeForOrg(o, bx, by)) return false;
-      } else if (pointInAnyInset(bx, by)) {
+      } else if (pointInAnyInset(bx, by, insetMainlandFencePad())) {
         return false;
       }
     }
@@ -3138,10 +3179,10 @@ export function mountNercOrgMap(): void {
         n.vy += (n.ty - n.y) * 0.18;
       } else if (
         (isUsInsetOrg(n.o) && !insetHomeForOrg(n.o, n.x / bucket, n.y / bucket)) ||
-        (!isUsInsetOrg(n.o) && pointInAnyInset(n.x / bucket, n.y / bucket))
+        (!isUsInsetOrg(n.o) && pointInAnyInset(n.x / bucket, n.y / bucket, insetMainlandFencePad()))
       ) {
-        n.vx += (n.tx - n.x) * 0.24;
-        n.vy += (n.ty - n.y) * 0.24;
+        n.vx += (n.tx - n.x) * 0.34;
+        n.vy += (n.ty - n.y) * 0.34;
       }
       n.o._dx = n.x - n.hx;
       n.o._dy = n.y - n.hy;
@@ -3156,7 +3197,10 @@ export function mountNercOrgMap(): void {
     for (const f of stateFeatures) {
       const name = (f as { properties?: { name?: string } }).properties?.name;
       if (!name) continue;
-      const c = path.centroid(f as never);
+      const anchor = INSET_STATE_LABEL_LNG_LAT[name];
+      const c = anchor
+        ? projection(anchor)
+        : path.centroid(f as never);
       if (!c || Number.isNaN(c[0]) || Number.isNaN(c[1])) continue;
       landLabels.push({ name, x: c[0], y: c[1], small: SMALL_STATES.has(name), kind: "state" });
     }
@@ -3888,6 +3932,7 @@ export function mountNercOrgMap(): void {
     if (!tourRunning) {
       for (const p of places) {
         if (p._x == null || p._y == null) continue;
+        if (placeInUsInsetViewBox(p._x, p._y) && k < INSET_AMBIENT_CONTEXT_MIN_K) continue;
         if (k < placeDotMinK(p.tier)) continue;
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
@@ -3910,6 +3955,7 @@ export function mountNercOrgMap(): void {
       for (const p of places) {
         if (placedPlaces >= placeCap) break;
         if (p._x == null || p._y == null) continue;
+        if (placeInUsInsetViewBox(p._x, p._y) && k < INSET_AMBIENT_CONTEXT_MIN_K) continue;
         if (k < placeLabelMinK(p.tier)) continue;
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
@@ -3963,7 +4009,7 @@ export function mountNercOrgMap(): void {
       const landCap = Math.max(8, Math.round((compact ? 20 : 56) * (1 - 0.4 * deepLandT)));
       for (const L of landOrder) {
         if (placedLand >= landCap) break;
-        if (L.kind === "state" && L.small && k < 3.2) continue; // tiny states only once zoomed in
+        if (L.kind === "state" && L.small && k < INSET_AMBIENT_CONTEXT_MIN_K) continue; // inset + tiny states
         if (L.kind === "state" && !L.small && k >= 16) continue; // big state names fade at deep zoom
         if (L.kind === "water" && k >= 9) continue; // ocean/lake context only at out/mid zoom
         if (L.kind === "province" && k >= 12) continue;
@@ -4455,14 +4501,6 @@ export function mountNercOrgMap(): void {
     return `${parts.join("; ")}.`;
   }
 
-  // PJM/MISO focus emphasis. The per-bubble parent/related/dim classes are applied
-  // in redraw's class pass (so panned-in bubbles get them too); this just keeps the
-  // screen-space signal rings centred on the hub when applyHighlights runs without a
-  // full redraw (e.g. the async detail-load path after a selection).
-  function applyFamilyFocus(): void {
-    syncFocusState();
-  }
-
   function applyHighlights(): void {
     const hot = hoverOrg;
     gOverlay
@@ -4484,7 +4522,9 @@ export function mountNercOrgMap(): void {
       // the shown subset is visible, so a sticky reorder is harmless.)
       .filter((d) => hot?.ncr_id === d.ncr_id || selectedOrg?.ncr_id === d.ncr_id)
       .raise();
-    applyFamilyFocus();
+    // Keep the svg-root focus classes in sync when applyHighlights runs without a
+    // full redraw (e.g. the async detail-load path after a selection).
+    syncFocusState();
   }
 
   // Hover preview: highlight the dot and show the tooltip without relayout —
@@ -4866,6 +4906,7 @@ export function mountNercOrgMap(): void {
     // subareas, otherwise `o` itself.
     const panelOrg = panelOrgForSelection(o);
     focusedSubareaOrg = panelOrg.ncr_id !== o.ncr_id ? o : null;
+    (window as unknown as Record<string, unknown>).__lastPick = { o: o.entity_name, sub: focusedSubareaOrg?.entity_name ?? null, same: selectedOrg != null && selectedOrg.ncr_id === panelOrg.ncr_id };
 
     // Re-selecting the org already in the panel — clicking a subarea of the open hub
     // (or re-clicking the same org) — keeps the panel and the view exactly as they

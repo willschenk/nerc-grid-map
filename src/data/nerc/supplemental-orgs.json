@@ -3,7 +3,7 @@
     "entity_name": "Alaska Electric Light & Power Company",
     "acronym": "AEL&P",
     "state": "AK",
-    "city": null,
+    "city": "Juneau",
     "lat": 58.3,
     "lng": -134.42,
     "roles": [
@@ -16,7 +16,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.aelp.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -24,13 +24,13 @@
         "lat": 58.3,
         "lng": -134.42,
         "headquarters_address": null,
-        "city": null,
+        "city": "Juneau",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.aelp.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -66,7 +66,7 @@
     "entity_name": "Alaska Energy Authority",
     "acronym": "AEA",
     "state": "AK",
-    "city": null,
+    "city": "Anchorage",
     "lat": 61.22,
     "lng": -149.89,
     "roles": [
@@ -79,7 +79,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.akenergyauthority.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -87,13 +87,13 @@
         "lat": 61.22,
         "lng": -149.89,
         "headquarters_address": null,
-        "city": null,
+        "city": "Anchorage",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.akenergyauthority.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -142,7 +142,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://alaskapower.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -156,7 +156,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://alaskapower.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -192,7 +192,7 @@
     "entity_name": "Alaska Power Company",
     "acronym": "APC",
     "state": "AK",
-    "city": null,
+    "city": "Anchorage",
     "lat": 61.19,
     "lng": -149.86,
     "roles": [
@@ -205,7 +205,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.alaskapower.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -213,13 +213,13 @@
         "lat": 61.19,
         "lng": -149.86,
         "headquarters_address": null,
-        "city": null,
+        "city": "Anchorage",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.alaskapower.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -255,7 +255,7 @@
     "entity_name": "Alaska Village Electric Cooperative, Inc.",
     "acronym": "AVEC",
     "state": "AK",
-    "city": null,
+    "city": "Anchorage",
     "lat": 61.19,
     "lng": -149.86,
     "roles": [
@@ -268,7 +268,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.avec.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -276,13 +276,13 @@
         "lat": 61.19,
         "lng": -149.86,
         "headquarters_address": null,
-        "city": null,
+        "city": "Anchorage",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.avec.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -331,7 +331,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.bueci.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -345,7 +345,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.bueci.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -381,7 +381,7 @@
     "entity_name": "Chugach Electric Association, Inc.",
     "acronym": "CEA",
     "state": "AK",
-    "city": null,
+    "city": "Anchorage",
     "lat": 61.19,
     "lng": -149.88,
     "roles": [
@@ -394,7 +394,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.chugachelectric.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -402,13 +402,13 @@
         "lat": 61.19,
         "lng": -149.88,
         "headquarters_address": null,
-        "city": null,
+        "city": "Anchorage",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.chugachelectric.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -457,7 +457,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.cityofbethel.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "City of Bethel AK municipal utility. Not the same entity as NERC NCR13276 Bethel Wind Energy LLC (Iowa wind project).",
     "locations": [
       {
         "rank": 1,
@@ -471,7 +471,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.cityofbethel.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "City of Bethel AK municipal utility. Not the same entity as NERC NCR13276 Bethel Wind Energy LLC (Iowa wind project)."
       },
       {
         "rank": 2,
@@ -520,7 +520,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.dillinghamak.us/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -534,7 +534,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.dillinghamak.us/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -583,7 +583,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.cityofkingcove.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -597,7 +597,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.cityofkingcove.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -633,7 +633,7 @@
     "entity_name": "City of Seward Electric System",
     "acronym": "Seward",
     "state": "AK",
-    "city": null,
+    "city": "Seward",
     "lat": 60.1,
     "lng": -149.44,
     "roles": [
@@ -646,7 +646,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.cityofseward.us/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -654,13 +654,13 @@
         "lat": 60.1,
         "lng": -149.44,
         "headquarters_address": null,
-        "city": null,
+        "city": "Seward",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.cityofseward.us/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -696,7 +696,7 @@
     "entity_name": "City of Unalaska Department of Public Utilities",
     "acronym": "Unalaska",
     "state": "AK",
-    "city": null,
+    "city": "Unalaska",
     "lat": 53.87,
     "lng": -166.54,
     "roles": [
@@ -709,7 +709,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.ci.unalaska.ak.us/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -717,13 +717,13 @@
         "lat": 53.87,
         "lng": -166.54,
         "headquarters_address": null,
-        "city": null,
+        "city": "Unalaska",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.ci.unalaska.ak.us/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -772,7 +772,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.ci.valdez.ak.us/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -786,7 +786,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.ci.valdez.ak.us/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -822,7 +822,7 @@
     "entity_name": "Copper Valley Electric Association, Inc.",
     "acronym": "CVEA",
     "state": "AK",
-    "city": null,
+    "city": "Glennallen",
     "lat": 62.11,
     "lng": -145.55,
     "roles": [
@@ -835,7 +835,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.cve.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -843,13 +843,13 @@
         "lat": 62.11,
         "lng": -145.55,
         "headquarters_address": null,
-        "city": null,
+        "city": "Glennallen",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.cve.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -885,7 +885,7 @@
     "entity_name": "Cordova Electric Cooperative",
     "acronym": "Cordova",
     "state": "AK",
-    "city": null,
+    "city": "Cordova",
     "lat": 60.54,
     "lng": -145.76,
     "roles": [
@@ -898,7 +898,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.cordovaelectric.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -906,13 +906,13 @@
         "lat": 60.54,
         "lng": -145.76,
         "headquarters_address": null,
-        "city": null,
+        "city": "Cordova",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.cordovaelectric.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -948,7 +948,7 @@
     "entity_name": "Golden Valley Electric Association, Inc.",
     "acronym": "GVEA",
     "state": "AK",
-    "city": null,
+    "city": "Fairbanks",
     "lat": 64.84,
     "lng": -147.72,
     "roles": [
@@ -961,7 +961,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gvea.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -969,13 +969,13 @@
         "lat": 64.84,
         "lng": -147.72,
         "headquarters_address": null,
-        "city": null,
+        "city": "Fairbanks",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gvea.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1024,7 +1024,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.fortyukon.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1038,7 +1038,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.fortyukon.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1074,7 +1074,7 @@
     "entity_name": "Homer Electric Association, Inc.",
     "acronym": "HEA",
     "state": "AK",
-    "city": null,
+    "city": "Homer",
     "lat": 59.65,
     "lng": -151.54,
     "roles": [
@@ -1087,7 +1087,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.homerelectric.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1095,13 +1095,13 @@
         "lat": 59.65,
         "lng": -151.54,
         "headquarters_address": null,
-        "city": null,
+        "city": "Homer",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.homerelectric.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1137,34 +1137,34 @@
     "entity_name": "Inside Passage Electric Cooperative, Inc.",
     "acronym": "IPEC",
     "state": "AK",
-    "city": "Juneau",
-    "lat": 58.3019,
-    "lng": -134.4197,
+    "city": "Coffman Cove",
+    "lat": 55.0892,
+    "lng": -132.828,
     "roles": [
       "DP"
     ],
     "org_type": "cooperative",
     "nerc_registered": false,
-    "geo_confidence": "HIGH",
+    "geo_confidence": "MEDIUM",
     "out_of_footprint": false,
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
-    "geo_source_url": "https://www.akenergyauthority.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_source_url": "https://www.ipec.coop/",
+    "geo_notes": "Prince of Wales Island co-op HQ, Coffman Cove AK (not Juneau).",
     "locations": [
       {
         "rank": 1,
         "role": "headquarters",
-        "lat": 58.3019,
-        "lng": -134.4197,
+        "lat": 55.0892,
+        "lng": -132.828,
         "headquarters_address": null,
-        "city": "Juneau",
+        "city": "Coffman Cove",
         "state": "AK",
         "country": "US",
-        "geo_confidence": "HIGH",
+        "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
-        "geo_source_url": "https://www.akenergyauthority.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_source_url": "https://www.ipec.coop/",
+        "geo_notes": "Prince of Wales Island co-op HQ, Coffman Cove AK (not Juneau)."
       },
       {
         "rank": 2,
@@ -1200,7 +1200,7 @@
     "entity_name": "Ketchikan Public Utilities - Electric Division",
     "acronym": "KPU",
     "state": "AK",
-    "city": null,
+    "city": "Ketchikan",
     "lat": 55.34,
     "lng": -131.65,
     "roles": [
@@ -1213,7 +1213,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.kpu.us/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1221,13 +1221,13 @@
         "lat": 55.34,
         "lng": -131.65,
         "headquarters_address": null,
-        "city": null,
+        "city": "Ketchikan",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.kpu.us/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1263,7 +1263,7 @@
     "entity_name": "Kodiak Electric Association, Inc.",
     "acronym": "KEA",
     "state": "AK",
-    "city": null,
+    "city": "Kodiak",
     "lat": 57.79,
     "lng": -152.41,
     "roles": [
@@ -1276,7 +1276,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.kodiakelectric.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1284,13 +1284,13 @@
         "lat": 57.79,
         "lng": -152.41,
         "headquarters_address": null,
-        "city": null,
+        "city": "Kodiak",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.kodiakelectric.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1326,7 +1326,7 @@
     "entity_name": "Kotzebue Electric Association",
     "acronym": "KEA-K",
     "state": "AK",
-    "city": null,
+    "city": "Kotzebue",
     "lat": 66.9,
     "lng": -162.6,
     "roles": [
@@ -1339,7 +1339,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.kea.coop/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1347,13 +1347,13 @@
         "lat": 66.9,
         "lng": -162.6,
         "headquarters_address": null,
-        "city": null,
+        "city": "Kotzebue",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.kea.coop/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1389,7 +1389,7 @@
     "entity_name": "Matanuska Electric Association, Inc.",
     "acronym": "MEA",
     "state": "AK",
-    "city": null,
+    "city": "Palmer",
     "lat": 61.6,
     "lng": -149.11,
     "roles": [
@@ -1402,7 +1402,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.mea.coop/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1410,13 +1410,13 @@
         "lat": 61.6,
         "lng": -149.11,
         "headquarters_address": null,
-        "city": null,
+        "city": "Palmer",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.mea.coop/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1452,7 +1452,7 @@
     "entity_name": "Naknek Electric Association, Inc.",
     "acronym": "Naknek",
     "state": "AK",
-    "city": null,
+    "city": "Naknek",
     "lat": 58.73,
     "lng": -157.02,
     "roles": [
@@ -1465,7 +1465,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.nakelectric.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1473,13 +1473,13 @@
         "lat": 58.73,
         "lng": -157.02,
         "headquarters_address": null,
-        "city": null,
+        "city": "Naknek",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.nakelectric.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1515,7 +1515,7 @@
     "entity_name": "Nome Joint Utility System",
     "acronym": "NJUS",
     "state": "AK",
-    "city": null,
+    "city": "Nome",
     "lat": 64.5,
     "lng": -165.41,
     "roles": [
@@ -1528,7 +1528,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.nomealaska.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1536,13 +1536,13 @@
         "lat": 64.5,
         "lng": -165.41,
         "headquarters_address": null,
-        "city": null,
+        "city": "Nome",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.nomealaska.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1591,7 +1591,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.akenergyauthority.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1605,7 +1605,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.akenergyauthority.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1654,7 +1654,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.akenergyauthority.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1668,7 +1668,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.akenergyauthority.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1704,7 +1704,7 @@
     "entity_name": "Petersburg Municipal Power & Light",
     "acronym": "PMP&L",
     "state": "AK",
-    "city": null,
+    "city": "Petersburg",
     "lat": 56.81,
     "lng": -132.96,
     "roles": [
@@ -1717,7 +1717,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.petersburgak.gov/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1725,13 +1725,13 @@
         "lat": 56.81,
         "lng": -132.96,
         "headquarters_address": null,
-        "city": null,
+        "city": "Petersburg",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.petersburgak.gov/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1767,7 +1767,7 @@
     "entity_name": "Railbelt Reliability Council",
     "acronym": "RRC",
     "state": "AK",
-    "city": null,
+    "city": "Anchorage",
     "lat": 61.22,
     "lng": -149.89,
     "roles": [
@@ -1780,7 +1780,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://alaskapower.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1788,13 +1788,13 @@
         "lat": 61.22,
         "lng": -149.89,
         "headquarters_address": null,
-        "city": null,
+        "city": "Anchorage",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://alaskapower.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1830,7 +1830,7 @@
     "entity_name": "Sitka Electric Department",
     "acronym": "Sitka",
     "state": "AK",
-    "city": null,
+    "city": "Sitka",
     "lat": 57.05,
     "lng": -135.33,
     "roles": [
@@ -1843,7 +1843,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.akenergyauthority.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1851,13 +1851,13 @@
         "lat": 57.05,
         "lng": -135.33,
         "headquarters_address": null,
-        "city": null,
+        "city": "Sitka",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.akenergyauthority.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1906,7 +1906,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.akenergyauthority.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1920,7 +1920,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.akenergyauthority.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -1969,7 +1969,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.tdxpower.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -1983,7 +1983,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.tdxpower.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -2019,7 +2019,7 @@
     "entity_name": "Wrangell Municipal Light & Power",
     "acronym": "Wrangell",
     "state": "AK",
-    "city": null,
+    "city": "Wrangell",
     "lat": 56.47,
     "lng": -132.38,
     "roles": [
@@ -2032,7 +2032,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.wrangell.com/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -2040,13 +2040,13 @@
         "lat": 56.47,
         "lng": -132.38,
         "headquarters_address": null,
-        "city": null,
+        "city": "Wrangell",
         "state": "AK",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.wrangell.com/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -2095,7 +2095,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.akenergyauthority.org/",
-    "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows",
+    "geo_notes": "Supplemental Alaska utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -2109,7 +2109,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.akenergyauthority.org/",
-        "geo_notes": "Alaska utility and grid-organization candidate; the uploaded NERC-derived dataset contains no Alaska rows"
+        "geo_notes": "Supplemental Alaska utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7109,7 +7109,7 @@
     "entity_name": "AES Hawaii, Inc.",
     "acronym": "AES Hawaii",
     "state": "HI",
-    "city": null,
+    "city": "Kapolei",
     "lat": 21.32,
     "lng": -158.05,
     "roles": [
@@ -7122,7 +7122,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.aes.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7130,13 +7130,13 @@
         "lat": 21.32,
         "lng": -158.05,
         "headquarters_address": null,
-        "city": null,
+        "city": "Kapolei",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.aes.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7172,7 +7172,7 @@
     "entity_name": "Auwahi Wind Energy, LLC",
     "acronym": "Auwahi",
     "state": "HI",
-    "city": null,
+    "city": "Ulupalakua",
     "lat": 20.62,
     "lng": -156.36,
     "roles": [
@@ -7185,7 +7185,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gridinfo.com/auwahi-wind-energy",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7193,13 +7193,13 @@
         "lat": 20.62,
         "lng": -156.36,
         "headquarters_address": null,
-        "city": null,
+        "city": "Ulupalakua",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gridinfo.com/auwahi-wind-energy",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7248,7 +7248,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.interconnection.fyi/eia/project/55369-ct2",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7262,7 +7262,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.interconnection.fyi/eia/project/55369-ct2",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7298,7 +7298,7 @@
     "entity_name": "Hawaii Electric Light Company, Inc.",
     "acronym": "HELCO",
     "state": "HI",
-    "city": null,
+    "city": "Hilo",
     "lat": 19.71,
     "lng": -155.08,
     "roles": [
@@ -7311,7 +7311,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.hawaiianelectric.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7319,13 +7319,13 @@
         "lat": 19.71,
         "lng": -155.08,
         "headquarters_address": null,
-        "city": null,
+        "city": "Hilo",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.hawaiianelectric.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7374,7 +7374,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://energy.hawaii.gov/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii state energy office (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7388,7 +7388,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://energy.hawaii.gov/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7424,7 +7424,7 @@
     "entity_name": "Hawaiian Electric Company, Inc.",
     "acronym": "HECO",
     "state": "HI",
-    "city": null,
+    "city": "Honolulu",
     "lat": 21.31,
     "lng": -157.86,
     "roles": [
@@ -7437,7 +7437,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.hawaiianelectric.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7445,13 +7445,13 @@
         "lat": 21.31,
         "lng": -157.86,
         "headquarters_address": null,
-        "city": null,
+        "city": "Honolulu",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.hawaiianelectric.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7487,7 +7487,7 @@
     "entity_name": "Hawaiian Electric Industries, Inc.",
     "acronym": "HEI",
     "state": "HI",
-    "city": null,
+    "city": "Honolulu",
     "lat": 21.31,
     "lng": -157.86,
     "roles": [
@@ -7500,7 +7500,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.hei.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7508,13 +7508,13 @@
         "lat": 21.31,
         "lng": -157.86,
         "headquarters_address": null,
-        "city": null,
+        "city": "Honolulu",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.hei.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7563,7 +7563,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.huhonua.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7577,7 +7577,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.huhonua.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7613,7 +7613,7 @@
     "entity_name": "Kaheawa Wind Power, LLC",
     "acronym": "Kaheawa",
     "state": "HI",
-    "city": null,
+    "city": "Maui",
     "lat": 20.8,
     "lng": -156.54,
     "roles": [
@@ -7626,7 +7626,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gridinfo.com/plant/kaheawa-wind-power-llc/56012",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7634,13 +7634,13 @@
         "lat": 20.8,
         "lng": -156.54,
         "headquarters_address": null,
-        "city": null,
+        "city": "Maui",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gridinfo.com/plant/kaheawa-wind-power-llc/56012",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7689,7 +7689,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.interconnection.fyi/eia/project/57087-1",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7703,7 +7703,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.interconnection.fyi/eia/project/57087-1",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7752,7 +7752,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.kalaeloapartners.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7766,7 +7766,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.kalaeloapartners.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7815,7 +7815,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.interconnection.fyi/eia/project/60546-pv1",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7829,7 +7829,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.interconnection.fyi/eia/project/60546-pv1",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7865,7 +7865,7 @@
     "entity_name": "Kapolei Energy Storage, LLC",
     "acronym": "Kapolei",
     "state": "HI",
-    "city": null,
+    "city": "Kapolei",
     "lat": 21.34,
     "lng": -158.06,
     "roles": [
@@ -7878,7 +7878,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.interconnection.fyi/eia/project/66067-kes1",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7886,13 +7886,13 @@
         "lat": 21.34,
         "lng": -158.06,
         "headquarters_address": null,
-        "city": null,
+        "city": "Kapolei",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.interconnection.fyi/eia/project/66067-kes1",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -7928,7 +7928,7 @@
     "entity_name": "Kauai Island Utility Cooperative",
     "acronym": "KIUC",
     "state": "HI",
-    "city": null,
+    "city": "Lihue",
     "lat": 21.98,
     "lng": -159.37,
     "roles": [
@@ -7941,7 +7941,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://kiuc.coop/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -7949,13 +7949,13 @@
         "lat": 21.98,
         "lng": -159.37,
         "headquarters_address": null,
-        "city": null,
+        "city": "Lihue",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://kiuc.coop/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -8004,7 +8004,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gridinfo.com/kawailoa-wind",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -8018,7 +8018,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gridinfo.com/kawailoa-wind",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -8067,7 +8067,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.interconnection.fyi/eia/project/64256-kulni",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -8081,7 +8081,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.interconnection.fyi/eia/project/64256-kulni",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -8130,7 +8130,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gridinfo.com/plant/lawai-solar-and-energy-storage-project/63758",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -8144,7 +8144,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gridinfo.com/plant/lawai-solar-and-energy-storage-project/63758",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -8180,7 +8180,7 @@
     "entity_name": "Maui Electric Company, Limited",
     "acronym": "MECO",
     "state": "HI",
-    "city": null,
+    "city": "Wailuku",
     "lat": 20.89,
     "lng": -156.47,
     "roles": [
@@ -8193,7 +8193,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.mauielectric.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -8201,13 +8201,13 @@
         "lat": 20.89,
         "lng": -156.47,
         "headquarters_address": null,
-        "city": null,
+        "city": "Wailuku",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.mauielectric.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -8256,7 +8256,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.hei.com/",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii non-utility affiliate (HEI; not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -8270,7 +8270,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.hei.com/",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -8319,7 +8319,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gridinfo.com/plant/pakini-nui-wind-farm",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -8333,7 +8333,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gridinfo.com/plant/pakini-nui-wind-farm",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,
@@ -8369,7 +8369,7 @@
     "entity_name": "Puna Geothermal Venture",
     "acronym": "PGV",
     "state": "HI",
-    "city": null,
+    "city": "Pahoa",
     "lat": 19.49,
     "lng": -154.91,
     "roles": [
@@ -8382,7 +8382,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gridinfo.com/puna-geothermal-venture",
-    "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows",
+    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -8390,13 +8390,13 @@
         "lat": 19.49,
         "lng": -154.91,
         "headquarters_address": null,
-        "city": null,
+        "city": "Pahoa",
         "state": "HI",
         "country": "US",
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gridinfo.com/puna-geothermal-venture",
-        "geo_notes": "Hawaii utility and generation-business candidate; the uploaded NERC-derived dataset contains no Hawaii rows"
+        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
       },
       {
         "rank": 2,

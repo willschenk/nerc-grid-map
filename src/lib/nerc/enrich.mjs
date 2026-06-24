@@ -10,6 +10,7 @@ import {
   PUBLIC_ROLES,
   normalizeRegion,
 } from "./roles.mjs";
+import { isCoordInScope } from "./geography-scope.mjs";
 
 const KNOWN = new Set(KNOWN_ROLES);
 const PUBLIC = new Set(PUBLIC_ROLES);
@@ -445,7 +446,9 @@ export function validateLocations(orgs) {
       if (loc.lat == null && loc.lng == null) continue;
       if (loc.lat == null || loc.lng == null) {
         errors.push(`locations partial coords: ${o.ncr_id} rank ${loc.rank}`);
-      } else if (loc.lat < 24 || loc.lat > 72 || loc.lng < -180 || loc.lng > -50) {
+      } else if (
+        !isCoordInScope(loc.lat, loc.lng, loc.state || o.state, { outOfFootprint: o.out_of_footprint })
+      ) {
         warnings.push(`locations out-of-range: ${o.ncr_id} rank ${loc.rank} (${loc.lat}, ${loc.lng})`);
       }
     }

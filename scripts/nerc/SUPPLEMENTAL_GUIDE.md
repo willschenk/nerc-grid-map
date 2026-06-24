@@ -85,10 +85,12 @@ functions — don't use them.) If `roles` is `[]`, the dot is colored by
   likely duplicates (similarity ≥ ~0.9 with the same real entity = skip). The
   build also auto-skips supplemental entries whose name matches an existing NERC
   org, but don't rely on it for near-matches/aliases.
-- **Only Puerto Rico and the U.S. Virgin Islands are carried as territories**
-  (`out_of_footprint: true`), rendered as labelled offshore insets. No other U.S.
-  territories are included — do not add them.
-- **Alaska & Hawaii DO render** (Albers USA has insets). Geocode them normally.
+- **Only Puerto Rico and the U.S. Virgin Islands are carried as out-of-footprint
+  territories** (`out_of_footprint: true`), rendered as labelled offshore insets.
+  See `src/lib/nerc/geography-scope.mjs` for the full scope table.
+- **Alaska & Hawaii DO render** (Albers USA has native insets). Geocode them
+  normally with `out_of_footprint: false`. They are supplemental-only because the
+  NERC Compliance Registry extract has no AK/HI rows.
 - Keep entries sorted/clean; the converter re-sorts by state then name on run.
 
 ## Where to find more candidates
