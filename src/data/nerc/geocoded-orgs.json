@@ -6129,7 +6129,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/bethel-wind-energy-llc",
-          "geo_notes": "Iowa wind project; name is Bethel Wind Energy Center, not the Alaska city of Bethel."
+          "geo_notes": "37.5 MW Bethel Wind Energy Center, Hawkeye IA — not Bethel AK. PPA seller to Central Iowa Power Cooperative."
         },
         {
           "rank": 2,
@@ -28014,7 +28014,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://unitil.com/contact",
-          "geo_notes": "Massachusetts mainland utility; fuzzy-match twin for HELCO in supplemental-candidates.csv only."
+          "geo_notes": "Unitil electric and gas utility serving Fitchburg MA — not Hawaii Electric Light (HELCO)."
         },
         {
           "rank": 2,
@@ -51079,7 +51079,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Fairbanks in the entity name is the Indiana wind project, not Alaska."
+          "geo_notes": "Invenergy Fairbanks Wind Energy Center (Indiana). Sullivan IN HQ — not Fairbanks AK."
         },
         {
           "rank": 2,
