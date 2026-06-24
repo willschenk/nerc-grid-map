@@ -7,7 +7,7 @@ import "d3-transition";
 import { feature, mesh } from "topojson-client";
 import { tightenMapLabel } from "../display-names.mjs";
 import { PLACES } from "../places.mjs";
-import { isExcludedTerritoryFips } from "../excluded-territories.mjs";
+import { isExcludedTerritoryFips, US_INSET_STATE_CODES } from "../geography-scope.mjs";
 import {
   CONFIDENCE_LABELS,
   confidenceLabel,
@@ -19,7 +19,6 @@ import {
   midName,
   orgAcronym,
   primaryRoles,
-  primaryRoleSummaryText,
   regionLabel,
   roleFullName,
   safeColor,
@@ -433,18 +432,17 @@ const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
 const TERRITORY_BUBBLE_RADIUS_PX = { desktop: 4.6, compact: 5.4 };
 const TERRITORY_HIT_RADIUS_PX = { desktop: 8.6, compact: 10 };
 
-// Alaska and Hawaii plot inside geoAlbersUsa's built-in lower-left/right insets.
+// Alaska and Hawaii plot on geoAlbersUsa's built-in lower-left/right insets.
 // They share the mainland declutter path but need extra spread and tap area at
-// overview zoom where the inset is tiny on screen.
-const US_INSET_STATES = new Set(["AK", "HI"]);
+// overview zoom where the inset is tiny on screen. (PR/VI use separate offshore
+// inset boxes — see layoutTerritoryInsets and geography-scope.mjs.)
+function isUsInsetOrg(o: { state?: string | null }): boolean {
+  return US_INSET_STATE_CODES.has(o.state ?? "");
+}
 
 // Dense upper-Midwest utility belt (NE/IA/MN/WI): extra declutter spread and
 // slightly earlier label tries without changing the placement algorithm.
 const MIDWEST_STATES = new Set(["NE", "IA", "MN", "WI"]);
-
-function isUsInsetOrg(o: { state?: string | null }): boolean {
-  return US_INSET_STATES.has(o.state ?? "");
-}
 
 function isMidwestOrg(o: { state?: string | null }): boolean {
   return MIDWEST_STATES.has(o.state ?? "");
@@ -505,11 +503,12 @@ const QUIET_LAND_LABELS = new Set([
   "New Brunswick", "Maine",
 ]);
 
-// Tiny states whose centroid label would clutter the eastern seaboard; held
-// back until the map is zoomed in.
+// Tiny states whose centroid label would clutter the map at overview; held back
+// until zoomed in. Alaska and Hawaii live in the Albers USA insets and are tiny
+// on screen at national scale.
 const SMALL_STATES = new Set([
   "Rhode Island", "Delaware", "Connecticut", "New Jersey", "New Hampshire",
-  "Vermont", "Massachusetts", "Maryland", "District of Columbia", "Hawaii",
+  "Vermont", "Massachusetts", "Maryland", "District of Columbia", "Alaska", "Hawaii",
 ]);
 
 const ROLE_TOUR_LABELS: Record<string, string> = {
@@ -606,33 +605,19 @@ export function mountNercOrgMap(): void {
   const svgNode = byId<SVGSVGElement>("nerc-svg");
   const svg = select(svgNode);
   const gMap = svg.append("g").attr("class", "map");
-  // Territory inset frames ride the zoom transform (like the Alaska/Hawaii
-  // insets) so their dots stay inside as you zoom.
+  // PR/VI offshore inset frames (geoMercator boxes east of the lower 48).
   const gInsets = svg.append("g").attr("class", "insets");
   // City context stays below every NERC mark and label.
   const gPlaces = svg.append("g").attr("class", "places");
   // Area context is even quieter than city context and must paint below the
   // NERC overlay, not over it.
   const gLand = svg.append("g").attr("class", "land");
-  // Super-thin animated threads tying each RTO area org back to its hub. Painted
-  // under the bubbles (background) and riding the zoom transform so the ends stay
-  // glued to their bubbles as you pan/zoom. One group per RTO so they layer and
-  // colour independently (MISO LBAs, PJM transmission zones).
-  const gMisoLink = svg.append("g").attr("class", "miso-links");
-  const gPjmLink = svg.append("g").attr("class", "pjm-links");
   const gOverlay = svg.append("g").attr("class", "overlay");
   // Animated orange "saber" outlines for the ISO/RTO bubbles — painted just above
   // the bubbles (so the light reads on top) but below the hit + label layers.
   const gSaber = svg.append("g").attr("class", "saber");
   const gHit = svg.append("g").attr("class", "hit");
   const gLabels = svg.append("g").attr("class", "labels");
-  // Expanding orange "signal" rings for PJM/MISO focus mode. Lives in SCREEN space
-  // (NOT the zoom transform) and is re-centred on the focused hub each redraw; the
-  // rings expand + fade purely in CSS. Hidden until a hub is focused.
-  const gFocusRings = svg.append("g").attr("class", "focus-rings hide");
-  gFocusRings.append("circle");
-  gFocusRings.append("circle");
-  gFocusRings.append("circle");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
   const panel = byId<HTMLElement>("nerc-panel");
@@ -652,11 +637,6 @@ export function mountNercOrgMap(): void {
   const focusClearBtn = byId<HTMLButtonElement>("nerc-focus-clear");
   const infoToggle = byId<HTMLButtonElement>("nerc-info-toggle");
   const metricsToggle = byId<HTMLButtonElement>("nerc-metrics-toggle");
-  const tagHelp = createEl("div", "nerc-tag-help");
-  tagHelp.hidden = true;
-  tagHelp.setAttribute("role", "tooltip");
-  root.append(tagHelp);
-  let activeTagHelp: HTMLElement | null = null;
 
   const projection = geoAlbersUsa();
   const path = geoPath(projection);
@@ -682,12 +662,18 @@ export function mountNercOrgMap(): void {
   // market hubs (see marketFamily / the focus helpers below). Set whenever a hub
   // is selected, cleared on background-click / Escape / the Clear control.
   let activeFocusGroup: "PJM" | "MISO" | null = null;
+  // Last PJM/MISO subarea clicked while its hub focus is active — visual emphasis
+  // only; the detail panel stays anchored to the parent hub.
+  let focusedSubareaOrg: Org | null = null;
   let userPanning = false;
   let lastPanEndAt = 0;
   let wheelZooming = false;
   let zoomBoundsDirty = false;
   let wheelRedrawPending = false;
   let focusPanPending = false;
+  // True while a selection is being framed by centerOnOrg (focus-hub click), so the
+  // gentler edge-nudge below stands down and the two pans never fight.
+  let centerSelection = false;
   let tourIds = new Set<string>();
   let tourTimers: number[] = [];
   // Tour mode is on (button shows Stop) even between steps / during the reset.
@@ -700,6 +686,11 @@ export function mountNercOrgMap(): void {
   let nationOutline: unknown = null;
   let canadaFeature: unknown = null;
   let stateFeatures: unknown[] = [];
+  // Screen-space bounds of the geoAlbersUsa AK/HI inset silhouettes (recomputed on
+  // every project()). Used to keep mainland packing out of the insets and AK/HI
+  // utilities inside their home inset.
+  let akInsetBounds: [[number, number], [number, number]] | null = null;
+  let hiInsetBounds: [[number, number], [number, number]] | null = null;
   // Low-res land masks in viewBox space, rebuilt on every project(). Separate US
   // and Canada silhouettes so mainland orgs cannot drift across the border.
   let landMask: Uint8Array | null = null;
@@ -926,47 +917,10 @@ export function mountNercOrgMap(): void {
     return pill;
   }
 
-  function showTagHelp(target: HTMLElement): void {
-    const text = target.dataset.tagHelp?.trim();
-    if (!text) return;
-    activeTagHelp = target;
-    tagHelp.textContent = text;
-    tagHelp.hidden = false;
-    const targetRect = target.getBoundingClientRect();
-    const helpRect = tagHelp.getBoundingClientRect();
-    const gap = 8;
-    let left = targetRect.left + targetRect.width / 2 - helpRect.width / 2;
-    let top = targetRect.top - helpRect.height - gap;
-    if (top < gap) top = targetRect.bottom + gap;
-    left = Math.min(window.innerWidth - helpRect.width - gap, Math.max(gap, left));
-    top = Math.min(window.innerHeight - helpRect.height - gap, Math.max(gap, top));
-    tagHelp.style.left = `${left}px`;
-    tagHelp.style.top = `${top}px`;
-  }
-
-  function hideTagHelp(target?: HTMLElement): void {
-    if (target && activeTagHelp && activeTagHelp !== target) return;
-    activeTagHelp = null;
-    tagHelp.hidden = true;
-  }
-
-  function wireTagHelp<T extends HTMLElement>(target: T, text: string): T {
-    const help = text.trim();
-    if (!help) return target;
-    target.dataset.tagHelp = help;
-    target.title = help;
-    target.setAttribute("aria-label", `${target.textContent?.trim() ?? "Tag"}: ${help}`);
-    if (target.tabIndex < 0) target.tabIndex = 0;
-    target.addEventListener("pointerenter", () => showTagHelp(target));
-    target.addEventListener("pointerleave", () => hideTagHelp(target));
-    target.addEventListener("focus", () => showTagHelp(target));
-    target.addEventListener("blur", () => hideTagHelp(target));
-    target.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      if (activeTagHelp === target && !tagHelp.hidden) hideTagHelp(target);
-      else showTagHelp(target);
-    });
-    return target;
+  function createAreaPill(label: string, className: string, title: string): HTMLSpanElement {
+    const pill = createEl("span", `nerc-rolepill ${className}`, label);
+    pill.title = title;
+    return pill;
   }
 
   // Disclosure text: placement tries compact labels first and only admits longer
@@ -1038,6 +992,16 @@ export function mountNercOrgMap(): void {
 
   function fullRegistryRevealK(): number {
     return compact ? FULL_REGISTRY_REVEAL_K_COMPACT : FULL_REGISTRY_REVEAL_K;
+  }
+
+  // Supplemental AK/HI utilities defer until zoom makes the Albers inset large
+  // enough to read; land geometry and state labels still show as context.
+  function insetOrgRevealK(o: Org): number {
+    if (!isUsInsetOrg(o) || o.nerc_registered !== false) return 0;
+    const pri = visualPriority(o);
+    const w = o.weight ?? 0;
+    if (pri >= 35 || w >= 14) return compact ? 1.75 : 1.45;
+    return compact ? 2.55 : 2.15;
   }
 
   // GO/GOP-only dots and TO-only transmission owners disclose as pinpoints; this
@@ -1137,6 +1101,7 @@ export function mountNercOrgMap(): void {
     // The real ISOs/RTOs are headline orgs: always eligible at every zoom so they
     // are visible whenever their area is on screen (incl. the zoomed-out overview).
     if (isIsoRtoOperator(o)) return true;
+    if (isUsInsetOrg(o) && k < insetOrgRevealK(o)) return false;
     // The fully zoomed-out view is a major-org overview: smaller eligible orgs
     // wait until the next zoom bucket so they do not take slots from high-ranked
     // regulated entities.
@@ -2095,6 +2060,19 @@ export function mountNercOrgMap(): void {
     return activeFocusGroup != null && marketFamily(o) === activeFocusGroup;
   }
 
+  function focusHubForGroup(group: "PJM" | "MISO"): Org | null {
+    return orgById(group === "PJM" ? PJM_HUB_ID : MISO_HUB_ID);
+  }
+
+  // When a PJM/MISO family is focused, subarea clicks keep the hub in the panel.
+  function panelOrgForSelection(o: Org): Org {
+    const group = activeFocusGroup;
+    if (group != null && marketFamily(o) === group && !isMarketHub(o)) {
+      return focusHubForGroup(group) ?? o;
+    }
+    return o;
+  }
+
   // Give every related member a staggered animation delay so the orange pulse
   // visibly sweeps OUTWARD from the hub (nearer members light up first). Distance
   // is geographic (lat/lng) so the ordering is stable across pan/zoom; the parent
@@ -2162,54 +2140,16 @@ export function mountNercOrgMap(): void {
     return true;
   }
 
-  // Re-centre the screen-space ripple group on the focused hub and toggle the
-  // svg-root focus classes. Cheap; called from every redraw + applyHighlights.
-  function syncFocusRings(): void {
+  // Toggle the svg-root focus classes that drive the family dimming + parent/related
+  // glows. Cheap; called from every redraw + applyHighlights. (There is no longer a
+  // radiating ring overlay — the relationship reads from the glow alone.)
+  function syncFocusState(): void {
     const on = activeFocusGroup != null;
     svg.classed("focus-mode", on);
     svg.classed("focus-pjm", activeFocusGroup === "PJM");
     svg.classed("focus-miso", activeFocusGroup === "MISO");
-    if (!on) {
-      gFocusRings.classed("hide", true);
-      return;
-    }
-    const hub = orgById(activeFocusGroup === "PJM" ? PJM_HUB_ID : MISO_HUB_ID);
-    if (!hub || hub._x == null || hub._y == null || hub._vis === false) {
-      gFocusRings.classed("hide", true);
-      return;
-    }
-    // Project the hub to screen space here (the rings live OUTSIDE the zoom
-    // transform). Computing it directly — rather than reading hub._sx/_sy — means
-    // this stays correct even on the wheel-zoom path, where the full redraw loop
-    // that sets _sx/_sy does not run.
-    const sx = transform.applyX(orgRenderX(hub));
-    const sy = transform.applyY(orgRenderY(hub));
-    const baseR = Math.max(12, renderedRadius(hub, transform.k));
-    gFocusRings
-      .classed("hide", false)
-      .attr("transform", `translate(${sx},${sy})`)
-      .selectAll<SVGCircleElement, unknown>("circle")
-      .attr("r", baseR);
   }
 
-  function misoControlAreaCodes(o: Org): readonly string[] {
-    return MISO_CONTROL_AREA_CODES.get(o.ncr_id) ?? [];
-  }
-
-  function misoControlAreaCodeLabel(o: Org): string {
-    return misoControlAreaCodes(o).join(" / ");
-  }
-
-  // PJM transmission zones attach to their org via area-aliases.json (PJM-market
-  // codes); read them straight off the enriched org's area_aliases. WESTERN HUB is
-  // a PJM pricing hub, not an organization, so it never lands here.
-  function pjmZoneCodes(o: Org): string[] {
-    return o.area_aliases?.filter((code) => PJM_TRANSMISSION_ZONE_CODES.has(code)) ?? [];
-  }
-
-  function pjmZoneCodeLabel(o: Org): string {
-    return pjmZoneCodes(o).join(" / ");
-  }
 
   // Keep each saber ring matched to its bubble: same center and rounded-rect
   // shape, sitting a hair outside the fill edge. Only a handful of always-visible
@@ -2248,86 +2188,6 @@ export function mountNercOrgMap(): void {
     return o.area_aliases?.some((code) => PJM_TRANSMISSION_ZONE_CODES.has(code)) ?? false;
   }
 
-  // Build a gently-waving polyline from an RTO area org to its hub. The wave is
-  // baked into the geometry (amplitude/wavelength fixed in SCREEN px, so it looks
-  // the same at every zoom); the "live" motion is a CSS dash flow. The amplitude
-  // tapers to zero at both ends so each thread meets its bubble cleanly.
-  const RTO_LINK_AMP_PX = 2.1; // squiggle height on screen
-  const RTO_LINK_WAVE_PX = 16; // squiggle wavelength on screen
-  function rtoLinkPath(x0: number, y0: number, x1: number, y1: number, k: number): string {
-    const dx = x1 - x0;
-    const dy = y1 - y0;
-    const len = Math.hypot(dx, dy) || 1;
-    const px = -dy / len; // unit perpendicular
-    const py = dx / len;
-    const amp = RTO_LINK_AMP_PX / k; // world units (group is scaled by k)
-    const lenPx = len * k;
-    const waves = Math.max(1, Math.round(lenPx / RTO_LINK_WAVE_PX));
-    const steps = Math.max(10, waves * 6);
-    let d = "";
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps;
-      const env = Math.sin(Math.PI * t); // 0 at the ends, 1 in the middle
-      const off = Math.sin(t * waves * 2 * Math.PI) * amp * env;
-      const x = x0 + dx * t + px * off;
-      const y = y0 + dy * t + py * off;
-      d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
-    }
-    return d;
-  }
-
-  // Re-thread every visible area link in `group` back to `hubId`. Reused for MISO
-  // and PJM. Cheap: at most a few dozen short polylines, only the `d` attribute is
-  // rewritten, and the animation is pure CSS (no per-frame JS), so it never taxes
-  // the page. Threads hide when either endpoint isn't a currently-projected bubble.
-  function syncRtoAreaLinks(
-    group: typeof gMisoLink,
-    hubId: string,
-    className: string,
-    k = transform.k,
-  ): void {
-    const links = group.selectAll<SVGPathElement, Org>(`path.${className}`);
-    const hub = orgById(hubId);
-    const fanScale = spiderFanScale(k);
-    const declScale = declutterScale(k);
-    const hubShown = !!hub && hub._x != null && hub._vis !== false;
-    if (!hubShown) {
-      links.classed("hide", true);
-      return;
-    }
-    const hx = orgRenderX(hub as Org, fanScale, declScale);
-    const hy = orgRenderY(hub as Org, fanScale, declScale);
-    links.each(function (o) {
-      const node = this as SVGPathElement;
-      // Hide a thread whose area org isn't currently a visible bubble.
-      const shown = o._vis !== false && o._x != null;
-      node.classList.toggle("hide", !shown);
-      if (!shown) return;
-      // Focus/family emphasis classes are managed centrally by applyFamilyFocus
-      // (they persist on the node between geometry syncs); here we only rewrite the
-      // thread geometry.
-      const cx = orgRenderX(o, fanScale, declScale);
-      const cy = orgRenderY(o, fanScale, declScale);
-      node.setAttribute("d", rtoLinkPath(cx, cy, hx, hy, k));
-    });
-  }
-
-  // Below this zoom the whole web of family threads is hidden to keep the overview
-  // clean (the hubs still glow); a hovered/selected family's threads are exempt and
-  // always show via the `.family-on` CSS escape hatch.
-  function linkRevealK(): number {
-    return compact ? 2.0 : 1.6;
-  }
-
-  // Re-thread both RTO area-link layers: MISO Local Balancing Authorities (LBAs)
-  // back to MISO, PJM transmission zones back to PJM.
-  function syncRtoLinks(k = transform.k): void {
-    // Progressive disclosure: reveal the full thread web only once zoomed in.
-    svg.classed("market-links-on", k >= linkRevealK());
-    syncRtoAreaLinks(gMisoLink, MISO_HUB_ID, "miso-control-area-link", k);
-    syncRtoAreaLinks(gPjmLink, PJM_HUB_ID, "pjm-area-link", k);
-  }
-
   function positionOrgMarks(k = transform.k, force = false): void {
     computePlacements(k, force);
     // Render positions only depend on k (panning is handled by the group
@@ -2350,7 +2210,6 @@ export function mountNercOrgMap(): void {
       .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
       .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
     syncSabers(k);
-    syncRtoLinks(k);
   }
 
   function isPanSourceEvent(event: Event | null | undefined): boolean {
@@ -2393,8 +2252,6 @@ export function mountNercOrgMap(): void {
     const tStr = transform.toString();
     gMap.attr("transform", tStr);
     gInsets.attr("transform", tStr);
-    gMisoLink.attr("transform", tStr);
-    gPjmLink.attr("transform", tStr);
     gOverlay.attr("transform", tStr);
     gSaber.attr("transform", tStr);
     gHit.attr("transform", tStr);
@@ -2426,7 +2283,7 @@ export function mountNercOrgMap(): void {
     hitK = k;
     // Keep the focus rings glued to the hub during the wheel gesture too (the full
     // redraw loop that normally re-centres them does not run while wheeling).
-    syncFocusRings();
+    syncFocusState();
     gLabels.style("opacity", "0.55");
   }
 
@@ -2458,26 +2315,45 @@ export function mountNercOrgMap(): void {
     zoomBehavior.extent([[0, 0], [W, H]]).translateExtent([[-pad, -pad], [W + pad, H + pad]]);
   }
 
-  function nudgeSelectedOrgIntoView(duration = 280): void {
+  function nudgeSelectedOrgIntoView(duration = 300): void {
+    if (centerSelection) return; // a focus-hub click is framing this pick itself
     if (!zoomBehavior || focusPanPending || tourRunning || userPanning || !selectedOrg) return;
-    if (performance.now() - lastPanEndAt < 160) return;
+    if (performance.now() - lastPanEndAt < 220) return; // don't yank right after a manual pan
     const k = transform.k;
     const focused = selectedOrg;
     if (focused._sx == null || focused._sy == null) return;
     const r = renderedRadius(focused, k);
-    const sideSafe = (compact ? 52 : 44) * unitPerPx + r;
-    const topSafe = (compact ? 88 : 40) * unitPerPx + r;
-    const bottomSafe = (compact ? 84 : 48) * unitPerPx + r;
+    const sx = focused._sx;
+    const sy = focused._sy;
+    // 1) Comfortable framing margins so a pick near a corner/edge eases inward
+    //    instead of hugging the rim.
+    const mL = (compact ? 38 : 52) * unitPerPx + r;
+    const mR = (compact ? 38 : 52) * unitPerPx + r;
+    const mT = (compact ? 92 : 60) * unitPerPx + r;
+    const mB = (compact ? 60 : 46) * unitPerPx + r;
     let dx = 0;
     let dy = 0;
-    // Only ensure the selected org sits inside the viewport (a gentle edge nudge).
-    // We deliberately do NOT pan it clear of the detail card: the card is a compact
-    // corner card now, and panning to dodge it threw the whole map off-centre on
-    // half-screen / narrow layouts. Let the card overlap the org if it must.
-    if (focused._sx < sideSafe) dx = sideSafe - focused._sx;
-    else if (focused._sx > W - sideSafe) dx = W - sideSafe - focused._sx;
-    if (focused._sy < topSafe) dy = topSafe - focused._sy;
-    else if (focused._sy > H - bottomSafe) dy = H - bottomSafe - focused._sy;
+    if (sx < mL) dx = mL - sx;
+    else if (sx > W - mR) dx = (W - mR) - sx;
+    if (sy < mT) dy = mT - sy;
+    else if (sy > H - mB) dy = (H - mB) - sy;
+    // 2) Lift the pick out from behind the detail card only when it would actually
+    //    land under it (rect-aware: a bottom-left pick on desktop, where the card is
+    //    bottom-right, is left alone). Clearing upward keeps the move small.
+    const card = panelRectVB();
+    if (card) {
+      const padX = 8 * unitPerPx;
+      const padY = (compact ? 10 : 12) * unitPerPx + r;
+      const px = sx + dx;
+      const py = sy + dy;
+      if (px > card.left - padX && px < card.right + padX && py > card.top - padY) {
+        dy += card.top - padY - py;
+      }
+    }
+    // 3) Cap the move so a single selection never makes the map leap.
+    const cap = H * (compact ? 0.46 : 0.5);
+    dx = Math.max(-cap, Math.min(cap, dx));
+    dy = Math.max(-cap, Math.min(cap, dy));
     if (Math.abs(dx) < 0.5 * unitPerPx && Math.abs(dy) < 0.5 * unitPerPx) return;
     focusPanPending = true;
     requestAnimationFrame(() => {
@@ -2538,6 +2414,7 @@ export function mountNercOrgMap(): void {
     if (canadaFeature) gMap.select<SVGPathElement>("path.canada").attr("d", canadaPath(canadaFeature as never));
     gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
     gMap.select<SVGPathElement>("path.nation").attr("d", path((nationOutline ?? nationFeature) as never));
+    syncInsetBounds();
     buildLandMask();
 
     for (const o of orgs) {
@@ -2614,6 +2491,37 @@ export function mountNercOrgMap(): void {
     return mask;
   }
 
+  function syncInsetBounds(): void {
+    akInsetBounds = null;
+    hiInsetBounds = null;
+    for (const f of stateFeatures) {
+      const name = (f as { properties?: { name?: string } }).properties?.name;
+      if (name !== "Alaska" && name !== "Hawaii") continue;
+      const b = path.bounds(f as never) as [[number, number], [number, number]];
+      if (name === "Alaska") akInsetBounds = b;
+      else hiInsetBounds = b;
+    }
+  }
+
+  function pointInInsetBounds(
+    x: number,
+    y: number,
+    bounds: [[number, number], [number, number]] | null,
+  ): boolean {
+    if (!bounds) return false;
+    return x >= bounds[0][0] && x <= bounds[1][0] && y >= bounds[0][1] && y <= bounds[1][1];
+  }
+
+  function insetHomeForOrg(o: Org, x: number, y: number): boolean {
+    if (o.state === "AK") return pointInInsetBounds(x, y, akInsetBounds);
+    if (o.state === "HI") return pointInInsetBounds(x, y, hiInsetBounds);
+    return false;
+  }
+
+  function pointInAnyInset(x: number, y: number): boolean {
+    return pointInInsetBounds(x, y, akInsetBounds) || pointInInsetBounds(x, y, hiInsetBounds);
+  }
+
   function buildLandMask(): void {
     landMask = null;
     usLandMask = null;
@@ -2686,10 +2594,18 @@ export function mountNercOrgMap(): void {
     bucket: number,
     frame: LandFrame | "terr",
     tiny: boolean,
+    o?: Org,
   ): boolean {
     if (frame === "terr") return true;
     const bx = cx / bucket;
     const by = cy / bucket;
+    if (o) {
+      if (isUsInsetOrg(o)) {
+        if (!insetHomeForOrg(o, bx, by)) return false;
+      } else if (pointInAnyInset(bx, by)) {
+        return false;
+      }
+    }
     if (!onLandForFrame(bx, by, frame, false)) return false;
     if (tiny) return true;
     const rr = r / bucket;
@@ -2952,7 +2868,7 @@ export function mountNercOrgMap(): void {
     const frame = orgLandFrame(o);
     const r = orgPackingRadius(o, k);
     const { cx, cy } = bubbleScreenCenter(o, bucket);
-    if (placementLandValid(cx, cy, r, bucket, frame, false)) return;
+    if (placementLandValid(cx, cy, r, bucket, frame, false, o)) return;
     o._placed = false;
     o.placementMode = undefined;
     o._vis = false;
@@ -3130,7 +3046,7 @@ export function mountNercOrgMap(): void {
           const ang = (i / cnt) * 2 * Math.PI + (Math.round(rad / step) % 2) * (Math.PI / cnt);
           const cx = ox + Math.cos(ang) * rad;
           const cy = oy + Math.sin(ang) * rad;
-          if (!placementLandValid(cx, cy, r, bucket, frame, false)) continue;
+          if (!placementLandValid(cx, cy, r, bucket, frame, false, o)) continue;
           if (!fits(cx, cy, r)) continue;
           claim(cx, cy, r);
           slotX = cx;
@@ -3220,6 +3136,12 @@ export function mountNercOrgMap(): void {
       if (!onLandForFrame(n.x / bucket, n.y / bucket, n.frame, true)) {
         n.vx += (n.tx - n.x) * 0.18;
         n.vy += (n.ty - n.y) * 0.18;
+      } else if (
+        (isUsInsetOrg(n.o) && !insetHomeForOrg(n.o, n.x / bucket, n.y / bucket)) ||
+        (!isUsInsetOrg(n.o) && pointInAnyInset(n.x / bucket, n.y / bucket))
+      ) {
+        n.vx += (n.tx - n.x) * 0.24;
+        n.vy += (n.ty - n.y) * 0.24;
       }
       n.o._dx = n.x - n.hx;
       n.o._dy = n.y - n.hy;
@@ -3697,7 +3619,8 @@ export function mountNercOrgMap(): void {
         (tourRunning && !inTour ? 256 : 0) |
         (focusParent ? 512 : 0) |
         (focusRelated ? 1024 : 0) |
-        (focusDim ? 2048 : 0);
+        (focusDim ? 2048 : 0) |
+        (focusedSubareaOrg?.ncr_id === o.ncr_id ? 4096 : 0);
       if (o._clsMask !== mask) {
         o._clsMask = mask;
         node.classList.toggle("labeled", labeled);
@@ -3717,6 +3640,7 @@ export function mountNercOrgMap(): void {
         node.classList.toggle("focus-parent", focusParent);
         node.classList.toggle("focus-related", focusRelated);
         node.classList.toggle("focus-dim", focusDim);
+        node.classList.toggle("focus-picked", (mask & 4096) !== 0);
         // Stagger the related glow so the pulse radiates from the hub outward.
         node.style.animationDelay = focusRelated ? `${o._focusDelay ?? 0}s` : "";
       }
@@ -3726,8 +3650,6 @@ export function mountNercOrgMap(): void {
     // force-sim nudges bubbles at constant k as it settles, and the rings must
     // track that or they drift off to one side of their bubble.
     syncSabers(k);
-    // Likewise re-thread the RTO area links (MISO + PJM) as bubbles settle/move.
-    syncRtoLinks(k);
 
     gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
       const node = this as SVGCircleElement;
@@ -4102,7 +4024,7 @@ export function mountNercOrgMap(): void {
       .classed("dim", tourRunning);
     lastLabelState = labelState;
     // Re-centre the focus "signal" rings on the hub for the new viewport.
-    syncFocusRings();
+    syncFocusState();
   }
 
   // Lay out-of-footprint territory orgs
@@ -4400,26 +4322,40 @@ export function mountNercOrgMap(): void {
   function renderTooltip(o: Org): void {
     tooltip.replaceChildren();
     tooltip.setAttribute("role", "tooltip");
-    tooltip.append(
+
+    const head = createEl("div", "tt-head");
+    const headText = createEl("div", "tt-head-text");
+    headText.append(
       createEl("div", "tt-acronym", orgAcronym(o)),
       createEl("div", "tt-name", displayName(o)),
-      createEl("div", "tt-sub", primaryRoleSummaryText(o, 4)),
     );
+    head.append(headText);
+
+    const special = createEl("div", "nerc-tt-pills nerc-tt-special");
+    if (isIsoRtoOperator(o)) {
+      special.append(
+        createAreaPill(
+          "ISO / RTO",
+          "nerc-iso-area-pill",
+          "Independent System Operator / Regional Transmission Organization",
+        ),
+      );
+    }
+    if (isPjmZone(o)) {
+      special.append(createAreaPill("PJM Zone", "nerc-pjm-area-pill", "PJM Transmission Zone"));
+    }
+    if (isMisoControlArea(o)) {
+      special.append(createAreaPill("MISO LBA", "nerc-miso-area-pill", "MISO Local Balancing Authority"));
+    }
+    if (special.childElementCount > 0) head.append(special);
+
+    tooltip.append(head);
+
     const chips = createEl("div", "nerc-tt-pills");
     const roles = primaryRoles(o);
     roles.slice(0, 4).forEach((role) => chips.append(createRolePill(role)));
     if (roles.length > 4) chips.append(createEl("span", "nerc-rolepill nerc-rolepill-more", `+${roles.length - 4}`));
     tooltip.append(chips);
-    if (isMisoControlArea(o)) {
-      tooltip.append(
-        createEl("div", "tt-misoca", `MISO LBA · ${misoControlAreaCodeLabel(o)}`),
-      );
-    }
-    if (isPjmZone(o)) {
-      tooltip.append(
-        createEl("div", "tt-pjmzone", `PJM transmission zone · ${pjmZoneCodeLabel(o)}`),
-      );
-    }
     tooltip.hidden = false;
   }
 
@@ -4482,20 +4418,15 @@ export function mountNercOrgMap(): void {
   function createPanelRoleRows(roles: string[]): HTMLDivElement {
     const rows = createEl("div", "p-roles");
     roles.forEach((role) => {
-      const row = createEl("div", "p-role");
-      row.append(wireTagHelp(createRolePill(role), roleFullName(role)), createEl("span", undefined, roleFullName(role)));
-      rows.append(row);
+      const pill = createRolePill(role);
+      pill.removeAttribute("title");
+      rows.append(pill);
     });
     return rows;
   }
 
   function createPanelRoleBlock(o: Org): HTMLDivElement {
-    // The role tags (pill + full name per role) already list every role, so we
-    // skip the redundant bold comma-separated code summary that used to sit on
-    // top — just the term title and the tags remain.
-    const block = createEl("div", "p-role-block");
-    block.append(createPanelRoleRows(primaryRoles(o)));
-    return block;
+    return createPanelRoleRows(primaryRoles(o));
   }
 
   function createMapSizeTier(o: Org): HTMLDivElement {
@@ -4529,7 +4460,7 @@ export function mountNercOrgMap(): void {
   // screen-space signal rings centred on the hub when applyHighlights runs without a
   // full redraw (e.g. the async detail-load path after a selection).
   function applyFamilyFocus(): void {
-    syncFocusRings();
+    syncFocusState();
   }
 
   function applyHighlights(): void {
@@ -4607,18 +4538,26 @@ export function mountNercOrgMap(): void {
       .classed("tour-flash", (d) => active && tourIds.has(d.ncr_id));
   }
 
-  function addDlRow(dl: HTMLDListElement, term: string, value: string | Node): void {
+  // Each field is a self-contained block (label above value) so the grid can lay
+  // them out in columns with a thin divider between rows — clearly separated, not
+  // mashed together. `wide` spans the full width (roles + regional entity).
+  function addDlRow(
+    dl: HTMLDListElement,
+    term: string,
+    value: string | Node,
+    wide = false,
+  ): void {
+    const field = createEl("div", `p-field${wide ? " p-field-wide" : ""}`);
     const dt = createEl("dt", undefined, term);
     const dd = createEl("dd");
     if (typeof value === "string") dd.textContent = value;
     else dd.append(value);
-    dl.append(dt, dd);
+    field.append(dt, dd);
+    dl.append(field);
   }
 
-  function createPanelTag(className: string, text: string, title: string): HTMLButtonElement {
-    const tag = createEl("button", `${className} nerc-panel-tag`, text);
-    tag.type = "button";
-    return wireTagHelp(tag, title);
+  function createPanelTag(className: string, text: string): HTMLSpanElement {
+    return createEl("span", `${className} nerc-panel-tag`, text);
   }
 
   // Collapse shrinks the card to its title bar so it stops covering the map without
@@ -4633,7 +4572,6 @@ export function mountNercOrgMap(): void {
 
   function renderPanel(o: Org): void {
     o = applyOrgDetails(o);
-    hideTagHelp();
     panelBody.replaceChildren();
     panelBody.scrollTop = 0;
     // The close/collapse buttons are static siblings of the scrolling body (see
@@ -4644,7 +4582,6 @@ export function mountNercOrgMap(): void {
     const title = createEl("div", "p-title");
     title.style.setProperty("--org-color", safeColor(o.color));
     const acronym = createEl("span", "p-acronym", orgAcronym(o));
-    wireTagHelp(acronym, displayName(o));
     title.append(acronym, createEl("h2", undefined, displayName(o)));
     panelBody.append(
       title,
@@ -4653,28 +4590,22 @@ export function mountNercOrgMap(): void {
     // Compact classification tags. Details stay in the rows below.
     if (isIsoRtoOperator(o)) {
       const note = createEl("p", "p-isorto");
-      note.append(
-        createPanelTag(
-          "p-isorto-badge",
-          "ISO / RTO",
-          "Independent System Operator / Regional Transmission Organization",
-        ),
-      );
+      note.append(createPanelTag("p-isorto-badge", "ISO / RTO"));
       panelBody.append(note);
     }
     if (isMisoControlArea(o)) {
       const note = createEl("p", "p-misoca");
-      note.append(createPanelTag("p-misoca-badge", "LBA", "Local Balancing Authority"));
+      note.append(createPanelTag("p-misoca-badge", "MISO LBA"));
       panelBody.append(note);
     }
     if (isPjmZone(o)) {
       const note = createEl("p", "p-pjmzone");
-      note.append(createPanelTag("p-pjmzone-badge", "PJM Zone", "PJM Transmission Zone"));
+      note.append(createPanelTag("p-pjmzone-badge", "PJM Zone"));
       panelBody.append(note);
     }
     const dl = createEl("dl");
-    addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o));
-    addDlRow(dl, "Regional Entity", regionLabel(o));
+    addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o), true);
+    addDlRow(dl, "Regional Entity", regionLabel(o), true);
     addDlRow(dl, "Location", o.headquarters_address ?? locationLabel(o));
     addDlRow(dl, "Location confidence", `${confidenceLabel(o.geo_confidence)}${o.geo_source ? ` | ${o.geo_source}` : ""}`);
     addDlRow(dl, "Map size / priority", createMapSizeTier(o));
@@ -4694,9 +4625,9 @@ export function mountNercOrgMap(): void {
         row.append(meta, createEl("span", "p-combined-name", memberDisplayName(m.entity_name)));
         list.append(row);
       }
-      addDlRow(dl, `Also registered here (${o.combined_members.length})`, list);
+      addDlRow(dl, `Also registered here (${o.combined_members.length})`, list, true);
       if (o.entity_name !== displayName(o)) {
-        addDlRow(dl, "Primary registration", o.entity_name);
+        addDlRow(dl, "Primary registration", o.entity_name, true);
       }
     }
 
@@ -4742,8 +4673,8 @@ export function mountNercOrgMap(): void {
 
   function closePanel(): void {
     panel.hidden = true;
-    hideTagHelp();
     selectedOrg = null;
+    focusedSubareaOrg = null;
     hoverOrg = null;
     clearFocus();
     clearOrgPointerFocus();
@@ -4870,33 +4801,96 @@ export function mountNercOrgMap(): void {
     animateTransform(zoomIdentity.translate(W / 2, H / 2).scale(s).translate(-W / 2, -H / 2), duration);
   }
 
-  function centerOnOrg(o: Org, duration = 225): void {
+  // The detail card's rectangle in viewBox units (or null when hidden). Centering
+  // and edge-nudging use it to frame the selection in the area the card leaves
+  // clear — a bottom-right card on desktop, a full-width sheet on mobile.
+  function panelRectVB(): { left: number; top: number; right: number; bottom: number } | null {
+    if (panel.hidden) return null;
+    const pr = panel.getBoundingClientRect();
+    if (pr.width <= 0 || pr.height <= 0) return null;
+    return {
+      left: pr.left * unitPerPx,
+      top: pr.top * unitPerPx,
+      right: pr.right * unitPerPx,
+      bottom: pr.bottom * unitPerPx,
+    };
+  }
+
+  function centerOnOrg(o: Org, duration = 300): void {
     if (o._x == null || o._y == null) return;
     // Ensure a readable zoom, but never zoom the user back out if they've
     // already zoomed in deeper.
     const scale = Math.min(MAX_ZOOM, Math.max(transform.k, o.is_iso_rto ? 3.2 : 4.2));
-    const next = zoomIdentity.translate(W / 2, H / 2).scale(scale).translate(-o._x, -o._y);
+    // Frame the org (and its focus family) in the space the card leaves clear: lift
+    // the focus point above the card's top edge, and on desktop — where the card
+    // hugs the bottom-right — lean it a touch left so the family isn't pushed under
+    // the card. Mobile (full-width sheet) keeps the horizontal centre.
+    const card = panelRectVB();
+    const topSafe = (compact ? 96 : 64) * unitPerPx;
+    let cx = W / 2;
+    let cy = H * 0.46;
+    if (card) {
+      cy = Math.max(H * 0.34, Math.min(H * 0.52, (topSafe + card.top) / 2));
+      if (card.left > W * 0.4) cx = W * 0.45; // desktop bottom-right card → bias left
+    }
+    const next = zoomIdentity.translate(cx, cy).scale(scale).translate(-o._x, -o._y);
     animateTransform(next, duration);
+  }
+
+  // Brief one-shot pulse on a bubble — used to acknowledge a subarea click when the
+  // panel stays anchored to its parent hub, so the click still feels responsive.
+  function pingSubarea(o: Org): void {
+    const node = gOverlay
+      .selectAll<SVGRectElement, Org>("rect.org")
+      .filter((d) => d.ncr_id === o.ncr_id)
+      .node();
+    if (!node) return;
+    node.classList.remove("focus-ping");
+    void node.getBoundingClientRect(); // reflow so the animation restarts each click
+    node.classList.add("focus-ping");
+    window.setTimeout(() => node.classList.remove("focus-ping"), 520);
   }
 
   function selectOrg(o: Org, opts: { center?: boolean } = {}): void {
     if (tourRunning) stopTour(true);
     hoverOrg = null;
-    selectedOrg = o;
     // Focus mode (PJM/MISO only). Clicking a hub focuses its family; clicking one
-    // of that family's related areas keeps the focus (and selects it); clicking
-    // anything else clears focus. Must run before redraw so the focus visuals are
-    // applied in the same pass.
-    if (isMarketHub(o)) setFocusGroup(marketFamily(o) as "PJM" | "MISO");
-    else if (!(activeFocusGroup != null && marketFamily(o) === activeFocusGroup)) clearFocus();
+    // of that family's related areas keeps the focus but leaves the panel on the
+    // hub; clicking anything else clears focus. Must run before panelOrgForSelection.
+    if (isMarketHub(o)) {
+      setFocusGroup(marketFamily(o) as "PJM" | "MISO");
+    } else if (!(activeFocusGroup != null && marketFamily(o) === activeFocusGroup)) {
+      clearFocus();
+    }
+    // The org the panel will show: the parent hub when `o` is one of its focused
+    // subareas, otherwise `o` itself.
+    const panelOrg = panelOrgForSelection(o);
+    focusedSubareaOrg = panelOrg.ncr_id !== o.ncr_id ? o : null;
+
+    // Re-selecting the org already in the panel — clicking a subarea of the open hub
+    // (or re-clicking the same org) — keeps the panel and the view exactly as they
+    // are: no re-render, no pan. The pick just pulses + highlights so it still feels
+    // interactive. This is what keeps exploring PJM/MISO members calm and jitter-free.
+    const sameSelection = selectedOrg != null && selectedOrg.ncr_id === panelOrg.ncr_id;
+    if (sameSelection) {
+      hideTooltip();
+      clearOrgPointerFocus();
+      raiseVisibleOrg(o);
+      if (focusedSubareaOrg) pingSubarea(o);
+      redraw(); // refresh the focus-picked highlight onto the newly clicked subarea
+      applyHighlights();
+      return;
+    }
+
+    selectedOrg = panelOrg;
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
-    renderPanel(o);
-    if (!hasOrgDetails(o)) {
-      const selectedId = o.ncr_id;
-      void ensureOrgDetails(o)
+    renderPanel(panelOrg);
+    if (!hasOrgDetails(panelOrg)) {
+      const panelId = panelOrg.ncr_id;
+      void ensureOrgDetails(panelOrg)
         .then((fullOrg) => {
-          if (selectedOrg?.ncr_id !== selectedId) return;
+          if (selectedOrg?.ncr_id !== panelId) return;
           selectedOrg = fullOrg;
           renderPanel(fullOrg);
           applyHighlights();
@@ -4906,7 +4900,18 @@ export function mountNercOrgMap(): void {
     hideTooltip();
     clearOrgPointerFocus();
     raiseVisibleOrg(o);
-    if (opts.center) centerOnOrg(o);
+    if (focusedSubareaOrg) {
+      raiseVisibleOrg(focusedSubareaOrg);
+      pingSubarea(focusedSubareaOrg);
+    }
+    // Only deliberate navigations (search / tour, opts.center) hard-centre + zoom on
+    // a pick. A plain click — including clicking a PJM/MISO hub to enter focus mode —
+    // stays at the current zoom and just gently edge-nudges the pick into clear view
+    // (via renderPanel). That keeps the move small (item: "no excessive jump") and,
+    // crucially, leaves the OTHER hub on screen so PJM⇄MISO stays switchable.
+    // centerSelection stands the nudge down so the two pans never fight.
+    centerSelection = opts.center === true;
+    if (centerSelection) centerOnOrg(panelOrg);
     else redraw();
     applyHighlights();
   }
@@ -5021,15 +5026,6 @@ export function mountNercOrgMap(): void {
       ev.stopPropagation();
       setPanelCollapsed(!panel.classList.contains("collapsed"));
     });
-    document.addEventListener(
-      "pointerdown",
-      (ev) => {
-        const target = ev.target;
-        if (target instanceof Element && (target.closest("[data-tag-help]") || target.closest(".nerc-tag-help"))) return;
-        hideTagHelp();
-      },
-      true,
-    );
     // Clear focus → back to the calm default map (also closes the detail panel).
     focusClearBtn.addEventListener("click", (ev) => {
       ev.stopPropagation();
@@ -5171,9 +5167,9 @@ export function mountNercOrgMap(): void {
   function startTour(): void {
     stopTour();
     selectedOrg = null;
+    focusedSubareaOrg = null;
     clearFocus();
     panel.hidden = true;
-    hideTagHelp();
     infoPanel.hidden = true;
     metricsPanel.hidden = true;
     tourRunning = true;
@@ -5276,11 +5272,6 @@ export function mountNercOrgMap(): void {
           "org" +
           (o.geo_confidence === "ESTIMATED" || o.geo_confidence === "LOW" ? " estimated" : "") +
           (o.nerc_registered === false ? " unregistered" : "") +
-          // Relationship-overlay marker: a matching-colour outline tying the bubble
-          // to its RTO hub link. Static per org (membership never changes with zoom),
-          // so it is set once here rather than in the per-frame class pass.
-          (isPjmZone(o) ? " pjm-area-linked-org" : "") +
-          (isMisoControlArea(o) ? " miso-control-area-linked-org" : "") +
           // The PJM/MISO hubs themselves: the gravitational centre of each family.
           (isMarketHub(o) ? ` market-hub ${marketFamily(o) === "PJM" ? "pjm-hub" : "miso-hub"}` : ""),
       )
@@ -5342,23 +5333,6 @@ export function mountNercOrgMap(): void {
       .attr("class", "olabel")
       .text((o) => orgAcronym(o));
 
-    // Background threads tying each visible RTO area org back to its hub: MISO
-    // Local Balancing Authorities (LBAs) to MISO, PJM transmission zones to PJM.
-    // The squiggle geometry is written by syncRtoLinks; the flowing animation is
-    // pure CSS, so a few dozen of these cost effectively nothing per frame.
-    gMisoLink
-      .selectAll("path.miso-control-area-link")
-      .data(visibleOrder.filter(isMisoControlArea), (o: unknown) => (o as Org).ncr_id)
-      .join("path")
-      .attr("class", "miso-control-area-link")
-      .attr("aria-hidden", "true");
-    gPjmLink
-      .selectAll("path.pjm-area-link")
-      .data(visibleOrder.filter(isPjmZone), (o: unknown) => (o as Org).ncr_id)
-      .join("path")
-      .attr("class", "pjm-area-link")
-      .attr("aria-hidden", "true");
-    syncRtoLinks(transform.k);
 
     gPlaces
       .selectAll("text.place")
