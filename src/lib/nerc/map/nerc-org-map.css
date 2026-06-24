@@ -309,10 +309,10 @@
    The default map is calm: no thread web, no persistent member outlines. The PJM
    and MISO relationships appear ONLY after the user clicks one of those two hubs:
      • the selected hub gets a slow orange glow (the brightest object on the map);
-     • its members light up with a softer glow, staggered so it sweeps outward;
+     • its members light up with PJM/MISO family-colour outlines and staggered glow;
      • everything else desaturates into quiet grey background context.
    Limited to the curated PJM and MISO families (see marketFamily in the TS).
-   The colour is orange throughout — the one focus colour. */
+   The hub stays orange; subareas use family colour so they separate from the map. */
 
 :root {
   /* A slightly less saturated orange so the focus state reads as a refined accent
@@ -320,18 +320,33 @@
   --focus-orange: hsl(30, 82%, 57%);
   --focus-orange-strong: hsl(28, 90%, 60%);
   --focus-orange-soft: hsla(30, 82%, 57%, 0.4);
+  --focus-family: var(--focus-orange);
+  --focus-family-strong: var(--focus-orange-strong);
+  --focus-family-soft: var(--focus-orange-soft);
+}
+
+#nerc-svg.focus-pjm {
+  --focus-family: var(--pjm-area-color);
+  --focus-family-strong: hsl(322, 92%, 64%);
+  --focus-family-soft: hsla(322, 82%, 53%, 0.52);
+}
+
+#nerc-svg.focus-miso {
+  --focus-family: var(--miso-area-color);
+  --focus-family-strong: hsl(198, 96%, 62%);
+  --focus-family-soft: hsla(205, 90%, 50%, 0.52);
 }
 
 /* Unrelated organizations: faded grey context while a focus is active. Still
    visible enough to keep the geography legible, but clearly the background layer.
    Muted bubbles never carry a stroke/glow, so they can't compete with the family. */
 #nerc-svg.focus-mode .org.focus-dim {
-  filter: grayscale(0.85);
-  opacity: 0.3;
+  filter: grayscale(0.95) saturate(0.45);
+  opacity: 0.2;
   transition: opacity 0.4s ease, filter 0.4s ease;
 }
 #nerc-svg.focus-mode .olabel.focus-dim {
-  opacity: 0.26;
+  opacity: 0.15;
   transition: opacity 0.4s ease;
 }
 
@@ -339,29 +354,49 @@
    Each member's animation-delay is set in JS from its distance to the hub, so the
    light visibly sweeps outward from the centre rather than blinking at random. */
 #nerc-svg.focus-mode .org.focus-related {
-  stroke: var(--focus-orange-soft);
-  stroke-width: 0.9;
+  stroke: var(--focus-family);
+  stroke-width: 1.45;
+  stroke-dasharray: 2.2 2.4;
+  vector-effect: non-scaling-stroke;
   paint-order: stroke fill;
-  animation: nerc-focus-related 3.6s ease-in-out infinite;
-  will-change: filter;
+  filter:
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.7))
+    drop-shadow(0 0 2px var(--focus-family-soft));
+  animation:
+    nerc-focus-related 6s ease-in-out infinite,
+    nerc-focus-dash 1.7s linear infinite;
+  will-change: filter, stroke-dashoffset;
 }
 @keyframes nerc-focus-related {
   0%, 100% {
-    stroke: var(--focus-orange-soft);
-    filter: drop-shadow(0 0 0.6px var(--focus-orange-soft));
+    stroke: var(--focus-family);
+    filter:
+      drop-shadow(0 0 1px rgba(255, 255, 255, 0.72))
+      drop-shadow(0 0 2px var(--focus-family-soft));
   }
-  42% {
-    stroke: var(--focus-orange);
-    filter: drop-shadow(0 0 2px var(--focus-orange-soft));
+  48% {
+    stroke: var(--focus-family-strong);
+    filter:
+      drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.86))
+      drop-shadow(0 0 5px var(--focus-family-soft));
+  }
+}
+
+@keyframes nerc-focus-dash {
+  to {
+    stroke-dashoffset: -9.2;
   }
 }
 
 /* Last-clicked subarea while the parent hub stays in the panel. */
 #nerc-svg.focus-mode .org.focus-picked {
   stroke: rgba(255, 255, 255, 0.98);
-  stroke-width: 1.1;
+  stroke-width: 1.7;
+  stroke-dasharray: none;
   paint-order: stroke fill;
-  filter: drop-shadow(0 0 3px var(--focus-orange-soft));
+  filter:
+    drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.88))
+    drop-shadow(0 0 5px var(--focus-family-soft));
 }
 
 /* One-shot pulse when a focused subarea is (re)clicked. The panel stays on the
@@ -413,6 +448,7 @@
 /* Keep focused labels crisp white; the dimming above fades the rest. */
 #nerc-svg.focus-mode .olabel.focus-on-label {
   opacity: 1;
+  filter: drop-shadow(0 0 2px var(--focus-family-soft));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -425,8 +461,9 @@
     filter: drop-shadow(0 0 4px var(--focus-orange-soft));
   }
   #nerc-svg.focus-mode .org.focus-related {
-    stroke: var(--focus-orange);
-    filter: drop-shadow(0 0 3px var(--focus-orange-soft));
+    stroke: var(--focus-family);
+    stroke-dasharray: none;
+    filter: drop-shadow(0 0 3px var(--focus-family-soft));
   }
 }
 
@@ -930,12 +967,57 @@
 }
 
 .nerc-rolepill {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  font: inherit;
   font-size: 0.68rem;
   line-height: 1.35;
   padding: 0.03rem 0.36rem;
   border-radius: 999px;
   color: #fff;
   white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nerc-rolepill[data-role] {
+  cursor: pointer;
+}
+
+.nerc-panel .nerc-rolepill[data-role] {
+  animation: nerc-role-breathe 6s ease-in-out infinite;
+  transform: translateX(0);
+  will-change: transform, box-shadow;
+}
+
+.nerc-panel .nerc-rolepill[data-role]:nth-child(2n) {
+  animation-delay: 0.18s;
+}
+
+.nerc-panel .nerc-rolepill[data-role]:nth-child(3n) {
+  animation-delay: 0.36s;
+}
+
+.nerc-rolepill[data-role]:focus-visible {
+  outline: 2px solid rgba(9, 22, 18, 0.82);
+  outline-offset: 2px;
+}
+
+@keyframes nerc-role-breathe {
+  0%, 43%, 100% {
+    transform: translateX(0);
+    box-shadow: none;
+  }
+  50% {
+    transform: translateX(2px);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.38);
+  }
+  57% {
+    transform: translateX(-1px);
+  }
+  64% {
+    transform: translateX(0);
+  }
 }
 
 .nerc-tooltip .nerc-rolepill {
@@ -960,6 +1042,45 @@
 
 .nerc-rolepill.nerc-pjm-area-pill {
   background: var(--pjm-area-color);
+}
+
+.nerc-role-popover {
+  position: fixed;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 0.48rem;
+  max-width: min(19rem, calc(100vw - 1rem));
+  padding: 0.42rem 0.54rem;
+  border: 1px solid rgba(31, 47, 42, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.97);
+  color: #16231f;
+  box-shadow: 0 12px 32px rgba(20, 31, 28, 0.22);
+  pointer-events: none;
+  font-size: 0.78rem;
+  line-height: 1.22;
+}
+
+.nerc-role-popover[hidden] {
+  display: none;
+}
+
+.nerc-role-popover-code {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.2rem;
+  padding: 0.12rem 0.38rem;
+  border-radius: 999px;
+  background: #18211f;
+  color: #fff;
+  font-weight: 850;
+}
+
+.nerc-role-popover-name {
+  min-width: 0;
+  font-weight: 760;
 }
 
 /* Special classification tags stack under the title on touch; desktop hovers pin
@@ -1094,8 +1215,8 @@
   right: max(0.75rem, env(safe-area-inset-right, 0px));
   bottom: max(0.6rem, env(safe-area-inset-bottom, 0px));
   width: auto;
-  max-height: min(31dvh, 16rem);
-  padding: 0.56rem 0.72rem 0.6rem;
+  max-height: min(28dvh, 14.4rem);
+  padding: 0.48rem 0.62rem 0.52rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1164,8 +1285,8 @@
 
 .nerc-panel-close {
   position: absolute;
-  top: 0.42rem;
-  right: 0.48rem;
+  top: 0.34rem;
+  right: 0.4rem;
   z-index: 2;
   display: grid;
   place-items: center;
@@ -1209,8 +1330,8 @@
 /* Collapse toggle sits just left of the close button. */
 .nerc-panel-collapse {
   position: absolute;
-  top: 0.44rem;
-  right: calc(0.48rem + 1.8rem + 0.28rem);
+  top: 0.36rem;
+  right: calc(0.4rem + 1.8rem + 0.24rem);
   width: 1.55rem;
   height: 1.55rem;
   border: 1px solid transparent;
@@ -1238,9 +1359,9 @@
    Everything below the title row is hidden; the title row keeps its right
    padding clear of the collapse/close buttons. */
 .nerc-panel.collapsed {
-  max-height: 3.1rem;
+  max-height: 2.8rem;
   overflow: hidden;
-  padding-bottom: 0.72rem;
+  padding-bottom: 0.58rem;
 }
 
 .nerc-panel.collapsed #nerc-panel-body > *:not(.p-title) {
@@ -1254,7 +1375,7 @@
 .p-title {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.52rem;
+  gap: 0.44rem;
   align-items: center;
   padding-right: 4.15rem;
 }
@@ -1293,7 +1414,7 @@
 
 .nerc-panel .p-sub {
   color: #66736f;
-  margin: 0.18rem 4.2rem 0.3rem 0;
+  margin: 0.14rem 4.05rem 0.22rem 0;
   font-size: 0.7rem;
 }
 
@@ -1301,7 +1422,7 @@
    no explanatory copy, so it stays a lightweight marker. */
 .nerc-panel .p-isorto {
   display: inline-flex;
-  margin: 0 0.35rem 0.38rem 0;
+  margin: 0 0.3rem 0.28rem 0;
 }
 
 .nerc-panel-tag {
@@ -1328,7 +1449,7 @@
 .nerc-panel .p-misoca {
   display: inline-flex;
   gap: 0.35rem;
-  margin: 0 0.35rem 0.38rem 0;
+  margin: 0 0.3rem 0.28rem 0;
 }
 
 .nerc-panel .p-misoca-badge {
@@ -1345,7 +1466,7 @@
 .nerc-panel .p-pjmzone {
   display: inline-flex;
   gap: 0.35rem;
-  margin: 0 0.35rem 0.38rem 0;
+  margin: 0 0.3rem 0.28rem 0;
 }
 
 .nerc-panel .p-pjmzone-badge {
@@ -1365,7 +1486,7 @@
 .nerc-panel dl {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 0.85rem;
+  column-gap: 0.72rem;
   row-gap: 0;
   align-items: stretch;
   margin: 0.1rem 0 0;
@@ -1373,7 +1494,7 @@
 
 .nerc-panel .p-field {
   min-width: 0;
-  padding: 0.28rem 0 0.3rem;
+  padding: 0.22rem 0 0.24rem;
   border-top: 1px solid rgba(31, 47, 42, 0.11);
 }
 
@@ -1382,7 +1503,7 @@
 }
 
 .nerc-panel dt {
-  margin: 0 0 0.1rem;
+  margin: 0 0 0.07rem;
   color: #5b6b64;
   font-weight: 820;
   font-size: 0.61rem;
@@ -1395,7 +1516,7 @@
   margin: 0;
   color: #1d2925;
   font-size: 0.78rem;
-  line-height: 1.34;
+  line-height: 1.28;
   overflow-wrap: anywhere;
 }
 
@@ -1403,7 +1524,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.26rem;
+  gap: 0.22rem;
 }
 
 .nerc-panel .p-priority-score {
@@ -1418,10 +1539,10 @@
 }
 
 .nerc-panel .p-combined-note {
-  margin: 0.35rem 1.8rem 0.65rem 0;
+  margin: 0.26rem 1.8rem 0.48rem 0;
   color: #485852;
   font-size: 0.78rem;
-  line-height: 1.45;
+  line-height: 1.36;
 }
 
 .nerc-panel .p-combined {
@@ -1660,25 +1781,25 @@
     right: max(0.55rem, env(safe-area-inset-right, 0px));
     bottom: max(0.6rem, env(safe-area-inset-bottom, 0px));
     width: min(25.5rem, calc(100vw - 1.4rem));
-    max-height: min(42dvh, 15.25rem);
-    padding: 0.46rem 0.62rem 0.5rem;
+    max-height: min(38dvh, 13.75rem);
+    padding: 0.36rem 0.52rem 0.4rem;
     font-size: 0.735rem;
   }
 
   /* Trim the per-field and header spacing a touch so the card stays vertically
      compact without losing legibility. */
   .nerc-panel .p-field {
-    padding: 0.22rem 0 0.24rem;
+    padding: 0.18rem 0 0.2rem;
   }
 
   .nerc-panel .p-acronym {
     min-width: 1.85rem;
-    height: 1.58rem;
+    height: 1.5rem;
     font-size: 0.74rem;
   }
 
   .nerc-panel .p-sub {
-    margin-bottom: 0.24rem;
+    margin-bottom: 0.18rem;
   }
 }
 
@@ -1789,8 +1910,8 @@
   /* Detail panel: compact bottom sheet with the same content model as desktop. */
   .nerc-panel {
     bottom: max(0.55rem, env(safe-area-inset-bottom, 0px));
-    max-height: min(40dvh, 17rem);
-    padding: 0.68rem 0.72rem 0.66rem;
+    max-height: min(36dvh, 15.3rem);
+    padding: 0.52rem 0.58rem 0.5rem;
     font-size: 0.79rem;
     border-radius: 12px 12px 10px 10px;
     overscroll-behavior: contain;
@@ -1803,24 +1924,24 @@
   .nerc-panel::before {
     content: "";
     position: sticky;
-    top: -0.45rem;
+    top: -0.34rem;
     z-index: 1;
     display: block;
     width: 2.2rem;
     height: 0.22rem;
-    margin: -0.38rem auto 0.4rem;
+    margin: -0.28rem auto 0.28rem;
     border-radius: 999px;
     background: rgba(31, 47, 42, 0.26);
   }
 
   .nerc-panel.collapsed {
-    padding-bottom: 0.7rem;
+    padding-bottom: 0.54rem;
   }
 
   .nerc-panel .p-sub {
     font-size: 0.71rem;
-    line-height: 1.4;
-    margin-bottom: 0.34rem;
+    line-height: 1.3;
+    margin-bottom: 0.22rem;
   }
 
   .nerc-panel dt {
@@ -1829,24 +1950,24 @@
 
   .nerc-panel dd {
     font-size: 0.8rem;
-    line-height: 1.4;
+    line-height: 1.3;
   }
 
   .nerc-panel .p-title h2 {
     font-size: 0.95rem;
-    line-height: 1.2;
+    line-height: 1.16;
   }
 
   .nerc-panel .p-combined-note,
   .nerc-panel .p-combined-row {
     font-size: 0.84rem;
-    line-height: 1.42;
+    line-height: 1.32;
   }
 
   /* Compact visible buttons; pseudo-elements keep the tap area forgiving. */
   .nerc-panel-close {
-    top: 0.38rem;
-    right: 0.38rem;
+    top: 0.3rem;
+    right: 0.32rem;
     width: 2.05rem;
     height: 2.05rem;
     min-width: 2.05rem;
@@ -1856,8 +1977,8 @@
   }
 
   .nerc-panel-collapse {
-    top: 0.43rem;
-    right: calc(0.38rem + 2.05rem + 0.28rem);
+    top: 0.34rem;
+    right: calc(0.32rem + 2.05rem + 0.22rem);
     width: 1.8rem;
     height: 1.8rem;
     min-width: 1.8rem;

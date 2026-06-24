@@ -633,6 +633,12 @@ export function mountNercOrgMap(): void {
   const gLabels = svg.append("g").attr("class", "labels");
 
   const tooltip = byId<HTMLElement>("nerc-tooltip");
+  const rolePopover = createEl("div", "nerc-role-popover");
+  rolePopover.id = "nerc-role-popover";
+  rolePopover.hidden = true;
+  rolePopover.setAttribute("role", "tooltip");
+  rolePopover.setAttribute("aria-live", "polite");
+  svgNode.parentElement?.append(rolePopover);
   const panel = byId<HTMLElement>("nerc-panel");
   const panelBody = byId<HTMLElement>("nerc-panel-body");
   // Static close/collapse buttons — siblings of the scrolling body so they stay
@@ -759,6 +765,7 @@ export function mountNercOrgMap(): void {
   // recomputing the full label pass.
   let lastLabelState: Map<string, { x: number; y: number; font: number; text: string; inside: boolean }> | null = null;
   let tooltipRequest = 0;
+  let rolePopoverTimer: number | undefined;
 
   function invalidateOrgLayout(): void {
     orgMarkK = NaN;
@@ -935,10 +942,28 @@ export function mountNercOrgMap(): void {
     return el ? getComputedStyle(el).backgroundColor : "#777";
   }
 
-  function createRolePill(role: string, full = false): HTMLSpanElement {
+  function createRolePill(role: string, full = false, interactive = true): HTMLSpanElement {
     const pill = createEl("span", "nerc-rolepill", full ? `${role} - ${roleFullName(role)}` : role);
-    pill.title = roleFullName(role);
+    const fullName = roleFullName(role);
+    pill.title = fullName;
     pill.style.backgroundColor = colorFor(role);
+    if (interactive) {
+      pill.dataset.role = role;
+      pill.tabIndex = 0;
+      pill.setAttribute("role", "button");
+      pill.setAttribute("aria-label", `${role}: ${fullName}`);
+      pill.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        showRolePopover(role, pill);
+      });
+      pill.addEventListener("keydown", (ev) => {
+        if (ev.key !== "Enter" && ev.key !== " ") return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        showRolePopover(role, pill);
+      });
+    }
     return pill;
   }
 
@@ -4417,7 +4442,7 @@ export function mountNercOrgMap(): void {
     const roles = primaryRoles(o);
     if (roles.length) {
       const chips = createEl("div", "nerc-tt-pills");
-      roles.slice(0, TOOLTIP_ROLE_LIMIT).forEach((role) => chips.append(createRolePill(role)));
+      roles.slice(0, TOOLTIP_ROLE_LIMIT).forEach((role) => chips.append(createRolePill(role, false, false)));
       if (roles.length > TOOLTIP_ROLE_LIMIT) {
         chips.append(createEl("span", "nerc-rolepill nerc-rolepill-more", `+${roles.length - TOOLTIP_ROLE_LIMIT}`));
       }
@@ -4470,11 +4495,50 @@ export function mountNercOrgMap(): void {
     tooltip.hidden = true;
   }
 
+  function hideRolePopover(): void {
+    if (rolePopoverTimer != null) {
+      window.clearTimeout(rolePopoverTimer);
+      rolePopoverTimer = undefined;
+    }
+    rolePopover.hidden = true;
+  }
+
+  function showRolePopover(role: string, anchor: HTMLElement): void {
+    const fullName = roleFullName(role);
+    rolePopover.replaceChildren(
+      createEl("span", "nerc-role-popover-code", role),
+      createEl("span", "nerc-role-popover-name", fullName),
+    );
+    rolePopover.hidden = false;
+    rolePopover.style.visibility = "hidden";
+    rolePopover.style.left = "0px";
+    rolePopover.style.top = "0px";
+
+    const margin = 8;
+    const gap = compact ? 7 : 8;
+    const anchorRect = anchor.getBoundingClientRect();
+    const popRect = rolePopover.getBoundingClientRect();
+    const centeredX = anchorRect.left + anchorRect.width / 2;
+    const x = Math.min(
+      window.innerWidth - popRect.width - margin,
+      Math.max(margin, centeredX - popRect.width / 2),
+    );
+    let y = anchorRect.top - popRect.height - gap;
+    if (y < margin) y = anchorRect.bottom + gap;
+    y = Math.min(window.innerHeight - popRect.height - margin, Math.max(margin, y));
+
+    rolePopover.style.left = `${Math.round(x)}px`;
+    rolePopover.style.top = `${Math.round(y)}px`;
+    rolePopover.style.visibility = "";
+
+    if (rolePopoverTimer != null) window.clearTimeout(rolePopoverTimer);
+    rolePopoverTimer = window.setTimeout(hideRolePopover, compact ? 3600 : 4400);
+  }
+
   function createPanelRoleRows(roles: string[]): HTMLDivElement {
     const rows = createEl("div", "p-roles");
     roles.forEach((role) => {
       const pill = createRolePill(role);
-      pill.removeAttribute("title");
       rows.append(pill);
     });
     return rows;
@@ -4721,6 +4785,7 @@ export function mountNercOrgMap(): void {
   }
 
   function closePanel(): void {
+    hideRolePopover();
     panel.hidden = true;
     selectedOrg = null;
     focusedSubareaOrg = null;
@@ -4961,6 +5026,7 @@ export function mountNercOrgMap(): void {
   function selectOrg(o: Org, opts: { center?: boolean } = {}): void {
     if (tourRunning) stopTour(true);
     hoverOrg = null;
+    hideRolePopover();
     // Focus mode (PJM/MISO only). Clicking a hub focuses its family; clicking one
     // of that family's related areas keeps the focus but leaves the panel on the
     // hub; clicking anything else clears focus. Must run before panelOrgForSelection.
@@ -5158,6 +5224,7 @@ export function mountNercOrgMap(): void {
 
     document.addEventListener("keydown", (ev) => {
       if (ev.key === "Escape") {
+        hideRolePopover();
         stopTour();
         closePopovers();
         return;
@@ -5170,6 +5237,14 @@ export function mountNercOrgMap(): void {
         animateTransform(zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k), 160);
       }
     });
+
+    document.addEventListener("click", (ev) => {
+      const target = ev.target instanceof Element ? ev.target : null;
+      if (target?.closest(".nerc-role-popover, .nerc-rolepill[data-role]")) return;
+      hideRolePopover();
+    });
+    window.addEventListener("resize", hideRolePopover);
+    panelBody.addEventListener("scroll", hideRolePopover, { passive: true });
   }
 
   function revealActionButtons(): void {
