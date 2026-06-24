@@ -985,17 +985,10 @@
 }
 
 .nerc-panel .nerc-rolepill[data-role] {
-  animation: nerc-role-breathe 6s ease-in-out infinite;
-  transform: translateX(0);
+  animation: nerc-role-breathe 6s ease-in-out var(--role-wave-delay, 0.25s) infinite;
+  transform: translateX(0) scale(1);
+  transform-origin: center;
   will-change: transform, box-shadow;
-}
-
-.nerc-panel .nerc-rolepill[data-role]:nth-child(2n) {
-  animation-delay: 0.18s;
-}
-
-.nerc-panel .nerc-rolepill[data-role]:nth-child(3n) {
-  animation-delay: 0.36s;
 }
 
 .nerc-rolepill[data-role]:focus-visible {
@@ -1005,18 +998,18 @@
 
 @keyframes nerc-role-breathe {
   0%, 43%, 100% {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
     box-shadow: none;
   }
   50% {
-    transform: translateX(2px);
+    transform: translateX(1px) scale(1.04);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.38);
   }
   57% {
-    transform: translateX(-1px);
+    transform: translateX(-0.5px) scale(1.02);
   }
   64% {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 
@@ -1759,6 +1752,7 @@
   #nerc-svg .org,
   #nerc-svg .org.tour-flash,
   #nerc-svg .olabel.tour-flash,
+  .nerc-panel .nerc-rolepill[data-role],
   .tour-title,
   .nerc-tour-status {
     animation: none;

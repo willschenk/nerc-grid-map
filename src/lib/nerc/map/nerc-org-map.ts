@@ -2110,16 +2110,9 @@ export function mountNercOrgMap(): void {
     return activeFocusGroup != null && marketFamily(o) === activeFocusGroup;
   }
 
-  function focusHubForGroup(group: "PJM" | "MISO"): Org | null {
-    return orgById(group === "PJM" ? PJM_HUB_ID : MISO_HUB_ID);
-  }
-
-  // When a PJM/MISO family is focused, subarea clicks keep the hub in the panel.
+  // When a PJM/MISO family is focused, subarea clicks still keep family focus
+  // active, but the detail panel belongs to the clicked subarea.
   function panelOrgForSelection(o: Org): Org {
-    const group = activeFocusGroup;
-    if (group != null && marketFamily(o) === group && !isMarketHub(o)) {
-      return focusHubForGroup(group) ?? o;
-    }
     return o;
   }
 
@@ -4537,8 +4530,9 @@ export function mountNercOrgMap(): void {
 
   function createPanelRoleRows(roles: string[]): HTMLDivElement {
     const rows = createEl("div", "p-roles");
-    roles.forEach((role) => {
+    roles.forEach((role, index) => {
       const pill = createRolePill(role);
+      pill.style.setProperty("--role-wave-delay", `${0.25 + index * 0.08}s`);
       rows.append(pill);
     });
     return rows;
@@ -5028,23 +5022,23 @@ export function mountNercOrgMap(): void {
     hoverOrg = null;
     hideRolePopover();
     // Focus mode (PJM/MISO only). Clicking a hub focuses its family; clicking one
-    // of that family's related areas keeps the focus but leaves the panel on the
-    // hub; clicking anything else clears focus. Must run before panelOrgForSelection.
+    // of that family's related areas keeps focus active and opens that area's
+    // panel; clicking anything else clears focus. Must run before panelOrgForSelection.
     if (isMarketHub(o)) {
       setFocusGroup(marketFamily(o) as "PJM" | "MISO");
     } else if (!(activeFocusGroup != null && marketFamily(o) === activeFocusGroup)) {
       clearFocus();
     }
-    // The org the panel will show: the parent hub when `o` is one of its focused
-    // subareas, otherwise `o` itself.
+    // The org the panel will show. Focused subareas keep PJM/MISO focus active
+    // but open their own detail panel rather than redirecting to the hub.
     const panelOrg = panelOrgForSelection(o);
-    focusedSubareaOrg = panelOrg.ncr_id !== o.ncr_id ? o : null;
+    focusedSubareaOrg =
+      activeFocusGroup != null && marketFamily(o) === activeFocusGroup && !isMarketHub(o) ? o : null;
     (window as unknown as Record<string, unknown>).__lastPick = { o: o.entity_name, sub: focusedSubareaOrg?.entity_name ?? null, same: selectedOrg != null && selectedOrg.ncr_id === panelOrg.ncr_id };
 
-    // Re-selecting the org already in the panel — clicking a subarea of the open hub
-    // (or re-clicking the same org) — keeps the panel and the view exactly as they
-    // are: no re-render, no pan. The pick just pulses + highlights so it still feels
-    // interactive. This is what keeps exploring PJM/MISO members calm and jitter-free.
+    // Re-selecting the org already in the panel keeps the panel and the view exactly
+    // as they are: no re-render, no pan. The pick just pulses + highlights so it
+    // still feels interactive.
     const sameSelection = selectedOrg != null && selectedOrg.ncr_id === panelOrg.ncr_id;
     if (sameSelection) {
       hideTooltip();
