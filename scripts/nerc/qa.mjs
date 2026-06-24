@@ -28,6 +28,17 @@ const COLOR_RE = /^hsl\(\d{1,3}, \d{1,3}%, \d{1,3}%\)$/;
 const isSupplemental = (o) => o.nerc_registered === false;
 const isTerritoryInset = (o) => o.out_of_footprint === true;
 const validRegions = new Set(CURRENT_REGIONAL_ENTITIES);
+const US_STATE_CODES = new Set([
+  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA",
+  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA",
+  "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY",
+  "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX",
+  "UT", "VT", "VA", "WA", "WV", "WI", "WY", "PR", "VI",
+]);
+const CA_PROVINCE_CODES = new Set([
+  "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT",
+]);
+const MX_STATE_CODES = new Set(["BC"]); // Baja California cross-border NERC generation.
 
 // 1. Every projected record has non-null coordinates. Territory inset records
 // are placed schematically by the renderer instead of by lat/lng.
@@ -39,6 +50,37 @@ for (const o of orgs) {
   if (o.lat == null || o.lng == null) continue;
   if (!isCoordInScope(o.lat, o.lng, o.state, { outOfFootprint: isTerritoryInset(o) })) {
     warnings.push(`out-of-range coords: ${o.ncr_id} ${o.entity_name} (${o.lat}, ${o.lng})`);
+  }
+}
+
+// 2b. Country/state combinations must be internally consistent. This catches
+// cross-border rows accidentally tagged US and alternate locations inheriting
+// a parent org's country when their own state is in a different country.
+function validCountryState(country, state) {
+  const c = String(country || "").toUpperCase();
+  const s = String(state || "").toUpperCase();
+  if (c === "US") return US_STATE_CODES.has(s);
+  if (c === "CA") return CA_PROVINCE_CODES.has(s);
+  if (c === "MX") return MX_STATE_CODES.has(s);
+  return false;
+}
+
+for (const o of orgs) {
+  if (!validCountryState(o.country, o.state)) {
+    errors.push(`country/state mismatch: ${o.ncr_id} country=${o.country} state=${o.state}`);
+  }
+  for (const loc of o.locations ?? []) {
+    const populated =
+      loc.lat != null ||
+      loc.lng != null ||
+      loc.city != null ||
+      loc.state != null ||
+      loc.country != null ||
+      loc.headquarters_address != null;
+    if (!populated) continue;
+    if (!validCountryState(loc.country, loc.state)) {
+      errors.push(`location country/state mismatch: ${o.ncr_id} rank ${loc.rank} country=${loc.country} state=${loc.state}`);
+    }
   }
 }
 
