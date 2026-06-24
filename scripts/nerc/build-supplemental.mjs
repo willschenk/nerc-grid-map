@@ -177,6 +177,7 @@ function main() {
       entity_name: name,
       acronym: null,
       state,
+      country: "US",
       city: null,
       lat: coords ? coords[0] : null,
       lng: coords ? coords[1] : null,

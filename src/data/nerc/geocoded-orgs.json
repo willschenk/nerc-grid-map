@@ -152362,6 +152362,34 @@
           "geo_source": "official_website",
           "geo_source_url": "https://www.aeso.ca",
           "geo_notes": "ISO for the Alberta Interconnected Electric System."
+        },
+        {
+          "rank": 2,
+          "role": "alternate",
+          "lat": null,
+          "lng": null,
+          "headquarters_address": null,
+          "city": null,
+          "state": null,
+          "country": null,
+          "geo_confidence": null,
+          "geo_source": null,
+          "geo_source_url": null,
+          "geo_notes": null
+        },
+        {
+          "rank": 3,
+          "role": "alternate",
+          "lat": null,
+          "lng": null,
+          "headquarters_address": null,
+          "city": null,
+          "state": null,
+          "country": null,
+          "geo_confidence": null,
+          "geo_source": null,
+          "geo_source_url": null,
+          "geo_notes": null
         }
       ]
     }
