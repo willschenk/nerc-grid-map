@@ -123,6 +123,7 @@ type Org = {
   _tiny?: string;       // tinyName(o)
   _mrc?: number;        // meaningfulRoleCount(o)
   _defMarket?: boolean; // isDeferredMarketOrg(o)
+  _giveWay?: boolean;   // isGiveWayDot(o) — GO/GOP-only subordinate dot layer
   _toOnly?: boolean;    // isTransmissionOwnerOnly(o)
   _gridLead?: boolean;  // isGridLeadershipOrg(o)
   _topTier?: boolean;   // isTopTierOrg(o)
@@ -164,6 +165,9 @@ type LandLabel = {
   y: number;
   small: boolean;
   kind: "state" | "province" | "water";
+  // Interior water (rivers, lakes, bays) stays as open-space context when zoomed in;
+  // open ocean / Great Lakes labels are overview-only and hide at deep zoom.
+  interior?: boolean;
   _node?: SVGTextElement;
 };
 // An offshore territory's layout region. x/y/w/h bound where its cluster of dots
@@ -308,6 +312,21 @@ const GRID_ROLES = new Set(["TSP", "TP", "TO", "DP", "LSE"]);
 const SUPPORT_ROLES = new Set(["RP", "RSG", "FRSG", "RRSG"]);
 const GENERATION_ROLES = new Set(["GO", "GOP"]);
 const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
+// Give-way dots: the GO/GOP-only generator companies. They render as a
+// subordinate dot layer that NEVER joins the packing/force-sim — it always
+// gives way to (moves around) the real bubbles and only shows details on
+// hover/click. Zoom-gated: hidden at the calm national overview, faded in as
+// the user zooms into a region. Reveal-K and fade span are tunable here.
+const GIVE_WAY_DOT_REVEAL_K = 4.5;
+const GIVE_WAY_DOT_REVEAL_K_COMPACT = 5.0;
+// Short fade so dots reach full (still small) size soon after reveal — visible and
+// clickable in the regional view rather than lingering sub-pixel.
+const GIVE_WAY_DOT_FADE_SPAN = 0.5;
+// Give-way dots render at 2x the base fallback-tiny radius so they read clearly as
+// real (clickable) markers once zoomed in. They still stay strictly subordinate:
+// layoutDotGiveWay clears each enlarged dot from every real bubble, so the bigger
+// size never lets a dot overlap an organization (it moves around, or hides).
+const GIVE_WAY_DOT_SIZE_SCALE = 2;
 // Growth anchor for generation-only micro-orgs: how deep before their post-reveal
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 50;
@@ -482,7 +501,8 @@ const PROVINCE_LABELS: Array<{ name: string; lat: number; lng: number }> = [
 // Water-body labels filling the big open ocean/lake gaps around the footprint —
 // always-open space, so they give the map geographic context without ever
 // crowding the data. Projected with the lower-48 albersUsa like the states.
-const WATER_LABELS: Array<{ name: string; lat: number; lng: number }> = [
+const WATER_LABELS: Array<{ name: string; lat: number; lng: number; interior?: boolean }> = [
+  // Overview-only open water + Great Lakes (hide once zoomed in).
   { name: "Gulf of Mexico", lat: 26, lng: -91 },
   { name: "Atlantic Ocean", lat: 31, lng: -75 },
   { name: "Pacific Ocean", lat: 38, lng: -125 },
@@ -492,6 +512,27 @@ const WATER_LABELS: Array<{ name: string; lat: number; lng: number }> = [
   { name: "Lake Huron", lat: 44.8, lng: -82.2 },
   { name: "Lake Erie", lat: 42.2, lng: -81.2 },
   { name: "Lake Ontario", lat: 43.7, lng: -77.9 },
+  // Interior water — rivers, lakes, bays. Flagged interior:true so they persist as
+  // open-space geographic context when the user zooms into a region (placed at a
+  // representative open point; they still yield to NERC data via the open-space test).
+  { name: "Mississippi River", lat: 33.4, lng: -91.1, interior: true },
+  { name: "Missouri River", lat: 46.0, lng: -100.5, interior: true },
+  { name: "Ohio River", lat: 38.3, lng: -86.5, interior: true },
+  { name: "Colorado River", lat: 36.0, lng: -113.5, interior: true },
+  { name: "Rio Grande", lat: 29.7, lng: -101.5, interior: true },
+  { name: "Columbia River", lat: 45.9, lng: -119.8, interior: true },
+  { name: "Snake River", lat: 43.6, lng: -114.5, interior: true },
+  { name: "Arkansas River", lat: 38.0, lng: -100.5, interior: true },
+  { name: "Red River", lat: 33.9, lng: -94.0, interior: true },
+  { name: "Tennessee River", lat: 34.8, lng: -87.5, interior: true },
+  { name: "Great Salt Lake", lat: 41.2, lng: -112.5, interior: true },
+  { name: "Lake Tahoe", lat: 39.1, lng: -120.0, interior: true },
+  { name: "Lake Okeechobee", lat: 26.95, lng: -80.8, interior: true },
+  { name: "Lake Champlain", lat: 44.5, lng: -73.35, interior: true },
+  { name: "Chesapeake Bay", lat: 38.0, lng: -76.1, interior: true },
+  { name: "Long Island Sound", lat: 41.1, lng: -72.6, interior: true },
+  { name: "Puget Sound", lat: 47.8, lng: -122.5, interior: true },
+  { name: "San Francisco Bay", lat: 37.8, lng: -122.35, interior: true },
 ];
 
 // Oversized geographic labels (big water bodies, Canadian provinces, Maine) that
@@ -892,6 +933,13 @@ export function mountNercOrgMap(): void {
         better = true; // innermost (smaller) drawn circle wins
       } else if (inVisual && visual > bestVisual + radiusTol) {
         better = false; // keep the tighter bubble already chosen
+      } else if (isGiveWayDot(o) && isGiveWayDot(best)) {
+        // Two close give-way dots: pick the nearest centre with NO focus-boost
+        // stickiness, so hover/selection flips to a neighbour the instant the pointer
+        // is closer to it. Combined with the generous dot hit ring (hitTargetRadius),
+        // this keeps the buffer large for easy tapping yet easy to switch between dots
+        // that sit close together.
+        better = norm < bestNorm;
       } else {
         better =
           norm < bestNorm - 0.02 ||
@@ -1008,6 +1056,25 @@ export function mountNercOrgMap(): void {
 
   function isGenerationOnly(o: Org): boolean {
     return o.roles.length > 0 && o.roles.every((r) => GENERATION_ROLES.has(r));
+  }
+
+  // The give-way dot layer: GO/GOP-only generator companies. These are kept out
+  // of the placement/force-sim entirely (see canDisplayOrgBase) and drawn as a
+  // subordinate dot layer that gives way to — and never moves or hides — any real
+  // bubble. Memoized; roles are static so this never changes at runtime.
+  function isGiveWayDot(o: Org): boolean {
+    if (o._giveWay != null) return o._giveWay;
+    return (o._giveWay = isGenerationOnly(o));
+  }
+
+  function giveWayDotRevealK(): number {
+    return compact ? GIVE_WAY_DOT_REVEAL_K_COMPACT : GIVE_WAY_DOT_REVEAL_K;
+  }
+
+  // 0–1 fade-in for the dot layer: 0 below reveal-K, ramping to 1 over the fade
+  // span so dots grow in as the user zooms into a region instead of popping.
+  function dotDisclosureT(k: number): number {
+    return smoothStep((k - giveWayDotRevealK()) / GIVE_WAY_DOT_FADE_SPAN);
   }
 
   // PSE-only (or PSE with other zero-priority roles like GO/GOP) — no grid/reliability
@@ -1146,8 +1213,12 @@ export function mountNercOrgMap(): void {
   // so the selected family's overlay sub-areas never enter the shared packing and
   // therefore never push the gray background organizations around.
   function canDisplayOrgBase(o: Org, k: number): boolean {
-    // Generation-only (GO/GOP) companies are excluded from the map entirely.
-    if (isGenerationOnly(o)) return false;
+    // Give-way dots (GO/GOP-only) never enter PLACEMENT: returning false here keeps
+    // them out of computePlacements' eligible set and the force-sim, so they can
+    // never displace or hide a real bubble. They are drawn separately as a
+    // subordinate dot layer (see the dot-branch in redraw + layoutDotGiveWay),
+    // which is what makes them always give way to the rest of the map.
+    if (isGiveWayDot(o)) return false;
     // The real ISOs/RTOs are headline orgs: always eligible at every zoom so they
     // are visible whenever their area is on screen (incl. the zoomed-out overview).
     if (isIsoRtoOperator(o)) return true;
@@ -1610,10 +1681,10 @@ export function mountNercOrgMap(): void {
     // bound the work, not the look. More city names fill the open gaps now.
     // Phones keep the overview calm — only a few big metros for orientation — and
     // admit more city context as the user zooms in (where there is room for it).
-    if (compact) return k < 2.2 ? 5 : k < 5 ? 11 : 16;
+    if (compact) return k < 2.2 ? 5 : k < 5 ? 11 : 18;
     if (k < 1.8) return 40;
-    if (k < 4.8) return 66;
-    return 100;
+    if (k < 4.8) return 72;
+    return 130;
   }
 
   function placeDotMinK(tier: number): number {
@@ -1779,7 +1850,10 @@ export function mountNercOrgMap(): void {
     const v = promoted
       ? promotedBackgroundRadius(o, k)
       : fallback
-        ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE
+        ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE *
+          // Give-way dots render 2x larger and grow in over the fade span instead of
+          // popping at reveal-K (layoutDotGiveWay still clears them from every bubble).
+          (isGiveWayDot(o) ? dotDisclosureT(k) * GIVE_WAY_DOT_SIZE_SCALE : 1)
         : visualRadius(o, k);
     o._vr = v;
     o._vrk = k;
@@ -1793,7 +1867,11 @@ export function mountNercOrgMap(): void {
     if (o._frame === "terr") return territoryHitRadiusPx() * unitPerPx;
     if (o._renderFallback) {
       const visual = bubblePackingRadius(renderedRadius(o, k));
-      return Math.max(visual + 2 * unitPerPx, (compact ? 18 : 12) * unitPerPx);
+      // Give-way dots get a slightly larger tap/hover ring so the tiny markers stay
+      // easy to select; dot-vs-dot ties resolve by nearest centre (see
+      // nearestOrgAtPointer), so the bigger ring never makes close dots ambiguous.
+      const floor = isGiveWayDot(o) ? (compact ? 20 : 15) : (compact ? 18 : 12);
+      return Math.max(visual + 2 * unitPerPx, floor * unitPerPx);
     }
     // Every shown bubble is fully placed, so tap targets track the visible radius
     // plus a small pad and a floor — no per-dot reveal strength to fold in. Uses
@@ -2921,6 +2999,91 @@ export function mountNercOrgMap(): void {
     }
   }
 
+  // One-directional give-way for the GO/GOP dot layer. Each visible dot is nudged
+  // to the NEAREST open spot that clears every nearby real bubble, within a short
+  // leash; the bubbles themselves are obstacles only and are never moved. A dot
+  // that is boxed in (no clear spot within the leash) gives way by hiding. Works
+  // in the same zoomed-viewBox screen space as resolveBubbleOverlaps (_sx/_sy),
+  // writing the result back into the dot's _dx/_dy render offset.
+  function layoutDotGiveWay(dots: Org[], obstacles: Org[], k: number): void {
+    if (!dots.length) return;
+    const fanScale = spiderFanScale(k);
+    const declScale = declutterScale(k);
+    // Build a spatial grid of the real visible bubbles (their final positions).
+    // Bubbles paint as wide rounded RECTANGLES, so model each as its half-extents
+    // (hw, hh) and clear the dot from that box — a circle test would let a dot touch
+    // a rect corner. maxExt sizes the grid cells / neighbour search.
+    type Ob = { x: number; y: number; hw: number; hh: number };
+    let maxExt = 4 * unitPerPx;
+    const obs: Ob[] = [];
+    for (const o of obstacles) {
+      if (o._sx == null || o._sy == null) continue;
+      const { hw, hh } = orgBubbleHalfExtents(o, k);
+      obs.push({ x: o._sx, y: o._sy, hw, hh });
+      if (hw > maxExt) maxExt = hw;
+      if (hh > maxExt) maxExt = hh;
+    }
+    const cell = 2 * maxExt + 4 * unitPerPx;
+    const grid = new Map<string, Ob[]>();
+    for (const o of obs) {
+      const key = Math.floor(o.x / cell) + ":" + Math.floor(o.y / cell);
+      const arr = grid.get(key);
+      if (arr) arr.push(o);
+      else grid.set(key, [o]);
+    }
+    const clears = (x: number, y: number, rd: number): boolean => {
+      const gx = Math.floor(x / cell);
+      const gy = Math.floor(y / cell);
+      for (let ix = -1; ix <= 1; ix++)
+        for (let iy = -1; iy <= 1; iy++) {
+          const arr = grid.get(gx + ix + ":" + (gy + iy));
+          if (!arr) continue;
+          for (const o of arr) {
+            if (Math.abs(o.x - x) < o.hw + rd && Math.abs(o.y - y) < o.hh + rd) return false;
+          }
+        }
+      return true;
+    };
+    const step = 2 * unitPerPx;
+    // Leash scales with the biggest nearby bubble so a dot can escape even a large
+    // deep-zoom rectangle, with a comfortable floor for the common regional case.
+    // Roomy enough that the 2x-size dots almost always find a clear spot to move into
+    // (stay visible) instead of being boxed in and hidden.
+    const leash = Math.max((compact ? 34 : 48) * unitPerPx, maxExt + (compact ? 16 : 22) * unitPerPx);
+    for (const d of dots) {
+      // Recompute from the true home each frame so the nudge never accumulates.
+      d._dx = 0;
+      d._dy = 0;
+      const hx = transform.applyX(orgRenderX(d, fanScale, declScale));
+      const hy = transform.applyY(orgRenderY(d, fanScale, declScale));
+      d._sx = hx;
+      d._sy = hy;
+      // A hovered/selected/toured dot is promoted to the front — it leads the
+      // interaction, so it stays put rather than dodging out from under the cursor.
+      if (d._promoteBackground) continue;
+      const rd = renderedRadius(d, k) + 0.6 * unitPerPx;
+      if (obs.length === 0 || clears(hx, hy, rd)) continue;
+      let placed = false;
+      for (let rad = step; rad <= leash && !placed; rad += step) {
+        const cnt = Math.max(8, Math.round((2 * Math.PI * rad) / step));
+        for (let i = 0; i < cnt; i++) {
+          const ang = (i / cnt) * 2 * Math.PI;
+          const cx = hx + Math.cos(ang) * rad;
+          const cy = hy + Math.sin(ang) * rad;
+          if (!clears(cx, cy, rd)) continue;
+          d._dx = cx - hx;
+          d._dy = cy - hy;
+          d._sx = cx;
+          d._sy = cy;
+          placed = true;
+          break;
+        }
+      }
+      // Boxed in by larger neighbours: give way by hiding rather than overlapping.
+      if (!placed) d._vis = false;
+    }
+  }
+
   function guardVisiblePlacement(o: Org, k: number, forced: boolean): void {
     if (forced || o._frame === "terr" || !o._placed || isTopTierOrg(o) || isIsoRtoOperator(o)) return;
     const bucket = declutterBucket(k);
@@ -3225,7 +3388,7 @@ export function mountNercOrgMap(): void {
     for (const w of WATER_LABELS) {
       const xy = projection([w.lng, w.lat]);
       if (!xy || Number.isNaN(xy[0]) || Number.isNaN(xy[1])) continue;
-      landLabels.push({ name: w.name, x: xy[0], y: xy[1], small: false, kind: "water" });
+      landLabels.push({ name: w.name, x: xy[0], y: xy[1], small: false, kind: "water", interior: w.interior });
     }
     for (const p of PROVINCE_LABELS) {
       const xy = canadaProj([p.lng, p.lat]);
@@ -3286,6 +3449,9 @@ export function mountNercOrgMap(): void {
     const margin = 90;
     const candidates: Org[] = [];
     const visibleOrgs: Org[] = [];
+    // The give-way dot layer, kept separate from visibleOrgs so it never enters the
+    // bubble overlap/declutter passes (zero impact on real-org layout).
+    const dotOrgs: Org[] = [];
     let shownCount = 0;
     for (const o of placeableOrgs) {
       if (o._x == null || o._y == null) {
@@ -3297,6 +3463,28 @@ export function mountNercOrgMap(): void {
       o._sx = sx;
       o._sy = sy;
       const onScreen = sx >= -margin && sx <= W + margin && sy >= -margin && sy <= H + margin;
+      // GIVE-WAY DOT LAYER. GO/GOP-only generators are never placed (canDisplayOrgBase
+      // returns false for them), so they are handled here as a subordinate dot layer.
+      // Crucially they are collected into dotOrgs, NOT visibleOrgs — so they never
+      // enter separateNeIsos/resolveBubbleOverlaps and can never move or hide a real
+      // bubble. They reuse the fallbackTiny dot rendering and are nudged clear of the
+      // real bubbles afterwards by layoutDotGiveWay. Visible once zoomed into a region
+      // (>= reveal-K), or any time the dot is hovered/selected. The role tour does
+      // NOT force them: its GO/GOP steps would otherwise reveal ~1,500 dots at the
+      // overview, contradicting the zoom-gated reveal — so the tour is left unchanged.
+      if (isGiveWayDot(o)) {
+        const forcedDot =
+          hot?.ncr_id === o.ncr_id ||
+          selectedOrg?.ncr_id === o.ncr_id;
+        const dotVis = onScreen && (forcedDot || k >= giveWayDotRevealK());
+        o._placed = false;
+        o.placementMode = dotVis ? "fallbackTiny" : undefined;
+        o._renderFallback = dotVis && !forcedDot;
+        o._promoteBackground = isBackgroundPromoted(o, forcedDot);
+        o._vis = dotVis;
+        if (dotVis) dotOrgs.push(o);
+        continue;
+      }
       // Disclosure is zoom-only: a dot shows once it found a non-overlapping spot
       // at this zoom bucket (computePlacements sets _placed), or as a fallback
       // tiny dot when placement failed. Panning never changes the set.
@@ -3621,6 +3809,11 @@ export function mountNercOrgMap(): void {
 
     const finalVisibleOrgs = visibleOrgs.filter((o) => o._vis);
 
+    // Nudge the give-way dots clear of the now-settled real bubbles. One-directional:
+    // dots read the bubbles and move themselves; bubbles are never touched. Runs after
+    // the real layout is final and before the DOM sync below picks up dot positions.
+    layoutDotGiveWay(dotOrgs, finalVisibleOrgs, k);
+
     for (const o of finalVisibleOrgs) {
       if (o._promoteBackground || selectedOrg?.ncr_id === o.ncr_id || hot?.ncr_id === o.ncr_id) {
         raiseVisibleOrg(o);
@@ -3639,6 +3832,11 @@ export function mountNercOrgMap(): void {
       if (!o._vis) {
         if (o._wasVis !== false) {
           node.classList.add("hide");
+          // Strip transient focus markers so a bubble that hides (e.g. the
+          // last-clicked subarea once the panel/focus closes) can't keep a stale
+          // focus-picked/parent/related/dim class. Force a clean re-toggle on return.
+          node.classList.remove("focus-picked", "focus-parent", "focus-related", "focus-dim");
+          o._clsMask = -1;
           o._wasVis = false;
         }
         return;
@@ -4029,7 +4227,11 @@ export function mountNercOrgMap(): void {
         if (placedLand >= landCap) break;
         if (L.kind === "state" && L.small && k < INSET_AMBIENT_CONTEXT_MIN_K) continue; // inset + tiny states
         if (L.kind === "state" && !L.small && k >= 16) continue; // big state names fade at deep zoom
-        if (L.kind === "water" && k >= 9) continue; // ocean/lake context only at out/mid zoom
+        // Open ocean / Great Lakes: overview/mid context only. Interior water (rivers,
+        // lakes, bays) does the opposite — it fills the open space AS you zoom into a
+        // region, giving more geographic context exactly where the task wants it.
+        if (L.kind === "water" && !L.interior && k >= 9) continue;
+        if (L.kind === "water" && L.interior && (k < 2.5 || k >= 50)) continue;
         if (L.kind === "province" && k >= 12) continue;
         const baseSx = transform.applyX(L.x);
         const baseSy = transform.applyY(L.y);
@@ -4963,7 +5165,7 @@ export function mountNercOrgMap(): void {
     }
 
     const span = Math.max(maxX - minX, maxY - minY, 24 * unitPerPx);
-    const pad = span * 0.16 + 28 * unitPerPx;
+    const pad = span * 0.1 + 20 * unitPerPx;
     minX -= pad;
     maxX += pad;
     minY -= pad;
@@ -4991,9 +5193,12 @@ export function mountNercOrgMap(): void {
     const viewCx = mL + viewW / 2;
     const viewCy = mT + viewH / 2;
 
+    // Fill the clear viewport a little past the padded bbox (the pad is empty
+    // margin) so the family frames up closer/more zoomed-in rather than floating
+    // small in the middle.
     const k = Math.max(
       0.72,
-      Math.min(MAX_ZOOM, Math.min(viewW / bboxW, viewH / bboxH) * 0.94),
+      Math.min(MAX_ZOOM, Math.min(viewW / bboxW, viewH / bboxH) * 1.12),
     );
     focusPanPending = true;
     const next = zoomIdentity.translate(viewCx, viewCy).scale(k).translate(-dataCx, -dataCy);

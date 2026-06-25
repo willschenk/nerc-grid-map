@@ -134,6 +134,37 @@ node scripts/nerc/build-orgs.mjs --resplit
 - Do not reintroduce unlabeled background dots, viewport-driven disclosure, or
   renderer-side weight/color calculations.
 
+## Map interaction & layer design
+
+These are deliberate UX choices in `nerc-org-map.ts`. Tunables are named constants
+near the top of the file; change those rather than scattering magic numbers.
+
+- **Give-way dot layer (GO/GOP-only generators).** `isGiveWayDot(o)` returns true
+  for generation-only companies. They are excluded from placement
+  (`canDisplayOrgBase` returns false) so they NEVER join the force-sim/packing and
+  can never push or hide a real bubble. They render as a separate subordinate dot
+  layer (`dotOrgs`, not `visibleOrgs`) at 2x the fallback-tiny radius
+  (`GIVE_WAY_DOT_SIZE_SCALE`), zoom-gated in past `GIVE_WAY_DOT_REVEAL_K`.
+  `layoutDotGiveWay` is the invariant: each dot is nudged ONE-DIRECTIONALLY to the
+  nearest open spot clearing every real bubble (bubbles are obstacles only, never
+  moved); a dot with no clear spot within its leash gives way by hiding rather than
+  overlapping. Verified by `scripts/perf/verify-giveway-dots.mjs` (dot↔bubble
+  overlaps must stay 0).
+- **Close-dot selection.** `hitTargetRadius` gives give-way dots a slightly larger
+  tap/hover ring (easy to hit). In `nearestOrgAtPointer`, dot-vs-dot ties resolve by
+  nearest centre with NO focus-boost stickiness, so hover/selection flips the instant
+  the pointer is closer to a neighbour — a large buffer that still switches easily.
+- **Geographic context labels.** Cities live in `src/lib/nerc/places.mjs` (tiered;
+  higher tier = only when zoomed in). `WATER_LABELS` split into open ocean / Great
+  Lakes (overview-only, hidden at deep zoom) and `interior: true` rivers/lakes/bays
+  that fade IN as you zoom into a region. All geo labels yield to NERC data via the
+  open-space/blocker test — they only draw where there is genuinely open space.
+- **PJM/MISO focus.** Clicking a hub calls `fitFocusGroup` (frames the whole family
+  in the card-clear viewport, zoomed in a bit past the padded bbox). Clicking a
+  subarea while focused selects that subarea (its own panel) and keeps the family in
+  focus; `nearestOrgAtPointer` projects positions LIVE (not cached `_sx/_sy`) so
+  clicks resolve correctly right after an animated zoom.
+
 ## Name review
 
 `docs/standards/name-shortest.md` is the only policy source for

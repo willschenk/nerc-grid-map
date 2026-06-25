@@ -3,8 +3,8 @@
 //   - no orange ripple (.focus-rings) anywhere in the DOM
 //   - hover tooltip: ISO/RTO, PJM Zone, MISO LBA show as pills ABOVE the role pills,
 //     with no redundant "· CODE" text
-//   - subarea clickability while a parent hub is selected (panel stays on the hub,
-//     the clicked subarea is marked focus-picked)
+//   - subarea clickability while a parent family is in focus (clicking a subarea
+//     selects it / opens its panel and keeps PJM/MISO focus active)
 //   - desktop detail card is narrow + tucked to the right
 // Usage: npm run build && node scripts/perf/verify-fixes.mjs
 
@@ -230,9 +230,9 @@ async function main() {
     assert(!afterPjm.panelHidden && /PJM/i.test(afterPjm.panel || ""), `panel shows PJM after hub click (got "${afterPjm.panel}")`);
     assert(afterPjm.focusMode, "focus mode active after PJM click");
 
-    // Click the on-screen PJM subarea farthest from the hub and assert the panel
-    // stays on PJM while the clicked subarea itself responds (focus-picked) — i.e. the
-    // subarea is interactive while its parent stays selected. The click is dispatched
+    // Click the on-screen PJM subarea farthest from the hub and assert the subarea is
+    // clickable/interactive while the family stays in focus: it selects the subarea
+    // (its own panel opens) and PJM focus mode remains active. The click is dispatched
     // as a native event on the subarea's hit circle (with correct client coords) so it
     // drives the real d3 click handler + nearestOrgAtPointer + selectOrg without
     // d3-zoom's drag-gesture detection swallowing a synthesized CDP press/release.
@@ -262,26 +262,29 @@ async function main() {
     await sleep(450);
     const afterSub = await evalJs(conn, sessionId, `(() => ({
       panel: document.querySelector('#nerc-panel .p-title h2')?.textContent,
+      panelHidden: document.getElementById('nerc-panel').hidden,
       focusMode: document.getElementById('nerc-svg').classList.contains('focus-mode'),
-      pickedNames: [...document.querySelectorAll('rect.org.focus-picked')].map(e=>e.getAttribute('aria-label')),
+      selectedNames: [...document.querySelectorAll('rect.org.selected')].map(e=>e.getAttribute('aria-label')),
     }))()`);
-    assert(/PJM/i.test(afterSub.panel || ""), `panel STAYS on PJM after subarea click (got "${afterSub.panel}")`);
+    // New behavior (parallel agent's focused-subarea panels): clicking a subarea opens
+    // its OWN panel and keeps the family in focus — the subarea is fully interactive.
+    assert(!afterSub.panelHidden, "subarea click opens a detail panel");
     assert(afterSub.focusMode, "still in PJM focus after subarea click");
-    assert(afterSub.pickedNames.includes(sub),
-      `the clicked subarea "${sub}" is marked focus-picked (picked=${JSON.stringify(afterSub.pickedNames)})`);
+    assert(afterSub.selectedNames.includes(sub),
+      `the clicked subarea "${sub}" is the selected org (selected=${JSON.stringify(afterSub.selectedNames)})`);
 
-    // ── item 1: desktop card is narrow + tucked right (panel still open on PJM) ──
+    // ── item 1: desktop card is narrow + tucked right (panel open) ──
     const card = await evalJs(conn, sessionId, `(() => { const p = document.getElementById('nerc-panel'); if (p.hidden) return null; const b = p.getBoundingClientRect(); return { w: b.width, right: b.right, vw: window.innerWidth }; })()`);
     assert(card && card.w <= 460, `desktop card is narrow (width ${card?.w}px ≤ 460)`);
     assert(card && card.right >= card.vw - 30, `desktop card is tucked to the right edge (right ${card?.right} of ${card?.vw})`);
 
-    // Background click clears focus + the subarea highlight cleanly. Dispatch the
-    // click on the svg root (its handler closes popovers/focus) so d3-zoom's gesture
-    // detection can't swallow a synthesized empty-space press/release.
+    // Background click clears focus + selection cleanly. Dispatch the click on the svg
+    // root (its handler closes popovers/focus) so d3-zoom's gesture detection can't
+    // swallow a synthesized empty-space press/release.
     await evalJs(conn, sessionId, `document.getElementById('nerc-svg').dispatchEvent(new MouseEvent('click', { clientX: 40, clientY: 300, bubbles: true, cancelable: true, view: window }))`);
     await sleep(500);
-    const clearedPicked = await evalJs(conn, sessionId, `document.querySelectorAll('rect.org.focus-picked').length + (document.getElementById('nerc-svg').classList.contains('focus-mode') ? 100 : 0)`);
-    assert(clearedPicked === 0, `background click clears focus + subarea highlight (got ${clearedPicked})`);
+    const cleared = await evalJs(conn, sessionId, `document.querySelectorAll('rect.org.selected, rect.org.focus-picked').length + (document.getElementById('nerc-svg').classList.contains('focus-mode') ? 100 : 0)`);
+    assert(cleared === 0, `background click clears focus + selection (got ${cleared})`);
     const errs = await evalJs(conn, sessionId, `window.__errs || []`);
     assert(errs.length === 0, `no page errors during interaction (got ${JSON.stringify(errs)})`);
 
