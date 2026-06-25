@@ -3,26 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-144. NCR12088 — Frontier Windpower II, LLC
-145. NCR11696 — GEV - Marcus Hook
-146. NCR10306 — Grand Ridge Energy LLC
-147. NCR11510 — Green Pastures Wind I, LLC.
-148. NCR11573 — Green Pastures Wind II, LLC
-150. NCR11611 — Hamilton Liberty, LLC
-151. NCR11654 — Hamilton Patriot, LLC
-152. NCR12545 — Hardin Solar Energy II LLC
-153. NCR13012 — Hardin Solar Energy III LLC
-154. NCR11859 — Hunterstown Combined Cycle Generating Station
-155. NCR10361 — Indeck - Olean, LP
-156. NCR10363 — Indeck - Yerkes, LP
-157. NCR10364 — Indeck Energy Services of Silver Springs, LP
-158. NCR12454 — King Creek Wind Farm 1, LLC
-159. NCR12455 — King Creek Wind Farm 2, LLC
-160. NCR12213 — Linden Combined Cycle
-161. NCR11273 — Mesquite Solar 1, LLC
-162. NCR11653 — Mojave 3/4/5
-163. NCR11842 — Montpelier Generating Station, LLC
-164. NCR13045 — Mordor 1
 165. NCR11561 — NAES Corporation - Cogen Technologies Linden Venture
 166. NCR12339 — NAES Corporation-Rayburn Energy Station
 167. NCR10326 — NRG Cedar Bayou Development Co, LLC
@@ -90,8 +70,6 @@ Delete each line after its name is updated and validated.
 230. NCR11657 — ETEC - San Jacinto County Peaking Facility
 231. NCR12410 — Ethos Energy Performance Center
 232. NCR11658 — EthosEnergy - Hardin County Peaking Facility
-233. NCR11692 — Frontier Windpower, LLC
-234. NCR11747 — GEV - Linden VFT
 235. NCR13364 — Hecate Energy Albany 1 LLC
 236. NCR12393 — Heritage  Mountain
 237. NCR12395 — Heritage  Portland
@@ -128,11 +106,8 @@ Delete each line after its name is updated and validated.
 268. NCR10133 — Luminant Energy Company, LLC
 269. NCR10219 — Luminant Generation Company, LLC
 270. NCR11493 — Major Oak Power, LLC
-271. NCR05235 — Mesquite Power LLC
 272. NCR12117 — Milford Solar I
 273. NCR10394 — Milford Wind Corridor Phase I, LLC
-274. NCR11463 — Mojave 16/17/18, LLC
-275. NCR13459 — Montpelier Solar, LLC
 276. NCR00303 — Municipal Energy Agency Of Nebraska
 277. NCR12040 — North Allegheny Wind, LLC
 278. NCR11854 — NRG Energy Services, LLC - Carlsbad
@@ -174,11 +149,6 @@ Delete each line after its name is updated and validated.
 325. NCR12192 — DTE Sustainable Generation Holdings, LLC
 326. NCR11167 — Entergy - Fossil & Hydroelectric Generation
 327. NCR12526 — Entergy Renewables
-330. NCR11029 — Grand Ridge Energy II LLC
-331. NCR11030 — Grand Ridge Energy III LLC
-332. NCR11031 — Grand Ridge Energy IV LLC
-334. NCR12212 — Linden Peaking Generating Station
-335. NCR13046 — Mordor 2
 337. NCR12159 — NAES Corporation - Aquamarine
 338. NCR11562 — NAES Corporation - East Coast Power Linden Holdings
 339. NCR11954 — Prairie Breeze Wind Energy III LLC
@@ -204,7 +174,6 @@ Delete each line after its name is updated and validated.
 363. NCR11878 — Dominion Energy Generation Marketing, Inc.
 364. NCR11655 — EthosEnergy - San Jacinto County Peaking Facility
 365. NCR13365 — Hecate Energy Albany 2 LLC
-366. NCR12392 — Heritage Hunterstown
 367. NCR11718 — Invenergy Services LLC
 368. NCR12554 — Invenergy Services-7V
 369. NCR12448 — Invenergy Services-Assembly
@@ -233,7 +202,6 @@ Delete each line after its name is updated and validated.
 392. NCR11589 — NAES Corporation - Plains End
 393. NCR13061 — NAES Corporation - South Boston Energy
 394. NCR00849 — NAES Corporation - Wolf Hills
-395. NCR12402 — NAES Corporation Heritage Hunterstown
 396. NCR12134 — NAES Corporation-Hill Top Energy
 397. NCR11127 — NAES Corporation-Kleen Energy Systems, LLC.
 398. NCR11181 — NAES Corporation-Sandy Creek Energy Station

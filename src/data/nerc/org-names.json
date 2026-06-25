@@ -5094,10 +5094,13 @@
     {
       "ncr_id": "NCR12088",
       "entity_name": "Frontier Windpower II, LLC",
-      "shortest": "Frontier II",
+      "shortest": "Front II",
       "short": "Frontier Windpower II",
       "normal": "Frontier Windpower II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://derivaenergy.com/projects/frontier-windpower-ii/"
     },
     {
       "ncr_id": "NCR13268",
@@ -5185,7 +5188,10 @@
       "shortest": "GEV MH",
       "short": "GEV Marcus Hook",
       "normal": "GEV Marcus Hook",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.fieldcore.com/3-ge-vernova-om-plants-win-2025-best-practice-awards/"
     },
     {
       "ncr_id": "NCR00069",
@@ -5246,34 +5252,46 @@
     {
       "ncr_id": "NCR11029",
       "entity_name": "Grand Ridge Energy II LLC",
-      "shortest": "Grand Ridge",
+      "shortest": "GrandR2",
       "short": "Grand Ridge Energy II",
       "normal": "Grand Ridge Energy II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center"
     },
     {
       "ncr_id": "NCR11030",
       "entity_name": "Grand Ridge Energy III LLC",
-      "shortest": "Grand Ridge",
+      "shortest": "GrandR3",
       "short": "Grand Ridge Energy III",
       "normal": "Grand Ridge Energy III",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center"
     },
     {
       "ncr_id": "NCR11031",
       "entity_name": "Grand Ridge Energy IV LLC",
-      "shortest": "Grand Ridge",
+      "shortest": "GrandR4",
       "short": "Grand Ridge Energy IV",
       "normal": "Grand Ridge Energy IV",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center"
     },
     {
       "ncr_id": "NCR10306",
       "entity_name": "Grand Ridge Energy LLC",
-      "shortest": "Grand Ridge",
+      "shortest": "GrandRdg",
       "short": "Grand Ridge Energy",
       "normal": "Grand Ridge Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center"
     },
     {
       "ncr_id": "NCR11682",
@@ -5329,7 +5347,10 @@
       "shortest": "GrnPast1",
       "short": "Green Pastures Wind I",
       "normal": "Green Pastures Wind I",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/green-pastures-wind-i-llc"
     },
     {
       "ncr_id": "NCR11573",
@@ -5337,7 +5358,10 @@
       "shortest": "GrnPast2",
       "short": "Green Pastures Wind II",
       "normal": "Green Pastures Wind II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/green-pastures-wind-ii"
     },
     {
       "ncr_id": "NCR11971",
@@ -5468,7 +5492,10 @@
       "shortest": "Ham Lib",
       "short": "Hamilton Liberty",
       "normal": "Hamilton Liberty",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cogentrix.com/news/cogentrix-embraces-sealed-deal"
     },
     {
       "ncr_id": "NCR11654",
@@ -5476,7 +5503,10 @@
       "shortest": "Ham Pat",
       "short": "Hamilton Patriot",
       "normal": "Hamilton Patriot",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cogentrix.com/news/cogentrix-embraces-sealed-deal"
     },
     {
       "ncr_id": "NCR05177",
@@ -5497,18 +5527,24 @@
     {
       "ncr_id": "NCR12545",
       "entity_name": "Hardin Solar Energy II LLC",
-      "shortest": "Hardin PV2",
+      "shortest": "Hardin 2",
       "short": "Hardin Solar II",
       "normal": "Hardin Solar Energy II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://hardinsolar2.invenergy.com/"
     },
     {
       "ncr_id": "NCR13012",
       "entity_name": "Hardin Solar Energy III LLC",
-      "shortest": "Hardin PV3",
+      "shortest": "Hardin 3",
       "short": "Hardin Solar III",
       "normal": "Hardin Solar Energy III",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://hardinsolar3.invenergy.com/"
     },
     {
       "ncr_id": "NCR13301",
@@ -5689,10 +5725,13 @@
     {
       "ncr_id": "NCR11859",
       "entity_name": "Hunterstown Combined Cycle Generating Station",
-      "shortest": "Hunterstn CC",
+      "shortest": "HunterCC",
       "short": "Hunterstown CC",
       "normal": "Hunterstown Combined Cycle Generating Station",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/"
     },
     {
       "ncr_id": "NCR11103",
@@ -5713,26 +5752,35 @@
     {
       "ncr_id": "NCR10361",
       "entity_name": "Indeck - Olean, LP",
-      "shortest": "Indeck Olean",
+      "shortest": "IndOlean",
       "short": "Indeck Olean",
       "normal": "Indeck Olean",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "state_puc",
+      "shortest_source_url": "https://dec.ny.gov/news/environmental-notice-bulletin/2020-08-05/city-of-olean-indeck-olean-energy-center"
     },
     {
       "ncr_id": "NCR10363",
       "entity_name": "Indeck - Yerkes, LP",
-      "shortest": "Indeck Yerk",
+      "shortest": "IndYerk",
       "short": "Indeck Yerkes",
       "normal": "Indeck Yerkes",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/50451-gen1"
     },
     {
       "ncr_id": "NCR10364",
       "entity_name": "Indeck Energy Services of Silver Springs, LP",
-      "shortest": "Indeck Silv",
+      "shortest": "IndSilv",
       "short": "Indeck Silver Springs",
       "normal": "Indeck Silver Springs",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/50449-gen1"
     },
     {
       "ncr_id": "NCR13375",
@@ -5905,18 +5953,24 @@
     {
       "ncr_id": "NCR12454",
       "entity_name": "King Creek Wind Farm 1, LLC",
-      "shortest": "King Crk WF1",
+      "shortest": "KingCrk1",
       "short": "King Creek Wind 1",
       "normal": "King Creek Wind Farm 1",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.edf-re.com/project/king-creek-1/"
     },
     {
       "ncr_id": "NCR12455",
       "entity_name": "King Creek Wind Farm 2, LLC",
-      "shortest": "King Crk WF2",
+      "shortest": "KingCrk2",
       "short": "King Creek Wind 2",
       "normal": "King Creek Wind Farm 2",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.edf-re.com/project/king-creek-2/"
     },
     {
       "ncr_id": "NCR12049",
@@ -6108,18 +6162,24 @@
     {
       "ncr_id": "NCR12213",
       "entity_name": "Linden Combined Cycle",
-      "shortest": "Linden",
+      "shortest": "LindenCC",
       "short": "Linden Combined Cycle",
       "normal": "Linden Combined Cycle",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/2406"
     },
     {
       "ncr_id": "NCR12212",
       "entity_name": "Linden Peaking Generating Station",
-      "shortest": "Linden",
+      "shortest": "LindenPk",
       "short": "Linden Peaking",
       "normal": "Linden Peaking Generating Station",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/2406"
     },
     {
       "ncr_id": "NCR11897",
@@ -6388,10 +6448,13 @@
     {
       "ncr_id": "NCR11273",
       "entity_name": "Mesquite Solar 1, LLC",
-      "shortest": "Mesquite PV1",
+      "shortest": "Mesq PV1",
       "short": "Mesquite Solar",
       "normal": "Mesquite Solar",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://americas.rwe.com/our-energy/solar-energy/solar-projects-and-locations/mesquite-solar-complex/"
     },
     {
       "ncr_id": "NCR11980",
@@ -6508,18 +6571,24 @@
     {
       "ncr_id": "NCR11653",
       "entity_name": "Mojave 3/4/5",
-      "shortest": "Mojave PV",
-      "short": "Mojave Solar 3/4/5",
-      "normal": "Mojave Solar 3/4/5",
-      "tier": "normal"
+      "shortest": "Mojv345",
+      "short": "Mojave Wind 3/4/5",
+      "normal": "Mojave Wind 3/4/5",
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://terra-gen.com/terragen_project/mojave-16-17-18/"
     },
     {
       "ncr_id": "NCR11842",
       "entity_name": "Montpelier Generating Station, LLC",
-      "shortest": "Montplr GS",
+      "shortest": "MontpGS",
       "short": "Montpelier Generating Station",
       "normal": "Montpelier Generating Station",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/montpelier-electric-generating-station/55229"
     },
     {
       "ncr_id": "NCR12227",
@@ -6548,18 +6617,24 @@
     {
       "ncr_id": "NCR13045",
       "entity_name": "Mordor 1",
-      "shortest": "Mordor",
+      "shortest": "Mordor1",
       "short": "Mordor 1",
       "normal": "Mordor 1",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M527/K749/527749985.PDF"
     },
     {
       "ncr_id": "NCR13046",
       "entity_name": "Mordor 2",
-      "shortest": "Mordor",
+      "shortest": "Mordor2",
       "short": "Mordor 2",
       "normal": "Mordor 2",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M527/K749/527749985.PDF"
     },
     {
       "ncr_id": "NCR10283",
@@ -11821,10 +11896,13 @@
     {
       "ncr_id": "NCR11692",
       "entity_name": "Frontier Windpower, LLC",
-      "shortest": "FrontWF",
+      "shortest": "Front I",
       "short": "Frontier Windpower",
       "normal": "Frontier Windpower",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://derivaenergy.com/projects/frontier-windpower-ii/"
     },
     {
       "ncr_id": "NCR12145",
@@ -11877,10 +11955,13 @@
     {
       "ncr_id": "NCR11747",
       "entity_name": "GEV - Linden VFT",
-      "shortest": "LINDEN",
+      "shortest": "Lind VFT",
       "short": "GEV Linden VFT",
       "normal": "GEV Linden VFT",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.ge.com/news/press-releases/ge-unit-auction-electric-transmission-capacity-connecting-new-york-city-and-pjm"
     },
     {
       "ncr_id": "NCR13184",
@@ -12325,10 +12406,13 @@
     {
       "ncr_id": "NCR12392",
       "entity_name": "Heritage Hunterstown",
-      "shortest": "H Hunt",
+      "shortest": "HeritHun",
       "short": "Heritage Hunterstown",
       "normal": "Heritage Hunterstown",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/"
     },
     {
       "ncr_id": "NCR12394",
@@ -13701,10 +13785,13 @@
     {
       "ncr_id": "NCR05235",
       "entity_name": "Mesquite Power LLC",
-      "shortest": "Mesquite",
+      "shortest": "MesqPwr",
       "short": "Mesquite Power",
       "normal": "Mesquite Power",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/55481"
     },
     {
       "ncr_id": "NCR12036",
@@ -13789,10 +13876,13 @@
     {
       "ncr_id": "NCR11463",
       "entity_name": "Mojave 16/17/18, LLC",
-      "shortest": "Mojave 16-18",
+      "shortest": "Mojv1618",
       "short": "Mojave 16/17/18",
       "normal": "Mojave 16/17/18",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://terra-gen.com/terragen_project/mojave-3-4-5/"
     },
     {
       "ncr_id": "NCR13562",
@@ -13805,10 +13895,13 @@
     {
       "ncr_id": "NCR13459",
       "entity_name": "Montpelier Solar, LLC",
-      "shortest": "Montplr PV",
+      "shortest": "MontpPV",
       "short": "Montpelier Solar",
       "normal": "Montpelier Solar",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/montpelier-solar"
     },
     {
       "ncr_id": "NCR12537",
@@ -14157,10 +14250,13 @@
     {
       "ncr_id": "NCR12402",
       "entity_name": "NAES Corporation Heritage Hunterstown",
-      "shortest": "H Hunt",
+      "shortest": "NAES Hun",
       "short": "Heritage Hunterstown",
       "normal": "Heritage Hunterstown",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.naes.com/"
     },
     {
       "ncr_id": "NCR12404",
@@ -17950,10 +18046,13 @@
     {
       "ncr_id": "NCR12350",
       "entity_name": "Sagebrush ESS, LLC",
-      "shortest": "Sagebrush ESS",
+      "shortest": "Sage ESS",
       "short": "Sagebrush ESS",
       "normal": "Sagebrush ESS, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/65933"
     },
     {
       "ncr_id": "NCR13262",

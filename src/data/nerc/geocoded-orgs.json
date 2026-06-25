@@ -10549,11 +10549,11 @@
       "state": "OK",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/plant/frontier-windpower-ii/62837",
+      "source": "official_website",
+      "source_url": "https://derivaenergy.com/projects/frontier-windpower-ii/",
       "org_type": "merchant",
       "parent_org": "Deriva Energy",
-      "notes": "352 MW Kay County wind expansion; COD February 2021.",
+      "notes": "350 MW Kay County wind expansion of Frontier Windpower; Deriva identifies the original project as Frontier I and this project as Frontier II.",
       "seed": false,
       "locations": [
         {
@@ -10566,9 +10566,9 @@
           "state": "OK",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/plant/frontier-windpower-ii/62837",
-          "geo_notes": "352 MW Kay County wind expansion; COD February 2021."
+          "geo_source": "official_website",
+          "geo_source_url": "https://derivaenergy.com/projects/frontier-windpower-ii/",
+          "geo_notes": "350 MW Kay County wind expansion of Frontier Windpower; Deriva identifies the original project as Frontier I and this project as Frontier II."
         },
         {
           "rank": 2,
@@ -10616,11 +10616,11 @@
       "state": "OK",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/plant/frontier-windpower/60218",
+      "source": "official_website",
+      "source_url": "https://derivaenergy.com/projects/frontier-windpower-ii/",
       "org_type": "merchant",
       "parent_org": "Deriva Energy",
-      "notes": "200 MW Kay County wind; COD December 2016.",
+      "notes": "220 MW Kay County wind project in operation since 2016; Deriva refers to it as Frontier I when paired with Frontier Windpower II.",
       "seed": false,
       "locations": [
         {
@@ -10633,9 +10633,9 @@
           "state": "OK",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/plant/frontier-windpower/60218",
-          "geo_notes": "200 MW Kay County wind; COD December 2016."
+          "geo_source": "official_website",
+          "geo_source_url": "https://derivaenergy.com/projects/frontier-windpower-ii/",
+          "geo_notes": "220 MW Kay County wind project in operation since 2016; Deriva refers to it as Frontier I when paired with Frontier Windpower II."
         },
         {
           "rank": 2,
@@ -47905,9 +47905,9 @@
       "state": "NJ",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gevernova.com/",
-      "notes": "",
+      "source": "other",
+      "source_url": "https://www.prnewswire.com/news-releases/castleton-commodities-international-llc-acquires-linden-vft-302684213.html",
+      "notes": "Linden VFT is a 315 MW variable-frequency-transformer transmission facility between PJM and NYISO; CCI announced acquisition from GE Vernova on February 11, 2026, while this NERC registry row still carries GEV.",
       "seed": false,
       "locations": [
         {
@@ -47920,9 +47920,9 @@
           "state": "NJ",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gevernova.com/",
-          "geo_notes": ""
+          "geo_source": "other",
+          "geo_source_url": "https://www.prnewswire.com/news-releases/castleton-commodities-international-llc-acquires-linden-vft-302684213.html",
+          "geo_notes": "Linden VFT is a 315 MW variable-frequency-transformer transmission facility between PJM and NYISO; CCI announced acquisition from GE Vernova on February 11, 2026, while this NERC registry row still carries GEV."
         },
         {
           "rank": 2,
@@ -47971,9 +47971,9 @@
       "state": "PA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gevernova.com/",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://www.fieldcore.com/3-ge-vernova-om-plants-win-2025-best-practice-awards/",
+      "notes": "GE Vernova O&M listing identifies Marcus Hook Energy Facility as a GE Vernova-operated power plant; `GEV MH` distinguishes this row from GEV Linden VFT and Shady Hills.",
       "seed": false,
       "locations": [
         {
@@ -47986,9 +47986,9 @@
           "state": "PA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gevernova.com/",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.fieldcore.com/3-ge-vernova-om-plants-win-2025-best-practice-awards/",
+          "geo_notes": "GE Vernova O&M listing identifies Marcus Hook Energy Facility as a GE Vernova-operated power plant; `GEV MH` distinguishes this row from GEV Linden VFT and Shady Hills."
         },
         {
           "rank": 2,
@@ -48037,9 +48037,9 @@
       "state": "IL",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/grand-ridge-energy-ii-llc",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+      "notes": "Grand Ridge Energy II record at the shared Marseilles site; folded with Grand Ridge Energy I, III, and IV into one Grand Ridge Energy Center map bubble.",
       "seed": false,
       "locations": [
         {
@@ -48052,9 +48052,9 @@
           "state": "IL",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/grand-ridge-energy-ii-llc",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+          "geo_notes": "Grand Ridge Energy II record at the shared Marseilles site; folded with Grand Ridge Energy I, III, and IV into one Grand Ridge Energy Center map bubble."
         },
         {
           "rank": 2,
@@ -48103,9 +48103,9 @@
       "state": "IL",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/grand-ridge-energy-iii-llc",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+      "notes": "Grand Ridge Energy III record at the shared Marseilles site; folded with Grand Ridge Energy I, II, and IV into one Grand Ridge Energy Center map bubble.",
       "seed": false,
       "locations": [
         {
@@ -48118,9 +48118,9 @@
           "state": "IL",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/grand-ridge-energy-iii-llc",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+          "geo_notes": "Grand Ridge Energy III record at the shared Marseilles site; folded with Grand Ridge Energy I, II, and IV into one Grand Ridge Energy Center map bubble."
         },
         {
           "rank": 2,
@@ -48169,9 +48169,9 @@
       "state": "IL",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/grand-ridge-energy-iv",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+      "notes": "Grand Ridge Energy IV record at the shared Marseilles site; folded with Grand Ridge Energy I, II, and III into one Grand Ridge Energy Center map bubble.",
       "seed": false,
       "locations": [
         {
@@ -48184,9 +48184,9 @@
           "state": "IL",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/grand-ridge-energy-iv",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+          "geo_notes": "Grand Ridge Energy IV record at the shared Marseilles site; folded with Grand Ridge Energy I, II, and III into one Grand Ridge Energy Center map bubble."
         },
         {
           "rank": 2,
@@ -48235,9 +48235,9 @@
       "state": "IL",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/grand-ridge-energy-llc",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+      "notes": "Grand Ridge Energy Center at Marseilles; Invenergy describes the overall site as eight projects totaling 210 MW wind, 20 MW solar, and 36 MW storage.",
       "seed": false,
       "locations": [
         {
@@ -48250,9 +48250,9 @@
           "state": "IL",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/grand-ridge-energy-llc",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center",
+          "geo_notes": "Grand Ridge Energy Center at Marseilles; Invenergy describes the overall site as eight projects totaling 210 MW wind, 20 MW solar, and 36 MW storage."
         },
         {
           "rank": 2,
@@ -48696,9 +48696,9 @@
       "state": "PA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/hamilton-liberty-llc",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://www.cogentrix.com/news/cogentrix-embraces-sealed-deal",
+      "notes": "Liberty combined-cycle asset in Towanda, PA; Cogentrix describes Liberty and Patriot as 829 MW PJM plants in the Hamilton portfolio.",
       "seed": false,
       "locations": [
         {
@@ -48711,9 +48711,9 @@
           "state": "PA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/hamilton-liberty-llc",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.cogentrix.com/news/cogentrix-embraces-sealed-deal",
+          "geo_notes": "Liberty combined-cycle asset in Towanda, PA; Cogentrix describes Liberty and Patriot as 829 MW PJM plants in the Hamilton portfolio."
         },
         {
           "rank": 2,
@@ -48762,9 +48762,9 @@
       "state": "PA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/hamilton-patriot-llc",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://www.cogentrix.com/news/cogentrix-embraces-sealed-deal",
+      "notes": "Patriot combined-cycle asset in Montgomery, PA; Cogentrix describes Liberty and Patriot as 829 MW PJM plants in the Hamilton portfolio.",
       "seed": false,
       "locations": [
         {
@@ -48777,9 +48777,9 @@
           "state": "PA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/hamilton-patriot-llc",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.cogentrix.com/news/cogentrix-embraces-sealed-deal",
+          "geo_notes": "Patriot combined-cycle asset in Montgomery, PA; Cogentrix describes Liberty and Patriot as 829 MW PJM plants in the Hamilton portfolio."
         },
         {
           "rank": 2,
@@ -48828,9 +48828,9 @@
       "state": "OH",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/hardin-solar-energy-ii-llc",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://hardinsolar2.invenergy.com/",
+      "notes": "150 MW Hardin Solar Energy II facility in Hardin County, OH; compact label keeps phase 2 distinct from Hardin Solar III.",
       "seed": false,
       "locations": [
         {
@@ -48843,9 +48843,9 @@
           "state": "OH",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/hardin-solar-energy-ii-llc",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://hardinsolar2.invenergy.com/",
+          "geo_notes": "150 MW Hardin Solar Energy II facility in Hardin County, OH; compact label keeps phase 2 distinct from Hardin Solar III."
         },
         {
           "rank": 2,
@@ -48894,9 +48894,9 @@
       "state": "OH",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/hardin-solar-energy-iii",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://hardinsolar3.invenergy.com/",
+      "notes": "250 MW Hardin Solar Energy III facility in Hardin County, OH; compact label keeps phase 3 distinct from Hardin Solar II.",
       "seed": false,
       "locations": [
         {
@@ -48909,9 +48909,9 @@
           "state": "OH",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/hardin-solar-energy-iii",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://hardinsolar3.invenergy.com/",
+          "geo_notes": "250 MW Hardin Solar Energy III facility in Hardin County, OH; compact label keeps phase 3 distinct from Hardin Solar II."
         },
         {
           "rank": 2,
@@ -49156,9 +49156,9 @@
       "state": "PA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "source": "official_website",
+      "source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/",
+      "notes": "Heritage Hunterstown GO record shares the Hunterstown plant site; folded with Hunterstown Combined Cycle and NAES Heritage Hunterstown into one map bubble.",
       "seed": false,
       "locations": [
         {
@@ -49171,9 +49171,9 @@
           "state": "PA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/",
+          "geo_notes": "Heritage Hunterstown GO record shares the Hunterstown plant site; folded with Hunterstown Combined Cycle and NAES Heritage Hunterstown into one map bubble."
         },
         {
           "rank": 2,
@@ -50533,9 +50533,9 @@
       "state": "PA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.interconnection.fyi/eia/project/55976",
-      "notes": "Hunterstown gas CC Adams County PA; EIA 55976.",
+      "source": "official_website",
+      "source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/",
+      "notes": "810 MW Hunterstown combined-cycle gas plant in Adams County, PA; primary GO/GOP row folded with Heritage and NAES related registrations.",
       "seed": false,
       "locations": [
         {
@@ -50548,9 +50548,9 @@
           "state": "PA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.interconnection.fyi/eia/project/55976",
-          "geo_notes": "Hunterstown gas CC Adams County PA; EIA 55976."
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/",
+          "geo_notes": "810 MW Hunterstown combined-cycle gas plant in Adams County, PA; primary GO/GOP row folded with Heritage and NAES related registrations."
         },
         {
           "rank": 2,
@@ -52372,7 +52372,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/2406",
-      "notes": "PSEG Linden CC; EIA 2406.",
+      "notes": "Linden Combined Cycle at the Wood Avenue generating station; folded with Linden Peaking because both records share EIA plant 2406.",
       "seed": false,
       "entity_name": "Linden Combined Cycle",
       "roles": [
@@ -52394,7 +52394,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/2406",
-          "geo_notes": "PSEG Linden CC; EIA 2406."
+          "geo_notes": "Linden Combined Cycle at the Wood Avenue generating station; folded with Linden Peaking because both records share EIA plant 2406."
         },
         {
           "rank": 2,
@@ -52438,7 +52438,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/2406",
-      "notes": "PSEG Linden peaking; EIA 2406.",
+      "notes": "Linden Peaking record at the Wood Avenue generating station; folded with Linden Combined Cycle because both records share EIA plant 2406.",
       "seed": false,
       "entity_name": "Linden Peaking Generating Station",
       "roles": [
@@ -52460,7 +52460,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/2406",
-          "geo_notes": "PSEG Linden peaking; EIA 2406."
+          "geo_notes": "Linden Peaking record at the Wood Avenue generating station; folded with Linden Combined Cycle because both records share EIA plant 2406."
         },
         {
           "rank": 2,
@@ -53553,8 +53553,8 @@
       "state": "IN",
       "confidence": "MEDIUM",
       "source": "eia_861",
-      "source_url": "https://www.interconnection.fyi/eia/project/55229",
-      "notes": "625 MW CC; EIA 55229.",
+      "source_url": "https://www.gridinfo.com/plant/montpelier-electric-generating-station/55229",
+      "notes": "Montpelier Electric Generating Station in Wells County, IN; four 59 MW gas-fired combustion turbines, not a 625 MW combined-cycle plant.",
       "seed": false,
       "entity_name": "Montpelier Generating Station, LLC",
       "roles": [
@@ -53575,8 +53575,8 @@
           "country": "US",
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
-          "geo_source_url": "https://www.interconnection.fyi/eia/project/55229",
-          "geo_notes": "625 MW CC; EIA 55229."
+          "geo_source_url": "https://www.gridinfo.com/plant/montpelier-electric-generating-station/55229",
+          "geo_notes": "Montpelier Electric Generating Station in Wells County, IN; four 59 MW gas-fired combustion turbines, not a 625 MW combined-cycle plant."
         },
         {
           "rank": 2,
@@ -53620,7 +53620,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/montpelier-solar",
-      "notes": "100 MW solar Williams County.",
+      "notes": "100 MW Montpelier Solar project in Williams County, OH; kept distinct from Montpelier Generating Station in Indiana.",
       "seed": false,
       "entity_name": "Montpelier Solar, LLC",
       "roles": [
@@ -53641,7 +53641,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/montpelier-solar",
-          "geo_notes": "100 MW solar Williams County."
+          "geo_notes": "100 MW Montpelier Solar project in Williams County, OH; kept distinct from Montpelier Generating Station in Indiana."
         },
         {
           "rank": 2,
@@ -54795,7 +54795,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Hunterstown.",
+      "notes": "NAES GOP record for the Hunterstown plant site; folded with Hunterstown Combined Cycle and Heritage Hunterstown into one map bubble.",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Hunterstown",
       "roles": [
@@ -54816,7 +54816,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Hunterstown."
+          "geo_notes": "NAES GOP record for the Hunterstown plant site; folded with Hunterstown Combined Cycle and Heritage Hunterstown into one map bubble."
         },
         {
           "rank": 2,
@@ -100359,9 +100359,9 @@
       "state": "TX",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/king-creek-wind-farm-1",
-      "notes": "184 MW King Creek Wind Farm 1 in Haskell County TX.",
+      "source": "official_website",
+      "source_url": "https://www.edf-re.com/project/king-creek-1/",
+      "notes": "184 MW King Creek 1 wind project in Texas; EDF page and compact label keep phase 1 distinct from King Creek 2.",
       "seed": false,
       "locations": [
         {
@@ -100374,9 +100374,9 @@
           "state": "TX",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/king-creek-wind-farm-1",
-          "geo_notes": "184 MW King Creek Wind Farm 1 in Haskell County TX."
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.edf-re.com/project/king-creek-1/",
+          "geo_notes": "184 MW King Creek 1 wind project in Texas; EDF page and compact label keep phase 1 distinct from King Creek 2."
         },
         {
           "rank": 2,
@@ -100425,9 +100425,9 @@
       "state": "TX",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/king-creek-wind-farm-2-llc",
-      "notes": "209 MW King Creek Wind Farm 2 in Throckmorton County TX.",
+      "source": "official_website",
+      "source_url": "https://www.edf-re.com/project/king-creek-2/",
+      "notes": "209 MW King Creek 2 wind project in Texas; EDF page and compact label keep phase 2 distinct from King Creek 1.",
       "seed": false,
       "locations": [
         {
@@ -100440,9 +100440,9 @@
           "state": "TX",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/king-creek-wind-farm-2-llc",
-          "geo_notes": "209 MW King Creek Wind Farm 2 in Throckmorton County TX."
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.edf-re.com/project/king-creek-2/",
+          "geo_notes": "209 MW King Creek 2 wind project in Texas; EDF page and compact label keep phase 2 distinct from King Creek 1."
         },
         {
           "rank": 2,
@@ -103175,9 +103175,9 @@
       "state": "CA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "parent_company_inference",
-      "source_url": "https://www.terra-gen.com/power/mojave/",
-      "notes": "Mojave GOP portfolio; operator likely outside TX—plant sites in ERCOT.",
+      "source": "official_website",
+      "source_url": "https://terra-gen.com/terragen_project/mojave-16-17-18/",
+      "notes": "88.3 MW Terra-Gen Mojave 16/17/18 wind project in Kern County, CA; keep CA coordinates despite this GOP row's Texas RE registry region.",
       "seed": false,
       "locations": [
         {
@@ -103190,9 +103190,9 @@
           "state": "CA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "parent_company_inference",
-          "geo_source_url": "https://www.terra-gen.com/power/mojave/",
-          "geo_notes": "Mojave GOP portfolio; operator likely outside TX—plant sites in ERCOT."
+          "geo_source": "official_website",
+          "geo_source_url": "https://terra-gen.com/terragen_project/mojave-16-17-18/",
+          "geo_notes": "88.3 MW Terra-Gen Mojave 16/17/18 wind project in Kern County, CA; keep CA coordinates despite this GOP row's Texas RE registry region."
         },
         {
           "rank": 2,
@@ -132524,7 +132524,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/55481",
-      "notes": "692 MW Mesquite Generating Station gas Maricopa County AZ; EIA plant 55481.",
+      "notes": "692 MW Mesquite Generating Station gas plant in Maricopa County, AZ; kept distinct from the nearby Mesquite Solar complex.",
       "seed": false,
       "locations": [
         {
@@ -132539,7 +132539,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/55481",
-          "geo_notes": "692 MW Mesquite Generating Station gas Maricopa County AZ; EIA plant 55481."
+          "geo_notes": "692 MW Mesquite Generating Station gas plant in Maricopa County, AZ; kept distinct from the nearby Mesquite Solar complex."
         },
         {
           "rank": 2,
@@ -132588,9 +132588,9 @@
       "state": "AZ",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.interconnection.fyi/eia/project/57707",
-      "notes": "Mesquite Solar complex phase 1 Maricopa County AZ; EIA plant 57707.",
+      "source": "official_website",
+      "source_url": "https://americas.rwe.com/our-energy/solar-energy/solar-projects-and-locations/mesquite-solar-complex/",
+      "notes": "Mesquite Solar 1 is part of RWE's Maricopa County Mesquite Solar Complex; compact label keeps it distinct from Mesquite Power gas generation.",
       "seed": false,
       "locations": [
         {
@@ -132603,9 +132603,9 @@
           "state": "AZ",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.interconnection.fyi/eia/project/57707",
-          "geo_notes": "Mesquite Solar complex phase 1 Maricopa County AZ; EIA plant 57707."
+          "geo_source": "official_website",
+          "geo_source_url": "https://americas.rwe.com/our-energy/solar-energy/solar-projects-and-locations/mesquite-solar-complex/",
+          "geo_notes": "Mesquite Solar 1 is part of RWE's Maricopa County Mesquite Solar Complex; compact label keeps it distinct from Mesquite Power gas generation."
         },
         {
           "rank": 2,
@@ -133250,9 +133250,9 @@
       "state": "CA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.interconnection.fyi/eia/project/52142",
-      "notes": "75 MW Terra-Gen wind Kern County; EIA plant 52142.",
+      "source": "official_website",
+      "source_url": "https://terra-gen.com/terragen_project/mojave-3-4-5/",
+      "notes": "67 MW Terra-Gen Mojave 3/4/5 wind project in Kern County, CA; prior solar wording was incorrect.",
       "seed": false,
       "locations": [
         {
@@ -133265,9 +133265,9 @@
           "state": "CA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.interconnection.fyi/eia/project/52142",
-          "geo_notes": "75 MW Terra-Gen wind Kern County; EIA plant 52142."
+          "geo_source": "official_website",
+          "geo_source_url": "https://terra-gen.com/terragen_project/mojave-3-4-5/",
+          "geo_notes": "67 MW Terra-Gen Mojave 3/4/5 wind project in Kern County, CA; prior solar wording was incorrect."
         },
         {
           "rank": 2,
@@ -133316,9 +133316,9 @@
       "state": "CA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.interconnection.fyi/eia/project/67828",
-      "notes": "25 MW Mordor ES1 battery Inyo County CA; EIA plant 67828.",
+      "source": "state_puc",
+      "source_url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M527/K749/527749985.PDF",
+      "notes": "25 MW Mordor 1 battery in Inyo County, CA; CPUC filing treats Mordor 1 and Mordor 2 as paired 45 MW storage contracts.",
       "seed": false,
       "locations": [
         {
@@ -133331,9 +133331,9 @@
           "state": "CA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.interconnection.fyi/eia/project/67828",
-          "geo_notes": "25 MW Mordor ES1 battery Inyo County CA; EIA plant 67828."
+          "geo_source": "state_puc",
+          "geo_source_url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M527/K749/527749985.PDF",
+          "geo_notes": "25 MW Mordor 1 battery in Inyo County, CA; CPUC filing treats Mordor 1 and Mordor 2 as paired 45 MW storage contracts."
         },
         {
           "rank": 2,
@@ -133382,9 +133382,9 @@
       "state": "CA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.interconnection.fyi/eia/project/67829",
-      "notes": "20 MW Mordor ES2 battery adjacent Inyo County CA; EIA plant 67829.",
+      "source": "state_puc",
+      "source_url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M527/K749/527749985.PDF",
+      "notes": "20 MW Mordor 2 battery adjacent to Mordor 1 in Inyo County, CA; folded into the Mordor Storage map bubble.",
       "seed": false,
       "locations": [
         {
@@ -133397,9 +133397,9 @@
           "state": "CA",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.interconnection.fyi/eia/project/67829",
-          "geo_notes": "20 MW Mordor ES2 battery adjacent Inyo County CA; EIA plant 67829."
+          "geo_source": "state_puc",
+          "geo_source_url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M527/K749/527749985.PDF",
+          "geo_notes": "20 MW Mordor 2 battery adjacent to Mordor 1 in Inyo County, CA; folded into the Mordor Storage map bubble."
         },
         {
           "rank": 2,
