@@ -81,7 +81,10 @@
       "shortest": "DTE",
       "short": "DTE Electric",
       "normal": "DTE Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dteenergy.com/"
     },
     {
       "ncr_id": "NCR-SEED-028",
@@ -219,7 +222,10 @@
       "shortest": "CONS",
       "short": "Consumers",
       "normal": "Consumers Energy Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "nerc_committee_material",
+      "shortest_source_url": "https://www.nerc.com/globalassets/who-we-are/standing-committees/rstc/rtos/rtos_agenda_feb_4-5_2025.pdf"
     },
     {
       "ncr_id": "NCR-SEED-008",
@@ -284,7 +290,10 @@
       "shortest": "NYPA",
       "short": "New York Power Authority",
       "normal": "New York Power Authority",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nypa.gov/"
     },
     {
       "ncr_id": "NCR-SEED-023",
@@ -346,7 +355,10 @@
       "shortest": "Deseret",
       "short": "Deseret G&T",
       "normal": "Deseret Generation & Transmission",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.deseretpower.com/"
     },
     {
       "ncr_id": "NCR-SEED-039",
@@ -362,7 +374,10 @@
       "shortest": "Oncor",
       "short": "Oncor Electric Delivery",
       "normal": "Oncor Electric Delivery",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.oncor.com/"
     },
     {
       "ncr_id": "NCR-SEED-051",
@@ -370,7 +385,10 @@
       "shortest": "CPS",
       "short": "CPS Energy",
       "normal": "CPS Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cpsenergy.com/"
     },
     {
       "ncr_id": "NCR-SEED-033",
@@ -1121,10 +1139,13 @@
     {
       "ncr_id": "NCR10102",
       "entity_name": "Tri-State Generation And Transmission Association Inc. - Transmission",
-      "shortest": "Tri-State",
+      "shortest": "TriState",
       "short": "Tri-State Transmission",
       "normal": "Tri-State Generation and Transmission",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://tristate.coop/"
     },
     {
       "ncr_id": "NCR07228",
@@ -1164,7 +1185,10 @@
       "shortest": "DME",
       "short": "Denton Municipal Electric",
       "normal": "Denton Municipal Electric",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cityofdenton.com/331/Denton-Municipal-Electric-DME"
     },
     {
       "ncr_id": "NCR04124",
@@ -1260,7 +1284,10 @@
       "shortest": "Brazos",
       "short": "Brazos Electric",
       "normal": "Brazos Electric Power Cooperative",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.brazoselectric.com/"
     },
     {
       "ncr_id": "NCR04018",
@@ -1300,7 +1327,10 @@
       "shortest": "Austin",
       "short": "Austin Energy",
       "normal": "Austin Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://austinenergy.com/"
     },
     {
       "ncr_id": "NCR04032",
@@ -1316,7 +1346,10 @@
       "shortest": "GP&L",
       "short": "Garland Power & Light",
       "normal": "Garland Power & Light",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.gpltexas.org/"
     },
     {
       "ncr_id": "NCR12106",
@@ -1372,7 +1405,10 @@
       "shortest": "PEC",
       "short": "Pedernales Electric Cooperative",
       "normal": "Pedernales Electric Cooperative",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://mypec.com/"
     },
     {
       "ncr_id": "NCR04113",
@@ -1380,7 +1416,10 @@
       "shortest": "Rayburn",
       "short": "Rayburn Country Electric Cooperative",
       "normal": "Rayburn Country Electric Cooperative",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.rayburnelectric.com/"
     },
     {
       "ncr_id": "NCR04143",
@@ -1532,7 +1571,10 @@
       "shortest": "WAPA RM",
       "short": "WAPA Rocky Mountain",
       "normal": "Western Area Power Administration",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.wapa.gov/"
     },
     {
       "ncr_id": "NCR11074",
@@ -1580,7 +1622,10 @@
       "shortest": "USACE SV",
       "short": "USACE Savannah District",
       "normal": "U.S. Army Corps of Engineers - Savannah District",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sas.usace.army.mil/"
     },
     {
       "ncr_id": "NCR03049",
@@ -1684,7 +1729,10 @@
       "shortest": "ETEC",
       "short": "East Texas Electric Cooperative",
       "normal": "East Texas Electric Cooperative",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.etec.coop/"
     },
     {
       "ncr_id": "NCR00004",
@@ -1692,7 +1740,10 @@
       "shortest": "Beaches",
       "short": "Beaches Energy Services",
       "normal": "Beaches Energy Services",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.beachesenergy.com/"
     },
     {
       "ncr_id": "NCR07029",
@@ -1849,10 +1900,13 @@
     {
       "ncr_id": "NCR01254",
       "entity_name": "Henderson Municipal Power & Light",
-      "shortest": "HMPL",
+      "shortest": "HMP&L",
       "short": "Henderson Municipal Power & Light",
       "normal": "Henderson Municipal Power & Light",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.hmpl.com/"
     },
     {
       "ncr_id": "NCR05206",
@@ -2028,7 +2082,10 @@
       "shortest": "AMP",
       "short": "American Municipal Power",
       "normal": "American Municipal Power",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.amppartners.org/"
     },
     {
       "ncr_id": "NCR00997",
@@ -16300,7 +16357,10 @@
       "shortest": "DTE",
       "short": "DTE Electric",
       "normal": "DTE Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dteenergy.com/"
     },
     {
       "ncr_id": "NCR00740",
@@ -16308,7 +16368,10 @@
       "shortest": "CONS",
       "short": "Consumers",
       "normal": "Consumers Energy Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "nerc_committee_material",
+      "shortest_source_url": "https://www.nerc.com/globalassets/who-we-are/standing-committees/rstc/rtos/rtos_agenda_feb_4-5_2025.pdf"
     },
     {
       "ncr_id": "NCR07163",
@@ -16324,7 +16387,10 @@
       "shortest": "NYPA",
       "short": "New York Power Authority",
       "normal": "New York Power Authority",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nypa.gov/"
     },
     {
       "ncr_id": "NCR00102",
@@ -16376,7 +16442,10 @@
       "shortest": "Oncor",
       "short": "Oncor Electric Delivery",
       "normal": "Oncor Electric Delivery",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.oncor.com/"
     },
     {
       "ncr_id": "NCR04037",
@@ -16384,7 +16453,10 @@
       "shortest": "CPS",
       "short": "CPS Energy",
       "normal": "CPS Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cpsenergy.com/"
     },
     {
       "ncr_id": "NCR04092",
@@ -16430,15 +16502,21 @@
       "shortest": "Deseret",
       "short": "Deseret G&T",
       "normal": "Deseret Generation & Transmission",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.deseretpower.com/"
     },
     {
       "ncr_id": "NCR10030",
       "entity_name": "Tri-State Generation and Transmission Association, Inc. - Reliability",
-      "shortest": "Tri-State",
+      "shortest": "TriState",
       "short": "Tri-State G&T",
       "normal": "Tri-State Generation and Transmission",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://tristate.coop/"
     },
     {
       "ncr_id": "NCR05372",
@@ -16545,7 +16623,10 @@
       "shortest": "SnoPUD",
       "short": "Snohomish County PUD",
       "normal": "Snohomish County PUD No. 1",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.snopud.com/"
     },
     {
       "ncr_id": "NCR05392",
@@ -17282,7 +17363,10 @@
       "shortest": "GP&L",
       "short": "City of Garland",
       "normal": "City of Garland",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.gpltexas.org/"
     },
     {
       "ncr_id": "NCR11694",
@@ -17589,7 +17673,10 @@
       "shortest": "GP&L",
       "short": "City of Garland",
       "normal": "City of Garland",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.gpltexas.org/"
     },
     {
       "ncr_id": "NCR11630",
@@ -18468,10 +18555,13 @@
     {
       "ncr_id": "NCR-SEED-056",
       "entity_name": "Tri-State Generation and Transmission Association, Inc.",
-      "shortest": "Tri-State",
+      "shortest": "TriState",
       "short": "Tri-State G&T",
       "normal": "Tri-State Generation and Transmission Association, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://tristate.coop/"
     },
     {
       "ncr_id": "NCR-SEED-057",

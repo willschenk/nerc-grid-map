@@ -2427,7 +2427,7 @@
       "notes": "Largest electric utility in Michigan; its own BA in MISO.",
       "seed": true,
       "acronym": "DTE",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "locations": [
         {
           "rank": 1,
@@ -2497,10 +2497,10 @@
       "source": "eia_861",
       "source_url": "https://www.consumersenergy.com/",
       "org_type": "IOU",
-      "notes": "CMS Energy utility serving most of Michigan's lower peninsula.",
+      "notes": "Retired seed for Consumers Energy; CONS is the NERC committee/area code used for the registered entity.",
       "seed": true,
-      "acronym": "CE",
-      "acronym_source": "common_market_name",
+      "acronym": "CONS",
+      "acronym_source": "nerc_committee_material",
       "locations": [
         {
           "rank": 1,
@@ -2514,7 +2514,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.consumersenergy.com/",
-          "geo_notes": "CMS Energy utility serving most of Michigan's lower peninsula."
+          "geo_notes": "Retired seed for Consumers Energy; CONS is the NERC committee/area code used for the registered entity."
         },
         {
           "rank": 2,
@@ -3639,7 +3639,7 @@
       "notes": "Largest municipally owned utility in the US providing both gas and electric.",
       "seed": true,
       "acronym": "CPS",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "locations": [
         {
           "rank": 1,
@@ -3992,10 +3992,10 @@
       "source": "google_maps",
       "source_url": "https://www.tristate.coop/",
       "org_type": "cooperative",
-      "notes": "G&T cooperative serving member co-ops across four Western states.",
+      "notes": "Retired seed for Tri-State Generation and Transmission; canonical registry rows now cover the Westminster HQ.",
       "seed": true,
       "acronym": "Tri-State",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "locations": [
         {
           "rank": 1,
@@ -4009,7 +4009,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "google_maps",
           "geo_source_url": "https://www.tristate.coop/",
-          "geo_notes": "G&T cooperative serving member co-ops across four Western states."
+          "geo_notes": "Retired seed for Tri-State Generation and Transmission; canonical registry rows now cover the Westminster HQ."
         },
         {
           "rank": 2,
@@ -21542,7 +21542,7 @@
       "source_url": "https://www.tristate.coop/contact",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "G&T cooperative transmission registration in MRO. Corporate headquarters in Westminster, Colorado.",
+      "notes": "Tri-State transmission registration in MRO; map combines it with the co-located reliability registration at Westminster HQ.",
       "seed": false,
       "locations": [
         {
@@ -21557,7 +21557,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.tristate.coop/contact",
-          "geo_notes": "G&T cooperative transmission registration in MRO. Corporate headquarters in Westminster, Colorado."
+          "geo_notes": "Tri-State transmission registration in MRO; map combines it with the co-located reliability registration at Westminster HQ."
         },
         {
           "rank": 2,
@@ -44857,8 +44857,8 @@
         "GOP",
         "RP"
       ],
-      "acronym": "Consumers",
-      "acronym_source": "common_market_name",
+      "acronym": "CONS",
+      "acronym_source": "nerc_committee_material",
       "lat": 42.2459,
       "lng": -84.4013,
       "headquarters_address": "1 Energy Plaza Dr, Jackson, MI 49201",
@@ -44868,7 +44868,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.consumersenergy.com",
-      "notes": "CMS Energy IOU HQ. Retires NCR-SEED-035.",
+      "notes": "CONS is the NERC committee/area code for Consumers Energy; public brand remains Consumers Energy. Jackson, MI HQ.",
       "seed": false,
       "locations": [
         {
@@ -44883,7 +44883,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.consumersenergy.com",
-          "geo_notes": "CMS Energy IOU HQ. Retires NCR-SEED-035."
+          "geo_notes": "CONS is the NERC committee/area code for Consumers Energy; public brand remains Consumers Energy. Jackson, MI HQ."
         },
         {
           "rank": 2,
@@ -46046,7 +46046,7 @@
         "RP"
       ],
       "acronym": "DTE",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "lat": 42.334,
       "lng": -83.051,
       "headquarters_address": "1 Energy Plaza, Detroit, MI 48226",
@@ -73302,7 +73302,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.hmpl.com/contact-us.html",
-      "notes": "City of Henderson KY municipal electric utility.",
+      "notes": "Henderson Municipal Power & Light uses HMP&L publicly; city-owned utility in Henderson, KY.",
       "seed": false,
       "locations": [
         {
@@ -73317,7 +73317,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.hmpl.com/contact-us.html",
-          "geo_notes": "City of Henderson KY municipal electric utility."
+          "geo_notes": "Henderson Municipal Power & Light uses HMP&L publicly; city-owned utility in Henderson, KY."
         },
         {
           "rank": 2,
@@ -93990,7 +93990,7 @@
         "TOP",
         "TP"
       ],
-      "acronym": "CPS Energy",
+      "acronym": "CPS",
       "acronym_source": "official_website",
       "lat": 29.4319,
       "lng": -98.4869,
@@ -94519,7 +94519,7 @@
         "TP"
       ],
       "acronym": "DME",
-      "acronym_source": "name_initialism",
+      "acronym_source": "official_website",
       "lat": 33.2149,
       "lng": -97.1331,
       "headquarters_address": "901 Texas Street, Suite A, Denton, TX 76209",
@@ -150091,7 +150091,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.tristate.coop/contact-us",
-      "notes": "G&T cooperative WECC reliability registration; corporate HQ Westminster CO.",
+      "notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -150108,7 +150108,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.tristate.coop/contact-us",
-          "geo_notes": "G&T cooperative WECC reliability registration; corporate HQ Westminster CO."
+          "geo_notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location."
         },
         {
           "rank": 2,

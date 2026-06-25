@@ -3,26 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-84. NCR04037 — CPS Energy
-85. NCR04049 — Denton Municipal Electric
-86. NCR05126 — Deseret Generation & Transmission Co-operative
-87. NCR05335 — Public Utility District No. 1 of Snohomish County
-88. NCR10102 — Tri-State Generation And Transmission Association Inc. - Transmission
-89. NCR00740 — Consumers Energy Company
-90. NCR00753 — DTE Electric Company
-91. NCR04015 — Brazos Electric Power Co Op, Inc.
-92. NCR04029 — City of Austin dba Austin Energy
-93. NCR04033 — City of Garland
-94. NCR04109 — Oncor Electric Delivery Company LLC
-95. NCR04111 — Pedernales Elec Co Op Inc.
-96. NCR04113 — Rayburn Country Electric Cooperative, Inc.
-97. NCR01361 — USACE - Savannah District
-98. NCR05464 — Western Area Power Administration - Rocky Mountain Region
-99. NCR07161 — New York Power Authority
-100. NCR01227 — East Texas Electric Cooperative Inc.
-101. NCR00004 — Beaches Energy Services of Jacksonville Beach
-102. NCR01254 — Henderson Municipal Power & Light
-103. NCR00683 — American Municipal Power Inc.
 104. NCR04088 — Kiowa Power Partners, LLC
 105. NCR01356 — USACE - Charleston District
 106. NCR07163 — Niagara Mohawk Power Corporation
@@ -228,7 +208,6 @@ Delete each line after its name is updated and validated.
 306. SUP-murray-electric-system — Murray Electric System
 307. SUP-pedernales-electric-cooperative — Pedernales Electric Cooperative
 308. SUP-snohomish-county-public-utility-district — Snohomish County Public Utility District
-309. NCR10030 — Tri-State Generation and Transmission Association, Inc. - Reliability
 311. NCR01021 — NorthWestern Energy Public Service
 312. NCR04006 — American Electric Power Service Corp as agent for AEP Texas Inc. and Public Service Company of Oklahoma
 313. NCR04091 — LCRA Transmission Services Corporation
@@ -277,8 +256,6 @@ Delete each line after its name is updated and validated.
 357. NCR13060 — AWAM - Prosperity Wind
 358. NCR13516 — Bluegrass Solar, LLC (2)
 359. NCR12431 — BPL Sol Solar, LLC
-360. NCR04034 — City of Garland
-361. NCR04035 — City of Garland
 363. NCR11878 — Dominion Energy Generation Marketing, Inc.
 364. NCR11655 — EthosEnergy - San Jacinto County Peaking Facility
 365. NCR13365 — Hecate Energy Albany 2 LLC
@@ -334,7 +311,6 @@ Delete each line after its name is updated and validated.
 415. NCR-SEED-025 — Tennessee Valley Authority
 416. NCR-SEED-054 — Bonneville Power Administration
 417. NCR-SEED-015 — PacifiCorp
-418. NCR-SEED-034 — DTE Electric Company
 420. NCR-SEED-021 — Duke Energy Progress, LLC
 422. NCR-SEED-018 — Public Service Company of New Mexico
 423. NCR-SEED-016 — Puget Sound Energy, Inc.
@@ -342,22 +318,16 @@ Delete each line after its name is updated and validated.
 427. NCR-SEED-029 — Tampa Electric Company
 429. NCR-SEED-026 — Associated Electric Cooperative, Inc.
 431. NCR-SEED-011 — Arizona Public Service Company
-432. NCR-SEED-035 — Consumers Energy Company
 433. NCR-SEED-042 — Northern States Power Company - Minnesota
 435. NCR-SEED-017 — Portland General Electric Company
 436. NCR-SEED-012 — Public Service Company of Colorado
 438. NCR-SEED-031 — Virginia Electric and Power Company
 439. NCR-SEED-036 — American Electric Power Service Corporation
-441. NCR-SEED-056 — Tri-State Generation and Transmission Association, Inc.
 442. NCR-SEED-052 — Lower Colorado River Authority
-443. NCR-SEED-041 — New York Power Authority
 444. NCR-SEED-023 — Alabama Power Company
 445. NCR-SEED-019 — El Paso Electric Company
 446. NCR-SEED-022 — Georgia Power Company
 449. NCR-SEED-043 — Basin Electric Power Cooperative
-450. NCR-SEED-060 — Deseret Generation & Transmission Co-operative
-451. NCR-SEED-051 — CPS Energy
-452. NCR-SEED-050 — Oncor Electric Delivery Company LLC
 453. NCR-SEED-033 — Commonwealth Edison Company
 454. NCR-SEED-040 — Niagara Mohawk Power Corporation
 455. NCR-SEED-032 — Public Service Electric and Gas Company
