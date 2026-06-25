@@ -66,7 +66,7 @@
         "NCR11954"
       ],
       "label": "Prairie Breeze II/III",
-      "summary": "Prairie Breeze Wind Energy II and III share the same Elgin, NE plant office address.",
+      "summary": "Prairie Breeze Wind Energy II and III share the same Elgin, NE plant office address; phase I remains a separate nearby record.",
       "display_name": "Prairie Breeze II/III"
     },
     {
@@ -249,7 +249,7 @@
         "NCR11562"
       ],
       "label": "Linden cogeneration",
-      "summary": "NAES Corporation Linden registrations share the Linden, NJ cogeneration plant address.",
+      "summary": "Cogen Technologies Linden Venture and East Coast Power Linden share the Linden, NJ cogeneration plant address.",
       "display_name": "Linden Cogen"
     },
     {
@@ -561,7 +561,7 @@
         "NCR11383"
       ],
       "label": "RWE Clean Energy Chicago HQ",
-      "summary": "RWE Clean DCE Operations (RF) and RWE Clean Energy QSE (Texas RE) share the Chicago headquarters.",
+      "summary": "RWE Clean DCE Operations (RF) and RWE Clean Energy QSE (Texas RE) share the Chicago headquarters as portfolio/QSE registrations.",
       "display_name": "RWE Clean Energy"
     },
     {
@@ -1143,7 +1143,7 @@
         "NCR12411"
       ],
       "label": "Sun Valley Energy",
-      "summary": "Sun Valley Solar and Sun Valley Storage share the Hill County, TX hybrid site (~1.4 km apart).",
+      "summary": "Sun Valley Solar and Sun Valley Storage are co-located components of ENGIE's Hill County, TX hybrid project.",
       "display_name": "Sun Valley Energy"
     },
     {

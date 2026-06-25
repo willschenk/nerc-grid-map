@@ -17933,7 +17933,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/60262-gen1",
       "org_type": "merchant",
       "parent_org": "Invenergy",
-      "notes": "73 MW phase II of Prairie Breeze Wind Energy Center in Antelope and Boone Counties. COD October 2015.",
+      "notes": "73 MW Prairie Breeze phase II wind project in Antelope and Boone Counties; shares the Elgin plant office with phase III. COD October 2015.",
       "seed": false,
       "locations": [
         {
@@ -17948,7 +17948,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/60262-gen1",
-          "geo_notes": "73 MW phase II of Prairie Breeze Wind Energy Center in Antelope and Boone Counties. COD October 2015."
+          "geo_notes": "73 MW Prairie Breeze phase II wind project in Antelope and Boone Counties; shares the Elgin plant office with phase III. COD October 2015."
         },
         {
           "rank": 2,
@@ -18001,7 +18001,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/60314-gen1",
       "org_type": "merchant",
       "parent_org": "Invenergy",
-      "notes": "36 MW phase III at Prairie Breeze Wind Energy Center in Antelope County. COD April 2016.",
+      "notes": "36 MW Prairie Breeze phase III wind project in Antelope County; shares the Elgin plant office with phase II. COD April 2016.",
       "seed": false,
       "locations": [
         {
@@ -18016,7 +18016,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/60314-gen1",
-          "geo_notes": "36 MW phase III at Prairie Breeze Wind Energy Center in Antelope County. COD April 2016."
+          "geo_notes": "36 MW Prairie Breeze phase III wind project in Antelope County; shares the Elgin plant office with phase II. COD April 2016."
         },
         {
           "rank": 2,
@@ -18069,7 +18069,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/58322-1",
       "org_type": "merchant",
       "parent_org": "Invenergy",
-      "notes": "200 MW phase I of Prairie Breeze Wind Energy Center; Omaha Public Power District PPA. COD May 2014.",
+      "notes": "200 MW Prairie Breeze phase I wind project near Elgin; Omaha Public Power District PPA. COD May 2014.",
       "seed": false,
       "locations": [
         {
@@ -18084,7 +18084,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/58322-1",
-          "geo_notes": "200 MW phase I of Prairie Breeze Wind Energy Center; Omaha Public Power District PPA. COD May 2014."
+          "geo_notes": "200 MW Prairie Breeze phase I wind project near Elgin; Omaha Public Power District PPA. COD May 2014."
         },
         {
           "rank": 2,
@@ -19358,7 +19358,7 @@
       "source_url": "https://americas.rwe.com/rwe-americas/",
       "org_type": "merchant",
       "parent_org": "RWE AG",
-      "notes": "U.S. renewable generation and operations affiliate of RWE.",
+      "notes": "RWE Americas renewable generation and operations affiliate at the same Austin office as RWE Clean Energy Asset Holdings.",
       "seed": false,
       "locations": [
         {
@@ -19373,7 +19373,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://americas.rwe.com/rwe-americas/",
-          "geo_notes": "U.S. renewable generation and operations affiliate of RWE."
+          "geo_notes": "RWE Americas renewable generation and operations affiliate at the same Austin office as RWE Clean Energy Asset Holdings."
         },
         {
           "rank": 2,
@@ -31660,7 +31660,7 @@
       "source_url": "https://www.gem.wiki/Linden_cogeneration_plant",
       "org_type": "merchant",
       "parent_org": "Cogen Technologies Linden Venture LP",
-      "notes": "Linden cogeneration plant site coordinates for this NAES participant.",
+      "notes": "Cogen Technologies Linden Venture registration at the Linden cogeneration site; paired with East Coast Power Linden for the map bubble.",
       "seed": false,
       "locations": [
         {
@@ -31675,7 +31675,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gem.wiki/Linden_cogeneration_plant",
-          "geo_notes": "Linden cogeneration plant site coordinates for this NAES participant."
+          "geo_notes": "Cogen Technologies Linden Venture registration at the Linden cogeneration site; paired with East Coast Power Linden for the map bubble."
         },
         {
           "rank": 2,
@@ -34873,7 +34873,7 @@
       "source_url": "https://www.epa.gov/system/files/documents/2026-02/draftme0023710permit-2026.pdf",
       "org_type": "merchant",
       "parent_org": "ReGenerate Energy",
-      "notes": "Biomass facility permit address and site pin at Livermore Falls.",
+      "notes": "Legacy ReEnergy registry name for the ReGenerate Livermore Falls biomass facility at Diamond Road.",
       "seed": false,
       "locations": [
         {
@@ -34888,7 +34888,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "state_puc",
           "geo_source_url": "https://www.epa.gov/system/files/documents/2026-02/draftme0023710permit-2026.pdf",
-          "geo_notes": "Biomass facility permit address and site pin at Livermore Falls."
+          "geo_notes": "Legacy ReEnergy registry name for the ReGenerate Livermore Falls biomass facility at Diamond Road."
         },
         {
           "rank": 2,
@@ -34941,7 +34941,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/50650-uni1",
       "org_type": "merchant",
       "parent_org": "ReGenerate Energy",
-      "notes": "Biomass facility pin for ReEnergy Stratton site.",
+      "notes": "Legacy ReEnergy registry name for the ReGenerate Stratton biomass facility at Fox Farm Road.",
       "seed": false,
       "locations": [
         {
@@ -34956,7 +34956,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/50650-uni1",
-          "geo_notes": "Biomass facility pin for ReEnergy Stratton site."
+          "geo_notes": "Legacy ReEnergy registry name for the ReGenerate Stratton biomass facility at Fox Farm Road."
         },
         {
           "rank": 2,
@@ -35688,7 +35688,7 @@
       "source_url": "https://www.cscos.com/wp-content/uploads/2024/05/Batavia_NYSDEC_PPP-May-2024.pdf",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "Plant pin for Batavia power plant operated by Seneca Power Partners.",
+      "notes": "Seneca Power Partners operates the Batavia plant at 163 Cedar Street; distinct from Seneca Generation pumped storage.",
       "seed": false,
       "locations": [
         {
@@ -35703,7 +35703,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "state_puc",
           "geo_source_url": "https://www.cscos.com/wp-content/uploads/2024/05/Batavia_NYSDEC_PPP-May-2024.pdf",
-          "geo_notes": "Plant pin for Batavia power plant operated by Seneca Power Partners."
+          "geo_notes": "Seneca Power Partners operates the Batavia plant at 163 Cedar Street; distinct from Seneca Generation pumped storage."
         },
         {
           "rank": 2,
@@ -54077,7 +54077,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "GOP at Linden cogeneration.",
+      "notes": "East Coast Power Linden registration at the Linden cogeneration site; combined with Cogen Technologies Linden Venture for display.",
       "seed": false,
       "entity_name": "NAES Corporation - East Coast Power Linden Holdings",
       "roles": [
@@ -54099,7 +54099,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "GOP at Linden cogeneration."
+          "geo_notes": "East Coast Power Linden registration at the Linden cogeneration site; combined with Cogen Technologies Linden Venture for display."
         },
         {
           "rank": 2,
@@ -58157,8 +58157,8 @@
       "country": "US",
       "confidence": "MEDIUM",
       "source": "official_website",
-      "source_url": "https://americas.rwe.com/",
-      "notes": "RWE Clean Energy distributed clean energy operations HQ; portfolio entity without single plant.",
+      "source_url": "https://americas.rwe.com/energy-services/retail-energy-services-and-distributed-clean-energy/",
+      "notes": "RWE distributed clean energy operations entity at the Chicago office; portfolio registration, not a single plant.",
       "seed": false,
       "locations": [
         {
@@ -58172,8 +58172,8 @@
           "country": "US",
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
-          "geo_source_url": "https://americas.rwe.com/",
-          "geo_notes": "RWE Clean Energy distributed clean energy operations HQ; portfolio entity without single plant."
+          "geo_source_url": "https://americas.rwe.com/energy-services/retail-energy-services-and-distributed-clean-energy/",
+          "geo_notes": "RWE distributed clean energy operations entity at the Chicago office; portfolio registration, not a single plant."
         },
         {
           "rank": 2,
@@ -58421,7 +58421,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/seneca-generation-llc",
-      "notes": "Seneca pumped storage at Kinzua Dam Warren PA.",
+      "notes": "Seneca pumped-storage generation at Kinzua Dam near Warren; FERC Project 2280.",
       "seed": false,
       "locations": [
         {
@@ -58436,7 +58436,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/seneca-generation-llc",
-          "geo_notes": "Seneca pumped storage at Kinzua Dam Warren PA."
+          "geo_notes": "Seneca pumped-storage generation at Kinzua Dam near Warren; FERC Project 2280."
         },
         {
           "rank": 2,
@@ -103898,8 +103898,8 @@
       "country": "US",
       "confidence": "MEDIUM",
       "source": "eia_861",
-      "source_url": "https://www.naes.com/",
-      "notes": "NAES O&M at Rayburn Energy combined-cycle plant Sherman TX.",
+      "source_url": "https://www.rayburnelectric.com/news-releases/rayburn-energy-station-acquisition/",
+      "notes": "NAES O&M record for the 758 MW Rayburn Energy Station gas plant in Sherman; distinct from Rayburn Country Electric Cooperative.",
       "seed": false,
       "locations": [
         {
@@ -103913,8 +103913,8 @@
           "country": "US",
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
-          "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES O&M at Rayburn Energy combined-cycle plant Sherman TX."
+          "geo_source_url": "https://www.rayburnelectric.com/news-releases/rayburn-energy-station-acquisition/",
+          "geo_notes": "NAES O&M record for the 758 MW Rayburn Energy Station gas plant in Sherman; distinct from Rayburn Country Electric Cooperative."
         },
         {
           "rank": 2,
@@ -104228,7 +104228,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/nrg-cedar-bayou-development",
-      "notes": "NRG Cedar Bayou 4 combined-cycle units Chambers County TX.",
+      "notes": "NRG Cedar Bayou Unit 4 combined-cycle generation at the Baytown/Chambers County plant; separate from the broader NRG Texas Power portfolio.",
       "seed": false,
       "locations": [
         {
@@ -104243,7 +104243,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/nrg-cedar-bayou-development",
-          "geo_notes": "NRG Cedar Bayou 4 combined-cycle units Chambers County TX."
+          "geo_notes": "NRG Cedar Bayou Unit 4 combined-cycle generation at the Baytown/Chambers County plant; separate from the broader NRG Texas Power portfolio."
         },
         {
           "rank": 2,
@@ -104359,7 +104359,7 @@
       "confidence": "MEDIUM",
       "source": "sec_filing",
       "source_url": "https://www.nrg.com/",
-      "notes": "NRG Texas Power portfolio operator HQ Houston; plants statewide including Cedar Bayou.",
+      "notes": "NRG Texas Power portfolio operator at the Houston HQ; Cedar Bayou is also tracked separately as a plant-specific record.",
       "seed": false,
       "locations": [
         {
@@ -104374,7 +104374,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": "NRG Texas Power portfolio operator HQ Houston; plants statewide including Cedar Bayou."
+          "geo_notes": "NRG Texas Power portfolio operator at the Houston HQ; Cedar Bayou is also tracked separately as a plant-specific record."
         },
         {
           "rank": 2,
@@ -107440,8 +107440,8 @@
       "country": "US",
       "confidence": "MEDIUM",
       "source": "official_website",
-      "source_url": "https://americas.rwe.com/",
-      "notes": "RWE Clean Energy QSE GOP; US office Chicago IL (outside TRE).",
+      "source_url": "https://americas.rwe.com/energy-services/retail-energy-services-and-distributed-clean-energy/",
+      "notes": "RWE Clean Energy QSE GOP record at the Chicago office; combined with DCE Operations for display.",
       "seed": false,
       "locations": [
         {
@@ -107455,8 +107455,8 @@
           "country": "US",
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
-          "geo_source_url": "https://americas.rwe.com/",
-          "geo_notes": "RWE Clean Energy QSE GOP; US office Chicago IL (outside TRE)."
+          "geo_source_url": "https://americas.rwe.com/energy-services/retail-energy-services-and-distributed-clean-energy/",
+          "geo_notes": "RWE Clean Energy QSE GOP record at the Chicago office; combined with DCE Operations for display."
         },
         {
           "rank": 2,
@@ -107573,7 +107573,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/samson-solar-energy-iii-llc",
-      "notes": "250 MW Samson Solar Energy III Lamar County TX.",
+      "notes": "250 MW Samson Solar phase III project in Lamar County; part of the multi-phase Samson Solar Energy Center.",
       "seed": false,
       "locations": [
         {
@@ -107588,7 +107588,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/samson-solar-energy-iii-llc",
-          "geo_notes": "250 MW Samson Solar Energy III Lamar County TX."
+          "geo_notes": "250 MW Samson Solar phase III project in Lamar County; part of the multi-phase Samson Solar Energy Center."
         },
         {
           "rank": 2,
@@ -107639,7 +107639,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/samson-solar-energy",
-      "notes": "250 MW Samson Solar Franklin County TX.",
+      "notes": "250 MW Samson Solar phase I project in Franklin County; part of the multi-phase Samson Solar Energy Center.",
       "seed": false,
       "locations": [
         {
@@ -107654,7 +107654,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/samson-solar-energy",
-          "geo_notes": "250 MW Samson Solar Franklin County TX."
+          "geo_notes": "250 MW Samson Solar phase I project in Franklin County; part of the multi-phase Samson Solar Energy Center."
         },
         {
           "rank": 2,
@@ -107968,7 +107968,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "302 MW Invenergy wind farm in Irion County TX.",
+      "notes": "302 MW Invenergy Santa Rita East wind farm in Irion County; separate from BHE's Santa Rita Wind in Reagan County.",
       "seed": false,
       "locations": [
         {
@@ -107983,7 +107983,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "302 MW Invenergy wind farm in Irion County TX."
+          "geo_notes": "302 MW Invenergy Santa Rita East wind farm in Irion County; separate from BHE's Santa Rita Wind in Reagan County."
         },
         {
           "rank": 2,
@@ -108034,7 +108034,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/santa-rita-wind-energy",
-      "notes": "300 MW BHE Renewables wind farm in Reagan County TX.",
+      "notes": "300 MW BHE Renewables Santa Rita wind farm in Reagan County; separate from Invenergy's Santa Rita East project.",
       "seed": false,
       "locations": [
         {
@@ -108049,7 +108049,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/santa-rita-wind-energy",
-          "geo_notes": "300 MW BHE Renewables wind farm in Reagan County TX."
+          "geo_notes": "300 MW BHE Renewables Santa Rita wind farm in Reagan County; separate from Invenergy's Santa Rita East project."
         },
         {
           "rank": 2,
@@ -108100,7 +108100,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/scurry-county-wind-ii",
-      "notes": "120 MW Camp Springs phase 2 wind in Scurry County TX.",
+      "notes": "Camp Springs phase 2 / Scurry County Wind II, a 120 MW wind project in Scurry County.",
       "seed": false,
       "locations": [
         {
@@ -108115,7 +108115,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/scurry-county-wind-ii",
-          "geo_notes": "120 MW Camp Springs phase 2 wind in Scurry County TX."
+          "geo_notes": "Camp Springs phase 2 / Scurry County Wind II, a 120 MW wind project in Scurry County."
         },
         {
           "rank": 2,
@@ -108166,7 +108166,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/scurry-county-wind-lp",
-      "notes": "131 MW Camp Springs phase 1 wind in Scurry County TX.",
+      "notes": "Camp Springs phase 1 / Scurry County Wind, a 131 MW wind project in Scurry County.",
       "seed": false,
       "locations": [
         {
@@ -108181,7 +108181,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/scurry-county-wind-lp",
-          "geo_notes": "131 MW Camp Springs phase 1 wind in Scurry County TX."
+          "geo_notes": "Camp Springs phase 1 / Scurry County Wind, a 131 MW wind project in Scurry County."
         },
         {
           "rank": 2,
@@ -109806,8 +109806,8 @@
       "country": "US",
       "confidence": "MEDIUM",
       "source": "eia_861",
-      "source_url": "https://www.boralex.com/",
-      "notes": "194 MW Boralex wind in Oldham County TX.",
+      "source_url": "https://us.boralex.com/en/projects-and-sites/wind-spinning-spur-3",
+      "notes": "Spinning Spur 3, a 194 MW Boralex wind project in Oldham County; separate from nearby Spinning Spur 2.",
       "seed": false,
       "locations": [
         {
@@ -109821,8 +109821,8 @@
           "country": "US",
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
-          "geo_source_url": "https://www.boralex.com/",
-          "geo_notes": "194 MW Boralex wind in Oldham County TX."
+          "geo_source_url": "https://us.boralex.com/en/projects-and-sites/wind-spinning-spur-3",
+          "geo_notes": "Spinning Spur 3, a 194 MW Boralex wind project in Oldham County; separate from nearby Spinning Spur 2."
         },
         {
           "rank": 2,
@@ -109873,7 +109873,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/spinning-spur-wind-two",
-      "notes": "161 MW EDF wind in Oldham County TX.",
+      "notes": "Spinning Spur 2, a 161 MW EDF wind project in Oldham County; separate from nearby Spinning Spur 3.",
       "seed": false,
       "locations": [
         {
@@ -109888,7 +109888,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/spinning-spur-wind-two",
-          "geo_notes": "161 MW EDF wind in Oldham County TX."
+          "geo_notes": "Spinning Spur 2, a 161 MW EDF wind project in Oldham County; separate from nearby Spinning Spur 3."
         },
         {
           "rank": 2,
@@ -110397,7 +110397,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/sun-valley-solar-llc",
-      "notes": "250 MW solar in Hill County TX.",
+      "notes": "ENGIE Sun Valley Solar, a 250 MW project in Hill County co-located with Sun Valley Storage.",
       "seed": false,
       "locations": [
         {
@@ -110412,7 +110412,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/sun-valley-solar-llc",
-          "geo_notes": "250 MW solar in Hill County TX."
+          "geo_notes": "ENGIE Sun Valley Solar, a 250 MW project in Hill County co-located with Sun Valley Storage."
         },
         {
           "rank": 2,
@@ -110463,7 +110463,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/68896-sunvb",
-      "notes": "123 MW BESS co-located with Sun Valley Solar Hill County TX.",
+      "notes": "Sun Valley battery storage is co-located with ENGIE Sun Valley Solar in Hill County; EIA record lists 123 MW BESS.",
       "seed": false,
       "locations": [
         {
@@ -110478,7 +110478,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/68896-sunvb",
-          "geo_notes": "123 MW BESS co-located with Sun Valley Solar Hill County TX."
+          "geo_notes": "Sun Valley battery storage is co-located with ENGIE Sun Valley Solar in Hill County; EIA record lists 123 MW BESS."
         },
         {
           "rank": 2,
@@ -143778,8 +143778,8 @@
       "country": "US",
       "confidence": "HIGH",
       "source": "official_website",
-      "source_url": "https://americas.rwe.com",
-      "notes": "U.S. renewables holding company HQ; umbrella registration for western wind/solar assets.",
+      "source_url": "https://americas.rwe.com/rwe-americas/",
+      "notes": "RWE Clean Energy asset-holding registration at the Austin office; combined with RWE Americas for display.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -143795,8 +143795,8 @@
           "country": "US",
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
-          "geo_source_url": "https://americas.rwe.com",
-          "geo_notes": "U.S. renewables holding company HQ; umbrella registration for western wind/solar assets."
+          "geo_source_url": "https://americas.rwe.com/rwe-americas/",
+          "geo_notes": "RWE Clean Energy asset-holding registration at the Austin office; combined with RWE Americas for display."
         },
         {
           "rank": 2,

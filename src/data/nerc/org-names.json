@@ -6754,10 +6754,13 @@
     {
       "ncr_id": "NCR11561",
       "entity_name": "NAES Corporation - Cogen Technologies Linden Venture",
-      "shortest": "Linden Cogen",
+      "shortest": "LindenCG",
       "short": "Linden Cogen",
       "normal": "Linden Cogeneration",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gem.wiki/Linden_cogeneration_plant"
     },
     {
       "ncr_id": "NCR13266",
@@ -6770,10 +6773,13 @@
     {
       "ncr_id": "NCR11562",
       "entity_name": "NAES Corporation - East Coast Power Linden Holdings",
-      "shortest": "Linden ECP",
+      "shortest": "Lind ECP",
       "short": "East Coast Power Linden",
       "normal": "East Coast Power Linden",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.naes.com/"
     },
     {
       "ncr_id": "NCR11236",
@@ -6866,10 +6872,13 @@
     {
       "ncr_id": "NCR12339",
       "entity_name": "NAES Corporation-Rayburn Energy Station",
-      "shortest": "Rayburn ES",
+      "shortest": "Raybn ES",
       "short": "Rayburn Energy Station",
       "normal": "Rayburn Energy Station",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.rayburnelectric.com/news-releases/rayburn-energy-station-acquisition/"
     },
     {
       "ncr_id": "NCR12360",
@@ -7098,10 +7107,13 @@
     {
       "ncr_id": "NCR10326",
       "entity_name": "NRG Cedar Bayou Development Co, LLC",
-      "shortest": "NRG CB",
+      "shortest": "NRG Ced",
       "short": "NRG Cedar Bayou",
       "normal": "NRG Cedar Bayou",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/nrg-cedar-bayou-development"
     },
     {
       "ncr_id": "NCR11715",
@@ -7117,7 +7129,10 @@
       "shortest": "NRG Tex",
       "short": "NRG Texas Power",
       "normal": "NRG Texas Power",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12315",
@@ -7418,26 +7433,35 @@
     {
       "ncr_id": "NCR11953",
       "entity_name": "Prairie Breeze Wind Energy II LLC",
-      "shortest": "Prairie II",
+      "shortest": "PBreeze2",
       "short": "Prairie Breeze II",
       "normal": "Prairie Breeze Wind Energy II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/news/invenergy-announces-start-of-commercial-operation-for-prairie-breeze-ii-wind-energy-center"
     },
     {
       "ncr_id": "NCR11954",
       "entity_name": "Prairie Breeze Wind Energy III LLC",
-      "shortest": "Prairie III",
+      "shortest": "PBreeze3",
       "short": "Prairie Breeze III",
       "normal": "Prairie Breeze Wind Energy III",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/news/invenergy-completes-project-financing-for-prairie-breeze-iii-wind-energy-center"
     },
     {
       "ncr_id": "NCR11460",
       "entity_name": "Prairie Breeze Wind Energy LLC",
-      "shortest": "Prairie WF",
+      "shortest": "PBreeze1",
       "short": "Prairie Breeze Wind",
       "normal": "Prairie Breeze Wind Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/news/invenergy-completes-project-financing-for-prairie-breeze-wind-energy-center-in-nebraska"
     },
     {
       "ncr_id": "NCR12065",
@@ -7578,18 +7602,24 @@
     {
       "ncr_id": "NCR11514",
       "entity_name": "ReEnergy Livermore Falls",
-      "shortest": "RE Livermre",
+      "shortest": "RE LivF",
       "short": "ReEnergy Livermore Falls",
       "normal": "ReEnergy Livermore Falls",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.regenerate-energy.com/portfolio/regenerate-livermore-falls/"
     },
     {
       "ncr_id": "NCR10352",
       "entity_name": "ReEnergy Stratton",
-      "shortest": "RE Stratton",
+      "shortest": "RE Strat",
       "short": "ReEnergy Stratton",
       "normal": "ReEnergy Stratton",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.regenerate-energy.com/portfolio/regenerate-stratton/"
     },
     {
       "ncr_id": "NCR10371",
@@ -7789,7 +7819,10 @@
       "shortest": "RWE Am",
       "short": "RWE Americas",
       "normal": "RWE Americas",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://americas.rwe.com/rwe-americas/"
     },
     {
       "ncr_id": "NCR13518",
@@ -7797,7 +7830,10 @@
       "shortest": "RWE DCE",
       "short": "RWE Clean DCE",
       "normal": "RWE Clean DCE Operations",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://americas.rwe.com/energy-services/retail-energy-services-and-distributed-clean-energy/"
     },
     {
       "ncr_id": "NCR01305",
@@ -7834,18 +7870,24 @@
     {
       "ncr_id": "NCR12263",
       "entity_name": "Samson Solar Energy III LLC",
-      "shortest": "Samson PV3",
+      "shortest": "Samson3",
       "short": "Samson Solar III",
       "normal": "Samson Solar Energy III",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://samsonsolarenergycenter.com/"
     },
     {
       "ncr_id": "NCR12241",
       "entity_name": "Samson Solar Energy LLC",
-      "shortest": "Samson PV",
+      "shortest": "Samson1",
       "short": "Samson Solar",
       "normal": "Samson Solar Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://samsonsolarenergycenter.com/"
     },
     {
       "ncr_id": "NCR13319",
@@ -7874,18 +7916,24 @@
     {
       "ncr_id": "NCR11918",
       "entity_name": "Santa Rita East Wind Energy LLC",
-      "shortest": "Santa Rita E",
+      "shortest": "Santa E",
       "short": "Santa Rita East Wind",
       "normal": "Santa Rita East Wind Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.invenergy.com/"
     },
     {
       "ncr_id": "NCR11841",
       "entity_name": "Santa Rita Wind Energy LLC",
-      "shortest": "Santa Rita WF",
+      "shortest": "Santa WF",
       "short": "Santa Rita Wind",
       "normal": "Santa Rita Wind Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/santa-rita-wind-energy"
     },
     {
       "ncr_id": "NCR11483",
@@ -7922,18 +7970,24 @@
     {
       "ncr_id": "NCR10321",
       "entity_name": "Scurry County Wind II, LLC",
-      "shortest": "SCW II",
+      "shortest": "Scurry2",
       "short": "Scurry County Wind II",
       "normal": "Scurry County Wind II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/scurry-county-wind-ii"
     },
     {
       "ncr_id": "NCR10027",
       "entity_name": "Scurry County Wind, LP",
-      "shortest": "SCW I",
+      "shortest": "Scurry1",
       "short": "Scurry County Wind",
       "normal": "Scurry County Wind",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/scurry-county-wind-lp"
     },
     {
       "ncr_id": "NCR12194",
@@ -7954,18 +8008,24 @@
     {
       "ncr_id": "NCR11446",
       "entity_name": "Seneca Generation, LLC",
-      "shortest": "Seneca Gen",
+      "shortest": "SenecaPS",
       "short": "Seneca Generation",
       "normal": "Seneca Generation",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "ferc_filing",
+      "shortest_source_url": "https://www.federalregister.gov/documents/2026/02/10/2026-02612/seneca-generation-llc-notice-of-effectiveness-of-withdrawal-of-operating-plan-and-operation"
     },
     {
       "ncr_id": "NCR10372",
       "entity_name": "Seneca Power Partners, LP",
-      "shortest": "Seneca Pwr",
+      "shortest": "SenecaPP",
       "short": "Seneca Power Partners",
       "normal": "Seneca Power Partners",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "state_puc",
+      "shortest_source_url": "https://www.cscos.com/wp-content/uploads/2024/05/Batavia_NYSDEC_PPP-May-2024.pdf"
     },
     {
       "ncr_id": "NCR11615",
@@ -8130,18 +8190,24 @@
     {
       "ncr_id": "NCR11575",
       "entity_name": "Spinning Spur Wind Three, LLC",
-      "shortest": "Spin Spur 3",
+      "shortest": "SpinSp3",
       "short": "Spinning Spur Wind III",
       "normal": "Spinning Spur Wind III",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://us.boralex.com/en/projects-and-sites/wind-spinning-spur-3"
     },
     {
       "ncr_id": "NCR11464",
       "entity_name": "Spinning Spur Wind Two",
-      "shortest": "Spin Spur 2",
+      "shortest": "SpinSp2",
       "short": "Spinning Spur Wind II",
       "normal": "Spinning Spur Wind II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/spinning-spur-wind-two"
     },
     {
       "ncr_id": "NCR11822",
@@ -8218,18 +8284,24 @@
     {
       "ncr_id": "NCR12443",
       "entity_name": "Sun Valley Solar, LLC",
-      "shortest": "Sun Valley",
+      "shortest": "SunV PV",
       "short": "Sun Valley Solar",
       "normal": "Sun Valley Solar",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.engie-na.com/project/sun-valley/"
     },
     {
       "ncr_id": "NCR12411",
       "entity_name": "Sun Valley Storage, LLC",
-      "shortest": "Sun Valley",
+      "shortest": "SunV ES",
       "short": "Sun Valley Storage",
       "normal": "Sun Valley Storage",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.engie-na.com/project/sun-valley/"
     },
     {
       "ncr_id": "NCR12007",
@@ -15248,7 +15320,10 @@
       "shortest": "RWE QSE",
       "short": "RWE Clean Energy QSE",
       "normal": "RWE Clean Energy QSE",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://americas.rwe.com/energy-services/retail-energy-services-and-distributed-clean-energy/"
     },
     {
       "ncr_id": "NCR00911",
@@ -17177,10 +17252,13 @@
     {
       "ncr_id": "NCR11605",
       "entity_name": "RWE Clean Energy Asset Holdings, Inc.",
-      "shortest": "RWE Asst",
+      "shortest": "RWE CE",
       "short": "RWE Clean Energy",
       "normal": "RWE Clean Energy Asset Holdings, Inc.",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://americas.rwe.com/rwe-americas/"
     },
     {
       "ncr_id": "NCR11353",

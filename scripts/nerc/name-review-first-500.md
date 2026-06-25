@@ -3,27 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-165. NCR11561 — NAES Corporation - Cogen Technologies Linden Venture
-166. NCR12339 — NAES Corporation-Rayburn Energy Station
-167. NCR10326 — NRG Cedar Bayou Development Co, LLC
-168. NCR10090 — NRG Texas Power, LLC
-169. NCR11953 — Prairie Breeze Wind Energy II LLC
-170. NCR11460 — Prairie Breeze Wind Energy LLC
-171. NCR11514 — ReEnergy Livermore Falls
-172. NCR10352 — ReEnergy Stratton
-173. NCR13518 — RWE Clean DCE Operations, LLC
-174. NCR11605 — RWE Clean Energy Asset Holdings, Inc.
-175. NCR12263 — Samson Solar Energy III LLC
-176. NCR12241 — Samson Solar Energy LLC
-177. NCR11918 — Santa Rita East Wind Energy LLC
-178. NCR11841 — Santa Rita Wind Energy LLC
-179. NCR10321 — Scurry County Wind II, LLC
-180. NCR10027 — Scurry County Wind, LP
-181. NCR11446 — Seneca Generation, LLC
-182. NCR10372 — Seneca Power Partners, LP
-183. NCR11575 — Spinning Spur Wind Three, LLC
-184. NCR11464 — Spinning Spur Wind Two
-185. NCR12443 — Sun Valley Solar, LLC
 186. NCR11462 — Temple Generation I, LLC
 187. NCR04136 — Tenaska Frontier Partners LTD
 188. NCR04137 — Tenaska Gateway Partners LTD
@@ -150,11 +129,7 @@ Delete each line after its name is updated and validated.
 326. NCR11167 — Entergy - Fossil & Hydroelectric Generation
 327. NCR12526 — Entergy Renewables
 337. NCR12159 — NAES Corporation - Aquamarine
-338. NCR11562 — NAES Corporation - East Coast Power Linden Holdings
-339. NCR11954 — Prairie Breeze Wind Energy III LLC
-340. NCR12482 — RWE Americas, LLC
 342. NCR11396 — Southern Power Company
-343. NCR12411 — Sun Valley Storage, LLC
 344. NCR11872 — Temple Generation II, LLC
 345. NCR00632 — Tenaska Frontier Partners, Ltd
 346. NCR00633 — Tenaska Gateway Partners Ltd
@@ -208,7 +183,6 @@ Delete each line after its name is updated and validated.
 399. NCR12273 — NRG Energy Services LLC-Petra Nova
 400. NCR12507 — QE Solar, LLC
 401. NCR12156 — RES America Asset Management - Chisholm
-402. NCR11383 — RWE Clean Energy QSE, LLC
 403. NCR01322 — Southern Power Company
 404. NCR12021 — Southern Power Company
 405. NCR13147 — St. Gall Energy Storage II LLC
