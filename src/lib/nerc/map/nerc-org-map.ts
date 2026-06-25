@@ -778,7 +778,10 @@ export function mountNercOrgMap(): void {
   let phone = false;
   // Multiplier applied to bubble radius, label font and tap floors on narrow
   // phones only. 1 everywhere else, so desktop sizes never change.
-  const phoneSizeScale = (): number => (phone ? 1.2 : 1);
+  // Phones enlarge bubbles for readability/tap, but a touch less than before so a few
+  // more organizations fit on screen at the default (home) overview. Tap targets keep
+  // their own comfortable floors in hitTargetRadius, so selection stays easy.
+  const phoneSizeScale = (): number => (phone ? 1.1 : 1);
   let orgMarkK = NaN;
   let orgLayoutBucket = NaN;
   // Live force-simulation layout state (see computePlacements). The sim owns each
