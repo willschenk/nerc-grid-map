@@ -964,10 +964,10 @@
       "source": "official_website",
       "source_url": "https://www.idahopower.com",
       "org_type": "IOU",
-      "notes": "IOU serving southern Idaho and eastern Oregon.",
+      "notes": "Retired seed for Idaho Power Company. NERC/WECC audit identifies the registered entity as IPCO; HQ Boise.",
       "seed": true,
-      "acronym": "Idaho",
-      "acronym_source": "common_market_name",
+      "acronym": "IPCO",
+      "acronym_source": "nerc_audit_report",
       "locations": [
         {
           "rank": 1,
@@ -981,7 +981,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.idahopower.com",
-          "geo_notes": "IOU serving southern Idaho and eastern Oregon."
+          "geo_notes": "Retired seed for Idaho Power Company. NERC/WECC audit identifies the registered entity as IPCO; HQ Boise."
         },
         {
           "rank": 2,
@@ -1993,10 +1993,10 @@
       "source": "eia_861",
       "source_url": "https://www.duke-energy.com/florida",
       "org_type": "IOU",
-      "notes": "Duke operating company in central and northern Florida.",
+      "notes": "Retired seed for Duke Energy Florida. DEF is the current Duke Energy Florida acronym; FPC remains only as the legacy Florida Power Corporation area alias.",
       "seed": true,
-      "acronym": "Duke",
-      "acronym_source": "common_market_name",
+      "acronym": "DEF",
+      "acronym_source": "official_website",
       "locations": [
         {
           "rank": 1,
@@ -2010,7 +2010,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.duke-energy.com/florida",
-          "geo_notes": "Duke operating company in central and northern Florida."
+          "geo_notes": "Retired seed for Duke Energy Florida. DEF is the current Duke Energy Florida acronym; FPC remains only as the legacy Florida Power Corporation area alias."
         },
         {
           "rank": 2,
@@ -69066,7 +69066,7 @@
         "TSP"
       ],
       "acronym": "DEF",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "lat": 27.7676,
       "lng": -82.6403,
       "headquarters_address": "299 1st Ave N",
@@ -69076,7 +69076,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.duke-energy.com/florida",
-      "notes": "Duke Florida utility HQ St. Petersburg.",
+      "notes": "Duke Energy Florida uses DEF in Duke and regulatory materials; FPC is retained only as the legacy Florida Power Corporation area alias. HQ St. Petersburg.",
       "seed": false,
       "locations": [
         {
@@ -69091,7 +69091,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.duke-energy.com/florida",
-          "geo_notes": "Duke Florida utility HQ St. Petersburg."
+          "geo_notes": "Duke Energy Florida uses DEF in Duke and regulatory materials; FPC is retained only as the legacy Florida Power Corporation area alias. HQ St. Petersburg."
         },
         {
           "rank": 2,
@@ -81820,7 +81820,7 @@
         "RP"
       ],
       "acronym": "SCS-Gen",
-      "acronym_source": "name_initialism",
+      "acronym_source": "nerc_audit_report",
       "lat": 33.7607,
       "lng": -84.3878,
       "headquarters_address": "30 Ivan Allen Jr Boulevard NW",
@@ -81830,7 +81830,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.southerncompany.com",
-      "notes": "Southern Company generation services division HQ Atlanta.",
+      "notes": "NERC audit context distinguishes SCS-Gen from co-located SCS-Trans; folded into the Southern Company Services HQ map location.",
       "seed": false,
       "locations": [
         {
@@ -81845,7 +81845,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.southerncompany.com",
-          "geo_notes": "Southern Company generation services division HQ Atlanta."
+          "geo_notes": "NERC audit context distinguishes SCS-Gen from co-located SCS-Trans; folded into the Southern Company Services HQ map location."
         },
         {
           "rank": 2,
@@ -81890,7 +81890,7 @@
         "TSP"
       ],
       "acronym": "SCS-Trans",
-      "acronym_source": "name_initialism",
+      "acronym_source": "nerc_audit_report",
       "lat": 33.7607,
       "lng": -84.3878,
       "headquarters_address": "30 Ivan Allen Jr Boulevard NW",
@@ -81900,7 +81900,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.southerncompany.com",
-      "notes": "Southern Company transmission and reliability services HQ Atlanta.",
+      "notes": "NERC audit identifies this registration as SCS-Trans; map combines it with co-located SCS-Gen at Southern Company Services' Atlanta HQ.",
       "seed": false,
       "locations": [
         {
@@ -81915,7 +81915,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.southerncompany.com",
-          "geo_notes": "Southern Company transmission and reliability services HQ Atlanta."
+          "geo_notes": "NERC audit identifies this registration as SCS-Trans; map combines it with co-located SCS-Gen at Southern Company Services' Atlanta HQ."
         },
         {
           "rank": 2,
@@ -128372,7 +128372,7 @@
         "TSP"
       ],
       "acronym": "IPCO",
-      "acronym_source": "name_initialism",
+      "acronym_source": "nerc_audit_report",
       "lat": 43.6155,
       "lng": -116.2017,
       "headquarters_address": "1221 W Idaho Street",
@@ -128382,7 +128382,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.idahopower.com",
-      "notes": "IOU HQ in Boise; serves southern Idaho and eastern Oregon.",
+      "notes": "NERC/WECC audit identifies Idaho Power Company as IPCO; HQ Boise.",
       "seed": false,
       "locations": [
         {
@@ -128397,7 +128397,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.idahopower.com",
-          "geo_notes": "IOU HQ in Boise; serves southern Idaho and eastern Oregon."
+          "geo_notes": "NERC/WECC audit identifies Idaho Power Company as IPCO; HQ Boise."
         },
         {
           "rank": 2,

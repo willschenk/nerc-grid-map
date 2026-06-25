@@ -6,7 +6,10 @@
       "shortest": "PJM",
       "short": "PJM Interconnection",
       "normal": "PJM Interconnection, LLC",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.pjm.com/"
     },
     {
       "ncr_id": "NCR-SEED-002",
@@ -83,10 +86,13 @@
     {
       "ncr_id": "NCR-SEED-028",
       "entity_name": "Duke Energy Florida, LLC",
-      "shortest": "FPC",
+      "shortest": "DEF",
       "short": "Duke Energy Florida",
       "normal": "Duke Energy Florida, LLC",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://news.duke-energy.com/releases/releases-20160209"
     },
     {
       "ncr_id": "NCR-SEED-021",
@@ -99,10 +105,13 @@
     {
       "ncr_id": "NCR-SEED-014",
       "entity_name": "Idaho Power Company",
-      "shortest": "Idaho",
+      "shortest": "IPCO",
       "short": "Idaho Power",
       "normal": "Idaho Power Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/wecc/2022/ncr05191_ipco_wecc_pub_2018.pdf"
     },
     {
       "ncr_id": "NCR-SEED-013",
@@ -409,10 +418,13 @@
     {
       "ncr_id": "NCR01320",
       "entity_name": "Southern Company Services, Inc. - Trans",
-      "shortest": "SOCO",
+      "shortest": "SCS Tx",
       "short": "Southern Company Services - Trans",
       "normal": "Southern Company Services - Trans",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/serc/2022/ncr01166_01247_01273_01320_southern_serc_pub_2021_op-rev1-11-2022.pdf"
     },
     {
       "ncr_id": "NCR05020",
@@ -484,7 +496,10 @@
       "shortest": "NWE",
       "short": "NorthWestern Energy",
       "normal": "NorthWestern Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.sec.gov/Archives/edgar/data/1993004/000199300425000021/nweg-20241231.htm"
     },
     {
       "ncr_id": "NCR05261",
@@ -524,7 +539,10 @@
       "shortest": "SPP",
       "short": "Southwest Power Pool",
       "normal": "Southwest Power Pool",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.spp.org/"
     },
     {
       "ncr_id": "NCR01169",
@@ -2369,10 +2387,13 @@
     {
       "ncr_id": "NCR01319",
       "entity_name": "Southern Company Services, Inc. - Gen",
-      "shortest": "SOCO",
+      "shortest": "SCS Gen",
       "short": "Southern Company Services - Gen",
       "normal": "Southern Company Services - Gen",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/serc/2022/ncr01166_01247_01273_01320_southern_serc_pub_2021_op-rev1-11-2022.pdf"
     },
     {
       "ncr_id": "NCR12086",
@@ -15956,7 +15977,10 @@
       "shortest": "MISO",
       "short": "Midcontinent ISO",
       "normal": "Midcontinent Independent System Operator, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.misoenergy.org/"
     },
     {
       "ncr_id": "NCR05048",
@@ -15964,7 +15988,10 @@
       "shortest": "CAISO",
       "short": "California ISO",
       "normal": "California Independent System Operator",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.caiso.com/"
     },
     {
       "ncr_id": "NCR07160",
@@ -15972,7 +15999,10 @@
       "shortest": "NYISO",
       "short": "New York ISO",
       "normal": "New York Independent System Operator",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.nyiso.com/"
     },
     {
       "ncr_id": "NCR04056",
@@ -15980,7 +16010,10 @@
       "shortest": "ERCOT",
       "short": "Electric Reliability Council of Texas",
       "normal": "Electric Reliability Council of Texas, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.ercot.com/"
     },
     {
       "ncr_id": "NCR05299",
@@ -16012,7 +16045,10 @@
       "shortest": "APS",
       "short": "Arizona Public Service",
       "normal": "Arizona Public Service Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aps.com/"
     },
     {
       "ncr_id": "NCR05521",
@@ -16020,15 +16056,21 @@
       "shortest": "PSCo",
       "short": "Public Service of Colorado",
       "normal": "Public Service Company of Colorado",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.sec.gov/Archives/edgar/data/81018/000008101821000008/psco-20201231.htm"
     },
     {
       "ncr_id": "NCR05191",
       "entity_name": "Idaho Power Company",
-      "shortest": "Idaho",
+      "shortest": "IPCO",
       "short": "Idaho Power",
       "normal": "Idaho Power Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/wecc/2022/ncr05191_ipco_wecc_pub_2018.pdf"
     },
     {
       "ncr_id": "NCR05304",
@@ -16036,7 +16078,10 @@
       "shortest": "PacifiCorp",
       "short": "PacifiCorp",
       "normal": "PacifiCorp",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pacificorp.com/"
     },
     {
       "ncr_id": "NCR05344",
@@ -16044,7 +16089,10 @@
       "shortest": "PSE",
       "short": "Puget Sound Energy",
       "normal": "Puget Sound Energy, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pse.com/"
     },
     {
       "ncr_id": "NCR05325",
@@ -16052,7 +16100,10 @@
       "shortest": "PGE",
       "short": "Portland General Electric",
       "normal": "Portland General Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://portlandgeneral.com/"
     },
     {
       "ncr_id": "NCR05333",
@@ -16060,7 +16111,10 @@
       "shortest": "PNM",
       "short": "Public Service of New Mexico",
       "normal": "Public Service Company of New Mexico",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pnm.com/"
     },
     {
       "ncr_id": "NCR05140",
@@ -16068,7 +16122,10 @@
       "shortest": "EPE",
       "short": "El Paso Electric",
       "normal": "El Paso Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.epelectric.com/"
     },
     {
       "ncr_id": "NCR01219",
@@ -16076,7 +16133,10 @@
       "shortest": "DEC",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.duke-energy.com/home"
     },
     {
       "ncr_id": "NCR01298",
@@ -16084,7 +16144,10 @@
       "shortest": "DEP",
       "short": "Duke Energy Progress",
       "normal": "Duke Energy Progress, LLC",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.duke-energy.com/progress"
     },
     {
       "ncr_id": "NCR01247",
@@ -16119,15 +16182,21 @@
       "shortest": "AECI",
       "short": "Associated Electric Cooperative",
       "normal": "Associated Electric Cooperative, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aeci.org/"
     },
     {
       "ncr_id": "NCR00063",
       "entity_name": "Duke Energy Florida, LLC",
-      "shortest": "FPC",
+      "shortest": "DEF",
       "short": "Duke Energy Florida",
       "normal": "Duke Energy Florida, LLC",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://news.duke-energy.com/releases/releases-20160209"
     },
     {
       "ncr_id": "NCR00074",
@@ -16135,7 +16204,10 @@
       "shortest": "TECO",
       "short": "Tampa Electric",
       "normal": "Tampa Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tampaelectric.com/"
     },
     {
       "ncr_id": "NCR00040",
@@ -16143,7 +16215,10 @@
       "shortest": "JEA",
       "short": "JEA",
       "normal": "JEA",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.jea.com/"
     },
     {
       "ncr_id": "NCR08013",
@@ -16247,7 +16322,10 @@
       "shortest": "BPA",
       "short": "Bonneville Power Administration",
       "normal": "Bonneville Power Administration",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bpa.gov/"
     },
     {
       "ncr_id": "NCR00006",

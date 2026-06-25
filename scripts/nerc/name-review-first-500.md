@@ -3,29 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-41. NCR07160 — New York Independent System Operator
-42. NCR00879 — PJM Interconnection, LLC
-43. NCR01320 — Southern Company Services, Inc. - Trans
-44. NCR05016 — Arizona Public Service Company
-45. NCR01177 — Associated Electric Cooperative, Inc.
-46. NCR01219 — Duke Energy Carolinas, LLC
-47. NCR00063 — Duke Energy Florida, LLC
-48. NCR01298 — Duke Energy Progress, LLC
-49. NCR05140 — El Paso Electric Company
-50. NCR05191 — Idaho Power Company
-51. NCR00040 — JEA
-52. NCR05282 — NorthWestern Corporation
-53. NCR05304 — PacifiCorp
-54. NCR05325 — Portland General Electric Company
-55. NCR05521 — Public Service Company of Colorado
-56. NCR05333 — Public Service Company of New Mexico
-57. NCR05344 — Puget Sound Energy, Inc.
-58. NCR00074 — Tampa Electric Company
-59. NCR04056 — Electric Reliability Council of Texas, Inc.
-60. NCR00826 — Midcontinent Independent System Operator, Inc.
-61. NCR05048 — California Independent System Operator
-62. NCR05032 — Bonneville Power Administration
-63. NCR01143 — Southwest Power Pool, Inc.
 64. NCR-SEED-048 — Evergy Kansas Central, Inc.
 65. NCR01083 — Cleco Corporate Holdings LLC
 66. NCR00992 — Great River Energy
@@ -303,7 +280,6 @@ Delete each line after its name is updated and validated.
 338. NCR11562 — NAES Corporation - East Coast Power Linden Holdings
 339. NCR11954 — Prairie Breeze Wind Energy III LLC
 340. NCR12482 — RWE Americas, LLC
-341. NCR01319 — Southern Company Services, Inc. - Gen
 342. NCR11396 — Southern Power Company
 343. NCR12411 — Sun Valley Storage, LLC
 344. NCR11872 — Temple Generation II, LLC
@@ -381,9 +357,7 @@ Delete each line after its name is updated and validated.
 416. NCR-SEED-054 — Bonneville Power Administration
 417. NCR-SEED-015 — PacifiCorp
 418. NCR-SEED-034 — DTE Electric Company
-419. NCR-SEED-028 — Duke Energy Florida, LLC
 420. NCR-SEED-021 — Duke Energy Progress, LLC
-421. NCR-SEED-014 — Idaho Power Company
 422. NCR-SEED-018 — Public Service Company of New Mexico
 423. NCR-SEED-016 — Puget Sound Energy, Inc.
 424. NCR-SEED-046 — Southwestern Public Service Company
