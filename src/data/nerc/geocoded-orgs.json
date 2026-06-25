@@ -4547,7 +4547,7 @@
       "source_url": "https://www.aep.com/contact/",
       "org_type": "IOU",
       "parent_org": "American Electric Power Company, Inc.",
-      "notes": "AEPSC agent registration for OK Transco, PSO, and SWEPCO bulk electric functions (NERC audit NCR01056).",
+      "notes": "AEP agent registration for OK Transco, PSO, and SWEPCO; Columbus, OH HQ. Combined on map with related AEP registrations.",
       "seed": false,
       "locations": [
         {
@@ -4562,7 +4562,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.aep.com/contact/",
-          "geo_notes": "AEPSC agent registration for OK Transco, PSO, and SWEPCO bulk electric functions (NERC audit NCR01056)."
+          "geo_notes": "AEP agent registration for OK Transco, PSO, and SWEPCO; Columbus, OH HQ. Combined on map with related AEP registrations."
         },
         {
           "rank": 2,
@@ -4614,7 +4614,7 @@
       "source_url": "https://docs.aep.com/docs/investors/AnnualReportsProxies/docs/24annrep/2025ProxyAppendixA.pdf",
       "org_type": "merchant",
       "parent_org": "AEP Energy Supply, LLC",
-      "notes": "AEP Renewables division GO registration; corporate HQ per AEP annual report appendix.",
+      "notes": "AEP Renewables Central Region; Columbus, OH HQ. Combined on map with related AEP registrations.",
       "seed": false,
       "locations": [
         {
@@ -4629,7 +4629,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://docs.aep.com/docs/investors/AnnualReportsProxies/docs/24annrep/2025ProxyAppendixA.pdf",
-          "geo_notes": "AEP Renewables division GO registration; corporate HQ per AEP annual report appendix."
+          "geo_notes": "AEP Renewables Central Region; Columbus, OH HQ. Combined on map with related AEP registrations."
         },
         {
           "rank": 2,
@@ -9461,7 +9461,7 @@
       "source_url": "https://www.gridinfo.com/plant/dogwood-energy-facility/55178",
       "org_type": "merchant",
       "parent_org": "Kelson Energy",
-      "notes": "675 MW Dogwood Energy Facility combined-cycle gas; SPP public power owners.",
+      "notes": "675 MW Dogwood Energy Facility combined-cycle gas plant (GO) in Pleasant Hill, MO. Combined on map with NAES Corporation - Dogwood (GOP).",
       "seed": false,
       "locations": [
         {
@@ -9476,7 +9476,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/dogwood-energy-facility/55178",
-          "geo_notes": "675 MW Dogwood Energy Facility combined-cycle gas; SPP public power owners."
+          "geo_notes": "675 MW Dogwood Energy Facility combined-cycle gas plant (GO) in Pleasant Hill, MO. Combined on map with NAES Corporation - Dogwood (GOP)."
         },
         {
           "rank": 2,
@@ -11987,7 +11987,7 @@
       "source_url": "https://invenergy.com/contact",
       "org_type": "merchant",
       "parent_org": "Invenergy",
-      "notes": "Invenergy operations and maintenance services for MRO wind and gas assets.",
+      "notes": "Invenergy Services LLC (MRO registration); Chicago Wacker Drive HQ. Combined on map with Texas RE Invenergy Services registration.",
       "seed": false,
       "locations": [
         {
@@ -12002,7 +12002,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://invenergy.com/contact",
-          "geo_notes": "Invenergy operations and maintenance services for MRO wind and gas assets."
+          "geo_notes": "Invenergy Services LLC (MRO registration); Chicago Wacker Drive HQ. Combined on map with Texas RE Invenergy Services registration."
         },
         {
           "rank": 2,
@@ -12188,7 +12188,7 @@
       "source_url": "https://www.gridinfo.com/plant/diversion-wind-energy-llc/67601",
       "org_type": "merchant",
       "parent_org": "Invenergy",
-      "notes": "200.6 MW Baylor County wind; SWEPCO owner. Invenergy Services GOP registration. COD December 2024.",
+      "notes": "Invenergy GOP at Diversion Wind Energy plant, Seymour, TX (Baylor County). 200.6 MW wind; SWEPCO owner. COD December 2024.",
       "seed": false,
       "locations": [
         {
@@ -12203,7 +12203,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/diversion-wind-energy-llc/67601",
-          "geo_notes": "200.6 MW Baylor County wind; SWEPCO owner. Invenergy Services GOP registration. COD December 2024."
+          "geo_notes": "Invenergy GOP at Diversion Wind Energy plant, Seymour, TX (Baylor County). 200.6 MW wind; SWEPCO owner. COD December 2024."
         },
         {
           "rank": 2,
@@ -15753,7 +15753,7 @@
       "source_url": "https://www.nmppenergy.org/mean",
       "org_type": "municipal",
       "parent_org": "NMPP Energy",
-      "notes": "Wholesale power supplier for Nebraska municipal utilities; part of the NMPP Energy coalition.",
+      "notes": "Municipal Energy Agency of Nebraska (MEAN) MRO registration; Lincoln, NE HQ. Combined on map with MEAN WECC registration.",
       "seed": false,
       "locations": [
         {
@@ -15768,7 +15768,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.nmppenergy.org/mean",
-          "geo_notes": "Wholesale power supplier for Nebraska municipal utilities; part of the NMPP Energy coalition."
+          "geo_notes": "Municipal Energy Agency of Nebraska (MEAN) MRO registration; Lincoln, NE HQ. Combined on map with MEAN WECC registration."
         },
         {
           "rank": 2,
@@ -15894,7 +15894,7 @@
       "source_url": "https://www.gridinfo.com/plant/dogwood-energy-facility/55178",
       "org_type": "merchant",
       "parent_org": "NAES Corporation",
-      "notes": "GOP operator at 675 MW Dogwood Energy Facility combined-cycle gas plant.",
+      "notes": "NAES GOP at Dogwood Energy Facility, Pleasant Hill, MO. Combined on map with Dogwood Power Management, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -15909,7 +15909,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/dogwood-energy-facility/55178",
-          "geo_notes": "GOP operator at 675 MW Dogwood Energy Facility combined-cycle gas plant."
+          "geo_notes": "NAES GOP at Dogwood Energy Facility, Pleasant Hill, MO. Combined on map with Dogwood Power Management, LLC (GO)."
         },
         {
           "rank": 2,
@@ -16778,7 +16778,7 @@
       "source_url": "https://www.northwesternenergy.com",
       "org_type": "IOU",
       "parent_org": "NorthWestern Energy Group",
-      "notes": "Investor-owned electric and natural gas utility in Montana, South Dakota, and Nebraska.",
+      "notes": "NorthWestern Energy Public Service (MRO registration); Sioux Falls HQ. Combined on map with NorthWestern Corporation (WECC).",
       "seed": false,
       "locations": [
         {
@@ -16793,7 +16793,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.northwesternenergy.com",
-          "geo_notes": "Investor-owned electric and natural gas utility in Montana, South Dakota, and Nebraska."
+          "geo_notes": "NorthWestern Energy Public Service (MRO registration); Sioux Falls HQ. Combined on map with NorthWestern Corporation (WECC)."
         },
         {
           "rank": 2,
@@ -19910,7 +19910,7 @@
       "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001160661",
       "org_type": "merchant",
       "parent_org": "Southern Company",
-      "notes": "Wholesale generation subsidiary of Southern Company.",
+      "notes": "Southern Power Company wholesale generation subsidiary; Atlanta HQ. Combined on map with related Southern Power registrations (MRO, NPCC, WECC, RF).",
       "seed": false,
       "locations": [
         {
@@ -19925,7 +19925,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001160661",
-          "geo_notes": "Wholesale generation subsidiary of Southern Company."
+          "geo_notes": "Southern Power Company wholesale generation subsidiary; Atlanta HQ. Combined on map with related Southern Power registrations (MRO, NPCC, WECC, RF)."
         },
         {
           "rank": 2,
@@ -25554,7 +25554,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/10190-gen1",
       "org_type": "merchant",
       "parent_org": "Fortistar",
-      "notes": "72 MW Castleton Energy Center in Rensselaer County. COD February 1992.",
+      "notes": "72 MW Castleton Energy Center (GO) in Rensselaer County, NY. COD February 1992. Combined on map with NAES Corporation - Castleton Power (GOP).",
       "seed": false,
       "locations": [
         {
@@ -25569,7 +25569,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/10190-gen1",
-          "geo_notes": "72 MW Castleton Energy Center in Rensselaer County. COD February 1992."
+          "geo_notes": "72 MW Castleton Energy Center (GO) in Rensselaer County, NY. COD February 1992. Combined on map with NAES Corporation - Castleton Power (GOP)."
         },
         {
           "rank": 2,
@@ -27456,7 +27456,7 @@
       "source_url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7BB559B23E-3BF6-45E0-8C35-DC6C44111212%7D",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "635 MW combined cycle plant on the Hudson River. COD September 2010.",
+      "notes": "635 MW Empire Generating combined-cycle plant (GO) on the Hudson River, Rensselaer, NY. COD September 2010. Combined on map with NAES Empire and Rensselaer Generating at the Riverside Avenue plant complex.",
       "seed": false,
       "locations": [
         {
@@ -27471,7 +27471,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "state_puc",
           "geo_source_url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7BB559B23E-3BF6-45E0-8C35-DC6C44111212%7D",
-          "geo_notes": "635 MW combined cycle plant on the Hudson River. COD September 2010."
+          "geo_notes": "635 MW Empire Generating combined-cycle plant (GO) on the Hudson River, Rensselaer, NY. COD September 2010. Combined on map with NAES Empire and Rensselaer Generating at the Riverside Avenue plant complex."
         },
         {
           "rank": 2,
@@ -28945,7 +28945,7 @@
       "source_url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7BAC803911-0F91-4AEF-8308-1D7A30E3F9ED%7D",
       "org_type": "merchant",
       "parent_org": "Greenbacker Renewable Energy Corporation",
-      "notes": "20 MW Coeymans Solar Farm phase 1 in Albany County. COD February 2024.",
+      "notes": "20 MW Coeymans Solar Farm phase 1 (GO) in Albany County, NY. COD February 2024. Combined on map with Hecate Energy Albany 2 LLC at the same project address.",
       "seed": false,
       "locations": [
         {
@@ -28960,7 +28960,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "state_puc",
           "geo_source_url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7BAC803911-0F91-4AEF-8308-1D7A30E3F9ED%7D",
-          "geo_notes": "20 MW Coeymans Solar Farm phase 1 in Albany County. COD February 2024."
+          "geo_notes": "20 MW Coeymans Solar Farm phase 1 (GO) in Albany County, NY. COD February 2024. Combined on map with Hecate Energy Albany 2 LLC at the same project address."
         },
         {
           "rank": 2,
@@ -29012,7 +29012,7 @@
       "source_url": "https://www.gridinfo.com/plant/hecate-energy-albany-2-llc/66126",
       "org_type": "merchant",
       "parent_org": "Greenbacker Renewable Energy Corporation",
-      "notes": "21 MW Coeymans Solar Farm phase 2 in Albany County. COD April 2024.",
+      "notes": "21 MW Coeymans Solar Farm phase 2 in Albany County, NY. COD April 2024. Combined on map with Hecate Energy Albany 1 LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -29027,7 +29027,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/hecate-energy-albany-2-llc/66126",
-          "geo_notes": "21 MW Coeymans Solar Farm phase 2 in Albany County. COD April 2024."
+          "geo_notes": "21 MW Coeymans Solar Farm phase 2 in Albany County, NY. COD April 2024. Combined on map with Hecate Energy Albany 1 LLC (GO)."
         },
         {
           "rank": 2,
@@ -29427,7 +29427,7 @@
       "source_url": "https://www.hydroquebec.com/contact-us/",
       "org_type": "IOU",
       "parent_org": null,
-      "notes": "Quebec provincial crown utility; headquarters at Edifice Jean-Lesage in downtown Montreal.",
+      "notes": "Quebec provincial crown utility; headquarters at Edifice Jean-Lesage in downtown Montreal. Combined on map with Hydro-Québec Reliability Coordinator (HQCF).",
       "seed": false,
       "locations": [
         {
@@ -29442,7 +29442,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.hydroquebec.com/contact-us/",
-          "geo_notes": "Quebec provincial crown utility; headquarters at Edifice Jean-Lesage in downtown Montreal."
+          "geo_notes": "Quebec provincial crown utility; headquarters at Edifice Jean-Lesage in downtown Montreal. Combined on map with Hydro-Québec Reliability Coordinator (HQCF)."
         },
         {
           "rank": 2,
@@ -29496,7 +29496,7 @@
       "source_url": "https://www.hydroquebec.com/reliability-coordinator/",
       "org_type": "other",
       "parent_org": "Hydro-Quebec",
-      "notes": "Reliability Coordinator for Quebec designated by the Regie de l'energie; DPCMEER performs RC and BA functions.",
+      "notes": "Reliability Coordinator for Quebec designated by the Regie de l'energie; DPCMEER performs the function. Combined on map with Hydro-Quebec (HQ) at Montreal headquarters.",
       "seed": false,
       "locations": [
         {
@@ -29511,7 +29511,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.hydroquebec.com/reliability-coordinator/",
-          "geo_notes": "Reliability Coordinator for Quebec designated by the Regie de l'energie; DPCMEER performs RC and BA functions."
+          "geo_notes": "Reliability Coordinator for Quebec designated by the Regie de l'energie; DPCMEER performs the function. Combined on map with Hydro-Quebec (HQ) at Montreal headquarters."
         },
         {
           "rank": 2,
@@ -30174,7 +30174,7 @@
       "source_url": "https://www.gridinfo.com/plant/kleen-energy-systems-project/56798",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "620 MW combined-cycle power plant in the Lower Connecticut River Valley.",
+      "notes": "620 MW Kleen Energy combined-cycle plant (GO) in Middletown, CT. Combined on map with NAES Corporation-Kleen Energy Systems (GOP).",
       "seed": false,
       "locations": [
         {
@@ -30189,7 +30189,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/kleen-energy-systems-project/56798",
-          "geo_notes": "620 MW combined-cycle power plant in the Lower Connecticut River Valley."
+          "geo_notes": "620 MW Kleen Energy combined-cycle plant (GO) in Middletown, CT. Combined on map with NAES Corporation-Kleen Energy Systems (GOP)."
         },
         {
           "rank": 2,
@@ -31592,7 +31592,7 @@
       "source_url": "https://dec.ny.gov/news/environmental-notice-bulletin/2022-12-07/completed-application/castleton-energy-center",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "NAES provides services for the Castleton Energy Center.",
+      "notes": "NAES GOP at Castleton Energy Center, Castleton-on-Hudson, NY. Combined on map with Castleton Power, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -31607,7 +31607,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "state_puc",
           "geo_source_url": "https://dec.ny.gov/news/environmental-notice-bulletin/2022-12-07/completed-application/castleton-energy-center",
-          "geo_notes": "NAES provides services for the Castleton Energy Center."
+          "geo_notes": "NAES GOP at Castleton Energy Center, Castleton-on-Hudson, NY. Combined on map with Castleton Power, LLC (GO)."
         },
         {
           "rank": 2,
@@ -31794,7 +31794,7 @@
       "source_url": "https://www.gridinfo.com/plant/empire-generating-co-llc/56259",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "NAES participant associated with Empire Generating Station.",
+      "notes": "NAES GOP at Empire Generating Station, Rensselaer, NY. Combined on map with Empire Generating Co, LLC and Rensselaer Generating LLC.",
       "seed": false,
       "locations": [
         {
@@ -31809,7 +31809,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/empire-generating-co-llc/56259",
-          "geo_notes": "NAES participant associated with Empire Generating Station."
+          "geo_notes": "NAES GOP at Empire Generating Station, Rensselaer, NY. Combined on map with Empire Generating Co, LLC and Rensselaer Generating LLC."
         },
         {
           "rank": 2,
@@ -32130,7 +32130,7 @@
       "source_url": "https://www.gridinfo.com/plant/kleen-energy-systems-project/56798",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "NAES participant associated with Kleen Energy Systems facility.",
+      "notes": "NAES GOP at Kleen Energy Systems plant, Middletown, CT. Combined on map with Kleen Energy Systems, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -32145,7 +32145,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/kleen-energy-systems-project/56798",
-          "geo_notes": "NAES participant associated with Kleen Energy Systems facility."
+          "geo_notes": "NAES GOP at Kleen Energy Systems plant, Middletown, CT. Combined on map with Kleen Energy Systems, LLC (GO)."
         },
         {
           "rank": 2,
@@ -34602,7 +34602,7 @@
       "source_url": "https://qesolar.com/contact",
       "org_type": "other",
       "parent_org": null,
-      "notes": "Pinned to QE Solar control room and warehouse office in Springfield.",
+      "notes": "QE Solar, LLC at Springfield, NJ corporate office. Combined on map with QE Solar ROC.",
       "seed": false,
       "locations": [
         {
@@ -34617,7 +34617,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://qesolar.com/contact",
-          "geo_notes": "Pinned to QE Solar control room and warehouse office in Springfield."
+          "geo_notes": "QE Solar, LLC at Springfield, NJ corporate office. Combined on map with QE Solar ROC."
         },
         {
           "rank": 2,
@@ -35076,7 +35076,7 @@
       "source_url": "https://dec.ny.gov/news/environmental-notice-bulletin/2022-06-29/completed-application/rensselaer-cogen-facility",
       "org_type": "merchant",
       "parent_org": null,
-      "notes": "Plant pin for Rensselaer Cogen facility.",
+      "notes": "Rensselaer Generating LLC at the Empire Generating plant complex, Rensselaer, NY. Combined on map with Empire Generating Co, LLC and NAES Corporation - Empire.",
       "seed": false,
       "locations": [
         {
@@ -35091,7 +35091,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "state_puc",
           "geo_source_url": "https://dec.ny.gov/news/environmental-notice-bulletin/2022-06-29/completed-application/rensselaer-cogen-facility",
-          "geo_notes": "Plant pin for Rensselaer Cogen facility."
+          "geo_notes": "Rensselaer Generating LLC at the Empire Generating plant complex, Rensselaer, NY. Combined on map with Empire Generating Co, LLC and NAES Corporation - Empire."
         },
         {
           "rank": 2,
@@ -36025,7 +36025,7 @@
       "source_url": "https://www.southerncompany.com/",
       "org_type": "other",
       "parent_org": "The Southern Company",
-      "notes": "Southern Power merchant generation HQ at Southern Company, 30 Ivan Allen Jr Blvd NW, Atlanta.",
+      "notes": "Southern Power Company MRO registration; Atlanta HQ. Combined on map with related Southern Power registrations.",
       "seed": false,
       "locations": [
         {
@@ -36040,7 +36040,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.southerncompany.com/",
-          "geo_notes": "Southern Power merchant generation HQ at Southern Company, 30 Ivan Allen Jr Blvd NW, Atlanta."
+          "geo_notes": "Southern Power Company MRO registration; Atlanta HQ. Combined on map with related Southern Power registrations."
         },
         {
           "rank": 2,
@@ -38468,7 +38468,7 @@
       "source_url": "https://www.sec.gov/Archives/edgar/data/50172/000000490424000020/0000004904-24-000020-index-headers.html",
       "org_type": "other",
       "parent_org": "American Electric Power Company, Inc.",
-      "notes": "Pinned to AEP principal office address in Columbus.",
+      "notes": "AEP Generation Resources; Columbus, OH HQ. Combined on map with related AEP registrations.",
       "seed": false,
       "locations": [
         {
@@ -38483,7 +38483,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.sec.gov/Archives/edgar/data/50172/000000490424000020/0000004904-24-000020-index-headers.html",
-          "geo_notes": "Pinned to AEP principal office address in Columbus."
+          "geo_notes": "AEP Generation Resources; Columbus, OH HQ. Combined on map with related AEP registrations."
         },
         {
           "rank": 2,
@@ -38535,7 +38535,7 @@
       "source_url": "https://www.aep.com/news/stories/view/6158/Invenergy-and-AEP-Renewables-Solar-Project-Lights-Up-Las-Vegas-Strip",
       "org_type": "other",
       "parent_org": "American Electric Power Company, Inc.",
-      "notes": "Pinned to AEP Renewables Columbus office.",
+      "notes": "AEP Renewables East Region; Columbus, OH HQ. Combined on map with related AEP registrations.",
       "seed": false,
       "locations": [
         {
@@ -38550,7 +38550,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.aep.com/news/stories/view/6158/Invenergy-and-AEP-Renewables-Solar-Project-Lights-Up-Las-Vegas-Strip",
-          "geo_notes": "Pinned to AEP Renewables Columbus office."
+          "geo_notes": "AEP Renewables East Region; Columbus, OH HQ. Combined on map with related AEP registrations."
         },
         {
           "rank": 2,
@@ -39083,7 +39083,7 @@
       "source_url": "https://www.aep.com/contact",
       "org_type": "other",
       "parent_org": "American Electric Power Company, Inc.",
-      "notes": "AEP Service Corporation registration as agent for multiple AEP operating and transmission companies; map combines co-located AEP registrations at Columbus HQ.",
+      "notes": "American Electric Power Service Corporation (primary AEP registration); Columbus, OH HQ. Combined on map with five related AEP registrations at the same headquarters.",
       "seed": false,
       "locations": [
         {
@@ -39098,7 +39098,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.aep.com/contact",
-          "geo_notes": "AEP Service Corporation registration as agent for multiple AEP operating and transmission companies; map combines co-located AEP registrations at Columbus HQ."
+          "geo_notes": "American Electric Power Service Corporation (primary AEP registration); Columbus, OH HQ. Combined on map with five related AEP registrations at the same headquarters."
         },
         {
           "rank": 2,
@@ -39152,7 +39152,7 @@
       "source_url": "https://www.amppartners.org/contact-us/",
       "org_type": "municipal",
       "parent_org": null,
-      "notes": "Pinned to American Municipal Power headquarters office.",
+      "notes": "American Municipal Power HQ, Columbus, OH. Combined on map with AMP Transmission, L.L.C.",
       "seed": false,
       "locations": [
         {
@@ -39167,7 +39167,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.amppartners.org/contact-us/",
-          "geo_notes": "Pinned to American Municipal Power headquarters office."
+          "geo_notes": "American Municipal Power HQ, Columbus, OH. Combined on map with AMP Transmission, L.L.C."
         },
         {
           "rank": 2,
@@ -39219,7 +39219,7 @@
       "source_url": "https://www.amppartners.org/contact-us/",
       "org_type": "municipal",
       "parent_org": "American Municipal Power Inc.",
-      "notes": "Pinned to AMP Transmission office at AMP headquarters.",
+      "notes": "AMP Transmission office at American Municipal Power headquarters, Columbus, OH. Combined on map with American Municipal Power Inc.",
       "seed": false,
       "locations": [
         {
@@ -39234,7 +39234,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.amppartners.org/contact-us/",
-          "geo_notes": "Pinned to AMP Transmission office at AMP headquarters."
+          "geo_notes": "AMP Transmission office at American Municipal Power headquarters, Columbus, OH. Combined on map with American Municipal Power Inc."
         },
         {
           "rank": 2,
@@ -40501,7 +40501,7 @@
       "source_url": "https://www.gridinfo.com/plant/big-sandy-peaker-plant/55284",
       "org_type": "merchant",
       "parent_org": "Middle River Power II, LLC",
-      "notes": "Plant pin for Big Sandy peaking gas plant in Wayne County.",
+      "notes": "Big Sandy peaking gas plant (GO) at Kenova, WV. Combined on map with NAES Corporation - Big Sandy (GOP) at the same plant site.",
       "seed": false,
       "locations": [
         {
@@ -40516,7 +40516,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/big-sandy-peaker-plant/55284",
-          "geo_notes": "Plant pin for Big Sandy peaking gas plant in Wayne County."
+          "geo_notes": "Big Sandy peaking gas plant (GO) at Kenova, WV. Combined on map with NAES Corporation - Big Sandy (GOP) at the same plant site."
         },
         {
           "rank": 2,
@@ -40636,7 +40636,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/61035-gen1",
       "org_type": "merchant",
       "parent_org": "Ares Management Corporation",
-      "notes": "Plant pin for Birdsboro combined-cycle gas plant in Berks County.",
+      "notes": "Birdsboro combined-cycle gas plant (GO) in Berks County, PA. Combined on map with NAES Corporation - Birdsboro Power (GOP) at the Armorcast Road plant site.",
       "seed": false,
       "locations": [
         {
@@ -40651,7 +40651,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/61035-gen1",
-          "geo_notes": "Plant pin for Birdsboro combined-cycle gas plant in Berks County."
+          "geo_notes": "Birdsboro combined-cycle gas plant (GO) in Berks County, PA. Combined on map with NAES Corporation - Birdsboro Power (GOP) at the Armorcast Road plant site."
         },
         {
           "rank": 2,
@@ -40975,7 +40975,7 @@
       "source_url": "https://www.gridinfo.com/plant/bluegrass-solar/63910",
       "org_type": "merchant",
       "parent_org": "MN8 Energy LLC",
-      "notes": "Plant pin for 79.6 MW Bluegrass Solar in Queen Anne's County. Category 2 GO registration (1) at the Church Hill facility.",
+      "notes": "79.6 MW Bluegrass Solar phase 1 (GO) in Queen Anne's County, MD at Church Hill. Combined on map with Bluegrass Solar, LLC (2).",
       "seed": false,
       "locations": [
         {
@@ -40990,7 +40990,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/bluegrass-solar/63910",
-          "geo_notes": "Plant pin for 79.6 MW Bluegrass Solar in Queen Anne's County. Category 2 GO registration (1) at the Church Hill facility."
+          "geo_notes": "79.6 MW Bluegrass Solar phase 1 (GO) in Queen Anne's County, MD at Church Hill. Combined on map with Bluegrass Solar, LLC (2)."
         },
         {
           "rank": 2,
@@ -41042,7 +41042,7 @@
       "source_url": "https://www.gridinfo.com/plant/bluegrass-solar/63910",
       "org_type": "merchant",
       "parent_org": "MN8 Energy LLC",
-      "notes": "Plant pin for 79.6 MW Bluegrass Solar in Queen Anne's County. Category 2 GO registration (2) at the Church Hill facility.",
+      "notes": "79.6 MW Bluegrass Solar phase 2 (GO) in Queen Anne's County, MD at Church Hill. Combined on map with Bluegrass Solar, LLC (1).",
       "seed": false,
       "locations": [
         {
@@ -41057,7 +41057,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/bluegrass-solar/63910",
-          "geo_notes": "Plant pin for 79.6 MW Bluegrass Solar in Queen Anne's County. Category 2 GO registration (2) at the Church Hill facility."
+          "geo_notes": "79.6 MW Bluegrass Solar phase 2 (GO) in Queen Anne's County, MD at Church Hill. Combined on map with Bluegrass Solar, LLC (1)."
         },
         {
           "rank": 2,
@@ -46057,7 +46057,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.dteenergy.com",
-      "notes": "DTE Electric HQ. Retires NCR-SEED-034.",
+      "notes": "DTE Electric Company HQ, Detroit Energy Plaza. Combined on map with DTE Sustainable Generation Holdings.",
       "seed": false,
       "locations": [
         {
@@ -46072,7 +46072,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.dteenergy.com",
-          "geo_notes": "DTE Electric HQ. Retires NCR-SEED-034."
+          "geo_notes": "DTE Electric Company HQ, Detroit Energy Plaza. Combined on map with DTE Sustainable Generation Holdings."
         },
         {
           "rank": 2,
@@ -46123,7 +46123,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.dteenergy.com",
-      "notes": "DTE renewables holding company.",
+      "notes": "DTE Sustainable Generation Holdings renewables portfolio; Detroit HQ. Combined on map with DTE Electric Company.",
       "seed": false,
       "locations": [
         {
@@ -46138,7 +46138,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.dteenergy.com",
-          "geo_notes": "DTE renewables holding company."
+          "geo_notes": "DTE Sustainable Generation Holdings renewables portfolio; Detroit HQ. Combined on map with DTE Electric Company."
         },
         {
           "rank": 2,
@@ -46984,7 +46984,7 @@
       "confidence": "MEDIUM",
       "source": "official_website",
       "source_url": "https://ethosenergy.com/our-locations/performance-center",
-      "notes": "EthosEnergy remote operations/monitoring center in Houston; GOP registration HQ.",
+      "notes": "EthosEnergy Performance Center GOP registration; remote operations and monitoring HQ in Houston, TX (not a plant site).",
       "seed": false,
       "locations": [
         {
@@ -46999,7 +46999,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://ethosenergy.com/our-locations/performance-center",
-          "geo_notes": "EthosEnergy remote operations/monitoring center in Houston; GOP registration HQ."
+          "geo_notes": "EthosEnergy Performance Center GOP registration; remote operations and monitoring HQ in Houston, TX (not a plant site)."
         },
         {
           "rank": 2,
@@ -47118,7 +47118,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.firstenergycorp.com",
-      "notes": "FirstEnergy agent HQ Apr 2025. Retires NCR-SEED-038.",
+      "notes": "FirstEnergy Service Company agent registration for transmission and distribution subsidiaries; Akron-area agent HQ. Replaces placeholder NCR-SEED-038.",
       "seed": false,
       "locations": [
         {
@@ -47133,7 +47133,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.firstenergycorp.com",
-          "geo_notes": "FirstEnergy agent HQ Apr 2025. Retires NCR-SEED-038."
+          "geo_notes": "FirstEnergy Service Company agent registration for transmission and distribution subsidiaries; Akron-area agent HQ. Replaces placeholder NCR-SEED-038."
         },
         {
           "rank": 2,
@@ -49158,7 +49158,7 @@
       "confidence": "MEDIUM",
       "source": "official_website",
       "source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/",
-      "notes": "Heritage Hunterstown GO record shares the Hunterstown plant site; folded with Hunterstown Combined Cycle and NAES Heritage Hunterstown into one map bubble.",
+      "notes": "Heritage Mountain GO peaker at Mount Holly Springs, PA. Combined on map with NAES Corporation Heritage Mountain (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49173,7 +49173,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://www.lspower.com/news/renewable-gateway-and-king-pine-wind-project-will-save-maine-electricity-consumers-nearly-900-million/",
-          "geo_notes": "Heritage Hunterstown GO record shares the Hunterstown plant site; folded with Hunterstown Combined Cycle and NAES Heritage Hunterstown into one map bubble."
+          "geo_notes": "Heritage Mountain GO peaker at Mount Holly Springs, PA. Combined on map with NAES Corporation Heritage Mountain (GOP)."
         },
         {
           "rank": 2,
@@ -49223,7 +49223,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage Portland GO peaker at Upper Mount Bethel Township, PA. Combined on map with NAES Corporation Heritage Portland (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49238,7 +49238,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage Portland GO peaker at Upper Mount Bethel Township, PA. Combined on map with NAES Corporation Heritage Portland (GOP)."
         },
         {
           "rank": 2,
@@ -49288,7 +49288,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage Sayreville GO peaker at Sayreville, NJ. Combined on map with NAES Corporation Heritage Sayreville (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49303,7 +49303,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage Sayreville GO peaker at Sayreville, NJ. Combined on map with NAES Corporation Heritage Sayreville (GOP)."
         },
         {
           "rank": 2,
@@ -49353,7 +49353,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage Shawville GO peaker at Shawville, PA. Combined on map with NAES Corporation Heritage Shawville (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49368,7 +49368,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage Shawville GO peaker at Shawville, PA. Combined on map with NAES Corporation Heritage Shawville (GOP)."
         },
         {
           "rank": 2,
@@ -49418,7 +49418,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage Titus GO peaker at Birdsboro, PA. Combined on map with NAES Corporation Heritage Titus (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49433,7 +49433,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage Titus GO peaker at Birdsboro, PA. Combined on map with NAES Corporation Heritage Titus (GOP)."
         },
         {
           "rank": 2,
@@ -49483,7 +49483,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage Tolna GO peaker at New Freedom, PA. Combined on map with NAES Corporation Heritage Tolna (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49498,7 +49498,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage Tolna GO peaker at New Freedom, PA. Combined on map with NAES Corporation Heritage Tolna (GOP)."
         },
         {
           "rank": 2,
@@ -49548,7 +49548,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage Brunot Island GO at Pittsburgh, PA. Combined on map with NAES Corporation Heritage Brunot Island (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49563,7 +49563,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage Brunot Island GO at Pittsburgh, PA. Combined on map with NAES Corporation Heritage Brunot Island (GOP)."
         },
         {
           "rank": 2,
@@ -49613,7 +49613,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage Gilbert GO peaker at the Gilberton, PA plant site. Combined on map with NAES Corporation Heritage Gilbert (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49628,7 +49628,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage Gilbert GO peaker at the Gilberton, PA plant site. Combined on map with NAES Corporation Heritage Gilbert (GOP)."
         },
         {
           "rank": 2,
@@ -49743,7 +49743,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "",
+      "notes": "Heritage New Castle GO peaker at New Castle, PA. Combined on map with NAES Corporation Heritage New Castle (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49758,7 +49758,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": ""
+          "geo_notes": "Heritage New Castle GO peaker at New Castle, PA. Combined on map with NAES Corporation Heritage New Castle (GOP)."
         },
         {
           "rank": 2,
@@ -49808,7 +49808,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "Aggregate Heritage single-unit peakers; pin at Warren plant.",
+      "notes": "Heritage Single Units GO portfolio; pin at Warren, PA. Combined on map with NAES Corporation Heritage Single Units (GOP).",
       "seed": false,
       "locations": [
         {
@@ -49823,7 +49823,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": "Aggregate Heritage single-unit peakers; pin at Warren plant."
+          "geo_notes": "Heritage Single Units GO portfolio; pin at Warren, PA. Combined on map with NAES Corporation Heritage Single Units (GOP)."
         },
         {
           "rank": 2,
@@ -50071,7 +50071,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "",
+      "notes": "Hill Top Energy GO at Carmichaels, PA. Combined on map with NAES Corporation-Hill Top Energy (GOP).",
       "seed": false,
       "locations": [
         {
@@ -50086,7 +50086,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": ""
+          "geo_notes": "Hill Top Energy GO at Carmichaels, PA. Combined on map with NAES Corporation-Hill Top Energy (GOP)."
         },
         {
           "rank": 2,
@@ -51130,7 +51130,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "",
+      "notes": "Invenergy GOP at Gibson Solar plant site, Gibson County, IN.",
       "seed": false,
       "locations": [
         {
@@ -51145,7 +51145,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": ""
+          "geo_notes": "Invenergy GOP at Gibson Solar plant site, Gibson County, IN."
         },
         {
           "rank": 2,
@@ -51195,7 +51195,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "",
+      "notes": "Invenergy GOP at Meadow Lake Solar Park operations address, Chalmers, IN.",
       "seed": false,
       "locations": [
         {
@@ -51210,7 +51210,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": ""
+          "geo_notes": "Invenergy GOP at Meadow Lake Solar Park operations address, Chalmers, IN."
         },
         {
           "rank": 2,
@@ -51260,7 +51260,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "",
+      "notes": "Invenergy GOP at White Tail Solar (140 MW) in Washtenaw County, MI. Combined on map with White Tail Solar, LLC.",
       "seed": false,
       "locations": [
         {
@@ -51275,7 +51275,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": ""
+          "geo_notes": "Invenergy GOP at White Tail Solar (140 MW) in Washtenaw County, MI. Combined on map with White Tail Solar, LLC."
         },
         {
           "rank": 2,
@@ -51517,7 +51517,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.jpowerusa.com/contact-us/",
-      "notes": "GOP remote ops at J-POWER USA office.",
+      "notes": "JP Remote Operations Center II GOP at J-POWER USA Schaumburg, IL office. Combined on map with JP Remote Operations Center I LLC.",
       "seed": false,
       "entity_name": "JP Remote Operations Center II LLC",
       "roles": [
@@ -51538,7 +51538,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.jpowerusa.com/contact-us/",
-          "geo_notes": "GOP remote ops at J-POWER USA office."
+          "geo_notes": "JP Remote Operations Center II GOP at J-POWER USA Schaumburg, IL office. Combined on map with JP Remote Operations Center I LLC."
         },
         {
           "rank": 2,
@@ -53882,7 +53882,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "GOP at Big Sandy Peaker.",
+      "notes": "NAES GOP at Big Sandy Peaker Plant, Kenova, WV. Combined on map with Big Sandy Peaker Plant, LLC (GO).",
       "seed": false,
       "entity_name": "NAES Corporation - Big Sandy",
       "roles": [
@@ -53903,7 +53903,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "GOP at Big Sandy Peaker."
+          "geo_notes": "NAES GOP at Big Sandy Peaker Plant, Kenova, WV. Combined on map with Big Sandy Peaker Plant, LLC (GO)."
         },
         {
           "rank": 2,
@@ -53947,7 +53947,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "GOP at Birdsboro Power.",
+      "notes": "NAES GOP at Birdsboro Power, Berks County, PA. Combined on map with Birdsboro Power LLC (GO).",
       "seed": false,
       "entity_name": "NAES Corporation - Birdsboro Power",
       "roles": [
@@ -53968,7 +53968,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "GOP at Birdsboro Power."
+          "geo_notes": "NAES GOP at Birdsboro Power, Berks County, PA. Combined on map with Birdsboro Power LLC (GO)."
         },
         {
           "rank": 2,
@@ -54535,7 +54535,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "GOP at Wolf Hills Energy.",
+      "notes": "NAES GOP at Wolf Hills Energy plant, Bristol, VA. Combined on map with Wolf Hills Energy, LLC (GO).",
       "seed": false,
       "entity_name": "NAES Corporation - Wolf Hills",
       "roles": [
@@ -54556,7 +54556,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "GOP at Wolf Hills Energy."
+          "geo_notes": "NAES GOP at Wolf Hills Energy plant, Bristol, VA. Combined on map with Wolf Hills Energy, LLC (GO)."
         },
         {
           "rank": 2,
@@ -54665,7 +54665,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Brunot Island.",
+      "notes": "NAES GOP at Heritage Brunot Island plant, Pittsburgh, PA. Combined on map with Heritage Brunot Island (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Brunot Island",
       "roles": [
@@ -54686,7 +54686,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Brunot Island."
+          "geo_notes": "NAES GOP at Heritage Brunot Island plant, Pittsburgh, PA. Combined on map with Heritage Brunot Island (GO)."
         },
         {
           "rank": 2,
@@ -54730,7 +54730,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Gilbert.",
+      "notes": "NAES GOP at Heritage Gilbert plant, Gilberton, PA. Combined on map with Heritage Gilbert (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Gilbert",
       "roles": [
@@ -54751,7 +54751,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Gilbert."
+          "geo_notes": "NAES GOP at Heritage Gilbert plant, Gilberton, PA. Combined on map with Heritage Gilbert (GO)."
         },
         {
           "rank": 2,
@@ -54860,7 +54860,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Mountain.",
+      "notes": "NAES GOP at Heritage Mountain plant, Mount Holly Springs, PA. Combined on map with Heritage Mountain (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Mountain",
       "roles": [
@@ -54881,7 +54881,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Mountain."
+          "geo_notes": "NAES GOP at Heritage Mountain plant, Mount Holly Springs, PA. Combined on map with Heritage Mountain (GO)."
         },
         {
           "rank": 2,
@@ -54925,7 +54925,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage New Castle.",
+      "notes": "NAES GOP at Heritage New Castle plant, New Castle, PA. Combined on map with Heritage New Castle (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage New Castle",
       "roles": [
@@ -54946,7 +54946,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage New Castle."
+          "geo_notes": "NAES GOP at Heritage New Castle plant, New Castle, PA. Combined on map with Heritage New Castle (GO)."
         },
         {
           "rank": 2,
@@ -54990,7 +54990,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Portland.",
+      "notes": "NAES GOP at Heritage Portland plant, Upper Mount Bethel Township, PA. Combined on map with Heritage Portland (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Portland",
       "roles": [
@@ -55011,7 +55011,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Portland."
+          "geo_notes": "NAES GOP at Heritage Portland plant, Upper Mount Bethel Township, PA. Combined on map with Heritage Portland (GO)."
         },
         {
           "rank": 2,
@@ -55055,7 +55055,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Sayreville.",
+      "notes": "NAES GOP at Heritage Sayreville plant, Sayreville, NJ. Combined on map with Heritage Sayreville (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Sayreville",
       "roles": [
@@ -55076,7 +55076,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Sayreville."
+          "geo_notes": "NAES GOP at Heritage Sayreville plant, Sayreville, NJ. Combined on map with Heritage Sayreville (GO)."
         },
         {
           "rank": 2,
@@ -55120,7 +55120,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Shawville.",
+      "notes": "NAES GOP at Heritage Shawville plant, Shawville, PA. Combined on map with Heritage Shawville (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Shawville",
       "roles": [
@@ -55141,7 +55141,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Shawville."
+          "geo_notes": "NAES GOP at Heritage Shawville plant, Shawville, PA. Combined on map with Heritage Shawville (GO)."
         },
         {
           "rank": 2,
@@ -55185,7 +55185,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage single-unit peakers.",
+      "notes": "NAES GOP for Heritage Single Units portfolio, Warren, PA. Combined on map with Heritage Single Units (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Single Units",
       "roles": [
@@ -55206,7 +55206,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage single-unit peakers."
+          "geo_notes": "NAES GOP for Heritage Single Units portfolio, Warren, PA. Combined on map with Heritage Single Units (GO)."
         },
         {
           "rank": 2,
@@ -55250,7 +55250,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Titus.",
+      "notes": "NAES GOP at Heritage Titus plant, Birdsboro, PA. Combined on map with Heritage Titus (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Titus",
       "roles": [
@@ -55271,7 +55271,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Titus."
+          "geo_notes": "NAES GOP at Heritage Titus plant, Birdsboro, PA. Combined on map with Heritage Titus (GO)."
         },
         {
           "rank": 2,
@@ -55315,7 +55315,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Heritage Tolna.",
+      "notes": "NAES GOP at Heritage Tolna plant, New Freedom, PA. Combined on map with Heritage Tolna (GO).",
       "seed": false,
       "entity_name": "NAES Corporation Heritage Tolna",
       "roles": [
@@ -55336,7 +55336,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Heritage Tolna."
+          "geo_notes": "NAES GOP at Heritage Tolna plant, New Freedom, PA. Combined on map with Heritage Tolna (GO)."
         },
         {
           "rank": 2,
@@ -55380,7 +55380,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP Hill Top Energy Center.",
+      "notes": "NAES GOP at Hill Top Energy Center, Carmichaels, PA. Combined on map with Hill Top Energy, LLC (GO).",
       "seed": false,
       "entity_name": "NAES Corporation-Hill Top Energy",
       "roles": [
@@ -55401,7 +55401,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP Hill Top Energy Center."
+          "geo_notes": "NAES GOP at Hill Top Energy Center, Carmichaels, PA. Combined on map with Hill Top Energy, LLC (GO)."
         },
         {
           "rank": 2,
@@ -59148,7 +59148,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/southern-power",
-      "notes": "Southern Power merchant generation subsidiary HQ Atlanta; multi-plant portfolio with SERC assets.",
+      "notes": "Southern Power Company RF registration; Atlanta HQ. Combined on map with related Southern Power registrations.",
       "seed": false,
       "locations": [
         {
@@ -59163,7 +59163,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/southern-power",
-          "geo_notes": "Southern Power merchant generation subsidiary HQ Atlanta; multi-plant portfolio with SERC assets."
+          "geo_notes": "Southern Power Company RF registration; Atlanta HQ. Combined on map with related Southern Power registrations."
         },
         {
           "rank": 2,
@@ -61320,7 +61320,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/67678",
-      "notes": "EIA Plant 67678 140 MW solar Washtenaw County MI on MISO.",
+      "notes": "140 MW White Tail Solar (GO, EIA plant 67678) in Washtenaw County, MI. Combined on map with Invenergy Services-White Tail (GOP).",
       "seed": false,
       "locations": [
         {
@@ -61335,7 +61335,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/67678",
-          "geo_notes": "EIA Plant 67678 140 MW solar Washtenaw County MI on MISO."
+          "geo_notes": "140 MW White Tail Solar (GO, EIA plant 67678) in Washtenaw County, MI. Combined on map with Invenergy Services-White Tail (GOP)."
         },
         {
           "rank": 2,
@@ -61581,7 +61581,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/55285",
-      "notes": "EIA Plant 55285 285 MW gas peaking Washington County VA in PJM.",
+      "notes": "285 MW Wolf Hills gas peaking plant (GO) in Washington County, VA (PJM); EIA plant 55285. Combined on map with NAES Corporation - Wolf Hills (GOP).",
       "seed": false,
       "locations": [
         {
@@ -61596,7 +61596,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/55285",
-          "geo_notes": "EIA Plant 55285 285 MW gas peaking Washington County VA in PJM."
+          "geo_notes": "285 MW Wolf Hills gas peaking plant (GO) in Washington County, VA (PJM); EIA plant 55285. Combined on map with NAES Corporation - Wolf Hills (GOP)."
         },
         {
           "rank": 2,
@@ -63042,7 +63042,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.apexcleanenergy.com/",
-      "notes": "~200 MW Apex/AWEM Lotus Wind in Macoupin County, IL; approximate GEM coordinates.",
+      "notes": "AWAM GOP at ~200 MW Lotus Wind in Macoupin County, IL. Combined on map with Lotus Wind, LLC.",
       "seed": false,
       "locations": [
         {
@@ -63057,7 +63057,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.apexcleanenergy.com/",
-          "geo_notes": "~200 MW Apex/AWEM Lotus Wind in Macoupin County, IL; approximate GEM coordinates."
+          "geo_notes": "AWAM GOP at ~200 MW Lotus Wind in Macoupin County, IL. Combined on map with Lotus Wind, LLC."
         },
         {
           "rank": 2,
@@ -63107,7 +63107,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.apexcleanenergy.com/",
-      "notes": "300 MW Prosperity Wind in Piatt County, IL; GEM approximate coordinates.",
+      "notes": "AWAM GOP at 300 MW Prosperity Wind in Piatt County, IL. Combined on map with Prosperity Wind, LLC.",
       "seed": false,
       "locations": [
         {
@@ -63122,7 +63122,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.apexcleanenergy.com/",
-          "geo_notes": "300 MW Prosperity Wind in Piatt County, IL; GEM approximate coordinates."
+          "geo_notes": "AWAM GOP at 300 MW Prosperity Wind in Piatt County, IL. Combined on map with Prosperity Wind, LLC."
         },
         {
           "rank": 2,
@@ -63237,7 +63237,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.cityofbartow.net/184/Electric",
-      "notes": "Municipal electric department operations office.",
+      "notes": "City of Bartow municipal electric department (NERC DP); 915 Stearman Street HQ. Supplemental Bartow Electric Department row is the same utility.",
       "seed": false,
       "locations": [
         {
@@ -63252,7 +63252,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.cityofbartow.net/184/Electric",
-          "geo_notes": "Municipal electric department operations office."
+          "geo_notes": "City of Bartow municipal electric department (NERC DP); 915 Stearman Street HQ. Supplemental Bartow Electric Department row is the same utility."
         },
         {
           "rank": 2,
@@ -66597,7 +66597,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.hmpl.com/contact-us.html",
-      "notes": "Municipal balancing authority and electric utility service center.",
+      "notes": "City of Henderson balancing authority registration; shares HQ with Henderson Municipal Power & Light. Combined on map with HMP&L (NCR01254).",
       "seed": false,
       "locations": [
         {
@@ -66612,7 +66612,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.hmpl.com/contact-us.html",
-          "geo_notes": "Municipal balancing authority and electric utility service center."
+          "geo_notes": "City of Henderson balancing authority registration; shares HQ with Henderson Municipal Power & Light. Combined on map with HMP&L (NCR01254)."
         },
         {
           "rank": 2,
@@ -69745,7 +69745,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.entergy.com/",
-      "notes": "Entergy Corporation corporate HQ.",
+      "notes": "Entergy Corporation corporate HQ, New Orleans, LA. Combined on map with Entergy Fossil & Hydro and Entergy Renewables.",
       "seed": false,
       "locations": [
         {
@@ -69760,7 +69760,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.entergy.com/",
-          "geo_notes": "Entergy Corporation corporate HQ."
+          "geo_notes": "Entergy Corporation corporate HQ, New Orleans, LA. Combined on map with Entergy Fossil & Hydro and Entergy Renewables."
         },
         {
           "rank": 2,
@@ -69811,7 +69811,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.entergy.com/",
-      "notes": "Entergy fossil/hydro generation portfolio; corporate HQ.",
+      "notes": "Entergy Fossil & Hydroelectric Generation portfolio; New Orleans HQ. Combined on map with Entergy Corporation and Entergy Renewables.",
       "seed": false,
       "locations": [
         {
@@ -69826,7 +69826,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.entergy.com/",
-          "geo_notes": "Entergy fossil/hydro generation portfolio; corporate HQ."
+          "geo_notes": "Entergy Fossil & Hydroelectric Generation portfolio; New Orleans HQ. Combined on map with Entergy Corporation and Entergy Renewables."
         },
         {
           "rank": 2,
@@ -69943,7 +69943,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.entergy.com/",
-      "notes": "Entergy renewables portfolio managed from corporate HQ.",
+      "notes": "Entergy Renewables portfolio; New Orleans HQ. Combined on map with Entergy Corporation and Entergy Fossil & Hydro.",
       "seed": false,
       "locations": [
         {
@@ -69958,7 +69958,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.entergy.com/",
-          "geo_notes": "Entergy renewables portfolio managed from corporate HQ."
+          "geo_notes": "Entergy Renewables portfolio; New Orleans HQ. Combined on map with Entergy Corporation and Entergy Fossil & Hydro."
         },
         {
           "rank": 2,
@@ -70073,7 +70073,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.etec.coop/",
-      "notes": "East Texas Electric Coop gas peaker San Jacinto County TX.",
+      "notes": "East Texas Electric Co-op San Jacinto County gas peaker (GO) at Shepherd, TX. Combined on map with EthosEnergy - San Jacinto County Peaking Facility (GOP).",
       "seed": false,
       "locations": [
         {
@@ -70088,7 +70088,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.etec.coop/",
-          "geo_notes": "East Texas Electric Coop gas peaker San Jacinto County TX."
+          "geo_notes": "East Texas Electric Co-op San Jacinto County gas peaker (GO) at Shepherd, TX. Combined on map with EthosEnergy - San Jacinto County Peaking Facility (GOP)."
         },
         {
           "rank": 2,
@@ -70138,7 +70138,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.ethosenergy.com/",
-      "notes": "EthosEnergy O&M at Hardin County peaker Entergy Texas.",
+      "notes": "EthosEnergy GOP at Hardin County peaking plant, Kountze, TX; O&M for Entergy Texas. Separate site from the San Jacinto County ETEC peaker.",
       "seed": false,
       "locations": [
         {
@@ -70153,7 +70153,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.ethosenergy.com/",
-          "geo_notes": "EthosEnergy O&M at Hardin County peaker Entergy Texas."
+          "geo_notes": "EthosEnergy GOP at Hardin County peaking plant, Kountze, TX; O&M for Entergy Texas. Separate site from the San Jacinto County ETEC peaker."
         },
         {
           "rank": 2,
@@ -70268,7 +70268,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.ethosenergy.com/",
-      "notes": "EthosEnergy O&M at San Jacinto County peaker.",
+      "notes": "EthosEnergy GOP at ETEC San Jacinto County peaker, Shepherd, TX. Combined on map with ETEC - San Jacinto County Peaking Facility (GO).",
       "seed": false,
       "locations": [
         {
@@ -70283,7 +70283,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.ethosenergy.com/",
-          "geo_notes": "EthosEnergy O&M at San Jacinto County peaker."
+          "geo_notes": "EthosEnergy GOP at ETEC San Jacinto County peaker, Shepherd, TX. Combined on map with ETEC - San Jacinto County Peaking Facility (GO)."
         },
         {
           "rank": 2,
@@ -73303,7 +73303,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.hmpl.com/contact-us.html",
-      "notes": "Henderson Municipal Power & Light uses HMP&L publicly; city-owned utility in Henderson, KY.",
+      "notes": "Henderson Municipal Power & Light (HMP&L) city-owned utility in Henderson, KY. Combined on map with City of Henderson BA registration (NCR11916).",
       "seed": false,
       "locations": [
         {
@@ -73318,7 +73318,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.hmpl.com/contact-us.html",
-          "geo_notes": "Henderson Municipal Power & Light uses HMP&L publicly; city-owned utility in Henderson, KY."
+          "geo_notes": "Henderson Municipal Power & Light (HMP&L) city-owned utility in Henderson, KY. Combined on map with City of Henderson BA registration (NCR11916)."
         },
         {
           "rank": 2,
@@ -73499,7 +73499,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/holland-energy-llc",
-      "notes": "Holland Energy Facility 702 MW gas Shelby County IL.",
+      "notes": "702 MW Holland Energy Facility gas plant (GO) in Beecher City, IL. Combined on map with NAES Corporation - Holland (GOP).",
       "seed": false,
       "locations": [
         {
@@ -73514,7 +73514,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/holland-energy-llc",
-          "geo_notes": "Holland Energy Facility 702 MW gas Shelby County IL."
+          "geo_notes": "702 MW Holland Energy Facility gas plant (GO) in Beecher City, IL. Combined on map with NAES Corporation - Holland (GOP)."
         },
         {
           "rank": 2,
@@ -75819,7 +75819,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/lotus-wind",
-      "notes": "~200 MW Lotus Wind in Macoupin County IL; GEM approximate coordinates.",
+      "notes": "~200 MW Lotus Wind (GO) in Macoupin County, IL. Combined on map with AWAM - Lotus Wind (GOP) at the Modesto project site.",
       "seed": false,
       "locations": [
         {
@@ -75834,7 +75834,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/lotus-wind",
-          "geo_notes": "~200 MW Lotus Wind in Macoupin County IL; GEM approximate coordinates."
+          "geo_notes": "~200 MW Lotus Wind (GO) in Macoupin County, IL. Combined on map with AWAM - Lotus Wind (GOP) at the Modesto project site."
         },
         {
           "rank": 2,
@@ -77465,7 +77465,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP at Holland Energy Facility natural gas plant Shelby County IL.",
+      "notes": "NAES GOP at Holland Energy Facility, Beecher City, IL. Combined on map with Holland Energy, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -77480,7 +77480,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP at Holland Energy Facility natural gas plant Shelby County IL."
+          "geo_notes": "NAES GOP at Holland Energy Facility, Beecher City, IL. Combined on map with Holland Energy, LLC (GO)."
         },
         {
           "rank": 2,
@@ -77660,7 +77660,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "Halifax County Biomass (South Boston Energy LLC); NAES GOP operator at plant site.",
+      "notes": "NAES GOP at South Boston Energy biomass plant, South Boston, VA. Combined on map with South Boston Energy LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -77675,7 +77675,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "Halifax County Biomass (South Boston Energy LLC); NAES GOP operator at plant site."
+          "geo_notes": "NAES GOP at South Boston Energy biomass plant, South Boston, VA. Combined on map with South Boston Energy LLC (GO)."
         },
         {
           "rank": 2,
@@ -80109,7 +80109,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/prosperity-wind",
-      "notes": "300 MW wind farm Piatt County IL; SERC registration, plant outside SERC geography.",
+      "notes": "300 MW Prosperity Wind (GO) in Piatt County, IL. Combined on map with AWAM - Prosperity Wind (GOP) at the Monticello project site.",
       "seed": false,
       "locations": [
         {
@@ -80124,7 +80124,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/prosperity-wind",
-          "geo_notes": "300 MW wind farm Piatt County IL; SERC registration, plant outside SERC geography."
+          "geo_notes": "300 MW Prosperity Wind (GO) in Piatt County, IL. Combined on map with AWAM - Prosperity Wind (GOP) at the Monticello project site."
         },
         {
           "rank": 2,
@@ -81625,7 +81625,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/south-boston-energy",
-      "notes": "Halifax County Biomass plant South Boston VA.",
+      "notes": "Halifax County biomass plant (GO) in South Boston, VA. Combined on map with NAES Corporation - South Boston Energy (GOP).",
       "seed": false,
       "locations": [
         {
@@ -81640,7 +81640,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/south-boston-energy",
-          "geo_notes": "Halifax County Biomass plant South Boston VA."
+          "geo_notes": "Halifax County biomass plant (GO) in South Boston, VA. Combined on map with NAES Corporation - South Boston Energy (GOP)."
         },
         {
           "rank": 2,
@@ -83211,7 +83211,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/68326",
-      "notes": "74.9 MW solar Shelby County TN phase II; EIA Plant 68326.",
+      "notes": "74.9 MW solar Shelby County TN phase II; EIA Plant 68326. Combined on map with SR Millington.",
       "seed": false,
       "locations": [
         {
@@ -83226,7 +83226,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/68326",
-          "geo_notes": "74.9 MW solar Shelby County TN phase II; EIA Plant 68326."
+          "geo_notes": "74.9 MW solar Shelby County TN phase II; EIA Plant 68326. Combined on map with SR Millington."
         },
         {
           "rank": 2,
@@ -83276,7 +83276,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/60560",
-      "notes": "53 MW Millington I solar Shelby County TN; EIA Plant 60560.",
+      "notes": "53 MW Millington I solar Shelby County TN; EIA Plant 60560. Combined on map with SR Millington II.",
       "seed": false,
       "locations": [
         {
@@ -83291,7 +83291,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/60560",
-          "geo_notes": "53 MW Millington I solar Shelby County TN; EIA Plant 60560."
+          "geo_notes": "53 MW Millington I solar Shelby County TN; EIA Plant 60560. Combined on map with SR Millington II."
         },
         {
           "rank": 2,
@@ -87171,7 +87171,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/7v-solar-ranch",
-      "notes": "240 MW 7V Solar Ranch in Fayette County TX.",
+      "notes": "240 MW 7V Solar Ranch (GO) in Fayette County, TX. Combined on map with Invenergy Services-7V (GOP).",
       "seed": false,
       "locations": [
         {
@@ -87186,7 +87186,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/7v-solar-ranch",
-          "geo_notes": "240 MW 7V Solar Ranch in Fayette County TX."
+          "geo_notes": "240 MW 7V Solar Ranch (GO) in Fayette County, TX. Combined on map with Invenergy Services-7V (GOP)."
         },
         {
           "rank": 2,
@@ -87502,7 +87502,7 @@
       "confidence": "MEDIUM",
       "source": "official_website",
       "source_url": "https://www.aep.com/",
-      "notes": "AEP Service Corp agent for AEP Texas and PSO; corporate HQ Columbus OH (outside TRE).",
+      "notes": "AEP Service Corp agent for AEP Texas and PSO; Columbus, OH HQ. Combined on map with related AEP registrations (outside Texas RE footprint).",
       "seed": false,
       "locations": [
         {
@@ -87517,7 +87517,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://www.aep.com/",
-          "geo_notes": "AEP Service Corp agent for AEP Texas and PSO; corporate HQ Columbus OH (outside TRE)."
+          "geo_notes": "AEP Service Corp agent for AEP Texas and PSO; Columbus, OH HQ. Combined on map with related AEP registrations (outside Texas RE footprint)."
         },
         {
           "rank": 2,
@@ -89659,7 +89659,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/64259",
-      "notes": "100 MW BPL Crown Solar in Falls County; EIA plant 64259.",
+      "notes": "100 MW BPL Crown Solar (GO) in Falls County, TX; EIA plant 64259. Combined on map with BPL Sol Solar, LLC at the same project address.",
       "seed": false,
       "locations": [
         {
@@ -89674,7 +89674,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/64259",
-          "geo_notes": "100 MW BPL Crown Solar in Falls County; EIA plant 64259."
+          "geo_notes": "100 MW BPL Crown Solar (GO) in Falls County, TX; EIA plant 64259. Combined on map with BPL Sol Solar, LLC at the same project address."
         },
         {
           "rank": 2,
@@ -89789,7 +89789,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/64260",
-      "notes": "100 MW BPL Sol Solar in Falls County; EIA plant 64260.",
+      "notes": "100 MW BPL Sol Solar in Falls County, TX; EIA plant 64260. Combined on map with BPL Crown Solar, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -89804,7 +89804,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/64260",
-          "geo_notes": "100 MW BPL Sol Solar in Falls County; EIA plant 64260."
+          "geo_notes": "100 MW BPL Sol Solar in Falls County, TX; EIA plant 64260. Combined on map with BPL Crown Solar, LLC (GO)."
         },
         {
           "rank": 2,
@@ -89919,7 +89919,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/66046",
-      "notes": "200 MW Brazoria County Solar (Danciger) in Brazoria County; EIA plant 66046.",
+      "notes": "200 MW Brazoria County Solar (GO) in Danciger, Brazoria County, TX; EIA plant 66046. Combined on map with Invenergy Services-Brazoria County (GOP).",
       "seed": false,
       "locations": [
         {
@@ -89934,7 +89934,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/66046",
-          "geo_notes": "200 MW Brazoria County Solar (Danciger) in Brazoria County; EIA plant 66046."
+          "geo_notes": "200 MW Brazoria County Solar (GO) in Danciger, Brazoria County, TX; EIA plant 66046. Combined on map with Invenergy Services-Brazoria County (GOP)."
         },
         {
           "rank": 2,
@@ -92814,7 +92814,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://austinenergy.com/about/company-profile/directory",
-      "notes": "Austin Energy municipal utility HQ.",
+      "notes": "Austin Energy municipal utility HQ. Combined on map with City of Austin GO/GOP generation registration.",
       "seed": false,
       "locations": [
         {
@@ -92829,7 +92829,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://austinenergy.com/about/company-profile/directory",
-          "geo_notes": "Austin Energy municipal utility HQ."
+          "geo_notes": "Austin Energy municipal utility HQ. Combined on map with City of Austin GO/GOP generation registration."
         },
         {
           "rank": 2,
@@ -92880,7 +92880,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://austinenergy.com/about/company-profile/directory",
-      "notes": "Same Austin Energy HQ; GO/GOP registration for municipal generation.",
+      "notes": "Same Austin Energy HQ; GO/GOP registration for municipal generation. Combined on map with Austin Energy transmission registration.",
       "seed": false,
       "locations": [
         {
@@ -92895,7 +92895,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://austinenergy.com/about/company-profile/directory",
-          "geo_notes": "Same Austin Energy HQ; GO/GOP registration for municipal generation."
+          "geo_notes": "Same Austin Energy HQ; GO/GOP registration for municipal generation. Combined on map with Austin Energy transmission registration."
         },
         {
           "rank": 2,
@@ -96895,7 +96895,7 @@
       "confidence": "MEDIUM",
       "source": "official_website",
       "source_url": "https://www.lcra.org/energy/electric-power/facilities/lost-pines-1-power-project/",
-      "notes": "LCRA affiliate; Lost Pines 1 gas plant in Bastrop County.",
+      "notes": "GEN TEX Power Corp (GO) LCRA affiliate; Austin, TX HQ registration. Combined on map with Lower Colorado River Authority (GO) and related LCRA registrations.",
       "seed": false,
       "locations": [
         {
@@ -96910,7 +96910,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://www.lcra.org/energy/electric-power/facilities/lost-pines-1-power-project/",
-          "geo_notes": "LCRA affiliate; Lost Pines 1 gas plant in Bastrop County."
+          "geo_notes": "GEN TEX Power Corp (GO) LCRA affiliate; Austin, TX HQ registration. Combined on map with Lower Colorado River Authority (GO) and related LCRA registrations."
         },
         {
           "rank": 2,
@@ -97616,7 +97616,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/grimes-county-solar-project",
-      "notes": "210 MW Grimes County Solar in Grimes County TX; Naturgy development.",
+      "notes": "Grimes County Solar Project (GO) in Grimes County, TX. Combined on map with Invenergy Services-Grimes Solar (GOP).",
       "seed": false,
       "locations": [
         {
@@ -97631,7 +97631,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/grimes-county-solar-project",
-          "geo_notes": "210 MW Grimes County Solar in Grimes County TX; Naturgy development."
+          "geo_notes": "Grimes County Solar Project (GO) in Grimes County, TX. Combined on map with Invenergy Services-Grimes Solar (GOP)."
         },
         {
           "rank": 2,
@@ -98796,7 +98796,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP portfolio; operator HQ Chicago IL (outside TRE).",
+      "notes": "Invenergy Services LLC (Texas RE registration); Chicago Wacker Drive HQ. Combined on map with MRO Invenergy Services registration.",
       "seed": false,
       "locations": [
         {
@@ -98811,7 +98811,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP portfolio; operator HQ Chicago IL (outside TRE)."
+          "geo_notes": "Invenergy Services LLC (Texas RE registration); Chicago Wacker Drive HQ. Combined on map with MRO Invenergy Services registration."
         },
         {
           "rank": 2,
@@ -98861,7 +98861,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at 240 MW 7V Solar Ranch in Fayette County TX.",
+      "notes": "Invenergy GOP at 240 MW 7V Solar Ranch in Fayette County, TX. Combined on map with 7V Solar Ranch.",
       "seed": false,
       "locations": [
         {
@@ -98876,7 +98876,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at 240 MW 7V Solar Ranch in Fayette County TX."
+          "geo_notes": "Invenergy GOP at 240 MW 7V Solar Ranch in Fayette County, TX. Combined on map with 7V Solar Ranch."
         },
         {
           "rank": 2,
@@ -98926,7 +98926,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at 200 MW Brazoria County Solar (Danciger) in Brazoria County TX.",
+      "notes": "Invenergy GOP at Brazoria County Solar plant, Danciger, TX. Combined on map with Brazoria County Solar Project, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -98941,7 +98941,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at 200 MW Brazoria County Solar (Danciger) in Brazoria County TX."
+          "geo_notes": "Invenergy GOP at Brazoria County Solar plant, Danciger, TX. Combined on map with Brazoria County Solar Project, LLC (GO)."
         },
         {
           "rank": 2,
@@ -98991,7 +98991,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at Grimes County Solar in Grimes County TX.",
+      "notes": "Invenergy GOP at Grimes County Solar in Grimes County, TX. Combined on map with Grimes County Solar Project.",
       "seed": false,
       "locations": [
         {
@@ -99006,7 +99006,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at Grimes County Solar in Grimes County TX."
+          "geo_notes": "Invenergy GOP at Grimes County Solar in Grimes County, TX. Combined on map with Grimes County Solar Project."
         },
         {
           "rank": 2,
@@ -99186,7 +99186,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at Silver Star I Wind in Erath County TX.",
+      "notes": "Invenergy GOP at Silver Star I Wind in Erath County, TX. Combined on map with Silver Star I Power Partners.",
       "seed": false,
       "locations": [
         {
@@ -99201,7 +99201,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at Silver Star I Wind in Erath County TX."
+          "geo_notes": "Invenergy GOP at Silver Star I Wind in Erath County, TX. Combined on map with Silver Star I Power Partners."
         },
         {
           "rank": 2,
@@ -99251,7 +99251,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at 198 MW Trinity Hills wind in Young County TX.",
+      "notes": "Invenergy GOP at 198 MW Trinity Hills wind in Young County, TX. Combined on map with Trinity Hills Wind Farm.",
       "seed": false,
       "locations": [
         {
@@ -99266,7 +99266,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at 198 MW Trinity Hills wind in Young County TX."
+          "geo_notes": "Invenergy GOP at 198 MW Trinity Hills wind in Young County, TX. Combined on map with Trinity Hills Wind Farm."
         },
         {
           "rank": 2,
@@ -99643,7 +99643,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.jpowerusa.com/",
-      "notes": "JP Remote Operations Center GOP; corporate office Schaumburg IL (outside TRE).",
+      "notes": "JP Remote Operations Center I GOP; J-POWER USA corporate office in Schaumburg, IL. Combined on map with JP Remote Operations Center II.",
       "seed": false,
       "locations": [
         {
@@ -99658,7 +99658,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.jpowerusa.com/",
-          "geo_notes": "JP Remote Operations Center GOP; corporate office Schaumburg IL (outside TRE)."
+          "geo_notes": "JP Remote Operations Center I GOP; J-POWER USA corporate office in Schaumburg, IL. Combined on map with JP Remote Operations Center II."
         },
         {
           "rank": 2,
@@ -101019,7 +101019,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.lcra.org/contact-us/",
-      "notes": "LCRA transmission affiliate HQ at LCRA General Office Complex Austin.",
+      "notes": "LCRA Transmission Services Corporation affiliate; Austin, TX HQ. Combined on map with Lower Colorado River Authority (GO) and related LCRA registrations.",
       "seed": false,
       "locations": [
         {
@@ -101034,7 +101034,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.lcra.org/contact-us/",
-          "geo_notes": "LCRA transmission affiliate HQ at LCRA General Office Complex Austin."
+          "geo_notes": "LCRA Transmission Services Corporation affiliate; Austin, TX HQ. Combined on map with Lower Colorado River Authority (GO) and related LCRA registrations."
         },
         {
           "rank": 2,
@@ -101477,7 +101477,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/67083-lbbes",
-      "notes": "174 MW Longbow BESS in Brazoria County TX.",
+      "notes": "174 MW Longbow BESS at Liverpool, TX. Combined on map with Longbow Solar, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -101492,7 +101492,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/67083-lbbes",
-          "geo_notes": "174 MW Longbow BESS in Brazoria County TX."
+          "geo_notes": "174 MW Longbow BESS at Liverpool, TX. Combined on map with Longbow Solar, LLC (GO)."
         },
         {
           "rank": 2,
@@ -101542,7 +101542,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/longbow-solar-llc",
-      "notes": "Longbow Solar hybrid site in Brazoria County TX.",
+      "notes": "Longbow Solar (GO) at Liverpool, TX hybrid site. Combined on map with Longbow BESS, LLC (~960 m apart).",
       "seed": false,
       "locations": [
         {
@@ -101557,7 +101557,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/longbow-solar-llc",
-          "geo_notes": "Longbow Solar hybrid site in Brazoria County TX."
+          "geo_notes": "Longbow Solar (GO) at Liverpool, TX hybrid site. Combined on map with Longbow BESS, LLC (~960 m apart)."
         },
         {
           "rank": 2,
@@ -101935,7 +101935,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/los-vientos-windpower-iii",
-      "notes": "200 MW Los Vientos III in Starr County TX.",
+      "notes": "200 MW Los Vientos III (GO) in Starr County, TX. Combined on map with Los Vientos Windpower IV at the Rio Grande City wind complex.",
       "seed": false,
       "locations": [
         {
@@ -101950,7 +101950,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/los-vientos-windpower-iii",
-          "geo_notes": "200 MW Los Vientos III in Starr County TX."
+          "geo_notes": "200 MW Los Vientos III (GO) in Starr County, TX. Combined on map with Los Vientos Windpower IV at the Rio Grande City wind complex."
         },
         {
           "rank": 2,
@@ -102000,7 +102000,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/los-vientos-windpower-iv",
-      "notes": "200 MW Los Vientos IV in Starr County TX.",
+      "notes": "200 MW Los Vientos IV in Starr County, TX. Combined on map with Los Vientos Windpower III (GO).",
       "seed": false,
       "locations": [
         {
@@ -102015,7 +102015,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/los-vientos-windpower-iv",
-          "geo_notes": "200 MW Los Vientos IV in Starr County TX."
+          "geo_notes": "200 MW Los Vientos IV in Starr County, TX. Combined on map with Los Vientos Windpower III (GO)."
         },
         {
           "rank": 2,
@@ -102130,7 +102130,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.lcra.org/contact-us/",
-      "notes": "LCRA GOP registration; HQ at General Office Complex Austin.",
+      "notes": "LCRA GOP registration; Austin, TX HQ at Lake Austin Boulevard. Combined on map with Lower Colorado River Authority (GO) and related LCRA registrations.",
       "seed": false,
       "locations": [
         {
@@ -102145,7 +102145,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.lcra.org/contact-us/",
-          "geo_notes": "LCRA GOP registration; HQ at General Office Complex Austin."
+          "geo_notes": "LCRA GOP registration; Austin, TX HQ at Lake Austin Boulevard. Combined on map with Lower Colorado River Authority (GO) and related LCRA registrations."
         },
         {
           "rank": 2,
@@ -102195,7 +102195,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.lcra.org/contact-us/",
-      "notes": "LCRA GO registration; wholesale generation operator HQ Austin.",
+      "notes": "Lower Colorado River Authority (GO) wholesale generation operator; Austin, TX HQ. Combined on map with LCRA GOP, LCRA Transmission, and GEN TEX Power Corp at Lake Austin Boulevard.",
       "seed": false,
       "locations": [
         {
@@ -102210,7 +102210,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.lcra.org/contact-us/",
-          "geo_notes": "LCRA GO registration; wholesale generation operator HQ Austin."
+          "geo_notes": "Lower Colorado River Authority (GO) wholesale generation operator; Austin, TX HQ. Combined on map with LCRA GOP, LCRA Transmission, and GEN TEX Power Corp at Lake Austin Boulevard."
         },
         {
           "rank": 2,
@@ -102520,7 +102520,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/major-oak-power",
-      "notes": "174.6 MW lignite coal plant in Robertson County TX.",
+      "notes": "174.6 MW Major Oak lignite coal plant (GO) in Robertson County, TX. Combined on map with NAES Corporation - Major Oak Power (GOP).",
       "seed": false,
       "locations": [
         {
@@ -102535,7 +102535,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/major-oak-power",
-          "geo_notes": "174.6 MW lignite coal plant in Robertson County TX."
+          "geo_notes": "174.6 MW Major Oak lignite coal plant (GO) in Robertson County, TX. Combined on map with NAES Corporation - Major Oak Power (GOP)."
         },
         {
           "rank": 2,
@@ -103701,7 +103701,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP operator at Major Oak coal plant Robertson County TX.",
+      "notes": "NAES GOP at Major Oak Power plant, Robertson County, TX. Combined on map with Major Oak Power, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -103716,7 +103716,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP operator at Major Oak coal plant Robertson County TX."
+          "geo_notes": "NAES GOP at Major Oak Power plant, Robertson County, TX. Combined on map with Major Oak Power, LLC (GO)."
         },
         {
           "rank": 2,
@@ -103964,7 +103964,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP operator at Sandy Creek coal plant McLennan County TX.",
+      "notes": "NAES GOP at Sandy Creek Energy Station coal plant, Riesel, TX. Combined on map with Sandy Creek Services, LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -103979,7 +103979,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP operator at Sandy Creek coal plant McLennan County TX."
+          "geo_notes": "NAES GOP at Sandy Creek Energy Station coal plant, Riesel, TX. Combined on map with Sandy Creek Services, LLC (GO)."
         },
         {
           "rank": 2,
@@ -104293,7 +104293,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.nrg.com/",
-      "notes": "NRG GOP operator at Petra Nova carbon capture cogen W.A. Parish site.",
+      "notes": "NRG GOP operator at Petra Nova carbon capture cogen W.A. Parish site. Combined on map with Petra Nova Power I.",
       "seed": false,
       "locations": [
         {
@@ -104308,7 +104308,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": "NRG GOP operator at Petra Nova carbon capture cogen W.A. Parish site."
+          "geo_notes": "NRG GOP operator at Petra Nova carbon capture cogen W.A. Parish site. Combined on map with Petra Nova Power I."
         },
         {
           "rank": 2,
@@ -105346,7 +105346,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/petra-nova-power-i",
-      "notes": "Petra Nova carbon capture cogen at W.A. Parish Fort Bend County TX.",
+      "notes": "Petra Nova carbon capture cogen (GO) at W.A. Parish, Fort Bend County, TX. Combined on map with NRG Energy Services Petra Nova (GOP).",
       "seed": false,
       "locations": [
         {
@@ -105361,7 +105361,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/petra-nova-power-i",
-          "geo_notes": "Petra Nova carbon capture cogen at W.A. Parish Fort Bend County TX."
+          "geo_notes": "Petra Nova carbon capture cogen (GO) at W.A. Parish, Fort Bend County, TX. Combined on map with NRG Energy Services Petra Nova (GOP)."
         },
         {
           "rank": 2,
@@ -106196,7 +106196,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.qcells.com/us/",
-      "notes": "QE Solar ROC GOP; operator office outside TX (NJ).",
+      "notes": "QE Solar ROC GOP; Springfield, NJ corporate office. Combined on map with QE Solar, LLC (Texas RE and NPCC registrations).",
       "seed": false,
       "locations": [
         {
@@ -106211,7 +106211,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.qcells.com/us/",
-          "geo_notes": "QE Solar ROC GOP; operator office outside TX (NJ)."
+          "geo_notes": "QE Solar ROC GOP; Springfield, NJ corporate office. Combined on map with QE Solar, LLC (Texas RE and NPCC registrations)."
         },
         {
           "rank": 2,
@@ -106788,7 +106788,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.res-group.com/",
-      "notes": "RES America Asset Management GOP; parent HQ Broomfield CO.",
+      "notes": "RES America Asset Management GOP at Denver, CO office. Combined on map with RES Energy Services Inc.",
       "seed": false,
       "locations": [
         {
@@ -106803,7 +106803,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.res-group.com/",
-          "geo_notes": "RES America Asset Management GOP; parent HQ Broomfield CO."
+          "geo_notes": "RES America Asset Management GOP at Denver, CO office. Combined on map with RES Energy Services Inc."
         },
         {
           "rank": 2,
@@ -106983,7 +106983,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.res-group.com/",
-      "notes": "RES Energy Services GOP; corporate HQ Broomfield CO (outside TRE).",
+      "notes": "RES Energy Services GOP; Denver, CO office. Combined on map with RES America Asset Management - Chisholm.",
       "seed": false,
       "locations": [
         {
@@ -106998,7 +106998,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.res-group.com/",
-          "geo_notes": "RES Energy Services GOP; corporate HQ Broomfield CO (outside TRE)."
+          "geo_notes": "RES Energy Services GOP; Denver, CO office. Combined on map with RES America Asset Management - Chisholm."
         },
         {
           "rank": 2,
@@ -107902,7 +107902,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.sandycreekpower.net/",
-      "notes": "Operator of Sandy Creek Energy Station coal plant.",
+      "notes": "Sandy Creek Services (GO) operator at Sandy Creek Energy Station coal plant, Riesel, TX. Combined on map with NAES Corporation Sandy Creek (GOP).",
       "seed": false,
       "locations": [
         {
@@ -107917,7 +107917,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.sandycreekpower.net/",
-          "geo_notes": "Operator of Sandy Creek Energy Station coal plant."
+          "geo_notes": "Sandy Creek Services (GO) operator at Sandy Creek Energy Station coal plant, Riesel, TX. Combined on map with NAES Corporation Sandy Creek (GOP)."
         },
         {
           "rank": 2,
@@ -109015,7 +109015,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/silver-star-i-power-partners",
-      "notes": "60 MW wind in Erath County TX.",
+      "notes": "Silver Star I Power Partners (GO) wind in Erath County, TX. Combined on map with Invenergy Services-Silver Star (GOP).",
       "seed": false,
       "locations": [
         {
@@ -109030,7 +109030,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/silver-star-i-power-partners",
-          "geo_notes": "60 MW wind in Erath County TX."
+          "geo_notes": "Silver Star I Power Partners (GO) wind in Erath County, TX. Combined on map with Invenergy Services-Silver Star (GOP)."
         },
         {
           "rank": 2,
@@ -109938,7 +109938,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.jupiterpower.io/",
-      "notes": "100 MW Jupiter Power BESS in Pecos County TX.",
+      "notes": "100 MW St. Gall Energy Storage I BESS (GO) in Pecos County, TX. Combined on map with St. Gall Energy Storage II at the Fort Stockton site.",
       "seed": false,
       "locations": [
         {
@@ -109953,7 +109953,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.jupiterpower.io/",
-          "geo_notes": "100 MW Jupiter Power BESS in Pecos County TX."
+          "geo_notes": "100 MW St. Gall Energy Storage I BESS (GO) in Pecos County, TX. Combined on map with St. Gall Energy Storage II at the Fort Stockton site."
         },
         {
           "rank": 2,
@@ -110003,7 +110003,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.jupiterpower.io/",
-      "notes": "100 MW Jupiter Power BESS phase 2 in Pecos County TX.",
+      "notes": "100 MW St. Gall Energy Storage II BESS in Pecos County, TX. Combined on map with St. Gall Energy Storage I LLC (GO).",
       "seed": false,
       "locations": [
         {
@@ -110018,7 +110018,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.jupiterpower.io/",
-          "geo_notes": "100 MW Jupiter Power BESS phase 2 in Pecos County TX."
+          "geo_notes": "100 MW St. Gall Energy Storage II BESS in Pecos County, TX. Combined on map with St. Gall Energy Storage I LLC (GO)."
         },
         {
           "rank": 2,
@@ -112303,7 +112303,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/trinity-hills-wind-farm",
-      "notes": "225 MW Trinity Hills wind; Archer and Young counties TX.",
+      "notes": "198 MW Trinity Hills Wind Farm (GO) in Young County, TX. Combined on map with Invenergy Services-Trinity Hills (GOP).",
       "seed": false,
       "locations": [
         {
@@ -112318,7 +112318,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/trinity-hills-wind-farm",
-          "geo_notes": "225 MW Trinity Hills wind; Archer and Young counties TX."
+          "geo_notes": "198 MW Trinity Hills Wind Farm (GO) in Young County, TX. Combined on map with Invenergy Services-Trinity Hills (GOP)."
         },
         {
           "rank": 2,
@@ -118957,7 +118957,7 @@
       "confidence": "HIGH",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/calpeak-power-panoche-peaker-plant/55508",
-      "notes": "60 MW gas peaker, western Fresno County CA.",
+      "notes": "Calpeak Power Panoche (GO) gas peaker, western Fresno County, CA. Combined on map with Panoche Energy Center and related plant registrations.",
       "seed": false,
       "locations": [
         {
@@ -118972,7 +118972,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/calpeak-power-panoche-peaker-plant/55508",
-          "geo_notes": "60 MW gas peaker, western Fresno County CA."
+          "geo_notes": "Calpeak Power Panoche (GO) gas peaker, western Fresno County, CA. Combined on map with Panoche Energy Center and related plant registrations."
         },
         {
           "rank": 2,
@@ -128246,7 +128246,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/huntington",
-      "notes": "Burnt River wind portfolio (~50 MW) near Huntington OR; Idaho Power offtake.",
+      "notes": "Huntington Wind Projects (GO) in Baker County, OR. Combined on map with Invenergy Services-Huntington (GOP).",
       "seed": false,
       "locations": [
         {
@@ -128261,7 +128261,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/huntington",
-          "geo_notes": "Burnt River wind portfolio (~50 MW) near Huntington OR; Idaho Power offtake."
+          "geo_notes": "Huntington Wind Projects (GO) in Baker County, OR. Combined on map with Invenergy Services-Huntington (GOP)."
         },
         {
           "rank": 2,
@@ -129045,7 +129045,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at Burnt River/Huntington wind portfolio in Baker County OR.",
+      "notes": "Invenergy GOP at Burnt River/Huntington wind portfolio in Baker County, OR. Combined on map with Huntington Wind Projects.",
       "seed": false,
       "locations": [
         {
@@ -129060,7 +129060,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at Burnt River/Huntington wind portfolio in Baker County OR."
+          "geo_notes": "Invenergy GOP at Burnt River/Huntington wind portfolio in Baker County, OR. Combined on map with Huntington Wind Projects."
         },
         {
           "rank": 2,
@@ -129240,7 +129240,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at Rancho Seco Solar II (160 MW) in Sacramento County.",
+      "notes": "Invenergy GOP at Rancho Seco Solar II (160 MW) in Sacramento County, CA. Combined on map with Rancho Seco Solar II.",
       "seed": false,
       "locations": [
         {
@@ -129255,7 +129255,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at Rancho Seco Solar II (160 MW) in Sacramento County."
+          "geo_notes": "Invenergy GOP at Rancho Seco Solar II (160 MW) in Sacramento County, CA. Combined on map with Rancho Seco Solar II."
         },
         {
           "rank": 2,
@@ -129305,7 +129305,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.invenergy.com/",
-      "notes": "Invenergy GOP at SloughHouse Solar (50 MW) in Sacramento County.",
+      "notes": "Invenergy GOP at SloughHouse Solar (50 MW) in Sacramento County, CA. Combined on map with SloughHouse Solar.",
       "seed": false,
       "locations": [
         {
@@ -129320,7 +129320,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "Invenergy GOP at SloughHouse Solar (50 MW) in Sacramento County."
+          "geo_notes": "Invenergy GOP at SloughHouse Solar (50 MW) in Sacramento County, CA. Combined on map with SloughHouse Solar."
         },
         {
           "rank": 2,
@@ -129696,7 +129696,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/65103",
-      "notes": "62.5 MW Jicarilla Solar 2 in Rio Arriba County; EIA plant 65103.",
+      "notes": "62.5 MW Jicarilla Solar 2 (GOP) in Rio Arriba County, NM; EIA plant 65103. Combined on map with Jicarilla Energy Center.",
       "seed": false,
       "locations": [
         {
@@ -129711,7 +129711,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/65103",
-          "geo_notes": "62.5 MW Jicarilla Solar 2 in Rio Arriba County; EIA plant 65103."
+          "geo_notes": "62.5 MW Jicarilla Solar 2 (GOP) in Rio Arriba County, NM; EIA plant 65103. Combined on map with Jicarilla Energy Center."
         },
         {
           "rank": 2,
@@ -130874,7 +130874,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/65103",
-      "notes": "Jicarilla Solar 2 on Jicarilla Apache Nation land Rio Arriba County; EIA plant 65103.",
+      "notes": "Lighthouse Renewables Jicarilla Energy Center (GO) in Rio Arriba County, NM. Combined on map with Jicarilla 2 (GOP).",
       "seed": false,
       "locations": [
         {
@@ -130889,7 +130889,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/65103",
-          "geo_notes": "Jicarilla Solar 2 on Jicarilla Apache Nation land Rio Arriba County; EIA plant 65103."
+          "geo_notes": "Lighthouse Renewables Jicarilla Energy Center (GO) in Rio Arriba County, NM. Combined on map with Jicarilla 2 (GOP)."
         },
         {
           "rank": 2,
@@ -131005,7 +131005,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/59870",
-      "notes": "40 MW Longroad solar Fresno County; EIA plant 59870.",
+      "notes": "40 MW Longroad solar Fresno County; EIA plant 59870. Combined on map with Little Bear Solar 3 at Mendota project address.",
       "seed": false,
       "locations": [
         {
@@ -131020,7 +131020,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/59870",
-          "geo_notes": "40 MW Longroad solar Fresno County; EIA plant 59870."
+          "geo_notes": "40 MW Longroad solar Fresno County; EIA plant 59870. Combined on map with Little Bear Solar 3 at Mendota project address."
         },
         {
           "rank": 2,
@@ -131070,7 +131070,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/59870",
-      "notes": "Little Bear Solar complex phase 3 Mendota area; EIA plant 59870 cluster.",
+      "notes": "Little Bear Solar complex phase 3 Mendota area; EIA plant 59870 cluster. Combined on map with Little Bear Solar 1.",
       "seed": false,
       "locations": [
         {
@@ -131085,7 +131085,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/59870",
-          "geo_notes": "Little Bear Solar complex phase 3 Mendota area; EIA plant 59870 cluster."
+          "geo_notes": "Little Bear Solar complex phase 3 Mendota area; EIA plant 59870 cluster. Combined on map with Little Bear Solar 1."
         },
         {
           "rank": 2,
@@ -133252,7 +133252,7 @@
       "confidence": "MEDIUM",
       "source": "official_website",
       "source_url": "https://terra-gen.com/terragen_project/mojave-3-4-5/",
-      "notes": "67 MW Terra-Gen Mojave 3/4/5 wind project in Kern County, CA; prior solar wording was incorrect.",
+      "notes": "67 MW Terra-Gen Mojave 3/4/5 wind project in Kern County, CA. Combined on map with Sagebrush ESS at the Sagebrush complex.",
       "seed": false,
       "locations": [
         {
@@ -133267,7 +133267,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://terra-gen.com/terragen_project/mojave-3-4-5/",
-          "geo_notes": "67 MW Terra-Gen Mojave 3/4/5 wind project in Kern County, CA; prior solar wording was incorrect."
+          "geo_notes": "67 MW Terra-Gen Mojave 3/4/5 wind project in Kern County, CA. Combined on map with Sagebrush ESS at the Sagebrush complex."
         },
         {
           "rank": 2,
@@ -133777,7 +133777,7 @@
       "confidence": "MEDIUM",
       "source": "official_website",
       "source_url": "https://www.nppd.com/mean",
-      "notes": "MEAN HQ Lincoln NE; registered WECC RP—HQ outside WECC footprint.",
+      "notes": "MEAN WECC registration; Lincoln, NE HQ. Combined on map with Municipal Energy Agency of Nebraska (MRO).",
       "seed": false,
       "locations": [
         {
@@ -133792,7 +133792,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://www.nppd.com/mean",
-          "geo_notes": "MEAN HQ Lincoln NE; registered WECC RP—HQ outside WECC footprint."
+          "geo_notes": "MEAN WECC registration; Lincoln, NE HQ. Combined on map with Municipal Energy Agency of Nebraska (MRO)."
         },
         {
           "rank": 2,
@@ -133973,7 +133973,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP; operator HQ Issaquah WA—dot at served plant in WECC.",
+      "notes": "NAES GOP at Panoche peaker plant, Fresno County, CA. Combined on map with Panoche Energy Center and related plant registrations.",
       "seed": false,
       "locations": [
         {
@@ -133988,7 +133988,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP; operator HQ Issaquah WA—dot at served plant in WECC."
+          "geo_notes": "NAES GOP at Panoche peaker plant, Fresno County, CA. Combined on map with Panoche Energy Center and related plant registrations."
         },
         {
           "rank": 2,
@@ -134301,7 +134301,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP; operator HQ Issaquah WA—dot at served plant in WECC.",
+      "notes": "NAES GOP at Plains End plant site, Arvada, CO. Combined on map with Plains End, LLC and Plains End II (GO).",
       "seed": false,
       "locations": [
         {
@@ -134316,7 +134316,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP; operator HQ Issaquah WA—dot at served plant in WECC."
+          "geo_notes": "NAES GOP at Plains End plant site, Arvada, CO. Combined on map with Plains End, LLC and Plains End II (GO)."
         },
         {
           "rank": 2,
@@ -134366,7 +134366,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.naes.com/",
-      "notes": "NAES GOP; operator HQ Issaquah WA—dot at served plant in WECC.",
+      "notes": "NAES GOP at Rathdrum Power plant, Kootenai County ID. Combined on map with Rathdrum Power, LLC.",
       "seed": false,
       "locations": [
         {
@@ -134381,7 +134381,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.naes.com/",
-          "geo_notes": "NAES GOP; operator HQ Issaquah WA—dot at served plant in WECC."
+          "geo_notes": "NAES GOP at Rathdrum Power plant, Kootenai County ID. Combined on map with Rathdrum Power, LLC."
         },
         {
           "rank": 2,
@@ -135688,7 +135688,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.northwesternenergy.com",
-      "notes": "NorthWestern Energy corporate HQ; WECC operations primarily Montana.",
+      "notes": "NorthWestern Energy corporate HQ, Sioux Falls, SD; WECC BA/operations. Combined on map with NorthWestern Energy Public Service (MRO).",
       "seed": false,
       "locations": [
         {
@@ -135703,7 +135703,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.northwesternenergy.com",
-          "geo_notes": "NorthWestern Energy corporate HQ; WECC operations primarily Montana."
+          "geo_notes": "NorthWestern Energy corporate HQ, Sioux Falls, SD; WECC BA/operations. Combined on map with NorthWestern Energy Public Service (MRO)."
         },
         {
           "rank": 2,
@@ -135753,7 +135753,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.nrg.com/",
-      "notes": "NRG GOP at Carlsbad Energy Center; operator HQ outside WECC—dot at plant.",
+      "notes": "NRG GOP at Carlsbad Energy Center, Carlsbad, CA. Operator registration HQ outside the served plant region.",
       "seed": false,
       "locations": [
         {
@@ -135768,7 +135768,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": "NRG GOP at Carlsbad Energy Center; operator HQ outside WECC—dot at plant."
+          "geo_notes": "NRG GOP at Carlsbad Energy Center, Carlsbad, CA. Operator registration HQ outside the served plant region."
         },
         {
           "rank": 2,
@@ -135818,7 +135818,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.nrg.com/",
-      "notes": "NRG GOP at El Segundo Energy Center; operator HQ outside WECC.",
+      "notes": "NRG GOP at El Segundo Energy Center, El Segundo, CA. Operator registration HQ outside the served plant region.",
       "seed": false,
       "locations": [
         {
@@ -135833,7 +135833,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": "NRG GOP at El Segundo Energy Center; operator HQ outside WECC."
+          "geo_notes": "NRG GOP at El Segundo Energy Center, El Segundo, CA. Operator registration HQ outside the served plant region."
         },
         {
           "rank": 2,
@@ -135948,7 +135948,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.nrg.com/",
-      "notes": "NRG GOP at Walnut Creek Energy Park; operator HQ outside WECC.",
+      "notes": "NRG GOP at Walnut Creek Energy Park, City of Industry, CA. Operator registration HQ outside the served plant region.",
       "seed": false,
       "locations": [
         {
@@ -135963,7 +135963,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.nrg.com/",
-          "geo_notes": "NRG GOP at Walnut Creek Energy Park; operator HQ outside WECC."
+          "geo_notes": "NRG GOP at Walnut Creek Energy Park, City of Industry, CA. Operator registration HQ outside the served plant region."
         },
         {
           "rank": 2,
@@ -136939,7 +136939,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/56516",
-      "notes": "EIA plant 56516 Plains End II gas peaking; co-located with Plains End I.",
+      "notes": "Plains End II gas peaking plant (GO) in Arvada, CO; EIA plant 56516. Combined on map with Plains End, LLC and NAES Corporation - Plains End.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -136956,7 +136956,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/56516",
-          "geo_notes": "EIA plant 56516 Plains End II gas peaking; co-located with Plains End I."
+          "geo_notes": "Plains End II gas peaking plant (GO) in Arvada, CO; EIA plant 56516. Combined on map with Plains End, LLC and NAES Corporation - Plains End."
         },
         {
           "rank": 2,
@@ -137074,7 +137074,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/55650",
-      "notes": "EIA plant 55650 Plains End I gas peaking Jefferson County CO.",
+      "notes": "Plains End I gas peaking plant (GO) in Arvada, CO; EIA plant 55650. Combined on map with Plains End II and NAES Corporation - Plains End at Highway 93.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137091,7 +137091,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/55650",
-          "geo_notes": "EIA plant 55650 Plains End I gas peaking Jefferson County CO."
+          "geo_notes": "Plains End I gas peaking plant (GO) in Arvada, CO; EIA plant 55650. Combined on map with Plains End II and NAES Corporation - Plains End at Highway 93."
         },
         {
           "rank": 2,
@@ -138148,7 +138148,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/55874",
-      "notes": "EIA plant 55874 Wellhead Power Panoche; 56.7 MW gas peaker Fresno County CA.",
+      "notes": "Wellhead Power Panoche (GO) gas peaker; EIA plant 55874. Combined on map with Panoche Energy Center at West Panoche Road.",
       "seed": false,
       "skip": false,
       "skip_reason": "",
@@ -138165,7 +138165,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/55874",
-          "geo_notes": "EIA plant 55874 Wellhead Power Panoche; 56.7 MW gas peaker Fresno County CA."
+          "geo_notes": "Wellhead Power Panoche (GO) gas peaker; EIA plant 55874. Combined on map with Panoche Energy Center at West Panoche Road."
         },
         {
           "rank": 2,
@@ -138215,7 +138215,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/55874",
-      "notes": "GOP at Panoche peaker plant (EIA 55874); not corporate HQ.",
+      "notes": "Wellhead Services GOP at Panoche peaker plant. Combined on map with Panoche Energy Center and related plant registrations.",
       "seed": false,
       "skip": false,
       "skip_reason": "",
@@ -138232,7 +138232,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/55874",
-          "geo_notes": "GOP at Panoche peaker plant (EIA 55874); not corporate HQ."
+          "geo_notes": "Wellhead Services GOP at Panoche peaker plant. Combined on map with Panoche Energy Center and related plant registrations."
         },
         {
           "rank": 2,
@@ -141893,7 +141893,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/56803",
-      "notes": "EIA plant 56803; gas peaker western Fresno County.",
+      "notes": "Panoche Energy Center (GO) gas peaker, western Fresno County, CA. Combined on map with Calpeak Panoche, Wellhead Power, and GOP operators at West Panoche Road.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -141910,7 +141910,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/56803",
-          "geo_notes": "EIA plant 56803; gas peaker western Fresno County."
+          "geo_notes": "Panoche Energy Center (GO) gas peaker, western Fresno County, CA. Combined on map with Calpeak Panoche, Wellhead Power, and GOP operators at West Panoche Road."
         },
         {
           "rank": 2,
@@ -142234,7 +142234,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/63387",
-      "notes": "EIA plant 63387; 160 MW solar Sacramento County CA.",
+      "notes": "Rancho Seco Solar II (GO, 160 MW) in Sacramento County, CA. Combined on map with Invenergy Services-Rancho Seco II (GOP).",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -142251,7 +142251,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/63387",
-          "geo_notes": "EIA plant 63387; 160 MW solar Sacramento County CA."
+          "geo_notes": "Rancho Seco Solar II (GO, 160 MW) in Sacramento County, CA. Combined on map with Invenergy Services-Rancho Seco II (GOP)."
         },
         {
           "rank": 2,
@@ -142301,7 +142301,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/55179",
-      "notes": "EIA plant 55179; 302 MW gas combined-cycle Kootenai County ID.",
+      "notes": "EIA plant 55179; 302 MW gas combined-cycle Kootenai County ID. Combined on map with NAES Corporation - Rathdrum Power (GOP).",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -142318,7 +142318,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/55179",
-          "geo_notes": "EIA plant 55179; 302 MW gas combined-cycle Kootenai County ID."
+          "geo_notes": "EIA plant 55179; 302 MW gas combined-cycle Kootenai County ID. Combined on map with NAES Corporation - Rathdrum Power (GOP)."
         },
         {
           "rank": 2,
@@ -143173,7 +143173,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/67823",
-      "notes": "EIA plant 67823 Apache Solar II; 940 MWh BESS Cochise County AZ (Clenera).",
+      "notes": "Roadrunner Battery Storage hybrid site, Cochise County AZ. Combined on map with Roadrunner Solar LLC.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -143190,7 +143190,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/67823",
-          "geo_notes": "EIA plant 67823 Apache Solar II; 940 MWh BESS Cochise County AZ (Clenera)."
+          "geo_notes": "Roadrunner Battery Storage hybrid site, Cochise County AZ. Combined on map with Roadrunner Solar LLC."
         },
         {
           "rank": 2,
@@ -143240,7 +143240,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/67823",
-      "notes": "EIA plant 67823 Apache Solar II; 298 MWdc solar Cochise County AZ (Clenera).",
+      "notes": "EIA plant 67823 Apache Solar II; 298 MWdc solar Cochise County AZ. Combined on map with Roadrunner Battery Storage at Cochise Stronghold Road.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -143257,7 +143257,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/67823",
-          "geo_notes": "EIA plant 67823 Apache Solar II; 298 MWdc solar Cochise County AZ (Clenera)."
+          "geo_notes": "EIA plant 67823 Apache Solar II; 298 MWdc solar Cochise County AZ. Combined on map with Roadrunner Battery Storage at Cochise Stronghold Road."
         },
         {
           "rank": 2,
@@ -143987,7 +143987,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/65933",
-      "notes": "EIA plant 65933; 80 MW battery Kern County CA (Terra-Gen Sagebrush complex).",
+      "notes": "EIA plant 65933; 80 MW battery Kern County CA (Terra-Gen Sagebrush complex). Combined on map with Mojave 3/4/5 wind.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -144004,7 +144004,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/65933",
-          "geo_notes": "EIA plant 65933; 80 MW battery Kern County CA (Terra-Gen Sagebrush complex)."
+          "geo_notes": "EIA plant 65933; 80 MW battery Kern County CA (Terra-Gen Sagebrush complex). Combined on map with Mojave 3/4/5 wind."
         },
         {
           "rank": 2,
@@ -146031,7 +146031,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/sloughhouse-solar",
-      "notes": "50 MW solar in unincorporated Sacramento County; SMUD offtake; D.E. Shaw.",
+      "notes": "SloughHouse Solar (GO, 50 MW) in Sacramento County, CA. Combined on map with Invenergy Services-SloughHouse (GOP).",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -146048,7 +146048,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/sloughhouse-solar",
-          "geo_notes": "50 MW solar in unincorporated Sacramento County; SMUD offtake; D.E. Shaw."
+          "geo_notes": "SloughHouse Solar (GO, 50 MW) in Sacramento County, CA. Combined on map with Invenergy Services-SloughHouse (GOP)."
         },
         {
           "rank": 2,
@@ -146981,7 +146981,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.southernpowercompany.com/",
-      "notes": "Southern Company wholesale generation subsidiary; owns WECC assets in CA, NV, and other states.",
+      "notes": "Southern Power Company WECC registration; Atlanta HQ. Combined on map with related Southern Power registrations.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -146998,7 +146998,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.southernpowercompany.com/",
-          "geo_notes": "Southern Company wholesale generation subsidiary; owns WECC assets in CA, NV, and other states."
+          "geo_notes": "Southern Power Company WECC registration; Atlanta HQ. Combined on map with related Southern Power registrations."
         },
         {
           "rank": 2,
@@ -147320,7 +147320,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.clearwayenergy.com/",
-      "notes": "32.5 MW expansion phase near Peetz; Platte River Power Authority offtake; Clearway entity.",
+      "notes": "32.5 MW expansion phase near Peetz; Platte River Power Authority offtake; Clearway entity. Combined on map with Spring Canyon Energy III.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -147337,7 +147337,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.clearwayenergy.com/",
-          "geo_notes": "32.5 MW expansion phase near Peetz; Platte River Power Authority offtake; Clearway entity."
+          "geo_notes": "32.5 MW expansion phase near Peetz; Platte River Power Authority offtake; Clearway entity. Combined on map with Spring Canyon Energy III."
         },
         {
           "rank": 2,
@@ -147388,7 +147388,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.clearwayenergy.com/",
-      "notes": "27.5 MW expansion phase adjacent to Spring Canyon II, Logan County; Clearway entity.",
+      "notes": "27.5 MW expansion phase adjacent to Spring Canyon II, Logan County; Clearway entity. Combined on map with Spring Canyon Energy II.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -147405,7 +147405,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.clearwayenergy.com/",
-          "geo_notes": "27.5 MW expansion phase adjacent to Spring Canyon II, Logan County; Clearway entity."
+          "geo_notes": "27.5 MW expansion phase adjacent to Spring Canyon II, Logan County; Clearway entity. Combined on map with Spring Canyon Energy II."
         },
         {
           "rank": 2,

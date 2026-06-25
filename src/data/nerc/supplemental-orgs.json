@@ -2258,7 +2258,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-    "geo_notes": "Alabama municipal light department listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Alexander City, AL.",
     "verify": false,
     "locations": [
       {
@@ -2273,7 +2273,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-        "geo_notes": "Alabama municipal light department listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Alexander City, AL."
       },
       {
         "rank": 2,
@@ -2323,7 +2323,7 @@
     "priority": "High",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-    "geo_notes": "Alabama municipal utilities board listed by APPA; distinct from PowerSouth HQ in same city.",
+    "geo_notes": "Municipal electric utility serving Andalusia, AL.",
     "verify": false,
     "locations": [
       {
@@ -2338,7 +2338,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-        "geo_notes": "Alabama municipal utilities board listed by APPA; distinct from PowerSouth HQ in same city."
+        "geo_notes": "Municipal electric utility serving Andalusia, AL."
       },
       {
         "rank": 2,
@@ -2713,7 +2713,7 @@
     "priority": "High",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-    "geo_notes": "Alabama municipal utility listed by APPA; distinct from Decatur Energy Center merchant generation.",
+    "geo_notes": "Municipal electric, gas, water, and telecom utility serving Decatur, AL.",
     "verify": false,
     "locations": [
       {
@@ -2728,7 +2728,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-        "geo_notes": "Alabama municipal utility listed by APPA; distinct from Decatur Energy Center merchant generation."
+        "geo_notes": "Municipal electric, gas, water, and telecom utility serving Decatur, AL."
       },
       {
         "rank": 2,
@@ -2778,7 +2778,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-    "geo_notes": "Alabama municipal utility listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Florence, AL.",
     "verify": false,
     "locations": [
       {
@@ -2793,7 +2793,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-        "geo_notes": "Alabama municipal utility listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Florence, AL."
       },
       {
         "rank": 2,
@@ -2908,7 +2908,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-    "geo_notes": "Alabama municipal electric board listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric board serving Guntersville, AL.",
     "verify": false,
     "locations": [
       {
@@ -2923,7 +2923,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-alabama",
-        "geo_notes": "Alabama municipal electric board listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric board serving Guntersville, AL."
       },
       {
         "rank": 2,
@@ -3493,7 +3493,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "Community choice aggregator serving Apple Valley, CA.",
     "locations": [
       {
         "rank": 1,
@@ -3507,7 +3507,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "Community choice aggregator serving Apple Valley, CA."
       },
       {
         "rank": 2,
@@ -3621,7 +3621,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "Joint powers authority supporting community choice aggregation in California; Lancaster HQ.",
     "locations": [
       {
         "rank": 1,
@@ -3635,7 +3635,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "Joint powers authority supporting community choice aggregation in California; Lancaster HQ."
       },
       {
         "rank": 2,
@@ -3685,7 +3685,7 @@
     "priority": "High",
     "geo_source": "official_website",
     "geo_source_url": "https://3cenergy.org/about-us/",
-    "geo_notes": "City-level HQ anchor for Central Coast Community Energy in Monterey.",
+    "geo_notes": "Community choice aggregator (CCA) serving Monterey, San Benito, and Santa Cruz counties; HQ in Monterey, CA.",
     "locations": [
       {
         "rank": 1,
@@ -3699,7 +3699,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "official_website",
         "geo_source_url": "https://3cenergy.org/about-us/",
-        "geo_notes": "City-level HQ anchor for Central Coast Community Energy in Monterey."
+        "geo_notes": "Community choice aggregator (CCA) serving Monterey, San Benito, and Santa Cruz counties; HQ in Monterey, CA."
       },
       {
         "rank": 2,
@@ -3749,7 +3749,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "Community choice aggregator serving northern San Diego County, CA.",
     "locations": [
       {
         "rank": 1,
@@ -3763,7 +3763,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "Community choice aggregator serving northern San Diego County, CA."
       },
       {
         "rank": 2,
@@ -3813,7 +3813,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "Community choice aggregator serving Los Angeles and Ventura counties, CA.",
     "locations": [
       {
         "rank": 1,
@@ -3827,7 +3827,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "Community choice aggregator serving Los Angeles and Ventura counties, CA."
       },
       {
         "rank": 2,
@@ -3877,7 +3877,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "San Francisco community choice aggregation program.",
     "locations": [
       {
         "rank": 1,
@@ -3891,7 +3891,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "San Francisco community choice aggregation program."
       },
       {
         "rank": 2,
@@ -3941,7 +3941,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "Community choice aggregator serving desert communities in Riverside County, CA.",
     "locations": [
       {
         "rank": 1,
@@ -3955,7 +3955,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "Community choice aggregator serving desert communities in Riverside County, CA."
       },
       {
         "rank": 2,
@@ -4005,7 +4005,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "Community choice aggregator for Lancaster, CA; CalChoice member.",
     "locations": [
       {
         "rank": 1,
@@ -4019,7 +4019,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "Community choice aggregator for Lancaster, CA; CalChoice member."
       },
       {
         "rank": 2,
@@ -4517,7 +4517,7 @@
     "priority": "Medium",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Public-power or joint-action candidate for expansion beyond registered bulk entities; validate alias/EIA ID",
+    "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR05368 SMUD carries the map dot.",
     "locations": [
       {
         "rank": 1,
@@ -4531,7 +4531,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Public-power or joint-action candidate for expansion beyond registered bulk entities; validate alias/EIA ID"
+        "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR05368 SMUD carries the map dot."
       },
       {
         "rank": 2,
@@ -4581,7 +4581,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases",
+    "geo_notes": "Community choice aggregator serving San Diego County and southern Orange County, CA.",
     "locations": [
       {
         "rank": 1,
@@ -4595,7 +4595,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "California load-serving/CCA candidate for non-NERC business layer; validate EIA utility identifier and aliases"
+        "geo_notes": "Community choice aggregator serving San Diego County and southern Orange County, CA."
       },
       {
         "rank": 2,
@@ -4837,7 +4837,7 @@
     "priority": "High",
     "geo_source": "official_website",
     "geo_source_url": "https://svcleanenergy.org/contact/",
-    "geo_notes": "City-level HQ anchor for Silicon Valley Clean Energy in Sunnyvale.",
+    "geo_notes": "Community choice aggregator for much of Santa Clara County, CA; HQ in Sunnyvale.",
     "locations": [
       {
         "rank": 1,
@@ -4851,7 +4851,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "official_website",
         "geo_source_url": "https://svcleanenergy.org/contact/",
-        "geo_notes": "City-level HQ anchor for Silicon Valley Clean Energy in Sunnyvale."
+        "geo_notes": "Community choice aggregator for much of Santa Clara County, CA; HQ in Sunnyvale."
       },
       {
         "rank": 2,
@@ -5157,7 +5157,7 @@
     "priority": "Medium",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.cityofbartow.net/184/Electric",
-    "geo_notes": "City electric department HQ, 915 Stearman Street.",
+    "geo_notes": "City of Bartow electric department; same 915 Stearman Street HQ as NERC registry City of Bartow (NCR00003).",
     "locations": [
       {
         "rank": 1,
@@ -5171,7 +5171,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.cityofbartow.net/184/Electric",
-        "geo_notes": "City electric department HQ, 915 Stearman Street."
+        "geo_notes": "City of Bartow electric department; same 915 Stearman Street HQ as NERC registry City of Bartow (NCR00003)."
       },
       {
         "rank": 2,
@@ -6195,7 +6195,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-florida",
-    "geo_notes": "APPA lists this public-power utility at Lake Buena Vista; distinct local public utility district candidate.",
+    "geo_notes": "Special district providing electric and other services to Walt Disney World, Lake Buena Vista, FL.",
     "verify": false,
     "locations": [
       {
@@ -6210,7 +6210,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-florida",
-        "geo_notes": "APPA lists this public-power utility at Lake Buena Vista; distinct local public utility district candidate."
+        "geo_notes": "Special district providing electric and other services to Walt Disney World, Lake Buena Vista, FL."
       },
       {
         "rank": 2,
@@ -6260,7 +6260,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-georgia",
-    "geo_notes": "APPA lists this as a Georgia public power utility; city utilities operation.",
+    "geo_notes": "Municipal electric utility serving Albany, GA.",
     "verify": false,
     "locations": [
       {
@@ -6275,7 +6275,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-georgia",
-        "geo_notes": "APPA lists this as a Georgia public power utility; city utilities operation."
+        "geo_notes": "Municipal electric utility serving Albany, GA."
       },
       {
         "rank": 2,
@@ -7170,7 +7170,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-georgia",
-    "geo_notes": "APPA lists this as a Georgia public power utility; municipal utility.",
+    "geo_notes": "Municipal electric utility serving Fairburn, GA.",
     "verify": false,
     "locations": [
       {
@@ -7185,7 +7185,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-georgia",
-        "geo_notes": "APPA lists this as a Georgia public power utility; municipal utility."
+        "geo_notes": "Municipal electric utility serving Fairburn, GA."
       },
       {
         "rank": 2,
@@ -7299,7 +7299,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.gridinfo.com/auwahi-wind-energy",
-    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
+    "geo_notes": "Sempra wind project on Maui, HI; 21 MW Auwahi Wind Farm.",
     "locations": [
       {
         "rank": 1,
@@ -7313,7 +7313,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.gridinfo.com/auwahi-wind-energy",
-        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
+        "geo_notes": "Sempra wind project on Maui, HI; 21 MW Auwahi Wind Farm."
       },
       {
         "rank": 2,
@@ -7363,7 +7363,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.interconnection.fyi/eia/project/55369-ct2",
-    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
+    "geo_notes": "Biomass and cogen plant on Hawaii Island; 60 MW Hamakua Energy facility.",
     "locations": [
       {
         "rank": 1,
@@ -7377,7 +7377,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.interconnection.fyi/eia/project/55369-ct2",
-        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
+        "geo_notes": "Biomass and cogen plant on Hawaii Island; 60 MW Hamakua Energy facility."
       },
       {
         "rank": 2,
@@ -7875,7 +7875,7 @@
     "priority": "Add now",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.kalaeloapartners.com/",
-    "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract).",
+    "geo_notes": "Independent power producer operating the Kalaeloa cogen plant on Oahu, HI.",
     "locations": [
       {
         "rank": 1,
@@ -7889,7 +7889,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.kalaeloapartners.com/",
-        "geo_notes": "Supplemental Hawaii utility (not in NERC registry extract)."
+        "geo_notes": "Independent power producer operating the Kalaeloa cogen plant on Oahu, HI."
       },
       {
         "rank": 2,
@@ -8579,7 +8579,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-    "geo_notes": "Kentucky municipal utility commission listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Barbourville, KY.",
     "verify": false,
     "locations": [
       {
@@ -8594,7 +8594,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-        "geo_notes": "Kentucky municipal utility commission listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Barbourville, KY."
       },
       {
         "rank": 2,
@@ -8644,7 +8644,7 @@
     "priority": "High",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-    "geo_notes": "Kentucky municipal utility listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Benham, KY.",
     "verify": false,
     "locations": [
       {
@@ -8659,7 +8659,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-        "geo_notes": "Kentucky municipal utility listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Benham, KY."
       },
       {
         "rank": 2,
@@ -9229,7 +9229,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-    "geo_notes": "Kentucky city utilities commission listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Corbin, KY.",
     "verify": false,
     "locations": [
       {
@@ -9244,7 +9244,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-        "geo_notes": "Kentucky city utilities commission listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Corbin, KY."
       },
       {
         "rank": 2,
@@ -9359,7 +9359,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-    "geo_notes": "Kentucky electric plant board listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric plant board serving Franklin, KY.",
     "verify": false,
     "locations": [
       {
@@ -9374,7 +9374,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-        "geo_notes": "Kentucky electric plant board listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric plant board serving Franklin, KY."
       },
       {
         "rank": 2,
@@ -9424,7 +9424,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-    "geo_notes": "Kentucky electric plant board listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric plant board serving Glasgow, KY.",
     "verify": false,
     "locations": [
       {
@@ -9439,7 +9439,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-kentucky",
-        "geo_notes": "Kentucky electric plant board listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric plant board serving Glasgow, KY."
       },
       {
         "rank": 2,
@@ -10791,7 +10791,7 @@
     "priority": "Explore",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Power-market or energy-business candidate outside a registered-entity-only map; validate through EIA/FERC market-based-rate or asset datasets",
+    "geo_notes": "Retail energy marketing subsidiary; Baltimore, MD corporate office.",
     "locations": [
       {
         "rank": 1,
@@ -10805,7 +10805,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Power-market or energy-business candidate outside a registered-entity-only map; validate through EIA/FERC market-based-rate or asset datasets"
+        "geo_notes": "Retail energy marketing subsidiary; Baltimore, MD corporate office."
       },
       {
         "rank": 2,
@@ -10920,7 +10920,7 @@
     "priority": "Add now",
     "geo_source": "state co-op association member directory",
     "geo_source_url": "https://www.ncelectriccooperatives.com/our-members",
-    "geo_notes": "NC Electric Cooperatives lists this member with headquarters in Lenoir; distribution co-op.",
+    "geo_notes": "NC electric cooperative HQ in Lenoir; distinct from Blue Ridge Electric Membership Corp (NCR01183) in South Carolina.",
     "verify": false,
     "locations": [
       {
@@ -10935,7 +10935,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "state co-op association member directory",
         "geo_source_url": "https://www.ncelectriccooperatives.com/our-members",
-        "geo_notes": "NC Electric Cooperatives lists this member with headquarters in Lenoir; distribution co-op."
+        "geo_notes": "NC electric cooperative HQ in Lenoir; distinct from Blue Ridge Electric Membership Corp (NCR01183) in South Carolina."
       },
       {
         "rank": 2,
@@ -11570,7 +11570,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-    "geo_notes": "APPA lists this Nebraska public power utility at Auburn; municipal board utility.",
+    "geo_notes": "Municipal electric utility serving Auburn, NE.",
     "verify": false,
     "locations": [
       {
@@ -11585,7 +11585,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-        "geo_notes": "APPA lists this Nebraska public power utility at Auburn; municipal board utility."
+        "geo_notes": "Municipal electric utility serving Auburn, NE."
       },
       {
         "rank": 2,
@@ -11700,7 +11700,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-    "geo_notes": "APPA lists this Nebraska public power district at Hartington; public distribution utility.",
+    "geo_notes": "Nebraska public power district serving Cedar and Knox counties.",
     "verify": false,
     "locations": [
       {
@@ -11715,7 +11715,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-        "geo_notes": "APPA lists this Nebraska public power district at Hartington; public distribution utility."
+        "geo_notes": "Nebraska public power district serving Cedar and Knox counties."
       },
       {
         "rank": 2,
@@ -11765,7 +11765,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-    "geo_notes": "APPA lists this Nebraska public power district at Bayard; rural public power utility.",
+    "geo_notes": "Nebraska public power district serving northwest Nebraska.",
     "verify": false,
     "locations": [
       {
@@ -11780,7 +11780,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-        "geo_notes": "APPA lists this Nebraska public power district at Bayard; rural public power utility."
+        "geo_notes": "Nebraska public power district serving northwest Nebraska."
       },
       {
         "rank": 2,
@@ -11960,7 +11960,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-    "geo_notes": "APPA lists this Nebraska public power district at Battle Creek; rural public power district.",
+    "geo_notes": "Nebraska rural public power district serving northeast Nebraska.",
     "verify": false,
     "locations": [
       {
@@ -11975,7 +11975,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-        "geo_notes": "APPA lists this Nebraska public power district at Battle Creek; rural public power district."
+        "geo_notes": "Nebraska rural public power district serving northeast Nebraska."
       },
       {
         "rank": 2,
@@ -12155,7 +12155,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-    "geo_notes": "APPA lists this Nebraska public power district at Creighton; public distribution utility.",
+    "geo_notes": "Nebraska public power district serving Antelope, Knox, and Pierce counties.",
     "verify": false,
     "locations": [
       {
@@ -12170,7 +12170,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-        "geo_notes": "APPA lists this Nebraska public power district at Creighton; public distribution utility."
+        "geo_notes": "Nebraska public power district serving Antelope, Knox, and Pierce counties."
       },
       {
         "rank": 2,
@@ -12220,7 +12220,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-    "geo_notes": "APPA lists this Nebraska public power district at Hay Springs; rural public power utility.",
+    "geo_notes": "Nebraska rural public power district serving northwest Nebraska.",
     "verify": false,
     "locations": [
       {
@@ -12235,7 +12235,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-nebraska",
-        "geo_notes": "APPA lists this Nebraska public power district at Hay Springs; rural public power utility."
+        "geo_notes": "Nebraska rural public power district serving northwest Nebraska."
       },
       {
         "rank": 2,
@@ -13248,7 +13248,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-    "geo_notes": "Tennessee municipal utilities board listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric, gas, water, and telecom utility serving Athens, TN.",
     "verify": false,
     "locations": [
       {
@@ -13263,7 +13263,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-        "geo_notes": "Tennessee municipal utilities board listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric, gas, water, and telecom utility serving Athens, TN."
       },
       {
         "rank": 2,
@@ -13313,7 +13313,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-    "geo_notes": "Tennessee county electric system listed by APPA at Camden; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Benton County, TN.",
     "verify": false,
     "locations": [
       {
@@ -13328,7 +13328,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-        "geo_notes": "Tennessee county electric system listed by APPA at Camden; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Benton County, TN."
       },
       {
         "rank": 2,
@@ -13573,7 +13573,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-    "geo_notes": "Tennessee municipal utility department listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Brownsville, TN.",
     "verify": false,
     "locations": [
       {
@@ -13588,7 +13588,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-        "geo_notes": "Tennessee municipal utility department listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Brownsville, TN."
       },
       {
         "rank": 2,
@@ -14093,7 +14093,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-    "geo_notes": "Tennessee electric system listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Dickson, TN.",
     "verify": false,
     "locations": [
       {
@@ -14108,7 +14108,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-        "geo_notes": "Tennessee electric system listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Dickson, TN."
       },
       {
         "rank": 2,
@@ -14158,7 +14158,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-    "geo_notes": "Tennessee electric system listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Dyersburg, TN.",
     "verify": false,
     "locations": [
       {
@@ -14173,7 +14173,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-        "geo_notes": "Tennessee electric system listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Dyersburg, TN."
       },
       {
         "rank": 2,
@@ -14223,7 +14223,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-    "geo_notes": "Tennessee electric system listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Elizabethton, TN.",
     "verify": false,
     "locations": [
       {
@@ -14238,7 +14238,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-        "geo_notes": "Tennessee electric system listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Elizabethton, TN."
       },
       {
         "rank": 2,
@@ -14353,7 +14353,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-    "geo_notes": "Tennessee municipal electric department listed by APPA; city-level utility location.",
+    "geo_notes": "Municipal electric utility serving Gallatin, TN.",
     "verify": false,
     "locations": [
       {
@@ -14368,7 +14368,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-tennessee",
-        "geo_notes": "Tennessee municipal electric department listed by APPA; city-level utility location."
+        "geo_notes": "Municipal electric utility serving Gallatin, TN."
       },
       {
         "rank": 2,
@@ -14548,7 +14548,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID",
+    "geo_notes": "Austin municipal utility (not in NERC registry extract); HQ Austin, TX.",
     "locations": [
       {
         "rank": 1,
@@ -14562,7 +14562,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID"
+        "geo_notes": "Austin municipal utility (not in NERC registry extract); HQ Austin, TX."
       },
       {
         "rank": 2,
@@ -14677,7 +14677,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID",
+    "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR04022 Bryan Texas Utilities carries the map dot.",
     "locations": [
       {
         "rank": 1,
@@ -14691,7 +14691,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID"
+        "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR04022 Bryan Texas Utilities carries the map dot."
       },
       {
         "rank": 2,
@@ -15326,7 +15326,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID",
+    "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR04037 CPS Energy carries the map dot.",
     "locations": [
       {
         "rank": 1,
@@ -15340,7 +15340,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID"
+        "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR04037 CPS Energy carries the map dot."
       },
       {
         "rank": 2,
@@ -15390,7 +15390,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID",
+    "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR04049 Denton Municipal Electric carries the map dot.",
     "locations": [
       {
         "rank": 1,
@@ -15404,7 +15404,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID"
+        "geo_notes": "Supplemental EIA-861 layer record; NERC-registered twin NCR04049 Denton Municipal Electric carries the map dot."
       },
       {
         "rank": 2,
@@ -15454,7 +15454,7 @@
     "priority": "High",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID",
+    "geo_notes": "Pedernales Electric Cooperative (PEC) distribution cooperative; HQ Johnson City, TX area (supplemental context).",
     "locations": [
       {
         "rank": 1,
@@ -15468,7 +15468,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Texas municipal/cooperative candidate for EIA-861 distribution and public-power layer; validate alias/EIA ID"
+        "geo_notes": "Pedernales Electric Cooperative (PEC) distribution cooperative; HQ Johnson City, TX area (supplemental context)."
       },
       {
         "rank": 2,
@@ -15904,7 +15904,7 @@
     "priority": "Add now",
     "geo_source": "APPA public power directory",
     "geo_source_url": "https://www.publicpower.org/public-power-washington",
-    "geo_notes": "APPA lists this Washington public power utility at Centralia; municipal utility.",
+    "geo_notes": "Municipal electric utility serving Centralia, WA.",
     "verify": false,
     "locations": [
       {
@@ -15919,7 +15919,7 @@
         "geo_confidence": "HIGH",
         "geo_source": "APPA public power directory",
         "geo_source_url": "https://www.publicpower.org/public-power-washington",
-        "geo_notes": "APPA lists this Washington public power utility at Centralia; municipal utility."
+        "geo_notes": "Municipal electric utility serving Centralia, WA."
       },
       {
         "rank": 2,
@@ -16813,7 +16813,7 @@
     "priority": "Medium",
     "geo_source": "EIA-861 / public utility records",
     "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-    "geo_notes": "Washington public-power candidate; validate alias/EIA ID and retain entities not already mapped",
+    "geo_notes": "Snohomish PUD public utility district, Everett, WA (not in NERC registry extract).",
     "locations": [
       {
         "rank": 1,
@@ -16827,7 +16827,7 @@
         "geo_confidence": "MEDIUM",
         "geo_source": "EIA-861 / public utility records",
         "geo_source_url": "https://www.eia.gov/electricity/data/eia861/",
-        "geo_notes": "Washington public-power candidate; validate alias/EIA ID and retain entities not already mapped"
+        "geo_notes": "Snohomish PUD public utility district, Everett, WA (not in NERC registry extract)."
       },
       {
         "rank": 2,
