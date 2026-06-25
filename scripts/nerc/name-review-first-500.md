@@ -3,26 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-104. NCR04088 — Kiowa Power Partners, LLC
-105. NCR01356 — USACE - Charleston District
-106. NCR07163 — Niagara Mohawk Power Corporation
-107. NCR01166 — Alabama Power Company
-108. NCR01247 — Georgia Power Company
-109. NCR05234 — Merced Irrigation District
-110. NCR11966 — AES Alamitos Energy LLC
-111. NCR11967 — AES Huntington Beach Energy LLC
-112. NCR08039 — Allegheny Ridge Wind Farm, LLC
-113. NCR10248 — Ameren Missouri
-114. NCR00538 — Astoria Energy, LLC
-115. NCR07012 — Astoria Generating Company L.P.
-116. NCR11040 — Beech Ridge Energy LLC
-117. NCR12242 — Brazoria West Solar Project, LLC
-118. NCR10195 — Brush Power
-119. NCR00006 — Calpine Corporation
-120. NCR11986 — Camilla Solar Energy LLC
-121. NCR00778 — Constellation Energy Generation, LLC - Constellation Nuclear
-122. NCR10390 — Constellation Energy Generation, LLC - South Region
-123. NCR11216 — Constellation Maryland Peaker Fleet
 124. NCR11290 — Copper Mountain Solar 2, LLC
 125. NCR05119 — Coso Energy Developers
 126. NCR13272 — CPV Backbone Solar, LLC
@@ -212,13 +192,7 @@ Delete each line after its name is updated and validated.
 312. NCR04006 — American Electric Power Service Corp as agent for AEP Texas Inc. and Public Service Company of Oklahoma
 313. NCR04091 — LCRA Transmission Services Corporation
 314. NCR11916 — City of Henderson, KY, Utility Commission, DBA Henderson Municipal Power & Light
-315. NCR05002 — AES Alamitos, LLC
-316. NCR12104 — AES ES Alamitos, LLC
-317. NCR05004 — AES Huntington Beach, LLC
-318. NCR11528 — AltaGas Brush Energy Inc.
 319. NCR11940 — Calpeak Power Panoche LLC
-320. NCR04057 — Constellation Energy Generation, LLC - Constellation Power
-321. NCR11325 — Constellation Energy Generation, LLC - Western Region
 322. NCR12121 — Copper Mountain Solar 5, LLC
 323. NCR05120 — Coso Finance Partners
 324. NCR05122 — Coso Power Developers
@@ -230,7 +204,6 @@ Delete each line after its name is updated and validated.
 330. NCR11029 — Grand Ridge Energy II LLC
 331. NCR11030 — Grand Ridge Energy III LLC
 332. NCR11031 — Grand Ridge Energy IV LLC
-333. NCR01113 — Kiowa Power Partners, LLC
 334. NCR12212 — Linden Peaking Generating Station
 335. NCR13046 — Mordor 2
 336. NCR13421 — MPH Elwood, LLC
@@ -324,14 +297,10 @@ Delete each line after its name is updated and validated.
 438. NCR-SEED-031 — Virginia Electric and Power Company
 439. NCR-SEED-036 — American Electric Power Service Corporation
 442. NCR-SEED-052 — Lower Colorado River Authority
-444. NCR-SEED-023 — Alabama Power Company
 445. NCR-SEED-019 — El Paso Electric Company
-446. NCR-SEED-022 — Georgia Power Company
 449. NCR-SEED-043 — Basin Electric Power Cooperative
 453. NCR-SEED-033 — Commonwealth Edison Company
-454. NCR-SEED-040 — Niagara Mohawk Power Corporation
 455. NCR-SEED-032 — Public Service Electric and Gas Company
-456. NCR-SEED-058 — Calpine Corporation
 457. NCR-SEED-057 — Luminant Generation Company LLC
 458. SUP-bryan-texas-utilities — Bryan Texas Utilities
 459. SUP-cps-energy — CPS Energy

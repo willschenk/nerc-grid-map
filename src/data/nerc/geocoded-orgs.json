@@ -1554,10 +1554,10 @@
       "source": "official_website",
       "source_url": "https://www.georgiapower.com",
       "org_type": "IOU",
-      "notes": "Largest Southern Company operating utility.",
+      "notes": "Retired Georgia Power seed; canonical registry row NCR01247 uses the NERC-audit acronym GPC.",
       "seed": true,
-      "acronym": "Georgia",
-      "acronym_source": "common_market_name",
+      "acronym": "GPC",
+      "acronym_source": "nerc_audit_report",
       "locations": [
         {
           "rank": 1,
@@ -1571,7 +1571,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.georgiapower.com",
-          "geo_notes": "Largest Southern Company operating utility."
+          "geo_notes": "Retired Georgia Power seed; canonical registry row NCR01247 uses the NERC-audit acronym GPC."
         },
         {
           "rank": 2,
@@ -1626,10 +1626,10 @@
       "source": "eia_861",
       "source_url": "https://www.alabamapower.com/",
       "org_type": "IOU",
-      "notes": "Southern Company operating utility in Alabama.",
+      "notes": "Retired Alabama Power seed; canonical registry row NCR01166 uses the NERC-audit acronym APC.",
       "seed": true,
-      "acronym": "Alabama",
-      "acronym_source": "common_market_name",
+      "acronym": "APC",
+      "acronym_source": "nerc_audit_report",
       "locations": [
         {
           "rank": 1,
@@ -1643,7 +1643,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.alabamapower.com/",
-          "geo_notes": "Southern Company operating utility in Alabama."
+          "geo_notes": "Retired Alabama Power seed; canonical registry row NCR01166 uses the NERC-audit acronym APC."
         },
         {
           "rank": 2,
@@ -2848,10 +2848,10 @@
       "source": "eia_861",
       "source_url": "https://www.nationalgridus.com/",
       "org_type": "IOU",
-      "notes": "National Grid operating company in upstate New York.",
+      "notes": "Retired seed for Niagara Mohawk; canonical registry row NCR07163 uses NiMo for the National Grid upstate New York utility.",
       "seed": true,
       "acronym": "NiMo",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "locations": [
         {
           "rank": 1,
@@ -2865,7 +2865,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.nationalgridus.com/",
-          "geo_notes": "National Grid operating company in upstate New York."
+          "geo_notes": "Retired seed for Niagara Mohawk; canonical registry row NCR07163 uses NiMo for the National Grid upstate New York utility."
         },
         {
           "rank": 2,
@@ -4127,10 +4127,10 @@
       "source": "google_maps",
       "source_url": "https://www.calpine.com/",
       "org_type": "merchant",
-      "notes": "Independent power producer; large natural gas and geothermal fleet.",
+      "notes": "Retired Calpine seed; canonical registry row NCR00006 remains Calpine, now a Constellation Energy business unit as of January 7, 2026.",
       "seed": true,
       "acronym": "Calpine",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "locations": [
         {
           "rank": 1,
@@ -4144,7 +4144,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "google_maps",
           "geo_source_url": "https://www.calpine.com/",
-          "geo_notes": "Independent power producer; large natural gas and geothermal fleet."
+          "geo_notes": "Retired Calpine seed; canonical registry row NCR00006 remains Calpine, now a Constellation Energy business unit as of January 7, 2026."
         },
         {
           "rank": 2,
@@ -4174,7 +4174,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Constellation Energy Corporation"
     },
     {
       "ncr_id": "NCR-SEED-059",
@@ -5075,8 +5076,8 @@
     {
       "ncr_id": "NCR10248",
       "entity_name": "Ameren Missouri",
-      "acronym": "Ameren MO",
-      "acronym_source": "official_website",
+      "acronym": "AMMO",
+      "acronym_source": "iso_rto_material",
       "region": "MRO",
       "roles": [
         "GO",
@@ -5093,7 +5094,7 @@
       "source_url": "https://www.ameren.com/-/media/corporate-site/files/aboutameren/amerencorporatefactsheet.ashx",
       "org_type": "IOU",
       "parent_org": "Ameren Corporation",
-      "notes": "Union Electric Company d/b/a Ameren Missouri.",
+      "notes": "AMMO is the MISO transmission-owner/rate-zone code for Ameren Missouri; legal utility remains Union Electric Company d/b/a Ameren Missouri.",
       "seed": false,
       "locations": [
         {
@@ -5108,7 +5109,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.ameren.com/-/media/corporate-site/files/aboutameren/amerencorporatefactsheet.ashx",
-          "geo_notes": "Union Electric Company d/b/a Ameren Missouri."
+          "geo_notes": "AMMO is the MISO transmission-owner/rate-zone code for Ameren Missouri; legal utility remains Union Electric Company d/b/a Ameren Missouri."
         },
         {
           "rank": 2,
@@ -13265,11 +13266,11 @@
       "state": "OK",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/plant/kiamichi-energy-facility/55501",
+      "source": "official_website",
+      "source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf",
       "org_type": "merchant",
       "parent_org": "Tenaska",
-      "notes": "1,220 MW Kiamichi combined-cycle gas; dual ERCOT and SPP interconnection. COD April 2003.",
+      "notes": "Kiowa Power Partners MRO GO/GOP registration; folded into the Texas RE Kiowa Power Partners map row at Tenaska Kiamichi.",
       "seed": false,
       "locations": [
         {
@@ -13282,9 +13283,9 @@
           "state": "OK",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/plant/kiamichi-energy-facility/55501",
-          "geo_notes": "1,220 MW Kiamichi combined-cycle gas; dual ERCOT and SPP interconnection. COD April 2003."
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf",
+          "geo_notes": "Kiowa Power Partners MRO GO/GOP registration; folded into the Texas RE Kiowa Power Partners map row at Tenaska Kiamichi."
         },
         {
           "rank": 2,
@@ -23384,7 +23385,7 @@
       "source_url": "https://www.gridinfo.com/plant/astoria-energy-ii/57664",
       "org_type": "merchant",
       "parent_org": "APG Asset Management",
-      "notes": "650 MW combined-cycle gas plant in Queens. NYPA PPA. COD July 2011.",
+      "notes": "Astoria Energy II combined-cycle plant in Queens; folded into the Astoria Energy I/II map location.",
       "seed": false,
       "locations": [
         {
@@ -23399,7 +23400,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/astoria-energy-ii/57664",
-          "geo_notes": "650 MW combined-cycle gas plant in Queens. NYPA PPA. COD July 2011."
+          "geo_notes": "Astoria Energy II combined-cycle plant in Queens; folded into the Astoria Energy I/II map location."
         },
         {
           "rank": 2,
@@ -23452,7 +23453,7 @@
       "source_url": "https://www.gridinfo.com/plant/astoria-energy/55375",
       "org_type": "merchant",
       "parent_org": "APG Asset Management",
-      "notes": "615 MW combined-cycle gas plant in Queens. Merchant NYISO sales. COD May 2006.",
+      "notes": "Astoria Energy I combined-cycle plant in Queens; map combines it with Astoria Energy II and keeps it distinct from Astoria Generating Company.",
       "seed": false,
       "locations": [
         {
@@ -23467,7 +23468,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/astoria-energy/55375",
-          "geo_notes": "615 MW combined-cycle gas plant in Queens. Merchant NYISO sales. COD May 2006."
+          "geo_notes": "Astoria Energy I combined-cycle plant in Queens; map combines it with Astoria Energy II and keeps it distinct from Astoria Generating Company."
         },
         {
           "rank": 2,
@@ -23520,7 +23521,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/8906-1",
       "org_type": "merchant",
       "parent_org": "Eastern Generation",
-      "notes": "Astoria Generating Station steam and gas units in Queens. COD March 1954.",
+      "notes": "Astoria Generating Station steam and gas units in Queens; separate from the Astoria Energy I/II combined-cycle plants.",
       "seed": false,
       "locations": [
         {
@@ -23535,7 +23536,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/8906-1",
-          "geo_notes": "Astoria Generating Station steam and gas units in Queens. COD March 1954."
+          "geo_notes": "Astoria Generating Station steam and gas units in Queens; separate from the Astoria Energy I/II combined-cycle plants."
         },
         {
           "rank": 2,
@@ -25211,10 +25212,10 @@
       "country": "US",
       "confidence": "HIGH",
       "source": "official_website",
-      "source_url": "https://www.calpine.com/privacy-policy/",
+      "source_url": "https://www.calpine.com/contact/",
       "org_type": "merchant",
-      "parent_org": null,
-      "notes": "NPCC GO and GOP registration for Calpine fleet assets in ISO-NE and NYISO markets.",
+      "parent_org": "Constellation Energy Corporation",
+      "notes": "Calpine NERC registration remains under the Calpine name; Calpine became a Constellation Energy business unit on January 7, 2026.",
       "seed": false,
       "locations": [
         {
@@ -25228,8 +25229,8 @@
           "country": "US",
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
-          "geo_source_url": "https://www.calpine.com/privacy-policy/",
-          "geo_notes": "NPCC GO and GOP registration for Calpine fleet assets in ISO-NE and NYISO markets."
+          "geo_source_url": "https://www.calpine.com/contact/",
+          "geo_notes": "Calpine NERC registration remains under the Calpine name; Calpine became a Constellation Energy business unit on January 7, 2026."
         },
         {
           "rank": 2,
@@ -26035,7 +26036,7 @@
       "source_url": "https://investors.constellationenergy.com/",
       "org_type": "merchant",
       "parent_org": "Constellation Energy Corporation",
-      "notes": "NPCC GO and GOP registration for Constellation nuclear fleet in ISO-NE and NYISO.",
+      "notes": "CEG Nuclear is the Constellation Energy Generation nuclear-fleet registration; paired CEG Power registration is folded at the same Kennett Square generation office.",
       "seed": false,
       "locations": [
         {
@@ -26050,7 +26051,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://investors.constellationenergy.com/",
-          "geo_notes": "NPCC GO and GOP registration for Constellation nuclear fleet in ISO-NE and NYISO."
+          "geo_notes": "CEG Nuclear is the Constellation Energy Generation nuclear-fleet registration; paired CEG Power registration is folded at the same Kennett Square generation office."
         },
         {
           "rank": 2,
@@ -26103,7 +26104,7 @@
       "source_url": "https://investors.constellationenergy.com/",
       "org_type": "merchant",
       "parent_org": "Constellation Energy Corporation",
-      "notes": "NPCC GO and GOP registration for Constellation fossil and renewable fleet in ISO-NE and NYISO.",
+      "notes": "CEG Power is the Constellation Energy Generation power-fleet registration; folded into the CEG Nuclear Kennett Square generation-office map row.",
       "seed": false,
       "locations": [
         {
@@ -26118,7 +26119,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://investors.constellationenergy.com/",
-          "geo_notes": "NPCC GO and GOP registration for Constellation fossil and renewable fleet in ISO-NE and NYISO."
+          "geo_notes": "CEG Power is the Constellation Energy Generation power-fleet registration; folded into the CEG Nuclear Kennett Square generation-office map row."
         },
         {
           "rank": 2,
@@ -33214,7 +33215,7 @@
       "ncr_id": "NCR07163",
       "entity_name": "Niagara Mohawk Power Corporation",
       "acronym": "NiMo",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "region": "NPCC",
       "roles": [
         "TOP"
@@ -33230,7 +33231,7 @@
       "source_url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7BD084D70D-3268-4CF2-8282-0A0E0E3627E3%7D",
       "org_type": "IOU",
       "parent_org": "National Grid USA",
-      "notes": "Pinned to Niagara Mohawk corporate address in Syracuse.",
+      "notes": "NiMo is National Grid/Niagara Mohawk shorthand; legal utility remains Niagara Mohawk Power Corporation d/b/a National Grid in upstate New York.",
       "seed": false,
       "locations": [
         {
@@ -33245,7 +33246,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "state_puc",
           "geo_source_url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7BD084D70D-3268-4CF2-8282-0A0E0E3627E3%7D",
-          "geo_notes": "Pinned to Niagara Mohawk corporate address in Syracuse."
+          "geo_notes": "NiMo is National Grid/Niagara Mohawk shorthand; legal utility remains Niagara Mohawk Power Corporation d/b/a National Grid in upstate New York."
         },
         {
           "rank": 2,
@@ -38806,7 +38807,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/56451-1",
       "org_type": "merchant",
       "parent_org": "Leeward Renewable Energy",
-      "notes": "Project pin for Allegheny Ridge wind facility near Portage.",
+      "notes": "Project pin for Allegheny Ridge Wind Farm near Portage, PA; full project name is retained in short/normal, while the compact map label trims one vowel to avoid generic initials.",
       "seed": false,
       "locations": [
         {
@@ -38821,7 +38822,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/56451-1",
-          "geo_notes": "Project pin for Allegheny Ridge wind facility near Portage."
+          "geo_notes": "Project pin for Allegheny Ridge Wind Farm near Portage, PA; full project name is retained in short/normal, while the compact map label trims one vowel to avoid generic initials."
         },
         {
           "rank": 2,
@@ -40094,7 +40095,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/57151-gen1",
       "org_type": "merchant",
       "parent_org": "Invenergy",
-      "notes": "Plant pin for 100.5 MW Beech Ridge wind in Greenbrier County.",
+      "notes": "Plant pin for 100.5 MW Beech Ridge wind in Greenbrier County, WV; Beech Ridge Energy is an Invenergy affiliate.",
       "seed": false,
       "locations": [
         {
@@ -40109,7 +40110,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/57151-gen1",
-          "geo_notes": "Plant pin for 100.5 MW Beech Ridge wind in Greenbrier County."
+          "geo_notes": "Plant pin for 100.5 MW Beech Ridge wind in Greenbrier County, WV; Beech Ridge Energy is an Invenergy affiliate."
         },
         {
           "rank": 2,
@@ -43121,7 +43122,7 @@
       "ncr_id": "NCR11216",
       "entity_name": "Constellation Maryland Peaker Fleet",
       "acronym": "CMPF",
-      "acronym_source": "nerc_cores",
+      "acronym_source": "nerc_audit_report",
       "region": "RF",
       "roles": [
         "GO",
@@ -43138,7 +43139,7 @@
       "source_url": "https://www.constellationenergy.com/about/locations/perryman-generating-station.html",
       "org_type": "merchant",
       "parent_org": "Constellation Energy Corporation",
-      "notes": "Representative plant pin for Perryman, the largest Maryland peaker in the fleet. Registration also covers Philadelphia Road and Crisfield peakers.",
+      "notes": "NERC audit identifies Constellation Maryland Peaker Fleet as CMPF; representative map pin is Perryman, the largest plant in the Maryland peaker fleet.",
       "seed": false,
       "locations": [
         {
@@ -43153,7 +43154,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.constellationenergy.com/about/locations/perryman-generating-station.html",
-          "geo_notes": "Representative plant pin for Perryman, the largest Maryland peaker in the fleet. Registration also covers Philadelphia Road and Crisfield peakers."
+          "geo_notes": "NERC audit identifies Constellation Maryland Peaker Fleet as CMPF; representative map pin is Perryman, the largest plant in the Maryland peaker fleet."
         },
         {
           "rank": 2,
@@ -62365,7 +62366,7 @@
         "TO"
       ],
       "acronym": "APC",
-      "acronym_source": "common_market_name",
+      "acronym_source": "nerc_audit_report",
       "lat": 33.5179,
       "lng": -86.8119,
       "headquarters_address": "600 North 18th Street",
@@ -62375,7 +62376,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.alabamapower.com",
-      "notes": "Southern Company subsidiary HQ in Birmingham per proxy and company materials.",
+      "notes": "NERC Southern audit lists Alabama Power Company as APC; Southern Company operating utility HQ in Birmingham.",
       "seed": false,
       "locations": [
         {
@@ -62390,7 +62391,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.alabamapower.com",
-          "geo_notes": "Southern Company subsidiary HQ in Birmingham per proxy and company materials."
+          "geo_notes": "NERC Southern audit lists Alabama Power Company as APC; Southern Company operating utility HQ in Birmingham."
         },
         {
           "rank": 2,
@@ -65206,9 +65207,9 @@
       "state": "GA",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.invenergy.com/",
-      "notes": "160 MW Southern Oak solar project northwest of Camilla, GA (Invenergy).",
+      "source": "official_website",
+      "source_url": "https://invenergy.com/news/invenergy-announces-commercial-operations-at-its-100th-sustainable-energy-project",
+      "notes": "Camilla Solar Energy LLC is the Invenergy subsidiary for Southern Oak Solar Energy Center, a 160 MW project northwest of Camilla, GA.",
       "seed": false,
       "locations": [
         {
@@ -65223,7 +65224,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.invenergy.com/",
-          "geo_notes": "160 MW Southern Oak solar project northwest of Camilla, GA (Invenergy)."
+          "geo_notes": "Camilla Solar Energy LLC is the Invenergy subsidiary for Southern Oak Solar Energy Center, a 160 MW project northwest of Camilla, GA."
         },
         {
           "rank": 2,
@@ -67465,7 +67466,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.constellationenergy.com/",
-      "notes": "Constellation South Region generation portfolio; Baltimore regional office (parent HQ Kennett Square PA).",
+      "notes": "Constellation South Region generation portfolio; paired Western Region registration is folded into the Baltimore corporate office map row.",
       "seed": false,
       "locations": [
         {
@@ -67480,7 +67481,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.constellationenergy.com/",
-          "geo_notes": "Constellation South Region generation portfolio; Baltimore regional office (parent HQ Kennett Square PA)."
+          "geo_notes": "Constellation South Region generation portfolio; paired Western Region registration is folded into the Baltimore corporate office map row."
         },
         {
           "rank": 2,
@@ -71915,7 +71916,7 @@
         "TO"
       ],
       "acronym": "GPC",
-      "acronym_source": "common_market_name",
+      "acronym_source": "nerc_audit_report",
       "lat": 33.755,
       "lng": -84.39,
       "headquarters_address": "241 Ralph McGill Blvd NE",
@@ -71925,7 +71926,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.georgiapower.com",
-      "notes": "Southern Company operating utility HQ.",
+      "notes": "NERC Southern audit lists Georgia Power Company as GPC; Southern Company operating utility HQ in Atlanta.",
       "seed": false,
       "locations": [
         {
@@ -71940,7 +71941,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.georgiapower.com",
-          "geo_notes": "Southern Company operating utility HQ."
+          "geo_notes": "NERC Southern audit lists Georgia Power Company as GPC; Southern Company operating utility HQ in Atlanta."
         },
         {
           "rank": 2,
@@ -85393,7 +85394,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.sac.usace.army.mil/Locations/",
-      "notes": "USACE Charleston District headquarters.",
+      "notes": "USACE Charleston District headquarters; official district web domain uses SAC, while the map label follows the USACE district-label pattern.",
       "seed": false,
       "locations": [
         {
@@ -85408,7 +85409,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.sac.usace.army.mil/Locations/",
-          "geo_notes": "USACE Charleston District headquarters."
+          "geo_notes": "USACE Charleston District headquarters; official district web domain uses SAC, while the map label follows the USACE district-label pattern."
         },
         {
           "rank": 2,
@@ -89984,7 +89985,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/64447",
-      "notes": "200 MW Brazoria West Solar in Brazoria County; EIA plant 64447.",
+      "notes": "Brazoria West Solar Project in Brazoria County, TX; 260 MWdc / 200 MWac project acquired from Savion by Shikun & Binui.",
       "seed": false,
       "locations": [
         {
@@ -89999,7 +90000,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/64447",
-          "geo_notes": "200 MW Brazoria West Solar in Brazoria County; EIA plant 64447."
+          "geo_notes": "Brazoria West Solar Project in Brazoria County, TX; 260 MWdc / 200 MWac project acquired from Savion by Shikun & Binui."
         },
         {
           "rank": 2,
@@ -100489,9 +100490,9 @@
       "state": "OK",
       "country": "US",
       "confidence": "MEDIUM",
-      "source": "eia_861",
-      "source_url": "https://www.gridinfo.com/plant/kiamichi-energy-facility/55501",
-      "notes": "1,220 MW Kiamichi dual-grid gas plant in Oklahoma; also owns Texas transmission to ERCOT near Fannin County.",
+      "source": "official_website",
+      "source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf",
+      "notes": "Kiowa Power Partners owns the Tenaska Kiamichi plant; this map row carries the Texas RE TO registration and folded MRO GO/GOP registration.",
       "seed": false,
       "locations": [
         {
@@ -100504,9 +100505,9 @@
           "state": "OK",
           "country": "US",
           "geo_confidence": "MEDIUM",
-          "geo_source": "eia_861",
-          "geo_source_url": "https://www.gridinfo.com/plant/kiamichi-energy-facility/55501",
-          "geo_notes": "1,220 MW Kiamichi dual-grid gas plant in Oklahoma; also owns Texas transmission to ERCOT near Fannin County."
+          "geo_source": "official_website",
+          "geo_source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf",
+          "geo_notes": "Kiowa Power Partners owns the Tenaska Kiamichi plant; this map row carries the Texas RE TO registration and folded MRO GO/GOP registration."
         },
         {
           "rank": 2,
@@ -114391,7 +114392,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://renewaesalamitos.com",
-      "notes": "Alamitos Energy Center combined-cycle plant; GO/GOP entity at generating station.",
+      "notes": "Alamitos Energy Center combined-cycle entity; folded map row also includes legacy AES Alamitos and AES ES Alamitos at the Long Beach plant site.",
       "seed": false,
       "locations": [
         {
@@ -114406,7 +114407,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://renewaesalamitos.com",
-          "geo_notes": "Alamitos Energy Center combined-cycle plant; GO/GOP entity at generating station."
+          "geo_notes": "Alamitos Energy Center combined-cycle entity; folded map row also includes legacy AES Alamitos and AES ES Alamitos at the Long Beach plant site."
         },
         {
           "rank": 2,
@@ -114457,7 +114458,7 @@
       "confidence": "HIGH",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/aes-alamitos-llc/315",
-      "notes": "Legacy Alamitos generating station units; same Long Beach plant site as AES Alamitos Energy.",
+      "notes": "Legacy AES Alamitos generating station entity; folded into the AES Alamitos Energy Center map location.",
       "seed": false,
       "locations": [
         {
@@ -114472,7 +114473,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/aes-alamitos-llc/315",
-          "geo_notes": "Legacy Alamitos generating station units; same Long Beach plant site as AES Alamitos Energy."
+          "geo_notes": "Legacy AES Alamitos generating station entity; folded into the AES Alamitos Energy Center map location."
         },
         {
           "rank": 2,
@@ -114523,7 +114524,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/aes-es-alamitos-llc",
-      "notes": "Alamitos battery energy storage affiliate; colocated at Alamitos Energy Center.",
+      "notes": "Alamitos battery energy storage affiliate; folded into the AES Alamitos Energy Center map location.",
       "seed": false,
       "locations": [
         {
@@ -114538,7 +114539,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/aes-es-alamitos-llc",
-          "geo_notes": "Alamitos battery energy storage affiliate; colocated at Alamitos Energy Center."
+          "geo_notes": "Alamitos battery energy storage affiliate; folded into the AES Alamitos Energy Center map location."
         },
         {
           "rank": 2,
@@ -114589,7 +114590,7 @@
       "confidence": "HIGH",
       "source": "ferc_filing",
       "source_url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=211139",
-      "notes": "Huntington Beach Energy Project; CEC filing confirms plant GPS coordinates.",
+      "notes": "Huntington Beach Energy Project entity; folded map row also includes the legacy AES Huntington Beach plant entity.",
       "seed": false,
       "locations": [
         {
@@ -114604,7 +114605,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "ferc_filing",
           "geo_source_url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=211139",
-          "geo_notes": "Huntington Beach Energy Project; CEC filing confirms plant GPS coordinates."
+          "geo_notes": "Huntington Beach Energy Project entity; folded map row also includes the legacy AES Huntington Beach plant entity."
         },
         {
           "rank": 2,
@@ -114655,7 +114656,7 @@
       "confidence": "HIGH",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/aes-huntington-beach-llc/314",
-      "notes": "Legacy Huntington Beach generating station entity at same Newland Street plant.",
+      "notes": "Legacy Huntington Beach generating station entity; folded into the AES Huntington Beach Energy map location.",
       "seed": false,
       "locations": [
         {
@@ -114670,7 +114671,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/aes-huntington-beach-llc/314",
-          "geo_notes": "Legacy Huntington Beach generating station entity at same Newland Street plant."
+          "geo_notes": "Legacy Huntington Beach generating station entity; folded into the AES Huntington Beach Energy map location."
         },
         {
           "rank": 2,
@@ -114916,7 +114917,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/altagas-brush-energy",
-      "notes": "Brush Generation Facility natural-gas plant in Morgan County CO.",
+      "notes": "AltaGas Brush Energy registration at Brush Generation Facility; folded into the Brush Power map location.",
       "seed": false,
       "locations": [
         {
@@ -114931,7 +114932,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/altagas-brush-energy",
-          "geo_notes": "Brush Generation Facility natural-gas plant in Morgan County CO."
+          "geo_notes": "AltaGas Brush Energy registration at Brush Generation Facility; folded into the Brush Power map location."
         },
         {
           "rank": 2,
@@ -118489,7 +118490,7 @@
       "confidence": "HIGH",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/brush-generation-facility/10682",
-      "notes": "Brush Generation Facility gas peaker, Morgan County CO.",
+      "notes": "Brush Power canonical map row for the Brush Generation Facility; AltaGas Brush Energy is folded into the same Morgan County, CO plant location.",
       "seed": false,
       "locations": [
         {
@@ -118504,7 +118505,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/brush-generation-facility/10682",
-          "geo_notes": "Brush Generation Facility gas peaker, Morgan County CO."
+          "geo_notes": "Brush Power canonical map row for the Brush Generation Facility; AltaGas Brush Energy is folded into the same Morgan County, CO plant location."
         },
         {
           "rank": 2,
@@ -122382,7 +122383,7 @@
       "confidence": "MEDIUM",
       "source": "parent_company_inference",
       "source_url": "https://www.constellationenergy.com/",
-      "notes": "Constellation Western Region portfolio; Baltimore corporate office (parent HQ).",
+      "notes": "Constellation Western Region generation portfolio; folded into the Constellation South Region Baltimore corporate office map row.",
       "seed": false,
       "locations": [
         {
@@ -122397,7 +122398,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "parent_company_inference",
           "geo_source_url": "https://www.constellationenergy.com/",
-          "geo_notes": "Constellation Western Region portfolio; Baltimore corporate office (parent HQ)."
+          "geo_notes": "Constellation Western Region generation portfolio; folded into the Constellation South Region Baltimore corporate office map row."
         },
         {
           "rank": 2,
@@ -132391,7 +132392,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://mercedid.org/contact-merced-irrigation-district/",
-      "notes": "Irrigation district electric and water utility HQ.",
+      "notes": "Merced Irrigation District uses MID publicly, but the map keeps Merced to avoid colliding with nearby Modesto Irrigation District, also MID.",
       "seed": false,
       "locations": [
         {
@@ -132406,7 +132407,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://mercedid.org/contact-merced-irrigation-district/",
-          "geo_notes": "Irrigation district electric and water utility HQ."
+          "geo_notes": "Merced Irrigation District uses MID publicly, but the map keeps Merced to avoid colliding with nearby Modesto Irrigation District, also MID."
         },
         {
           "rank": 2,

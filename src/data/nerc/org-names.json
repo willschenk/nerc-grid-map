@@ -298,10 +298,13 @@
     {
       "ncr_id": "NCR-SEED-023",
       "entity_name": "Alabama Power Company",
-      "shortest": "Alabama",
+      "shortest": "APC",
       "short": "Alabama Power",
       "normal": "Alabama Power Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/serc/2022/ncr01166_01247_01273_01320_southern_serc_pub_2021_op-rev1-11-2022.pdf"
     },
     {
       "ncr_id": "NCR-SEED-019",
@@ -314,10 +317,13 @@
     {
       "ncr_id": "NCR-SEED-022",
       "entity_name": "Georgia Power Company",
-      "shortest": "Georgia",
+      "shortest": "GPC",
       "short": "Georgia Power",
       "normal": "Georgia Power Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/serc/2022/ncr01166_01247_01273_01320_southern_serc_pub_2021_op-rev1-11-2022.pdf"
     },
     {
       "ncr_id": "NCR-SEED-055",
@@ -404,7 +410,10 @@
       "shortest": "NiMo",
       "short": "Niagara Mohawk",
       "normal": "Niagara Mohawk Power Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nationalgrid.com/document/152231/download"
     },
     {
       "ncr_id": "NCR-SEED-058",
@@ -412,7 +421,10 @@
       "shortest": "Calpine",
       "short": "Calpine",
       "normal": "Calpine Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.calpine.com/"
     },
     {
       "ncr_id": "NCR00024",
@@ -2293,7 +2305,10 @@
       "shortest": "Merced",
       "short": "Merced Irrigation District",
       "normal": "Merced Irrigation District",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://mercedid.org/"
     },
     {
       "ncr_id": "NCR01273",
@@ -2341,7 +2356,10 @@
       "shortest": "USACE CH",
       "short": "USACE Charleston District",
       "normal": "U.S. Army Corps of Engineers - Charleston District",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sac.usace.army.mil/"
     },
     {
       "ncr_id": "NCR11109",
@@ -2544,7 +2562,10 @@
       "shortest": "AES AlmE",
       "short": "AES Alamitos",
       "normal": "AES Alamitos Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.energy.ca.gov/powerplant/combined-cycle/alamitos-energy-center"
     },
     {
       "ncr_id": "NCR05002",
@@ -2552,7 +2573,10 @@
       "shortest": "AES Alam",
       "short": "AES Alamitos",
       "normal": "AES Alamitos",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.energy.ca.gov/powerplant/combined-cycle/alamitos-energy-center"
     },
     {
       "ncr_id": "NCR12104",
@@ -2560,7 +2584,10 @@
       "shortest": "AES AlmS",
       "short": "AES ES Alamitos",
       "normal": "AES ES Alamitos",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.energy.ca.gov/powerplant/combined-cycle/alamitos-energy-center"
     },
     {
       "ncr_id": "NCR11967",
@@ -2568,7 +2595,10 @@
       "shortest": "AES HBE",
       "short": "AES Huntington Beach",
       "normal": "AES Huntington Beach Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=211139"
     },
     {
       "ncr_id": "NCR05004",
@@ -2576,7 +2606,10 @@
       "shortest": "AES HB",
       "short": "AES Huntington Beach",
       "normal": "AES Huntington Beach",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=211139"
     },
     {
       "ncr_id": "NCR11178",
@@ -2669,18 +2702,24 @@
     {
       "ncr_id": "NCR08039",
       "entity_name": "Allegheny Ridge Wind Farm, LLC",
-      "shortest": "Allegny WF",
+      "shortest": "Alleghny",
       "short": "Allegheny Ridge Wind Farm",
       "normal": "Allegheny Ridge Wind Farm",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/56451-1"
     },
     {
       "ncr_id": "NCR11528",
       "entity_name": "AltaGas Brush Energy Inc.",
-      "shortest": "Brush",
+      "shortest": "AltaGas",
       "short": "AltaGas Brush Energy",
       "normal": "AltaGas Brush Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/altagas-brush-energy"
     },
     {
       "ncr_id": "NCR05363",
@@ -2712,7 +2751,10 @@
       "shortest": "AMMO",
       "short": "Ameren Missouri",
       "normal": "Ameren Missouri",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.misoenergy.org/markets-and-operations/settlements/to-rate-data/ameren-missouri-ammo/"
     },
     {
       "ncr_id": "NCR00680",
@@ -2832,7 +2874,10 @@
       "shortest": "Astoria II",
       "short": "Astoria Energy II",
       "normal": "Astoria Energy II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/astoria-energy-ii/57664"
     },
     {
       "ncr_id": "NCR00538",
@@ -2840,7 +2885,10 @@
       "shortest": "Astor En",
       "short": "Astoria Energy",
       "normal": "Astoria Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/astoria-energy/55375"
     },
     {
       "ncr_id": "NCR07012",
@@ -2848,7 +2896,10 @@
       "shortest": "Astor Gn",
       "short": "Astoria Generating",
       "normal": "Astoria Generating Company",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/8906-1"
     },
     {
       "ncr_id": "NCR11746",
@@ -2968,7 +3019,10 @@
       "shortest": "Beech Ridge",
       "short": "Beech Ridge Energy",
       "normal": "Beech Ridge Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/57151-gen1"
     },
     {
       "ncr_id": "NCR12551",
@@ -3264,7 +3318,10 @@
       "shortest": "Brazor W",
       "short": "Brazoria West Solar",
       "normal": "Brazoria West Solar Project",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://savionenergy.com/shikun-binui-acquire-savions-brazoria-west-solar-project-in-texas/"
     },
     {
       "ncr_id": "NCR10210",
@@ -3381,10 +3438,13 @@
     {
       "ncr_id": "NCR10195",
       "entity_name": "Brush Power",
-      "shortest": "Brush",
+      "shortest": "BrushPwr",
       "short": "Brush Power",
       "normal": "Brush Power",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/brush-generation-facility/10682"
     },
     {
       "ncr_id": "NCR12270",
@@ -3536,7 +3596,10 @@
       "shortest": "Camilla PV",
       "short": "Camilla Solar Energy",
       "normal": "Camilla Solar Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://invenergy.com/news/invenergy-announces-commercial-operations-at-its-100th-sustainable-energy-project"
     },
     {
       "ncr_id": "NCR00214",
@@ -3896,7 +3959,10 @@
       "shortest": "CEG Nuke",
       "short": "Constellation Nuclear",
       "normal": "Constellation Nuclear",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://investors.constellationenergy.com/"
     },
     {
       "ncr_id": "NCR04057",
@@ -3904,7 +3970,10 @@
       "shortest": "CEG Pwr",
       "short": "Constellation Power",
       "normal": "Constellation Power",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://investors.constellationenergy.com/"
     },
     {
       "ncr_id": "NCR10122",
@@ -3920,7 +3989,10 @@
       "shortest": "CEG S",
       "short": "Constellation South",
       "normal": "Constellation Energy South",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.constellationenergy.com/"
     },
     {
       "ncr_id": "NCR11325",
@@ -3928,15 +4000,21 @@
       "shortest": "CEG W",
       "short": "Constellation Western",
       "normal": "Constellation Energy Western",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.constellationenergy.com/"
     },
     {
       "ncr_id": "NCR11216",
       "entity_name": "Constellation Maryland Peaker Fleet",
-      "shortest": "CEG MD",
+      "shortest": "CMPF",
       "short": "Constellation Maryland Peakers",
       "normal": "Constellation Maryland Peaker Fleet",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/rfc/2020/ncr11216_cmpf_rf_pub_2016.pdf"
     },
     {
       "ncr_id": "NCR11290",
@@ -5797,10 +5875,13 @@
     {
       "ncr_id": "NCR01113",
       "entity_name": "Kiowa Power Partners, LLC",
-      "shortest": "Kiowa Pwr",
+      "shortest": "KiowaPwr",
       "short": "Kiowa Power Partners",
       "normal": "Kiowa Power Partners",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf"
     },
     {
       "ncr_id": "NCR11475",
@@ -16275,18 +16356,24 @@
     {
       "ncr_id": "NCR01247",
       "entity_name": "Georgia Power Company",
-      "shortest": "Georgia",
+      "shortest": "GPC",
       "short": "Georgia Power",
       "normal": "Georgia Power Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/serc/2022/ncr01166_01247_01273_01320_southern_serc_pub_2021_op-rev1-11-2022.pdf"
     },
     {
       "ncr_id": "NCR01166",
       "entity_name": "Alabama Power Company",
-      "shortest": "Alabama",
+      "shortest": "APC",
       "short": "Alabama Power",
       "normal": "Alabama Power Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/serc/2022/ncr01166_01247_01273_01320_southern_serc_pub_2021_op-rev1-11-2022.pdf"
     },
     {
       "ncr_id": "NCR01151",
@@ -16379,7 +16466,10 @@
       "shortest": "NiMo",
       "short": "Niagara Mohawk",
       "normal": "Niagara Mohawk Power Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nationalgrid.com/document/152231/download"
     },
     {
       "ncr_id": "NCR07161",
@@ -16483,7 +16573,10 @@
       "shortest": "Calpine",
       "short": "Calpine",
       "normal": "Calpine Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.calpine.com/"
     },
     {
       "ncr_id": "NCR01148",
@@ -16976,10 +17069,13 @@
     {
       "ncr_id": "NCR04088",
       "entity_name": "Kiowa Power Partners, LLC",
-      "shortest": "Kiowa Pwr",
+      "shortest": "KiowaPwr",
       "short": "Kiowa Power Partners",
       "normal": "Kiowa Power Partners, LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf"
     },
     {
       "ncr_id": "NCR11279",
