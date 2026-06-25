@@ -3,32 +3,11 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-124. NCR11290 — Copper Mountain Solar 2, LLC
-125. NCR05119 — Coso Energy Developers
-126. NCR13272 — CPV Backbone Solar, LLC
-127. NCR13148 — CPV Canton Mountain Wind, LLC
-128. NCR11952 — CPV Fairview, LLC
-129. NCR12421 — CPV Maple Hill Solar, LLC
-130. NCR13149 — CPV Saddleback Ridge Wind, LLC
-131. NCR11585 — CPV Shore, LLC
-132. NCR11827 — CPV Valley, LLC
-133. NCR13447 — Dairyland Power Cooperative - Elwood
-134. NCR00209 — Energy Northwest - Columbia
-135. NCR00250 — Energy Northwest - Energy/Business Services
-136. NCR00540 — Essential Power Newington, LLC
-137. NCR04058 — Exxon Mobil Corporation
-138. NCR01239 — ExxonMobil Oil Corporation - Beaumont Refinery
-139. NCR13031 — Five Wells Solar Center LLC
-140. NCR11930 — Fluvanna Wind Energy 2 LLC
-141. NCR11769 — Fluvanna Wind Energy LLC
-142. NCR03040 — Fowler Ridge II Wind Farm LLC
-143. NCR10307 — Fowler Ridge Wind Farm LLC
 144. NCR12088 — Frontier Windpower II, LLC
 145. NCR11696 — GEV - Marcus Hook
 146. NCR10306 — Grand Ridge Energy LLC
 147. NCR11510 — Green Pastures Wind I, LLC.
 148. NCR11573 — Green Pastures Wind II, LLC
-149. NCR11852 — GSP Newington LLC
 150. NCR11611 — Hamilton Liberty, LLC
 151. NCR11654 — Hamilton Patriot, LLC
 152. NCR12545 — Hardin Solar Energy II LLC
@@ -106,7 +85,6 @@ Delete each line after its name is updated and validated.
 224. NCR13152 — BT Signal Ranch, LLC
 225. NCR13528 — BT Smith Storage LLC
 226. NCR10382 — Castleton Power, LLC
-227. NCR13267 — Coso Battery Storage, LLC
 228. NCR11250 — Dogwood Power Management, LLC
 229. NCR11061 — Empire Generating Co, LLC
 230. NCR11657 — ETEC - San Jacinto County Peaking Facility
@@ -193,20 +171,14 @@ Delete each line after its name is updated and validated.
 313. NCR04091 — LCRA Transmission Services Corporation
 314. NCR11916 — City of Henderson, KY, Utility Commission, DBA Henderson Municipal Power & Light
 319. NCR11940 — Calpeak Power Panoche LLC
-322. NCR12121 — Copper Mountain Solar 5, LLC
-323. NCR05120 — Coso Finance Partners
-324. NCR05122 — Coso Power Developers
 325. NCR12192 — DTE Sustainable Generation Holdings, LLC
 326. NCR11167 — Entergy - Fossil & Hydroelectric Generation
 327. NCR12526 — Entergy Renewables
-328. NCR12458 — Five Wells Storage LLC
-329. NCR10308 — Fowler Ridge III Wind Farm LLC
 330. NCR11029 — Grand Ridge Energy II LLC
 331. NCR11030 — Grand Ridge Energy III LLC
 332. NCR11031 — Grand Ridge Energy IV LLC
 334. NCR12212 — Linden Peaking Generating Station
 335. NCR13046 — Mordor 2
-336. NCR13421 — MPH Elwood, LLC
 337. NCR12159 — NAES Corporation - Aquamarine
 338. NCR11562 — NAES Corporation - East Coast Power Linden Holdings
 339. NCR11954 — Prairie Breeze Wind Energy III LLC

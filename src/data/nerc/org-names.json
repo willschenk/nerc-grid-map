@@ -4022,15 +4022,21 @@
       "shortest": "CM Solar",
       "short": "Copper Mountain Solar 2",
       "normal": "Copper Mountain Solar 2",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://americas.rwe.com/our-energy/solar-energy/solar-projects-and-locations/copper-mountain-solar/"
     },
     {
       "ncr_id": "NCR12121",
       "entity_name": "Copper Mountain Solar 5, LLC",
-      "shortest": "CM Solar",
+      "shortest": "CM Sol5",
       "short": "Copper Mountain Solar 5",
       "normal": "Copper Mountain Solar 5",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://americas.rwe.com/our-energy/solar-energy/solar-projects-and-locations/copper-mountain-solar/"
     },
     {
       "ncr_id": "NCR12492",
@@ -4062,23 +4068,32 @@
       "shortest": "Coso",
       "short": "Coso Energy Developers",
       "normal": "Coso Energy Developers",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cosoenergy.com/"
     },
     {
       "ncr_id": "NCR05120",
       "entity_name": "Coso Finance Partners",
-      "shortest": "Coso",
+      "shortest": "Coso Fin",
       "short": "Coso Finance Partners",
       "normal": "Coso Finance Partners",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cosoenergy.com/"
     },
     {
       "ncr_id": "NCR05122",
       "entity_name": "Coso Power Developers",
-      "shortest": "Coso",
+      "shortest": "Coso Pwr",
       "short": "Coso Power Developers",
       "normal": "Coso Power Developers",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cosoenergy.com/"
     },
     {
       "ncr_id": "NCR11735",
@@ -4115,10 +4130,13 @@
     {
       "ncr_id": "NCR13272",
       "entity_name": "CPV Backbone Solar, LLC",
-      "shortest": "CPV Bckbone",
+      "shortest": "CPV Back",
       "short": "CPV Backbone Solar",
       "normal": "CPV Backbone Solar",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cpv.com/our-fleet/cpv-backbone-solar/"
     },
     {
       "ncr_id": "NCR13148",
@@ -4126,15 +4144,21 @@
       "shortest": "CPV Cant",
       "short": "CPV Canton Mountain Wind",
       "normal": "CPV Canton Mountain Wind",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/58620-1"
     },
     {
       "ncr_id": "NCR11952",
       "entity_name": "CPV Fairview, LLC",
-      "shortest": "CPV Fairvw",
+      "shortest": "CPV Fair",
       "short": "CPV Fairview",
       "normal": "CPV Fairview",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cpv.com/our-fleet/cpv-fairview-energy-center/"
     },
     {
       "ncr_id": "NCR11081",
@@ -4147,10 +4171,13 @@
     {
       "ncr_id": "NCR12421",
       "entity_name": "CPV Maple Hill Solar, LLC",
-      "shortest": "CPV Maple",
+      "shortest": "CPV Map",
       "short": "CPV Maple Hill Solar",
       "normal": "CPV Maple Hill Solar",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cpv.com/our-fleet/cpv-maple-hill-solar/"
     },
     {
       "ncr_id": "NCR11706",
@@ -4166,7 +4193,10 @@
       "shortest": "CPV Sadl",
       "short": "CPV Saddleback Ridge Wind",
       "normal": "CPV Saddleback Ridge Wind",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.gridinfo.com/plant/saddleback-ridge-wind-farm/58608"
     },
     {
       "ncr_id": "NCR11585",
@@ -4174,7 +4204,10 @@
       "shortest": "CPV Shor",
       "short": "CPV Shore",
       "normal": "CPV Shore",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cpv.com/our-fleet/"
     },
     {
       "ncr_id": "NCR12445",
@@ -4206,7 +4239,10 @@
       "shortest": "CPV Vly",
       "short": "CPV Valley",
       "normal": "CPV Valley",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cpv.com/our-fleet/cpv-valley-energy-center/"
     },
     {
       "ncr_id": "NCR12038",
@@ -4283,10 +4319,13 @@
     {
       "ncr_id": "NCR13447",
       "entity_name": "Dairyland Power Cooperative - Elwood",
-      "shortest": "DPC Elwood",
+      "shortest": "DPC Elwd",
       "short": "Dairyland Elwood",
       "normal": "Dairyland Power Cooperative - Elwood",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dairylandpower.com/"
     },
     {
       "ncr_id": "NCR12181",
@@ -4678,7 +4717,10 @@
       "shortest": "ENW",
       "short": "Energy Northwest Columbia",
       "normal": "Energy Northwest Columbia Generating Station",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.energy-northwest.com/energy-projects/columbia-generating-station/"
     },
     {
       "ncr_id": "NCR00250",
@@ -4686,7 +4728,10 @@
       "shortest": "ENW Svc",
       "short": "Energy Northwest",
       "normal": "Energy Northwest Energy and Business Services",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.energy-northwest.com/contact-us/"
     },
     {
       "ncr_id": "NCR12068",
@@ -4734,7 +4779,10 @@
       "shortest": "EP Newg",
       "short": "Essential Power Newington",
       "normal": "Essential Power Newington",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/newington-energy-center/55661"
     },
     {
       "ncr_id": "NCR00212",
@@ -4758,7 +4806,10 @@
       "shortest": "Exxon",
       "short": "Exxon Mobil",
       "normal": "Exxon Mobil",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://corporate.exxonmobil.com/locations/united-states/houston"
     },
     {
       "ncr_id": "NCR00128",
@@ -4774,7 +4825,10 @@
       "shortest": "Exxon Bm",
       "short": "ExxonMobil Beaumont",
       "normal": "ExxonMobil Beaumont Refinery",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://corporate.exxonmobil.com/locations/united-states/beaumont-operations"
     },
     {
       "ncr_id": "NCR13182",
@@ -4819,18 +4873,24 @@
     {
       "ncr_id": "NCR13031",
       "entity_name": "Five Wells Solar Center LLC",
-      "shortest": "Five Wells",
+      "shortest": "5 Wells",
       "short": "Five Wells Solar",
       "normal": "Five Wells Solar Center",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.engie-na.com/project/five-wells/"
     },
     {
       "ncr_id": "NCR12458",
       "entity_name": "Five Wells Storage LLC",
-      "shortest": "Five Wells",
+      "shortest": "5WellsES",
       "short": "Five Wells Storage",
       "normal": "Five Wells Storage",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.engie-na.com/project/five-wells/"
     },
     {
       "ncr_id": "NCR11314",
@@ -4894,7 +4954,10 @@
       "shortest": "Fluvna 2",
       "short": "Fluvanna Wind 2",
       "normal": "Fluvanna Wind Energy 2",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bherenewables.com/gopher-creek"
     },
     {
       "ncr_id": "NCR11769",
@@ -4902,7 +4965,10 @@
       "shortest": "Fluvna 1",
       "short": "Fluvanna Wind",
       "normal": "Fluvanna Wind Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/fluvanna/59245"
     },
     {
       "ncr_id": "NCR11950",
@@ -4963,10 +5029,13 @@
     {
       "ncr_id": "NCR03040",
       "entity_name": "Fowler Ridge II Wind Farm LLC",
-      "shortest": "Fowler 2",
+      "shortest": "Fowler23",
       "short": "Fowler Ridge II",
       "normal": "Fowler Ridge II Wind Farm",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bp.com/en_us/united-states/home/news/press-releases/bp-boosts-renewable-energy-production-and-efficiency-with-technology-upgrades-at-indiana-wind-farm.html"
     },
     {
       "ncr_id": "NCR10308",
@@ -4974,7 +5043,10 @@
       "shortest": "Fowler 3",
       "short": "Fowler Ridge III",
       "normal": "Fowler Ridge III Wind Farm",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bp.com/en_us/united-states/home/news/press-releases/bp-boosts-renewable-energy-production-and-efficiency-with-technology-upgrades-at-indiana-wind-farm.html"
     },
     {
       "ncr_id": "NCR10307",
@@ -4982,7 +5054,10 @@
       "shortest": "Fowler 1",
       "short": "Fowler Ridge Wind",
       "normal": "Fowler Ridge Wind Farm",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bp.com/en_us/united-states/home/news/press-releases/bp-boosts-renewable-energy-production-and-efficiency-with-technology-upgrades-at-indiana-wind-farm.html"
     },
     {
       "ncr_id": "NCR13406",
@@ -5342,7 +5417,10 @@
       "shortest": "GSP Newg",
       "short": "GSP Newington",
       "normal": "Newington Station",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.graniteshorepower.com/newington-station"
     },
     {
       "ncr_id": "NCR11851",
@@ -6550,10 +6628,13 @@
     {
       "ncr_id": "NCR13421",
       "entity_name": "MPH Elwood, LLC",
-      "shortest": "Elwood",
+      "shortest": "MPH Elwd",
       "short": "MPH Elwood",
       "normal": "MPH Elwood",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/mph-elwood"
     },
     {
       "ncr_id": "NCR11912",
@@ -10900,7 +10981,10 @@
       "shortest": "Coso ES",
       "short": "Coso Battery Storage",
       "normal": "Coso Battery Storage",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cosoenergy.com/"
     },
     {
       "ncr_id": "NCR13489",

@@ -26307,7 +26307,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/58620-1",
       "org_type": "merchant",
       "parent_org": "Competitive Power Ventures",
-      "notes": "22.8 MW wind farm in Oxford County. COD November 2017.",
+      "notes": "CPV Canton Mountain Wind is a 22.8 MW Oxford County, ME wind project; kept distinct from nearby CPV Saddleback Ridge.",
       "seed": false,
       "locations": [
         {
@@ -26322,7 +26322,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/58620-1",
-          "geo_notes": "22.8 MW wind farm in Oxford County. COD November 2017."
+          "geo_notes": "CPV Canton Mountain Wind is a 22.8 MW Oxford County, ME wind project; kept distinct from nearby CPV Saddleback Ridge."
         },
         {
           "rank": 2,
@@ -26375,7 +26375,7 @@
       "source_url": "https://www.gridinfo.com/plant/saddleback-ridge-wind-farm/58608",
       "org_type": "merchant",
       "parent_org": "Competitive Power Ventures",
-      "notes": "34.2 MW wind farm in Franklin County. COD December 2014.",
+      "notes": "CPV Saddleback Ridge Wind is a 34.2 MW Franklin County, ME wind project; kept distinct from nearby CPV Canton Mountain.",
       "seed": false,
       "locations": [
         {
@@ -26390,7 +26390,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/saddleback-ridge-wind-farm/58608",
-          "geo_notes": "34.2 MW wind farm in Franklin County. COD December 2014."
+          "geo_notes": "CPV Saddleback Ridge Wind is a 34.2 MW Franklin County, ME wind project; kept distinct from nearby CPV Canton Mountain."
         },
         {
           "rank": 2,
@@ -26511,7 +26511,7 @@
       "source_url": "https://cpv.com/our-fleet/cpv-valley-energy-center/",
       "org_type": "merchant",
       "parent_org": "Competitive Power Ventures",
-      "notes": "680 MW combined cycle plant in Orange County. COD May 2018.",
+      "notes": "CPV Valley Energy Center is a 680 MW combined-cycle plant in Wawayanda, NY.",
       "seed": false,
       "locations": [
         {
@@ -26526,7 +26526,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://cpv.com/our-fleet/cpv-valley-energy-center/",
-          "geo_notes": "680 MW combined cycle plant in Orange County. COD May 2018."
+          "geo_notes": "CPV Valley Energy Center is a 680 MW combined-cycle plant in Wawayanda, NY."
         },
         {
           "rank": 2,
@@ -27591,7 +27591,7 @@
       "source_url": "https://www.gridinfo.com/plant/newington-energy-center/55661",
       "org_type": "merchant",
       "parent_org": "Essential Power",
-      "notes": "565 MW combined cycle plant on the Piscataqua River. COD October 2002.",
+      "notes": "Essential Power Newington registration for Newington Energy Center, the combined-cycle plant on the Piscataqua River; distinct from GSP Newington Station.",
       "seed": false,
       "locations": [
         {
@@ -27606,7 +27606,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/newington-energy-center/55661",
-          "geo_notes": "565 MW combined cycle plant on the Piscataqua River. COD October 2002."
+          "geo_notes": "Essential Power Newington registration for Newington Energy Center, the combined-cycle plant on the Piscataqua River; distinct from GSP Newington Station."
         },
         {
           "rank": 2,
@@ -28743,7 +28743,7 @@
       "source_url": "https://www.graniteshorepower.com/newington-station",
       "org_type": "merchant",
       "parent_org": "Granite Shore Power",
-      "notes": "400 MW oil and gas plant on the Piscataqua River. COD 1974.",
+      "notes": "Granite Shore Power Newington Station is a separate oil/gas plant on the Piscataqua River; label keeps GSP to distinguish it from Essential Power Newington.",
       "seed": false,
       "locations": [
         {
@@ -28758,7 +28758,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.graniteshorepower.com/newington-station",
-          "geo_notes": "400 MW oil and gas plant on the Piscataqua River. COD 1974."
+          "geo_notes": "Granite Shore Power Newington Station is a separate oil/gas plant on the Piscataqua River; label keeps GSP to distinguish it from Essential Power Newington."
         },
         {
           "rank": 2,
@@ -43677,7 +43677,7 @@
       "source_url": "https://www.gridinfo.com/plant/cpv-backbone-solar/67022",
       "org_type": "merchant",
       "parent_org": "Competitive Power Ventures",
-      "notes": "Plant pin for 175 MW CPV Backbone Solar on a reclaimed coal mine site in Garrett County.",
+      "notes": "CPV Backbone Solar is a 175 MW Garrett County, MD solar project on former coal mine land; label keeps CPV plus project identifier.",
       "seed": false,
       "locations": [
         {
@@ -43692,7 +43692,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/cpv-backbone-solar/67022",
-          "geo_notes": "Plant pin for 175 MW CPV Backbone Solar on a reclaimed coal mine site in Garrett County."
+          "geo_notes": "CPV Backbone Solar is a 175 MW Garrett County, MD solar project on former coal mine land; label keeps CPV plus project identifier."
         },
         {
           "rank": 2,
@@ -43745,7 +43745,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/60589-gen1",
       "org_type": "merchant",
       "parent_org": "Competitive Power Ventures",
-      "notes": "Plant pin for 1,050 MW CPV Fairview Energy Center in Cambria County.",
+      "notes": "CPV Fairview Energy Center is a 1,050 MW combined-cycle plant in Cambria County, PA.",
       "seed": false,
       "locations": [
         {
@@ -43760,7 +43760,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/60589-gen1",
-          "geo_notes": "Plant pin for 1,050 MW CPV Fairview Energy Center in Cambria County."
+          "geo_notes": "CPV Fairview Energy Center is a 1,050 MW combined-cycle plant in Cambria County, PA."
         },
         {
           "rank": 2,
@@ -43813,7 +43813,7 @@
       "source_url": "https://www.gridinfo.com/plant/cpv-maple-hill-solar/65332",
       "org_type": "merchant",
       "parent_org": "Competitive Power Ventures",
-      "notes": "Plant pin for 100 MW CPV Maple Hill Solar on a former coal mine site in Cambria County.",
+      "notes": "CPV Maple Hill Solar is a 100 MWac solar project in Portage Township, PA, on former coal mine land.",
       "seed": false,
       "locations": [
         {
@@ -43828,7 +43828,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/cpv-maple-hill-solar/65332",
-          "geo_notes": "Plant pin for 100 MW CPV Maple Hill Solar on a former coal mine site in Cambria County."
+          "geo_notes": "CPV Maple Hill Solar is a 100 MWac solar project in Portage Township, PA, on former coal mine land."
         },
         {
           "rank": 2,
@@ -43949,7 +43949,7 @@
       "source_url": "https://www.gridinfo.com/plant/woodbridge-energy-center/57839",
       "org_type": "merchant",
       "parent_org": "Competitive Power Ventures",
-      "notes": "Plant pin for 725 MW CPV Woodbridge Energy Center in Middlesex County, New Jersey.",
+      "notes": "CPV Shore maps to CPV Woodbridge Energy Center, a 725 MW combined-cycle plant in Middlesex County, NJ.",
       "seed": false,
       "locations": [
         {
@@ -43964,7 +43964,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/woodbridge-energy-center/57839",
-          "geo_notes": "Plant pin for 725 MW CPV Woodbridge Energy Center in Middlesex County, New Jersey."
+          "geo_notes": "CPV Shore maps to CPV Woodbridge Energy Center, a 725 MW combined-cycle plant in Middlesex County, NJ."
         },
         {
           "rank": 2,
@@ -45263,7 +45263,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.dairylandpower.com/",
-      "notes": "Elwood Energy Center Will County IL; EIA 55199.",
+      "notes": "Dairyland Power Cooperative registration at Elwood Energy Center in Will County, IL; MPH Elwood is folded into the same plant site.",
       "seed": false,
       "locations": [
         {
@@ -45278,7 +45278,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.dairylandpower.com/",
-          "geo_notes": "Elwood Energy Center Will County IL; EIA 55199."
+          "geo_notes": "Dairyland Power Cooperative registration at Elwood Energy Center in Will County, IL; MPH Elwood is folded into the same plant site."
         },
         {
           "rank": 2,
@@ -47250,7 +47250,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/fowler-ridge-ii-wind-farm-llc",
-      "notes": "",
+      "notes": "Fowler Ridge II map row also folds in Fowler Ridge III at the shared Fowler, IN wind-farm office; compact label reflects phases 2 and 3.",
       "seed": false,
       "locations": [
         {
@@ -47265,7 +47265,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/fowler-ridge-ii-wind-farm-llc",
-          "geo_notes": ""
+          "geo_notes": "Fowler Ridge II map row also folds in Fowler Ridge III at the shared Fowler, IN wind-farm office; compact label reflects phases 2 and 3."
         },
         {
           "rank": 2,
@@ -47316,7 +47316,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/fowler-ridge-iii-wind-farm-llc",
-      "notes": "",
+      "notes": "Fowler Ridge III wind registration; folded into the Fowler Ridge II/III map row at the shared Fowler, IN plant office.",
       "seed": false,
       "locations": [
         {
@@ -47331,7 +47331,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/fowler-ridge-iii-wind-farm-llc",
-          "geo_notes": ""
+          "geo_notes": "Fowler Ridge III wind registration; folded into the Fowler Ridge II/III map row at the shared Fowler, IN plant office."
         },
         {
           "rank": 2,
@@ -47382,7 +47382,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/fowler-ridge-wind-farm-llc",
-      "notes": "",
+      "notes": "Fowler Ridge phase 1 wind registration near Fowler, IN; separate from the folded Fowler Ridge II/III map row.",
       "seed": false,
       "locations": [
         {
@@ -47397,7 +47397,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/fowler-ridge-wind-farm-llc",
-          "geo_notes": ""
+          "geo_notes": "Fowler Ridge phase 1 wind registration near Fowler, IN; separate from the folded Fowler Ridge II/III map row."
         },
         {
           "rank": 2,
@@ -53751,7 +53751,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/mph-elwood",
-      "notes": "1,025 MW Elwood Energy Center.",
+      "notes": "MPH Elwood registration at Elwood Energy Center; folded into the Dairyland Power Cooperative - Elwood map row.",
       "seed": false,
       "entity_name": "MPH Elwood, LLC",
       "roles": [
@@ -53773,7 +53773,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/mph-elwood",
-          "geo_notes": "1,025 MW Elwood Energy Center."
+          "geo_notes": "MPH Elwood registration at Elwood Energy Center; folded into the Dairyland Power Cooperative - Elwood map row."
         },
         {
           "rank": 2,
@@ -70464,8 +70464,8 @@
       "country": "US",
       "confidence": "HIGH",
       "source": "official_website",
-      "source_url": "https://corporate.exxonmobil.com/",
-      "notes": "Beaumont refinery operations.",
+      "source_url": "https://corporate.exxonmobil.com/locations/united-states/beaumont-operations",
+      "notes": "ExxonMobil Beaumont Refinery operations registration; site-specific label avoids colliding with the corporate ExxonMobil row.",
       "seed": false,
       "locations": [
         {
@@ -70480,7 +70480,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://corporate.exxonmobil.com/",
-          "geo_notes": "Beaumont refinery operations."
+          "geo_notes": "ExxonMobil Beaumont Refinery operations registration; site-specific label avoids colliding with the corporate ExxonMobil row."
         },
         {
           "rank": 2,
@@ -95908,7 +95908,7 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://corporate.exxonmobil.com/locations/united-states/houston",
-      "notes": "Corporate HQ; merchant/cogeneration assets statewide including Baytown.",
+      "notes": "ExxonMobil corporate registration at Spring, TX; separate from site-specific refinery registrations such as Beaumont and Baton Rouge.",
       "seed": false,
       "locations": [
         {
@@ -95923,7 +95923,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://corporate.exxonmobil.com/locations/united-states/houston",
-          "geo_notes": "Corporate HQ; merchant/cogeneration assets statewide including Baytown."
+          "geo_notes": "ExxonMobil corporate registration at Spring, TX; separate from site-specific refinery registrations such as Beaumont and Baton Rouge."
         },
         {
           "rank": 2,
@@ -95973,8 +95973,8 @@
       "country": "US",
       "confidence": "MEDIUM",
       "source": "eia_861",
-      "source_url": "https://www.engie.com/",
-      "notes": "355 MW Five Wells solar hybrid in Bell County TX; ENGIE.",
+      "source_url": "https://www.gridinfo.com/plant/five-wells-solar-center-hybrid/66420",
+      "notes": "Five Wells Solar is ENGIE North America's Bell County, TX solar and storage hybrid site; storage registration is folded here.",
       "seed": false,
       "locations": [
         {
@@ -95989,7 +95989,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.engie.com/",
-          "geo_notes": "355 MW Five Wells solar hybrid in Bell County TX; ENGIE."
+          "geo_notes": "Five Wells Solar is ENGIE North America's Bell County, TX solar and storage hybrid site; storage registration is folded here."
         },
         {
           "rank": 2,
@@ -96019,7 +96019,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "ENGIE North America"
     },
     {
       "ncr_id": "NCR12458",
@@ -96040,7 +96041,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/66420-fwbat",
-      "notes": "263 MW co-located BESS at Five Wells hybrid site in Bell County TX.",
+      "notes": "Five Wells Storage is the BESS registration at ENGIE North America's Five Wells hybrid site; folded into the solar map row.",
       "seed": false,
       "locations": [
         {
@@ -96055,7 +96056,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/66420-fwbat",
-          "geo_notes": "263 MW co-located BESS at Five Wells hybrid site in Bell County TX."
+          "geo_notes": "Five Wells Storage is the BESS registration at ENGIE North America's Five Wells hybrid site; folded into the solar map row."
         },
         {
           "rank": 2,
@@ -96085,7 +96086,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "ENGIE North America"
     },
     {
       "ncr_id": "NCR11824",
@@ -96303,7 +96305,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/fluvanna-wind-energy-2-llc",
-      "notes": "Gopher Creek Wind Farm phase in Borden County TX.",
+      "notes": "Fluvanna Wind Energy 2 is the Gopher Creek phase in Borden and Scurry counties, TX; label keeps phase 2 distinct from Fluvanna 1.",
       "seed": false,
       "locations": [
         {
@@ -96318,7 +96320,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/fluvanna-wind-energy-2-llc",
-          "geo_notes": "Gopher Creek Wind Farm phase in Borden County TX."
+          "geo_notes": "Fluvanna Wind Energy 2 is the Gopher Creek phase in Borden and Scurry counties, TX; label keeps phase 2 distinct from Fluvanna 1."
         },
         {
           "rank": 2,
@@ -96369,7 +96371,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/fluvanna-wind-energy",
-      "notes": "155 MW Fluvanna wind in Scurry County TX.",
+      "notes": "Fluvanna Wind Energy phase 1 in Scurry County, TX; label keeps phase 1 distinct from Fluvanna 2 / Gopher Creek.",
       "seed": false,
       "locations": [
         {
@@ -96384,7 +96386,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/fluvanna-wind-energy",
-          "geo_notes": "155 MW Fluvanna wind in Scurry County TX."
+          "geo_notes": "Fluvanna Wind Energy phase 1 in Scurry County, TX; label keeps phase 1 distinct from Fluvanna 2 / Gopher Creek."
         },
         {
           "rank": 2,
@@ -122514,7 +122516,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/copper-mountain-solar-2",
-      "notes": "Copper Mountain Solar 2 PV plant; Eldorado Valley NV.",
+      "notes": "Copper Mountain Solar 2 at the Boulder City / Eldorado Valley solar complex; map row also folds in Copper Mountain Solar 5.",
       "seed": false,
       "locations": [
         {
@@ -122529,7 +122531,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/copper-mountain-solar-2",
-          "geo_notes": "Copper Mountain Solar 2 PV plant; Eldorado Valley NV."
+          "geo_notes": "Copper Mountain Solar 2 at the Boulder City / Eldorado Valley solar complex; map row also folds in Copper Mountain Solar 5."
         },
         {
           "rank": 2,
@@ -122580,7 +122582,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/copper-mountain-solar-5",
-      "notes": "Copper Mountain Solar 5 co-located with Copper Mountain complex.",
+      "notes": "Copper Mountain Solar 5 at the same Boulder City solar complex; folded into the Copper Mountain Solar 2 map row.",
       "seed": false,
       "locations": [
         {
@@ -122595,7 +122597,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/copper-mountain-solar-5",
-          "geo_notes": "Copper Mountain Solar 5 co-located with Copper Mountain complex."
+          "geo_notes": "Copper Mountain Solar 5 at the same Boulder City solar complex; folded into the Copper Mountain Solar 2 map row."
         },
         {
           "rank": 2,
@@ -122704,7 +122706,7 @@
         "GO"
       ],
       "acronym": "Coso BESS",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "lat": 36.0565,
       "lng": -117.8586,
       "headquarters_address": null,
@@ -122714,7 +122716,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/coso-battery-storage",
-      "notes": "60 MW battery co-located with Coso geothermal; Inyo County CA.",
+      "notes": "Coso Battery Storage is a nearby storage registration associated with the Coso geothermal operating area in Inyo County, CA.",
       "seed": false,
       "locations": [
         {
@@ -122729,7 +122731,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/coso-battery-storage",
-          "geo_notes": "60 MW battery co-located with Coso geothermal; Inyo County CA."
+          "geo_notes": "Coso Battery Storage is a nearby storage registration associated with the Coso geothermal operating area in Inyo County, CA."
         },
         {
           "rank": 2,
@@ -122780,7 +122782,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://cosoenergy.com/contact/",
-      "notes": "Coso geothermal operating company at Coso Junction CA.",
+      "notes": "Coso Energy Developers is part of the Coso geothermal operating group at the China Lake / Coso Junction site; finance and power developer registrations are folded here.",
       "seed": false,
       "locations": [
         {
@@ -122795,7 +122797,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://cosoenergy.com/contact/",
-          "geo_notes": "Coso geothermal operating company at Coso Junction CA."
+          "geo_notes": "Coso Energy Developers is part of the Coso geothermal operating group at the China Lake / Coso Junction site; finance and power developer registrations are folded here."
         },
         {
           "rank": 2,
@@ -122846,7 +122848,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://cosoenergy.com/contact/",
-      "notes": "Coso geothermal partnership entity; shared Coso Junction HQ.",
+      "notes": "Coso Finance Partners registration at the Coso geothermal site; folded into the Coso Energy Developers map row.",
       "seed": false,
       "locations": [
         {
@@ -122861,7 +122863,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://cosoenergy.com/contact/",
-          "geo_notes": "Coso geothermal partnership entity; shared Coso Junction HQ."
+          "geo_notes": "Coso Finance Partners registration at the Coso geothermal site; folded into the Coso Energy Developers map row."
         },
         {
           "rank": 2,
@@ -122912,7 +122914,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://cosoenergy.com/contact/",
-      "notes": "Coso geothermal development entity; Coso Junction operations office.",
+      "notes": "Coso Power Developers registration at the Coso geothermal site; folded into the Coso Energy Developers map row.",
       "seed": false,
       "locations": [
         {
@@ -122927,7 +122929,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://cosoenergy.com/contact/",
-          "geo_notes": "Coso geothermal development entity; Coso Junction operations office."
+          "geo_notes": "Coso Power Developers registration at the Coso geothermal site; folded into the Coso Energy Developers map row."
         },
         {
           "rank": 2,
@@ -124892,7 +124894,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.energy-northwest.com/contact-us/",
-      "notes": "Columbia Generating Station nuclear plant; Richland WA.",
+      "notes": "Energy Northwest Columbia registration for Columbia Generating Station, the Northwest commercial nuclear plant near Richland, WA.",
       "seed": false,
       "locations": [
         {
@@ -124907,7 +124909,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.energy-northwest.com/contact-us/",
-          "geo_notes": "Columbia Generating Station nuclear plant; Richland WA."
+          "geo_notes": "Energy Northwest Columbia registration for Columbia Generating Station, the Northwest commercial nuclear plant near Richland, WA."
         },
         {
           "rank": 2,
@@ -124958,7 +124960,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.energy-northwest.com/contact-us/",
-      "notes": "Energy Northwest administrative and business services HQ; Richland WA.",
+      "notes": "Energy Northwest Energy/Business Services registration at the Richland administrative office; distinct from the Columbia Generating Station plant row.",
       "seed": false,
       "locations": [
         {
@@ -124973,7 +124975,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.energy-northwest.com/contact-us/",
-          "geo_notes": "Energy Northwest administrative and business services HQ; Richland WA."
+          "geo_notes": "Energy Northwest Energy/Business Services registration at the Richland administrative office; distinct from the Columbia Generating Station plant row."
         },
         {
           "rank": 2,
