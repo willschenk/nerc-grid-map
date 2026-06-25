@@ -3,26 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-64. NCR-SEED-048 — Evergy Kansas Central, Inc.
-65. NCR01083 — Cleco Corporate Holdings LLC
-66. NCR00992 — Great River Energy
-67. NCR01020 — Northern States Power (Xcel Energy)
-68. NCR05023 — Basin Electric Power Cooperative
-69. NCR05368 — Sacramento Municipal Utility District
-70. NCR01175 — Ameren Services Company
-71. NCR01234 — Entergy
-72. NCR00682 — American Electric Power Service Corporation as agent for Appalachian Power Company, Indiana Michigan Power Company, Kentucky Power Company, Kingsport Power Company, Ohio Power Company, Wheeling Power Company, AEP Ohio Transmission Company, AEP Appalachian Transmission Company, AEP West Virginia Transmission Company, AEP Indiana Michigan Transmission Company and AEP Kentucky Transmission Company, Inc.
-73. NCR00658 — Evergy, Inc.
-74. NCR05244 — Modesto Irrigation District
-75. NCR01018 — Nebraska Public Power District
-76. NCR01130 — Oklahoma Gas And Electric Co.
-77. NCR00860 — Omaha Public Power District
-78. NCR05299 — Pacific Gas and Electric Company
-79. NCR05377 — San Diego Gas & Electric
-80. NCR05398 — Southern California Edison Company
-81. NCR01145 — Southwestern Public Service Co. (Xcel Energy)
-82. NCR01148 — Sunflower Electric Power Corporation
-83. NCR-SEED-055 — Western Area Power Administration
 84. NCR04037 — CPS Energy
 85. NCR04049 — Denton Municipal Electric
 86. NCR05126 — Deseret Generation & Transmission Co-operative
@@ -249,7 +229,6 @@ Delete each line after its name is updated and validated.
 307. SUP-pedernales-electric-cooperative — Pedernales Electric Cooperative
 308. SUP-snohomish-county-public-utility-district — Snohomish County Public Utility District
 309. NCR10030 — Tri-State Generation and Transmission Association, Inc. - Reliability
-310. NCR00102 — Basin Electric Power Cooperative
 311. NCR01021 — NorthWestern Energy Public Service
 312. NCR04006 — American Electric Power Service Corp as agent for AEP Texas Inc. and Public Service Company of Oklahoma
 313. NCR04091 — LCRA Transmission Services Corporation
@@ -300,7 +279,6 @@ Delete each line after its name is updated and validated.
 359. NCR12431 — BPL Sol Solar, LLC
 360. NCR04034 — City of Garland
 361. NCR04035 — City of Garland
-362. NCR13099 — Cleco Power LLC
 363. NCR11878 — Dominion Energy Generation Marketing, Inc.
 364. NCR11655 — EthosEnergy - San Jacinto County Peaking Facility
 365. NCR13365 — Hecate Energy Albany 2 LLC
@@ -360,31 +338,22 @@ Delete each line after its name is updated and validated.
 420. NCR-SEED-021 — Duke Energy Progress, LLC
 422. NCR-SEED-018 — Public Service Company of New Mexico
 423. NCR-SEED-016 — Puget Sound Energy, Inc.
-424. NCR-SEED-046 — Southwestern Public Service Company
 425. NCR-SEED-030 — JEA
-426. NCR-SEED-045 — Omaha Public Power District
 427. NCR-SEED-029 — Tampa Electric Company
-428. NCR-SEED-049 — Nebraska Public Power District
 429. NCR-SEED-026 — Associated Electric Cooperative, Inc.
-430. NCR-SEED-059 — Sunflower Electric Power Corporation
 431. NCR-SEED-011 — Arizona Public Service Company
 432. NCR-SEED-035 — Consumers Energy Company
 433. NCR-SEED-042 — Northern States Power Company - Minnesota
-434. NCR-SEED-008 — Pacific Gas and Electric Company
 435. NCR-SEED-017 — Portland General Electric Company
 436. NCR-SEED-012 — Public Service Company of Colorado
-437. NCR-SEED-010 — San Diego Gas & Electric Company
 438. NCR-SEED-031 — Virginia Electric and Power Company
 439. NCR-SEED-036 — American Electric Power Service Corporation
-440. NCR-SEED-009 — Southern California Edison Company
 441. NCR-SEED-056 — Tri-State Generation and Transmission Association, Inc.
 442. NCR-SEED-052 — Lower Colorado River Authority
 443. NCR-SEED-041 — New York Power Authority
 444. NCR-SEED-023 — Alabama Power Company
 445. NCR-SEED-019 — El Paso Electric Company
 446. NCR-SEED-022 — Georgia Power Company
-447. NCR-SEED-047 — Oklahoma Gas and Electric Company
-448. NCR-SEED-044 — Great River Energy
 449. NCR-SEED-043 — Basin Electric Power Cooperative
 450. NCR-SEED-060 — Deseret Generation & Transmission Co-operative
 451. NCR-SEED-051 — CPS Energy

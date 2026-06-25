@@ -143,7 +143,10 @@
       "shortest": "WR",
       "short": "Evergy Kansas Central",
       "normal": "Evergy Kansas Central, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "oasis",
+      "shortest_source_url": "https://www.oasis.oati.com/WR/index.html"
     },
     {
       "ncr_id": "NCR-SEED-030",
@@ -159,7 +162,10 @@
       "shortest": "OPPD",
       "short": "Omaha Public Power District",
       "normal": "Omaha Public Power District",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.oppd.com/"
     },
     {
       "ncr_id": "NCR-SEED-029",
@@ -175,7 +181,10 @@
       "shortest": "NPPD",
       "short": "Nebraska Public Power District",
       "normal": "Nebraska Public Power District",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nppd.com/"
     },
     {
       "ncr_id": "NCR-SEED-026",
@@ -191,7 +200,10 @@
       "shortest": "SECI",
       "short": "Sunflower Electric",
       "normal": "Sunflower Electric Power Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/mro/2024/ncr01148_seci_mro_pub_2019_combo.pdf"
     },
     {
       "ncr_id": "NCR-SEED-011",
@@ -215,7 +227,10 @@
       "shortest": "PG&E",
       "short": "Pacific Gas and Electric",
       "normal": "Pacific Gas and Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pge.com/"
     },
     {
       "ncr_id": "NCR-SEED-017",
@@ -239,7 +254,10 @@
       "shortest": "SDG&E",
       "short": "San Diego Gas & Electric",
       "normal": "San Diego Gas & Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sdge.com/"
     },
     {
       "ncr_id": "NCR-SEED-009",
@@ -247,7 +265,10 @@
       "shortest": "SCE",
       "short": "Southern California Edison",
       "normal": "Southern California Edison Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sce.com/"
     },
     {
       "ncr_id": "NCR-SEED-052",
@@ -295,7 +316,10 @@
       "shortest": "WAPA",
       "short": "Western Area Power Administration",
       "normal": "Western Area Power Administration",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.wapa.gov/"
     },
     {
       "ncr_id": "NCR-SEED-044",
@@ -303,7 +327,10 @@
       "shortest": "GRE",
       "short": "Great River Energy",
       "normal": "Great River Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://greatriverenergy.com/transmission-and-delivery/standby-service/"
     },
     {
       "ncr_id": "NCR-SEED-043",
@@ -627,10 +654,13 @@
     {
       "ncr_id": "NCR01083",
       "entity_name": "Cleco Corporate Holdings LLC",
-      "shortest": "CLEC",
+      "shortest": "Cleco",
       "short": "Cleco",
       "normal": "Cleco",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cleco.com/"
     },
     {
       "ncr_id": "NCR01315",
@@ -718,7 +748,10 @@
       "shortest": "NSP",
       "short": "Xcel Energy",
       "normal": "Xcel Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.sec.gov/Archives/edgar/data/92521/000095013402010486/c71507a1e10vqza.htm"
     },
     {
       "ncr_id": "NCR01023",
@@ -774,7 +807,10 @@
       "shortest": "Ameren",
       "short": "Ameren",
       "normal": "Ameren",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.ameren.com/"
     },
     {
       "ncr_id": "NCR01196",
@@ -790,7 +826,10 @@
       "shortest": "Entergy",
       "short": "Entergy",
       "normal": "Entergy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.entergy.com/"
     },
     {
       "ncr_id": "NCR07111",
@@ -878,7 +917,10 @@
       "shortest": "AEP",
       "short": "AEP Service Corp",
       "normal": "AEP Service Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aep.com/"
     },
     {
       "ncr_id": "NCR01061",
@@ -918,7 +960,10 @@
       "shortest": "Evergy",
       "short": "Evergy",
       "normal": "Evergy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.evergy.com/"
     },
     {
       "ncr_id": "NCR01101",
@@ -950,7 +995,10 @@
       "shortest": "MID",
       "short": "Modesto Irrigation District",
       "normal": "Modesto Irrigation District",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.mid.org/"
     },
     {
       "ncr_id": "NCR01130",
@@ -958,7 +1006,10 @@
       "shortest": "OG&E",
       "short": "Oklahoma Gas and Electric",
       "normal": "Oklahoma Gas & Electric",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.oge.com/"
     },
     {
       "ncr_id": "NCR01145",
@@ -966,7 +1017,10 @@
       "shortest": "SPS",
       "short": "Xcel Energy",
       "normal": "Xcel Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.sec.gov/Archives/edgar/data/92521/000009252124000006/sps-20231231.htm"
     },
     {
       "ncr_id": "NCR01155",
@@ -10502,10 +10556,13 @@
     {
       "ncr_id": "NCR13099",
       "entity_name": "Cleco Power LLC",
-      "shortest": "CLEC",
+      "shortest": "Cleco Pwr",
       "short": "Cleco Power",
       "normal": "Cleco Power",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cleco.com/"
     },
     {
       "ncr_id": "NCR13458",
@@ -16021,7 +16078,10 @@
       "shortest": "PG&E",
       "short": "Pacific Gas and Electric",
       "normal": "Pacific Gas and Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pge.com/"
     },
     {
       "ncr_id": "NCR05398",
@@ -16029,7 +16089,10 @@
       "shortest": "SCE",
       "short": "Southern California Edison",
       "normal": "Southern California Edison Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sce.com/"
     },
     {
       "ncr_id": "NCR05377",
@@ -16037,7 +16100,10 @@
       "shortest": "SDG&E",
       "short": "San Diego Gas & Electric",
       "normal": "San Diego Gas & Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sdge.com/"
     },
     {
       "ncr_id": "NCR05016",
@@ -16263,10 +16329,13 @@
     {
       "ncr_id": "NCR00102",
       "entity_name": "Basin Electric Power Cooperative",
-      "shortest": "Basin",
+      "shortest": "BEPC",
       "short": "Basin Electric",
       "normal": "Basin Electric Power Cooperative",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/wecc/2016/2015_public_wecc_bepc.pdf"
     },
     {
       "ncr_id": "NCR00992",
@@ -16274,7 +16343,10 @@
       "shortest": "GRE",
       "short": "Great River Energy",
       "normal": "Great River Energy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://greatriverenergy.com/transmission-and-delivery/standby-service/"
     },
     {
       "ncr_id": "NCR00860",
@@ -16282,7 +16354,10 @@
       "shortest": "OPPD",
       "short": "Omaha Public Power District",
       "normal": "Omaha Public Power District",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.oppd.com/"
     },
     {
       "ncr_id": "NCR01018",
@@ -16290,7 +16365,10 @@
       "shortest": "NPPD",
       "short": "Nebraska Public Power District",
       "normal": "Nebraska Public Power District",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nppd.com/"
     },
     {
       "ncr_id": "NCR04109",
@@ -16341,7 +16419,10 @@
       "shortest": "SECI",
       "short": "Sunflower Electric",
       "normal": "Sunflower Electric Power Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/mro/2024/ncr01148_seci_mro_pub_2019_combo.pdf"
     },
     {
       "ncr_id": "NCR05126",
@@ -16445,7 +16526,10 @@
       "shortest": "SMUD",
       "short": "Sacramento Municipal Utility District",
       "normal": "SMUD",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.smud.org/"
     },
     {
       "ncr_id": "NCR05321",
@@ -16592,10 +16676,13 @@
     {
       "ncr_id": "NCR05023",
       "entity_name": "Basin Electric Power Cooperative",
-      "shortest": "Basin",
+      "shortest": "BEPC",
       "short": "Basin Electric",
       "normal": "Basin Electric Power Cooperative",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "nerc_audit_report",
+      "shortest_source_url": "https://www.nerc.com/globalassets/our-work/reports/regional-audit-reports-of-registered-entities/wecc/2016/2015_public_wecc_bepc.pdf"
     },
     {
       "ncr_id": "NCR11745",
@@ -18354,7 +18441,10 @@
       "shortest": "SPS",
       "short": "Southwestern Public Service",
       "normal": "Southwestern Public Service Company",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.sec.gov/Archives/edgar/data/92521/000009252124000006/sps-20231231.htm"
     },
     {
       "ncr_id": "NCR-SEED-047",
@@ -18362,7 +18452,10 @@
       "shortest": "OG&E",
       "short": "Oklahoma Gas & Electric",
       "normal": "Oklahoma Gas and Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.oge.com/"
     },
     {
       "ncr_id": "NCR-SEED-053",

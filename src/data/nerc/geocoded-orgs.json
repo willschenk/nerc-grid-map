@@ -3424,10 +3424,10 @@
       "source": "official_website",
       "source_url": "https://www.evergy.com/about-us/contact-us",
       "org_type": "IOU",
-      "notes": "Evergy Kansas Central (formerly Westar) corporate HQ 818 S Kansas Ave Topeka KS.",
+      "notes": "WR is the legacy Westar / Evergy Kansas Central OASIS area alias; HQ remains Evergy Kansas Central in Topeka.",
       "seed": true,
-      "acronym": "Evergy",
-      "acronym_source": "common_market_name",
+      "acronym": "WR",
+      "acronym_source": "oasis",
       "locations": [
         {
           "rank": 1,
@@ -3441,7 +3441,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.evergy.com/about-us/contact-us",
-          "geo_notes": "Evergy Kansas Central (formerly Westar) corporate HQ 818 S Kansas Ave Topeka KS."
+          "geo_notes": "WR is the legacy Westar / Evergy Kansas Central OASIS area alias; HQ remains Evergy Kansas Central in Topeka."
         },
         {
           "rank": 2,
@@ -3920,10 +3920,10 @@
       "source": "official_website",
       "source_url": "https://www.wapa.gov/about/contact/",
       "org_type": "federal",
-      "notes": "WAPA Headquarters 12155 W Alameda Pkwy Lakewood CO.",
+      "notes": "WAPA headquarters in Lakewood, CO; distinct from WAPA regional registrations such as WAPA Rocky Mountain Region.",
       "seed": true,
       "acronym": "WAPA",
-      "acronym_source": "common_market_name",
+      "acronym_source": "official_website",
       "locations": [
         {
           "rank": 1,
@@ -3937,7 +3937,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.wapa.gov/about/contact/",
-          "geo_notes": "WAPA Headquarters 12155 W Alameda Pkwy Lakewood CO."
+          "geo_notes": "WAPA headquarters in Lakewood, CO; distinct from WAPA regional registrations such as WAPA Rocky Mountain Region."
         },
         {
           "rank": 2,
@@ -4198,10 +4198,10 @@
       "source": "official_website",
       "source_url": "https://www.sunflower.net/contact-us",
       "org_type": "cooperative",
-      "notes": "G&T cooperative HQ in historic former hospital building downtown Hays. Twin: NCR01148.",
+      "notes": "Retired seed for Sunflower Electric Power Corporation; SECI is the verified NERC registered-entity acronym.",
       "seed": true,
-      "acronym": "Sunflower",
-      "acronym_source": "official_website",
+      "acronym": "SECI",
+      "acronym_source": "nerc_audit_report",
       "locations": [
         {
           "rank": 1,
@@ -4215,7 +4215,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.sunflower.net/contact-us",
-          "geo_notes": "G&T cooperative HQ in historic former hospital building downtown Hays. Twin: NCR01148."
+          "geo_notes": "Retired seed for Sunflower Electric Power Corporation; SECI is the verified NERC registered-entity acronym."
         },
         {
           "rank": 2,
@@ -5823,7 +5823,7 @@
       "ncr_id": "NCR00102",
       "entity_name": "Basin Electric Power Cooperative",
       "acronym": "BEPC",
-      "acronym_source": "common_market_name",
+      "acronym_source": "nerc_audit_report",
       "region": "MRO",
       "roles": [
         "DP",
@@ -5844,7 +5844,7 @@
       "source_url": "https://www.basinelectric.com/contacts/",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "G&T cooperative serving members across the northern plains.",
+      "notes": "MRO registration for Basin Electric Power Cooperative; folded into the BEPC Bismarck HQ map location.",
       "seed": false,
       "locations": [
         {
@@ -5859,7 +5859,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.basinelectric.com/contacts/",
-          "geo_notes": "G&T cooperative serving members across the northern plains."
+          "geo_notes": "MRO registration for Basin Electric Power Cooperative; folded into the BEPC Bismarck HQ map location."
         },
         {
           "rank": 2,
@@ -39082,7 +39082,7 @@
       "source_url": "https://www.aep.com/contact",
       "org_type": "other",
       "parent_org": "American Electric Power Company, Inc.",
-      "notes": "Pinned to AEP service corporation headquarters in Columbus.",
+      "notes": "AEP Service Corporation registration as agent for multiple AEP operating and transmission companies; map combines co-located AEP registrations at Columbus HQ.",
       "seed": false,
       "locations": [
         {
@@ -39097,7 +39097,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.aep.com/contact",
-          "geo_notes": "Pinned to AEP service corporation headquarters in Columbus."
+          "geo_notes": "AEP Service Corporation registration as agent for multiple AEP operating and transmission companies; map combines co-located AEP registrations at Columbus HQ."
         },
         {
           "rank": 2,
@@ -44573,8 +44573,8 @@
     {
       "ncr_id": "NCR01148",
       "entity_name": "Sunflower Electric Power Corporation",
-      "acronym": "Sunflower",
-      "acronym_source": "official_website",
+      "acronym": "SECI",
+      "acronym_source": "nerc_audit_report",
       "region": "MRO",
       "roles": [
         "DP",
@@ -44595,7 +44595,7 @@
       "source": "official_website",
       "source_url": "https://www.sunflower.net/contact-us",
       "org_type": "cooperative",
-      "notes": "G&T cooperative HQ in historic former hospital building downtown Hays. Retires NCR-SEED-059.",
+      "notes": "NERC audit identifies Sunflower Electric Power Corporation as SECI; G&T cooperative HQ in Hays, Kansas.",
       "seed": false,
       "locations": [
         {
@@ -44610,7 +44610,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.sunflower.net/contact-us",
-          "geo_notes": "G&T cooperative HQ in historic former hospital building downtown Hays. Retires NCR-SEED-059."
+          "geo_notes": "NERC audit identifies Sunflower Electric Power Corporation as SECI; G&T cooperative HQ in Hays, Kansas."
         },
         {
           "rank": 2,
@@ -67268,7 +67268,7 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?CIK=1089819",
-      "notes": "Cleco corporate and utility group HQ in Pineville, LA.",
+      "notes": "Cleco is the public company name; map combines co-located Cleco Power GOP registration at the Pineville HQ.",
       "seed": false,
       "locations": [
         {
@@ -67283,7 +67283,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sec.gov/cgi-bin/browse-edgar?CIK=1089819",
-          "geo_notes": "Cleco corporate and utility group HQ in Pineville, LA."
+          "geo_notes": "Cleco is the public company name; map combines co-located Cleco Power GOP registration at the Pineville HQ."
         },
         {
           "rank": 2,
@@ -67323,7 +67323,7 @@
         "GOP"
       ],
       "acronym": "Cleco Power",
-      "acronym_source": "sec_filing",
+      "acronym_source": "official_website",
       "lat": 31.3944,
       "lng": -92.4451,
       "headquarters_address": "2030 Donahue Ferry Road, Pineville, LA 71360",
@@ -67333,7 +67333,7 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?CIK=0000018672",
-      "notes": "Operating utility subsidiary; GOP umbrella at Cleco Pineville HQ.",
+      "notes": "Cleco Power operating utility subsidiary; folded into the Cleco Pineville HQ map location.",
       "seed": false,
       "locations": [
         {
@@ -67348,7 +67348,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sec.gov/cgi-bin/browse-edgar?CIK=0000018672",
-          "geo_notes": "Operating utility subsidiary; GOP umbrella at Cleco Pineville HQ."
+          "geo_notes": "Cleco Power operating utility subsidiary; folded into the Cleco Pineville HQ map location."
         },
         {
           "rank": 2,
@@ -116896,8 +116896,8 @@
         "TP",
         "TSP"
       ],
-      "acronym": "Basin Electric",
-      "acronym_source": "official_website",
+      "acronym": "BEPC",
+      "acronym_source": "nerc_audit_report",
       "lat": 46.8083,
       "lng": -100.7837,
       "headquarters_address": "1717 East Interstate Avenue",
@@ -116907,7 +116907,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.basinelectric.com",
-      "notes": "G&T cooperative HQ in Bismarck ND serving WECC and MRO members.",
+      "notes": "NERC audit identifies Basin Electric Power Cooperative as BEPC; map combines WECC and MRO registrations at the Bismarck HQ.",
       "seed": false,
       "locations": [
         {
@@ -116922,7 +116922,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.basinelectric.com",
-          "geo_notes": "G&T cooperative HQ in Bismarck ND serving WECC and MRO members."
+          "geo_notes": "NERC audit identifies Basin Electric Power Cooperative as BEPC; map combines WECC and MRO registrations at the Bismarck HQ."
         },
         {
           "rank": 2,
