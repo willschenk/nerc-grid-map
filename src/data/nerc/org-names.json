@@ -689,7 +689,7 @@
     {
       "ncr_id": "NCR02611",
       "entity_name": "Northern Indiana Public Service Company LLC",
-      "shortest": "NIPSCO",
+      "shortest": "NIPS",
       "short": "NIPSCO",
       "normal": "NIPSCO",
       "tier": "normal"
@@ -8369,7 +8369,7 @@
     {
       "ncr_id": "NCR09028",
       "entity_name": "Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Power Generation",
-      "shortest": "DOM Gen",
+      "shortest": "Dominion",
       "short": "Dominion Virginia Generation",
       "normal": "Dominion Energy Virginia Generation",
       "tier": "major"
@@ -11577,7 +11577,7 @@
     {
       "ncr_id": "NCR11747",
       "entity_name": "GEV - Linden VFT",
-      "shortest": "GEV Lndn",
+      "shortest": "LINDEN",
       "short": "GEV Linden VFT",
       "normal": "GEV Linden VFT",
       "tier": "normal"
@@ -12153,7 +12153,7 @@
     {
       "ncr_id": "NCR11366",
       "entity_name": "Hudson Transmission Partners, LLC",
-      "shortest": "HTP",
+      "shortest": "HUDSON",
       "short": "Hudson Transmission Partners",
       "normal": "Hudson Transmission Partners",
       "tier": "normal"
@@ -18467,7 +18467,7 @@
     {
       "ncr_id": "SUP-duke-energy-ohio-kentucky",
       "entity_name": "Duke Energy Ohio-Kentucky",
-      "shortest": "DEOK",
+      "shortest": "CIN",
       "short": "Duke Energy Ohio-Kentucky",
       "normal": "Duke Energy Ohio-Kentucky",
       "tier": "major",

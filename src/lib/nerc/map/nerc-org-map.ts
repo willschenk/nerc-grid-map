@@ -326,7 +326,12 @@ const GIVE_WAY_DOT_FADE_SPAN = 0.5;
 // real (clickable) markers once zoomed in. They still stay strictly subordinate:
 // layoutDotGiveWay clears each enlarged dot from every real bubble, so the bigger
 // size never lets a dot overlap an organization (it moves around, or hides).
-const GIVE_WAY_DOT_SIZE_SCALE = 2;
+const GIVE_WAY_DOT_SIZE_SCALE = 2.3;
+// Extra screen-px gaps layoutDotGiveWay keeps around each dot: from every real bubble
+// (so dots sit clearly OUTSIDE the organizations) and from other dots (so a cluster
+// spreads out instead of stacking). Bigger = more breathing room, fewer hidden.
+const GIVE_WAY_DOT_ORG_GAP_PX = 3.2;
+const GIVE_WAY_DOT_DOT_GAP_PX = 3.6;
 // Growth anchor for generation-only micro-orgs: how deep before their post-reveal
 // size ramp begins. Kept high so they stay small at mid/deep zoom.
 const GENERATION_ONLY_REVEAL_K = 50;
@@ -3047,12 +3052,40 @@ export function mountNercOrgMap(): void {
         }
       return true;
     };
+    // Second grid of already-placed DOTS so each new dot also gives way to its peers
+    // (the cluster spreads out instead of stacking). Cheap: a few hundred dots max.
+    type Dot = { x: number; y: number; r: number };
+    const dotCell = Math.max(cell, 12 * unitPerPx);
+    const dotGrid = new Map<string, Dot[]>();
+    const dotGap = GIVE_WAY_DOT_DOT_GAP_PX * unitPerPx;
+    const addDot = (x: number, y: number, r: number) => {
+      const key = Math.floor(x / dotCell) + ":" + Math.floor(y / dotCell);
+      const arr = dotGrid.get(key);
+      if (arr) arr.push({ x, y, r });
+      else dotGrid.set(key, [{ x, y, r }]);
+    };
+    const clearsDots = (x: number, y: number, r: number): boolean => {
+      const gx = Math.floor(x / dotCell);
+      const gy = Math.floor(y / dotCell);
+      for (let ix = -1; ix <= 1; ix++)
+        for (let iy = -1; iy <= 1; iy++) {
+          const arr = dotGrid.get(gx + ix + ":" + (gy + iy));
+          if (!arr) continue;
+          for (const o of arr) {
+            const min = o.r + r + dotGap;
+            const dx = o.x - x, dy = o.y - y;
+            if (dx * dx + dy * dy < min * min) return false;
+          }
+        }
+      return true;
+    };
+    const orgGap = GIVE_WAY_DOT_ORG_GAP_PX * unitPerPx;
     const step = 2 * unitPerPx;
     // Leash scales with the biggest nearby bubble so a dot can escape even a large
     // deep-zoom rectangle, with a comfortable floor for the common regional case.
-    // Roomy enough that the 2x-size dots almost always find a clear spot to move into
-    // (stay visible) instead of being boxed in and hidden.
-    const leash = Math.max((compact ? 34 : 48) * unitPerPx, maxExt + (compact ? 16 : 22) * unitPerPx);
+    // Roomy enough that the enlarged, well-spaced dots almost always find a clear spot
+    // to move into (stay visible) instead of being boxed in and hidden.
+    const leash = Math.max((compact ? 40 : 56) * unitPerPx, maxExt + (compact ? 18 : 26) * unitPerPx);
     for (const d of dots) {
       // Recompute from the true home each frame so the nudge never accumulates.
       d._dx = 0;
@@ -3061,11 +3094,21 @@ export function mountNercOrgMap(): void {
       const hy = transform.applyY(orgRenderY(d, fanScale, declScale));
       d._sx = hx;
       d._sy = hy;
+      const dotR = renderedRadius(d, k);
       // A hovered/selected/toured dot is promoted to the front — it leads the
       // interaction, so it stays put rather than dodging out from under the cursor.
-      if (d._promoteBackground) continue;
-      const rd = renderedRadius(d, k) + 0.6 * unitPerPx;
-      if (obs.length === 0 || clears(hx, hy, rd)) continue;
+      if (d._promoteBackground) {
+        addDot(hx, hy, dotR);
+        continue;
+      }
+      // Clearance a candidate spot must satisfy: outside every bubble by orgGap, and
+      // clear of every dot already placed this frame by dotGap.
+      const rdOrg = dotR + orgGap;
+      const ok = (x: number, y: number) => clears(x, y, rdOrg) && clearsDots(x, y, dotR);
+      if (ok(hx, hy)) {
+        addDot(hx, hy, dotR);
+        continue;
+      }
       let placed = false;
       for (let rad = step; rad <= leash && !placed; rad += step) {
         const cnt = Math.max(8, Math.round((2 * Math.PI * rad) / step));
@@ -3073,11 +3116,12 @@ export function mountNercOrgMap(): void {
           const ang = (i / cnt) * 2 * Math.PI;
           const cx = hx + Math.cos(ang) * rad;
           const cy = hy + Math.sin(ang) * rad;
-          if (!clears(cx, cy, rd)) continue;
+          if (!ok(cx, cy)) continue;
           d._dx = cx - hx;
           d._dy = cy - hy;
           d._sx = cx;
           d._sy = cy;
+          addDot(cx, cy, dotR);
           placed = true;
           break;
         }

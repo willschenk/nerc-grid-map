@@ -88,7 +88,9 @@ const MUNI_NAME = /\b(Municipal|Public Power|Public Utility District|Utility Dis
 const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation)\b/i;
 
 const SHORT_NAME_OVERRIDES = new Map([
-  ["Duke Energy Ohio-Kentucky", "DEOK"],
+  // Curated map labels keyed by entity_name; wins over the org-names table and the
+  // algorithmic shortener. Keep values within the map's compact-label budget.
+  ["Duke Energy Ohio-Kentucky", "CIN"],
   ["Evergy Missouri West", "EMW"],
 ]);
 const RESERVED_SHORT_NAMES = new Set(["HE", "SC", "SMT", "WR"]);

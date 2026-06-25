@@ -354,7 +354,11 @@
     },
     {
       "canonical": "NCR10306",
-      "members": ["NCR11029", "NCR11030", "NCR11031"],
+      "members": [
+        "NCR11029",
+        "NCR11030",
+        "NCR11031"
+      ],
       "label": "Grand Ridge wind",
       "summary": "Grand Ridge I–IV wind farms share the Marseilles, IL plant office address.",
       "display_name": "Grand Ridge"
@@ -371,952 +375,1240 @@
     },
     {
       "canonical": "NCR12257",
-      "members": ["NCR13075"],
+      "members": [
+        "NCR13075"
+      ],
       "label": "Indeck Niles",
       "summary": "Indeck Niles (GO) and NAES Corporation - Indeck Niles (GOP) share the Niles, MI plant site.",
       "display_name": "Indeck Niles"
     },
     {
       "canonical": "NCR12213",
-      "members": ["NCR12212"],
+      "members": [
+        "NCR12212"
+      ],
       "label": "Linden Generating Station",
       "summary": "Linden Combined Cycle and Linden Peaking share the Wood Avenue plant site in Linden, NJ.",
       "display_name": "Linden Generating"
     },
     {
       "canonical": "NCR00803",
-      "members": ["NCR00820", "NCR08023"],
+      "members": [
+        "NCR00820",
+        "NCR08023"
+      ],
       "label": "ITC Novi HQ",
       "summary": "ITC Transmission, METC, and Michigan Electric Coordinated Systems share the Novi, MI headquarters.",
       "display_name": "ITC Holdings"
     },
     {
       "canonical": "NCR11859",
-      "members": ["NCR12392", "NCR12402"],
+      "members": [
+        "NCR12392",
+        "NCR12402"
+      ],
       "label": "Hunterstown Energy",
       "summary": "Hunterstown Combined Cycle, Heritage Hunterstown, and NAES Heritage Hunterstown share the Gettysburg, PA plant site.",
       "display_name": "Hunterstown"
     },
     {
       "canonical": "NCR12133",
-      "members": ["NCR12134"],
+      "members": [
+        "NCR12134"
+      ],
       "label": "Hill Top Energy",
       "summary": "Hill Top Energy (GO) and NAES Corporation-Hill Top Energy (GOP) share the Carmichaels, PA plant site.",
       "display_name": "Hill Top"
     },
     {
       "canonical": "NCR12393",
-      "members": ["NCR12404"],
+      "members": [
+        "NCR12404"
+      ],
       "label": "Heritage Mountain",
       "summary": "Heritage Mountain GO and NAES GOP share the Mount Holly Springs, PA plant site.",
       "display_name": "Heritage Mountain"
     },
     {
       "canonical": "NCR12396",
-      "members": ["NCR12386"],
+      "members": [
+        "NCR12386"
+      ],
       "label": "Heritage Sayreville",
       "summary": "Heritage Sayreville GO and NAES GOP share the Sayreville, NJ plant site.",
       "display_name": "Heritage Sayreville"
     },
     {
       "canonical": "NCR12397",
-      "members": ["NCR12387"],
+      "members": [
+        "NCR12387"
+      ],
       "label": "Heritage Shawville",
       "summary": "Heritage Shawville GO and NAES GOP share the Shawville, PA plant site.",
       "display_name": "Heritage Shawville"
     },
     {
       "canonical": "NCR12398",
-      "members": ["NCR12388"],
+      "members": [
+        "NCR12388"
+      ],
       "label": "Heritage Titus",
       "summary": "Heritage Titus GO and NAES GOP share the Titus, PA plant site.",
       "display_name": "Heritage Titus"
     },
     {
       "canonical": "NCR12399",
-      "members": ["NCR12389"],
+      "members": [
+        "NCR12389"
+      ],
       "label": "Heritage Tolna",
       "summary": "Heritage Tolna GO and NAES GOP share the Tolna, PA plant site.",
       "display_name": "Heritage Tolna"
     },
     {
       "canonical": "NCR12391",
-      "members": ["NCR12401"],
+      "members": [
+        "NCR12401"
+      ],
       "label": "Heritage Gilbert",
       "summary": "Heritage Gilbert GO and NAES GOP share the Gilberton, PA plant site.",
       "display_name": "Heritage Gilbert"
     },
     {
       "canonical": "NCR11141",
-      "members": ["NCR12405"],
+      "members": [
+        "NCR12405"
+      ],
       "label": "Heritage Single Units",
       "summary": "Heritage Single Units GO and NAES GOP share the coordinated peaker portfolio HQ.",
       "display_name": "Heritage Single Units"
     },
     {
       "canonical": "NCR12390",
-      "members": ["NCR12400"],
+      "members": [
+        "NCR12400"
+      ],
       "label": "Heritage Brunot Island",
       "summary": "Heritage Brunot Island GO and NAES GOP share the Pittsburgh, PA plant site.",
       "display_name": "Heritage Brunot Island"
     },
     {
       "canonical": "NCR12395",
-      "members": ["NCR12385"],
+      "members": [
+        "NCR12385"
+      ],
       "label": "Heritage Portland",
       "summary": "Heritage Portland GO and NAES GOP share the Portland, PA plant site.",
       "display_name": "Heritage Portland"
     },
     {
       "canonical": "NCR12394",
-      "members": ["NCR12403"],
+      "members": [
+        "NCR12403"
+      ],
       "label": "Heritage New Castle",
       "summary": "Heritage New Castle GO and NAES GOP share the New Castle, PA plant site.",
       "display_name": "Heritage New Castle"
     },
     {
       "canonical": "NCR11526",
-      "members": ["NCR11527"],
+      "members": [
+        "NCR11527"
+      ],
       "label": "Newark Energy Center",
       "summary": "Newark Energy Center (GO) and NAES Corporation-Newark Energy Center (GOP) share the Newark, NJ plant site.",
       "display_name": "Newark Energy Center"
     },
     {
       "canonical": "NCR11812",
-      "members": ["NCR12264"],
+      "members": [
+        "NCR12264"
+      ],
       "label": "St. Joseph Energy Center",
       "summary": "St. Joseph Energy Center (GO) and Siemens Energy STJ (GOP) share the New Carlisle, IN plant site.",
       "display_name": "St. Joseph Energy"
     },
     {
       "canonical": "NCR00889",
-      "members": ["NCR11362"],
+      "members": [
+        "NCR11362"
+      ],
       "label": "Susquehanna Nuclear",
       "summary": "Susquehanna Nuclear and Talen Generation share the Berwick, PA Salem Boulevard site.",
       "display_name": "Susquehanna"
     },
     {
       "canonical": "NCR00953",
-      "members": ["NCR00849"],
+      "members": [
+        "NCR00849"
+      ],
       "label": "Wolf Hills Energy",
       "summary": "Wolf Hills Energy (GO) and NAES Corporation - Wolf Hills (GOP) share the Bristol, VA plant site.",
       "display_name": "Wolf Hills"
     },
     {
       "canonical": "NCR11716",
-      "members": ["NCR11498"],
+      "members": [
+        "NCR11498"
+      ],
       "label": "UMERC HQ",
       "summary": "Upper Michigan Energy Resources Corporation and Wisconsin Electric Power MIUP share the Iron Mountain, MI headquarters.",
       "display_name": "UMERC"
     },
     {
       "canonical": "NCR13518",
-      "members": ["NCR11383"],
+      "members": [
+        "NCR11383"
+      ],
       "label": "RWE Clean Energy Chicago HQ",
       "summary": "RWE Clean DCE Operations (RF) and RWE Clean Energy QSE (Texas RE) share the Chicago headquarters.",
       "display_name": "RWE Clean Energy"
     },
     {
       "canonical": "NCR13549",
-      "members": ["NCR13550"],
+      "members": [
+        "NCR13550"
+      ],
       "label": "Walker Springs solar",
       "summary": "AL Solar G and AL Solar H (Walker Springs I/II) share the Gainestown, AL project site.",
       "display_name": "Walker Springs Solar"
     },
     {
       "canonical": "NCR01083",
-      "members": ["NCR13099"],
+      "members": [
+        "NCR13099"
+      ],
       "label": "Cleco HQ",
       "summary": "Cleco Corporate Holdings and Cleco Power share the Pineville, LA headquarters.",
       "display_name": "Cleco"
     },
     {
       "canonical": "NCR13413",
-      "members": ["NCR13414"],
+      "members": [
+        "NCR13414"
+      ],
       "label": "White Tail Solar",
       "summary": "White Tail Solar (GO) and Invenergy Services-White Tail (GOP) share the Milan, MI project site.",
       "display_name": "White Tail Solar"
     },
     {
       "canonical": "NCR13054",
-      "members": ["NCR13055"],
+      "members": [
+        "NCR13055"
+      ],
       "label": "Blue Bird Solar",
       "summary": "Blue Bird Solar (GO) and Invenergy Services-Blue Bird (GOP) share the Warrenton, MO project site.",
       "display_name": "Blue Bird Solar"
     },
     {
       "canonical": "NCR01254",
-      "members": ["NCR11916"],
+      "members": [
+        "NCR11916"
+      ],
       "label": "Henderson HMP&L",
       "summary": "Henderson Municipal Power & Light and the City of Henderson BA registration share the Henderson, KY headquarters.",
       "display_name": "HMP&L"
     },
     {
       "canonical": "NCR10390",
-      "members": ["NCR11325"],
+      "members": [
+        "NCR11325"
+      ],
       "label": "Constellation Baltimore office",
       "summary": "Constellation Energy Generation South (SERC) and Western (WECC) region registrations share the Baltimore office.",
       "display_name": "Constellation Baltimore"
     },
     {
       "canonical": "NCR13557",
-      "members": ["NCR13555"],
+      "members": [
+        "NCR13555"
+      ],
       "label": "Lotus Wind",
       "summary": "Lotus Wind (GO) and AWAM - Lotus Wind (GOP) share the Modesto, IL project site.",
       "display_name": "Lotus Wind"
     },
     {
       "canonical": "NCR13062",
-      "members": ["NCR13060"],
+      "members": [
+        "NCR13060"
+      ],
       "label": "Prosperity Wind",
       "summary": "Prosperity Wind (GO) and AWAM - Prosperity Wind (GOP) share the Monticello, IL project site.",
       "display_name": "Prosperity Wind"
     },
     {
       "canonical": "NCR13010",
-      "members": ["NCR13011"],
+      "members": [
+        "NCR13011"
+      ],
       "label": "Timbermill Wind",
       "summary": "Timbermill Wind (GO) and AWAM - Timbermill Wind (GOP) share the Edenton, NC project site.",
       "display_name": "Timbermill Wind"
     },
     {
       "canonical": "NCR01234",
-      "members": ["NCR11167", "NCR12526"],
+      "members": [
+        "NCR11167",
+        "NCR12526"
+      ],
       "label": "Entergy HQ",
       "summary": "Entergy, Entergy Fossil & Hydro, and Entergy Renewables share the New Orleans Loyola Avenue headquarters.",
       "display_name": "Entergy"
     },
     {
       "canonical": "NCR11657",
-      "members": ["NCR11655"],
+      "members": [
+        "NCR11655"
+      ],
       "label": "San Jacinto Peaking",
       "summary": "ETEC San Jacinto County Peaking Facility (GO) and EthosEnergy GOP share the Shepherd, TX plant site.",
       "display_name": "San Jacinto Peaking"
     },
     {
       "canonical": "NCR00128",
-      "members": ["NCR11993"],
+      "members": [
+        "NCR11993"
+      ],
       "label": "ExxonMobil Baton Rouge",
       "summary": "ExxonMobil Baton Rouge (GO) and EthosEnergy Louisiana Station EMCF (GOP) share the Scenic Highway plant site.",
       "display_name": "ExxonMobil Baton Rouge"
     },
     {
       "canonical": "NCR00022",
-      "members": ["NCR00023"],
+      "members": [
+        "NCR00023"
+      ],
       "label": "Florida Municipal Power",
       "summary": "Florida Municipal Power Agency and Florida Municipal Power Pool share the Orlando headquarters.",
       "display_name": "FMPA"
     },
     {
       "canonical": "NCR00026",
-      "members": ["NCR00464"],
+      "members": [
+        "NCR00464"
+      ],
       "label": "Florida RC",
       "summary": "Florida Reliability Coordinating Council and Florida Reserve Sharing Group share the Tampa headquarters.",
       "display_name": "FRCC"
     },
     {
       "canonical": "NCR01255",
-      "members": ["NCR01283"],
+      "members": [
+        "NCR01283"
+      ],
       "label": "Holland Energy",
       "summary": "Holland Energy (GO) and NAES Corporation - Holland (GOP) share the Beecher City, IL plant site.",
       "display_name": "Holland Energy"
     },
     {
       "canonical": "NCR13024",
-      "members": ["NCR13032"],
+      "members": [
+        "NCR13032"
+      ],
       "label": "Long Lake Solar",
       "summary": "Long Lake Solar (GO) and Invenergy Long Lake (GOP) share the same Grayling, MI plant address.",
       "display_name": "Long Lake Solar"
     },
     {
       "canonical": "NCR10385",
-      "members": ["NCR11584"],
+      "members": [
+        "NCR11584"
+      ],
       "label": "Plum Point",
       "summary": "Plum Point Power Partners (GO) and NRG Plum Point (GOP) share the Osceola, AR plant site.",
       "display_name": "Plum Point"
     },
     {
       "canonical": "NCR13285",
-      "members": ["NCR13422"],
+      "members": [
+        "NCR13422"
+      ],
       "label": "Kelso Solar",
       "summary": "Kelso Solar and Kelso 2 Solar share the Scott County, MO plant coordinates (phase 2 expansion).",
       "display_name": "Kelso Solar"
     },
     {
       "canonical": "NCR13442",
-      "members": ["NCR13443"],
+      "members": [
+        "NCR13443"
+      ],
       "label": "Richland Township Solar",
       "summary": "Richland Township Solar and Richland Township Solar II share the Lacon, IL plant site.",
       "display_name": "Richland Township Solar"
     },
     {
       "canonical": "NCR11367",
-      "members": ["NCR13061"],
+      "members": [
+        "NCR13061"
+      ],
       "label": "South Boston Energy",
       "summary": "South Boston Energy (GO) and NAES Corporation - South Boston Energy (GOP) share the South Boston, VA plant site.",
       "display_name": "South Boston Energy"
     },
     {
       "canonical": "NCR12553",
-      "members": ["NCR12449"],
+      "members": [
+        "NCR12449"
+      ],
       "label": "Golden Triangle Solar",
       "summary": "MS Solar 5 and MS Solar 6 (Golden Triangle I/II) are adjacent Lowndes County, MS solar plants (~490 m apart).",
       "display_name": "Golden Triangle Solar"
     },
     {
       "canonical": "NCR01320",
-      "members": ["NCR01319"],
+      "members": [
+        "NCR01319"
+      ],
       "label": "Southern Company Services HQ",
       "summary": "Southern Company Services generation and transmission divisions share the Atlanta Ivan Allen Jr Boulevard headquarters.",
       "display_name": "Southern Company Services"
     },
     {
       "canonical": "NCR01330",
-      "members": ["NCR12012"],
+      "members": [
+        "NCR12012"
+      ],
       "label": "Spruance Energy",
       "summary": "Spruance Operating Services (GO) and Veolia Energy Operating Services (GOP) share the Richmond, VA cogen plant site.",
       "display_name": "Spruance"
     },
     {
       "canonical": "NCR04136",
-      "members": ["NCR00632"],
+      "members": [
+        "NCR00632"
+      ],
       "label": "Tenaska Frontier",
       "summary": "Tenaska Frontier Partners SERC and Texas RE registrations share the Shiro, TX plant coordinates.",
       "display_name": "Tenaska Frontier"
     },
     {
       "canonical": "NCR09028",
-      "members": ["NCR01214", "NCR11878"],
+      "members": [
+        "NCR01214",
+        "NCR11878",
+        "NCR12287"
+      ],
       "label": "Dominion Energy Virginia HQ",
-      "summary": "Dominion Energy Virginia transmission, generation, and generation-marketing registrations share the Richmond Tredegar Street headquarters.",
+      "summary": "Dominion Energy Virginia (Virginia Electric & Power Company) transmission, generation, and generation-marketing registrations share the Richmond headquarters and appear here as one map location.",
       "display_name": "Dominion Energy Virginia"
     },
     {
       "canonical": "NCR11623",
-      "members": ["NCR11625"],
+      "members": [
+        "NCR11625"
+      ],
       "label": "WestRock Dublin",
       "summary": "Green Power Solutions (GO) and WestRock Southeast (GOP) share the Dublin, GA paper-mill cogen site.",
       "display_name": "WestRock Dublin"
     },
     {
       "canonical": "NCR12570",
-      "members": ["NCR12524"],
+      "members": [
+        "NCR12524"
+      ],
       "label": "Wildflower Solar",
       "summary": "Wildflower Solar (GO) and Deriva Energy Solar Holdings (GOP) share the DeSoto County, MS plant coordinates.",
       "display_name": "Wildflower Solar"
     },
     {
       "canonical": "NCR12555",
-      "members": ["NCR12554"],
+      "members": [
+        "NCR12554"
+      ],
       "label": "7V Solar Ranch",
       "summary": "7V Solar Ranch (GO) and Invenergy Services-7V (GOP) share the Fayette County, TX plant coordinates.",
       "display_name": "7V Solar Ranch"
     },
     {
       "canonical": "NCR13293",
-      "members": ["NCR13551"],
+      "members": [
+        "NCR13551"
+      ],
       "label": "SR Millington Solar",
       "summary": "SR Millington and SR Millington II share the Shelby County, TN solar complex (~1.1 km apart).",
       "display_name": "SR Millington Solar"
     },
     {
       "canonical": "NCR13047",
-      "members": ["NCR13048"],
+      "members": [
+        "NCR13048"
+      ],
       "label": "Angelo Solar",
       "summary": "Angelo Solar (GO) and AWAM - Angelo Solar (GOP) share the Tom Green County, TX plant site.",
       "display_name": "Angelo Solar"
     },
     {
       "canonical": "NCR13085",
-      "members": ["NCR13086"],
+      "members": [
+        "NCR13086"
+      ],
       "label": "Angelo Storage",
       "summary": "Angelo Storage (GO) and AWAM - Angelo Storage (GOP) share the co-located BESS site in Tom Green County, TX.",
       "display_name": "Angelo Storage"
     },
     {
       "canonical": "NCR13042",
-      "members": ["NCR13043"],
+      "members": [
+        "NCR13043"
+      ],
       "label": "Big Elm Solar",
       "summary": "Big Elm Solar (GO) and AWAM - Big Elm Solar (GOP) share the Bell County, TX plant site.",
       "display_name": "Big Elm Solar"
     },
     {
       "canonical": "NCR12561",
-      "members": ["NCR12560"],
+      "members": [
+        "NCR12560"
+      ],
       "label": "Great Kiskadee Storage",
       "summary": "Great Kiskadee Storage (GO) and AWAM - Great Kiskadee Storage (GOP) share the Hidalgo County, TX BESS site.",
       "display_name": "Great Kiskadee Storage"
     },
     {
       "canonical": "NCR12430",
-      "members": ["NCR12431"],
+      "members": [
+        "NCR12431"
+      ],
       "label": "BPL Falls County Solar",
       "summary": "BPL Crown Solar and BPL Sol Solar share the Falls County, TX project address.",
       "display_name": "BPL Falls County Solar"
     },
     {
       "canonical": "NCR12269",
-      "members": ["NCR12271"],
+      "members": [
+        "NCR12271"
+      ],
       "label": "Brazoria County Solar",
       "summary": "Brazoria County Solar Project (GO) and Invenergy Services-Brazoria County (GOP) share the Danciger, TX plant coordinates.",
       "display_name": "Brazoria County Solar"
     },
     {
       "canonical": "NCR04029",
-      "members": ["NCR04030"],
+      "members": [
+        "NCR04030"
+      ],
       "label": "Austin Energy HQ",
       "summary": "City of Austin dba Austin Energy transmission and generation registrations share the Mueller Boulevard headquarters.",
       "display_name": "Austin Energy"
     },
     {
       "canonical": "NCR04033",
-      "members": ["NCR04034", "NCR04035"],
+      "members": [
+        "NCR04034",
+        "NCR04035"
+      ],
       "label": "Garland Power & Light HQ",
       "summary": "City of Garland transmission, GOP, and GO registrations share the N. 5th Street headquarters.",
       "display_name": "Garland Power & Light"
     },
     {
       "canonical": "NCR12504",
-      "members": ["NCR12495"],
+      "members": [
+        "NCR12495"
+      ],
       "label": "Century Oak Energy",
       "summary": "Century Oak Wind and Longhorn Storage share the Eastland County, TX hybrid site coordinates.",
       "display_name": "Century Oak Energy"
     },
     {
       "canonical": "NCR13110",
-      "members": ["NCR13418"],
+      "members": [
+        "NCR13418"
+      ],
       "label": "Alvin Storage",
       "summary": "Bocanova Power and BRP Tortolas BESS share the Alvin, TX storage complex (~340 m apart).",
       "display_name": "Alvin Storage"
     },
     {
       "canonical": "NCR13358",
-      "members": ["NCR13359"],
+      "members": [
+        "NCR13359"
+      ],
       "label": "Grimes County Solar",
       "summary": "Grimes County Solar Project (GO) and Invenergy Services-Grimes Solar (GOP) share the Grimes County, TX plant coordinates.",
       "display_name": "Grimes County Solar"
     },
     {
       "canonical": "NCR13031",
-      "members": ["NCR12458"],
+      "members": [
+        "NCR12458"
+      ],
       "label": "Five Wells",
       "summary": "Five Wells Solar Center and Five Wells Storage share the Rogers, TX hybrid site address.",
       "display_name": "Five Wells"
     },
     {
       "canonical": "NCR04093",
-      "members": ["NCR04092", "NCR04091", "NCR04074"],
+      "members": [
+        "NCR04092",
+        "NCR04091",
+        "NCR04074"
+      ],
       "label": "LCRA HQ",
       "summary": "Lower Colorado River Authority GO, GOP, transmission, and GEN TEX Power Corp share the Lake Austin Boulevard headquarters.",
       "display_name": "LCRA"
     },
     {
       "canonical": "NCR11885",
-      "members": ["NCR12072"],
+      "members": [
+        "NCR12072"
+      ],
       "label": "Lamesa II Solar",
       "summary": "Lamesa II Solar (GO) and Invenergy Services-Lamesa II (GOP) share the Dawson County, TX plant site.",
       "display_name": "Lamesa II Solar"
     },
     {
       "canonical": "NCR11206",
-      "members": ["NCR12250"],
+      "members": [
+        "NCR12250"
+      ],
       "label": "Sherbino II Wind",
       "summary": "Sherbino II Wind Farm (GO) and Invenergy Services-Sherbino II (GOP) share the Pecos County, TX plant coordinates.",
       "display_name": "Sherbino II Wind"
     },
     {
       "canonical": "NCR10235",
-      "members": ["NCR13284"],
+      "members": [
+        "NCR13284"
+      ],
       "label": "Silver Star Wind",
       "summary": "Silver Star I Power Partners (GO) and Invenergy Services-Silver Star (GOP) share the Erath County, TX plant site.",
       "display_name": "Silver Star Wind"
     },
     {
       "canonical": "NCR11205",
-      "members": ["NCR12251"],
+      "members": [
+        "NCR12251"
+      ],
       "label": "Trinity Hills Wind",
       "summary": "Trinity Hills Wind Farm (GO) and Invenergy Services-Trinity Hills (GOP) share the Young County, TX plant site.",
       "display_name": "Trinity Hills Wind"
     },
     {
       "canonical": "NCR13103",
-      "members": ["NCR13074"],
+      "members": [
+        "NCR13074"
+      ],
       "label": "J-POWER USA HQ",
       "summary": "JP Remote Operations Center I and II share the Schaumburg, IL corporate office (Texas RE and RF registrations).",
       "display_name": "J-POWER USA"
     },
     {
       "canonical": "NCR11694",
-      "members": ["NCR11718"],
+      "members": [
+        "NCR11718"
+      ],
       "label": "Invenergy Services HQ",
       "summary": "Invenergy Services LLC Texas RE and MRO registrations share the Chicago Wacker Drive headquarters.",
       "display_name": "Invenergy Services"
     },
     {
       "canonical": "NCR04088",
-      "members": ["NCR01113"],
+      "members": [
+        "NCR01113"
+      ],
       "label": "Kiowa Power Partners",
       "summary": "Kiowa Power Partners Texas RE and MRO registrations share the Kiowa, OK Kiamichi plant site.",
       "display_name": "Kiowa Power Partners"
     },
     {
       "canonical": "NCR12467",
-      "members": ["NCR12469"],
+      "members": [
+        "NCR12469"
+      ],
       "label": "Frye Solar",
       "summary": "Lighthouse Renewables Frye Solar (GO) and RES Americas Frye Solar (GOP) share the Kress, TX plant site.",
       "display_name": "Frye Solar"
     },
     {
       "canonical": "NCR13126",
-      "members": ["NCR13127"],
+      "members": [
+        "NCR13127"
+      ],
       "label": "Outpost Solar",
       "summary": "Lighthouse Renewables Outpost (GO) and RES Energy Services Outpost Solar (GOP) share the Laredo, TX plant site.",
       "display_name": "Outpost Solar"
     },
     {
       "canonical": "NCR11493",
-      "members": ["NCR12367"],
+      "members": [
+        "NCR12367"
+      ],
       "label": "Major Oak Power",
       "summary": "Major Oak Power (GO) and NAES Corporation - Major Oak Power (GOP) share the Robertson County, TX plant coordinates.",
       "display_name": "Major Oak Power"
     },
     {
       "canonical": "NCR11182",
-      "members": ["NCR11181"],
+      "members": [
+        "NCR11181"
+      ],
       "label": "Sandy Creek Energy",
       "summary": "Sandy Creek Services (GO) and NAES Corporation Sandy Creek (GOP) share the Riesel, TX coal plant site.",
       "display_name": "Sandy Creek Energy"
     },
     {
       "canonical": "NCR11346",
-      "members": ["NCR12273"],
+      "members": [
+        "NCR12273"
+      ],
       "label": "Petra Nova",
       "summary": "Petra Nova Power I (GO) and NRG Energy Services Petra Nova (GOP) share the Thompsons, TX plant site.",
       "display_name": "Petra Nova"
     },
     {
       "canonical": "NCR13464",
-      "members": ["NCR12507"],
+      "members": [
+        "NCR12507"
+      ],
       "label": "QE Solar HQ",
       "summary": "QE Solar ROC and QE Solar share the Springfield, NJ corporate office (Texas RE and NPCC registrations).",
       "display_name": "QE Solar"
     },
     {
       "canonical": "NCR13538",
-      "members": ["NCR12156"],
+      "members": [
+        "NCR12156"
+      ],
       "label": "RES Energy Services HQ",
       "summary": "RES Energy Services and RES America Asset Management Chisholm share the Denver, CO office address.",
       "display_name": "RES Energy Services"
     },
     {
       "canonical": "NCR12065",
-      "members": ["NCR13118"],
+      "members": [
+        "NCR13118"
+      ],
       "label": "Prairie Hill Wind",
       "summary": "Prairie Hill Wind Project and PP Jaguar BESS share the Mart, TX project address.",
       "display_name": "Prairie Hill Wind"
     },
     {
       "canonical": "NCR12442",
-      "members": ["NCR13050"],
+      "members": [
+        "NCR13050"
+      ],
       "label": "Longbow Solar",
       "summary": "Longbow Solar and Longbow BESS share the Liverpool, TX hybrid site (~960 m apart).",
       "display_name": "Longbow Solar"
     },
     {
       "canonical": "NCR11538",
-      "members": ["NCR11635"],
+      "members": [
+        "NCR11635"
+      ],
       "label": "Los Vientos Wind",
       "summary": "Los Vientos Windpower III and IV share the Rio Grande City, TX wind complex (~1.5 km apart).",
       "display_name": "Los Vientos Wind"
     },
     {
       "canonical": "NCR12031",
-      "members": ["NCR12152"],
+      "members": [
+        "NCR12152"
+      ],
       "label": "Prospero Solar",
       "summary": "Prospero Energy Project and Prospero Solar II share the Andrews County, TX solar complex (~1.4 km apart).",
       "display_name": "Prospero Solar"
     },
     {
       "canonical": "NCR11462",
-      "members": ["NCR11872"],
+      "members": [
+        "NCR11872"
+      ],
       "label": "Temple Power Station",
       "summary": "Temple Generation I and II share the Panda Drive plant address in Temple, TX.",
       "display_name": "Temple Power Station"
     },
     {
       "canonical": "NCR04137",
-      "members": ["NCR00633"],
+      "members": [
+        "NCR00633"
+      ],
       "label": "Tenaska Gateway",
       "summary": "Tenaska Gateway Partners Texas RE and MRO registrations share the Mount Enterprise, TX plant coordinates.",
       "display_name": "Tenaska Gateway"
     },
     {
       "canonical": "NCR12438",
-      "members": ["NCR13147"],
+      "members": [
+        "NCR13147"
+      ],
       "label": "St. Gall Storage",
       "summary": "St. Gall Energy Storage I and II share the Fort Stockton, TX BESS site (~50 m apart).",
       "display_name": "St. Gall Storage"
     },
     {
       "canonical": "NCR12443",
-      "members": ["NCR12411"],
+      "members": [
+        "NCR12411"
+      ],
       "label": "Sun Valley Energy",
       "summary": "Sun Valley Solar and Sun Valley Storage share the Hill County, TX hybrid site (~1.4 km apart).",
       "display_name": "Sun Valley Energy"
     },
     {
       "canonical": "NCR11966",
-      "members": ["NCR05002", "NCR12104"],
+      "members": [
+        "NCR05002",
+        "NCR12104"
+      ],
       "label": "AES Alamitos",
       "summary": "AES Alamitos Energy, AES Alamitos, and AES ES Alamitos share the Long Beach, CA plant site.",
       "display_name": "AES Alamitos"
     },
     {
       "canonical": "NCR11967",
-      "members": ["NCR05004"],
+      "members": [
+        "NCR05004"
+      ],
       "label": "AES Huntington Beach",
       "summary": "AES Huntington Beach Energy and AES Huntington Beach share the Newland Street plant site.",
       "display_name": "AES Huntington Beach"
     },
     {
       "canonical": "NCR10195",
-      "members": ["NCR11528"],
+      "members": [
+        "NCR11528"
+      ],
       "label": "Brush Power",
       "summary": "Brush Power and AltaGas Brush Energy share the Brush, CO generation facility.",
       "display_name": "Brush Power"
     },
     {
       "canonical": "NCR13029",
-      "members": ["NCR12159"],
+      "members": [
+        "NCR12159"
+      ],
       "label": "Aquamarine Solar",
       "summary": "Aquamarine Westside (GO) and NAES Corporation - Aquamarine (GOP) share the Westlands Solar Park site.",
       "display_name": "Aquamarine Solar"
     },
     {
       "canonical": "NCR03051",
-      "members": ["NCR03049"],
+      "members": [
+        "NCR03049"
+      ],
       "label": "Arlington Valley",
       "summary": "Arlington Valley generation and AVBA balancing authority share the Elliot Road plant site.",
       "display_name": "Arlington Valley"
     },
     {
       "canonical": "NCR13172",
-      "members": ["NCR13171"],
+      "members": [
+        "NCR13171"
+      ],
       "label": "Atlas Storage",
       "summary": "Atlas VII and Atlas IX BESS share the La Paz County, AZ storage complex.",
       "display_name": "Atlas Storage"
     },
     {
       "canonical": "NCR10395",
-      "members": ["NCR11382"],
+      "members": [
+        "NCR11382"
+      ],
       "label": "BHE Power Watch",
       "summary": "BHE Power Watch and BHE Wind Watch share the Ethridge, MT generation-only BA office.",
       "display_name": "BHE Power Watch"
     },
     {
       "canonical": "NCR13243",
-      "members": ["NCR13242"],
+      "members": [
+        "NCR13242"
+      ],
       "label": "American Falls Solar",
       "summary": "American Falls Solar and American Falls Solar II share the Smith Road project site (~310 m apart).",
       "display_name": "American Falls Solar"
     },
     {
       "canonical": "NCR10347",
-      "members": ["NCR11518", "NCR11940", "NCR05456", "NCR05457"],
+      "members": [
+        "NCR11518",
+        "NCR11940",
+        "NCR05456",
+        "NCR05457"
+      ],
       "label": "Panoche Energy",
       "summary": "Panoche Energy Center, Calpeak Panoche, Wellhead Power, and their GOP operators share the West Panoche Road plant complex (~300 m).",
       "display_name": "Panoche Energy"
     },
     {
       "canonical": "NCR05023",
-      "members": ["NCR00102"],
+      "members": [
+        "NCR00102"
+      ],
       "label": "Basin Electric HQ",
       "summary": "Basin Electric Power Cooperative WECC and MRO registrations share the Bismarck, ND headquarters.",
       "display_name": "Basin Electric"
     },
     {
       "canonical": "NCR11634",
-      "members": ["NCR11643"],
+      "members": [
+        "NCR11643"
+      ],
       "label": "Springbok Solar",
       "summary": "Springbok Solar Farm 1 (62SK) and Farm 2 (63SU) share the Cantil, CA solar complex (~2 km apart).",
       "display_name": "Springbok Solar"
     },
     {
       "canonical": "NCR12523",
-      "members": ["NCR13097"],
+      "members": [
+        "NCR13097"
+      ],
       "label": "Eland Solar",
       "summary": "Eland Solar and Storage Center phases 1 (68SF) and 2 (69SV) share the Mojave, CA project area (~780 m apart).",
       "display_name": "Eland Solar"
     },
     {
       "canonical": "NCR05119",
-      "members": ["NCR05120", "NCR05122"],
+      "members": [
+        "NCR05120",
+        "NCR05122"
+      ],
       "label": "Coso Geothermal",
       "summary": "Coso Energy Developers, Coso Finance Partners, and Coso Power Developers share the Gill Station Road geothermal site.",
       "display_name": "Coso Geothermal"
     },
     {
       "canonical": "NCR11290",
-      "members": ["NCR12121"],
+      "members": [
+        "NCR12121"
+      ],
       "label": "Copper Mountain Solar",
       "summary": "Copper Mountain Solar 2 and Copper Mountain Solar 5 share the Eldorado Valley Drive plant address.",
       "display_name": "Copper Mountain Solar"
     },
     {
       "canonical": "NCR13189",
-      "members": ["NCR13193"],
+      "members": [
+        "NCR13193"
+      ],
       "label": "Cuyama Solar",
       "summary": "Cuyama Solar (GO) and Invenergy Services-Cuyama (GOP) share the Kirschenmann Road plant site.",
       "display_name": "Cuyama Solar"
     },
     {
       "canonical": "NCR12081",
-      "members": ["NCR12085"],
+      "members": [
+        "NCR12085"
+      ],
       "label": "Desert Harvest Solar",
       "summary": "Desert Harvest and Desert Harvest II share the Kaiser Road project site in Desert Center, CA.",
       "display_name": "Desert Harvest Solar"
     },
     {
       "canonical": "NCR05107",
-      "members": ["NCR05367"],
+      "members": [
+        "NCR05367"
+      ],
       "label": "Colstrip Rosebud",
       "summary": "Colstrip Energy (GO) and Rosebud Operating Services (GOP) share the Rosebud Power Plant site near Colstrip, MT.",
       "display_name": "Colstrip Rosebud"
     },
     {
       "canonical": "NCR13192",
-      "members": ["NCR13194"],
+      "members": [
+        "NCR13194"
+      ],
       "label": "Huntington Wind",
       "summary": "Huntington Wind Projects (GO) and Invenergy Services-Huntington (GOP) share the Highway 30 plant site.",
       "display_name": "Huntington Wind"
     },
     {
       "canonical": "NCR12120",
-      "members": ["NCR12468"],
+      "members": [
+        "NCR12468"
+      ],
       "label": "Rancho Seco Solar II",
       "summary": "Rancho Seco Solar II (GO) and Invenergy Services-Rancho Seco II (GOP) share the Twin Cities Road plant site.",
       "display_name": "Rancho Seco Solar II"
     },
     {
       "canonical": "NCR13203",
-      "members": ["NCR13204"],
+      "members": [
+        "NCR13204"
+      ],
       "label": "SloughHouse Solar",
       "summary": "SloughHouse Solar (GO) and Invenergy Services-SloughHouse (GOP) share the Sacramento County plant coordinates.",
       "display_name": "SloughHouse Solar"
     },
     {
       "canonical": "NCR12470",
-      "members": ["NCR13120"],
+      "members": [
+        "NCR13120"
+      ],
       "label": "Jicarilla Solar",
       "summary": "Lighthouse Renewables Jicarilla Energy Center (GO) and Jicarilla 2 (GOP) share the Dulce, NM plant coordinates.",
       "display_name": "Jicarilla Solar"
     },
     {
       "canonical": "NCR12124",
-      "members": ["NCR12125"],
+      "members": [
+        "NCR12125"
+      ],
       "label": "Little Bear Solar",
       "summary": "Little Bear Solar 1 and Little Bear Solar 3 share the California Avenue project address in Mendota, CA.",
       "display_name": "Little Bear Solar"
     },
     {
       "canonical": "NCR12079",
-      "members": ["NCR12080", "NCR12198", "NCR12199"],
+      "members": [
+        "NCR12080",
+        "NCR12198",
+        "NCR12199"
+      ],
       "label": "Maverick Solar",
       "summary": "Maverick Solar and phases 4, 6, and 7 share the Corn Springs Road project site in Desert Center, CA.",
       "display_name": "Maverick Solar"
     },
     {
       "canonical": "NCR13045",
-      "members": ["NCR13046"],
+      "members": [
+        "NCR13046"
+      ],
       "label": "Mordor Storage",
       "summary": "Mordor 1 and Mordor 2 share the Gill Station Road battery site in Little Lake, CA (~70 m apart).",
       "display_name": "Mordor Storage"
     },
     {
       "canonical": "NCR13257",
-      "members": ["NCR13256"],
+      "members": [
+        "NCR13256"
+      ],
       "label": "Power County Wind",
       "summary": "Power County Wind Parks (GO) and Invenergy Services-Power County (GOP) share the American Falls, ID wind site (~310 m).",
       "display_name": "Power County Wind"
     },
     {
       "canonical": "NCR12346",
-      "members": ["NCR12347"],
+      "members": [
+        "NCR12347"
+      ],
       "label": "Lockhart Solar",
       "summary": "Lockhart Solar PV I and II share the Harper Lake Road project area in Hinkley, CA (~1.6 km apart).",
       "display_name": "Lockhart Solar"
     },
     {
       "canonical": "NCR05320",
-      "members": ["NCR11589", "NCR00082"],
+      "members": [
+        "NCR11589",
+        "NCR00082"
+      ],
       "label": "Plains End",
       "summary": "Plains End, Plains End II, and NAES Corporation - Plains End share the Highway 93 plant site in Arvada, CO.",
       "display_name": "Plains End"
     },
     {
       "canonical": "NCR05349",
-      "members": ["NCR11590"],
+      "members": [
+        "NCR11590"
+      ],
       "label": "Rathdrum Power",
       "summary": "Rathdrum Power (GO) and NAES Corporation - Rathdrum Power (GOP) share the Lancaster Road plant site.",
       "display_name": "Rathdrum Power"
     },
     {
       "canonical": "NCR05263",
-      "members": ["NCR02552"],
+      "members": [
+        "NCR02552"
+      ],
       "label": "Harquahala Generating",
       "summary": "New Harquahala Generating Company and its HGBA balancing authority share the Tonopah, AZ plant site.",
       "display_name": "Harquahala Generating"
     },
     {
       "canonical": "NCR11521",
-      "members": ["NCR11881"],
+      "members": [
+        "NCR11881"
+      ],
       "label": "ORNI Geothermal",
       "summary": "ORNI 39 and ORNI 41 share the McGinness Hills geothermal complex near Austin, NV (~250 m apart).",
       "display_name": "ORNI Geothermal"
     },
     {
       "canonical": "NCR13390",
-      "members": ["NCR13391"],
+      "members": [
+        "NCR13391"
+      ],
       "label": "Roadrunner Solar",
       "summary": "Roadrunner Solar and Roadrunner Battery Storage share the Cochise Stronghold Road hybrid site.",
       "display_name": "Roadrunner Solar"
     },
     {
       "canonical": "NCR11605",
-      "members": ["NCR12482"],
+      "members": [
+        "NCR12482"
+      ],
       "label": "RWE Clean Energy Austin HQ",
       "summary": "RWE Clean Energy Asset Holdings (WECC) and RWE Americas (MRO) share the Austin 6th Street headquarters.",
       "display_name": "RWE Clean Energy"
     },
     {
       "canonical": "NCR12267",
-      "members": ["NCR12200"],
+      "members": [
+        "NCR12200"
+      ],
       "label": "Athos Solar",
       "summary": "SE Athos I and SE Athos II share the Rice Road project site in Desert Center, CA.",
       "display_name": "Athos Solar"
     },
     {
       "canonical": "NCR13327",
-      "members": ["NCR13328"],
+      "members": [
+        "NCR13328"
+      ],
       "label": "Pomona Energy Storage",
       "summary": "Pomona Energy Storage and Pomona Energy Storage 2 share the Mount Vernon Avenue site (~130 m apart).",
       "display_name": "Pomona Energy Storage"
     },
     {
       "canonical": "NCR11232",
-      "members": ["NCR10292"],
+      "members": [
+        "NCR10292"
+      ],
       "label": "Shiloh Wind",
       "summary": "Shiloh III and Shiloh II wind projects share the Montezuma Hills Road site (~200 m apart).",
       "display_name": "Shiloh Wind"
     },
     {
       "canonical": "NCR13248",
-      "members": ["NCR13249"],
+      "members": [
+        "NCR13249"
+      ],
       "label": "Rosamond Solar",
       "summary": "Rosamond One and Rosamond Two share the Favorito Avenue project area in Rosamond, CA (~780 m apart).",
       "display_name": "Rosamond Solar"
     },
     {
       "canonical": "NCR11951",
-      "members": ["NCR12063"],
+      "members": [
+        "NCR12063"
+      ],
       "label": "RE Mustang Solar",
       "summary": "RE Mustang Holdings and RE Mustang Two share the Kings County, CA solar complex (~800 m apart).",
       "display_name": "RE Mustang Solar"
     },
     {
       "canonical": "NCR12540",
-      "members": ["NCR13175"],
+      "members": [
+        "NCR13175"
+      ],
       "label": "White Wing Ranch",
       "summary": "White Wing Ranch North and Sierra Pinta Energy Storage share the Yuma County, AZ hybrid site (~350 m apart).",
       "display_name": "White Wing Ranch"
     },
     {
       "canonical": "NCR11653",
-      "members": ["NCR12350"],
+      "members": [
+        "NCR12350"
+      ],
       "label": "Sagebrush Energy",
       "summary": "Mojave 3/4/5 wind and Sagebrush ESS share the Terra-Gen Sagebrush complex near Mojave, CA (~600 m apart).",
       "display_name": "Sagebrush Energy"
     },
     {
       "canonical": "NCR00978",
-      "members": ["NCR05537"],
+      "members": [
+        "NCR05537"
+      ],
       "label": "USACE Omaha",
       "summary": "USACE Omaha District MRO and WECC registrations share the Capitol Avenue headquarters.",
       "display_name": "USACE Omaha"
     },
     {
       "canonical": "NCR10102",
-      "members": ["NCR10030"],
+      "members": [
+        "NCR10030"
+      ],
       "label": "Tri-State HQ",
       "summary": "Tri-State transmission and reliability registrations share the Westminster, CO headquarters.",
       "display_name": "Tri-State G&T"
     },
     {
       "canonical": "NCR12301",
-      "members": ["NCR12300"],
+      "members": [
+        "NCR12300"
+      ],
       "label": "Great Pathfinder Wind",
       "summary": "Great Pathfinder Wind (GO) and AWAM (GOP) share the Stratford, IA plant site.",
       "display_name": "Great Pathfinder Wind"
     },
     {
       "canonical": "NCR11548",
-      "members": ["NCR12280"],
+      "members": [
+        "NCR12280"
+      ],
       "label": "Balko Wind",
       "summary": "Balko Wind (GO) and Invenergy Services-Balko (GOP) share the Balko, OK plant site.",
       "display_name": "Balko Wind"
     },
     {
       "canonical": "NCR10382",
-      "members": ["NCR11705"],
+      "members": [
+        "NCR11705"
+      ],
       "label": "Castleton Power",
       "summary": "Castleton Power (GO) and NAES Corporation - Castleton Power (GOP) share the Castleton, NY plant site.",
       "display_name": "Castleton Power"
     },
     {
       "canonical": "NCR11910",
-      "members": ["NCR11911"],
+      "members": [
+        "NCR11911"
+      ],
       "label": "Birdsboro Power",
       "summary": "Birdsboro Power (GO) and NAES Corporation - Birdsboro Power (GOP) share the Armorcast Road plant site.",
       "display_name": "Birdsboro Power"
     },
     {
       "canonical": "NCR12493",
-      "members": ["NCR12497"],
+      "members": [
+        "NCR12497"
+      ],
       "label": "Crossett Solar",
       "summary": "Crossett Solar Energy (GO) and RES Energy Services - Crossett (GOP) share the Crossett, AR plant site.",
       "display_name": "Crossett Solar"
     },
     {
       "canonical": "NCR12252",
-      "members": ["NCR12253"],
+      "members": [
+        "NCR12253"
+      ],
       "label": "Spring Canyon Wind",
       "summary": "Spring Canyon Energy II and III share the Peetz, CO wind project site (~150 m apart).",
       "display_name": "Spring Canyon Wind"
     },
     {
       "canonical": "NCR11107",
-      "members": ["NCR00936"],
+      "members": [
+        "NCR00936"
+      ],
       "label": "University Park Energy",
       "summary": "LSP University Park and University Park Energy share the Industrial Drive plant site in University Park, IL.",
       "display_name": "University Park Energy"
     },
     {
       "canonical": "NCR12420",
-      "members": ["NCR11715"],
+      "members": [
+        "NCR11715"
+      ],
       "label": "Chalk Point",
       "summary": "Chalk Point Power and NRG East share the Chalk Point Generating Station site in Aquasco, MD.",
       "display_name": "Chalk Point"
     },
     {
       "canonical": "NCR13447",
-      "members": ["NCR13421"],
+      "members": [
+        "NCR13421"
+      ],
       "label": "Elwood Energy Center",
       "summary": "Dairyland Power Cooperative - Elwood and MPH Elwood share the Patterson Road plant site in Elwood, IL.",
       "display_name": "Elwood Energy Center"
     },
     {
       "canonical": "NCR13098",
-      "members": ["NCR11724"],
+      "members": [
+        "NCR11724"
+      ],
       "label": "Gavin Power",
       "summary": "Gavin Power and Lightstone Generation share the Cheshire, OH plant site.",
       "display_name": "Gavin Power"
