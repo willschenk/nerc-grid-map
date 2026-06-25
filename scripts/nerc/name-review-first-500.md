@@ -3,22 +3,6 @@
 Pinned to `src/data/nerc/name-queue.jsonl` orders 1–500.
 Delete each line after its name is updated and validated.
 
-186. NCR11462 — Temple Generation I, LLC
-187. NCR04136 — Tenaska Frontier Partners LTD
-188. NCR04137 — Tenaska Gateway Partners LTD
-189. NCR09006 — Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Nuclear
-190. NCR09028 — Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Power Generation
-191. NCR12287 — Virginia Electric and Power Company - Power Generation (RF)
-192. NCR11102 — Wallingford Energy LLC
-193. NCR02923 — Wheelabrator Bridgeport, L.P.
-194. NCR08077 — Wheelabrator Falls Inc.
-195. NCR10172 — Wheelabrator Millbury Inc.
-196. NCR10033 — Wheelabrator Saugus J.V.
-197. NCR10221 — Wheelabrator Westchester Inc.
-198. NCR08013 — Commonwealth Edison Company
-199. NCR00896 — Public Service Electric & Gas Company
-200. NCR05337 — Public Utility District No. 1 of Benton County
-201. NCR07041 — Town of Wallingford Dept of Utilities
 202. NCR12312 — AL Solar D, LLC
 203. NCR13549 — AL Solar G, LLC
 204. NCR13047 — Angelo Solar, LLC
@@ -130,10 +114,6 @@ Delete each line after its name is updated and validated.
 327. NCR12526 — Entergy Renewables
 337. NCR12159 — NAES Corporation - Aquamarine
 342. NCR11396 — Southern Power Company
-344. NCR11872 — Temple Generation II, LLC
-345. NCR00632 — Tenaska Frontier Partners, Ltd
-346. NCR00633 — Tenaska Gateway Partners Ltd
-347. NCR01214 — Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Electric Transmission
 348. NCR11401 — AEP Generation Resources Inc.
 349. NCR12527 — AEP Renewables - Central Region
 350. NCR13230 — AEP Renewables - East Region
@@ -146,7 +126,6 @@ Delete each line after its name is updated and validated.
 357. NCR13060 — AWAM - Prosperity Wind
 358. NCR13516 — Bluegrass Solar, LLC (2)
 359. NCR12431 — BPL Sol Solar, LLC
-363. NCR11878 — Dominion Energy Generation Marketing, Inc.
 364. NCR11655 — EthosEnergy - San Jacinto County Peaking Facility
 365. NCR13365 — Hecate Energy Albany 2 LLC
 367. NCR11718 — Invenergy Services LLC

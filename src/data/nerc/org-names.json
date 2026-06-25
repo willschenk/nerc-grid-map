@@ -7517,7 +7517,10 @@
       "shortest": "PSE&G",
       "short": "Public Service Electric and Gas",
       "normal": "Public Service Electric and Gas",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://nj.pseg.com/"
     },
     {
       "ncr_id": "NCR12234",
@@ -8450,18 +8453,24 @@
     {
       "ncr_id": "NCR11462",
       "entity_name": "Temple Generation I, LLC",
-      "shortest": "Temple",
+      "shortest": "Temple1",
       "short": "Temple Generation I",
       "normal": "Temple Generation I",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/temple-generation-i"
     },
     {
       "ncr_id": "NCR11872",
       "entity_name": "Temple Generation II, LLC",
-      "shortest": "Temple",
+      "shortest": "Temple2",
       "short": "Temple Generation II",
       "normal": "Temple Generation II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/temple-power-station"
     },
     {
       "ncr_id": "NCR11995",
@@ -8474,34 +8483,46 @@
     {
       "ncr_id": "NCR04136",
       "entity_name": "Tenaska Frontier Partners LTD",
-      "shortest": "Tenaska",
+      "shortest": "TenFront",
       "short": "Tenaska Frontier",
       "normal": "Tenaska Frontier Partners",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tenaska.com/our-expertise/generation/"
     },
     {
       "ncr_id": "NCR00632",
       "entity_name": "Tenaska Frontier Partners, Ltd",
-      "shortest": "Tenaska",
+      "shortest": "TenFront",
       "short": "Tenaska Frontier",
       "normal": "Tenaska Frontier Partners",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tenaska.com/our-expertise/generation/"
     },
     {
       "ncr_id": "NCR00633",
       "entity_name": "Tenaska Gateway Partners Ltd",
-      "shortest": "Tenaska Gate",
+      "shortest": "TenGate",
       "short": "Tenaska Gateway",
       "normal": "Tenaska Gateway Partners",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tenaska.com/our-expertise/generation/"
     },
     {
       "ncr_id": "NCR04137",
       "entity_name": "Tenaska Gateway Partners LTD",
-      "shortest": "Tenaska Gate",
+      "shortest": "TenGate",
       "short": "Tenaska Gateway",
       "normal": "Tenaska Gateway Partners",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tenaska.com/our-expertise/generation/"
     },
     {
       "ncr_id": "NCR01337",
@@ -8602,10 +8623,13 @@
     {
       "ncr_id": "NCR07041",
       "entity_name": "Town of Wallingford Dept of Utilities",
-      "shortest": "Wallingford",
+      "shortest": "WallfdU",
       "short": "Wallingford Utilities",
       "normal": "Wallingford Department of Utilities",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.wallingfordct.gov/government/departments/electric-division/"
     },
     {
       "ncr_id": "NCR13234",
@@ -8797,7 +8821,10 @@
       "shortest": "DOM Tx",
       "short": "Dominion Virginia Transmission",
       "normal": "Dominion Energy Virginia Transmission",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dominionenergy.com/en/Virginia"
     },
     {
       "ncr_id": "NCR09006",
@@ -8805,23 +8832,32 @@
       "shortest": "DOM Nuke",
       "short": "Dominion Virginia Nuclear",
       "normal": "Dominion Energy Virginia Nuclear",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dominionenergy.com/en/Virginia"
     },
     {
       "ncr_id": "NCR09028",
       "entity_name": "Virginia Electric & Power Company d/b/a Dominion Energy Virginia - Power Generation",
-      "shortest": "Dominion",
+      "shortest": "DOM Gen",
       "short": "Dominion Virginia Generation",
       "normal": "Dominion Energy Virginia Generation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dominionenergy.com/en/Virginia"
     },
     {
       "ncr_id": "NCR12287",
       "entity_name": "Virginia Electric and Power Company - Power Generation (RF)",
-      "shortest": "DOM RF Gen",
+      "shortest": "DOM RF",
       "short": "Dominion Generation RF",
       "normal": "Dominion Energy Virginia Generation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dominionenergy.com/en/Virginia"
     },
     {
       "ncr_id": "NCR11876",
@@ -8834,10 +8870,13 @@
     {
       "ncr_id": "NCR11102",
       "entity_name": "Wallingford Energy LLC",
-      "shortest": "Wallingfrd En",
+      "shortest": "WallfdE",
       "short": "Wallingford Energy",
       "normal": "Wallingford Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.renewablesinfo.org/plant/55517"
     },
     {
       "ncr_id": "NCR11890",
@@ -8949,7 +8988,10 @@
       "shortest": "Whlb Brd",
       "short": "Wheelabrator Bridgeport",
       "normal": "Wheelabrator Bridgeport",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.win-waste.com/about-us/locations/bridgeport-ct/"
     },
     {
       "ncr_id": "NCR08077",
@@ -8957,7 +8999,10 @@
       "shortest": "Whlb Fls",
       "short": "Wheelabrator Falls",
       "normal": "Wheelabrator Falls",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.win-waste.com/about-us/locations/falls-pa/"
     },
     {
       "ncr_id": "NCR10172",
@@ -8965,7 +9010,10 @@
       "shortest": "Whlb Mlb",
       "short": "Wheelabrator Millbury",
       "normal": "Wheelabrator Millbury",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.win-waste.com/about-us/locations/millbury-ma/"
     },
     {
       "ncr_id": "NCR10033",
@@ -8973,7 +9021,10 @@
       "shortest": "Whlb Sgs",
       "short": "Wheelabrator Saugus",
       "normal": "Wheelabrator Saugus",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.win-waste.com/about-us/locations/saugus-ma/"
     },
     {
       "ncr_id": "NCR10221",
@@ -8981,7 +9032,10 @@
       "shortest": "Whlb Wst",
       "short": "Wheelabrator Westchester",
       "normal": "Wheelabrator Westchester",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.win-waste.com/about-us/locations/westchester-ny/"
     },
     {
       "ncr_id": "NCR13303",
@@ -11483,7 +11537,10 @@
       "shortest": "DOM Mkt",
       "short": "Dominion Energy Generation Marketing",
       "normal": "Dominion Energy Generation Marketing",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dominionenergy.com/en/Virginia"
     },
     {
       "ncr_id": "NCR12517",
@@ -16691,7 +16748,10 @@
       "shortest": "ComEd",
       "short": "Commonwealth Edison",
       "normal": "Commonwealth Edison Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.comed.com/"
     },
     {
       "ncr_id": "NCR00753",
@@ -17140,10 +17200,13 @@
     {
       "ncr_id": "NCR05337",
       "entity_name": "Public Utility District No. 1 of Benton County",
-      "shortest": "Benton PUD",
+      "shortest": "BentonPD",
       "short": "Benton County PUD",
       "normal": "Benton County PUD No. 1",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bentonpud.org/contact"
     },
     {
       "ncr_id": "NCR05286",

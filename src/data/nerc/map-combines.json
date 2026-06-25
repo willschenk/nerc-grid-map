@@ -778,7 +778,7 @@
         "NCR00632"
       ],
       "label": "Tenaska Frontier",
-      "summary": "Tenaska Frontier Partners SERC and Texas RE registrations share the Shiro, TX plant coordinates.",
+      "summary": "Tenaska Frontier SERC and Texas RE registrations share the Shiro, TX dual-grid plant coordinates.",
       "display_name": "Tenaska Frontier"
     },
     {
@@ -789,7 +789,7 @@
         "NCR12287"
       ],
       "label": "Dominion Energy Virginia HQ",
-      "summary": "Dominion Energy Virginia (Virginia Electric & Power Company) transmission, generation, and generation-marketing registrations share the Richmond headquarters and appear here as one map location.",
+      "summary": "Dominion Energy Virginia transmission, generation, RF generation, and generation-marketing registrations share the Richmond headquarters and appear here as one map location.",
       "display_name": "Dominion Energy Virginia"
     },
     {
@@ -1116,7 +1116,7 @@
         "NCR11872"
       ],
       "label": "Temple Power Station",
-      "summary": "Temple Generation I and II share the Panda Drive plant address in Temple, TX.",
+      "summary": "Temple Generation I and II split the Panda Temple Power Station units and share the Panda Drive plant address.",
       "display_name": "Temple Power Station"
     },
     {
@@ -1125,7 +1125,7 @@
         "NCR00633"
       ],
       "label": "Tenaska Gateway",
-      "summary": "Tenaska Gateway Partners Texas RE and MRO registrations share the Mount Enterprise, TX plant coordinates.",
+      "summary": "Tenaska Gateway Texas RE and MRO registrations share the Mount Enterprise, TX dual-grid plant coordinates.",
       "display_name": "Tenaska Gateway"
     },
     {

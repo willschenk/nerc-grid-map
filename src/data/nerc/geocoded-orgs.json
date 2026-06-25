@@ -20926,7 +20926,7 @@
       "source_url": "https://www.gridinfo.com/plant/tenaska-gateway-generating-station/55132",
       "org_type": "merchant",
       "parent_org": "Tenaska",
-      "notes": "940 MW combined-cycle gas in Rusk County. COD July 2001.",
+      "notes": "MRO registration for Tenaska Gateway Generating Station at Mount Enterprise; paired with the Texas RE registration at the same plant.",
       "seed": false,
       "locations": [
         {
@@ -20941,7 +20941,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/tenaska-gateway-generating-station/55132",
-          "geo_notes": "940 MW combined-cycle gas in Rusk County. COD July 2001."
+          "geo_notes": "MRO registration for Tenaska Gateway Generating Station at Mount Enterprise; paired with the Texas RE registration at the same plant."
         },
         {
           "rank": 2,
@@ -36705,10 +36705,10 @@
       "country": "US",
       "confidence": "HIGH",
       "source": "official_website",
-      "source_url": "https://www.wallingford.ct.us/Content/Public_Utilities.asp",
+      "source_url": "https://www.wallingfordct.gov/government/departments/electric-division/",
       "org_type": "municipal",
       "parent_org": null,
-      "notes": "Pinned to the Town of Wallingford Department of Public Utilities Electric Division office.",
+      "notes": "Town of Wallingford Electric Division office at 100 John Street; municipal utility record distinct from nearby Wallingford Energy plant.",
       "seed": false,
       "locations": [
         {
@@ -36722,8 +36722,8 @@
           "country": "US",
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
-          "geo_source_url": "https://www.wallingford.ct.us/Content/Public_Utilities.asp",
-          "geo_notes": "Pinned to the Town of Wallingford Department of Public Utilities Electric Division office."
+          "geo_source_url": "https://www.wallingfordct.gov/government/departments/electric-division/",
+          "geo_notes": "Town of Wallingford Electric Division office at 100 John Street; municipal utility record distinct from nearby Wallingford Energy plant."
         },
         {
           "rank": 2,
@@ -37588,7 +37588,7 @@
       "source_url": "https://www.renewablesinfo.org/plant/55517",
       "org_type": "merchant",
       "parent_org": "LS Power Development, LLC",
-      "notes": "Plant pin for Wallingford Energy combustion turbine facility.",
+      "notes": "Wallingford Energy gas-fired generation facility at 115 John Street; distinct from the municipal Electric Division office nearby.",
       "seed": false,
       "locations": [
         {
@@ -37603,7 +37603,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.renewablesinfo.org/plant/55517",
-          "geo_notes": "Plant pin for Wallingford Energy combustion turbine facility."
+          "geo_notes": "Wallingford Energy gas-fired generation facility at 115 John Street; distinct from the municipal Electric Division office nearby."
         },
         {
           "rank": 2,
@@ -38130,7 +38130,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/50883-gen1",
       "org_type": "merchant",
       "parent_org": "WIN Waste Innovations",
-      "notes": "Plant pin for Bridgeport waste to energy facility.",
+      "notes": "Legacy Wheelabrator registry name for the current WIN Waste Bridgeport waste-to-energy facility at 6 Howard Avenue.",
       "seed": false,
       "locations": [
         {
@@ -38145,7 +38145,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/50883-gen1",
-          "geo_notes": "Plant pin for Bridgeport waste to energy facility."
+          "geo_notes": "Legacy Wheelabrator registry name for the current WIN Waste Bridgeport waste-to-energy facility at 6 Howard Avenue."
         },
         {
           "rank": 2,
@@ -38198,7 +38198,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/50878-gen1",
       "org_type": "merchant",
       "parent_org": "WIN Waste Innovations",
-      "notes": "Plant pin for Millbury waste to energy facility.",
+      "notes": "Legacy Wheelabrator registry name for the current WIN Waste Millbury waste-to-energy facility at 331 Southwest Cutoff Road.",
       "seed": false,
       "locations": [
         {
@@ -38213,7 +38213,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/50878-gen1",
-          "geo_notes": "Plant pin for Millbury waste to energy facility."
+          "geo_notes": "Legacy Wheelabrator registry name for the current WIN Waste Millbury waste-to-energy facility at 331 Southwest Cutoff Road."
         },
         {
           "rank": 2,
@@ -38266,7 +38266,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/50880-gen1",
       "org_type": "merchant",
       "parent_org": "WIN Waste Innovations",
-      "notes": "Plant pin for Saugus waste to energy facility.",
+      "notes": "Legacy Wheelabrator registry name for the current WIN Waste Saugus waste-to-energy facility at 100 Salem Turnpike.",
       "seed": false,
       "locations": [
         {
@@ -38281,7 +38281,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/50880-gen1",
-          "geo_notes": "Plant pin for Saugus waste to energy facility."
+          "geo_notes": "Legacy Wheelabrator registry name for the current WIN Waste Saugus waste-to-energy facility at 100 Salem Turnpike."
         },
         {
           "rank": 2,
@@ -38334,7 +38334,7 @@
       "source_url": "https://www.interconnection.fyi/eia/project/50882-gen1",
       "org_type": "merchant",
       "parent_org": "WIN Waste Innovations",
-      "notes": "Plant pin for Westchester waste to energy facility.",
+      "notes": "Legacy Wheelabrator registry name for the current WIN Waste Westchester waste-to-energy facility at Charles Point in Peekskill.",
       "seed": false,
       "locations": [
         {
@@ -38349,7 +38349,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/50882-gen1",
-          "geo_notes": "Plant pin for Westchester waste to energy facility."
+          "geo_notes": "Legacy Wheelabrator registry name for the current WIN Waste Westchester waste-to-energy facility at Charles Point in Peekskill."
         },
         {
           "rank": 2,
@@ -44800,7 +44800,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.comed.com",
-      "notes": "Exelon delivery utility; RF registration. Retires NCR-SEED-033.",
+      "notes": "Official ComEd acronym for Commonwealth Edison; Exelon delivery utility RF registration that retires NCR-SEED-033.",
       "seed": false,
       "locations": [
         {
@@ -44815,7 +44815,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.comed.com",
-          "geo_notes": "Exelon delivery utility; RF registration. Retires NCR-SEED-033."
+          "geo_notes": "Official ComEd acronym for Commonwealth Edison; Exelon delivery utility RF registration that retires NCR-SEED-033."
         },
         {
           "rank": 2,
@@ -45856,7 +45856,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.dominionenergy.com",
-      "notes": "Dominion wholesale generation marketing.",
+      "notes": "Dominion Energy Generation Marketing registration at the Richmond office; combined with Dominion Energy Virginia HQ records for display.",
       "seed": false,
       "locations": [
         {
@@ -45871,7 +45871,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.dominionenergy.com",
-          "geo_notes": "Dominion wholesale generation marketing."
+          "geo_notes": "Dominion Energy Generation Marketing registration at the Richmond office; combined with Dominion Energy Virginia HQ records for display."
         },
         {
           "rank": 2,
@@ -57098,7 +57098,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://corporate.pseg.com/aboutpseg/companyinformation/thepsegfamilyofcompanies",
-      "notes": "PSE&G corporate HQ Newark.",
+      "notes": "Official PSE&G acronym for Public Service Electric & Gas; corporate HQ at 80 Park Plaza in Newark.",
       "seed": false,
       "entity_name": "Public Service Electric & Gas Company",
       "roles": [
@@ -57120,7 +57120,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://corporate.pseg.com/aboutpseg/companyinformation/thepsegfamilyofcompanies",
-          "geo_notes": "PSE&G corporate HQ Newark."
+          "geo_notes": "Official PSE&G acronym for Public Service Electric & Gas; corporate HQ at 80 Park Plaza in Newark."
         },
         {
           "rank": 2,
@@ -60727,7 +60727,7 @@
       "confidence": "MEDIUM",
       "source": "sec_filing",
       "source_url": "https://www.dominionenergy.com/",
-      "notes": "Dominion generation subsidiary RF registration; corporate ops Richmond VA.",
+      "notes": "Dominion Virginia RF generation registration at the Richmond corporate office; combined with the SERC generation row for display.",
       "seed": false,
       "locations": [
         {
@@ -60742,7 +60742,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.dominionenergy.com/",
-          "geo_notes": "Dominion generation subsidiary RF registration; corporate ops Richmond VA."
+          "geo_notes": "Dominion Virginia RF generation registration at the Richmond corporate office; combined with the SERC generation row for display."
         },
         {
           "rank": 2,
@@ -61255,7 +61255,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.interconnection.fyi/eia/project/54746",
-      "notes": "EIA Plant 54746 waste-to-energy Bucks County PA.",
+      "notes": "Legacy Wheelabrator Falls registry name for the current WIN Waste Falls waste-to-energy facility in Morrisville.",
       "seed": false,
       "locations": [
         {
@@ -61270,7 +61270,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.interconnection.fyi/eia/project/54746",
-          "geo_notes": "EIA Plant 54746 waste-to-energy Bucks County PA."
+          "geo_notes": "Legacy Wheelabrator Falls registry name for the current WIN Waste Falls waste-to-energy facility in Morrisville."
         },
         {
           "rank": 2,
@@ -84208,7 +84208,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/tenaska-frontier-partners-ltd",
-      "notes": "Tenaska Frontier Generating Station Shiro TX; dual ERCOT/SERC dispatch.",
+      "notes": "SERC registration for the 830 MW Tenaska Frontier dual ERCOT/MISO plant at Shiro; paired with the Texas RE registration.",
       "seed": false,
       "locations": [
         {
@@ -84223,7 +84223,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/tenaska-frontier-partners-ltd",
-          "geo_notes": "Tenaska Frontier Generating Station Shiro TX; dual ERCOT/SERC dispatch."
+          "geo_notes": "SERC registration for the 830 MW Tenaska Frontier dual ERCOT/MISO plant at Shiro; paired with the Texas RE registration."
         },
         {
           "rank": 2,
@@ -86058,7 +86058,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.dominionenergy.com",
-      "notes": "Dominion Energy Virginia transmission operating company; utility HQ Richmond.",
+      "notes": "Dominion Energy Virginia transmission registration at the Richmond utility HQ; combined with related Dominion Virginia registrations for display.",
       "seed": false,
       "locations": [
         {
@@ -86073,7 +86073,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.dominionenergy.com",
-          "geo_notes": "Dominion Energy Virginia transmission operating company; utility HQ Richmond."
+          "geo_notes": "Dominion Energy Virginia transmission registration at the Richmond utility HQ; combined with related Dominion Virginia registrations for display."
         },
         {
           "rank": 2,
@@ -86124,7 +86124,7 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000715957",
-      "notes": "North Anna Nuclear Power Station; Dominion Energy Virginia nuclear generation.",
+      "notes": "North Anna Nuclear Power Station registration for Dominion Energy Virginia nuclear generation.",
       "seed": false,
       "locations": [
         {
@@ -86139,7 +86139,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000715957",
-          "geo_notes": "North Anna Nuclear Power Station; Dominion Energy Virginia nuclear generation."
+          "geo_notes": "North Anna Nuclear Power Station registration for Dominion Energy Virginia nuclear generation."
         },
         {
           "rank": 2,
@@ -86190,7 +86190,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.dominionenergy.com",
-      "notes": "Dominion Energy Virginia fossil/hydro/renewable generation division; corporate HQ.",
+      "notes": "Dominion Energy Virginia power-generation registration at the Richmond utility HQ; canonical bubble for related Richmond Dominion registrations.",
       "seed": false,
       "locations": [
         {
@@ -86205,7 +86205,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.dominionenergy.com",
-          "geo_notes": "Dominion Energy Virginia fossil/hydro/renewable generation division; corporate HQ."
+          "geo_notes": "Dominion Energy Virginia power-generation registration at the Richmond utility HQ; canonical bubble for related Richmond Dominion registrations."
         },
         {
           "rank": 2,
@@ -111382,7 +111382,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/temple-generation-i",
-      "notes": "Temple Power Station units CTG-1/2 and STG-1; Bell County TX.",
+      "notes": "Temple Generation I owns CTG-1/2 and STG-1 at the Panda Temple Power Station; paired with Temple Generation II at the same Panda Drive site.",
       "seed": false,
       "locations": [
         {
@@ -111397,7 +111397,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/temple-generation-i",
-          "geo_notes": "Temple Power Station units CTG-1/2 and STG-1; Bell County TX."
+          "geo_notes": "Temple Generation I owns CTG-1/2 and STG-1 at the Panda Temple Power Station; paired with Temple Generation II at the same Panda Drive site."
         },
         {
           "rank": 2,
@@ -111448,7 +111448,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.gridinfo.com/plant/temple-power-station",
-      "notes": "Temple Power Station units CTG-3/4 and STG-2; Bell County TX.",
+      "notes": "Temple Generation II owns CTG-3/4 and STG-2 at the Panda Temple Power Station; combined with Temple Generation I for display.",
       "seed": false,
       "locations": [
         {
@@ -111463,7 +111463,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.gridinfo.com/plant/temple-power-station",
-          "geo_notes": "Temple Power Station units CTG-3/4 and STG-2; Bell County TX."
+          "geo_notes": "Temple Generation II owns CTG-3/4 and STG-2 at the Panda Temple Power Station; combined with Temple Generation I for display."
         },
         {
           "rank": 2,
@@ -111514,7 +111514,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.tenaska.com/our-expertise/generation/",
-      "notes": "830 MW Tenaska Frontier Generating Station; Grimes County TX.",
+      "notes": "830 MW Tenaska Frontier Generating Station near Shiro; dual ERCOT/MISO plant with Texas RE/SERC registrations at the same site.",
       "seed": false,
       "locations": [
         {
@@ -111529,7 +111529,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.tenaska.com/our-expertise/generation/",
-          "geo_notes": "830 MW Tenaska Frontier Generating Station; Grimes County TX."
+          "geo_notes": "830 MW Tenaska Frontier Generating Station near Shiro; dual ERCOT/MISO plant with Texas RE/SERC registrations at the same site."
         },
         {
           "rank": 2,
@@ -111580,7 +111580,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.tenaska.com/our-expertise/generation/",
-      "notes": "845 MW Tenaska Gateway Generating Station; Rusk County TX.",
+      "notes": "845 MW Tenaska Gateway Generating Station near Mount Enterprise; dual ERCOT/SPP plant with Texas RE/MRO registrations at the same site.",
       "seed": false,
       "locations": [
         {
@@ -111595,7 +111595,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.tenaska.com/our-expertise/generation/",
-          "geo_notes": "845 MW Tenaska Gateway Generating Station; Rusk County TX."
+          "geo_notes": "845 MW Tenaska Gateway Generating Station near Mount Enterprise; dual ERCOT/SPP plant with Texas RE/MRO registrations at the same site."
         },
         {
           "rank": 2,
@@ -137643,7 +137643,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.bentonpud.org/contact",
-      "notes": "Benton PUD business office Kennewick WA.",
+      "notes": "Benton PUD Kennewick business office; NERC registry record distinct from the supplemental Benton PUD context row.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137660,7 +137660,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.bentonpud.org/contact",
-          "geo_notes": "Benton PUD business office Kennewick WA."
+          "geo_notes": "Benton PUD Kennewick business office; NERC registry record distinct from the supplemental Benton PUD context row."
         },
         {
           "rank": 2,
