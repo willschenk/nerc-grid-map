@@ -20,7 +20,7 @@
 > [!IMPORTANT]
 > This is an independent visualization. It is not a NERC product and is not an official compliance source of truth.
 
-## 🟪 What this is
+## What this is
 
 The NERC Grid Map turns registry records into a browser map that is easy to scan. Each organization appears as a bubble: size reflects reliability responsibility, color reflects functional role mix, and the label uses the shortest practical name.
 
@@ -30,23 +30,23 @@ The NERC Grid Map turns registry records into a browser map that is easy to scan
 | Reviewing names, roles, regions, and locations | Replacing NERC source records |
 | Spotting data-quality issues visually | Treating estimated geography as exact |
 
-## 🟦 How to read the map
+## How to read the map
 
 | Visual cue | What it means |
 | --- | --- |
-| 🟣 **Bigger bubble** | Higher-weight reliability functions such as RC, BA, PC, TOP, or TSP. |
-| 🔵 **Color blend** | Functional role mix from the role anchors in `src/lib/nerc/roles.mjs`. |
-| 🟢 **Short label** | Researched display name meant to stay readable at map scale. |
-| 🟠 **Zoom reveal** | More organizations appear as space becomes available. |
-| ⚪ **Quiet entity** | Lower-priority organizations stay subdued until they can be shown cleanly. |
+| **Bigger bubble** | Higher-weight reliability functions such as RC, BA, PC, TOP, or TSP. |
+| **Color blend** | Functional role mix from the role anchors in `src/lib/nerc/roles.mjs`. |
+| **Short label** | Researched display name meant to stay readable at map scale. |
+| **Zoom reveal** | More organizations appear as space becomes available. |
+| **Quiet entity** | Lower-priority organizations stay subdued until they can be shown cleanly. |
 
-## 🟩 Role colors
+## Role colors
 
 Bubble colors come from fixed role anchors. Multi-role organizations blend between anchors, so similar role sets should feel visually related.
 
 <img src="docs/readme/role-palette.svg" alt="NERC Grid Map role color palette" width="920">
 
-## 🟧 Data pipeline
+## Data pipeline
 
 ```mermaid
 %%{init: {"theme": "base", "themeVariables": {"fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif", "primaryTextColor": "#ffffff", "lineColor": "#5a70c9"}}}%%
@@ -68,7 +68,7 @@ flowchart LR
   class E,F render;
 ```
 
-## 🟨 Render model
+## Render model
 
 ```mermaid
 %%{init: {"theme": "base", "themeVariables": {"fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif", "primaryTextColor": "#ffffff", "lineColor": "#5a70c9"}}}%%
@@ -95,7 +95,7 @@ flowchart TB
   class V final;
 ```
 
-## 🟫 Project shape
+## Project shape
 
 | Area | Files | Purpose |
 | --- | --- | --- |
@@ -105,7 +105,7 @@ flowchart TB
 | Public payloads | `public/nerc/orgs-render.json`<br>`public/nerc/org-details.json` | Small first-paint data plus lazy-loaded detail. |
 | QA data | `public/nerc/orgs.json` | Canonical generated organization output for review. |
 
-## 🛠️ Run locally
+## Run locally
 
 ```bash
 npm install
@@ -114,11 +114,11 @@ npm run dev
 
 Requires Node `>=20.3.0`.
 
-## 📌 Design principle
+## Design principle
 
 The goal is to make the registry easy to inspect at a glance: who is registered, what role they hold, where they are, and how much visual priority they should receive. The map should stay fast, readable, and honest about the underlying data.
 
-## ⚖️ License
+## License
 
 This project uses separate licenses for code and data.
 
