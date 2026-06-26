@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720" viewBox="0 0 720 720" role="img" aria-label="NERC Grid Map README graphic">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080d22"/><stop offset="1" stop-color="#0e1633"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0v36" fill="none" stroke="#1b2547" stroke-width="1" opacity=".38"/></pattern>
+  </defs>
+  <rect width="100%" height="100%" rx="18" fill="url(#bg)"/>
+  <rect width="100%" height="100%" rx="18" fill="url(#grid)" opacity=".7"/>
+  <style>text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif} .muted{fill:#8f9ac9} .small{font-size:14px} .title{fill:#fff;font-weight:800;letter-spacing:.2px} .label{fill:#fff;font-weight:700} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}</style>
+  <rect x="48" y="38" width="624" height="64" rx="14" fill="#101936" stroke="#34a4d6" stroke-width="2"/>
+  <text x="360" y="65" text-anchor="middle" class="label" font-size="19">NERC Registry</text>
+  <text x="360" y="87" text-anchor="middle" class="muted mono" font-size="12">.xlsx registry</text>
+  <path d="M360 108v28" stroke="#5a70c9" stroke-width="2"/><path d="M354 130l6 8 6-8" fill="#5a70c9"/>
+  <rect x="48" y="132" width="624" height="64" rx="14" fill="#101936" stroke="#22c6b8" stroke-width="2"/>
+  <text x="360" y="159" text-anchor="middle" class="label" font-size="19">Ingest</text>
+  <text x="360" y="181" text-anchor="middle" class="muted mono" font-size="12">scripts/nerc/ingest.mjs</text>
+  <path d="M360 202v28" stroke="#5a70c9" stroke-width="2"/><path d="M354 224l6 8 6-8" fill="#5a70c9"/>
+  <rect x="48" y="226" width="624" height="64" rx="14" fill="#101936" stroke="#8b6cff" stroke-width="2"/>
+  <text x="360" y="253" text-anchor="middle" class="label" font-size="19">Normalized Records</text>
+  <text x="360" y="275" text-anchor="middle" class="muted mono" font-size="12">src/data/nerc/ingested-records.json</text>
+  <path d="M360 296v28" stroke="#5a70c9" stroke-width="2"/><path d="M354 318l6 8 6-8" fill="#5a70c9"/>
+  <rect x="48" y="320" width="624" height="64" rx="14" fill="#101936" stroke="#f6a90a" stroke-width="2"/>
+  <text x="360" y="347" text-anchor="middle" class="label" font-size="19">Researched Locations + Short Names</text>
+  <text x="360" y="369" text-anchor="middle" class="muted mono" font-size="12">src/data/nerc/geocoded-orgs.json</text>
+  <path d="M360 390v28" stroke="#5a70c9" stroke-width="2"/><path d="M354 412l6 8 6-8" fill="#5a70c9"/>
+  <rect x="48" y="414" width="624" height="64" rx="14" fill="#101936" stroke="#58bfd4" stroke-width="2"/>
+  <text x="360" y="441" text-anchor="middle" class="label" font-size="19">Build Scripts</text>
+  <text x="360" y="463" text-anchor="middle" class="muted mono" font-size="12">scripts/nerc/build-orgs.mjs</text>
+  <path d="M360 484v28" stroke="#5a70c9" stroke-width="2"/><path d="M354 506l6 8 6-8" fill="#5a70c9"/>
+  <rect x="48" y="508" width="624" height="64" rx="14" fill="#101936" stroke="#aa5bd6" stroke-width="2"/>
+  <text x="360" y="535" text-anchor="middle" class="label" font-size="19">Static JSON</text>
+  <text x="360" y="557" text-anchor="middle" class="muted mono" font-size="12">public/nerc/*.json</text>
+  <path d="M360 578v28" stroke="#5a70c9" stroke-width="2"/><path d="M354 600l6 8 6-8" fill="#5a70c9"/>
+  <rect x="48" y="602" width="624" height="64" rx="14" fill="#101936" stroke="#66d987" stroke-width="2"/>
+  <text x="360" y="629" text-anchor="middle" class="label" font-size="19">Astro + D3 Map</text>
+  <text x="360" y="651" text-anchor="middle" class="muted mono" font-size="12">src/lib/nerc/map/nerc-org-map.ts</text>
+</svg>

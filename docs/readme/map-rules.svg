@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="350" viewBox="0 0 820 350" role="img" aria-label="NERC Grid Map README graphic">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080d22"/><stop offset="1" stop-color="#0e1633"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0v36" fill="none" stroke="#1b2547" stroke-width="1" opacity=".38"/></pattern>
+  </defs>
+  <rect width="100%" height="100%" rx="18" fill="url(#bg)"/>
+  <rect width="100%" height="100%" rx="18" fill="url(#grid)" opacity=".7"/>
+  <style>text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif} .muted{fill:#8f9ac9} .small{font-size:14px} .title{fill:#fff;font-weight:800;letter-spacing:.2px} .label{fill:#fff;font-weight:700} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}</style>
+  <rect x="55" y="80" width="200" height="92" rx="15" fill="#101936" stroke="#34a4d6" stroke-width="2"/>
+  <circle cx="85" cy="111" r="9" fill="#34a4d6"/>
+  <text x="105" y="118" class="label" font-size="20">Size</text>
+  <text x="85" y="148" class="muted" font-size="14">reliability impact</text>
+  <rect x="305" y="80" width="200" height="92" rx="15" fill="#101936" stroke="#22c6b8" stroke-width="2"/>
+  <circle cx="335" cy="111" r="9" fill="#22c6b8"/>
+  <text x="355" y="118" class="label" font-size="20">Color</text>
+  <text x="335" y="148" class="muted" font-size="14">functional mix</text>
+  <rect x="555" y="80" width="200" height="92" rx="15" fill="#101936" stroke="#8b6cff" stroke-width="2"/>
+  <circle cx="585" cy="111" r="9" fill="#8b6cff"/>
+  <text x="605" y="118" class="label" font-size="20">Label</text>
+  <text x="585" y="148" class="muted" font-size="14">shortest meaningful name</text>
+  <rect x="55" y="215" width="200" height="92" rx="15" fill="#101936" stroke="#f6a90a" stroke-width="2"/>
+  <circle cx="85" cy="246" r="9" fill="#f6a90a"/>
+  <text x="105" y="253" class="label" font-size="20">Zoom</text>
+  <text x="85" y="283" class="muted" font-size="14">reveal detail</text>
+  <rect x="305" y="215" width="200" height="92" rx="15" fill="#101936" stroke="#58bfd4" stroke-width="2"/>
+  <circle cx="335" cy="246" r="9" fill="#58bfd4"/>
+  <text x="355" y="253" class="label" font-size="20">QA</text>
+  <text x="335" y="283" class="muted" font-size="14">prevent bad geography</text>
+  <rect x="555" y="215" width="200" height="92" rx="15" fill="#101936" stroke="#aa5bd6" stroke-width="2"/>
+  <circle cx="585" cy="246" r="9" fill="#aa5bd6"/>
+  <text x="605" y="253" class="label" font-size="20">Payload</text>
+  <text x="585" y="283" class="muted" font-size="14">fast first paint</text>
+</svg>

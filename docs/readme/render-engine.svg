@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="450" viewBox="0 0 840 450" role="img" aria-label="NERC Grid Map README graphic">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080d22"/><stop offset="1" stop-color="#0e1633"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0v36" fill="none" stroke="#1b2547" stroke-width="1" opacity=".38"/></pattern>
+  </defs>
+  <rect width="100%" height="100%" rx="18" fill="url(#bg)"/>
+  <rect width="100%" height="100%" rx="18" fill="url(#grid)" opacity=".7"/>
+  <style>text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif} .muted{fill:#8f9ac9} .small{font-size:14px} .title{fill:#fff;font-weight:800;letter-spacing:.2px} .label{fill:#fff;font-weight:700} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}</style>
+  <circle cx="60" cy="165" r="31.5" fill="#34a4d6" opacity=".18" filter="url(#glow)"/>
+  <circle cx="60" cy="165" r="18" fill="#34a4d6" opacity=".92"/>
+  <text x="60" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="60" y="118" text-anchor="middle" class="label" font-size="15">Roles</text>
+  <path d="M84 165H140" stroke="#5a70c9" stroke-width="2"/><path d="M134 159l8 6-8 6" fill="#5a70c9"/>
+  <circle cx="164" cy="165" r="31.5" fill="#22c6b8" opacity=".18" filter="url(#glow)"/>
+  <circle cx="164" cy="165" r="18" fill="#22c6b8" opacity=".92"/>
+  <text x="164" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="164" y="118" text-anchor="middle" class="label" font-size="15">Weights</text>
+  <path d="M188 165H244" stroke="#5a70c9" stroke-width="2"/><path d="M238 159l8 6-8 6" fill="#5a70c9"/>
+  <circle cx="268" cy="165" r="31.5" fill="#8b6cff" opacity=".18" filter="url(#glow)"/>
+  <circle cx="268" cy="165" r="18" fill="#8b6cff" opacity=".92"/>
+  <text x="268" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="268" y="118" text-anchor="middle" class="label" font-size="15">Priority</text>
+  <path d="M292 165H348" stroke="#5a70c9" stroke-width="2"/><path d="M342 159l8 6-8 6" fill="#5a70c9"/>
+  <circle cx="372" cy="165" r="31.5" fill="#f6a90a" opacity=".18" filter="url(#glow)"/>
+  <circle cx="372" cy="165" r="18" fill="#f6a90a" opacity=".92"/>
+  <text x="372" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="372" y="118" text-anchor="middle" class="label" font-size="15">Size</text>
+  <path d="M396 165H452" stroke="#5a70c9" stroke-width="2"/><path d="M446 159l8 6-8 6" fill="#5a70c9"/>
+  <circle cx="476" cy="165" r="31.5" fill="#58bfd4" opacity=".18" filter="url(#glow)"/>
+  <circle cx="476" cy="165" r="18" fill="#58bfd4" opacity=".92"/>
+  <text x="476" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="476" y="118" text-anchor="middle" class="label" font-size="15">Color anchors</text>
+  <path d="M500 165H556" stroke="#5a70c9" stroke-width="2"/><path d="M550 159l8 6-8 6" fill="#5a70c9"/>
+  <circle cx="580" cy="165" r="31.5" fill="#aa5bd6" opacity=".18" filter="url(#glow)"/>
+  <circle cx="580" cy="165" r="18" fill="#aa5bd6" opacity=".92"/>
+  <text x="580" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="580" y="118" text-anchor="middle" class="label" font-size="15">Blended</text>
+  <path d="M604 165H660" stroke="#5a70c9" stroke-width="2"/><path d="M654 159l8 6-8 6" fill="#5a70c9"/>
+  <circle cx="684" cy="165" r="31.5" fill="#66d987" opacity=".18" filter="url(#glow)"/>
+  <circle cx="684" cy="165" r="18" fill="#66d987" opacity=".92"/>
+  <text x="684" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="684" y="118" text-anchor="middle" class="label" font-size="15">Label</text>
+  <path d="M708 165H764" stroke="#5a70c9" stroke-width="2"/><path d="M758 159l8 6-8 6" fill="#5a70c9"/>
+  <circle cx="788" cy="165" r="31.5" fill="#ff7f88" opacity=".18" filter="url(#glow)"/>
+  <circle cx="788" cy="165" r="18" fill="#ff7f88" opacity=".92"/>
+  <text x="788" y="165.35" text-anchor="middle" class="label" font-size="1"></text>
+  <text x="788" y="118" text-anchor="middle" class="label" font-size="15">Payload</text>
+  <text x="58" y="255" class="muted" font-size="15">bigger node = higher responsibility</text>
+  <text x="58" y="288" class="muted" font-size="15">color = function mix</text>
+  <text x="58" y="321" class="muted" font-size="15">label = shortest name</text>
+  <text x="58" y="354" class="muted" font-size="15">zoom reveals more detail</text>
+  <text x="58" y="387" class="muted" font-size="15">low-priority entities are subdued</text>
+</svg>

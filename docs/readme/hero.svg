@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="490" viewBox="0 0 920 490" role="img" aria-label="NERC Grid Map README graphic">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080d22"/><stop offset="1" stop-color="#0e1633"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0v36" fill="none" stroke="#1b2547" stroke-width="1" opacity=".38"/></pattern>
+  </defs>
+  <rect width="100%" height="100%" rx="18" fill="url(#bg)"/>
+  <rect width="100%" height="100%" rx="18" fill="url(#grid)" opacity=".7"/>
+  <style>text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif} .muted{fill:#8f9ac9} .small{font-size:14px} .title{fill:#fff;font-weight:800;letter-spacing:.2px} .label{fill:#fff;font-weight:700} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}</style>
+  <text x="42" y="78" class="title" font-size="46">NERC Grid Map</text>
+  <text x="44" y="112" class="muted" font-size="20">A visual index of North American grid organizations.</text>
+  <path d="M310 255 C390.0 170 390.0 275 470 210" fill="none" stroke="#4d67b3" stroke-width="2" opacity=".45"/>
+  <path d="M470 210 C555.0 170 555.0 280 640 260" fill="none" stroke="#4d67b3" stroke-width="2" opacity=".45"/>
+  <path d="M470 210 C607.5 110 607.5 230 745 150" fill="none" stroke="#4d67b3" stroke-width="2" opacity=".45"/>
+  <path d="M640 260 C600.0 220 600.0 370 560 350" fill="none" stroke="#4d67b3" stroke-width="2" opacity=".45"/>
+  <path d="M310 255 C435.0 215 435.0 370 560 350" fill="none" stroke="#4d67b3" stroke-width="2" opacity=".45"/>
+  <circle cx="310" cy="255" r="59.5" fill="#6f3ad9" opacity=".18" filter="url(#glow)"/>
+  <circle cx="310" cy="255" r="34" fill="#6f3ad9" opacity=".92"/>
+  <text x="310" y="261.3" text-anchor="middle" class="label" font-size="18">RC</text>
+  <circle cx="470" cy="210" r="56.0" fill="#3650d3" opacity=".18" filter="url(#glow)"/>
+  <circle cx="470" cy="210" r="32" fill="#3650d3" opacity=".92"/>
+  <text x="470" y="216.3" text-anchor="middle" class="label" font-size="18">BA</text>
+  <circle cx="640" cy="260" r="52.5" fill="#1ba79b" opacity=".18" filter="url(#glow)"/>
+  <circle cx="640" cy="260" r="30" fill="#1ba79b" opacity=".92"/>
+  <text x="640" y="266.3" text-anchor="middle" class="label" font-size="18">TOP</text>
+  <circle cx="560" cy="350" r="49.0" fill="#ca7021" opacity=".18" filter="url(#glow)"/>
+  <circle cx="560" cy="350" r="28" fill="#ca7021" opacity=".92"/>
+  <text x="560" y="356.3" text-anchor="middle" class="label" font-size="18">GO</text>
+  <circle cx="745" cy="150" r="52.5" fill="#cc338c" opacity=".18" filter="url(#glow)"/>
+  <circle cx="745" cy="150" r="30" fill="#cc338c" opacity=".92"/>
+  <text x="745" y="156.3" text-anchor="middle" class="label" font-size="18">PSE</text>
+  <text x="42" y="408" fill="#6ee7f4" font-size="22" font-weight="800">Live map →</text>
+  <text x="42" y="445" class="muted" font-size="13">Independent visualization. Not an official compliance source.</text>
+</svg>
