@@ -1,30 +1,65 @@
+<div align="center">
+
 # NERC Grid Map
 
-[Live Map →](https://willschenk.github.io/nerc-grid-map/)
+**A fast visual index of NERC-registered electric grid organizations.**
 
-![Hero](docs/readme/hero.svg)
+[**Open the live map →**](https://willschenk.github.io/nerc-grid-map/)
 
-This project turns the NERC compliance registry into an interactive map of North American bulk power system organizations. Each circle is a registered entity: size reflects weighted reliability responsibility, color reflects functional mix, and the label is the shortest meaningful name.
+<img src="docs/readme/hero.svg" alt="NERC Grid Map preview" width="920">
 
-> _Independent visualization — not an official NERC product, and not a compliance source of truth._
+</div>
 
-![System Stack](docs/readme/system-stack.svg)
+## What this is
 
-Registry data flows through a deterministic pipeline: the published NERC spreadsheet is ingested and normalized, locations and short names are researched, build scripts produce static JSON, and the Astro + D3 client renders the map.
+The NERC Grid Map turns registry records into a simple browser map. Each organization is plotted as a bubble, sized by reliability responsibility, colored by functional role mix, and labeled with the shortest practical name. It is built for exploration and data review, not official compliance determinations.
 
-![Render Engine](docs/readme/render-engine.svg)
+> Independent visualization — not a NERC product and not a compliance source of truth.
 
-The hard part is not drawing dots. The hard part is making registry data readable without lying about role, priority, or geography. Rendering is opinionated: high-impact reliability roles get visual priority; lower-impact entities stay present but quiet.
+## How to read the map
 
-![Role Constellation](docs/readme/role-constellation.svg)
+| Visual cue | Meaning |
+| --- | --- |
+| Bigger bubble | Higher-weight reliability functions such as RC, BA, PC, TOP, or TSP. |
+| Color | Blended functional role mix from the role anchors in `src/lib/nerc/roles.mjs`. |
+| Short label | Researched display name meant to stay readable at map scale. |
+| Zoom level | More organizations appear as space becomes available. |
+| Quiet or hidden entity | Lower-priority organizations stay subdued until they can be shown cleanly. |
 
-The role constellation uses the same role weights and color anchors defined in `src/lib/nerc/roles.mjs`. Large central roles such as RC and BA carry more visual weight; smaller market, ownership, and support roles orbit further out.
+## How the data becomes the map
 
-![Payload Split](docs/readme/payload-split.svg)
+```mermaid
+flowchart LR
+  A[NERC registry spreadsheet] --> B[Ingest + normalize]
+  B --> C[Research names + locations]
+  C --> D[Build static JSON]
+  D --> E[Astro page]
+  E --> F[D3 map renderer]
+```
 
-The data is split for speed and reviewability: `orgs.json` stays canonical for QA, `orgs-render.json` stays small for first paint, and `org-details.json` loads heavier detail only when needed.
+## Render model
 
-![Map Rules](docs/readme/map-rules.svg)
+```mermaid
+flowchart TB
+  R[Functional roles] --> W[Weights + priority]
+  R --> C[Color anchors]
+  N[Researched short names] --> L[Labels]
+  G[Researched locations] --> M[Map positions]
+  W --> S[Bubble size]
+  C --> B[Bubble color]
+  L --> V[Readable view]
+  M --> V
+  S --> V
+  B --> V
+```
+
+## Payload split
+
+| File | Purpose |
+| --- | --- |
+| `public/nerc/orgs.json` | Canonical generated organization data for review and QA. |
+| `public/nerc/orgs-render.json` | Smaller first-paint payload for the map. |
+| `public/nerc/org-details.json` | Heavier detail loaded when an organization is selected. |
 
 ## Run locally
 
@@ -33,12 +68,16 @@ npm install
 npm run dev
 ```
 
-## Key files
+Requires Node `>=20.3.0`.
+
+## Useful files
 
 ```text
 src/pages/index.astro              page markup
 src/lib/nerc/map/nerc-org-map.ts   D3 map client
 src/lib/nerc/roles.mjs             role weights, names, colors
-scripts/nerc/                      ingest, build, QA, research prompt
+scripts/nerc/                      ingest, build, QA, research prompts
 public/nerc/                       generated map JSON and basemap
 ```
+
+The goal is to make the registry easier to inspect at a glance: who is registered, what role they hold, where they are, and how much visual priority they should receive. The map should stay fast, readable, and honest about the underlying data.

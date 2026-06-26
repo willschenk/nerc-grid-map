@@ -227,6 +227,19 @@ East → **`NCR00961`**. **`MP`** = Minnesota Power → **`NCR00674`**. A prior 
 - [x] **MISO / PJM renderer sets** reconciled with `area-aliases.json`.
 - [x] **CPLE / CPLW → NCR01298** (Duke Energy Progress east/west BA codes).
 
+### Prioritization & sizing (carried from name-standards alignment)
+
+- [ ] **Work names from the largest / highest-impact organizations first.** Start
+  with major ISOs/RTOs, BAs, RCs, TOPs, large utilities, and high-weight orgs before
+  small GO/GOP records. Confirm their `shortest`, `short`, and `normal` values follow
+  `docs/standards/name-shortest.md` (and the new `docs/standards/asset-label-suffixes.md`
+  / `docs/standards/stock-ticker-labels.md` guidance), and verify the rendered size
+  feels reasonable relative to role weight and importance.
+- [ ] **Audit organization size/rank consistency.** Look for cases where an org with
+  fewer or less important roles renders larger than an org with more or higher-value
+  roles. Fix ranking, weight, tier, or display metadata only where the current sizing
+  is clearly unreasonable; do not add new UI behavior.
+
 ## 2. Data quality & combines
 
 - [ ] **Sweep for co-located registrations to combine** (the Virginia Power →
