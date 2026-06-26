@@ -200,7 +200,7 @@ const SPIDER_RING_STEP_PX = 28;
 // full-zoom sizes live in tierBaseRadiusPx.
 // Bubbles only ever move in render space (_dx/_dy nudges); the true projected
 // _x/_y are never mutated, so geography stays exact.
-const MAX_RADIUS = 58;
+const MAX_RADIUS = 68;
 const MAX_ZOOM = 1600;
 const ORG_CONTENT_SCALE = 0.92;
 const BUBBLE_WIDTH_FACTOR = 1.08;
@@ -909,6 +909,7 @@ export function mountNercOrgMap(): void {
     let bestNorm = Number.POSITIVE_INFINITY;
     let bestInVisual = false;
     let bestVisual = Number.POSITIVE_INFINITY;
+    let bestD2 = Number.POSITIVE_INFINITY;
     // Tolerance (in viewBox units) for treating two bubble radii as "the same
     // size" before falling back to normalized distance / draw priority.
     const radiusTol = 0.75 * unitPerPx;
@@ -948,6 +949,14 @@ export function mountNercOrgMap(): void {
         // this keeps the buffer large for easy tapping yet easy to switch between dots
         // that sit close together.
         better = norm < bestNorm;
+      } else if (isGiveWayDot(o) !== isGiveWayDot(best)) {
+        // Mixed: a give-way DOT vs a real PILL, pointer inside NEITHER drawn circle
+        // (both only in their padded rings). A pill's far larger ring + draw priority
+        // must never swallow a small dot sitting beside it — decide purely by which
+        // CENTRE the pointer is nearer to (RAW px, not ring-normalized, since the
+        // pill's huge ring would otherwise always read as "closer"). Keeps a dot next
+        // to a big pill clickable.
+        better = d2 < bestD2;
       } else {
         better =
           norm < bestNorm - 0.02 ||
@@ -962,6 +971,7 @@ export function mountNercOrgMap(): void {
         bestNorm = norm;
         bestInVisual = inVisual;
         bestVisual = visual;
+        bestD2 = d2;
       }
     }
     // Honour the hit circle the pointer landed on — especially background dots
@@ -1560,8 +1570,8 @@ export function mountNercOrgMap(): void {
     // top tier is trimmed slightly (iOS more than desktop) so the largest labels
     // don't crowd the map or cover too much space.
     const base = compact
-      ? priority >= 80 ? 9 : priority >= 50 ? 7.8 : 6
-      : priority >= 80 ? 12 : priority >= 50 ? 10.5 : 8.5;
+      ? priority >= 80 ? 9.7 : priority >= 50 ? 8.4 : 6.6
+      : priority >= 80 ? 13 : priority >= 50 ? 11.3 : 9.2;
     // Explicit zoom scaling: keep national-view labels subdued, then grow text
     // steadily as the user moves into regional and local views.
     const zoomFontScale =
@@ -1576,10 +1586,10 @@ export function mountNercOrgMap(): void {
     // labels keep getting bigger (and more legible) the further you zoom in. The
     // inside-label path still clamps to the bubble chord and long names fall back
     // to the short token, so this never causes overflow.
-    const midHighBoost = 1 + 0.5 * smoothStep((k - 1.8) / (compact ? 6 : 7));
+    const midHighBoost = 1 + 0.58 * smoothStep((k - 1.8) / (compact ? 6 : 7));
     const growth = compact
-      ? Math.min(2.3, (1 + Math.max(0, k - 1) * 0.06) * midHighBoost)
-      : Math.min(2.6, (1 + Math.max(0, k - 1) * 0.08) * midHighBoost);
+      ? Math.min(2.55, (1 + Math.max(0, k - 1) * 0.06) * midHighBoost)
+      : Math.min(2.85, (1 + Math.max(0, k - 1) * 0.08) * midHighBoost);
     const microLabelBoost = 1 + (isDeferredMarketOrg(o) ? (compact ? 1.05 : 0.85) : 0.55) * postRevealBoostT(o, k);
     // Once the user has intentionally zoomed in (k~3+), smaller organizations'
     // labels grow an extra bit so they read easily. This does NOT change when a
@@ -1799,14 +1809,16 @@ export function mountNercOrgMap(): void {
     const topOverviewScale = compact ? 0.4 + 0.26 * outerTopScaleT : 0.4 + 0.48 * outerTopScaleT;
     const overviewScale = tier >= 5 ? topOverviewScale : compact ? 0.56 : 0.72;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
-    // A small, tier-scaled deep-zoom lift so zooming further still grows bubbles a
-    // little — kept modest so the tiers never converge to one size.
-    const deepGrowPx = (compact ? 4.5 : 7) * smoothStep((k - 3) / 16) * (0.4 + 0.6 * tierT);
-    const capPx = fullPx + deepGrowPx + (compact ? 2 : 3);
+    // A tier-scaled deep-zoom lift so zooming all the way in grows the pills
+    // noticeably larger — the user wants bigger pills at deep zoom. Still
+    // tier-scaled so the tiers never fully converge to one size.
+    const deepGrowPx = (compact ? 5.5 : 11) * smoothStep((k - 3) / 16) * (0.4 + 0.6 * tierT);
+    const capPx = fullPx + deepGrowPx + (compact ? 3 : 4);
     // Deep-zoom readability floor: once zoomed right in, no visible bubble stays
     // tiny — every one reaches a legible floor (placement re-solves per bucket so
-    // this never reintroduces overlap).
-    const deepMinPx = (compact ? 7 : 8.5) * smoothStep((k - 6) / 14) * (0.55 + 0.45 * tierT);
+    // this never reintroduces overlap). Compact stays gentler so more pills fit
+    // in the narrow phone band.
+    const deepMinPx = (compact ? 7.8 : 12) * smoothStep((k - 6) / 14) * (0.55 + 0.45 * tierT);
     // Overview floor for AK/HI inset dots.
     const insetOverviewMinPx = isUsInsetOrg(o) ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2) : 0;
     const topTierOverviewMinPx =
@@ -1908,7 +1920,10 @@ export function mountNercOrgMap(): void {
     // circles get a proportionally larger tap target, while the absolute floor
     // keeps the smallest dots comfortably clickable. This keeps clickable areas
     // in sync as bubbles grow with zoom.
-    const margin = Math.max(padPx * unitPerPx, visual * 0.05);
+    // Hug the rendered pill a little tighter (was 0.05) so a big pill's hit ring
+    // does not blanket the give-way dots packed around it — each dot keeps an
+    // exclusive zone where only its own ring is under the pointer.
+    const margin = Math.max(padPx * unitPerPx, visual * 0.035);
     let target = Math.max(visual + margin, floorPx * unitPerPx);
     // Low-priority orgs gain clickability as they promote through mid/deep zoom.
     const discloseT = bubbleDisclosureT(o, k);
@@ -1987,11 +2002,14 @@ export function mountNercOrgMap(): void {
     // disappearing from roomy views.
     const t = declutterZoomT(k);
     const overviewPx = compact ? 58 : 84;
-    const deepPx = compact ? 34 : 50;
+    const deepPx = compact ? 40 : 58;
+    // Extra room to pull eligible-but-held-back orgs into nearby whitespace once
+    // the user has zoomed into a region — more pills fill the deep view. Fades
+    // out at very deep zoom so geography stays honest.
     const regionalFillPx =
-      (compact ? 16 : 34) *
+      (compact ? 32 : 48) *
       smoothStep((k - 3.5) / 5.5) *
-      (1 - smoothStep((k - 18) / 18));
+      (1 - smoothStep((k - 20) / 20));
     return (overviewPx + (deepPx - overviewPx) * t + regionalFillPx) * unitPerPx;
   }
 
@@ -2101,6 +2119,9 @@ export function mountNercOrgMap(): void {
     k: number,
     r = renderedRadius(o, k),
   ): { hw: number; hh: number } {
+    // Give-way / fallback dots are ACTUAL circles — equal half-extents and a
+    // full-radius corner (see setOrgBoxSize) so they render round, not as pills.
+    if (o._renderFallback) return { hw: r, hh: r };
     return { hw: r * orgWidthFactor(o, k), hh: r * BUBBLE_HEIGHT_FACTOR };
   }
 
@@ -2148,7 +2169,9 @@ export function mountNercOrgMap(): void {
     node.setAttribute("y", String(cy - h / 2));
     node.setAttribute("width", String(w));
     node.setAttribute("height", String(h));
-    node.setAttribute("rx", String(Math.min(w, h) * 0.44));
+    // Fallback dots are perfect circles (rx = half the side); pills keep the 0.44
+    // rounded-rectangle corner.
+    node.setAttribute("rx", String(Math.min(w, h) * (o._renderFallback ? 0.5 : 0.44)));
   }
 
   // The real ISOs/RTOs (see ISO_RTO_OPERATOR_NAME) — these get the saber
@@ -3087,7 +3110,10 @@ export function mountNercOrgMap(): void {
     // to move into (stay visible) instead of being boxed in and hidden.
     const leash = Math.max((compact ? 40 : 56) * unitPerPx, maxExt + (compact ? 18 : 26) * unitPerPx);
     for (const d of dots) {
-      // Recompute from the true home each frame so the nudge never accumulates.
+      // Remember last frame's offset BEFORE resetting — used for hysteresis so the
+      // dot keeps its previous slot instead of hopping to an equivalent one.
+      const prevDx = d._dx ?? 0;
+      const prevDy = d._dy ?? 0;
       d._dx = 0;
       d._dy = 0;
       const hx = transform.applyX(orgRenderX(d, fanScale, declScale));
@@ -3101,27 +3127,50 @@ export function mountNercOrgMap(): void {
         addDot(hx, hy, dotR);
         continue;
       }
-      // Clearance a candidate spot must satisfy: outside every bubble by orgGap, and
-      // clear of every dot already placed this frame by dotGap.
+      // A dot in the OCEAN never makes sense — convert a screen candidate back to
+      // base/projection space and require it sit on the dot's land silhouette.
+      const frame = orgLandFrame(d);
+      const onLand = (x: number, y: number) =>
+        onLandForFrame(transform.invertX(x), transform.invertY(y), frame, false);
+      // Clearance a candidate spot must satisfy: ON LAND, outside every bubble by
+      // orgGap, and clear of every dot already placed this frame by dotGap.
       const rdOrg = dotR + orgGap;
-      const ok = (x: number, y: number) => clears(x, y, rdOrg) && clearsDots(x, y, dotR);
+      const ok = (x: number, y: number) =>
+        onLand(x, y) && clears(x, y, rdOrg) && clearsDots(x, y, dotR);
+      const apply = (cx: number, cy: number) => {
+        d._dx = cx - hx;
+        d._dy = cy - hy;
+        d._sx = cx;
+        d._sy = cy;
+        addDot(cx, cy, dotR);
+      };
+      // 1) Home is the true location — snap back whenever it is clear and on land.
       if (ok(hx, hy)) {
         addDot(hx, hy, dotR);
         continue;
       }
+      // 2) HYSTERESIS — keep last frame's slot if it is still valid. This is what
+      // stops the dots jumping/flickering between equivalent slots as the bubbles
+      // jiggle while the force sim settles.
+      if ((prevDx || prevDy) && ok(hx + prevDx, hy + prevDy)) {
+        apply(hx + prevDx, hy + prevDy);
+        continue;
+      }
+      // 3) Ring-search outward for the nearest clear, on-land slot. Bias the angular
+      // scan toward last frame's direction so the new slot stays close to the old
+      // one (smaller, smoother moves) instead of snapping to a far equivalent.
+      const prevAng = prevDx || prevDy ? Math.atan2(prevDy, prevDx) : 0;
       let placed = false;
       for (let rad = step; rad <= leash && !placed; rad += step) {
         const cnt = Math.max(8, Math.round((2 * Math.PI * rad) / step));
         for (let i = 0; i < cnt; i++) {
-          const ang = (i / cnt) * 2 * Math.PI;
+          // 0, -1, +1, -2, +2 … steps out from prevAng so near-previous angles win.
+          const off = ((i + 1) >> 1) * (i % 2 === 0 ? 1 : -1);
+          const ang = prevAng + (off / cnt) * 2 * Math.PI;
           const cx = hx + Math.cos(ang) * rad;
           const cy = hy + Math.sin(ang) * rad;
           if (!ok(cx, cy)) continue;
-          d._dx = cx - hx;
-          d._dy = cy - hy;
-          d._sx = cx;
-          d._sy = cy;
-          addDot(cx, cy, dotR);
+          apply(cx, cy);
           placed = true;
           break;
         }
@@ -3301,7 +3350,7 @@ export function mountNercOrgMap(): void {
             ? (compact ? 0.6 : 0.8)
             : (compact ? 1.1 : 1.7) +
               (compact ? 1.25 : 2.25) * (1 - bigT) +
-              (compact ? 0.55 : 0.95) * regionalLeashT * (1 - 0.45 * bigT);
+              (compact ? 1.05 : 1.4) * regionalLeashT * (1 - 0.45 * bigT);
       const leash = Math.min(capBase, r * leashR);
       // Ring-search outward from home for the NEAREST non-overlapping on-land slot
       // within the leash; admit the org there and anchor the sim to that slot.
@@ -3688,7 +3737,7 @@ export function mountNercOrgMap(): void {
       const insideChord = isMidwestOrg(o) ? 1.94 : 1.86;
       const hoverInsideMin = (compact ? 5.2 : 5.8) * unitPerPx;
       const hoverAcrossMin = (compact ? 6 : 6.5) * unitPerPx;
-      const baseFont = Math.min(labelFontPx(o, k), compact ? 20 : 24) * unitPerPx;
+      const baseFont = Math.min(labelFontPx(o, k), compact ? 23 : 28) * unitPerPx;
       const labelPadX = (compact ? 4.5 : 5) * unitPerPx;
       const labelPadY = (compact ? 4 : 4.5) * unitPerPx;
 
@@ -3773,7 +3822,7 @@ export function mountNercOrgMap(): void {
       // Floating labels aren't bounded by a bubble chord (unlike inside labels),
       // so cap their on-screen size to keep deep zoom from producing oversized
       // text that overpowers the map.
-      const font = Math.min(labelFontPx(o, k), compact ? 20 : 24) * unitPerPx;
+      const font = Math.min(labelFontPx(o, k), compact ? 23 : 28) * unitPerPx;
       const padScale = midwest ? 0.92 : 1;
       const labelPadX = (compact ? 4.5 : 5) * unitPerPx * padScale;
       const labelPadY = (compact ? 4 : 4.5) * unitPerPx * padScale;
@@ -3834,6 +3883,24 @@ export function mountNercOrgMap(): void {
 
     for (const focus of [selectedOrg, hot]) {
       if (!focus?._vis || focus._sx == null || focus._sy == null || !isHoverLabelTarget(focus) || labelState.has(focus.ncr_id)) {
+        continue;
+      }
+      // A real bubble (incl. a hovered give-way dot, which promotes to a full,
+      // label-widened bubble — _renderFallback is false when forced) keeps its
+      // inside label centered, exactly like the unhovered path. The bubble widened
+      // to fit the name, so the label NEVER bounces below the pill on hover and
+      // never flickers placement frame-to-frame while the bubble expands.
+      const brand = focus._frame !== "terr" && !focus._renderFallback ? tinyName(focus) : "";
+      if (brand) {
+        const r = renderedRadius(focus, k);
+        const insideFont = insideLabelFont(focus, k, r, brand.length);
+        labelState.set(focus.ncr_id, {
+          x: focus._sx,
+          y: focus._sy,
+          font: insideFont,
+          text: displayMapLabel(focus, brand),
+          inside: true,
+        });
         continue;
       }
       const hoverLabel = tryHoverUnlabeledLabel(focus);
