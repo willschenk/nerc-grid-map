@@ -13,24 +13,41 @@ prompts.
 
 ## 1. Names & map labels (research-heavy)
 
+- [ ] **Work names from the largest / highest-impact organizations first.** Start
+  with major ISOs/RTOs, BAs, RCs, TOPs, large utilities, and high-weight orgs before
+  small GO/GOP records. Confirm their `shortest`, `short`, and `normal` values follow
+  `docs/standards/name-shortest.md`, and verify the rendered size feels reasonable
+  relative to role weight and importance.
+- [ ] **Audit organization size/rank consistency.** Look for cases where an org with
+  fewer or less important roles renders larger than an org with more or higher-value
+  roles. Fix ranking, weight, tier, or display metadata only where the current sizing
+  is clearly unreasonable; do not add new UI behavior.
+- [ ] **Prioritize project-owner supplied acronyms and mappings.** User-provided
+  values such as `CIN`, `YAD`, and other known-good labels supplied from personal
+  experience are priority evidence. Treat them as valid unless they were explicitly
+  marked uncertain, likely combined, not found, or needing verification.
 - [ ] **Resolve the `ALTE` attribution conflict.** `src/data/nerc/area-aliases.json`
   assigns `ALTE` → "ALLETE / Minnesota Power" (NCR00674), but the renderer's
   `MISO_CONTROL_AREA_CODES` and the requested label list treat `ALTE` as Alliant
-  Energy East (NCR00961). Determine the correct MISO LBA code (likely Alliant East =
-  `ALTE`, ALLETE/Minnesota Power = `MP`) and make the alias data + renderer agree.
+  Energy East (NCR00961). Determine the correct MISO LBA code using the current
+  standard: project-owner supplied mappings first, then official/authoritative
+  sources. Make the alias data + renderer agree.
 - [ ] **Reconcile the renderer's hard-coded `MISO_CONTROL_AREA_CODES` / PJM zone sets
   against `area-aliases.json`.** The ALTE drift shows the two sources have diverged;
-  pick one source of truth and make them match.
+  pick one source of truth and make them match. Preserve known-good project-owner
+  area labels when they exist.
 - [ ] **Confirm the "missing" area orgs.** Carolina Power & Light East/West
   (`CPLE`/`CPLW`) and Michigan Electric Coordinated System (`MECS`) had no matching
-  registration — verify they're truly folded into successors (Duke Energy Progress,
-  etc.) and not just unmatched.
+  registration — verify whether they are folded into successors, represented by a
+  different current registration, or simply unmatched.
 - [ ] **Work the `name-queue.csv` collisions.** Many rows carry `duplicate_label` /
   `nearby_label_collision` issues; research the correct distinguishing `shortest`
-  per `docs/standards/name-shortest.md`.
-- [ ] **Note:** `NIPS` and `CIN` were set by explicit user request even though
-  `name-shortest.md` prefers `NIPSCO` and flags `CIN` as an unverified legacy
-  planning-area code. If revisiting the standard, decide which wins.
+  per `docs/standards/name-shortest.md`. Prefer official/project-owner acronyms,
+  then parent/project + useful suffix, then readable place/project labels.
+- [ ] **Review legacy vs canonical name mappings under the current standard.** Do not
+  treat user-provided values as second-class legacy codes. A canonical public acronym
+  can replace a stale legacy format, but a project-owner supplied known-good mapping
+  wins when no stronger contrary evidence exists.
 
 ## 2. Data quality & combines
 
@@ -78,7 +95,8 @@ prompts.
 
 ### Suggested near-term order
 
-1. Reconcile `ALTE` / MISO-code source-of-truth (unblocks correct area labels).
-2. Co-located-registration combine sweep (clear data-quality wins).
-3. Work the `name-queue.csv` collisions in Cursor batches.
-4. Registry data refresh.
+1. Review largest / highest-impact organizations first, including size/rank sanity.
+2. Reconcile `ALTE` / MISO-code source-of-truth using project-owner mappings first.
+3. Co-located-registration combine sweep.
+4. Work the `name-queue.csv` collisions in Cursor batches.
+5. Registry data refresh.
