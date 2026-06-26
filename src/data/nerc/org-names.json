@@ -2402,7 +2402,10 @@
       "shortest": "USACE OM",
       "short": "USACE Omaha District",
       "normal": "U.S. Army Corps of Engineers - Omaha District",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nwo.usace.army.mil/Contact/"
     },
     {
       "ncr_id": "NCR06038",
@@ -10086,12 +10089,12 @@
     {
       "ncr_id": "NCR00690",
       "entity_name": "Big Sandy Peaker Plant, LLC",
-      "shortest": "BigSandy",
+      "shortest": "Big Sandy Peaker",
       "short": "Big Sandy Peaker",
       "normal": "Big Sandy Peaker Plant",
       "tier": "normal",
-      "shortest_type": "parent_project",
-      "shortest_source": "eia_861",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "common_market_name",
       "shortest_source_url": "https://www.gridinfo.com/plant/big-sandy-peaker-plant/55284"
     },
     {
@@ -10113,12 +10116,12 @@
     {
       "ncr_id": "NCR11910",
       "entity_name": "Birdsboro Power LLC",
-      "shortest": "BirdsPwr",
+      "shortest": "Birdsboro Power",
       "short": "Birdsboro Power",
       "normal": "Birdsboro Power",
       "tier": "normal",
-      "shortest_type": "parent_project",
-      "shortest_source": "eia_861",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "common_market_name",
       "shortest_source_url": "https://www.interconnection.fyi/eia/project/61035-gen1"
     },
     {
@@ -10687,12 +10690,12 @@
     {
       "ncr_id": "NCR10382",
       "entity_name": "Castleton Power, LLC",
-      "shortest": "CastPwr",
+      "shortest": "Castleton",
       "short": "Castleton Power",
       "normal": "Castleton Power",
       "tier": "normal",
-      "shortest_type": "parent_project",
-      "shortest_source": "state_puc",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "common_market_name",
       "shortest_source_url": "https://dec.ny.gov/news/environmental-notice-bulletin/2022-12-07/completed-application/castleton-energy-center"
     },
     {
@@ -12573,66 +12576,90 @@
     {
       "ncr_id": "NCR12393",
       "entity_name": "Heritage  Mountain",
-      "shortest": "H Mtn",
+      "shortest": "Heritage Mountain",
       "short": "Heritage Mountain",
       "normal": "Heritage Mountain",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12395",
       "entity_name": "Heritage  Portland",
-      "shortest": "H Port",
+      "shortest": "Heritage Portland",
       "short": "Heritage Portland",
       "normal": "Heritage Portland",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12396",
       "entity_name": "Heritage  Sayreville",
-      "shortest": "H Sayr",
+      "shortest": "Heritage Sayreville",
       "short": "Heritage Sayreville",
       "normal": "Heritage Sayreville",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12397",
       "entity_name": "Heritage  Shawville",
-      "shortest": "H Shaw",
+      "shortest": "Heritage Shawville",
       "short": "Heritage Shawville",
       "normal": "Heritage Shawville",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12398",
       "entity_name": "Heritage  Titus",
-      "shortest": "H Titus",
+      "shortest": "Heritage Titus",
       "short": "Heritage Titus",
       "normal": "Heritage Titus",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12399",
       "entity_name": "Heritage  Tolna",
-      "shortest": "H Tolna",
+      "shortest": "Heritage Tolna",
       "short": "Heritage Tolna",
       "normal": "Heritage Tolna",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12390",
       "entity_name": "Heritage Brunot Island",
-      "shortest": "H Brunot",
+      "shortest": "Heritage Brunot",
       "short": "Heritage Brunot Island",
       "normal": "Heritage Brunot Island",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12391",
       "entity_name": "Heritage Gilbert",
-      "shortest": "H Gilbrt",
+      "shortest": "Heritage Gilbert",
       "short": "Heritage Gilbert",
       "normal": "Heritage Gilbert",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12392",
@@ -12648,18 +12675,24 @@
     {
       "ncr_id": "NCR12394",
       "entity_name": "Heritage New Castle",
-      "shortest": "H NewC",
+      "shortest": "Heritage New Castle",
       "short": "Heritage New Castle",
       "normal": "Heritage New Castle",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR11141",
       "entity_name": "Heritage Single Units",
-      "shortest": "H SU",
+      "shortest": "Heritage Single",
       "short": "Heritage Single Units",
       "normal": "Heritage Single Units",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR13546",
@@ -13295,10 +13328,13 @@
     {
       "ncr_id": "NCR13103",
       "entity_name": "JP Remote Operations Center I LLC",
-      "shortest": "J-Power",
+      "shortest": "J-Power ROC I",
       "short": "J-POWER USA ROC I",
       "normal": "JP Remote Operations Center I",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "common_market_name",
+      "shortest_source_url": "https://www.jpowerusa.com/"
     },
     {
       "ncr_id": "NCR13074",
@@ -13485,7 +13521,10 @@
       "shortest": "Kleen",
       "short": "Kleen Energy Systems",
       "normal": "Kleen Energy Systems",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "name_initialism",
+      "shortest_source_url": "https://www.gridinfo.com/plant/kleen-energy-systems-project/56798"
     },
     {
       "ncr_id": "NCR13155",
@@ -17197,7 +17236,10 @@
       "shortest": "SCL",
       "short": "Seattle City Light",
       "normal": "Seattle City Light",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.seattle.gov/city-light"
     },
     {
       "ncr_id": "NCR05461",
@@ -17618,12 +17660,12 @@
     {
       "ncr_id": "NCR04088",
       "entity_name": "Kiowa Power Partners, LLC",
-      "shortest": "KiowaPwr",
+      "shortest": "Kiowa Power",
       "short": "Kiowa Power Partners",
       "normal": "Kiowa Power Partners, LLC",
       "tier": "normal",
       "shortest_type": "meaningful_name",
-      "shortest_source": "official_website",
+      "shortest_source": "common_market_name",
       "shortest_source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf"
     },
     {

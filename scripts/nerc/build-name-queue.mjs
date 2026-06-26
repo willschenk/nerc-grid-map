@@ -185,18 +185,18 @@ for (const group of rowsByLabel.values()) {
 
 const issueWeight = {
   missing_shortest: 120,
-  over_15_characters: 115,
+  over_22_characters: 115,
   generic_label: 110,
   nearby_label_collision: 100,
   under_3_without_alias_evidence: 95,
   two_letter_label_needs_alias_evidence: 90,
   entity_name_mismatch: 85,
   legal_suffix_in_shortest: 80,
-  length_13_to_15: 70,
+  length_17_to_22: 70,
   missing_org_names_entry: 65,
   duplicate_label: 50,
   whitespace_cleanup: 40,
-  documented_alias_over_15: 15,
+  documented_alias_over_22: 15,
 };
 
 function priorityScore(row) {
