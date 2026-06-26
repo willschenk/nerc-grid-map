@@ -245,6 +245,15 @@ East → **`NCR00961`**. **`MP`** = Minnesota Power → **`NCR00674`**. A prior 
 - [ ] **Sweep for co-located registrations to combine** (the Virginia Power →
   Dominion fold is one example). Same-entity rows at one HQ should be one map bubble.
   Use `location-queue.csv` (shared-coordinate clusters) as the starting list.
+  *Progress (2026-06-26):* the published-payload shared-coordinate scan is now
+  largely clean — seed-retirement + the 200+ existing combines handle most cases.
+  Folded the two genuine remaining co-located parent/subsidiary clusters: **Hawaiian
+  Electric** (HEI holding co + Pacific Current affiliate → operating utility HECO)
+  and **NextEra Juno Beach** (NextEra Energy Transmission Southwest → NextEra Energy
+  Resources). `build-orgs.mjs` now applies combines **after** the supplemental merge,
+  so combine groups can fold supplemental `SUP-` orgs too (not just registry rows).
+  Open: National Grid USA ⟷ New England Power Co (~2.9 km apart in Waltham, MA — kept
+  separate as distinct ISO-NE transmission registrations, revisit if desired).
 - [ ] **Decide on plant-site registrations** (e.g. Dominion's North Anna nuclear) —
   keep as distinct facilities (current behavior) or fold into the parent bubble.
 - [ ] **Work the QA warnings** from `npm run nerc:qa` (shared-coordinate clusters,
@@ -267,12 +276,25 @@ East → **`NCR00961`**. **`MP`** = Minnesota Power → **`NCR00674`**. A prior 
 - [ ] **Accessibility polish** of what exists: ARIA on the detail panel, color
   contrast, and full `prefers-reduced-motion` coverage.
 
-## 5. PJM / MISO focus mode
+## 5. Market focus mode (PJM / MISO / NYISO / ISO-NE)
 
-- [ ] **Extend focus families** to SPP / ISO-NE / NYISO once membership data is
-  curated — the code is generic via `marketFamily`, so this is mostly data.
-- [ ] **Area-pill coverage audit**: confirm every PJM zone / MISO LBA org shows the
-  correct classification pill.
+- [x] **Generalize the focus machinery to N families.** The renderer is now
+  data-driven via the `MARKET_FAMILIES` registry + `MarketFamilyId` (was hard-wired
+  to two literals): one row per family gives the hub id, focus/saber CSS class, and
+  classification pill. Adding a family = a `*_IDS` membership set, one registry row,
+  and one CSS colour block.
+- [x] **NYISO + ISO-NE added** (2026-06-26). Membership curated by `ncr_id` in
+  `nerc-org-map.ts`: `NYISO_TO_IDS` (8 Transmission Owners, NYISO OATT Attachment H)
+  and `ISONE_PTO_IDS` (11 Participating Transmission Owners, ISO-NE Tariff Schedule
+  21 / TOA). Municipal/light-department TOs are excluded from ISO-NE (single BA, so
+  not separate control areas, unlike MISO LBAs).
+- [ ] **Extend to SPP / CAISO / ERCOT** once membership is curated. Hubs exist
+  (SPP `NCR01143`, CAISO `NCR05048`, ERCOT `NCR04056`); ERCOT is effectively a
+  single-area BA so its "family" is mostly the hub. Add a `*_IDS` set + registry row
+  + CSS block per the now-generic pattern. Cite an authoritative member list
+  (SPP membership roster; CAISO participating-TO list).
+- [ ] **Area-pill coverage audit**: confirm every PJM zone / MISO LBA / NYISO TO /
+  ISO-NE PTO org shows the correct classification pill and that no hub double-tags.
 
 ## 6. Tooling & tech debt
 

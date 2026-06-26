@@ -202,7 +202,10 @@ for (const o of orgs) {
 }
 
 // 12c. Hawaii inventory — supplemental-only; no accidental mainland mapping.
-const EXPECTED_HI_SUPPLEMENTAL = 21;
+// 19 after the 2026-06-26 Hawaiian Electric combine folded the HEI holding company
+// and the Pacific Current affiliate into the operating utility HECO (see
+// map-combines.json: "Hawaiian Electric Honolulu HQ").
+const EXPECTED_HI_SUPPLEMENTAL = 19;
 const hiOrgs = orgs.filter((o) => o.state === "HI");
 const geocodedHi = orgs.filter((o) => o.state === "HI" && o.nerc_registered !== false);
 if (hiOrgs.length !== EXPECTED_HI_SUPPLEMENTAL) {

@@ -29,6 +29,10 @@ import {
 
 type Place = { name: string; lat: number; lng: number; tier: number; _x?: number; _y?: number };
 
+// The curated market families that support click-to-focus mode. Each maps to a
+// hub org plus a membership set (see the *_IDS sets and marketFamily below).
+type MarketFamilyId = "PJM" | "MISO" | "NYISO" | "ISONE";
+
 type Org = {
   ncr_id: string;
   entity_name: string;
@@ -130,7 +134,7 @@ type Org = {
   _vp?: number;         // visualPriority(o)
   _lpv?: number;        // labelPriority(o)
   _sizeTier?: number;   // sizeTier(o)
-  _mf?: "PJM" | "MISO" | null; // marketFamily(o)
+  _mf?: MarketFamilyId | null; // marketFamily(o)
   _focusDist?: number;  // geo distance to its family hub (focus-mode pulse stagger)
   _focusDelay?: number; // animation-delay (s) so the focus pulse sweeps outward
   _visRank?: number;    // position in visual-priority-descending sort
@@ -435,6 +439,110 @@ const PJM_TRANSMISSION_ZONE_CODES = new Set([
   "PSEG",
   "RECO",
 ]);
+
+// The NYISO hub org (New York Independent System Operator) — anchor for the New
+// York transmission family.
+const NYISO_HUB_ID = "NCR07160";
+// NYISO Transmission Owners — the eight Transmission Districts that make up the
+// NYISO transmission system. Source: NYISO Open Access Transmission Tariff (OATT)
+// Attachment H (Transmission Owners) / NYISO Transmission District map.
+// https://www.nyiso.com/transmission-owners — each is a distinct NERC TO/TOP
+// registration; no area-alias codes exist for NY districts, so membership is
+// curated here by ncr_id (mirrors MISO_CONTROL_AREA_CODES).
+const NYISO_TO_IDS = new Set<string>([
+  "NCR07028", // Central Hudson Gas & Electric
+  "NCR07046", // Consolidated Edison Co of NY (Con Edison)
+  "NCR07133", // Long Island Power Authority (LIPA)
+  "NCR07161", // New York Power Authority (NYPA)
+  "NCR07163", // Niagara Mohawk Power Corporation (National Grid)
+  "NCR07181", // New York State Electric & Gas (NYSEG)
+  "NCR07186", // Orange and Rockland Utilities
+  "NCR07207", // Rochester Gas and Electric (RG&E)
+]);
+
+// The ISO-NE hub org (ISO New England) — anchor for the New England transmission
+// family.
+const ISONE_HUB_ID = "NCR07124";
+// ISO New England Participating Transmission Owners (PTOs) — the transmission
+// backbone utilities under the ISO-NE Transmission Operating Agreement. Source:
+// ISO-NE Tariff Section II, Schedule 21 PTO service agreements / the TOA
+// signatory list. https://www.iso-ne.com/participate/participant-asset-listings
+// Municipal/light-department TOs are excluded: ISO-NE is the single balancing
+// authority, so unlike MISO LBAs they are not separate control areas.
+const ISONE_PTO_IDS = new Set<string>([
+  "NCR07176", // Eversource Energy Service Company (Eversource TO registration)
+  "NCR-SEED-039", // The Connecticut Light and Power Company (Eversource CT)
+  "NCR07222", // United Illuminating Company (Avangrid)
+  "NCR07029", // Central Maine Power Company (Avangrid)
+  "NCR11171", // National Grid USA
+  "NCR07159", // New England Power Company (National Grid)
+  "NCR07013", // Versant Power (formerly Bangor Hydro / Emera Maine)
+  "NCR07134", // Maine Electric Power Company
+  "NCR12248", // The Narragansett Electric Company / Rhode Island Energy
+  "NCR07228", // Vermont Transco, LLC (VELCO-managed)
+  "NCR07086", // Fitchburg Gas and Electric Light Company (Unitil)
+]);
+
+// Per-family metadata the renderer keys off: the anchor hub, the svg focus class
+// + member saber class that drive the dim/glow CSS, and the classification pill
+// shown for a member (PJM Zone / MISO LBA / NYISO TO / ISO-NE PTO). Membership
+// itself lives in marketFamily() (it needs the closure's area-alias helpers).
+// Adding a family = a *_IDS set, one row here, and the matching CSS block.
+interface MarketFamilyMeta {
+  hubId: string;
+  focusClass: string; // svg root class while this family is focused
+  saberClass: string; // class on the hub's saber so it keeps family colour
+  pillLabel: string; // classification pill text for a member
+  pillClass: string; // tooltip pill CSS class (family colour)
+  pillTitle: string; // pill tooltip / aria text
+  panelTagClass: string; // detail-panel <p> wrapper class
+  panelBadgeClass: string; // detail-panel badge class (family colour)
+}
+const MARKET_FAMILIES: Record<MarketFamilyId, MarketFamilyMeta> = {
+  PJM: {
+    hubId: PJM_HUB_ID,
+    focusClass: "focus-pjm",
+    saberClass: "pjm-saber",
+    pillLabel: "PJM Zone",
+    pillClass: "nerc-pjm-area-pill",
+    pillTitle: "PJM Transmission Zone",
+    panelTagClass: "p-pjmzone",
+    panelBadgeClass: "p-pjmzone-badge",
+  },
+  MISO: {
+    hubId: MISO_HUB_ID,
+    focusClass: "focus-miso",
+    saberClass: "miso-saber",
+    pillLabel: "MISO LBA",
+    pillClass: "nerc-miso-area-pill",
+    pillTitle: "MISO Local Balancing Authority",
+    panelTagClass: "p-misoca",
+    panelBadgeClass: "p-misoca-badge",
+  },
+  NYISO: {
+    hubId: NYISO_HUB_ID,
+    focusClass: "focus-nyiso",
+    saberClass: "nyiso-saber",
+    pillLabel: "NYISO TO",
+    pillClass: "nerc-nyiso-area-pill",
+    pillTitle: "NYISO Transmission Owner",
+    panelTagClass: "p-nyisoto",
+    panelBadgeClass: "p-nyisoto-badge",
+  },
+  ISONE: {
+    hubId: ISONE_HUB_ID,
+    focusClass: "focus-isone",
+    saberClass: "isone-saber",
+    pillLabel: "ISO-NE PTO",
+    pillClass: "nerc-isone-area-pill",
+    pillTitle: "ISO New England Participating Transmission Owner",
+    panelTagClass: "p-isonepto",
+    panelBadgeClass: "p-isonepto-badge",
+  },
+};
+const MARKET_FAMILY_IDS = Object.keys(MARKET_FAMILIES) as MarketFamilyId[];
+const MARKET_HUB_IDS = new Set(MARKET_FAMILY_IDS.map((id) => MARKET_FAMILIES[id].hubId));
+
 const RELIABILITY_ORG_NAME = /\b(ReliabilityFirst|Reliability (Organization|Corporation|Entity|Council|Coordinator)|Coordinating Council)\b/i;
 const REGIONAL_ENTITY_NAME = /\b(NERC|SERC|WECC|MRO|NPCC|ReliabilityFirst|Texas Reliability Entity|Midwest Reliability Organization|Northeast Power Coordinating Council|Western Electricity Coordinating Council|Regional Entity)\b/i;
 const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonneville|Western Area Power|Southwestern Power|Southeastern Power|Bureau of Reclamation|USACE|U\.S\. Army Corps)\b/i;
@@ -732,7 +840,7 @@ export function mountNercOrgMap(): void {
   // the ONLY state the focus feature adds; it is deliberately limited to the two
   // market hubs (see marketFamily / the focus helpers below). Set whenever a hub
   // is selected, cleared on background-click / Escape / the Clear control.
-  let activeFocusGroup: "PJM" | "MISO" | null = null;
+  let activeFocusGroup: MarketFamilyId | null = null;
   // Last PJM/MISO subarea clicked while its hub focus is active — visual emphasis
   // only; the detail panel stays anchored to the parent hub.
   let focusedSubareaOrg: Org | null = null;
@@ -2290,32 +2398,57 @@ export function mountNercOrgMap(): void {
   function isMisoControlArea(o: Org): boolean {
     return MISO_CONTROL_AREA_CODES.has(o.ncr_id);
   }
-
-  // The two market hubs that anchor a regional family.
-  function isMarketHub(o: Org): boolean {
-    return o.ncr_id === PJM_HUB_ID || o.ncr_id === MISO_HUB_ID;
+  function isNyisoTransmissionOwner(o: Org): boolean {
+    return NYISO_TO_IDS.has(o.ncr_id);
+  }
+  function isIsoneTransmissionOwner(o: Org): boolean {
+    return ISONE_PTO_IDS.has(o.ncr_id);
+  }
+  // True when `o` is a non-hub member of the given family (drives the membership
+  // pill/badge). Uses each family's own predicate rather than marketFamily so a
+  // dual-market utility (PJM zone AND MISO LBA) shows BOTH tags; the hub shows the
+  // ISO/RTO badge instead, so it is excluded here.
+  function isFamilyMemberOf(o: Org, id: MarketFamilyId): boolean {
+    if (isMarketHub(o)) return false;
+    switch (id) {
+      case "PJM":
+        return isPjmZone(o);
+      case "MISO":
+        return isMisoControlArea(o);
+      case "NYISO":
+        return isNyisoTransmissionOwner(o);
+      case "ISONE":
+        return isIsoneTransmissionOwner(o);
+    }
   }
 
-  // Regional-family affiliation, the single source of truth for PJM/MISO focus
-  // mode. Derived ONLY from existing, curated membership metadata (PJM
-  // transmission-zone codes via area_aliases; MISO LBA codes), plus the hubs
-  // themselves. An org with no clear membership stays neutral (null) — we never
-  // force an org into a family. Mirrors `marketFamily` on the data side.
-  function marketFamily(o: Org): "PJM" | "MISO" | null {
+  // The market hubs that anchor a regional family (PJM, MISO, NYISO, ISO-NE).
+  function isMarketHub(o: Org): boolean {
+    return MARKET_HUB_IDS.has(o.ncr_id);
+  }
+
+  // Regional-family affiliation, the single source of truth for focus mode.
+  // Derived ONLY from existing, curated membership metadata (PJM transmission-zone
+  // codes via area_aliases; MISO LBA codes; NYISO/ISO-NE transmission-owner id
+  // sets), plus the hubs themselves. An org with no clear membership stays neutral
+  // (null) — we never force an org into a family.
+  function marketFamily(o: Org): MarketFamilyId | null {
     if (o._mf !== undefined) return o._mf;
-    let v: "PJM" | "MISO" | null = null;
+    let v: MarketFamilyId | null = null;
     if (o.ncr_id === PJM_HUB_ID || isPjmZone(o)) v = "PJM";
     else if (o.ncr_id === MISO_HUB_ID || isMisoControlArea(o)) v = "MISO";
+    else if (o.ncr_id === NYISO_HUB_ID || isNyisoTransmissionOwner(o)) v = "NYISO";
+    else if (o.ncr_id === ISONE_HUB_ID || isIsoneTransmissionOwner(o)) v = "ISONE";
     return (o._mf = v);
   }
 
-  // ── PJM/MISO focus mode ──────────────────────────────────────────────────────
-  // Clicking the PJM or MISO bubble calms the map around that choice: the hub
-  // becomes the brightest object, its members light up a beat later as the pulse
-  // reaches them, and everything else greys out. The relationship is read straight
-  // from the existing curated membership (marketFamily) — the hub plus its PJM
-  // transmission zones / MISO Local Balancing Authorities. The focus surface is
-  // intentionally limited to these two curated families.
+  // ── Market focus mode ────────────────────────────────────────────────────────
+  // Clicking a market hub (PJM, MISO, NYISO, ISO-NE) calms the map around that
+  // choice: the hub becomes the brightest object, its members light up a beat later
+  // as the pulse reaches them, and everything else greys out. The relationship is
+  // read straight from the curated membership (marketFamily) — the hub plus its PJM
+  // transmission zones / MISO LBAs / NYISO Transmission Owners / ISO-NE PTOs. The
+  // focus surface is intentionally limited to these curated families.
   function isFocusParent(o: Org): boolean {
     return activeFocusGroup != null && isMarketHub(o) && marketFamily(o) === activeFocusGroup;
   }
@@ -2336,8 +2469,8 @@ export function mountNercOrgMap(): void {
   // visibly sweeps OUTWARD from the hub (nearer members light up first). Distance
   // is geographic (lat/lng) so the ordering is stable across pan/zoom; the parent
   // keeps delay 0 and always fires first.
-  function assignFocusDelays(group: "PJM" | "MISO"): void {
-    const hub = orgById(group === "PJM" ? PJM_HUB_ID : MISO_HUB_ID);
+  function assignFocusDelays(group: MarketFamilyId): void {
+    const hub = orgById(MARKET_FAMILIES[group].hubId);
     const members = placeableOrgs.filter((o) => !isMarketHub(o) && marketFamily(o) === group);
     let maxD = 0;
     const hlat = hub?.lat ?? 0;
@@ -2353,7 +2486,7 @@ export function mountNercOrgMap(): void {
     }
   }
 
-  function showFocusStatus(group: "PJM" | "MISO"): void {
+  function showFocusStatus(group: MarketFamilyId): void {
     // Status chip is intentionally hidden. Focus still clears via background
     // click / Escape / selecting another org. (group kept for the API.)
     void group;
@@ -2363,7 +2496,7 @@ export function mountNercOrgMap(): void {
     focusStatus.hidden = true;
   }
 
-  function setFocusGroup(group: "PJM" | "MISO"): void {
+  function setFocusGroup(group: MarketFamilyId): void {
     if (activeFocusGroup === group) return;
     // Switching straight from one family to the other (PJM ⇄ MISO): re-solve so the
     // previous family's screen-space nudges are dropped and nothing is left
@@ -2405,8 +2538,9 @@ export function mountNercOrgMap(): void {
   function syncFocusState(): void {
     const on = activeFocusGroup != null;
     svg.classed("focus-mode", on);
-    svg.classed("focus-pjm", activeFocusGroup === "PJM");
-    svg.classed("focus-miso", activeFocusGroup === "MISO");
+    for (const id of MARKET_FAMILY_IDS) {
+      svg.classed(MARKET_FAMILIES[id].focusClass, activeFocusGroup === id);
+    }
   }
 
 
@@ -4825,8 +4959,16 @@ export function mountNercOrgMap(): void {
         ),
       );
     }
-    if (isPjmZone(o)) tags.push(createAreaPill("PJM Zone", "nerc-pjm-area-pill", "PJM Transmission Zone"));
-    if (isMisoControlArea(o)) tags.push(createAreaPill("MISO LBA", "nerc-miso-area-pill", "MISO Local Balancing Authority"));
+    // Membership pill (PJM Zone / MISO LBA / NYISO TO / ISO-NE PTO). The hub itself
+    // already shows the ISO/RTO pill, so only non-hub members get the family tag.
+    // A dual-market utility (e.g. Duke Energy Ohio-Kentucky is both a PJM zone and a
+    // MISO LBA) can carry more than one, so each family is tested independently.
+    for (const id of MARKET_FAMILY_IDS) {
+      if (isFamilyMemberOf(o, id)) {
+        const m = MARKET_FAMILIES[id];
+        tags.push(createAreaPill(m.pillLabel, m.pillClass, m.pillTitle));
+      }
+    }
     return tags;
   }
 
@@ -5143,15 +5285,13 @@ export function mountNercOrgMap(): void {
       note.append(createPanelTag("p-isorto-badge", "ISO / RTO"));
       panelBody.append(note);
     }
-    if (isMisoControlArea(o)) {
-      const note = createEl("p", "p-misoca");
-      note.append(createPanelTag("p-misoca-badge", "MISO LBA"));
-      panelBody.append(note);
-    }
-    if (isPjmZone(o)) {
-      const note = createEl("p", "p-pjmzone");
-      note.append(createPanelTag("p-pjmzone-badge", "PJM Zone"));
-      panelBody.append(note);
+    for (const id of MARKET_FAMILY_IDS) {
+      if (isFamilyMemberOf(o, id)) {
+        const m = MARKET_FAMILIES[id];
+        const note = createEl("p", m.panelTagClass);
+        note.append(createPanelTag(m.panelBadgeClass, m.pillLabel));
+        panelBody.append(note);
+      }
     }
     const dl = createEl("dl");
     addDlRow(dl, `Roles (${o.role_count})`, createPanelRoleBlock(o), true);
@@ -5390,7 +5530,7 @@ export function mountNercOrgMap(): void {
 
   // Frame the whole PJM or MISO family in view — zooms out when needed so every
   // member fits in the area the detail card leaves clear.
-  function fitFocusGroup(group: "PJM" | "MISO", duration = 380): void {
+  function fitFocusGroup(group: MarketFamilyId, duration = 380): void {
     const members = orgs.filter((o) => marketFamily(o) === group && o._x != null && o._y != null);
     if (members.length === 0) return;
 
@@ -5471,7 +5611,7 @@ export function mountNercOrgMap(): void {
     // of that family's related areas keeps focus active and opens that area's
     // panel; clicking anything else clears focus. Must run before panelOrgForSelection.
     if (isMarketHub(o)) {
-      setFocusGroup(marketFamily(o) as "PJM" | "MISO");
+      setFocusGroup(marketFamily(o) as MarketFamilyId);
     } else if (!(activeFocusGroup != null && marketFamily(o) === activeFocusGroup)) {
       clearFocus();
     }
@@ -5493,7 +5633,7 @@ export function mountNercOrgMap(): void {
       if (focusedSubareaOrg) pingSubarea(o);
       if (isMarketHub(o)) {
         centerSelection = true;
-        fitFocusGroup(marketFamily(o) as "PJM" | "MISO");
+        fitFocusGroup(marketFamily(o) as MarketFamilyId);
       }
       redraw(); // refresh the focus-picked highlight onto the newly clicked subarea
       applyHighlights();
@@ -5525,7 +5665,7 @@ export function mountNercOrgMap(): void {
     // Hub click: zoom out to frame the whole PJM/MISO family in clear view.
     if (isMarketHub(o)) {
       centerSelection = true;
-      requestAnimationFrame(() => fitFocusGroup(marketFamily(o) as "PJM" | "MISO"));
+      requestAnimationFrame(() => fitFocusGroup(marketFamily(o) as MarketFamilyId));
       applyHighlights();
       return;
     }
@@ -5932,13 +6072,13 @@ export function mountNercOrgMap(): void {
       .selectAll("rect.org-saber")
       .data(visibleOrder.filter(isIsoRtoOperator), (o: unknown) => (o as Org).ncr_id)
       .join("rect")
-      // The two market hubs trade the generic orange saber for their own family
-      // colour, so PJM and MISO read as distinct gravitational centres; every
-      // other ISO/RTO keeps the orange light.
-      .attr(
-        "class",
-        (o) => "org-saber" + (marketFamily(o) === "PJM" ? " pjm-saber" : marketFamily(o) === "MISO" ? " miso-saber" : ""),
-      )
+      // A market hub trades the generic orange saber for its own family colour, so
+      // PJM/MISO/NYISO/ISO-NE read as distinct gravitational centres; every other
+      // ISO/RTO keeps the orange light.
+      .attr("class", (o) => {
+        const fam = marketFamily(o);
+        return "org-saber" + (fam && isMarketHub(o) ? ` ${MARKET_FAMILIES[fam].saberClass}` : "");
+      })
       .attr("pathLength", 100)
       .attr("aria-hidden", "true");
     syncSabers(transform.k);

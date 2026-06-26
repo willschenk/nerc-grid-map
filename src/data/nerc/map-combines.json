@@ -1,6 +1,6 @@
 {
   "_comment": "Fold multiple NERC registrations that share one HQ into a single map dot. Source rows stay in geocoded-orgs.json; build-orgs.mjs merges roles onto the canonical id and drops the satellites from public/nerc/orgs.json.",
-  "_review_progress": "COMPLETE: All geocoded-orgs indices reviewed (0–2278). Final pass added 10 combine groups and expanded 3 existing groups (Southern Power, Assembly Solar, Hickory Run).",
+  "_review_progress": "COMPLETE: All geocoded-orgs indices reviewed (0–2278). Final pass added 10 combine groups and expanded 3 existing groups (Southern Power, Assembly Solar, Hickory Run). 2026-06-26: folded two remaining co-located parent/subsidiary clusters surfaced by the published-payload shared-coordinate scan — Hawaiian Electric (HEI holding co + Pacific Current affiliate into operating utility HECO) and NextEra Juno Beach (NextEra Energy Transmission Southwest into NextEra Energy Resources).",
   "combines": [
     {
       "canonical": "NCR00682",
@@ -1612,6 +1612,25 @@
       "label": "Gavin Power",
       "summary": "Gavin Power and Lightstone Generation share the Cheshire, OH plant site.",
       "display_name": "Gavin Power"
+    },
+    {
+      "canonical": "SUP-hawaiian-electric-company-inc",
+      "members": [
+        "SUP-hawaiian-electric-industries-inc",
+        "SUP-pacific-current-llc"
+      ],
+      "label": "Hawaiian Electric Honolulu HQ",
+      "summary": "Hawaiian Electric Industries (the parent holding company) and its affiliate Pacific Current register at the same Honolulu headquarters as the operating utility Hawaiian Electric Company; shown here as one map location.",
+      "display_name": "Hawaiian Electric"
+    },
+    {
+      "canonical": "NCR10019",
+      "members": [
+        "NCR12556"
+      ],
+      "label": "NextEra Juno Beach HQ",
+      "summary": "NextEra Energy Resources (generation) and NextEra Energy Transmission Southwest share NextEra Energy's Juno Beach headquarters point and appear here as one map location; Florida Power & Light remains a separate bubble.",
+      "display_name": "NextEra Energy"
     }
   ]
 }

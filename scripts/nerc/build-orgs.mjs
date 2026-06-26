@@ -331,16 +331,20 @@ function main() {
     .map((r) => enrichOrg(applyNames(applyRegistryRegions(r, registryRegions), names)))
     .filter((o) => o.lat != null && o.lng != null);
 
-  if (existsSync(MAP_COMBINES)) {
-    const combineConfig = JSON.parse(readFileSync(MAP_COMBINES, "utf8"));
-    const { orgs: combinedOrgs, folded: foldedCount } = applyMapCombines(nercOrgs, combineConfig);
-    nercOrgs = combinedOrgs;
-    if (foldedCount) console.log(`nerc: map-combined ${foldedCount} co-located registration(s)`);
-  }
-
   const existingNames = new Set(nercOrgs.map((o) => normName(o.entity_name)));
   const supplemental = loadSupplemental(existingNames, names);
-  const orgs = applyAreaAliases([...nercOrgs, ...supplemental]);
+  // Apply combines AFTER merging supplemental orgs so a combine group can fold a
+  // supplemental SUP- registration (e.g. a holding company co-located with its
+  // operating utility) just like a registry one. Registry combines still resolve
+  // because every registry id is present in the merged list.
+  let mergedOrgs = [...nercOrgs, ...supplemental];
+  if (existsSync(MAP_COMBINES)) {
+    const combineConfig = JSON.parse(readFileSync(MAP_COMBINES, "utf8"));
+    const { orgs: combinedOrgs, folded: foldedCount } = applyMapCombines(mergedOrgs, combineConfig);
+    mergedOrgs = combinedOrgs;
+    if (foldedCount) console.log(`nerc: map-combined ${foldedCount} co-located registration(s)`);
+  }
+  const orgs = applyAreaAliases(mergedOrgs);
 
   mkdirSync(OUT_DIR, { recursive: true });
 

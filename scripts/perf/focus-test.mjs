@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// Headless verification of the PJM/MISO focus interaction. Serves dist/, opens
-// Chrome via CDP, clicks the PJM hub then the MISO hub, asserts the focus state
-// (one parent, ≥1 related, dimmed background), clears
-// it, and confirms the map returns to normal. Writes before/after screenshots.
+// Headless verification of the market focus interaction. Serves dist/, opens
+// Chrome via CDP, clicks each market hub (PJM, MISO, NYISO, ISO-NE) in turn,
+// asserts the focus state (one parent, ≥1 related, dimmed background, only that
+// family's class active), clears it, and confirms the map returns to normal.
+// Writes before/after screenshots.
 // Usage: npm run build && node scripts/perf/focus-test.mjs
 
 import { spawn, spawnSync } from "node:child_process";
@@ -77,6 +78,8 @@ const STATE = `(() => {
     focusMode: svg.classList.contains('focus-mode'),
     focusPjm: svg.classList.contains('focus-pjm'),
     focusMiso: svg.classList.contains('focus-miso'),
+    focusNyiso: svg.classList.contains('focus-nyiso'),
+    focusIsone: svg.classList.contains('focus-isone'),
     parents: shown('rect.org.focus-parent').length,
     related: shown('rect.org.focus-related').length,
     dimmed: shown('rect.org.focus-dim').length,
@@ -160,6 +163,26 @@ async function main() {
     assert(!miso.statusShown, "focus status chip stays hidden for MISO too");
     const shotMiso = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "2-miso.png"), Buffer.from(shotMiso.data, "base64"));
+
+    // ── switch to NYISO (8 Transmission Owners) ──
+    await clickHub(conn, sessionId, "New York Independent System Operator");
+    const nyiso = await evalJs(conn, sessionId, STATE);
+    console.log("NYISO state:", JSON.stringify(nyiso));
+    assert(nyiso.focusMode && nyiso.focusNyiso && !nyiso.focusMiso, "clicking NYISO switches focus to NYISO");
+    assert(nyiso.parents === 1, `exactly one focus-parent for NYISO (got ${nyiso.parents})`);
+    assert(nyiso.related >= 5, `NYISO has related TOs shown (got ${nyiso.related})`);
+    const shotNyiso = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
+    writeFileSync(join(OUT, "2a-nyiso.png"), Buffer.from(shotNyiso.data, "base64"));
+
+    // ── switch to ISO-NE (11 Participating Transmission Owners) ──
+    await clickHub(conn, sessionId, "ISO-NE");
+    const isone = await evalJs(conn, sessionId, STATE);
+    console.log("ISO-NE state:", JSON.stringify(isone));
+    assert(isone.focusMode && isone.focusIsone && !isone.focusNyiso, "clicking ISO-NE switches focus to ISO-NE");
+    assert(isone.parents === 1, `exactly one focus-parent for ISO-NE (got ${isone.parents})`);
+    assert(isone.related >= 5, `ISO-NE has related PTOs shown (got ${isone.related})`);
+    const shotIsone = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
+    writeFileSync(join(OUT, "2b-isone.png"), Buffer.from(shotIsone.data, "base64"));
 
     // ── clear ──
     await clickBackground(conn, sessionId);

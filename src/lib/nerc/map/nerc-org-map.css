@@ -279,7 +279,9 @@
 }
 
 #nerc-svg.focus-pjm .org-saber:not(.pjm-saber),
-#nerc-svg.focus-miso .org-saber:not(.miso-saber) {
+#nerc-svg.focus-miso .org-saber:not(.miso-saber),
+#nerc-svg.focus-nyiso .org-saber:not(.nyiso-saber),
+#nerc-svg.focus-isone .org-saber:not(.isone-saber) {
   opacity: 0.16;
   filter: none;
   animation: none;
@@ -309,22 +311,25 @@
   }
 }
 
-/* ── PJM / MISO family colours ────────────────────────────────────────────────
-   One saturated, non-role hue per system, used by the classification pills (hover
-   tooltip) and panel badges so MISO and PJM read apart at a glance. The bubble
-   fill always stays the role colour. */
+/* ── Market family colours ────────────────────────────────────────────────────
+   One saturated, non-role hue per system (PJM/MISO/NYISO/ISO-NE), used by the
+   classification pills (hover tooltip) and panel badges so the families read apart
+   at a glance. The bubble fill always stays the role colour. */
 :root {
   --miso-area-color: hsl(205, 90%, 50%); /* azure — MISO only */
   --pjm-area-color: hsl(322, 82%, 53%); /* magenta — PJM only */
+  --nyiso-area-color: hsl(168, 72%, 38%); /* teal-green — NYISO only */
+  --isone-area-color: hsl(270, 60%, 60%); /* violet — ISO-NE only */
 }
 
-/* ── PJM / MISO focus mode ────────────────────────────────────────────────────
-   The default map is calm: no thread web, no persistent member outlines. The PJM
-   and MISO relationships appear ONLY after the user clicks one of those two hubs:
+/* ── Market focus mode ─────────────────────────────────────────────────────────
+   The default map is calm: no thread web, no persistent member outlines. A market
+   relationship appears ONLY after the user clicks one of the curated hubs (PJM,
+   MISO, NYISO, ISO-NE):
      • the selected hub gets a slow orange glow (the brightest object on the map);
-     • its members light up with PJM/MISO family-colour outlines and staggered glow;
+     • its members light up with the family-colour outline and staggered glow;
      • everything else desaturates into quiet grey background context.
-   Limited to the curated PJM and MISO families (see marketFamily in the TS).
+   Limited to the curated families (see marketFamily in the TS).
    The hub stays orange; subareas use family colour so they separate from the map. */
 
 :root {
@@ -348,6 +353,18 @@
   --focus-family: var(--miso-area-color);
   --focus-family-strong: hsl(198, 96%, 62%);
   --focus-family-soft: hsla(205, 90%, 50%, 0.52);
+}
+
+#nerc-svg.focus-nyiso {
+  --focus-family: var(--nyiso-area-color);
+  --focus-family-strong: hsl(160, 78%, 48%);
+  --focus-family-soft: hsla(168, 72%, 38%, 0.52);
+}
+
+#nerc-svg.focus-isone {
+  --focus-family: var(--isone-area-color);
+  --focus-family-strong: hsl(272, 78%, 70%);
+  --focus-family-soft: hsla(270, 60%, 60%, 0.52);
 }
 
 /* Unrelated organizations: faded grey context while a focus is active. Still
@@ -467,7 +484,8 @@
 }
 
 /* The selected hub keeps its generic orange saber; no per-family hue (orange is the
-   one focus colour). The .pjm-saber/.miso-saber classes are left unstyled so every
+   one focus colour). The .{pjm,miso,nyiso,isone}-saber classes are left unstyled —
+   they only exempt the active hub's ring from the focus dim rule above, so every
    ISO/RTO ring stays the same calm orange in the default view. */
 
 /* Keep focused labels crisp white; the dimming above fades the rest. */
@@ -1062,6 +1080,14 @@
   background: var(--pjm-area-color);
 }
 
+.nerc-rolepill.nerc-nyiso-area-pill {
+  background: var(--nyiso-area-color);
+}
+
+.nerc-rolepill.nerc-isone-area-pill {
+  background: var(--isone-area-color);
+}
+
 .nerc-role-popover {
   position: fixed;
   z-index: 70;
@@ -1463,7 +1489,7 @@
   text-transform: uppercase;
 }
 
-/* Compact relationship tags for PJM/MISO child areas. */
+/* Compact relationship tags for market child areas (PJM/MISO/NYISO/ISO-NE). */
 .nerc-panel .p-misoca {
   display: inline-flex;
   gap: 0.35rem;
@@ -1496,6 +1522,32 @@
   font-size: 0.66rem;
   font-weight: 800;
   letter-spacing: 0.04em;
+}
+
+.nerc-panel .p-nyisoto,
+.nerc-panel .p-isonepto {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin: 0 0.3rem 0.28rem 0;
+}
+
+.nerc-panel .p-nyisoto-badge,
+.nerc-panel .p-isonepto-badge {
+  flex: none;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.nerc-panel .p-nyisoto-badge {
+  background: var(--nyiso-area-color);
+}
+
+.nerc-panel .p-isonepto-badge {
+  background: var(--isone-area-color);
 }
 
 /* Detail fields as a column grid of self-contained blocks (label above value),
