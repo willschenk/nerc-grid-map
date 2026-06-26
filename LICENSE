@@ -1,0 +1,90 @@
+Copyright (c) 2026 Will Schenk
+
+This repository uses a split license. Different parts of the repository are
+licensed under different terms.
+
+1. Software code
+
+Unless otherwise stated, all software source code, scripts, build tooling,
+configuration files, rendering logic, utilities, and application code in this
+repository are licensed under the GNU Affero General Public License v3.0 only
+(AGPL-3.0-only).
+
+This includes, without limitation:
+
+- src/
+- scripts/
+- package.json and related project configuration
+- application code
+- build code
+- map rendering logic
+- software utilities
+
+The official AGPL-3.0-only license text is available at:
+
+https://www.gnu.org/licenses/agpl-3.0.en.html
+
+2. Data, documentation, and non-code content
+
+Unless otherwise stated, all data, generated data payloads, research notes,
+documentation, map labels, researched organization names, short names,
+organization classifications, organization locations, confidence notes, source
+notes, diagrams, images, and other non-code content in this repository are
+licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+International License (CC BY-NC-SA 4.0).
+
+This includes, without limitation:
+
+- public/nerc/*.json
+- src/data/
+- docs/
+- README.md
+- generated map payloads
+- researched organization names
+- researched organization locations
+- researched organization classifications
+- source notes
+- confidence notes
+- derived datasets
+
+The official CC BY-NC-SA 4.0 legal code is available at:
+
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en
+
+3. Commercial use of data and non-code content
+
+Commercial use of the data and non-code content is not permitted without prior
+written permission from the copyright holder.
+
+This includes, without limitation, copying, redistributing, republishing,
+selling, incorporating into a commercial product, or using the dataset,
+generated map payloads, researched labels, researched locations, or derived
+datasets in a commercial service.
+
+4. Third-party material
+
+This repository may include, reference, or derive from public or third-party
+source materials. Those materials remain subject to their own licenses, terms,
+and public-source conditions. This license does not grant rights that the
+copyright holder does not have.
+
+5. No official status
+
+This project is independent. It is not a NERC product, is not affiliated with
+NERC, and is not an official compliance source of truth.
+
+6. Attribution
+
+For permitted non-commercial use of data, documentation, or other non-code
+content, attribution must include:
+
+"NERC Grid Map by Will Schenk"
+
+and a link to the repository:
+
+https://github.com/willschenk/nerc-grid-map
+
+7. Additional permission
+
+For commercial licensing, written permission, or other uses not allowed by the
+licenses above, contact the repository owner.
