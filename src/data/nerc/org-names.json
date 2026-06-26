@@ -1422,7 +1422,7 @@
     {
       "ncr_id": "NCR04032",
       "entity_name": "City of College Station",
-      "shortest": "CollStn",
+      "shortest": "College Station",
       "short": "College Station Utilities",
       "normal": "College Station Utilities",
       "tier": "normal"
@@ -2792,7 +2792,7 @@
     {
       "ncr_id": "NCR08039",
       "entity_name": "Allegheny Ridge Wind Farm, LLC",
-      "shortest": "Alleghny",
+      "shortest": "Allegheny Ridge",
       "short": "Allegheny Ridge Wind Farm",
       "normal": "Allegheny Ridge Wind Farm",
       "tier": "normal",
@@ -3432,7 +3432,7 @@
     {
       "ncr_id": "NCR12229",
       "entity_name": "Bridgeport Harbor",
-      "shortest": "BridgHbr",
+      "shortest": "Bridgeport Harbor",
       "short": "Bridgeport Harbor Station",
       "normal": "Bridgeport Harbor Station",
       "tier": "normal"
@@ -3528,7 +3528,7 @@
     {
       "ncr_id": "NCR10195",
       "entity_name": "Brush Power",
-      "shortest": "BrushPwr",
+      "shortest": "Brush",
       "short": "Brush Power",
       "normal": "Brush Power",
       "tier": "normal",
@@ -3670,7 +3670,7 @@
     {
       "ncr_id": "NCR00838",
       "entity_name": "Camden Plant Holdings, LLC",
-      "shortest": "CamdenPl",
+      "shortest": "Camden",
       "short": "Camden Plant",
       "normal": "Camden Plant",
       "tier": "normal"
@@ -3761,7 +3761,7 @@
     {
       "ncr_id": "NCR13265",
       "entity_name": "Carroll Area Wind Farm LLC",
-      "shortest": "CarrolWF",
+      "shortest": "Carroll Wind",
       "short": "Carroll Area Wind Farm",
       "normal": "Carroll Area Wind Farm",
       "tier": "normal"
@@ -3769,7 +3769,7 @@
     {
       "ncr_id": "NCR11786",
       "entity_name": "Carroll County Energy, LLC",
-      "shortest": "CarrolCo",
+      "shortest": "Carroll County",
       "short": "Carroll County Energy",
       "normal": "Carroll County Energy",
       "tier": "normal"
@@ -4487,7 +4487,7 @@
     {
       "ncr_id": "NCR11173",
       "entity_name": "Delaware City Refining Company LLC",
-      "shortest": "DelCity",
+      "shortest": "Delaware City",
       "short": "Delaware City Refining",
       "normal": "Delaware City Refining Company",
       "tier": "normal"
@@ -4767,7 +4767,7 @@
     {
       "ncr_id": "NCR13087",
       "entity_name": "Enbridge Solar (Orange Grove), LLC",
-      "shortest": "OrngGrPV",
+      "shortest": "Orange Grove Solar",
       "short": "Enbridge Orange Grove Solar",
       "normal": "Enbridge Orange Grove Solar",
       "tier": "normal"
@@ -5163,7 +5163,7 @@
     {
       "ncr_id": "NCR11963",
       "entity_name": "Franklin Biomass Plant",
-      "shortest": "FrankBio",
+      "shortest": "Franklin",
       "short": "Franklin Biomass",
       "normal": "Franklin Biomass Plant",
       "tier": "normal"
@@ -5179,7 +5179,7 @@
     {
       "ncr_id": "NCR13142",
       "entity_name": "Frontier Solar, LLC",
-      "shortest": "FrontPV",
+      "shortest": "Frontier",
       "short": "Frontier Solar",
       "normal": "Frontier Solar",
       "tier": "normal"
@@ -5345,40 +5345,40 @@
     {
       "ncr_id": "NCR11029",
       "entity_name": "Grand Ridge Energy II LLC",
-      "shortest": "GrandR2",
+      "shortest": "Grand Ridge II",
       "short": "Grand Ridge Energy II",
       "normal": "Grand Ridge Energy II",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center"
     },
     {
       "ncr_id": "NCR11030",
       "entity_name": "Grand Ridge Energy III LLC",
-      "shortest": "GrandR3",
+      "shortest": "Grand Ridge III",
       "short": "Grand Ridge Energy III",
       "normal": "Grand Ridge Energy III",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center"
     },
     {
       "ncr_id": "NCR11031",
       "entity_name": "Grand Ridge Energy IV LLC",
-      "shortest": "GrandR4",
+      "shortest": "Grand Ridge IV",
       "short": "Grand Ridge Energy IV",
       "normal": "Grand Ridge Energy IV",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://invenergy.com/projects/case-studies/grand-ridge-energy-center"
     },
     {
       "ncr_id": "NCR10306",
       "entity_name": "Grand Ridge Energy LLC",
-      "shortest": "GrandRdg",
+      "shortest": "Grand Ridge",
       "short": "Grand Ridge Energy",
       "normal": "Grand Ridge Energy",
       "tier": "normal",
@@ -5437,22 +5437,22 @@
     {
       "ncr_id": "NCR11510",
       "entity_name": "Green Pastures Wind I, LLC.",
-      "shortest": "GrnPast1",
+      "shortest": "Green Pastures I",
       "short": "Green Pastures Wind I",
       "normal": "Green Pastures Wind I",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gridinfo.com/green-pastures-wind-i-llc"
     },
     {
       "ncr_id": "NCR11573",
       "entity_name": "Green Pastures Wind II, LLC",
-      "shortest": "GrnPast2",
+      "shortest": "Green Pastures II",
       "short": "Green Pastures Wind II",
       "normal": "Green Pastures Wind II",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gridinfo.com/green-pastures-wind-ii"
     },
@@ -5467,7 +5467,7 @@
     {
       "ncr_id": "NCR13326",
       "entity_name": "Greenfield Wind, LLC",
-      "shortest": "GrnfldWF",
+      "shortest": "Greenfield",
       "short": "Greenfield Wind",
       "normal": "Greenfield Wind",
       "tier": "normal"
@@ -5818,7 +5818,7 @@
     {
       "ncr_id": "NCR11859",
       "entity_name": "Hunterstown Combined Cycle Generating Station",
-      "shortest": "HunterCC",
+      "shortest": "Hunterstown",
       "short": "Hunterstown CC",
       "normal": "Hunterstown Combined Cycle Generating Station",
       "tier": "normal",
@@ -5867,11 +5867,11 @@
     {
       "ncr_id": "NCR10364",
       "entity_name": "Indeck Energy Services of Silver Springs, LP",
-      "shortest": "IndSilv",
+      "shortest": "Indeck Silver",
       "short": "Indeck Silver Springs",
       "normal": "Indeck Silver Springs",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.interconnection.fyi/eia/project/50449-gen1"
     },
@@ -6046,22 +6046,22 @@
     {
       "ncr_id": "NCR12454",
       "entity_name": "King Creek Wind Farm 1, LLC",
-      "shortest": "KingCrk1",
+      "shortest": "King Creek 1",
       "short": "King Creek Wind 1",
       "normal": "King Creek Wind Farm 1",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.edf-re.com/project/king-creek-1/"
     },
     {
       "ncr_id": "NCR12455",
       "entity_name": "King Creek Wind Farm 2, LLC",
-      "shortest": "KingCrk2",
+      "shortest": "King Creek 2",
       "short": "King Creek Wind 2",
       "normal": "King Creek Wind Farm 2",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.edf-re.com/project/king-creek-2/"
     },
@@ -6255,22 +6255,22 @@
     {
       "ncr_id": "NCR12213",
       "entity_name": "Linden Combined Cycle",
-      "shortest": "LindenCC",
+      "shortest": "Linden CC",
       "short": "Linden Combined Cycle",
       "normal": "Linden Combined Cycle",
       "tier": "normal",
-      "shortest_type": "location",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.interconnection.fyi/eia/project/2406"
     },
     {
       "ncr_id": "NCR12212",
       "entity_name": "Linden Peaking Generating Station",
-      "shortest": "LindenPk",
+      "shortest": "Linden Peaking",
       "short": "Linden Peaking",
       "normal": "Linden Peaking Generating Station",
       "tier": "normal",
-      "shortest_type": "location",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.interconnection.fyi/eia/project/2406"
     },
@@ -6301,7 +6301,7 @@
     {
       "ncr_id": "NCR12495",
       "entity_name": "Longhorn Storage LLC",
-      "shortest": "LnghrnES",
+      "shortest": "Longhorn Storage",
       "short": "Longhorn Storage",
       "normal": "Longhorn Storage",
       "tier": "normal"
@@ -6309,7 +6309,7 @@
     {
       "ncr_id": "NCR11503",
       "entity_name": "Longhorn Wind Project, LLC",
-      "shortest": "LnghrnWF",
+      "shortest": "Longhorn Wind",
       "short": "Longhorn Wind",
       "normal": "Longhorn Wind Project",
       "tier": "normal"
@@ -6381,7 +6381,7 @@
     {
       "ncr_id": "NCR11962",
       "entity_name": "Madison Biomass Plant",
-      "shortest": "MadisBio",
+      "shortest": "Madison",
       "short": "Madison Biomass",
       "normal": "Madison Biomass Plant",
       "tier": "normal"
@@ -6675,7 +6675,7 @@
     {
       "ncr_id": "NCR11842",
       "entity_name": "Montpelier Generating Station, LLC",
-      "shortest": "MontpGS",
+      "shortest": "Montpelier",
       "short": "Montpelier Generating Station",
       "normal": "Montpelier Generating Station",
       "tier": "normal",
@@ -6850,11 +6850,11 @@
     {
       "ncr_id": "NCR11561",
       "entity_name": "NAES Corporation - Cogen Technologies Linden Venture",
-      "shortest": "LindenCG",
+      "shortest": "Linden Cogen",
       "short": "Linden Cogen",
       "normal": "Linden Cogeneration",
       "tier": "normal",
-      "shortest_type": "location",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gem.wiki/Linden_cogeneration_plant"
     },
@@ -7321,7 +7321,7 @@
     {
       "ncr_id": "NCR11352",
       "entity_name": "Orange Grove Energy,  L.P.",
-      "shortest": "OrngGrv",
+      "shortest": "Orange Grove",
       "short": "Orange Grove Energy",
       "normal": "Orange Grove Energy",
       "tier": "normal"
@@ -7505,7 +7505,7 @@
     {
       "ncr_id": "NCR10370",
       "entity_name": "Power City Partners, LP",
-      "shortest": "PwrCity",
+      "shortest": "Power City",
       "short": "Power City Partners",
       "normal": "Power City Partners",
       "tier": "normal"
@@ -7529,33 +7529,33 @@
     {
       "ncr_id": "NCR11953",
       "entity_name": "Prairie Breeze Wind Energy II LLC",
-      "shortest": "PBreeze2",
+      "shortest": "Prairie Breeze II",
       "short": "Prairie Breeze II",
       "normal": "Prairie Breeze Wind Energy II",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://invenergy.com/news/invenergy-announces-start-of-commercial-operation-for-prairie-breeze-ii-wind-energy-center"
     },
     {
       "ncr_id": "NCR11954",
       "entity_name": "Prairie Breeze Wind Energy III LLC",
-      "shortest": "PBreeze3",
+      "shortest": "Prairie Breeze III",
       "short": "Prairie Breeze III",
       "normal": "Prairie Breeze Wind Energy III",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://invenergy.com/news/invenergy-completes-project-financing-for-prairie-breeze-iii-wind-energy-center"
     },
     {
       "ncr_id": "NCR11460",
       "entity_name": "Prairie Breeze Wind Energy LLC",
-      "shortest": "PBreeze1",
+      "shortest": "Prairie Breeze I",
       "short": "Prairie Breeze Wind",
       "normal": "Prairie Breeze Wind Energy",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://invenergy.com/news/invenergy-completes-project-financing-for-prairie-breeze-wind-energy-center-in-nebraska"
     },
@@ -7787,7 +7787,7 @@
     {
       "ncr_id": "NCR11924",
       "entity_name": "Rio Bravo Windpower, LLC",
-      "shortest": "RioBrvWF",
+      "shortest": "Rio Bravo",
       "short": "Rio Bravo Windpower",
       "normal": "Rio Bravo Windpower",
       "tier": "normal"
@@ -8265,11 +8265,11 @@
     {
       "ncr_id": "NCR11695",
       "entity_name": "Southern Power Company",
-      "shortest": "SthrnPwr",
+      "shortest": "Southern Power",
       "short": "Southern Power",
       "normal": "Southern Power Company",
       "tier": "major",
-      "shortest_type": "acronym",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.southernpowercompany.com/"
     },
@@ -8292,22 +8292,22 @@
     {
       "ncr_id": "NCR11575",
       "entity_name": "Spinning Spur Wind Three, LLC",
-      "shortest": "SpinSp3",
+      "shortest": "Spinning Spur III",
       "short": "Spinning Spur Wind III",
       "normal": "Spinning Spur Wind III",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://us.boralex.com/en/projects-and-sites/wind-spinning-spur-3"
     },
     {
       "ncr_id": "NCR11464",
       "entity_name": "Spinning Spur Wind Two",
-      "shortest": "SpinSp2",
+      "shortest": "Spinning Spur II",
       "short": "Spinning Spur Wind II",
       "normal": "Spinning Spur Wind II",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gridinfo.com/spinning-spur-wind-two"
     },
@@ -8552,22 +8552,22 @@
     {
       "ncr_id": "NCR11462",
       "entity_name": "Temple Generation I, LLC",
-      "shortest": "Temple1",
+      "shortest": "Temple I",
       "short": "Temple Generation I",
       "normal": "Temple Generation I",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gridinfo.com/temple-generation-i"
     },
     {
       "ncr_id": "NCR11872",
       "entity_name": "Temple Generation II, LLC",
-      "shortest": "Temple2",
+      "shortest": "Temple II",
       "short": "Temple Generation II",
       "normal": "Temple Generation II",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gridinfo.com/plant/temple-power-station"
     },
@@ -8722,11 +8722,11 @@
     {
       "ncr_id": "NCR07041",
       "entity_name": "Town of Wallingford Dept of Utilities",
-      "shortest": "WallfdU",
+      "shortest": "Wallingford Util",
       "short": "Wallingford Utilities",
       "normal": "Wallingford Department of Utilities",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.wallingfordct.gov/government/departments/electric-division/"
     },
@@ -8972,11 +8972,11 @@
     {
       "ncr_id": "NCR11102",
       "entity_name": "Wallingford Energy LLC",
-      "shortest": "WallfdE",
+      "shortest": "Wallingford Energy",
       "short": "Wallingford Energy",
       "normal": "Wallingford Energy",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.renewablesinfo.org/plant/55517"
     },
@@ -9174,7 +9174,7 @@
     {
       "ncr_id": "NCR11784",
       "entity_name": "Willow Springs Windfarm, LLC",
-      "shortest": "WillowWF",
+      "shortest": "Willow Springs",
       "short": "Willow Springs Windfarm",
       "normal": "Willow Springs Windfarm",
       "tier": "normal"
@@ -9747,11 +9747,11 @@
     {
       "ncr_id": "NCR13029",
       "entity_name": "Aquamarine Westside, LLC",
-      "shortest": "AquaWest",
+      "shortest": "Aquamarine",
       "short": "Aquamarine Westside",
       "normal": "Aquamarine Westside",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gridinfo.com/aquamarine-westside-llc"
     },
@@ -10239,7 +10239,7 @@
     {
       "ncr_id": "NCR13173",
       "entity_name": "Black Hollow Sun",
-      "shortest": "BlkHollw",
+      "shortest": "Black Hollow",
       "short": "Black Hollow Sun",
       "normal": "Black Hollow Sun",
       "tier": "normal"
@@ -10287,11 +10287,11 @@
     {
       "ncr_id": "NCR01183",
       "entity_name": "Blue Ridge Electric Membership Corporation",
-      "shortest": "BlueRdg",
+      "shortest": "Blue Ridge",
       "short": "Blue Ridge Electric",
       "normal": "Blue Ridge Electric Membership Corporation",
       "tier": "normal",
-      "shortest_type": "acronym",
+      "shortest_type": "meaningful_name",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.blueridge.coop/office-locations"
     },
@@ -10585,11 +10585,11 @@
     {
       "ncr_id": "NCR12345",
       "entity_name": "BT Cunningham Storage, LLC",
-      "shortest": "CunnStor",
+      "shortest": "Cunningham",
       "short": "BT Cunningham Storage",
       "normal": "BT Cunningham Storage",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.brookfield.com/"
     },
@@ -10618,11 +10618,11 @@
     {
       "ncr_id": "NCR13152",
       "entity_name": "BT Signal Ranch, LLC",
-      "shortest": "SigRanch",
+      "shortest": "Signal Ranch",
       "short": "BT Signal Ranch",
       "normal": "BT Signal Ranch",
       "tier": "normal",
-      "shortest_type": "parent_project",
+      "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.gridinfo.com/bt-signal-ranch"
     },
@@ -11494,7 +11494,7 @@
     {
       "ncr_id": "NCR12243",
       "entity_name": "Crossett Power Management LLC",
-      "shortest": "CrosetPw",
+      "shortest": "Crossett",
       "short": "Crossett Power Management",
       "normal": "Crossett Power Management",
       "tier": "normal"
@@ -21114,7 +21114,7 @@
     {
       "ncr_id": "SUP-black-diamond-power-company",
       "entity_name": "Black Diamond Power Company",
-      "shortest": "BlkDiam",
+      "shortest": "Black Diamond",
       "short": "Black Diamond Power",
       "normal": "Black Diamond Power Company",
       "tier": "normal",
