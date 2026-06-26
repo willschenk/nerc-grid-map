@@ -80,4 +80,16 @@ scripts/nerc/                      ingest, build, QA, research prompts
 public/nerc/                       generated map JSON and basemap
 ```
 
-The goal is to make the registry easier to inspect at a glance: who is registered, what role they hold, where they are, and how much visual priority they should receive. The map should stay fast, readable, and honest about the underlying data.
+The goal is to make the registry easier to inspect at a glance: who is registered, what role they hold, where they are, and how much visual priority they should receive. The map should stay fast, readable, and honest about the underlying data. 
+
+
+## License
+
+This project uses separate licenses for code and data.
+
+- **Code** is licensed under the GNU Affero General Public License v3.0 only (`AGPL-3.0-only`).
+- **Data, generated JSON payloads, researched organization names, locations, classifications, notes, and documentation** are licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (`CC BY-NC-SA 4.0`).
+
+You may view, study, and non-commercially reuse the data with attribution. You may not copy the dataset or generated map payloads for commercial use without permission.
+
+This project is an independent visualization and is not a NERC product or official compliance source of truth.
