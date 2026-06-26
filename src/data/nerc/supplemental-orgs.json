@@ -74,7 +74,7 @@
     "roles": [
       "DP"
     ],
-    "org_type": "IOU",
+    "org_type": "governmental",
     "nerc_registered": false,
     "geo_confidence": "MEDIUM",
     "out_of_footprint": false,
@@ -193,7 +193,7 @@
   },
   {
     "entity_name": "Alaska Power Company",
-    "acronym": "APC",
+    "acronym": "AK Power",
     "state": "AK",
     "country": "US",
     "city": "Anchorage",

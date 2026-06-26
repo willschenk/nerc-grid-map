@@ -317,16 +317,22 @@ const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 // gives way to (moves around) the real bubbles and only shows details on
 // hover/click. Zoom-gated: hidden at the calm national overview, faded in as
 // the user zooms into a region. Reveal-K and fade span are tunable here.
-const GIVE_WAY_DOT_REVEAL_K = 4.5;
-const GIVE_WAY_DOT_REVEAL_K_COMPACT = 5.0;
+// Reveal earlier (was 4.5 / 5.0) so dots show at regional zoom, not only deep
+// zoom — they fade in sub-pixel at reveal-K and grow, so an earlier gate adds
+// texture without clutter and (being out of the sim) can never displace a bubble.
+// Compact reveals sooner (3.0 vs 3.4 desktop) so phone users see dots after fewer
+// pinch steps; the overview (k ≈ 1) stays dot-free on both layouts.
+const GIVE_WAY_DOT_REVEAL_K = 3.4;
+const GIVE_WAY_DOT_REVEAL_K_COMPACT = 3.0;
 // Short fade so dots reach full (still small) size soon after reveal — visible and
-// clickable in the regional view rather than lingering sub-pixel.
+// clickable in the regional view rather than lingering sub-pixel. Compact uses a
+// tighter span so phone dots finish growing sooner after the gate opens.
 const GIVE_WAY_DOT_FADE_SPAN = 0.5;
-// Give-way dots render at 2x the base fallback-tiny radius so they read clearly as
-// real (clickable) markers once zoomed in. They still stay strictly subordinate:
-// layoutDotGiveWay clears each enlarged dot from every real bubble, so the bigger
-// size never lets a dot overlap an organization (it moves around, or hides).
+const GIVE_WAY_DOT_FADE_SPAN_COMPACT = 0.4;
+// Give-way dots render larger than plain fallback-tiny dots so they read as
+// clickable markers. Compact gets a hair more scale (still subordinate to pills).
 const GIVE_WAY_DOT_SIZE_SCALE = 2.3;
+const GIVE_WAY_DOT_SIZE_SCALE_COMPACT = 2.4;
 // Extra screen-px gaps layoutDotGiveWay keeps around each dot: from every real bubble
 // (so dots sit clearly OUTSIDE the organizations) and from other dots (so a cluster
 // spreads out instead of stacking). Bigger = more breathing room, fewer hidden.
@@ -900,7 +906,7 @@ export function mountNercOrgMap(): void {
     const declScale = declutterScale(k);
     const sxOf = (o: Org) => transform.applyX(orgRenderX(o, fanScale, declScale));
     const syOf = (o: Org) => transform.applyY(orgRenderY(o, fanScale, declScale));
-    let best = fallback;
+    let best: Org | null = null;
     // Rank by how deep the pointer is INSIDE each bubble relative to that bubble's
     // own size (normalized distance), not raw distance to centre. In a dense
     // cluster this picks the dot you actually clicked into rather than a larger
@@ -918,53 +924,58 @@ export function mountNercOrgMap(): void {
       const dx = sxOf(o) - point.x;
       const dy = syOf(o) - point.y;
       const d2 = dx * dx + dy * dy;
-      const hit = hitTargetRadius(o, k) + unitPerPx;
-      if (d2 > hit * hit) continue;
+      if (!orgHitContainsOffset(o, k, dx, dy)) continue;
       const visual = renderedRadius(o, k);
       const inVisual = orgBubbleContainsOffset(o, k, dx, dy, visual);
-      const focusBoost =
-        (hoverOrg?.ncr_id === o.ncr_id ? 5000 : 0) +
-        (selectedOrg?.ncr_id === o.ncr_id && activeFocusGroup == null ? 5000 : 0) +
-        (tourIds.has(o.ncr_id) ? 4000 : 0);
-      const norm = d2 / (hit * hit);
+      // Pills compete only inside their visible geometry — padded hit alone must
+      // never beat a nearby dot the pointer is actually on.
+      if (!isDotOrg(o) && !inVisual) continue;
+      const pillVsPill = best !== null && !isDotOrg(o) && !isDotOrg(best);
+      const focusBoost = pillVsPill
+        ? (hoverOrg?.ncr_id === o.ncr_id ? 5000 : 0) +
+          (selectedOrg?.ncr_id === o.ncr_id && activeFocusGroup == null ? 5000 : 0)
+        : 0;
+      const tourBoost = tourIds.has(o.ncr_id) ? 4000 : 0;
+      const norm = orgHitNormDistance(o, k, dx, dy);
+      if (best === null) {
+        best = o;
+        bestNorm = norm;
+        bestInVisual = inVisual;
+        bestVisual = visual;
+        bestD2 = d2;
+        continue;
+      }
       // Selection order in dense clusters:
-      //   1. A pointer inside a drawn bubble always beats one only in
-      //      the padded hit ring.
-      //   2. When the pointer is inside more than one drawn circle, the INNERMOST
-      //      (smallest-radius) bubble wins — a small dot stacked under a larger
-      //      neighbour stays selectable when you click right on it.
-      //   3. Ties (same containment, same size) fall back to normalized distance,
-      //      then draw priority.
+      //   1. Pointer inside a drawn bubble beats one only in the padded hit ring.
+      //   2. Two overlapping drawn bubbles: smaller (innermost) wins — a dot under a
+      //      larger neighbour stays selectable when clicked on directly.
+      //   3. Two dots: nearest centre wins (no hover/selected stickiness).
+      //   4. Pills only reach this loop when inVisual; dots win from hit ring alone
+      //      when the pointer is outside every competing pill body.
+      //   5. Pill-vs-pill ties fall back to normalized distance, then draw priority
+      //      (hover/selected/tour boosts apply only here, never over a clear dot).
       let better: boolean;
       if (inVisual !== bestInVisual) {
         better = inVisual;
       } else if (inVisual && visual < bestVisual - radiusTol) {
-        better = true; // innermost (smaller) drawn circle wins
+        better = true; // innermost (smaller) drawn bubble wins
       } else if (inVisual && visual > bestVisual + radiusTol) {
         better = false; // keep the tighter bubble already chosen
-      } else if (isGiveWayDot(o) && isGiveWayDot(best)) {
-        // Two close give-way dots: pick the nearest centre with NO focus-boost
-        // stickiness, so hover/selection flips to a neighbour the instant the pointer
-        // is closer to it. Combined with the generous dot hit ring (hitTargetRadius),
-        // this keeps the buffer large for easy tapping yet easy to switch between dots
-        // that sit close together.
-        better = norm < bestNorm;
-      } else if (isGiveWayDot(o) !== isGiveWayDot(best)) {
-        // Mixed: a give-way DOT vs a real PILL, pointer inside NEITHER drawn circle
-        // (both only in their padded rings). A pill's far larger ring + draw priority
-        // must never swallow a small dot sitting beside it — decide purely by which
-        // CENTRE the pointer is nearer to (RAW px, not ring-normalized, since the
-        // pill's huge ring would otherwise always read as "closer"). Keeps a dot next
-        // to a big pill clickable.
+      } else if (isDotOrg(o) && isDotOrg(best)) {
+        // Two dots: nearest centre, no focus stickiness — hover flips instantly.
         better = d2 < bestD2;
       } else {
+        const bestFocusBoost =
+          pillVsPill
+            ? (hoverOrg?.ncr_id === best.ncr_id ? 5000 : 0) +
+              (selectedOrg?.ncr_id === best.ncr_id && activeFocusGroup == null ? 5000 : 0)
+            : 0;
+        const bestTourBoost = tourIds.has(best.ncr_id) ? 4000 : 0;
         better =
           norm < bestNorm - 0.02 ||
           (Math.abs(norm - bestNorm) <= 0.02 &&
-            drawPriority(o, k) + focusBoost > drawPriority(best, k) +
-              ((hoverOrg?.ncr_id === best.ncr_id ? 5000 : 0) +
-                (tourIds.has(best.ncr_id) ? 4000 : 0) +
-                (selectedOrg?.ncr_id === best.ncr_id && activeFocusGroup == null ? 5000 : 0)));
+            drawPriority(o, k) + focusBoost + tourBoost >
+              drawPriority(best, k) + bestFocusBoost + bestTourBoost);
       }
       if (better) {
         best = o;
@@ -974,7 +985,9 @@ export function mountNercOrgMap(): void {
         bestD2 = d2;
       }
     }
-    // Honour the hit circle the pointer landed on — especially background dots
+    // Nothing passed the hit test — hand back the caller's fallback org.
+    if (best === null) return fallback;
+    // Honour the hit target the pointer landed on — especially background dots
     // whose visual radius is tiny but whose padded target is easy to tap.
     if (
       fallback._vis &&
@@ -982,10 +995,11 @@ export function mountNercOrgMap(): void {
       fallback._y != null &&
       (fallback.placementMode === "fallbackTiny" || fallback._promoteBackground)
     ) {
-      const d2fb = (sxOf(fallback) - point.x) ** 2 + (syOf(fallback) - point.y) ** 2;
-      const hitFb = hitTargetRadius(fallback, k) + unitPerPx;
-      if (d2fb <= hitFb * hitFb) {
+      const fdx = sxOf(fallback) - point.x;
+      const fdy = syOf(fallback) - point.y;
+      if (orgHitContainsOffset(fallback, k, fdx, fdy)) {
         if (best.ncr_id === fallback.ncr_id) return fallback;
+        const d2fb = fdx * fdx + fdy * fdy;
         const d2best = (sxOf(best) - point.x) ** 2 + (syOf(best) - point.y) ** 2;
         const visBest = renderedRadius(best, k);
         const bestInsideVis = orgBubbleContainsOffset(
@@ -1085,14 +1099,27 @@ export function mountNercOrgMap(): void {
     return (o._giveWay = isGenerationOnly(o));
   }
 
+  /** Fallback / give-way orgs drawn as circular dots (not label pills). */
+  function isDotOrg(o: Org): boolean {
+    return !!o._renderFallback || isGiveWayDot(o);
+  }
+
   function giveWayDotRevealK(): number {
     return compact ? GIVE_WAY_DOT_REVEAL_K_COMPACT : GIVE_WAY_DOT_REVEAL_K;
+  }
+
+  function giveWayDotFadeSpan(): number {
+    return compact ? GIVE_WAY_DOT_FADE_SPAN_COMPACT : GIVE_WAY_DOT_FADE_SPAN;
+  }
+
+  function giveWayDotSizeScale(): number {
+    return compact ? GIVE_WAY_DOT_SIZE_SCALE_COMPACT : GIVE_WAY_DOT_SIZE_SCALE;
   }
 
   // 0–1 fade-in for the dot layer: 0 below reveal-K, ramping to 1 over the fade
   // span so dots grow in as the user zooms into a region instead of popping.
   function dotDisclosureT(k: number): number {
-    return smoothStep((k - giveWayDotRevealK()) / GIVE_WAY_DOT_FADE_SPAN);
+    return smoothStep((k - giveWayDotRevealK()) / giveWayDotFadeSpan());
   }
 
   // PSE-only (or PSE with other zero-priority roles like GO/GOP) — no grid/reliability
@@ -1877,10 +1904,17 @@ export function mountNercOrgMap(): void {
     const v = promoted
       ? promotedBackgroundRadius(o, k)
       : fallback
-        ? fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE *
-          // Give-way dots render 2x larger and grow in over the fade span instead of
-          // popping at reveal-K (layoutDotGiveWay still clears them from every bubble).
-          (isGiveWayDot(o) ? dotDisclosureT(k) * GIVE_WAY_DOT_SIZE_SCALE : 1)
+        ? (() => {
+            const gwFade = isGiveWayDot(o) ? dotDisclosureT(k) * giveWayDotSizeScale() : 1;
+            let r = fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE * gwFade;
+            // Compact give-way dots: floor the visible radius so early-fade dots
+            // read as clickable specks, not sub-pixel noise (tap ring unchanged).
+            if (isGiveWayDot(o) && compact && !promoted) {
+              const minVis = 2.1 * unitPerPx * ORG_CONTENT_SCALE * dotDisclosureT(k);
+              r = Math.max(r, minVis);
+            }
+            return r;
+          })()
         : visualRadius(o, k);
     o._vr = v;
     o._vrk = k;
@@ -1897,7 +1931,15 @@ export function mountNercOrgMap(): void {
       // Give-way dots get a slightly larger tap/hover ring so the tiny markers stay
       // easy to select; dot-vs-dot ties resolve by nearest centre (see
       // nearestOrgAtPointer), so the bigger ring never makes close dots ambiguous.
-      const floor = isGiveWayDot(o) ? (compact ? 20 : 15) : (compact ? 18 : 12);
+      const floor = isGiveWayDot(o)
+        ? phone
+          ? 22
+          : compact
+            ? 20
+            : 15
+        : compact
+          ? 18
+          : 12;
       return Math.max(visual + 2 * unitPerPx, floor * unitPerPx);
     }
     // Every shown bubble is fully placed, so tap targets track the visible radius
@@ -2181,6 +2223,64 @@ export function mountNercOrgMap(): void {
     node.setAttribute("rx", String(Math.min(w, h) * (o._renderFallback ? 0.5 : 0.44)));
   }
 
+  // Half-extents (CSS px / viewBox units) of an org's invisible HIT target. The
+  // tap/hover region tracks the VISIBLE shape: a tight rounded rectangle hugging
+  // the pill (visible extents + the ring pad), not a bounding circle whose radius
+  // would track the pill's half-WIDTH and balloon high above/below a wide pill —
+  // swallowing clicks meant for the dots packed around it. Fallback / give-way
+  // dots are real circles, so they keep the exact circular target as before.
+  function hitHalfExtents(o: Org, k: number): { hw: number; hh: number } {
+    const hitR = hitTargetRadius(o, k);
+    if (o._renderFallback) return { hw: hitR, hh: hitR };
+    const r = renderedRadius(o, k);
+    const { hw, hh } = orgBubbleHalfExtents(o, k, r);
+    // Pad beyond the visible rectangle, taken from the same circular hit radius so
+    // the floors / zoom interpolation / micro+inset boosts all carry over unchanged.
+    const pad = Math.max(0, hitR - orgPackingRadius(o, k, r));
+    return { hw: hw + pad, hh: hh + pad };
+  }
+
+  /** True when (dx, dy) from org centre sits inside the padded hit target. */
+  function orgHitContainsOffset(o: Org, k: number, dx: number, dy: number): boolean {
+    if (o._renderFallback) {
+      const hitR = hitTargetRadius(o, k);
+      return dx * dx + dy * dy <= hitR * hitR;
+    }
+    const { hw, hh } = hitHalfExtents(o, k);
+    return Math.abs(dx) <= hw && Math.abs(dy) <= hh;
+  }
+
+  /** 0 at centre, 1 on the hit boundary — circular for dots, AABB-normalized for pills. */
+  function orgHitNormDistance(o: Org, k: number, dx: number, dy: number): number {
+    if (o._renderFallback) {
+      const hitR = hitTargetRadius(o, k);
+      return hitR > 0 ? (dx * dx + dy * dy) / (hitR * hitR) : Number.POSITIVE_INFINITY;
+    }
+    const { hw, hh } = hitHalfExtents(o, k);
+    if (hw <= 0 || hh <= 0) return Number.POSITIVE_INFINITY;
+    const nx = dx / hw;
+    const ny = dy / hh;
+    return nx * nx + ny * ny;
+  }
+
+  // Size an invisible hit RECT (center-preserving, like setOrgBoxSize). Sized in
+  // transform space (÷ k) because the hit layer lives inside the zoomed group.
+  function setHitBoxSize(node: SVGRectElement, o: Org, k: number): void {
+    const oldW = Number(node.getAttribute("width") || 0);
+    const oldH = Number(node.getAttribute("height") || 0);
+    const cx = Number(node.getAttribute("x") || 0) + oldW / 2;
+    const cy = Number(node.getAttribute("y") || 0) + oldH / 2;
+    const safeK = Math.max(k, 0.001);
+    const { hw, hh } = hitHalfExtents(o, k);
+    const w = (2 * hw) / safeK;
+    const h = (2 * hh) / safeK;
+    node.setAttribute("x", String(cx - w / 2));
+    node.setAttribute("y", String(cy - h / 2));
+    node.setAttribute("width", String(w));
+    node.setAttribute("height", String(h));
+    node.setAttribute("rx", String(Math.min(w, h) * (o._renderFallback ? 0.5 : 0.44)));
+  }
+
   // The real ISOs/RTOs (see ISO_RTO_OPERATOR_NAME) — these get the saber
   // outline and an explicit "ISO/RTO" note in their detail panel.
   function isIsoRtoOperator(o: Org): boolean {
@@ -2285,7 +2385,7 @@ export function mountNercOrgMap(): void {
     const inFamily = (d: Org) => marketFamily(d) === activeFocusGroup;
     gOverlay.selectAll<SVGRectElement, Org>("rect.org").filter(inFamily).raise();
     gSaber.selectAll<SVGRectElement, Org>("rect.org-saber").filter(inFamily).raise();
-    gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").filter(inFamily).raise();
+    gHit.selectAll<SVGRectElement, Org>("rect.org-hit").filter(inFamily).raise();
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").filter(inFamily).raise();
   }
 
@@ -2365,9 +2465,14 @@ export function mountNercOrgMap(): void {
         );
       });
     gHit
-      .selectAll<SVGCircleElement, Org>("circle.org-hit")
-      .attr("cx", (o) => orgRenderX(o, fanScale, declScale))
-      .attr("cy", (o) => orgRenderY(o, fanScale, declScale));
+      .selectAll<SVGRectElement, Org>("rect.org-hit")
+      .each(function (o) {
+        setOrgBoxPosition(
+          this as SVGRectElement,
+          orgRenderX(o, fanScale, declScale),
+          orgRenderY(o, fanScale, declScale),
+        );
+      });
     syncSabers(k);
   }
 
@@ -2430,12 +2535,12 @@ export function mountNercOrgMap(): void {
         o._rr = rr;
       }
     });
-    gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
-      const node = this as SVGCircleElement;
+    gHit.selectAll<SVGRectElement, Org>("rect.org-hit").each(function (o) {
+      const node = this as SVGRectElement;
       if (node.classList.contains("hide")) return;
       const hr = hitTargetRadius(o, k);
       if (hitK !== k || o._hr !== hr) {
-        node.setAttribute("r", String(hr / k));
+        setHitBoxSize(node, o, k);
         o._hr = hr;
       }
     });
@@ -3113,9 +3218,10 @@ export function mountNercOrgMap(): void {
     const step = 2 * unitPerPx;
     // Leash scales with the biggest nearby bubble so a dot can escape even a large
     // deep-zoom rectangle, with a comfortable floor for the common regional case.
-    // Roomy enough that the enlarged, well-spaced dots almost always find a clear spot
-    // to move into (stay visible) instead of being boxed in and hidden.
-    const leash = Math.max((compact ? 40 : 56) * unitPerPx, maxExt + (compact ? 18 : 26) * unitPerPx);
+    // Compact leash is shorter than desktop but roomy enough that dots find open
+    // slots instead of hiding — raised from 40 so phone maps show more dots at the
+    // same early reveal-K without enlarging the drawn specks.
+    const leash = Math.max((compact ? 48 : 56) * unitPerPx, maxExt + (compact ? 22 : 26) * unitPerPx);
     for (const d of dots) {
       // Remember last frame's offset BEFORE resetting — used for hysteresis so the
       // dot keeps its previous slot instead of hopping to an equivalent one.
@@ -4032,8 +4138,8 @@ export function mountNercOrgMap(): void {
     // track that or they drift off to one side of their bubble.
     syncSabers(k);
 
-    gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").each(function (o) {
-      const node = this as SVGCircleElement;
+    gHit.selectAll<SVGRectElement, Org>("rect.org-hit").each(function (o) {
+      const node = this as SVGRectElement;
       if (!o._vis) {
         if (o._hitVis !== false) {
           node.classList.add("hide");
@@ -4047,12 +4153,9 @@ export function mountNercOrgMap(): void {
       }
       const cx = orgRenderX(o, fanScale, declScale);
       const cy = orgRenderY(o, fanScale, declScale);
-      if (o._whx !== cx) {
-        node.setAttribute("cx", String(cx));
+      if (o._whx !== cx || o._why !== cy) {
+        setOrgBoxPosition(node, cx, cy);
         o._whx = cx;
-      }
-      if (o._why !== cy) {
-        node.setAttribute("cy", String(cy));
         o._why = cy;
       }
       const mask =
@@ -4064,7 +4167,7 @@ export function mountNercOrgMap(): void {
       }
       const hr = hitTargetRadius(o, k);
       if (hitChanged || o._hr !== hr) {
-        node.setAttribute("r", String(hr / k));
+        setHitBoxSize(node, o, k);
         o._hr = hr;
       }
     });
@@ -4899,7 +5002,7 @@ export function mountNercOrgMap(): void {
       .classed("selected", (d) => selectedOrg?.ncr_id === d.ncr_id);
 
     gHit
-      .selectAll<SVGCircleElement, Org>("circle.org-hit")
+      .selectAll<SVGRectElement, Org>("rect.org-hit")
       .classed("hot", (d) => hot?.ncr_id === d.ncr_id)
       .classed("selected", (d) => selectedOrg?.ncr_id === d.ncr_id);
 
@@ -4969,7 +5072,7 @@ export function mountNercOrgMap(): void {
       const rr = promoted ? promotedBackgroundRadius(o, k) : renderedRadius(o, k);
       setOrgBoxSize(node, o, k, rr / k);
     });
-    gHit.selectAll<SVGCircleElement, Org>("circle.org-hit").classed("hot", false);
+    gHit.selectAll<SVGRectElement, Org>("rect.org-hit").classed("hot", false);
     gLabels.selectAll<SVGTextElement, Org>("text.olabel").classed("hot-label", false);
   }
 
@@ -5441,7 +5544,7 @@ export function mountNercOrgMap(): void {
       .filter((d) => d.ncr_id === o.ncr_id)
       .raise();
     gHit
-      .selectAll<SVGCircleElement, Org>("circle.org-hit")
+      .selectAll<SVGRectElement, Org>("rect.org-hit")
       .filter((d) => d.ncr_id === o.ncr_id)
       .raise();
     gLabels
@@ -5450,7 +5553,7 @@ export function mountNercOrgMap(): void {
       .raise();
   }
 
-  function wireOrgPointer(selection: ReturnType<typeof gOverlay.selectAll<SVGCircleElement, Org>>): void {
+  function wireOrgPointer(selection: ReturnType<typeof gOverlay.selectAll<SVGRectElement, Org>>): void {
     selection
       .on("mouseenter", (ev, o) => {
         if (selectedOrg) {
@@ -5459,8 +5562,12 @@ export function mountNercOrgMap(): void {
           clearHoverFocus();
           return;
         }
-        hoverOrg = o;
-        showTooltip(o, ev as MouseEvent);
+        // Resolve the same way a click does: a visible dot tucked against a pill
+        // gets hover priority over the pill's (padded) hit rect, rather than the
+        // pill always winning just because its hit element sits on top.
+        const target = nearestOrgAtPointer(ev as MouseEvent, o);
+        hoverOrg = target;
+        showTooltip(target, ev as MouseEvent);
         applyHoverFocus();
       })
       .on("mousemove", (ev) => {
@@ -5481,7 +5588,7 @@ export function mountNercOrgMap(): void {
           return;
         }
         hoverOrg = o;
-        const rect = (this as SVGCircleElement).getBoundingClientRect();
+        const rect = (this as SVGRectElement).getBoundingClientRect();
         showTooltipAt(o, rect.right, rect.top);
         applyHoverFocus();
       })
@@ -5836,17 +5943,19 @@ export function mountNercOrgMap(): void {
       .attr("aria-hidden", "true");
     syncSabers(transform.k);
 
-    const hitCircles = gHit
-      .selectAll("circle.org-hit")
+    const hitTargets = gHit
+      .selectAll("rect.org-hit")
       .data(hitOrder, (o: unknown) => (o as Org).ncr_id)
-      .join("circle")
+      .join("rect")
       .attr("class", "org-hit")
-      .attr("cx", (o) => orgRenderX(o))
-      .attr("cy", (o) => orgRenderY(o))
-      .attr("r", (o) => hitTargetRadius(o, transform.k) / Math.max(transform.k, 0.001))
-      .attr("aria-hidden", "true");
+      .attr("aria-hidden", "true")
+      .each(function (o) {
+        const node = this as SVGRectElement;
+        setHitBoxSize(node, o, transform.k);
+        setOrgBoxPosition(node, orgRenderX(o), orgRenderY(o));
+      });
 
-    wireOrgPointer(hitCircles as never);
+    wireOrgPointer(hitTargets as never);
 
     gPlaces
       .selectAll("circle.place-dot")

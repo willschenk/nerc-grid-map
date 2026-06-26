@@ -1,10 +1,12 @@
 #!/usr/bin/env node
-// Regression test for the "stale dot hover" bug: hovering a give-way dot promotes
-// it (bigger + inside short-name label); moving the pointer AWAY must shrink it
-// back and remove the label. Serves dist/, drives headless Chrome via CDP, zooms
-// to reveal dots, hovers one by dispatching real mouse events at its centre, then
-// moves away and asserts the dot returned to its small size with no lingering label.
-// Usage: npm run build && node scripts/perf/hover-dot-test.mjs
+// Regression tests for give-way dot interaction + dot/pill hitbox selection.
+//   1. Hover promotion: hovering a give-way dot promotes it; moving away shrinks
+//      it back and removes any lingering label.
+//   2. Hitbox selection: a dot beside a larger pill stays selectable; empty space
+//      above a pill (inside the old circular hit) must not select the pill; clicking
+//      inside the visible pill still selects normally.
+// Serves dist/, drives headless Chrome via CDP. Usage:
+//   npm run build && node scripts/perf/hover-dot-test.mjs
 
 import { spawn, spawnSync } from "node:child_process";
 import { createReadStream, existsSync, mkdirSync, statSync } from "node:fs";
@@ -66,6 +68,77 @@ async function evalJs(conn, sid, expr) {
 async function mouse(conn, sid, type, x, y) {
   await conn.send("Input.dispatchMouseEvent", { type, x, y, button: "none", buttons: 0 }, sid);
 }
+async function clickAt(conn, sid, x, y) {
+  await mouse(conn, sid, "mouseMoved", x, y);
+  await sleep(50);
+  await conn.send("Input.dispatchMouseEvent", { type: "mousePressed", x, y, button: "left", clickCount: 1, buttons: 1 }, sid);
+  await sleep(40);
+  await conn.send("Input.dispatchMouseEvent", { type: "mouseReleased", x, y, button: "left", clickCount: 1, buttons: 0 }, sid);
+  await sleep(120);
+}
+async function clearSelection(conn, sid) {
+  await evalJs(conn, sid, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}))`).catch(() => {});
+  await clickAt(conn, sid, 6, 6);
+  await evalJs(conn, sid, `window.__lastPick = '__cleared__'`).catch(() => {});
+  await sleep(120);
+}
+const LAST_PICK = `(window.__lastPick && window.__lastPick.o) || null`;
+const HAS_SELECTION = `!!document.querySelector('rect.org.selected')`;
+const PANEL_TITLE = `document.querySelector('#nerc-panel .p-title h2')?.textContent || null`;
+
+// Visible dot whose centre sits near a larger pill but outside the pill body.
+const DOT_NEAR_PILL = `(() => {
+  const onScreen = (x, y) => x > 20 && x < window.innerWidth - 20 && y > 80 && y < window.innerHeight - 120;
+  const dots = [], pills = [];
+  for (const h of document.querySelectorAll('rect.org-hit')) {
+    if (h.classList.contains('hide') || !h.__data__) continue;
+    const b = h.getBoundingClientRect(); if (b.width <= 0) continue;
+    const x = b.left + b.width / 2, y = b.top + b.height / 2;
+    if (!onScreen(x, y)) continue;
+    if (h.__data__._renderFallback) dots.push({ id: h.__data__.ncr_id, name: h.__data__.entity_name, x, y, r: Math.min(b.width, b.height) / 2 });
+  }
+  for (const r of document.querySelectorAll('rect.org')) {
+    if (r.classList.contains('hide') || !r.__data__ || r.__data__._renderFallback) continue;
+    const b = r.getBoundingClientRect(); if (b.width <= 0 || b.height <= 0) continue;
+    const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+    if (!onScreen(cx, cy)) continue;
+    pills.push({ id: r.__data__.ncr_id, name: r.__data__.entity_name, cx, cy,
+      l: b.left, rt: b.right, t: b.top, btm: b.bottom, vw: b.width, vh: b.height });
+  }
+  let best = null;
+  for (const dt of dots) {
+    for (const p of pills) {
+      if (p.vw < dt.r * 2.5) continue; // prefer a visibly larger pill neighbour
+      const insideBody = dt.x >= p.l && dt.x <= p.rt && dt.y >= p.t && dt.y <= p.btm;
+      if (insideBody) continue;
+      const d = Math.hypot(dt.x - p.cx, dt.y - p.cy);
+      if (d > 90) continue;
+      if (!best || d < best.dist) best = { dot: dt, pill: p, dist: +d.toFixed(1) };
+    }
+  }
+  return best;
+})()`;
+
+const pillById = (id) => `(() => {
+  const v = [...document.querySelectorAll('rect.org')].find(r => !r.classList.contains('hide') && r.__data__ && r.__data__.ncr_id === ${JSON.stringify(id)});
+  const h = [...document.querySelectorAll('rect.org-hit')].find(r => !r.classList.contains('hide') && r.__data__ && r.__data__.ncr_id === ${JSON.stringify(id)});
+  if (!v || !h) return null;
+  const vb = v.getBoundingClientRect(), hb = h.getBoundingClientRect();
+  return { cx: vb.left + vb.width / 2, cy: vb.top + vb.height / 2,
+    vtop: vb.top, vbot: vb.bottom, vw: vb.width, vh: vb.height,
+    htop: hb.top, hbot: hb.bottom, hw: hb.width, hh: hb.height,
+    dotX: hb.left + hb.width / 2, dotY: hb.top + hb.height / 2 };
+})()`;
+
+// Native click on an org-hit rect (drives wireOrgPointer + nearestOrgAtPointer reliably).
+const clickOrgHit = (ncrId) => `(() => {
+  const hit = [...document.querySelectorAll('rect.org-hit')].find(c => !c.classList.contains('hide') && c.__data__ && c.__data__.ncr_id === ${JSON.stringify(ncrId)});
+  if (!hit) return { ok: false };
+  const b = hit.getBoundingClientRect();
+  const x = b.left + b.width / 2, y = b.top + b.height / 2;
+  hit.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true, cancelable: true, view: window }));
+  return { ok: true, x, y };
+})()`;
 
 // Find an ISOLATED give-way dot comfortably inside the viewport (so a hover lands
 // cleanly and the nearby-label check is unambiguous). Returns its centre + size.
@@ -164,6 +237,51 @@ async function main() {
     else console.log("ok: dot returned to rest size after pointer left");
     if (after.labelNear && !rest.labelNear) { console.log("FAIL: short-name label still drawn after pointer left (none at rest)"); failures++; }
     else console.log("ok: label state returned to rest after pointer left");
+
+    // ── dot-near-pill hitbox selection regression ──
+    console.log("\n── dot-near-pill hitbox (selection regression) ──");
+    await mouse(conn, sessionId, "mouseMoved", 120, 120);
+    await sleep(300);
+    const near = await evalJs(conn, sessionId, DOT_NEAR_PILL);
+    if (!near) {
+      console.log("skip: no visible dot within 90px of a larger pill at this zoom");
+    } else {
+      console.log(`pair: dot "${near.dot.name}" @${near.dist}px from pill "${near.pill.name}" (${Math.round(near.pill.vw)}×${Math.round(near.pill.vh)}px)`);
+
+      await clearSelection(conn, sessionId);
+      const dotClick = await evalJs(conn, sessionId, clickOrgHit(near.dot.id));
+      await sleep(200);
+      const dotPick = await evalJs(conn, sessionId, LAST_PICK);
+      const dotPanel = await evalJs(conn, sessionId, PANEL_TITLE);
+      console.log(`  dot click @(${dotClick?.x?.toFixed?.(0) ?? "?"},${dotClick?.y?.toFixed?.(0) ?? "?"}) → pick=${JSON.stringify(dotPick)} panel=${JSON.stringify(dotPanel)}`);
+      if (!dotClick?.ok || dotPick !== near.dot.name) { console.log("FAIL: dot centre click selected the pill (or nothing) instead of the dot"); failures++; }
+      else console.log("ok: dot centre click selects the dot, not the nearby pill");
+
+      const geom = await evalJs(conn, sessionId, pillById(near.pill.id));
+      if (!geom) {
+        console.log("skip: pill geometry lost after dot click");
+      } else {
+        const emptyX = geom.cx;
+        const emptyY = geom.htop - 8;
+        console.log(`  empty-space probe above pill: (${Math.round(emptyX)}, ${Math.round(emptyY)}) — visible top ${geom.vtop.toFixed(0)}, hit top ${geom.htop.toFixed(0)}`);
+        await clearSelection(conn, sessionId);
+        await clickAt(conn, sessionId, emptyX, emptyY);
+        const emptyPick = await evalJs(conn, sessionId, LAST_PICK);
+        console.log(`  empty-space click → pick=${JSON.stringify(emptyPick)}`);
+        if (emptyPick === near.pill.name) { console.log("FAIL: empty space above pill selected the pill (circular hit overshoot regression)"); failures++; }
+        else console.log("ok: empty space above pill does not select the pill");
+      }
+
+      await clearSelection(conn, sessionId);
+      const pillClick = await evalJs(conn, sessionId, clickOrgHit(near.pill.id));
+      await sleep(200);
+      const pillPick = await evalJs(conn, sessionId, LAST_PICK);
+      const pillPanel = await evalJs(conn, sessionId, PANEL_TITLE);
+      const hasSel = await evalJs(conn, sessionId, HAS_SELECTION);
+      console.log(`  pill click @(${pillClick?.x?.toFixed?.(0) ?? "?"},${pillClick?.y?.toFixed?.(0) ?? "?"}) → pick=${JSON.stringify(pillPick)} panel=${JSON.stringify(pillPanel)} hasSelection=${hasSel}`);
+      if (!pillClick?.ok || !hasSel || pillPick !== near.pill.name) { console.log("FAIL: visible pill centre click did not select the pill"); failures++; }
+      else console.log("ok: visible pill centre click selects the pill normally");
+    }
   } finally {
     ws?.close(); chrome.kill("SIGKILL"); server.close();
   }

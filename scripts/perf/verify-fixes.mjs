@@ -3,6 +3,8 @@
 //   - no orange ripple (.focus-rings) anywhere in the DOM
 //   - hover tooltip: ISO/RTO, PJM Zone, MISO LBA show as pills ABOVE the role pills,
 //     with no redundant "· CODE" text
+//   - dot-near-pill hitbox: dots beside pills stay selectable; empty space above
+//     pills must not select; visible pill clicks still work
 //   - subarea clickability while a parent family is in focus (clicking a subarea
 //     selects it / opens its panel and keeps PJM/MISO focus active)
 //   - desktop detail card is narrow + tucked to the right
@@ -78,8 +80,8 @@ async function moveTo(conn, sessionId, x, y) {
   await conn.send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y }, sessionId);
 }
 function boxOf(name) {
-  // aria-label lives on rect.org (not the org-hit circle); the hit circle is
-  // co-located, so the rect centre is a valid click/hover point.
+  // aria-label lives on rect.org; the org-hit rect is co-located, so the rect
+  // centre is a valid click/hover point.
   return `(() => {
     const n = [...document.querySelectorAll('rect.org')].find((c) => (c.getAttribute('aria-label')||'').includes(${JSON.stringify(name)}) && !c.classList.contains('hide'));
     if (!n) return null; const b = n.getBoundingClientRect(); if (b.width <= 0) return null; return { x: b.left + b.width/2, y: b.top + b.height/2, w: b.width };
@@ -98,6 +100,110 @@ const TOOLTIP_PROBE = `(() => {
 })()`;
 
 const assert = (cond, msg) => { if (!cond) { console.error("FAIL:", msg); process.exitCode = 1; } else console.log("ok:", msg); };
+
+const LAST_PICK = `(window.__lastPick && window.__lastPick.o) || null`;
+const HAS_SELECTION = `!!document.querySelector('rect.org.selected')`;
+
+async function clearSelection(conn, sessionId) {
+  await evalJs(conn, sessionId, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}))`).catch(() => {});
+  await clickAt(conn, sessionId, 6, 6);
+  await evalJs(conn, sessionId, `window.__lastPick = '__cleared__'`).catch(() => {});
+  await sleep(120);
+}
+
+// Visible dot near a larger pill, measured from rect.org / rect.org-hit DOM boxes.
+const DOT_NEAR_PILL = `(() => {
+  const onScreen = (x, y) => x > 20 && x < window.innerWidth - 20 && y > 80 && y < window.innerHeight - 120;
+  const dots = [], pills = [];
+  for (const h of document.querySelectorAll('rect.org-hit')) {
+    if (h.classList.contains('hide') || !h.__data__) continue;
+    const b = h.getBoundingClientRect(); if (b.width <= 0) continue;
+    const x = b.left + b.width / 2, y = b.top + b.height / 2;
+    if (!onScreen(x, y)) continue;
+    if (h.__data__._renderFallback) dots.push({ id: h.__data__.ncr_id, name: h.__data__.entity_name, x, y, r: Math.min(b.width, b.height) / 2 });
+  }
+  for (const r of document.querySelectorAll('rect.org')) {
+    if (r.classList.contains('hide') || !r.__data__ || r.__data__._renderFallback) continue;
+    const b = r.getBoundingClientRect(); if (b.width <= 0 || b.height <= 0) continue;
+    const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+    if (!onScreen(cx, cy)) continue;
+    pills.push({ id: r.__data__.ncr_id, name: r.__data__.entity_name, cx, cy,
+      l: b.left, rt: b.right, t: b.top, btm: b.bottom, vw: b.width, vh: b.height });
+  }
+  let best = null;
+  for (const dt of dots) {
+    for (const p of pills) {
+      if (p.vw < dt.r * 2.5) continue;
+      const insideBody = dt.x >= p.l && dt.x <= p.rt && dt.y >= p.t && dt.y <= p.btm;
+      if (insideBody) continue;
+      const d = Math.hypot(dt.x - p.cx, dt.y - p.cy);
+      if (d > 90) continue;
+      if (!best || d < best.dist) best = { dot: dt, pill: p, dist: +d.toFixed(1) };
+    }
+  }
+  return best;
+})()`;
+
+const pillById = (id) => `(() => {
+  const v = [...document.querySelectorAll('rect.org')].find(r => !r.classList.contains('hide') && r.__data__ && r.__data__.ncr_id === ${JSON.stringify(id)});
+  const h = [...document.querySelectorAll('rect.org-hit')].find(r => !r.classList.contains('hide') && r.__data__ && r.__data__.ncr_id === ${JSON.stringify(id)});
+  if (!v || !h) return null;
+  const vb = v.getBoundingClientRect(), hb = h.getBoundingClientRect();
+  return { cx: vb.left + vb.width / 2, cy: vb.top + vb.height / 2,
+    vtop: vb.top, vbot: vb.bottom, htop: hb.top, hw: hb.width };
+})()`;
+
+const clickOrgHit = (ncrId) => `(() => {
+  const hit = [...document.querySelectorAll('rect.org-hit')].find(c => !c.classList.contains('hide') && c.__data__ && c.__data__.ncr_id === ${JSON.stringify(ncrId)});
+  if (!hit) return { ok: false };
+  const b = hit.getBoundingClientRect();
+  const x = b.left + b.width / 2, y = b.top + b.height / 2;
+  hit.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true, cancelable: true, view: window }));
+  return { ok: true, x, y };
+})()`;
+
+async function runDotPillHitboxTests(conn, sessionId) {
+  console.log("\n── dot-near-pill hitbox regression ──");
+  const zoomIn = `document.getElementById('nerc-zoom-in').click()`;
+  for (let i = 0; i < 6; i++) { await evalJs(conn, sessionId, zoomIn); await sleep(380); }
+  await sleep(700);
+
+  const near = await evalJs(conn, sessionId, DOT_NEAR_PILL);
+  if (!near) {
+    console.log("note: no visible dot within 90px of a larger pill at this zoom — skipping hitbox checks");
+    await evalJs(conn, sessionId, `document.getElementById('nerc-zoom-home').click()`);
+    await sleep(800);
+    return;
+  }
+  console.log(`pair: dot "${near.dot.name}" @${near.dist}px from pill "${near.pill.name}"`);
+
+  await clearSelection(conn, sessionId);
+  await evalJs(conn, sessionId, clickOrgHit(near.dot.id));
+  await sleep(200);
+  const dotPick = await evalJs(conn, sessionId, LAST_PICK);
+  assert(dotPick === near.dot.name, `dot centre click selects the dot (got ${JSON.stringify(dotPick)})`);
+
+  const geom = await evalJs(conn, sessionId, pillById(near.pill.id));
+  if (geom) {
+    const emptyX = geom.cx, emptyY = geom.htop - 8;
+    await clearSelection(conn, sessionId);
+    await clickAt(conn, sessionId, emptyX, emptyY);
+    const emptyPick = await evalJs(conn, sessionId, LAST_PICK);
+    assert(emptyPick !== near.pill.name, `empty space above pill does not select the pill (got ${JSON.stringify(emptyPick)})`);
+  } else {
+    console.log("note: pill geometry unavailable for empty-space probe — skipping");
+  }
+
+  await clearSelection(conn, sessionId);
+  await evalJs(conn, sessionId, clickOrgHit(near.pill.id));
+  await sleep(200);
+  const pillPick = await evalJs(conn, sessionId, LAST_PICK);
+  const hasSel = await evalJs(conn, sessionId, HAS_SELECTION);
+  assert(hasSel && pillPick === near.pill.name, `visible pill centre click selects the pill (got ${JSON.stringify(pillPick)}, hasSelection=${hasSel})`);
+
+  await evalJs(conn, sessionId, `document.getElementById('nerc-zoom-home').click()`);
+  await sleep(800);
+}
 
 async function hoverAndRead(conn, sessionId, name) {
   const box = await evalJs(conn, sessionId, boxOf(name));
@@ -140,6 +246,8 @@ async function main() {
     await sleep(3500);
     await evalJs(conn, sessionId, `window.__errs = []; addEventListener('error', (e) => window.__errs.push(String(e.message || e.error || e)));`);
 
+    await runDotPillHitboxTests(conn, sessionId);
+
     // ── item 5: no orange ripple element anywhere ──
     const hasRings = await evalJs(conn, sessionId, `!!document.querySelector('.focus-rings')`);
     assert(!hasRings, "no .focus-rings element exists in the DOM (orange ripple removed)");
@@ -166,7 +274,7 @@ async function main() {
     async function sweep() {
       const boxes = await evalJs(conn, sessionId, `(() => {
         const out = [];
-        for (const c of document.querySelectorAll('circle.org-hit')) {
+        for (const c of document.querySelectorAll('rect.org-hit')) {
           if (c.classList.contains('hide')) continue;
           const b = c.getBoundingClientRect();
           const cx = b.left + b.width/2, cy = b.top + b.height/2;
@@ -233,7 +341,7 @@ async function main() {
     // Click the on-screen PJM subarea farthest from the hub and assert the subarea is
     // clickable/interactive while the family stays in focus: it selects the subarea
     // (its own panel opens) and PJM focus mode remains active. The click is dispatched
-    // as a native event on the subarea's hit circle (with correct client coords) so it
+    // as a native event on the subarea's hit rect (with correct client coords) so it
     // drives the real d3 click handler + nearestOrgAtPointer + selectOrg without
     // d3-zoom's drag-gesture detection swallowing a synthesized CDP press/release.
     const sub = await evalJs(conn, sessionId, `(() => {
@@ -252,7 +360,7 @@ async function main() {
       if (!best) return null;
       const name = best.getAttribute('aria-label') || '';
       const id = best.__data__ && best.__data__.ncr_id;
-      const hit = [...document.querySelectorAll('circle.org-hit')].find((c) => c.__data__ && c.__data__.ncr_id === id) || best;
+      const hit = [...document.querySelectorAll('rect.org-hit')].find((c) => c.__data__ && c.__data__.ncr_id === id) || best;
       const b = hit.getBoundingClientRect();
       const x = b.left + b.width/2, y = b.top + b.height/2;
       hit.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true, cancelable: true, view: window }));
@@ -298,7 +406,7 @@ async function main() {
       const r = [...document.querySelectorAll('rect.org')].find((c) => (c.getAttribute('aria-label')||'').includes('Electric Reliability Council of Texas') && !c.classList.contains('hide'));
       if (!r) return false;
       const id = r.__data__ && r.__data__.ncr_id;
-      const hit = [...document.querySelectorAll('circle.org-hit')].find((c) => c.__data__ && c.__data__.ncr_id === id) || r;
+      const hit = [...document.querySelectorAll('rect.org-hit')].find((c) => c.__data__ && c.__data__.ncr_id === id) || r;
       const b = hit.getBoundingClientRect();
       hit.dispatchEvent(new MouseEvent('click', { clientX: b.left + b.width/2, clientY: b.top + b.height/2, bubbles: true, cancelable: true, view: window }));
       return true;

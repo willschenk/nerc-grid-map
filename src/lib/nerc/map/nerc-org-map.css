@@ -156,6 +156,11 @@
 #nerc-svg .org-hit {
   fill: transparent;
   stroke: transparent;
+  /* No base stroke: the hit rect now hugs the visible pill, so a scaling 1-unit
+     stroke would re-inflate the clickable area into a halo around it (the .hot /
+     .selected states below set their own non-scaling stroke when needed). */
+  stroke-width: 0;
+  vector-effect: non-scaling-stroke;
   cursor: pointer;
   pointer-events: all;
 }
@@ -1895,6 +1900,12 @@
   #nerc-svg .org.tour-flash,
   #nerc-svg .olabel.tour-flash {
     animation-duration: 950ms;
+  }
+
+  /* Give-way dots: slightly stronger fill on narrow viewports so tiny specks read
+     as deliberate, tappable data — still far subtler than labeled pills. */
+  #nerc-svg .org.org-background {
+    fill-opacity: 0.72;
   }
 
   /* Phones: slightly stronger halo floor so white org labels stay legible on small screens. */

@@ -113,8 +113,11 @@ export function validateAreaAliases(orgs, aliases = loadAreaAliases()) {
     ) {
       errors.push(`area alias ${code} kind must be a non-empty string`);
     }
-    if (row.kind === "transmission_zone" && !String(row.market ?? "").trim()) {
-      errors.push(`area alias ${code} transmission_zone is missing market`);
+    if (row.kind === "transmission_zone" && row.market !== "PJM") {
+      errors.push(`area alias ${code} transmission_zone requires market: PJM`);
+    }
+    if (row.market === "PJM" && row.kind !== "transmission_zone") {
+      errors.push(`area alias ${code} market: PJM requires kind: transmission_zone`);
     }
     const owners = acronymOwners.get(code) ?? new Set();
     const conflicts = [...owners].filter((owner) => owner !== ncr_id);
@@ -129,6 +132,111 @@ export function validateAreaAliases(orgs, aliases = loadAreaAliases()) {
       errors.push(`area alias ${code} has unnecessary allow_acronym_conflict`);
     }
   }
+  return errors;
+}
+
+const DEFAULT_RENDERER_PATH = resolve(__dirname, "map/nerc-org-map.ts");
+
+/** Parse PJM/MISO area-code sets from the map renderer (single source of truth). */
+export function loadRendererMarketAreaCodes(rendererPath = DEFAULT_RENDERER_PATH) {
+  const src = readFileSync(rendererPath, "utf8");
+  const misoBlock = src.match(
+    /const MISO_CONTROL_AREA_CODES = new Map<string, readonly string\[\]>\(\[([\s\S]*?)\]\);/,
+  );
+  const pjmBlock = src.match(/const PJM_TRANSMISSION_ZONE_CODES = new Set\(\[([\s\S]*?)\]\);/);
+  if (!misoBlock) throw new Error("could not parse MISO_CONTROL_AREA_CODES from renderer");
+  if (!pjmBlock) throw new Error("could not parse PJM_TRANSMISSION_ZONE_CODES from renderer");
+
+  const miso = new Map();
+  const entryRe = /\["([^"]+)",\s*\[([^\]]*)\]\]/g;
+  for (const m of misoBlock[1].matchAll(entryRe)) {
+    const codes = [...m[2].matchAll(/"([^"]+)"/g)].map((x) => x[1].toUpperCase());
+    miso.set(m[1], codes);
+  }
+
+  const pjm = new Set([...pjmBlock[1].matchAll(/"([^"]+)"/g)].map((m) => m[1].toUpperCase()));
+  return { miso, pjm };
+}
+
+/**
+ * Cross-check area-aliases.json (and built org payloads) against the renderer's
+ * PJM/MISO focus membership. Catches ALTE-style drift between data and UI logic.
+ */
+export function validateMarketAreaAliases(
+  orgs,
+  aliases = loadAreaAliases(),
+  rendererPath = DEFAULT_RENDERER_PATH,
+) {
+  const errors = [];
+  let renderer;
+  try {
+    renderer = loadRendererMarketAreaCodes(rendererPath);
+  } catch (err) {
+    return [`market area alias check: ${err.message}`];
+  }
+
+  const aliasByCode = new Map();
+  for (const row of aliases) {
+    const code = String(row.code ?? "").trim().toUpperCase();
+    if (!code) continue;
+    aliasByCode.set(code, row);
+  }
+
+  const orgIds = new Set(orgs.map((o) => o.ncr_id));
+  const orgById = new Map(orgs.map((o) => [o.ncr_id, o]));
+
+  for (const [ncrId, codes] of renderer.miso) {
+    if (!orgIds.has(ncrId)) {
+      errors.push(`MISO LBA org ${ncrId} in renderer but missing from built org data`);
+      continue;
+    }
+    const builtAliases = new Set((orgById.get(ncrId)?.area_aliases ?? []).map((c) => c.toUpperCase()));
+    for (const code of codes) {
+      const row = aliasByCode.get(code);
+      if (!row) {
+        errors.push(`MISO LBA ${code} missing from area-aliases.json (renderer ${ncrId})`);
+        continue;
+      }
+      if (row.ncr_id !== ncrId) {
+        errors.push(`MISO LBA ${code} targets ${row.ncr_id}, renderer expects ${ncrId}`);
+      }
+      if (!builtAliases.has(code)) {
+        errors.push(`MISO LBA ${code} not attached to ${ncrId} in built org payload`);
+      }
+    }
+  }
+
+  for (const code of renderer.pjm) {
+    const row = aliasByCode.get(code);
+    if (!row) {
+      errors.push(`PJM zone ${code} missing from area-aliases.json`);
+      continue;
+    }
+    if (row.market !== "PJM") {
+      errors.push(`PJM zone ${code} missing market: PJM`);
+    }
+    if (row.kind !== "transmission_zone") {
+      errors.push(`PJM zone ${code} missing kind: transmission_zone`);
+    }
+    if (!orgIds.has(row.ncr_id)) {
+      errors.push(`PJM zone ${code} targets missing org ${row.ncr_id}`);
+      continue;
+    }
+    const builtAliases = new Set((orgById.get(row.ncr_id)?.area_aliases ?? []).map((c) => c.toUpperCase()));
+    if (!builtAliases.has(code)) {
+      errors.push(`PJM zone ${code} not attached to ${row.ncr_id} in built org payload`);
+    }
+  }
+
+  for (const row of aliases) {
+    const code = String(row.code ?? "").trim().toUpperCase();
+    if (row.market === "PJM" && row.kind === "transmission_zone" && !renderer.pjm.has(code)) {
+      errors.push(
+        `area alias ${code} is PJM transmission_zone but not in renderer PJM_TRANSMISSION_ZONE_CODES`,
+      );
+    }
+  }
+
   return errors;
 }
 

@@ -46,7 +46,7 @@ exists.
 
 ```bash
 npm run nerc:build        # regenerate payloads from source
-npm run nerc:qa           # schema, area-alias conflicts, locations, confidence
+npm run nerc:qa           # schema, area-alias conflicts, PJM/MISO drift guard, locations
 npm run nerc:payload-check # canonical vs render vs details counts match
 npm run ux-check          # label lengths, casing, collisions (≤8-char mobile rule)
 npm run check             # astro/tsc typecheck
@@ -71,3 +71,45 @@ npm run deploy            # astro build + scripts/deploy-pages.sh → gh-pages b
 | A PJM/MISO area code → org | `src/data/nerc/area-aliases.json` | `nerc:build` + `nerc:qa` |
 | Roles / weight / color logic | `src/lib/nerc/enrich.mjs` | `nerc:build` |
 | How bubbles/dots/labels render | `src/lib/nerc/map/nerc-org-map.ts` + `.css` | `npm run build` |
+
+## Area-code source of truth (PJM / MISO / legacy)
+
+**Where to edit area codes.** Change `src/data/nerc/area-aliases.json`, then
+`npm run nerc:build` and `npm run nerc:qa`. Examples:
+
+| Code | Edit in `area-aliases.json` | Typical target |
+|------|----------------------------|----------------|
+| ALTE, ALTW, MP, AMIL, CIN | `code` + `ncr_id` + `meaning` | MISO LBA org (see renderer list below) |
+| CPLE, CPLW, YAD, DUK | same | Legacy BA / successor org (e.g. CPLE → NCR01298) |
+| AECO, COMED, DEOK, … | same + **`market: "PJM"`** and **`kind: "transmission_zone"`** | PJM zone org |
+
+**Generated payloads — never hand-edit.** `public/nerc/orgs.json`,
+`orgs-render.json`, and `org-details.json` are build output. Area codes land on
+orgs as `area_aliases[]` only via `applyAreaAliases` in `build-orgs.mjs`.
+
+**PJM transmission zones — data is canonical.** PJM focus mode derives membership
+from each org's built `area_aliases` intersecting
+`PJM_TRANSMISSION_ZONE_CODES` in the renderer. Add or fix zone codes in
+`area-aliases.json` (with `market` + `kind` as above); do not duplicate
+code→org mappings elsewhere.
+
+**MISO LBA codes — two places today (must agree).** MISO focus membership is
+still hard-coded in `MISO_CONTROL_AREA_CODES` inside `nerc-org-map.ts`
+(`ncr_id` → codes such as ALTE/ALTW/CIN). The same codes must also exist in
+`area-aliases.json` pointing at the same `ncr_id`. `npm run nerc:qa` runs
+`validateMarketAreaAliases` and fails on drift (e.g. ALTE on the wrong org).
+Longer term: collapse MISO membership into one source; until then, edit **both**
+files or QA will fail.
+
+**Legacy / project-owner codes.** Verified labels such as CIN, YAD, CPLE, CPLW,
+AMIL, ALTE, ALTW are priority evidence per `docs/standards/name-shortest.md`.
+Do not rename or re-target them without explicit research; preserve
+`allow_acronym_conflict` where APS/AEP/PSEG/NSP/MP already declare it.
+
+**Pricing hubs are not orgs.** `WESTERN HUB` lives in `area-aliases.json`
+→ `interfaces`, not `aliases`. Do not promote it to an org alias.
+
+**Logic:** `src/lib/nerc/area-aliases.mjs` (load, apply, validate) ·
+**QA:** `scripts/nerc/qa.mjs` step 14/14b ·
+**Renderer constants:** `PJM_TRANSMISSION_ZONE_CODES`, `MISO_CONTROL_AREA_CODES`
+in `nerc-org-map.ts`.

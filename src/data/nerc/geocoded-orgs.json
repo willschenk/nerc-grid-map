@@ -6231,7 +6231,7 @@
     },
     {
       "ncr_id": "NCR13470",
-      "entity_name": "Big Blue WInd Farm, LLC",
+      "entity_name": "Big Blue Wind Farm, LLC",
       "acronym": "Big Blue",
       "acronym_source": "name_initialism",
       "region": "MRO",
@@ -23094,7 +23094,7 @@
     },
     {
       "ncr_id": "NCR11791",
-      "entity_name": "Alcoa Power Generating Inc. -Long Sault Division",
+      "entity_name": "Alcoa Power Generating Inc. - Long Sault Division",
       "acronym": "APGI Long Sault",
       "acronym_source": "name_initialism",
       "region": "NPCC",
@@ -25264,7 +25264,7 @@
     },
     {
       "ncr_id": "NCR12033",
-      "entity_name": "Canal Generating llc",
+      "entity_name": "Canal Generating LLC",
       "acronym": "Canal",
       "acronym_source": "common_market_name",
       "region": "NPCC",

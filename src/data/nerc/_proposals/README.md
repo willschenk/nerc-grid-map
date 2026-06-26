@@ -8,7 +8,10 @@ Expected files (created on demand):
 
 - `name-proposals.csv` — proposed `name_shortest` labels.
 - `combine-proposals.csv` — same-entity co-location combine candidates.
-- `area-code-proposals.csv` — MISO/PJM area-code → org checks.
+- `area-code-proposals.csv` — MISO/PJM area-code → org checks (Cursor batch output).
+- `area-code-research-queue.csv` — human-maintained queue of confirmed vs unresolved
+  area-code mappings (sensitive/legacy codes); update after audits, apply only
+  `confirmed` rows to `area-aliases.json`.
 
 A human reviews these, then applies the verified rows
 (`needs_review = no`, `confidence = high`) to the real source files

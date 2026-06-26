@@ -15,7 +15,11 @@ import {
   US_INSET_STATE_CODES,
 } from "../../src/lib/nerc/geography-scope.mjs";
 import { orgWeight, roleSetColor, isPrivate, validateLocations } from "../../src/lib/nerc/enrich.mjs";
-import { validateAreaAliases, validateAreaInterfaces } from "../../src/lib/nerc/area-aliases.mjs";
+import {
+  validateAreaAliases,
+  validateAreaInterfaces,
+  validateMarketAreaAliases,
+} from "../../src/lib/nerc/area-aliases.mjs";
 import { CURRENT_REGIONAL_ENTITIES } from "../../src/lib/nerc/roles.mjs";
 
 const file = resolve(process.argv[2] || "public/nerc/orgs.json");
@@ -236,6 +240,9 @@ try {
 
 // 14. Area aliases: unique codes, valid targets, no acronym conflicts.
 for (const e of validateAreaAliases(orgs)) errors.push(e);
+
+// 14b. PJM/MISO focus codes: area-aliases.json must match renderer membership.
+for (const e of validateMarketAreaAliases(orgs)) errors.push(e);
 
 // 15. Area interfaces: non-org planning/interface codes excluded from the map.
 for (const e of validateAreaInterfaces(orgs)) errors.push(e);

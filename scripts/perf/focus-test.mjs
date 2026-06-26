@@ -88,7 +88,7 @@ const STATE = `(() => {
 // Find a hub bubble's viewport-centre and click it through the full pointer path.
 async function clickHub(conn, sessionId, namePart) {
   const box = await evalJs(conn, sessionId, `(() => {
-    const n = [...document.querySelectorAll('circle.org-hit')].find((c) => (c.getAttribute('aria-label')||'').includes(${JSON.stringify(namePart)}));
+    const n = [...document.querySelectorAll('rect.org-hit')].find((c) => (c.getAttribute('aria-label')||'').includes(${JSON.stringify(namePart)}));
     if (!n) { const r = [...document.querySelectorAll('rect.org')].find((c) => (c.getAttribute('aria-label')||'').includes(${JSON.stringify(namePart)})); if (!r) return null; const b = r.getBoundingClientRect(); return { x: b.left + b.width/2, y: b.top + b.height/2 }; }
     const b = n.getBoundingClientRect(); return { x: b.left + b.width/2, y: b.top + b.height/2 };
   })()`);
