@@ -1742,7 +1742,14 @@ export function mountNercOrgMap(): void {
       const isReliabilityBody =
         RELIABILITY_ORG_NAME.test(o.entity_name) || REGIONAL_ENTITY_NAME.test(o.entity_name);
       const isFederal = o.org_type === "federal" || FEDERAL_NAME.test(o.entity_name);
-      if (isIso || isReliabilityBody || roles.includes("RC") || isFederal) {
+      // Only federal GRID AUTHORITIES (BPA/TVA/WAPA/SWPA/SEPA — they carry a BA/RC
+      // role or substantial weight) earn the headline tier. A federal GENERATION
+      // owner like the Army Corps districts or the Bureau of Reclamation registers
+      // only GO/GOP/TO — functionally a generator, so it must be sized by its
+      // roles (below) instead of outranking far larger multi-role utilities.
+      const isFederalGridAuthority =
+        isFederal && (roles.includes("BA") || roles.includes("RC") || (o.weight ?? 0) >= 18);
+      if (isIso || isReliabilityBody || roles.includes("RC") || isFederalGridAuthority) {
         t = 6;
       } else if (roles.includes("BA") || roles.includes("PC")) {
         t = 5;
@@ -4930,6 +4937,23 @@ export function mountNercOrgMap(): void {
     if (hot) raiseVisibleOrg(hot);
   }
 
+  // Called when the pointer/focus LEAVES an org. A give-way dot promotes to a
+  // bigger bubble + gains a hover label while hovered; those are produced by a
+  // full redraw, so they must be cleared by one too — the lightweight
+  // clearHoverFocus alone leaves the dot stuck expanded with its label still
+  // drawn (it never resets _promoteBackground, which renderedRadius reads, nor
+  // removes the hover-only label element). Real pills never promote, so they take
+  // the cheap path with no relayout.
+  function endHoverFor(left: Org | null): void {
+    if (left && (isGiveWayDot(left) || left._promoteBackground)) {
+      left._promoteBackground = false;
+      clearHoverFocus();
+      redraw();
+      return;
+    }
+    clearHoverFocus();
+  }
+
   function clearHoverFocus(): void {
     const k = transform.k;
     applyHighlights();
@@ -5444,9 +5468,10 @@ export function mountNercOrgMap(): void {
         placeTooltip((ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
       })
       .on("mouseleave", () => {
+        const left = hoverOrg;
         hoverOrg = null;
         hideTooltip();
-        clearHoverFocus();
+        endHoverFor(left);
       })
       .on("focus", function (_ev, o) {
         if (selectedOrg) {
@@ -5461,9 +5486,10 @@ export function mountNercOrgMap(): void {
         applyHoverFocus();
       })
       .on("blur", () => {
+        const left = hoverOrg;
         hoverOrg = null;
         hideTooltip();
-        clearHoverFocus();
+        endHoverFor(left);
       })
       .on("keydown", (ev, o) => {
         const key = (ev as KeyboardEvent).key;
