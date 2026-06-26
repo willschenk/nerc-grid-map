@@ -42,9 +42,15 @@ The NERC Grid Map turns registry records into a browser map that is easy to scan
 
 ## Role colors
 
-Bubble colors come from fixed role anchors. Multi-role organizations blend between anchors, so similar role sets should feel visually related.
+Bubble colors come from fixed role anchors. Each anchor is defined as a hue–saturation–lightness (HSL) coordinate in `src/lib/nerc/roles.mjs`. For organizations with multiple roles, the map computes a weighted centroid of these coordinates using each role’s weight, producing a blended color that reflects the mix of roles. Multi‑role organizations blend between anchors, so similar role sets feel visually related.
 
 <img src="docs/readme/role-palette.svg" alt="NERC Grid Map role color palette" width="920">
+
+## Bubble sizes
+
+Bubble size is scaled by role weight. An organization with rare, high‑impact roles like RC or BA appears larger than one with lower‑weight roles. The weights are defined in `src/lib/nerc/roles.mjs` and range from 1 (smallest bubble) to 10 (largest bubble).
+
+<img src="docs/readme/bubble-size.svg" alt="Bubble size weights" width="920">
 
 ## Data pipeline
 
