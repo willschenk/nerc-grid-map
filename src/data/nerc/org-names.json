@@ -17,7 +17,10 @@
       "shortest": "MISO",
       "short": "Midcontinent ISO",
       "normal": "Midcontinent Independent System Operator, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.misoenergy.org/"
     },
     {
       "ncr_id": "NCR-SEED-003",
@@ -25,7 +28,10 @@
       "shortest": "CAISO",
       "short": "California ISO",
       "normal": "California Independent System Operator",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.caiso.com/"
     },
     {
       "ncr_id": "NCR-SEED-007",
@@ -33,7 +39,10 @@
       "shortest": "ERCOT",
       "short": "Electric Reliability Council of Texas",
       "normal": "Electric Reliability Council of Texas, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.ercot.com/"
     },
     {
       "ncr_id": "NCR-SEED-006",
@@ -41,7 +50,10 @@
       "shortest": "NYISO",
       "short": "New York ISO",
       "normal": "New York Independent System Operator",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.nyiso.com/"
     },
     {
       "ncr_id": "NCR-SEED-020",
@@ -49,7 +61,10 @@
       "shortest": "DEC",
       "short": "Duke Energy Carolinas",
       "normal": "Duke Energy Carolinas, LLC",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.duke-energy.com/home"
     },
     {
       "ncr_id": "NCR-SEED-054",
@@ -57,7 +72,10 @@
       "shortest": "BPA",
       "short": "Bonneville Power Administration",
       "normal": "Bonneville Power Administration",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bpa.gov/"
     },
     {
       "ncr_id": "NCR-SEED-025",
@@ -65,7 +83,10 @@
       "shortest": "TVA",
       "short": "Tennessee Valley Authority",
       "normal": "Tennessee Valley Authority",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tva.com/"
     },
     {
       "ncr_id": "NCR-SEED-015",
@@ -73,7 +94,10 @@
       "shortest": "PacifiCorp",
       "short": "PacifiCorp",
       "normal": "PacifiCorp",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pacificorp.com/"
     },
     {
       "ncr_id": "NCR-SEED-034",
@@ -103,7 +127,10 @@
       "shortest": "DEP",
       "short": "Duke Energy Progress",
       "normal": "Duke Energy Progress, LLC",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.duke-energy.com/progress"
     },
     {
       "ncr_id": "NCR-SEED-014",
@@ -130,7 +157,10 @@
       "shortest": "PNM",
       "short": "Public Service of New Mexico",
       "normal": "Public Service Company of New Mexico",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pnm.com/"
     },
     {
       "ncr_id": "NCR-SEED-016",
@@ -138,7 +168,10 @@
       "shortest": "PSE",
       "short": "Puget Sound Energy",
       "normal": "Puget Sound Energy, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.pse.com/"
     },
     {
       "ncr_id": "NCR-SEED-048",
@@ -157,7 +190,10 @@
       "shortest": "JEA",
       "short": "JEA",
       "normal": "JEA",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.jea.com/"
     },
     {
       "ncr_id": "NCR-SEED-045",
@@ -176,7 +212,10 @@
       "shortest": "TECO",
       "short": "Tampa Electric",
       "normal": "Tampa Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tampaelectric.com/"
     },
     {
       "ncr_id": "NCR-SEED-049",
@@ -195,7 +234,10 @@
       "shortest": "AECI",
       "short": "Associated Electric Cooperative",
       "normal": "Associated Electric Cooperative, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aeci.org/"
     },
     {
       "ncr_id": "NCR-SEED-059",
@@ -214,7 +256,10 @@
       "shortest": "APS",
       "short": "Arizona Public Service",
       "normal": "Arizona Public Service Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aps.com/"
     },
     {
       "ncr_id": "NCR-SEED-035",
@@ -244,7 +289,10 @@
       "shortest": "PGE",
       "short": "Portland General Electric",
       "normal": "Portland General Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://portlandgeneral.com/"
     },
     {
       "ncr_id": "NCR-SEED-012",
@@ -252,7 +300,10 @@
       "shortest": "PSCo",
       "short": "Public Service of Colorado",
       "normal": "Public Service Company of Colorado",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.sec.gov/Archives/edgar/data/81018/000008101821000008/psco-20201231.htm"
     },
     {
       "ncr_id": "NCR-SEED-010",
@@ -282,7 +333,10 @@
       "shortest": "LCRA",
       "short": "Lower Colorado River Authority",
       "normal": "Lower Colorado River Authority",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.lcra.org/contact-us/"
     },
     {
       "ncr_id": "NCR-SEED-041",
@@ -312,7 +366,10 @@
       "shortest": "EPE",
       "short": "El Paso Electric",
       "normal": "El Paso Electric Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.epelectric.com/"
     },
     {
       "ncr_id": "NCR-SEED-022",
@@ -402,7 +459,10 @@
       "shortest": "ComEd",
       "short": "Commonwealth Edison",
       "normal": "Commonwealth Edison Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.comed.com/"
     },
     {
       "ncr_id": "NCR-SEED-040",
@@ -580,7 +640,10 @@
       "shortest": "SC",
       "short": "Santee Cooper",
       "normal": "Santee Cooper",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "area_aliases",
+      "shortest_source_url": "https://www.santeecooper.com/"
     },
     {
       "ncr_id": "NCR00073",
@@ -722,7 +785,10 @@
       "shortest": "HE",
       "short": "Hoosier Energy",
       "normal": "Hoosier Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "alias_code",
+      "shortest_source": "area_aliases",
+      "shortest_source_url": "https://www.hoosierenergy.com/contact/"
     },
     {
       "ncr_id": "NCR00798",
@@ -746,7 +812,10 @@
       "shortest": "MP",
       "short": "Minnesota Power",
       "normal": "Minnesota Power",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "alias_code",
+      "shortest_source": "area_aliases",
+      "shortest_source_url": "https://mnpower.com/CustomerService/ContactUs"
     },
     {
       "ncr_id": "NCR01015",
@@ -1291,7 +1360,10 @@
       "shortest": "AEP",
       "short": "AEP Texas/PSO Agent",
       "normal": "AEP Service Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aep.com/"
     },
     {
       "ncr_id": "NCR04015",
@@ -1372,7 +1444,10 @@
       "shortest": "LP&L",
       "short": "Lubbock Power & Light",
       "normal": "Lubbock Power & Light",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.mylubbock.us/358/Lubbock-Power-Light"
     },
     {
       "ncr_id": "NCR07109",
@@ -1482,7 +1557,10 @@
       "shortest": "NWE",
       "short": "NorthWestern Energy",
       "normal": "NorthWestern Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.northwesternenergy.com"
     },
     {
       "ncr_id": "NCR09035",
@@ -1562,7 +1640,10 @@
       "shortest": "LCRA",
       "short": "LCRA Transmission",
       "normal": "LCRA Transmission Services",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.lcra.org/contact-us/"
     },
     {
       "ncr_id": "NCR13015",
@@ -2081,7 +2162,10 @@
       "shortest": "FE",
       "short": "FirstEnergy Utilities",
       "normal": "FirstEnergy",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "common_market_name",
+      "shortest_source_url": "https://www.firstenergycorp.com/"
     },
     {
       "ncr_id": "NCR07214",
@@ -6016,12 +6100,12 @@
     {
       "ncr_id": "NCR01113",
       "entity_name": "Kiowa Power Partners, LLC",
-      "shortest": "KiowaPwr",
+      "shortest": "Kiowa Power",
       "short": "Kiowa Power Partners",
       "normal": "Kiowa Power Partners",
       "tier": "normal",
       "shortest_type": "meaningful_name",
-      "shortest_source": "official_website",
+      "shortest_source": "common_market_name",
       "shortest_source_url": "https://www.tenaska.com/wp-content/uploads/2020/03/Kiamichi.pdf"
     },
     {
@@ -8764,7 +8848,10 @@
       "shortest": "UI",
       "short": "United Illuminating",
       "normal": "United Illuminating Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.uinet.com/"
     },
     {
       "ncr_id": "NCR00936",
@@ -9218,7 +9305,10 @@
       "shortest": "MEAN",
       "short": "Municipal Energy Agency of Nebraska",
       "normal": "Municipal Energy Agency of Nebraska",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nppd.com/mean"
     },
     {
       "ncr_id": "NCR00303",
@@ -9226,7 +9316,10 @@
       "shortest": "MEAN",
       "short": "Municipal Energy Agency of Nebraska",
       "normal": "Municipal Energy Agency of Nebraska",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nmppenergy.org/mean"
     },
     {
       "ncr_id": "NCR05281",
@@ -9928,7 +10021,10 @@
       "shortest": "Bartow",
       "short": "City of Bartow",
       "normal": "City of Bartow",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cityofbartow.net/184/Electric"
     },
     {
       "ncr_id": "NCR13556",
@@ -10395,7 +10491,10 @@
       "shortest": "Brazos",
       "short": "Brazos Electric Power Cooperative",
       "normal": "Brazos Electric Power Cooperative",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.brazoselectric.com"
     },
     {
       "ncr_id": "NCR12292",
@@ -12983,7 +13082,10 @@
       "shortest": "Inv Svc",
       "short": "Invenergy Services",
       "normal": "Invenergy Services",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "alias_code",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.invenergy.com/"
     },
     {
       "ncr_id": "NCR12554",
@@ -13339,10 +13441,13 @@
     {
       "ncr_id": "NCR13074",
       "entity_name": "JP Remote Operations Center II LLC",
-      "shortest": "J-Power",
+      "shortest": "J-Power ROC II",
       "short": "J-POWER USA ROC II",
       "normal": "JP Remote Operations Center II",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "common_market_name",
+      "shortest_source_url": "https://www.jpowerusa.com/"
     },
     {
       "ncr_id": "NCR13473",
@@ -13892,7 +13997,10 @@
       "shortest": "Luminant",
       "short": "Luminant Generation",
       "normal": "Luminant Generation Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://vistracorp.com/operations/"
     },
     {
       "ncr_id": "NCR11798",
@@ -14344,7 +14452,10 @@
       "shortest": "Panoche",
       "short": "NAES Panoche",
       "normal": "NAES Panoche",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.naes.com/"
     },
     {
       "ncr_id": "NCR13088",
@@ -14357,7 +14468,7 @@
     {
       "ncr_id": "NCR00839",
       "entity_name": "NAES Corporation - Big Sandy",
-      "shortest": "BigSandy",
+      "shortest": "Big Sandy Peaker",
       "short": "NAES Big Sandy",
       "normal": "Big Sandy Power",
       "tier": "normal",
@@ -14368,7 +14479,7 @@
     {
       "ncr_id": "NCR11911",
       "entity_name": "NAES Corporation - Birdsboro Power",
-      "shortest": "BirdsPwr",
+      "shortest": "Birdsboro Power",
       "short": "NAES Birdsboro Power",
       "normal": "Birdsboro Power",
       "tier": "normal",
@@ -14379,7 +14490,7 @@
     {
       "ncr_id": "NCR11705",
       "entity_name": "NAES Corporation - Castleton Power",
-      "shortest": "CastPwr",
+      "shortest": "Castleton",
       "short": "NAES Castleton Power",
       "normal": "Castleton Power",
       "tier": "normal",
@@ -14526,10 +14637,13 @@
     {
       "ncr_id": "NCR13061",
       "entity_name": "NAES Corporation - South Boston Energy",
-      "shortest": "S. Boston",
+      "shortest": "South Boston",
       "short": "NAES South Boston Energy",
       "normal": "South Boston Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "common_market_name",
+      "shortest_source_url": "https://www.gridinfo.com/south-boston-energy"
     },
     {
       "ncr_id": "NCR11728",
@@ -14558,18 +14672,24 @@
     {
       "ncr_id": "NCR12400",
       "entity_name": "NAES Corporation Heritage Brunot Island",
-      "shortest": "H Brunot",
+      "shortest": "Heritage Brunot",
       "short": "Heritage Brunot Island",
       "normal": "Heritage Brunot Island",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12401",
       "entity_name": "NAES Corporation Heritage Gilbert",
-      "shortest": "H Gilbrt",
+      "shortest": "Heritage Gilbert",
       "short": "Heritage Gilbert",
       "normal": "Heritage Gilbert",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12402",
@@ -14585,66 +14705,90 @@
     {
       "ncr_id": "NCR12404",
       "entity_name": "NAES Corporation Heritage Mountain",
-      "shortest": "H Mtn",
+      "shortest": "Heritage Mountain",
       "short": "Heritage Mountain",
       "normal": "Heritage Mountain",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12403",
       "entity_name": "NAES Corporation Heritage New Castle",
-      "shortest": "H NewC",
+      "shortest": "Heritage New Castle",
       "short": "Heritage New Castle",
       "normal": "Heritage New Castle",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12385",
       "entity_name": "NAES Corporation Heritage Portland",
-      "shortest": "H Port",
+      "shortest": "Heritage Portland",
       "short": "Heritage Portland",
       "normal": "Heritage Portland",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12386",
       "entity_name": "NAES Corporation Heritage Sayreville",
-      "shortest": "H Sayr",
+      "shortest": "Heritage Sayreville",
       "short": "Heritage Sayreville",
       "normal": "Heritage Sayreville",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12387",
       "entity_name": "NAES Corporation Heritage Shawville",
-      "shortest": "H Shaw",
+      "shortest": "Heritage Shawville",
       "short": "Heritage Shawville",
       "normal": "Heritage Shawville",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12405",
       "entity_name": "NAES Corporation Heritage Single Units",
-      "shortest": "H SU",
+      "shortest": "Heritage Single",
       "short": "Heritage Single Units",
       "normal": "Heritage Single Units",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12388",
       "entity_name": "NAES Corporation Heritage Titus",
-      "shortest": "H Titus",
+      "shortest": "Heritage Titus",
       "short": "Heritage Titus",
       "normal": "Heritage Titus",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12389",
       "entity_name": "NAES Corporation Heritage Tolna",
-      "shortest": "H Tolna",
+      "shortest": "Heritage Tolna",
       "short": "Heritage Tolna",
       "normal": "Heritage Tolna",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.nrg.com/"
     },
     {
       "ncr_id": "NCR12134",
@@ -14652,7 +14796,10 @@
       "shortest": "Hill Top",
       "short": "NAES Hill Top Energy",
       "normal": "Hill Top Energy",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "common_market_name",
+      "shortest_source_url": "https://www.naes.com/"
     },
     {
       "ncr_id": "NCR11127",
@@ -14660,7 +14807,10 @@
       "shortest": "Kleen",
       "short": "NAES Kleen Energy",
       "normal": "Kleen Energy Systems",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "common_market_name",
+      "shortest_source_url": "https://www.gridinfo.com/plant/kleen-energy-systems-project/56798"
     },
     {
       "ncr_id": "NCR11527",
@@ -15364,7 +15514,10 @@
       "shortest": "QE Solar",
       "short": "QE Solar ROC",
       "normal": "QE Solar ROC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.qcells.com/us/"
     },
     {
       "ncr_id": "NCR12507",
@@ -15372,7 +15525,10 @@
       "shortest": "QE Solar",
       "short": "QE Solar",
       "normal": "QE Solar",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://qesolar.com/contact"
     },
     {
       "ncr_id": "NCR13150",
@@ -15813,12 +15969,12 @@
     {
       "ncr_id": "NCR11367",
       "entity_name": "South Boston Energy LLC",
-      "shortest": "S Boston",
+      "shortest": "South Boston",
       "short": "South Boston Energy",
       "normal": "South Boston Energy",
       "tier": "normal",
-      "shortest_type": "parent_project",
-      "shortest_source": "eia_861",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "common_market_name",
       "shortest_source_url": "https://www.gridinfo.com/south-boston-energy"
     },
     {
@@ -17133,7 +17289,10 @@
       "shortest": "LCRA",
       "short": "Lower Colorado River Authority",
       "normal": "Lower Colorado River Authority",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.lcra.org/contact-us/"
     },
     {
       "ncr_id": "NCR05032",
@@ -17868,7 +18027,10 @@
       "shortest": "USACE OM",
       "short": "USACE - Omaha District",
       "normal": "USACE - Omaha District",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nwd.usace.army.mil/locations/"
     },
     {
       "ncr_id": "NCR05538",
@@ -18072,7 +18234,10 @@
       "shortest": "LCRA",
       "short": "Lower Colorado River Authority",
       "normal": "Lower Colorado River Authority",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.lcra.org/contact-us/"
     },
     {
       "ncr_id": "NCR11442",
@@ -18115,7 +18280,10 @@
       "shortest": "Panoche",
       "short": "Panoche Energy Center",
       "normal": "Panoche Energy Center LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/56803"
     },
     {
       "ncr_id": "NCR13533",
@@ -18744,7 +18912,10 @@
       "shortest": "Southern Power",
       "short": "Southern Power Company",
       "normal": "Southern Power Company",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.southernpowercompany.com/"
     },
     {
       "ncr_id": "NCR12021",
@@ -18752,7 +18923,10 @@
       "shortest": "Southern Power",
       "short": "Southern Power",
       "normal": "Southern Power Company",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/southern-power"
     },
     {
       "ncr_id": "NCR11221",
@@ -18768,7 +18942,10 @@
       "shortest": "Southern Power",
       "short": "Southern Power",
       "normal": "Southern Power Company",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.southernpowercompany.com/"
     },
     {
       "ncr_id": "NCR13021",
@@ -19125,8 +19302,8 @@
       "normal": "Wellhead Power Panoche, LLC",
       "tier": "normal",
       "shortest_type": "meaningful_name",
-      "shortest_source": "inferred",
-      "shortest_source_url": null
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/55874"
     },
     {
       "ncr_id": "NCR05457",
@@ -19202,7 +19379,10 @@
       "shortest": "PJM",
       "short": "PJM",
       "normal": "PJM Interconnection",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.pjm.com/"
     },
     {
       "ncr_id": "NCR-SEED-004",
@@ -19210,7 +19390,10 @@
       "shortest": "SPP",
       "short": "Southwest Power Pool",
       "normal": "Southwest Power Pool, Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.spp.org/"
     },
     {
       "ncr_id": "NCR-SEED-005",
@@ -19218,7 +19401,10 @@
       "shortest": "ISO-NE",
       "short": "ISO New England",
       "normal": "ISO New England Inc.",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "iso_rto_material",
+      "shortest_source_url": "https://www.iso-ne.com/"
     },
     {
       "ncr_id": "NCR-SEED-024",
@@ -19234,7 +19420,10 @@
       "shortest": "FPL",
       "short": "Florida Power & Light",
       "normal": "Florida Power & Light Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.fpl.com/"
     },
     {
       "ncr_id": "NCR-SEED-031",
@@ -19250,7 +19439,10 @@
       "shortest": "PSE&G",
       "short": "PSE&G",
       "normal": "Public Service Electric and Gas Company",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://nj.pseg.com/"
     },
     {
       "ncr_id": "NCR-SEED-036",
@@ -19258,7 +19450,10 @@
       "shortest": "AEP",
       "short": "American Electric Power",
       "normal": "American Electric Power Service Corporation",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aep.com/"
     },
     {
       "ncr_id": "NCR-SEED-037",
@@ -19282,7 +19477,10 @@
       "shortest": "NSP",
       "short": "Northern States Power",
       "normal": "Northern States Power Company - Minnesota",
-      "tier": "major"
+      "tier": "major",
+      "shortest_type": "acronym",
+      "shortest_source": "public_filing",
+      "shortest_source_url": "https://www.sec.gov/Archives/edgar/data/92521/000095013402010486/c71507a1e10vqza.htm"
     },
     {
       "ncr_id": "NCR-SEED-046",
@@ -19331,7 +19529,10 @@
       "shortest": "Luminant",
       "short": "Luminant Generation",
       "normal": "Luminant Generation Company LLC",
-      "tier": "normal"
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://vistracorp.com/operations/"
     },
     {
       "ncr_id": "SUP-albertville-municipal-utilities-board",
@@ -19486,6 +19687,842 @@
       "shortest_type": "acronym",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.seattle.gov/city-light"
+    },
+    {
+      "ncr_id": "SUP-austin-energy",
+      "entity_name": "Austin Energy",
+      "shortest": "Austin",
+      "short": "Austin Energy",
+      "normal": "Austin Energy",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://austinenergy.com/"
+    },
+    {
+      "ncr_id": "SUP-bartow-electric-department",
+      "entity_name": "Bartow Electric Department",
+      "shortest": "Bartow",
+      "short": "Bartow Electric Department",
+      "normal": "Bartow Electric Department",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cityofbartow.net/184/Electric"
+    },
+    {
+      "ncr_id": "SUP-beaches-energy-services",
+      "entity_name": "Beaches Energy Services",
+      "shortest": "Beaches",
+      "short": "Beaches Energy Services",
+      "normal": "Beaches Energy Services",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.beachesenergy.com/"
+    },
+    {
+      "ncr_id": "SUP-city-of-vinton-electric-utility",
+      "entity_name": "City of Vinton Electric Utility",
+      "shortest": "Vinton",
+      "short": "City of Vinton Electric Utility",
+      "normal": "City of Vinton Electric Utility",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-louisiana"
+    },
+    {
+      "ncr_id": "SUP-pedernales-electric-cooperative",
+      "entity_name": "Pedernales Electric Cooperative",
+      "shortest": "PEC",
+      "short": "Pedernales Electric Cooperative",
+      "normal": "Pedernales Electric Cooperative",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://mypec.com/"
+    },
+    {
+      "ncr_id": "SUP-snohomish-county-public-utility-district",
+      "entity_name": "Snohomish County Public Utility District",
+      "shortest": "SnoPUD",
+      "short": "Snohomish County PUD",
+      "normal": "Snohomish County Public Utility District",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.snopud.com/"
+    },
+    {
+      "ncr_id": "SUP-cps-energy",
+      "entity_name": "CPS Energy",
+      "shortest": "CPS",
+      "short": "CPS Energy",
+      "normal": "CPS Energy",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cpsenergy.com/"
+    },
+    {
+      "ncr_id": "SUP-denton-municipal-electric",
+      "entity_name": "Denton Municipal Electric",
+      "shortest": "DME",
+      "short": "Denton Municipal Electric",
+      "normal": "Denton Municipal Electric",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cityofdenton.com/331/Denton-Municipal-Electric-DME"
+    },
+    {
+      "ncr_id": "SUP-sacramento-municipal-utility-district",
+      "entity_name": "Sacramento Municipal Utility District",
+      "shortest": "SMUD",
+      "short": "Sacramento Municipal Utility District",
+      "normal": "Sacramento Municipal Utility District",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.smud.org/"
+    },
+    {
+      "ncr_id": "SUP-riviera-utilities",
+      "entity_name": "Riviera Utilities",
+      "shortest": "Riviera",
+      "short": "Riviera Utilities",
+      "normal": "Riviera Utilities",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-alabama"
+    },
+    {
+      "ncr_id": "SUP-scottsboro-electric-power-board",
+      "entity_name": "Scottsboro Electric Power Board",
+      "shortest": "Scottsboro",
+      "short": "Scottsboro Electric Power Board",
+      "normal": "Scottsboro Electric Power Board",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-alabama"
+    },
+    {
+      "ncr_id": "SUP-sheffield-utilities",
+      "entity_name": "Sheffield Utilities",
+      "shortest": "Sheffield",
+      "short": "Sheffield Utilities",
+      "normal": "Sheffield Utilities",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-alabama"
+    },
+    {
+      "ncr_id": "SUP-sylacauga-utilities-board",
+      "entity_name": "Sylacauga Utilities Board",
+      "shortest": "Sylacauga",
+      "short": "Sylacauga Utilities Board",
+      "normal": "Sylacauga Utilities Board",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-alabama"
+    },
+    {
+      "ncr_id": "SUP-twin-valleys-public-power-district",
+      "entity_name": "Twin Valleys Public Power District",
+      "shortest": "Twin Valleys",
+      "short": "Twin Valleys Public Power District",
+      "normal": "Twin Valleys Public Power District",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-nebraska"
+    },
+    {
+      "ncr_id": "SUP-wake-electric",
+      "entity_name": "Wake Electric",
+      "shortest": "Wake Electric",
+      "short": "Wake Electric",
+      "normal": "Wake Electric",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.wakeelectric.com/"
+    },
+    {
+      "ncr_id": "SUP-williamstown-utility-commission",
+      "entity_name": "Williamstown Utility Commission",
+      "shortest": "Williamstown",
+      "short": "Williamstown Utility Commission",
+      "normal": "Williamstown Utility Commission",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-kentucky"
+    },
+    {
+      "ncr_id": "SUP-bryan-texas-utilities",
+      "entity_name": "Bryan Texas Utilities",
+      "shortest": "BTU",
+      "short": "Bryan Texas Utilities",
+      "normal": "Bryan Texas Utilities",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.btutilities.com/"
+    },
+    {
+      "ncr_id": "SUP-turlock-irrigation-district",
+      "entity_name": "Turlock Irrigation District",
+      "shortest": "TID",
+      "short": "Turlock Irrigation District",
+      "normal": "Turlock Irrigation District",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.tid.org/contact/"
+    },
+    {
+      "ncr_id": "SUP-ava-community-energy",
+      "entity_name": "Ava Community Energy",
+      "shortest": "Ava Community",
+      "short": "Ava Community Energy",
+      "normal": "Ava Community Energy",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://avaenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-hawaii-state-energy-office",
+      "entity_name": "Hawaii State Energy Office",
+      "shortest": "HSEO",
+      "short": "Hawaii State Energy Office",
+      "normal": "Hawaii State Energy Office",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://energy.hawaii.gov/"
+    },
+    {
+      "ncr_id": "SUP-hu-honua-bioenergy-llc",
+      "entity_name": "Hu Honua Bioenergy, LLC",
+      "shortest": "Hu Honua",
+      "short": "Hu Honua Bioenergy",
+      "normal": "Hu Honua Bioenergy, LLC",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.huhonua.com/"
+    },
+    {
+      "ncr_id": "SUP-kaheawa-wind-power-llc",
+      "entity_name": "Kaheawa Wind Power, LLC",
+      "shortest": "Kaheawa WF",
+      "short": "Kaheawa Wind Power",
+      "normal": "Kaheawa Wind Power, LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/kaheawa-wind-power-llc/56012"
+    },
+    {
+      "ncr_id": "SUP-kahuku-wind-power-llc",
+      "entity_name": "Kahuku Wind Power, LLC",
+      "shortest": "Kahuku WF",
+      "short": "Kahuku Wind Power",
+      "normal": "Kahuku Wind Power, LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/57087-1"
+    },
+    {
+      "ncr_id": "SUP-kapaia-solar-llc",
+      "entity_name": "Kapaia Solar, LLC",
+      "shortest": "Kapaia PV",
+      "short": "Kapaia Solar",
+      "normal": "Kapaia Solar, LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/60546-pv1"
+    },
+    {
+      "ncr_id": "SUP-kapolei-energy-storage-llc",
+      "entity_name": "Kapolei Energy Storage, LLC",
+      "shortest": "Kapolei ES",
+      "short": "Kapolei Energy Storage",
+      "normal": "Kapolei Energy Storage, LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/66067-kes1"
+    },
+    {
+      "ncr_id": "SUP-kawailoa-wind-llc",
+      "entity_name": "Kawailoa Wind, LLC",
+      "shortest": "Kawailoa WF",
+      "short": "Kawailoa Wind",
+      "normal": "Kawailoa Wind, LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/kawailoa-wind"
+    },
+    {
+      "ncr_id": "SUP-kuihelani-solar-plus-storage",
+      "entity_name": "Kuihelani Solar Plus Storage",
+      "shortest": "Kuihelani",
+      "short": "Kuihelani Solar Plus Storage",
+      "normal": "Kuihelani Solar Plus Storage",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.interconnection.fyi/eia/project/64256-kulni"
+    },
+    {
+      "ncr_id": "SUP-lawai-solar-and-energy-storage-project",
+      "entity_name": "Lawai Solar and Energy Storage Project",
+      "shortest": "Lawai",
+      "short": "Lawai Solar and Energy Storage",
+      "normal": "Lawai Solar and Energy Storage Project",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/lawai-solar-and-energy-storage-project/63758"
+    },
+    {
+      "ncr_id": "SUP-marin-clean-energy",
+      "entity_name": "Marin Clean Energy",
+      "shortest": "MCE",
+      "short": "Marin Clean Energy",
+      "normal": "Marin Clean Energy",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://mcecleanenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-orange-county-power-authority",
+      "entity_name": "Orange County Power Authority",
+      "shortest": "OCPA",
+      "short": "Orange County Power Authority",
+      "normal": "Orange County Power Authority",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://ocpower.org/"
+    },
+    {
+      "ncr_id": "SUP-oriana-energy-llc",
+      "entity_name": "Oriana Energy LLC",
+      "shortest": "Oriana",
+      "short": "Oriana Energy",
+      "normal": "Oriana Energy LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gem.wiki/Oriana_solar_farm"
+    },
+    {
+      "ncr_id": "SUP-pakini-nui-wind-farm",
+      "entity_name": "Pakini Nui Wind Farm",
+      "shortest": "Pakini Nui",
+      "short": "Pakini Nui Wind Farm",
+      "normal": "Pakini Nui Wind Farm",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/plant/pakini-nui-wind-farm"
+    },
+    {
+      "ncr_id": "SUP-pattern-santa-isabel-llc",
+      "entity_name": "Pattern Santa Isabel, LLC",
+      "shortest": "Pattern SI",
+      "short": "Pattern Santa Isabel",
+      "normal": "Pattern Santa Isabel, LLC",
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://patternenergy.com/projects/santa-isabel-wind/"
+    },
+    {
+      "ncr_id": "SUP-pico-rivera-innovative-municipal-energy",
+      "entity_name": "Pico Rivera Innovative Municipal Energy",
+      "shortest": "PRIME",
+      "short": "Pico Rivera Innovative Municipal Energy",
+      "normal": "Pico Rivera Innovative Municipal Energy",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.primeenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-pomona-choice-energy",
+      "entity_name": "Pomona Choice Energy",
+      "shortest": "PCE",
+      "short": "Pomona Choice Energy",
+      "normal": "Pomona Choice Energy",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://pomonachoiceenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-puna-geothermal-venture",
+      "entity_name": "Puna Geothermal Venture",
+      "shortest": "PGV",
+      "short": "Puna Geothermal Venture",
+      "normal": "Puna Geothermal Venture",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gridinfo.com/puna-geothermal-venture"
+    },
+    {
+      "ncr_id": "SUP-punta-lima-wind-farm-llc",
+      "entity_name": "Punta Lima Wind Farm, LLC",
+      "shortest": "Punta Lima WF",
+      "short": "Punta Lima Wind Farm",
+      "normal": "Punta Lima Wind Farm, LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gem.wiki/Punta_Lima_wind_farm"
+    },
+    {
+      "ncr_id": "SUP-rancho-mirage-energy-authority",
+      "entity_name": "Rancho Mirage Energy Authority",
+      "shortest": "RMEA",
+      "short": "Rancho Mirage Energy Authority",
+      "normal": "Rancho Mirage Energy Authority",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.rmenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-redwood-coast-energy-authority",
+      "entity_name": "Redwood Coast Energy Authority",
+      "shortest": "RCEA",
+      "short": "Redwood Coast Energy Authority",
+      "normal": "Redwood Coast Energy Authority",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://redwoodenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-san-fermin-solar-farm-llc",
+      "entity_name": "San Fermin Solar Farm, LLC",
+      "shortest": "San Fermin PV",
+      "short": "San Fermin Solar Farm",
+      "normal": "San Fermin Solar Farm, LLC",
+      "tier": "normal",
+      "shortest_type": "location",
+      "shortest_source": "eia_861",
+      "shortest_source_url": "https://www.gem.wiki/San_Fermin_Solar_Project"
+    },
+    {
+      "ncr_id": "SUP-san-jacinto-power",
+      "entity_name": "San Jacinto Power",
+      "shortest": "SJP",
+      "short": "San Jacinto Power",
+      "normal": "San Jacinto Power",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sanjacintopower.org/"
+    },
+    {
+      "ncr_id": "SUP-san-jose-clean-energy",
+      "entity_name": "San Jose Clean Energy",
+      "shortest": "SJCE",
+      "short": "San Jose Clean Energy",
+      "normal": "San Jose Clean Energy",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://sanjosecleanenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-santa-barbara-clean-energy",
+      "entity_name": "Santa Barbara Clean Energy",
+      "shortest": "SBCE",
+      "short": "Santa Barbara Clean Energy",
+      "normal": "Santa Barbara Clean Energy",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.santabarbaracleanenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-sonoma-clean-power-authority",
+      "entity_name": "Sonoma Clean Power Authority",
+      "shortest": "SCP",
+      "short": "Sonoma Clean Power",
+      "normal": "Sonoma Clean Power Authority",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://sonomacleanpower.org/"
+    },
+    {
+      "ncr_id": "SUP-valley-clean-energy-alliance",
+      "entity_name": "Valley Clean Energy Alliance",
+      "shortest": "VCE",
+      "short": "Valley Clean Energy",
+      "normal": "Valley Clean Energy Alliance",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://valleycleanenergy.org/"
+    },
+    {
+      "ncr_id": "SUP-vi-electron-llc",
+      "entity_name": "VI Electron, LLC",
+      "shortest": "VI Electron",
+      "short": "VI Electron",
+      "normal": "VI Electron, LLC",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.vi.gov/governor-bryan-celebrates-commissioning-of-territorys-largest-solar-farm/"
+    },
+    {
+      "ncr_id": "SUP-western-community-energy",
+      "entity_name": "Western Community Energy",
+      "shortest": "WCE",
+      "short": "Western Community Energy",
+      "normal": "Western Community Energy",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.westerncommunityenergy.com/"
+    },
+    {
+      "ncr_id": "SUP-aes-hawaii-inc",
+      "entity_name": "AES Hawaii, Inc.",
+      "shortest": "AES Hawaii",
+      "short": "AES Hawaii",
+      "normal": "AES Hawaii, Inc.",
+      "tier": "normal",
+      "shortest_type": "parent_project",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aes.com/"
+    },
+    {
+      "ncr_id": "SUP-alaska-electric-light-power-company",
+      "entity_name": "Alaska Electric Light & Power Company",
+      "shortest": "AEL&P",
+      "short": "Alaska Electric Light & Power",
+      "normal": "Alaska Electric Light & Power Company",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aelp.com/"
+    },
+    {
+      "ncr_id": "SUP-alaska-energy-authority",
+      "entity_name": "Alaska Energy Authority",
+      "shortest": "AEA",
+      "short": "Alaska Energy Authority",
+      "normal": "Alaska Energy Authority",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.akenergyauthority.org/"
+    },
+    {
+      "ncr_id": "SUP-alaska-power-association",
+      "entity_name": "Alaska Power Association",
+      "shortest": "APA",
+      "short": "Alaska Power Association",
+      "normal": "Alaska Power Association",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://alaskapower.org/"
+    },
+    {
+      "ncr_id": "SUP-alaska-power-company",
+      "entity_name": "Alaska Power Company",
+      "shortest": "Alaska Power",
+      "short": "Alaska Power Company",
+      "normal": "Alaska Power Company",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.alaskapower.com/"
+    },
+    {
+      "ncr_id": "SUP-alaska-village-electric-cooperative-inc",
+      "entity_name": "Alaska Village Electric Cooperative, Inc.",
+      "shortest": "AVEC",
+      "short": "Alaska Village Electric Cooperative",
+      "normal": "Alaska Village Electric Cooperative, Inc.",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.avec.org/"
+    },
+    {
+      "ncr_id": "SUP-albemarle-emc",
+      "entity_name": "Albemarle EMC",
+      "shortest": "AEMC",
+      "short": "Albemarle EMC",
+      "normal": "Albemarle EMC",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aemc.coop/"
+    },
+    {
+      "ncr_id": "SUP-appalachian-power-company",
+      "entity_name": "Appalachian Power Company",
+      "shortest": "APCo",
+      "short": "Appalachian Power",
+      "normal": "Appalachian Power Company",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.appalachianpower.com/"
+    },
+    {
+      "ncr_id": "SUP-barrow-utilities-and-electric-cooperative-inc",
+      "entity_name": "Barrow Utilities and Electric Cooperative, Inc.",
+      "shortest": "BUECI",
+      "short": "Barrow Utilities and Electric Cooperative",
+      "normal": "Barrow Utilities and Electric Cooperative, Inc.",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bueci.org/"
+    },
+    {
+      "ncr_id": "SUP-bolivar-energy-authority",
+      "entity_name": "Bolivar Energy Authority",
+      "shortest": "Bolivar",
+      "short": "Bolivar Energy Authority",
+      "normal": "Bolivar Energy Authority",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-tennessee"
+    },
+    {
+      "ncr_id": "SUP-bowling-green-municipal-utilities",
+      "entity_name": "Bowling Green Municipal Utilities",
+      "shortest": "BGMU",
+      "short": "Bowling Green Municipal Utilities",
+      "normal": "Bowling Green Municipal Utilities",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bgmu.com/"
+    },
+    {
+      "ncr_id": "SUP-brightridge",
+      "entity_name": "BrightRidge",
+      "shortest": "BrightRidge",
+      "short": "BrightRidge",
+      "normal": "BrightRidge",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.brightridge.com/"
+    },
+    {
+      "ncr_id": "SUP-bristol-tennessee-essential-services",
+      "entity_name": "Bristol Tennessee Essential Services",
+      "shortest": "BTES",
+      "short": "Bristol Tennessee Essential Services",
+      "normal": "Bristol Tennessee Essential Services",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.btes.net/"
+    },
+    {
+      "ncr_id": "SUP-brunswick-electric",
+      "entity_name": "Brunswick Electric",
+      "shortest": "BEMC",
+      "short": "Brunswick Electric",
+      "normal": "Brunswick Electric",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.bemc.org/"
+    },
+    {
+      "ncr_id": "SUP-cape-hatteras-electric-cooperative",
+      "entity_name": "Cape Hatteras Electric Cooperative",
+      "shortest": "CHEC",
+      "short": "Cape Hatteras Electric Cooperative",
+      "normal": "Cape Hatteras Electric Cooperative",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.chec.coop/"
+    },
+    {
+      "ncr_id": "SUP-carteret-craven-electric-cooperative",
+      "entity_name": "Carteret-Craven Electric Cooperative",
+      "shortest": "CCEC NC",
+      "short": "Carteret-Craven Electric Cooperative",
+      "normal": "Carteret-Craven Electric Cooperative",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.ccecoop.org/"
+    },
+    {
+      "ncr_id": "SUP-cde-lightband",
+      "entity_name": "CDE Lightband",
+      "shortest": "CDE",
+      "short": "CDE Lightband",
+      "normal": "CDE Lightband",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cdelightband.com/"
+    },
+    {
+      "ncr_id": "SUP-central-electric-membership-corporation",
+      "entity_name": "Central Electric Membership Corporation",
+      "shortest": "CEMC",
+      "short": "Central Electric Membership Corporation",
+      "normal": "Central Electric Membership Corporation",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cemc.coop/"
+    },
+    {
+      "ncr_id": "SUP-chattanooga-electric-power-board",
+      "entity_name": "Chattanooga Electric Power Board",
+      "shortest": "EPB",
+      "short": "Chattanooga Electric Power Board",
+      "normal": "Chattanooga Electric Power Board",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://epb.com/"
+    },
+    {
+      "ncr_id": "SUP-chickamauga-electric-system",
+      "entity_name": "Chickamauga Electric System",
+      "shortest": "Chickamauga",
+      "short": "Chickamauga Electric System",
+      "normal": "Chickamauga Electric System",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-georgia"
+    },
+    {
+      "ncr_id": "SUP-chugach-electric-association-inc",
+      "entity_name": "Chugach Electric Association, Inc.",
+      "shortest": "CEA",
+      "short": "Chugach Electric Association",
+      "normal": "Chugach Electric Association, Inc.",
+      "tier": "normal",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.chugachelectric.com/"
+    },
+    {
+      "ncr_id": "SUP-city-of-acworth",
+      "entity_name": "City of Acworth",
+      "shortest": "Acworth",
+      "short": "City of Acworth",
+      "normal": "City of Acworth",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-georgia"
+    },
+    {
+      "ncr_id": "SUP-city-of-adel",
+      "entity_name": "City of Adel",
+      "shortest": "Adel",
+      "short": "City of Adel",
+      "normal": "City of Adel",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-georgia"
+    },
+    {
+      "ncr_id": "SUP-city-of-alachua",
+      "entity_name": "City of Alachua",
+      "shortest": "Alachua",
+      "short": "City of Alachua",
+      "normal": "City of Alachua",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-florida"
+    },
+    {
+      "ncr_id": "SUP-city-of-alcoa-electric-department",
+      "entity_name": "City of Alcoa Electric Department",
+      "shortest": "Alcoa TN",
+      "short": "City of Alcoa Electric Department",
+      "normal": "City of Alcoa Electric Department",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cityofalcoa.com/"
+    },
+    {
+      "ncr_id": "SUP-city-of-athens-electric-department",
+      "entity_name": "City of Athens Electric Department",
+      "shortest": "Athens AL",
+      "short": "City of Athens Electric Department",
+      "normal": "City of Athens Electric Department",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-alabama"
+    },
+    {
+      "ncr_id": "SUP-city-of-bardstown-electric-utility",
+      "entity_name": "City of Bardstown Electric Utility",
+      "shortest": "Bardstown",
+      "short": "City of Bardstown Electric Utility",
+      "normal": "City of Bardstown Electric Utility",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-kentucky"
+    },
+    {
+      "ncr_id": "SUP-city-of-barnesville",
+      "entity_name": "City of Barnesville",
+      "shortest": "Barnesville",
+      "short": "City of Barnesville",
+      "normal": "City of Barnesville",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-georgia"
+    },
+    {
+      "ncr_id": "SUP-city-of-bellville",
+      "entity_name": "City of Bellville",
+      "shortest": "Bellville",
+      "short": "City of Bellville",
+      "normal": "City of Bellville",
+      "tier": "normal",
+      "shortest_type": "meaningful_name",
+      "shortest_source": "app_public_power",
+      "shortest_source_url": "https://www.publicpower.org/public-power-texas"
     },
     {
       "ncr_id": "SUP-duke-energy-ohio-kentucky",
