@@ -3,8 +3,8 @@
 
 export const NAME_SHORTEST_MIN = 3;
 export const NAME_SHORTEST_BEST_MAX = 8;
-export const NAME_SHORTEST_PREFERRED_MAX = 12;
-export const NAME_SHORTEST_HARD_MAX = 15;
+export const NAME_SHORTEST_PREFERRED_MAX = 16;
+export const NAME_SHORTEST_HARD_MAX = 22;
 
 export const NAME_SHORTEST_TYPES = new Set([
   "alias_code",
@@ -51,15 +51,17 @@ export function nameShortestIssues(entry) {
     return issues;
   }
 
+  const projectOwnerProvided = shortestSource === "user_provided";
+  const actualShortName =
+    shortestType === "alias_code" || shortestType === "acronym" || projectOwnerProvided;
+
   if (label.length > NAME_SHORTEST_HARD_MAX) {
-    if (shortestType !== "alias_code" || !shortestSource) issues.push("over_15_characters");
-    else issues.push("documented_alias_over_15");
+    if (!actualShortName || !shortestSource) issues.push("over_22_characters");
+    else issues.push("documented_alias_over_22");
   } else if (label.length > NAME_SHORTEST_PREFERRED_MAX) {
-    issues.push("length_13_to_15");
+    issues.push("length_17_to_22");
   }
 
-  const actualShortName =
-    shortestType === "alias_code" || shortestType === "acronym";
   if (label.length < NAME_SHORTEST_MIN && !actualShortName) {
     issues.push("under_3_without_alias_evidence");
   }
