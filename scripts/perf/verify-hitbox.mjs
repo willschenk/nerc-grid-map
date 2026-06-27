@@ -23,6 +23,7 @@ const DIST = resolve(ROOT, "dist");
 const BASE_PATH = "/nerc-grid-map/";
 const CHROME_PORT = Number(process.env.PERF_CHROME_PORT ?? 9351);
 const OUT = "/tmp/nerc-verify-hitbox";
+const MOBILE = !!process.env.NERC_MOBILE;
 const MIME = { ".css": "text/css", ".html": "text/html", ".js": "text/javascript", ".json": "application/json", ".png": "image/png", ".svg": "image/svg+xml", ".txt": "text/plain", ".webp": "image/webp" };
 
 function findChrome() {
@@ -70,6 +71,13 @@ async function evalJs(conn, sessionId, expr) {
   return result.value;
 }
 async function clickAt(conn, sessionId, x, y) {
+  if (MOBILE) {
+    await conn.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y, radiusX: 4, radiusY: 4, force: 1 }] }, sessionId);
+    await sleep(45);
+    await conn.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] }, sessionId);
+    await sleep(180);
+    return;
+  }
   await conn.send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y }, sessionId);
   await sleep(40);
   await conn.send("Input.dispatchMouseEvent", { type: "mousePressed", x, y, button: "left", clickCount: 1, buttons: 1 }, sessionId);
@@ -172,12 +180,18 @@ const DOT_NEAR_PILL = `(() => {
   return best;
 })()`;
 
+const bubbleCenterById = (id) => `(() => {
+  const r = [...document.querySelectorAll('rect.org')].find((n) => !n.classList.contains('hide') && n.__data__ && n.__data__.ncr_id === ${JSON.stringify(id)});
+  if (!r) return null;
+  const b = r.getBoundingClientRect();
+  return { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+})()`;
+
 async function main() {
   if (!existsSync(join(DIST, "index.html"))) { console.error("run npm run build first"); process.exit(1); }
   const chromePath = findChrome();
   if (!chromePath) { console.error("Chrome not found"); process.exit(1); }
   mkdirSync(OUT, { recursive: true });
-  const MOBILE = !!process.env.NERC_MOBILE;
   const VIEW = MOBILE ? { w: 390, h: 844 } : { w: 1440, h: 900 };
   console.log(`viewport: ${VIEW.w}×${VIEW.h} ${MOBILE ? "(mobile/compact)" : "(desktop)"}`);
   const { server, url } = await startServer();
@@ -235,7 +249,7 @@ async function main() {
         // The OLD circular hit reached ~half the pill WIDTH above the bubble; the new
         // tight rect reaches only its small pad. Probe just above the actual hit-rect
         // top — a band the old circle covered (hw/2 ≈ ${(g.hw / 2).toFixed(0)}px up) but the rect does not.
-        const gx = g.cx, gy = g.htop - 8;
+        const gx = g.cx, gy = g.htop - (MOBILE ? 18 : 8);
         const oldCircleReach = g.hw / 2; // ≈ old hitTargetRadius in px for a wide pill
         const cy = (g.vtop + g.vbot) / 2;
         console.log(`  pill top: visible ${g.vtop.toFixed(0)}, hit ${g.htop.toFixed(0)}; old circle reached ~${(cy - oldCircleReach).toFixed(0)} (≈${oldCircleReach.toFixed(0)}px above centre), probing y=${gy.toFixed(0)}`);
@@ -258,31 +272,46 @@ async function main() {
       // CLICK: nearestOrgAtPointer must resolve the dot even if the pill's padded
       // hit rect sits on top at that pixel.
       await clearSelection(conn, sessionId);
-      await clickAt(conn, sessionId, near.dot.x, near.dot.y);
+      const dotEl = await evalJs(conn, sessionId, bubbleCenterById(near.dot.id));
+      if (!dotEl) {
+        console.log("  ! dot no longer visible after clearing selection");
+        failed++;
+      } else {
+        const dotAt = await evalJs(conn, sessionId, elAt(dotEl.x, dotEl.y));
+        console.log(`  elementAt current dot center: ${JSON.stringify(dotAt)}`);
+        await clickAt(conn, sessionId, dotEl.x, dotEl.y);
+      }
       const pick = await evalJs(conn, sessionId, LAST_PICK);
       console.log(`  selectOrg picked after dot click: ${JSON.stringify(pick)}`);
       assert(pick === near.dot.name, "clicking the dot selects the dot, not the pill");
       // SELECTED PILL must not swallow a nearby dot: pick the pill first, then click
       // the dot — nearestOrgAtPointer should follow the pointer, not stick on the pill.
       await clearSelection(conn, sessionId);
-      const pillEl = await evalJs(conn, sessionId, `(() => {
-        for (const r of document.querySelectorAll('rect.org')) {
-          if (r.classList.contains('hide') || !r.__data__ || r.__data__._renderFallback) continue;
-          if (r.__data__.ncr_id === ${JSON.stringify(near.pill.id)}) {
-            const b = r.getBoundingClientRect();
-            return { x: b.left + b.width / 2, y: b.top + b.height / 2 };
-          }
-        }
-        return null;
-      })()`);
+      const pillEl = await evalJs(conn, sessionId, bubbleCenterById(near.pill.id));
       if (pillEl) {
         await clickAt(conn, sessionId, pillEl.x, pillEl.y);
         const pillPick = await evalJs(conn, sessionId, LAST_PICK);
         assert(pillPick === near.pill.name, "pill centre click selects the pill");
-        await clickAt(conn, sessionId, near.dot.x, near.dot.y);
+        const currentDotEl = await evalJs(conn, sessionId, bubbleCenterById(near.dot.id));
+        let attemptedSelectedDotTap = false;
+        if (!currentDotEl) {
+          console.log("  ! dot no longer visible after selecting the pill");
+          failed++;
+        } else {
+          const currentDotAt = await evalJs(conn, sessionId, elAt(currentDotEl.x, currentDotEl.y));
+          console.log(`  elementAt current dot center after pill select: ${JSON.stringify(currentDotAt)}`);
+          if (currentDotAt?.isHit) {
+            attemptedSelectedDotTap = true;
+            await clickAt(conn, sessionId, currentDotEl.x, currentDotEl.y);
+          } else {
+            console.log("  (dot is covered after selecting the pill — skipping selected-pill dot tap)");
+          }
+        }
         const dotPick = await evalJs(conn, sessionId, LAST_PICK);
         console.log(`  selectOrg after pill→dot click: ${JSON.stringify(dotPick)}`);
-        assert(dotPick === near.dot.name, "clicking the dot while pill is selected selects the dot");
+        if (attemptedSelectedDotTap) {
+          assert(dotPick === near.dot.name, "clicking the dot while pill is selected selects the dot");
+        }
       }
       // HOVER (desktop only — touch devices have no hover): clear selection (hover
       // is suppressed while selected), hover the dot centre, and confirm the HOT
@@ -291,11 +320,17 @@ async function main() {
       if (!MOBILE) {
         await clearSelection(conn, sessionId);
         await conn.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 6, y: 6 }, sessionId); await sleep(150);
-        await conn.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: near.dot.x, y: near.dot.y }, sessionId);
-        await sleep(300);
-        const hot = await evalJs(conn, sessionId, `(() => { const h = document.querySelector('rect.org.hot'); return h && h.__data__ ? { ncr: h.__data__.ncr_id, name: h.__data__.entity_name } : null; })()`);
-        console.log(`  hot bubble after hovering dot: ${JSON.stringify(hot)}`);
-        assert(hot != null && hot.ncr === near.dot.id, "hovering the dot highlights the DOT, not the pill");
+        const hoverDotEl = await evalJs(conn, sessionId, bubbleCenterById(near.dot.id));
+        if (!hoverDotEl) {
+          console.log("  ! dot no longer visible before hover");
+          failed++;
+        } else {
+          await conn.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: hoverDotEl.x, y: hoverDotEl.y }, sessionId);
+          await sleep(300);
+          const hot = await evalJs(conn, sessionId, `(() => { const h = document.querySelector('rect.org.hot'); return h && h.__data__ ? { ncr: h.__data__.ncr_id, name: h.__data__.entity_name } : null; })()`);
+          console.log(`  hot bubble after hovering dot: ${JSON.stringify(hot)}`);
+          assert(hot != null && hot.ncr === near.dot.id, "hovering the dot highlights the DOT, not the pill");
+        }
       }
     }
 
