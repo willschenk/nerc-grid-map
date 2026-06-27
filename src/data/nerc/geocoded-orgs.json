@@ -3920,7 +3920,7 @@
       "source": "official_website",
       "source_url": "https://www.wapa.gov/about/contact/",
       "org_type": "federal",
-      "notes": "WAPA headquarters in Lakewood, CO; distinct from WAPA regional registrations such as WAPA Rocky Mountain Region.",
+      "notes": "WAPA headquarters in Lakewood, CO; distinct from WAPA regional registrations such as the Phoenix-based Desert Southwest Region.",
       "seed": true,
       "acronym": "WAPA",
       "acronym_source": "official_website",
@@ -3937,7 +3937,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.wapa.gov/about/contact/",
-          "geo_notes": "WAPA headquarters in Lakewood, CO; distinct from WAPA regional registrations such as WAPA Rocky Mountain Region."
+          "geo_notes": "WAPA headquarters in Lakewood, CO; distinct from WAPA regional registrations such as the Phoenix-based Desert Southwest Region."
         },
         {
           "rank": 2,
@@ -3951,7 +3951,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://www.wapa.gov/about-wapa/contact-us/",
-          "geo_notes": "WAPA Desert Southwest regional office; distinct from Lakewood HQ pin."
+          "geo_notes": "WAPA Desert Southwest regional office in Phoenix; distinct from the Lakewood, CO WAPA headquarters pin."
         },
         {
           "rank": 3,
@@ -115914,7 +115914,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.aps.com",
-      "notes": "Arizona's largest IOU; corporate HQ in downtown Phoenix.",
+      "notes": "Arizona's largest IOU; corporate HQ in downtown Phoenix. Principal subsidiary of Pinnacle West Capital Corporation.",
+      "parent_org": "Pinnacle West Capital Corporation",
       "seed": false,
       "locations": [
         {
@@ -115929,7 +115930,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.aps.com",
-          "geo_notes": "Arizona's largest IOU; corporate HQ in downtown Phoenix."
+          "geo_notes": "Arizona's largest IOU; corporate HQ in downtown Phoenix. Principal subsidiary of Pinnacle West Capital Corporation."
         },
         {
           "rank": 2,
@@ -134694,7 +134695,8 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.ntua.com/",
-      "notes": "72 MW Red Mesa Solar Project operated by NTUA Generation-Utah LLC.",
+      "notes": "72 MW Red Mesa Solar Project operated by NTUA Generation-Utah LLC; related to the Navajo Tribal Utility Authority service utility headquartered in Fort Defiance, AZ.",
+      "parent_org": "SUP-navajo-tribal-utility-authority",
       "seed": false,
       "locations": [
         {
@@ -134709,7 +134711,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.ntua.com/",
-          "geo_notes": "72 MW Red Mesa Solar Project operated by NTUA Generation-Utah LLC."
+          "geo_notes": "72 MW Red Mesa Solar Project operated by NTUA Generation-Utah LLC; related to the Navajo Tribal Utility Authority service utility headquartered in Fort Defiance, AZ."
         },
         {
           "rank": 2,
@@ -138287,7 +138289,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.wapa.gov/transmission/interconnection/interconnection-contacts/",
-      "notes": "WAPA Desert Southwest regional office Phoenix AZ.",
+      "notes": "WAPA Desert Southwest regional office in Phoenix, AZ; separate regional registration from the Lakewood, CO WAPA headquarters.",
       "seed": false,
       "skip": false,
       "skip_reason": "",
@@ -138304,7 +138306,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.wapa.gov/transmission/interconnection/interconnection-contacts/",
-          "geo_notes": "WAPA Desert Southwest regional office Phoenix AZ."
+          "geo_notes": "WAPA Desert Southwest regional office in Phoenix, AZ; separate regional registration from the Lakewood, CO WAPA headquarters."
         },
         {
           "rank": 2,
@@ -150237,7 +150239,8 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000100122",
-      "notes": "Investor-owned utility serving southern Arizona; UNS Energy subsidiary.",
+      "notes": "Investor-owned utility serving southern Arizona; UNS Energy subsidiary; UNS Energy is owned by Fortis Inc.",
+      "parent_org": "UNS Energy Corporation",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -150254,7 +150257,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000100122",
-          "geo_notes": "Investor-owned utility serving southern Arizona; UNS Energy subsidiary."
+          "geo_notes": "Investor-owned utility serving southern Arizona; UNS Energy subsidiary; UNS Energy is owned by Fortis Inc."
         },
         {
           "rank": 2,
