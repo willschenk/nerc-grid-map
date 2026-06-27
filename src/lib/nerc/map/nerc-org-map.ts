@@ -1180,8 +1180,8 @@ export function mountNercOrgMap(): void {
     const load = (): void => {
       void loadOrgDetails().catch((err) => console.warn("NERC org details were not available", err));
     };
-    if (idle) idle(load, { timeout: 3000 });
-    else window.setTimeout(load, 250);
+    if (idle) idle(load, { timeout: 9000 });
+    else window.setTimeout(load, 5000);
   }
 
   function clearOrgPointerFocus(): void {
