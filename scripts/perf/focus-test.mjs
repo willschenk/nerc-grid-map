@@ -80,6 +80,7 @@ const STATE = `(() => {
     focusMiso: svg.classList.contains('focus-miso'),
     focusNyiso: svg.classList.contains('focus-nyiso'),
     focusIsone: svg.classList.contains('focus-isone'),
+    focusSpp: svg.classList.contains('focus-spp'),
     parents: shown('rect.org.focus-parent').length,
     related: shown('rect.org.focus-related').length,
     dimmed: shown('rect.org.focus-dim').length,
@@ -110,6 +111,12 @@ async function clickAt(conn, sessionId, x, y) {
 async function clickBackground(conn, sessionId) {
   await clickAt(conn, sessionId, 40, 300); // empty map at the left edge
   await sleep(500);
+}
+// Reset to the national overview (clears focus AND zoom) via the home button, so a
+// geographically distant hub is on-screen and clickable for the next family.
+async function resetView(conn, sessionId) {
+  await evalJs(conn, sessionId, `document.querySelector('#nerc-zoom-home')?.click()`);
+  await sleep(900);
 }
 
 const assert = (cond, msg) => { if (!cond) { console.error("FAIL:", msg); process.exitCode = 1; } else console.log("ok:", msg); };
@@ -164,7 +171,10 @@ async function main() {
     const shotMiso = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "2-miso.png"), Buffer.from(shotMiso.data, "base64"));
 
-    // ── switch to NYISO (8 Transmission Owners) ──
+    // ── NYISO (8 Transmission Owners) ── clear first: a tight ISO family fit can
+    // push a geographically distant hub off-screen, so each of these is exercised
+    // from the national overview rather than chained switch-to-switch.
+    await resetView(conn, sessionId);
     await clickHub(conn, sessionId, "New York Independent System Operator");
     const nyiso = await evalJs(conn, sessionId, STATE);
     console.log("NYISO state:", JSON.stringify(nyiso));
@@ -174,7 +184,8 @@ async function main() {
     const shotNyiso = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "2a-nyiso.png"), Buffer.from(shotNyiso.data, "base64"));
 
-    // ── switch to ISO-NE (11 Participating Transmission Owners) ──
+    // ── ISO-NE (11 Participating Transmission Owners) ──
+    await resetView(conn, sessionId);
     await clickHub(conn, sessionId, "ISO-NE");
     const isone = await evalJs(conn, sessionId, STATE);
     console.log("ISO-NE state:", JSON.stringify(isone));
@@ -183,6 +194,17 @@ async function main() {
     assert(isone.related >= 5, `ISO-NE has related PTOs shown (got ${isone.related})`);
     const shotIsone = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "2b-isone.png"), Buffer.from(shotIsone.data, "base64"));
+
+    // ── SPP (Transmission Owners) ──
+    await resetView(conn, sessionId);
+    await clickHub(conn, sessionId, "Southwest Power Pool");
+    const spp = await evalJs(conn, sessionId, STATE);
+    console.log("SPP state:", JSON.stringify(spp));
+    assert(spp.focusMode && spp.focusSpp && !spp.focusIsone, "clicking SPP activates focus-spp");
+    assert(spp.parents === 1, `exactly one focus-parent for SPP (got ${spp.parents})`);
+    assert(spp.related >= 8, `SPP has related TOs shown (got ${spp.related})`);
+    const shotSpp = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
+    writeFileSync(join(OUT, "2c-spp.png"), Buffer.from(shotSpp.data, "base64"));
 
     // ── clear ──
     await clickBackground(conn, sessionId);

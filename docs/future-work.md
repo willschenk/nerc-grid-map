@@ -276,7 +276,7 @@ East → **`NCR00961`**. **`MP`** = Minnesota Power → **`NCR00674`**. A prior 
 - [ ] **Accessibility polish** of what exists: ARIA on the detail panel, color
   contrast, and full `prefers-reduced-motion` coverage.
 
-## 5. Market focus mode (PJM / MISO / NYISO / ISO-NE)
+## 5. Market focus mode (PJM / MISO / NYISO / ISO-NE / SPP)
 
 - [x] **Generalize the focus machinery to N families.** The renderer is now
   data-driven via the `MARKET_FAMILIES` registry + `MarketFamilyId` (was hard-wired
@@ -288,13 +288,18 @@ East → **`NCR00961`**. **`MP`** = Minnesota Power → **`NCR00674`**. A prior 
   and `ISONE_PTO_IDS` (11 Participating Transmission Owners, ISO-NE Tariff Schedule
   21 / TOA). Municipal/light-department TOs are excluded from ISO-NE (single BA, so
   not separate control areas, unlike MISO LBAs).
-- [ ] **Extend to SPP / CAISO / ERCOT** once membership is curated. Hubs exist
-  (SPP `NCR01143`, CAISO `NCR05048`, ERCOT `NCR04056`); ERCOT is effectively a
-  single-area BA so its "family" is mostly the hub. Add a `*_IDS` set + registry row
-  + CSS block per the now-generic pattern. Cite an authoritative member list
-  (SPP membership roster; CAISO participating-TO list).
+- [x] **SPP added** (2026-06-26). `SPP_TO_IDS` (18 Transmission Owners, SPP OATT
+  Attachment H / membership roster; Integrated System — Basin Electric, WAPA Upper
+  Great Plains — joined Oct 2015). Limited to members whose registration carries a
+  TO/TOP role. **Known gap:** AEP's SPP subsidiaries (PSO, SWEPCO) are folded into the
+  PJM-classified AEP combine (NCR00682, Ohio) so they have no separate SPP bubble; an
+  un-fold would be needed to surface them under SPP. SPP colour = crimson.
+- [ ] **Extend to CAISO / ERCOT** once membership is curated. Hubs exist
+  (CAISO `NCR05048`, ERCOT `NCR04056`); ERCOT is effectively a single-area BA so its
+  "family" is mostly the hub. Add a `*_IDS` set + registry row + CSS block per the
+  now-generic pattern. Cite an authoritative member list (CAISO participating-TO list).
 - [ ] **Area-pill coverage audit**: confirm every PJM zone / MISO LBA / NYISO TO /
-  ISO-NE PTO org shows the correct classification pill and that no hub double-tags.
+  ISO-NE PTO / SPP TO org shows the correct classification pill and no hub double-tags.
 
 ## 6. Tooling & tech debt
 

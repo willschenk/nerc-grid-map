@@ -31,7 +31,7 @@ type Place = { name: string; lat: number; lng: number; tier: number; _x?: number
 
 // The curated market families that support click-to-focus mode. Each maps to a
 // hub org plus a membership set (see the *_IDS sets and marketFamily below).
-type MarketFamilyId = "PJM" | "MISO" | "NYISO" | "ISONE";
+type MarketFamilyId = "PJM" | "MISO" | "NYISO" | "ISONE" | "SPP";
 
 type Org = {
   ncr_id: string;
@@ -483,6 +483,38 @@ const ISONE_PTO_IDS = new Set<string>([
   "NCR07086", // Fitchburg Gas and Electric Light Company (Unitil)
 ]);
 
+// The SPP hub org (Southwest Power Pool) — anchor for the central-US RTO family.
+const SPP_HUB_ID = "NCR01143";
+// SPP Transmission Owners — the member utilities that own transmission in the SPP
+// RTO. Source: SPP Open Access Transmission Tariff (OATT) Attachment H / SPP
+// membership roster; the Integrated System (Basin Electric, WAPA Upper Great
+// Plains) joined SPP in October 2015. https://www.spp.org/about-us/members/
+// Curated by ncr_id (no SPP area-alias codes exist), limited to members whose NERC
+// registration carries a transmission-owner role (TO/TOP), mirroring the other
+// families. NOTE: AEP's SPP subsidiaries (PSO, SWEPCO) are folded into the
+// PJM-classified AEP combine (NCR00682, Ohio), so they have no separate SPP bubble
+// and are intentionally absent here.
+const SPP_TO_IDS = new Set<string>([
+  "NCR01155", // Empire District Electric (Liberty)
+  "NCR-SEED-048", // Evergy Kansas Central (Westar)
+  "NCR00658", // Evergy, Inc. (Evergy Metro / Missouri transmission)
+  "NCR01101", // Grand River Dam Authority (GRDA)
+  "NCR01001", // Lincoln Electric System (LES)
+  "NCR01118", // Midwest Energy, Inc.
+  "NCR01018", // Nebraska Public Power District (NPPD)
+  "NCR01130", // Oklahoma Gas and Electric (OG&E)
+  "NCR00860", // Omaha Public Power District (OPPD)
+  "NCR01144", // Southwestern Power Administration (SWPA)
+  "NCR01145", // Southwestern Public Service / Xcel (SPS)
+  "NCR01148", // Sunflower Electric Power Corporation
+  "NCR01160", // Western Farmers Electric Cooperative (WFEC)
+  "NCR05023", // Basin Electric Power Cooperative (Integrated System)
+  "NCR05467", // WAPA Upper Great Plains Region (Integrated System)
+  "NCR01036", // WAPA Upper Great Plains East
+  "NCR01081", // City Utilities of Springfield, MO
+  "NCR01061", // Board of Public Utilities (Kansas City, KS)
+]);
+
 // Per-family metadata the renderer keys off: the anchor hub, the svg focus class
 // + member saber class that drive the dim/glow CSS, and the classification pill
 // shown for a member (PJM Zone / MISO LBA / NYISO TO / ISO-NE PTO). Membership
@@ -538,6 +570,16 @@ const MARKET_FAMILIES: Record<MarketFamilyId, MarketFamilyMeta> = {
     pillTitle: "ISO New England Participating Transmission Owner",
     panelTagClass: "p-isonepto",
     panelBadgeClass: "p-isonepto-badge",
+  },
+  SPP: {
+    hubId: SPP_HUB_ID,
+    focusClass: "focus-spp",
+    saberClass: "spp-saber",
+    pillLabel: "SPP TO",
+    pillClass: "nerc-spp-area-pill",
+    pillTitle: "Southwest Power Pool Transmission Owner",
+    panelTagClass: "p-sppto",
+    panelBadgeClass: "p-sppto-badge",
   },
 };
 const MARKET_FAMILY_IDS = Object.keys(MARKET_FAMILIES) as MarketFamilyId[];
@@ -652,6 +694,21 @@ const WATER_LABELS: Array<{ name: string; lat: number; lng: number; interior?: b
   { name: "Long Island Sound", lat: 41.1, lng: -72.6, interior: true },
   { name: "Puget Sound", lat: 47.8, lng: -122.5, interior: true },
   { name: "San Francisco Bay", lat: 37.8, lng: -122.35, interior: true },
+  { name: "Delaware Bay", lat: 38.85, lng: -75.25, interior: true },
+  { name: "Mobile Bay", lat: 30.4, lng: -88.0, interior: true },
+  { name: "Tampa Bay", lat: 27.7, lng: -82.65, interior: true },
+  { name: "Galveston Bay", lat: 29.45, lng: -94.85, interior: true },
+  { name: "Narragansett Bay", lat: 41.55, lng: -71.35, interior: true },
+  { name: "Lake Mead", lat: 36.2, lng: -114.4, interior: true },
+  { name: "Salton Sea", lat: 33.3, lng: -115.8, interior: true },
+  { name: "Appalachians", lat: 37.2, lng: -81.8, interior: true },
+  { name: "Great Plains", lat: 39.0, lng: -100.5, interior: true },
+  { name: "Ozarks", lat: 36.8, lng: -93.2, interior: true },
+  { name: "Sierra Nevada", lat: 38.2, lng: -119.5, interior: true },
+  { name: "Cascades", lat: 44.5, lng: -121.8, interior: true },
+  { name: "Adirondacks", lat: 44.1, lng: -74.2, interior: true },
+  { name: "Badlands", lat: 43.8, lng: -102.3, interior: true },
+  { name: "Black Hills", lat: 43.9, lng: -103.6, interior: true },
 ];
 
 // Oversized geographic labels (big water bodies, Canadian provinces, Maine) that
@@ -661,6 +718,8 @@ const QUIET_LAND_LABELS = new Set([
   "Gulf of Mexico", "Gulf of America",
   "Manitoba", "Ontario", "Québec", "Quebec",
   "New Brunswick", "Maine",
+  "Appalachians", "Great Plains", "Ozarks", "Sierra Nevada", "Cascades", "Adirondacks",
+  "Badlands", "Black Hills",
 ]);
 
 // Tiny states whose centroid label would clutter the map at overview; held back
@@ -914,7 +973,9 @@ export function mountNercOrgMap(): void {
     ty: number; // found within the geographic leash (close to home, never flung away)
     r: number; // reserved radius (visual + half gap)
     anchor: number; // positional-force strength toward the target slot
-    cap: number; // max wander distance from the target slot
+    cap: number; // max wander distance from the target slot (collide settle room)
+    homeCap: number; // hard max distance from hx/hy — geography never drifts farther
+    homePull: number; // gentle continuous pull back toward true home
     frame: LandFrame;
     x: number;
     y: number;
@@ -1827,27 +1888,20 @@ export function mountNercOrgMap(): void {
   }
 
   function placeLabelLimit(k: number): number {
-    // Background city context. Desktop carries more of it for a higher-resolution
-    // backdrop; city names still yield to NERC org labels/bubbles via blockers,
-    // so they never crowd out the data. Mobile stays modest (small screen).
-    // Caps are generous; the open-space test does the real limiting, so these only
-    // bound the work, not the look. More city names fill the open gaps now.
-    // Phones keep the overview calm — only a few big metros for orientation — and
-    // admit more city context as the user zooms in (where there is room for it).
-    if (compact) return k < 2.2 ? 5 : k < 5 ? 11 : 18;
-    if (k < 1.8) return 40;
-    if (k < 4.8) return 72;
-    return 130;
+    // Background city context — secondary to NERC orgs. Caps bound work only; the
+    // open-space blocker test is what keeps cities from crowding the data.
+    if (compact) return k < 2.2 ? 6 : k < 5 ? 14 : 26;
+    if (k < 1.8) return 44;
+    if (k < 4.8) return 92;
+    return 175;
   }
 
   function placeDotMinK(tier: number): number {
-    return tier === 1 ? 0.72 : tier === 2 ? 1.4 : 2.6;
+    return tier === 1 ? 0.72 : tier === 2 ? 1.4 : 2.35;
   }
 
   function placeLabelMinK(tier: number): number {
-    // Tier-2 includes the isolated Mountain-West / Northern cities that fill the
-    // big open gaps, so let them appear right from the national view.
-    return tier === 1 ? 0.72 : tier === 2 ? 0.9 : 2.7;
+    return tier === 1 ? 0.72 : tier === 2 ? 0.9 : 2.35;
   }
 
   function placeDotRadius(p: Place): number {
@@ -2154,17 +2208,14 @@ export function mountNercOrgMap(): void {
   }
 
   function maxDeclutterOffset(k: number): number {
-    // Substantial freedom at every zoom step; regional/deep buckets get an extra
-    // local-fill allowance so eligible orgs can use nearby whitespace instead of
-    // disappearing from roomy views.
+    // Tighter cap on how far a bubble may shift from its projected home. The old
+    // regional-fill allowance pulled orgs into distant whitespace; prefer holding
+    // back and revealing on zoom-in over shoving bubbles across the map.
     const t = declutterZoomT(k);
-    const overviewPx = compact ? 58 : 84;
-    const deepPx = compact ? 40 : 58;
-    // Extra room to pull eligible-but-held-back orgs into nearby whitespace once
-    // the user has zoomed into a region — more pills fill the deep view. Fades
-    // out at very deep zoom so geography stays honest.
+    const overviewPx = compact ? 50 : 68;
+    const deepPx = compact ? 36 : 48;
     const regionalFillPx =
-      (compact ? 32 : 48) *
+      (compact ? 16 : 24) *
       smoothStep((k - 3.5) / 5.5) *
       (1 - smoothStep((k - 20) / 20));
     return (overviewPx + (deepPx - overviewPx) * t + regionalFillPx) * unitPerPx;
@@ -2404,6 +2455,9 @@ export function mountNercOrgMap(): void {
   function isIsoneTransmissionOwner(o: Org): boolean {
     return ISONE_PTO_IDS.has(o.ncr_id);
   }
+  function isSppTransmissionOwner(o: Org): boolean {
+    return SPP_TO_IDS.has(o.ncr_id);
+  }
   // True when `o` is a non-hub member of the given family (drives the membership
   // pill/badge). Uses each family's own predicate rather than marketFamily so a
   // dual-market utility (PJM zone AND MISO LBA) shows BOTH tags; the hub shows the
@@ -2419,6 +2473,8 @@ export function mountNercOrgMap(): void {
         return isNyisoTransmissionOwner(o);
       case "ISONE":
         return isIsoneTransmissionOwner(o);
+      case "SPP":
+        return isSppTransmissionOwner(o);
     }
   }
 
@@ -2439,6 +2495,7 @@ export function mountNercOrgMap(): void {
     else if (o.ncr_id === MISO_HUB_ID || isMisoControlArea(o)) v = "MISO";
     else if (o.ncr_id === NYISO_HUB_ID || isNyisoTransmissionOwner(o)) v = "NYISO";
     else if (o.ncr_id === ISONE_HUB_ID || isIsoneTransmissionOwner(o)) v = "ISONE";
+    else if (o.ncr_id === SPP_HUB_ID || isSppTransmissionOwner(o)) v = "SPP";
     return (o._mf = v);
   }
 
@@ -3445,14 +3502,14 @@ export function mountNercOrgMap(): void {
   // larger bubbles that overshadow their spot (the "more freedom for small orgs"
   // rule, now continuous instead of a discrete ring leash).
   function orgAnchorStrength(o: Org): number {
-    // Pull toward the space-filling target slot. Firm enough to hold the filled
-    // layout steady (collide handles separation); big orgs hold a touch firmer.
-    if (isTopTierOrg(o)) return 0.5;
+    // Pull toward the nearest on-land slot. Stronger for big/important orgs so
+    // they hold their geography; collide still handles separation.
+    if (isTopTierOrg(o)) return 0.64;
     const bigT = Math.max(
       smoothStep((visualPriority(o) - 12) / 72),
       smoothStep(((o.weight ?? 0) - 6) / 38),
     );
-    return 0.32 + 0.16 * bigT;
+    return 0.44 + 0.22 * bigT;
   }
 
   // Bubble layout is a LIVE, BOUNDED force simulation. Disclosed bubbles (those
@@ -3586,18 +3643,17 @@ export function mountNercOrgMap(): void {
       const outerMajor = isOuterOverviewZoom(bucket) && isOuterOverviewMajor(o);
       const regionalLeashT = smoothStep((bucket - 3.5) / 5.5);
       const leashR = isIsoRtoOperator(o)
-        ? // ISOs/RTOs must always be shown AND never overlap, so give them enough
-          // room to slide apart when two sit close (e.g. NYISO and ISO-NE).
-          (compact ? 2.4 : 3.0)
+        ? // ISOs/RTOs need room to slide apart when co-located (e.g. NYISO + ISO-NE).
+          (compact ? 2.15 : 2.55)
         : outerMajor
           ? isTopTierOrg(o)
-            ? (compact ? 0.85 : 1.2)
-            : (compact ? 1.45 : 2.0)
+            ? (compact ? 0.72 : 0.95)
+            : (compact ? 1.15 : 1.5)
           : isTopTierOrg(o)
-            ? (compact ? 0.6 : 0.8)
-            : (compact ? 1.1 : 1.7) +
-              (compact ? 1.25 : 2.25) * (1 - bigT) +
-              (compact ? 1.05 : 1.4) * regionalLeashT * (1 - 0.45 * bigT);
+            ? (compact ? 0.52 : 0.68)
+            : (compact ? 0.92 : 1.28) +
+              (compact ? 0.72 : 1.28) * (1 - bigT) +
+              (compact ? 0.42 : 0.68) * regionalLeashT * (1 - 0.45 * bigT);
       const leash = Math.min(capBase, r * leashR);
       // Ring-search outward from home for the NEAREST non-overlapping on-land slot
       // within the leash; admit the org there and anchor the sim to that slot.
@@ -3640,7 +3696,10 @@ export function mountNercOrgMap(): void {
         ty: slotY,
         r,
         anchor,
-        cap: capBase * 1.3,
+        // Small collide-settle room around the slot; homeCap is the hard geographic limit.
+        cap: Math.max(r * 0.38, 2.5 * unitPerPx),
+        homeCap: leash,
+        homePull: 0.06 + 0.12 * bigT + (isTopTierOrg(o) ? 0.1 : isIsoRtoOperator(o) ? 0.06 : 0),
         frame,
         x: prev ? ox + (o._dx ?? 0) : slotX + (Math.cos(o._visRank ?? 0) * r) / 8,
         y: prev ? oy + (o._dy ?? 0) : slotY + (Math.sin(o._visRank ?? 0) * r) / 8,
@@ -3672,6 +3731,8 @@ export function mountNercOrgMap(): void {
     orgSim.force("collide", forceCollideAniso<SimNode>((n) => n.r, BUBBLE_PACK_Y_STRETCH, 5, 1));
     orgSim.force("x", forceX<SimNode>((n) => n.tx).strength((n) => n.anchor));
     orgSim.force("y", forceY<SimNode>((n) => n.ty).strength((n) => n.anchor));
+    orgSim.force("homeX", forceX<SimNode>((n) => n.hx).strength((n) => n.homePull));
+    orgSim.force("homeY", forceY<SimNode>((n) => n.hy).strength((n) => n.homePull));
     // Reheat with energy then settle snappily (~1.1s) onto the filled slot layout
     // — fast enough to feel responsive while zooming, slow enough to read as flow.
     orgSim.alphaDecay(0.05).alpha(0.95).restart();
@@ -3682,7 +3743,7 @@ export function mountNercOrgMap(): void {
   function onSimTick(): void {
     const bucket = simBucket;
     for (const n of simNodes) {
-      // Cap wander from the target slot (hard, but rare — a runaway backstop).
+      // Cap wander from the target slot (collide settle room only).
       const dx = n.x - n.tx;
       const dy = n.y - n.ty;
       const off = Math.hypot(dx, dy);
@@ -3693,20 +3754,27 @@ export function mountNercOrgMap(): void {
         n.vx *= 0.5;
         n.vy *= 0.5;
       }
-      // Soft land-keep: the target slot is on-land and the anchor holds bubbles
-      // near it, so if collide nudges one offshore just steer its velocity back
-      // toward the slot — a gentle pull, NOT a hard reposition (hard-resetting the
-      // position each tick fought collide and reintroduced overlap at crowded
-      // coastlines). Coastal bubbles may sit slightly offshore; that's fine.
+      // Hard geographic leash: never drift farther from true home than the gate allowed.
+      const hdx = n.x - n.hx;
+      const hdy = n.y - n.hy;
+      const homeOff = Math.hypot(hdx, hdy);
+      if (homeOff > n.homeCap) {
+        const s = n.homeCap / homeOff;
+        n.x = n.hx + hdx * s;
+        n.y = n.hy + hdy * s;
+        n.vx *= 0.4;
+        n.vy *= 0.4;
+      }
+      // Off land or wrong inset: steer back toward true home, not the displaced slot.
       if (!onLandForFrame(n.x / bucket, n.y / bucket, n.frame, true)) {
-        n.vx += (n.tx - n.x) * 0.18;
-        n.vy += (n.ty - n.y) * 0.18;
+        n.vx += (n.hx - n.x) * 0.24;
+        n.vy += (n.hy - n.y) * 0.24;
       } else if (
         (isUsInsetOrg(n.o) && !insetHomeForOrg(n.o, n.x / bucket, n.y / bucket)) ||
         (!isUsInsetOrg(n.o) && pointInAnyInset(n.x / bucket, n.y / bucket, insetMainlandFencePad()))
       ) {
-        n.vx += (n.tx - n.x) * 0.34;
-        n.vy += (n.ty - n.y) * 0.34;
+        n.vx += (n.hx - n.x) * 0.38;
+        n.vy += (n.hy - n.y) * 0.38;
       }
       n.o._dx = n.x - n.hx;
       n.o._dy = n.y - n.hy;
@@ -4421,17 +4489,15 @@ export function mountNercOrgMap(): void {
       y0: b.y0 - labelMargin,
       y1: b.y1 + labelMargin,
     }));
-    // Bubble keep-away — kept SEPARATE from the text blockers so a label that
-    // can't find an open spot near its feature can fall back to sitting *behind*
-    // the bubbles (the gLand group already paints under gOverlay) instead of
-    // being flung far from its true location or hidden entirely.
+    // Bubble + hit keep-away — orgs are immovable blockers; geo labels yield to them.
     const bubbleBoxes: Box[] = [];
     for (const o of finalVisibleOrgs) {
       if (o._sx == null || o._sy == null) continue;
-      // Tighter pad so geo labels can fill the gaps between bubbles, not just the
-      // wide-open regions — they still never touch a bubble.
-      const { hw, hh } = orgBubbleHalfExtents(o, k);
-      const pad = (compact ? 3 : 4) * unitPerPx;
+      const vis = orgBubbleHalfExtents(o, k);
+      const hit = hitHalfExtents(o, k);
+      const hw = Math.max(vis.hw, hit.hw);
+      const hh = Math.max(vis.hh, hit.hh);
+      const pad = (compact ? 2.5 : 3) * unitPerPx;
       bubbleBoxes.push({
         x0: o._sx - hw - pad,
         x1: o._sx + hw + pad,
@@ -4440,12 +4506,9 @@ export function mountNercOrgMap(): void {
       });
     }
     // ── Geographic context labels: cities, water bodies, state/province names ──
-    // Each shows ONLY where it fits in open space (clear of every bubble, every
-    // NERC label, and every other geo label). Crucially, each label tries its
-    // anchor first, then a ring of nearby offsets, so a name slides into the open
-    // part of its region instead of vanishing when its exact point sits near a
-    // bubble — that is what lets many more of them show. Filled in usefulness
-    // order so the best label wins contested space.
+    // HARD RULE: geo labels are post-processing only. They never enter the org
+    // placement sim, capacity gate, or _dx/_dy logic. If space is contested the
+    // geo label moves, fades, or disappears — orgs never change.
     const placeDotState = new Map<string, { x: number; y: number; r: number }>();
     const placeState = new Map<string, { x: number; y: number; font: number; bg: boolean }>();
     const landState = new Map<string, { x: number; y: number; font: number; bg: boolean; quiet: boolean }>();
@@ -4514,19 +4577,19 @@ export function mountNercOrgMap(): void {
         placeDotState.set(p.name, { x: sx, y: sy, r: placeDotRadius(p) });
       }
 
-      // 1) Cities — most specific context; bigger metros first, zoom-gated by tier.
-      // A city name may nudge slightly to dodge a bubble but stays near its point.
+      // 1) Cities — tier 1/2 metros first, then regional tier-3 close-in names.
       let placedPlaces = 0;
       const placeCap = placeLabelLimit(k);
-      // Offsets are in viewBox units (≈ geographic distance), NOT screen px, so a
-      // label's wander is the same on phone and desktop — never flung across the
-      // narrow mobile band into empty ocean/Arctic far from its true place.
       const cityOffsets: Array<[number, number]> = [
         [0, 0],
-        ...ringOffsets(11 * roam),
-        ...ringOffsets(20 * roam),
+        ...ringOffsets(8 * roam),
+        ...ringOffsets(14 * roam),
+        ...ringOffsets(22 * roam),
       ];
-      for (const p of places) {
+      const sortedPlaces = [...places].sort(
+        (a, b) => a.tier - b.tier || a.name.localeCompare(b.name),
+      );
+      for (const p of sortedPlaces) {
         if (placedPlaces >= placeCap) break;
         if (p._x == null || p._y == null) continue;
         if (placeInUsInsetViewBox(p._x, p._y) && k < INSET_AMBIENT_CONTEXT_MIN_K) continue;
@@ -4534,7 +4597,7 @@ export function mountNercOrgMap(): void {
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
-        const px = (p.tier === 1 ? 11.5 : p.tier === 2 ? 10 : 9) * unitPerPx;
+        const px = (p.tier === 1 ? 11 : p.tier === 2 ? 9.5 : 8.5) * unitPerPx;
         const w = p.name.length * px * 0.66 + (compact ? 10 : 9) * unitPerPx;
         const h = px + (compact ? 8 : 7) * unitPerPx;
         const spot = fitGeoLabel(sx, sy, w, h, cityOffsets, true);
@@ -4577,10 +4640,9 @@ export function mountNercOrgMap(): void {
         L.kind === "water" ? 0 : L.kind === "province" ? 3 : L.small ? 2 : 1;
       const landOrder = [...landLabels].sort((a, b) => kindRank(a) - kindRank(b));
       let placedLand = 0;
-      // Thin out orientation labels as you zoom in — by deep zoom they would only
-      // clutter the view, and the city names carry the local context.
-      const deepLandT = smoothStep((k - 5) / 8);
-      const landCap = Math.max(8, Math.round((compact ? 20 : 56) * (1 - 0.4 * deepLandT)));
+      // Thin orientation labels only at deep zoom — cities carry local context.
+      const deepLandT = smoothStep((k - 6.5) / 10);
+      const landCap = Math.max(12, Math.round((compact ? 28 : 80) * (1 - 0.22 * deepLandT)));
       for (const L of landOrder) {
         if (placedLand >= landCap) break;
         if (L.kind === "state" && L.small && k < INSET_AMBIENT_CONTEXT_MIN_K) continue; // inset + tiny states
@@ -4589,7 +4651,8 @@ export function mountNercOrgMap(): void {
         // lakes, bays) does the opposite — it fills the open space AS you zoom into a
         // region, giving more geographic context exactly where the task wants it.
         if (L.kind === "water" && !L.interior && k >= 9) continue;
-        if (L.kind === "water" && L.interior && (k < 2.5 || k >= 50)) continue;
+        if (L.kind === "water" && L.interior && k < 2.2) continue;
+        if (L.kind === "water" && L.interior && k >= 90) continue;
         if (L.kind === "province" && k >= 12) continue;
         const baseSx = transform.applyX(L.x);
         const baseSy = transform.applyY(L.y);
@@ -5499,11 +5562,12 @@ export function mountNercOrgMap(): void {
     if (panel.hidden) return null;
     const pr = panel.getBoundingClientRect();
     if (pr.width <= 0 || pr.height <= 0) return null;
+    const sr = svgNode.getBoundingClientRect();
     return {
-      left: pr.left * unitPerPx,
-      top: pr.top * unitPerPx,
-      right: pr.right * unitPerPx,
-      bottom: pr.bottom * unitPerPx,
+      left: (pr.left - sr.left) * unitPerPx,
+      top: (pr.top - sr.top) * unitPerPx,
+      right: (pr.right - sr.left) * unitPerPx,
+      bottom: (pr.bottom - sr.top) * unitPerPx,
     };
   }
 
@@ -5561,9 +5625,12 @@ export function mountNercOrgMap(): void {
     let mR = (compact ? 24 : 32) * unitPerPx;
     let mB = (compact ? 36 : 28) * unitPerPx;
     const card = panelRectVB();
+    const desktopCornerCard = !compact && card != null && card.left > W * 0.35;
     if (card) {
-      if (card.left > W * 0.35) {
-        mR = Math.max(mR, W - card.left + 14 * unitPerPx);
+      if (desktopCornerCard) {
+        // Bottom-right card only blocks its corner — reserve card height below and
+        // card width at the right edge, not a full-height strip from card.left.
+        mR = Math.max(mR, W - card.right + 14 * unitPerPx);
         mB = Math.max(mB, H - card.top + 10 * unitPerPx);
       } else {
         mB = Math.max(mB, H - card.top + 8 * unitPerPx);
@@ -5571,7 +5638,9 @@ export function mountNercOrgMap(): void {
     }
     const viewW = Math.max(W * 0.35, W - mL - mR);
     const viewH = Math.max(H * 0.35, H - mT - mB);
-    const viewCx = mL + viewW / 2;
+    // Desktop corner card: mild horizontal bias (matches centerOnOrg) instead of
+    // recentering in a falsely narrowed strip that leaves empty ocean on the right.
+    const viewCx = desktopCornerCard ? W * 0.48 : mL + viewW / 2;
     const viewCy = mT + viewH / 2;
 
     // Fill the clear viewport a little past the padded bbox (the pad is empty

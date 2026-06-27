@@ -103,15 +103,18 @@ still hard-coded in `MISO_CONTROL_AREA_CODES` inside `nerc-org-map.ts`
 Longer term: collapse MISO membership into one source; until then, edit **both**
 files or QA will fail.
 
-**NYISO / ISO-NE membership — id sets in the renderer.** Unlike PJM/MISO, the NY
-and New England transmission owners have no area-alias codes, so membership is a
-curated `ncr_id` set in `nerc-org-map.ts`: `NYISO_TO_IDS` (8 NYISO Transmission
-Owners) and `ISONE_PTO_IDS` (11 ISO-NE Participating Transmission Owners). These
-feed `marketFamily()` exactly like the MISO/PJM tests. Sources are cited inline
-(NYISO OATT Attachment H; ISO-NE Tariff Schedule 21 / TOA). All four families are
+**NYISO / ISO-NE / SPP membership — id sets in the renderer.** Unlike PJM/MISO, the
+NY, New England, and SPP transmission owners have no area-alias codes, so membership
+is a curated `ncr_id` set in `nerc-org-map.ts`: `NYISO_TO_IDS` (8 NYISO Transmission
+Owners), `ISONE_PTO_IDS` (11 ISO-NE Participating Transmission Owners), and
+`SPP_TO_IDS` (18 SPP Transmission Owners). These feed `marketFamily()` exactly like
+the MISO/PJM tests. Sources are cited inline (NYISO OATT Attachment H; ISO-NE Tariff
+Schedule 21 / TOA; SPP OATT Attachment H / membership roster). Each set is limited to
+members whose registration carries a transmission-owner role. All five families are
 registered once in the `MARKET_FAMILIES` record (hub id + CSS/saber class +
-classification pill); adding SPP/CAISO/ERCOT later = a new `*_IDS` set + one row +
-one CSS colour block.
+classification pill); adding CAISO/ERCOT later = a new `*_IDS` set + one row + one CSS
+colour block. (SPP caveat: AEP's PSO/SWEPCO are folded into the PJM-classified AEP
+combine, so they have no separate SPP bubble.)
 
 **Legacy / project-owner codes.** Verified labels such as CIN, YAD, CPLE, CPLW,
 AMIL, ALTE, ALTW are priority evidence per `docs/standards/name-shortest.md`.
@@ -124,5 +127,5 @@ Do not rename or re-target them without explicit research; preserve
 **Logic:** `src/lib/nerc/area-aliases.mjs` (load, apply, validate) ·
 **QA:** `scripts/nerc/qa.mjs` step 14/14b ·
 **Renderer constants:** `PJM_TRANSMISSION_ZONE_CODES`, `MISO_CONTROL_AREA_CODES`,
-`NYISO_TO_IDS`, `ISONE_PTO_IDS`, and the `MARKET_FAMILIES` registry in
+`NYISO_TO_IDS`, `ISONE_PTO_IDS`, `SPP_TO_IDS`, and the `MARKET_FAMILIES` registry in
 `nerc-org-map.ts`.
