@@ -1,7 +1,7 @@
-// Background geographic context for the map: a small set of major US cities.
-// These are *secondary* — the renderer always places NERC org labels first and
-// only fits a city name into the leftover space. tier controls how soon a city
-// appears as you zoom in (1 = visible at the national view, 3 = only zoomed in).
+// Background geographic context for the map: US cities and regional place names.
+// These are strictly *secondary* — the renderer places every NERC org label and
+// bubble first, then fits city names only into leftover open space. Geographic
+// labels never move, hide, or resize an organization.
 export const PLACES = [
   // Tier 1 — anchor metros, visible at the national view.
   { name: "New York", lat: 40.71, lng: -74.01, tier: 1 },
@@ -168,4 +168,82 @@ export const PLACES = [
   { name: "Bakersfield", lat: 35.37, lng: -119.02, tier: 3 },
   { name: "Redding", lat: 40.59, lng: -122.39, tier: 3 },
   { name: "Medford", lat: 42.33, lng: -122.87, tier: 3 },
+
+  // Dense-region / close-in fill — tier 3, appear at medium+ zoom, always yield to orgs.
+  // Northeast / ISO-NE / PJM corridor
+  { name: "Providence", lat: 41.82, lng: -71.41, tier: 3 },
+  { name: "Worcester", lat: 42.26, lng: -71.8, tier: 3 },
+  { name: "New Haven", lat: 41.31, lng: -72.93, tier: 3 },
+  { name: "Stamford", lat: 41.05, lng: -73.54, tier: 3 },
+  { name: "Allentown", lat: 40.6, lng: -75.47, tier: 3 },
+  { name: "Reading", lat: 40.34, lng: -75.93, tier: 3 },
+  { name: "Wilmington", lat: 39.74, lng: -75.55, tier: 3 },
+  { name: "Atlantic City", lat: 39.36, lng: -74.42, tier: 3 },
+  { name: "Portsmouth", lat: 43.07, lng: -70.76, tier: 3 },
+  { name: "Concord", lat: 43.21, lng: -71.54, tier: 3 },
+  { name: "Montpelier", lat: 44.26, lng: -72.58, tier: 3 },
+  { name: "State College", lat: 40.79, lng: -77.86, tier: 3 },
+  { name: "Johnstown", lat: 40.33, lng: -78.92, tier: 3 },
+  { name: "Morgantown", lat: 39.63, lng: -79.96, tier: 3 },
+  { name: "Youngstown", lat: 41.1, lng: -80.65, tier: 3 },
+  { name: "Akron", lat: 41.08, lng: -81.52, tier: 3 },
+  { name: "Ann Arbor", lat: 42.28, lng: -83.74, tier: 3 },
+  { name: "Flint", lat: 43.02, lng: -83.69, tier: 3 },
+
+  // MISO / Midwest
+  { name: "Rockford", lat: 42.27, lng: -89.09, tier: 3 },
+  { name: "South Bend", lat: 41.68, lng: -86.25, tier: 3 },
+  { name: "Moline", lat: 41.49, lng: -90.51, tier: 3 },
+  { name: "Waterloo", lat: 42.49, lng: -92.34, tier: 3 },
+  { name: "Dubuque", lat: 42.5, lng: -90.66, tier: 3 },
+  { name: "La Crosse", lat: 43.8, lng: -91.25, tier: 3 },
+  { name: "Appleton", lat: 44.26, lng: -88.42, tier: 3 },
+  { name: "Kalamazoo", lat: 42.29, lng: -85.59, tier: 3 },
+  { name: "Bloomington", lat: 40.48, lng: -88.99, tier: 3 },
+  { name: "Decatur", lat: 39.84, lng: -88.95, tier: 3 },
+  { name: "Quincy", lat: 39.94, lng: -91.41, tier: 3 },
+  { name: "Jefferson City", lat: 38.58, lng: -92.17, tier: 3 },
+
+  // California / West
+  { name: "Stockton", lat: 37.96, lng: -121.29, tier: 3 },
+  { name: "Modesto", lat: 37.64, lng: -120.99, tier: 3 },
+  { name: "Salinas", lat: 36.68, lng: -121.66, tier: 3 },
+  { name: "Santa Barbara", lat: 34.42, lng: -119.7, tier: 3 },
+  { name: "Oxnard", lat: 34.2, lng: -119.18, tier: 3 },
+  { name: "Riverside", lat: 33.95, lng: -117.4, tier: 3 },
+  { name: "Palm Springs", lat: 33.83, lng: -116.55, tier: 3 },
+  { name: "Monterey", lat: 36.6, lng: -121.89, tier: 3 },
+  { name: "Chico", lat: 39.73, lng: -121.84, tier: 3 },
+  { name: "Santa Rosa", lat: 38.44, lng: -122.71, tier: 3 },
+  { name: "Carson City", lat: 39.16, lng: -119.77, tier: 3 },
+
+  // Texas / South
+  { name: "Fort Worth", lat: 32.75, lng: -97.33, tier: 3 },
+  { name: "Waco", lat: 31.55, lng: -97.15, tier: 3 },
+  { name: "Tyler", lat: 32.35, lng: -95.3, tier: 3 },
+  { name: "Beaumont", lat: 30.08, lng: -94.1, tier: 3 },
+  { name: "College Station", lat: 30.63, lng: -96.33, tier: 3 },
+  { name: "McAllen", lat: 26.2, lng: -98.23, tier: 3 },
+  { name: "Galveston", lat: 29.3, lng: -94.79, tier: 3 },
+  { name: "Macon", lat: 32.84, lng: -83.63, tier: 3 },
+  { name: "Columbus GA", lat: 32.46, lng: -84.99, tier: 3 },
+  { name: "Fayetteville", lat: 35.05, lng: -78.88, tier: 3 },
+  { name: "Myrtle Beach", lat: 33.69, lng: -78.89, tier: 3 },
+
+  // Florida
+  { name: "Gainesville", lat: 29.65, lng: -82.32, tier: 3 },
+  { name: "Fort Myers", lat: 26.64, lng: -81.87, tier: 3 },
+  { name: "Sarasota", lat: 27.34, lng: -82.53, tier: 3 },
+  { name: "Daytona Beach", lat: 29.21, lng: -81.02, tier: 3 },
+  { name: "Melbourne", lat: 28.08, lng: -80.61, tier: 3 },
+  { name: "Naples", lat: 26.14, lng: -81.79, tier: 3 },
+  { name: "Key West", lat: 24.56, lng: -81.78, tier: 3 },
+
+  // Pacific Northwest
+  { name: "Tacoma", lat: 47.25, lng: -122.44, tier: 3 },
+  { name: "Olympia", lat: 47.04, lng: -122.9, tier: 3 },
+  { name: "Bellingham", lat: 48.75, lng: -122.48, tier: 3 },
+  { name: "Kennewick", lat: 46.21, lng: -119.14, tier: 3 },
+  { name: "Wenatchee", lat: 47.42, lng: -120.31, tier: 3 },
+  { name: "Coeur d'Alene", lat: 47.68, lng: -116.78, tier: 3 },
 ];
