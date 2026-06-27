@@ -81,6 +81,8 @@ const STATE = `(() => {
     focusNyiso: svg.classList.contains('focus-nyiso'),
     focusIsone: svg.classList.contains('focus-isone'),
     focusSpp: svg.classList.contains('focus-spp'),
+    focusCaiso: svg.classList.contains('focus-caiso'),
+    focusErcot: svg.classList.contains('focus-ercot'),
     parents: shown('rect.org.focus-parent').length,
     related: shown('rect.org.focus-related').length,
     dimmed: shown('rect.org.focus-dim').length,
@@ -205,6 +207,28 @@ async function main() {
     assert(spp.related >= 8, `SPP has related TOs shown (got ${spp.related})`);
     const shotSpp = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
     writeFileSync(join(OUT, "2c-spp.png"), Buffer.from(shotSpp.data, "base64"));
+
+    // ── CAISO (Participating Transmission Owners) ──
+    await resetView(conn, sessionId);
+    await clickHub(conn, sessionId, "California Independent System Operator");
+    const caiso = await evalJs(conn, sessionId, STATE);
+    console.log("CAISO state:", JSON.stringify(caiso));
+    assert(caiso.focusMode && caiso.focusCaiso && !caiso.focusSpp, "clicking CAISO activates focus-caiso");
+    assert(caiso.parents === 1, `exactly one focus-parent for CAISO (got ${caiso.parents})`);
+    assert(caiso.related >= 4, `CAISO has related PTOs shown (got ${caiso.related})`);
+    const shotCaiso = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
+    writeFileSync(join(OUT, "2d-caiso.png"), Buffer.from(shotCaiso.data, "base64"));
+
+    // ── ERCOT (Transmission Service Providers) ──
+    await resetView(conn, sessionId);
+    await clickHub(conn, sessionId, "Electric Reliability Council of Texas");
+    const ercot = await evalJs(conn, sessionId, STATE);
+    console.log("ERCOT state:", JSON.stringify(ercot));
+    assert(ercot.focusMode && ercot.focusErcot && !ercot.focusCaiso, "clicking ERCOT activates focus-ercot");
+    assert(ercot.parents === 1, `exactly one focus-parent for ERCOT (got ${ercot.parents})`);
+    assert(ercot.related >= 8, `ERCOT has related TSPs shown (got ${ercot.related})`);
+    const shotErcot = await conn.send("Page.captureScreenshot", { format: "png" }, sessionId);
+    writeFileSync(join(OUT, "2e-ercot.png"), Buffer.from(shotErcot.data, "base64"));
 
     // ── clear ──
     await clickBackground(conn, sessionId);
