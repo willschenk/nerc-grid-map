@@ -337,6 +337,14 @@ const GIVE_WAY_DOT_FADE_SPAN_COMPACT = 0.4;
 // clickable markers. Compact gets a hair more scale (still subordinate to pills).
 const GIVE_WAY_DOT_SIZE_SCALE = 2.3;
 const GIVE_WAY_DOT_SIZE_SCALE_COMPACT = 2.4;
+// Deep-zoom growth (CSS px of radius) added to a give-way dot as you zoom past its
+// reveal gate, so the generator specks firm up into clearly clickable markers rather
+// than sub-pixel dust at deep zoom. Kept GENTLE (and gentler still on the phone) so it
+// firms the dots up where space is open without letting a dot-dense region — west
+// Texas, the Permian — turn into a wall of markers. The wide-open gaps are filled by
+// the geographic-context labels, which target empty space and yield to every pill.
+const GIVE_WAY_DOT_DEEP_GROW_PX = { desktop: 2.2, compact: 1.1 };
+const GIVE_WAY_DOT_DEEP_GROW_SPAN = { desktop: 6, compact: 5 };
 // Extra screen-px gaps layoutDotGiveWay keeps around each dot: from every real bubble
 // (so dots sit clearly OUTSIDE the organizations) and from other dots (so a cluster
 // spreads out instead of stacking). Bigger = more breathing room, fewer hidden.
@@ -793,6 +801,43 @@ const WATER_LABELS: Array<{ name: string; lat: number; lng: number; interior?: b
   { name: "Adirondacks", lat: 44.1, lng: -74.2, interior: true },
   { name: "Badlands", lat: 43.8, lng: -102.3, interior: true },
   { name: "Black Hills", lat: 43.9, lng: -103.6, interior: true },
+  // Broad physiographic regions — the densest "data" the empty interior has. They
+  // reveal from mid zoom on and fill the wide-open Mountain West / Plains / desert
+  // gaps with orientation context (they still yield to every NERC label/bubble).
+  { name: "Rocky Mountains", lat: 39.3, lng: -106.2, interior: true },
+  { name: "Great Basin", lat: 39.6, lng: -117.0, interior: true },
+  { name: "Colorado Plateau", lat: 36.6, lng: -110.6, interior: true },
+  { name: "Mojave Desert", lat: 35.1, lng: -116.2, interior: true },
+  { name: "Sonoran Desert", lat: 32.6, lng: -112.6, interior: true },
+  { name: "Chihuahuan Desert", lat: 31.6, lng: -105.6, interior: true },
+  { name: "Columbia Plateau", lat: 46.1, lng: -118.9, interior: true },
+  { name: "Snake River Plain", lat: 42.9, lng: -113.6, interior: true },
+  { name: "High Plains", lat: 34.6, lng: -102.3, interior: true },
+  { name: "Sandhills", lat: 42.0, lng: -101.6, interior: true },
+  { name: "Flint Hills", lat: 38.1, lng: -96.5, interior: true },
+  { name: "Edwards Plateau", lat: 30.7, lng: -100.2, interior: true },
+  { name: "Hill Country", lat: 30.3, lng: -98.9, interior: true },
+  { name: "Wind River Range", lat: 43.0, lng: -109.6, interior: true },
+  { name: "Bighorn Mountains", lat: 44.4, lng: -107.4, interior: true },
+  { name: "Bitterroot Range", lat: 45.8, lng: -114.4, interior: true },
+  { name: "Sawtooth Range", lat: 44.1, lng: -114.9, interior: true },
+  { name: "Uinta Mountains", lat: 40.7, lng: -110.3, interior: true },
+  { name: "San Juan Mountains", lat: 37.7, lng: -107.5, interior: true },
+  { name: "Sangre de Cristo", lat: 37.6, lng: -105.4, interior: true },
+  { name: "Ouachita Mountains", lat: 34.6, lng: -94.4, interior: true },
+  { name: "Allegheny Plateau", lat: 41.4, lng: -78.6, interior: true },
+  { name: "Blue Ridge", lat: 35.6, lng: -82.6, interior: true },
+  { name: "Cumberland Plateau", lat: 35.7, lng: -85.0, interior: true },
+  { name: "Green Mountains", lat: 43.9, lng: -72.8, interior: true },
+  { name: "Central Valley", lat: 36.8, lng: -120.1, interior: true },
+  { name: "Willamette Valley", lat: 44.6, lng: -123.1, interior: true },
+  { name: "Shenandoah Valley", lat: 38.5, lng: -78.8, interior: true },
+  { name: "Driftless Area", lat: 43.4, lng: -90.8, interior: true },
+  { name: "Piney Woods", lat: 31.6, lng: -94.6, interior: true },
+  { name: "Mississippi Delta", lat: 33.2, lng: -90.7, interior: true },
+  { name: "Everglades", lat: 26.0, lng: -80.9, interior: true },
+  { name: "Big Bend", lat: 29.3, lng: -103.2, interior: true },
+  { name: "Red River Valley", lat: 47.6, lng: -97.0, interior: true },
 ];
 
 // Oversized geographic labels (big water bodies, Canadian provinces, Maine) that
@@ -804,6 +849,10 @@ const QUIET_LAND_LABELS = new Set([
   "New Brunswick", "Maine",
   "Appalachians", "Great Plains", "Ozarks", "Sierra Nevada", "Cascades", "Adirondacks",
   "Badlands", "Black Hills",
+  // Broad interior regions render quiet so they read as faint orientation context,
+  // not data, across the open space they cover.
+  "Rocky Mountains", "Great Basin", "Colorado Plateau", "Mojave Desert", "Sonoran Desert",
+  "Chihuahuan Desert", "Columbia Plateau", "High Plains", "Snake River Plain",
 ]);
 
 // Tiny states whose centroid label would clutter the map at overview; held back
@@ -1018,6 +1067,12 @@ export function mountNercOrgMap(): void {
   let landMask: Uint8Array | null = null;
   let usLandMask: Uint8Array | null = null;
   let caLandMask: Uint8Array | null = null;
+  // Eroded copies of the land masks (coastline pulled ~DOT_COAST_EROSION_CELLS cells
+  // inland). The give-way dot layer tests against these so the coarse silhouette can
+  // never leave a generator dot floating in shallow water just off the coast — it is
+  // pushed onto solid land instead.
+  let usDotMask: Uint8Array | null = null;
+  let caDotMask: Uint8Array | null = null;
   let maskW = 0;
   let maskH = 0;
   let maskScale = 1; // viewBox units per mask cell
@@ -2086,8 +2141,11 @@ export function mountNercOrgMap(): void {
     // authority orgs fit before smaller orgs enter on the next bucket; ramp back
     // to full as soon as the user zooms in.
     const outerTopScaleT = smoothStep((k - 0.75) / (compact ? 0.22 : 0.2));
-    const topOverviewScale = compact ? 0.4 + 0.26 * outerTopScaleT : 0.4 + 0.48 * outerTopScaleT;
-    const overviewScale = tier >= 5 ? topOverviewScale : compact ? 0.56 : 0.72;
+    const topOverviewScale = compact ? 0.4 + 0.26 * outerTopScaleT : 0.46 + 0.46 * outerTopScaleT;
+    // Desktop runs a touch larger at the zoomed-all-the-way-out view (the user wants
+    // the orgs a tiny bit bigger there); compact stays tight so the phone band keeps
+    // its pill count.
+    const overviewScale = tier >= 5 ? topOverviewScale : compact ? 0.56 : 0.8;
     const basePx = fullPx * (overviewScale + (1 - overviewScale) * zoomT);
     // A tier-scaled deep-zoom lift so zooming all the way in grows the pills
     // noticeably larger — the user wants bigger pills at deep zoom. Still
@@ -2119,9 +2177,9 @@ export function mountNercOrgMap(): void {
     );
     const discloseT = tier >= 6 || topTier ? 1 : bubbleDisclosureT(o, k);
     const scaledPx = (minPx + (targetPx - minPx) * discloseT) * phoneSizeScale() * ORG_CONTENT_SCALE;
-    const overviewFloorPx = isHomeOverviewZoom(k) ? (compact ? 4.8 * phoneSizeScale() : 8.8) : 0;
+    const overviewFloorPx = isHomeOverviewZoom(k) ? (compact ? 4.8 * phoneSizeScale() : 9.6) : 0;
     const outerCapPx =
-      isHomeOverviewZoom(k) && isNationalFillOrg(o) ? (compact ? 12.2 : 16.2) : capPx;
+      isHomeOverviewZoom(k) && isNationalFillOrg(o) ? (compact ? 12.2 : 17.8) : capPx;
     return (
       Math.min(MAX_RADIUS, Math.max(minPx, overviewFloorPx, Math.min(outerCapPx, scaledPx))) * unitPerPx
     );
@@ -2153,6 +2211,15 @@ export function mountNercOrgMap(): void {
         ? (() => {
             const gwFade = isGiveWayDot(o) ? dotDisclosureT(k) * giveWayDotSizeScale() : 1;
             let r = fallbackTinyRadiusPx(k) * unitPerPx * ORG_CONTENT_SCALE * gwFade;
+            // Deep-zoom growth: once past the reveal gate, ramp the dot up to a clear,
+            // clickable marker so the generation layer fills the wide-open rural space
+            // at deep zoom. Tied to dotDisclosureT so it fades in with the dot, and
+            // still well under the smallest pill tier so dots stay subordinate.
+            if (isGiveWayDot(o) && !promoted) {
+              const grow = compact ? GIVE_WAY_DOT_DEEP_GROW_PX.compact : GIVE_WAY_DOT_DEEP_GROW_PX.desktop;
+              const span = compact ? GIVE_WAY_DOT_DEEP_GROW_SPAN.compact : GIVE_WAY_DOT_DEEP_GROW_SPAN.desktop;
+              r += grow * smoothStep((k - giveWayDotRevealK()) / span) * dotDisclosureT(k) * unitPerPx * ORG_CONTENT_SCALE;
+            }
             // Compact give-way dots: floor the visible radius so early-fade dots
             // read as clickable specks, not sub-pixel noise (tap ring unchanged).
             if (isGiveWayDot(o) && compact && !promoted) {
@@ -3089,6 +3156,34 @@ export function mountNercOrgMap(): void {
     return false;
   }
 
+  // Cells of inland margin the give-way dot mask erodes the coastline by. One coarse
+  // cell (maskScale=6 viewBox units) is enough to keep dots off shallow-water coasts
+  // without stranding generators on narrow landforms (Cape Cod, Long Island, the
+  // Florida Keys), which a wider erosion would erase entirely.
+  const DOT_COAST_EROSION_CELLS = 1;
+
+  // Morphological erosion: a cell stays land only if every cell within the Chebyshev
+  // radius is also land. Pulls the valid region inland by `radius` coarse cells.
+  function erodeMask(mask: Uint8Array | null, radius: number): Uint8Array | null {
+    if (!mask || radius <= 0) return mask;
+    const out = new Uint8Array(mask.length);
+    for (let y = 0; y < maskH; y++) {
+      for (let x = 0; x < maskW; x++) {
+        let solid = true;
+        for (let dy = -radius; dy <= radius && solid; dy++) {
+          const yy = y + dy;
+          if (yy < 0 || yy >= maskH) { solid = false; break; }
+          for (let dx = -radius; dx <= radius; dx++) {
+            const xx = x + dx;
+            if (xx < 0 || xx >= maskW || mask[yy * maskW + xx] !== 1) { solid = false; break; }
+          }
+        }
+        out[y * maskW + x] = solid ? 1 : 0;
+      }
+    }
+    return out;
+  }
+
   function buildLandMask(): void {
     landMask = null;
     usLandMask = null;
@@ -3123,6 +3218,8 @@ export function mountNercOrgMap(): void {
     } else {
       landMask = usLandMask;
     }
+    usDotMask = erodeMask(usLandMask, DOT_COAST_EROSION_CELLS);
+    caDotMask = erodeMask(caLandMask, DOT_COAST_EROSION_CELLS);
   }
 
   type LandFrame = "us" | "ca";
@@ -3130,6 +3227,24 @@ export function mountNercOrgMap(): void {
   function landMaskForFrame(frame: LandFrame | "terr" | undefined): Uint8Array | null {
     if (frame === "ca") return caLandMask ?? landMask;
     return usLandMask ?? landMask;
+  }
+
+  // Eroded (coast-pulled-inland) mask used only for give-way dot placement.
+  function dotMaskForFrame(frame: LandFrame | "terr" | undefined): Uint8Array | null {
+    if (frame === "ca") return caDotMask ?? caLandMask ?? landMask;
+    return usDotMask ?? usLandMask ?? landMask;
+  }
+
+  // True when (x, y) in base/viewBox space sits on solid land with a coastal margin —
+  // i.e. far enough from any shoreline that a dot drawn there reads as on land.
+  function onDotLandForFrame(x: number, y: number, frame: LandFrame | "terr" | undefined): boolean {
+    if (frame === "terr") return true;
+    const mask = dotMaskForFrame(frame);
+    if (!mask) return true;
+    const mx = Math.floor(x / maskScale);
+    const my = Math.floor(y / maskScale);
+    if (mx < 0 || my < 0 || mx >= maskW || my >= maskH) return false;
+    return mask[my * maskW + mx] === 1;
   }
 
   function orgLandFrame(o: Org, slotFrame?: LandFrame): LandFrame {
@@ -3523,20 +3638,37 @@ export function mountNercOrgMap(): void {
       const dotR = renderedRadius(d, k);
       // A hovered/selected/toured dot is promoted to the front — it leads the
       // interaction, so it stays put rather than dodging out from under the cursor.
+      // CRITICALLY it holds its CURRENT give-way slot (prevDx/prevDy) instead of
+      // snapping back to its true home: home is the very spot it was giving way from
+      // (under/beside the larger neighbour), so a snap would jump the now widened,
+      // label-bearing pill ~a dot-width sideways out from under the tap and slide its
+      // text off the marker the user is pointing at. Re-applying the previous offset
+      // keeps the pill (and its centered label) exactly where the dot was drawn.
       if (d._promoteBackground) {
-        addDot(hx, hy, dotR);
+        d._dx = prevDx;
+        d._dy = prevDy;
+        d._sx = hx + prevDx;
+        d._sy = hy + prevDy;
+        addDot(d._sx, d._sy, dotR);
         continue;
       }
-      // A dot in the OCEAN never makes sense — convert a screen candidate back to
-      // base/projection space and require it sit on the dot's land silhouette.
+      // A dot in the OCEAN (or shallow coastal water) never makes sense — convert a
+      // screen candidate back to base/projection space and require it sit on the dot's
+      // land silhouette. onDotLand uses the ERODED mask (coast pulled ~1 cell inland)
+      // so the primary search keeps the speck off the shoreline; onLand (the true
+      // silhouette) is the fallback below so a dot stranded on a thin coastal strip
+      // still shows rather than vanishing.
       const frame = orgLandFrame(d);
       const onLand = (x: number, y: number) =>
         onLandForFrame(transform.invertX(x), transform.invertY(y), frame, false);
-      // Clearance a candidate spot must satisfy: ON LAND, outside every bubble by
+      const onDotLand = (x: number, y: number) =>
+        onDotLandForFrame(transform.invertX(x), transform.invertY(y), frame);
+      // Clearance a candidate spot must satisfy beyond land: outside every bubble by
       // orgGap, and clear of every dot already placed this frame by dotGap.
       const rdOrg = dotR + orgGap;
-      const ok = (x: number, y: number) =>
-        onLand(x, y) && clears(x, y, rdOrg) && clearsDots(x, y, dotR);
+      const clearsAll = (x: number, y: number) =>
+        clears(x, y, rdOrg) && clearsDots(x, y, dotR);
+      const ok = (x: number, y: number) => onDotLand(x, y) && clearsAll(x, y);
       const apply = (cx: number, cy: number) => {
         d._dx = cx - hx;
         d._dy = cy - hy;
@@ -3544,7 +3676,29 @@ export function mountNercOrgMap(): void {
         d._sy = cy;
         addDot(cx, cy, dotR);
       };
-      // 1) Home is the true location — snap back whenever it is clear and on land.
+      // Ring-search outward for the nearest slot satisfying `pred`. Bias the angular
+      // scan toward last frame's direction so the new slot stays close to the old one
+      // (smaller, smoother moves) instead of snapping to a far equivalent.
+      const prevAng = prevDx || prevDy ? Math.atan2(prevDy, prevDx) : 0;
+      const ringSearch = (pred: (x: number, y: number) => boolean): boolean => {
+        for (let rad = step; rad <= leash; rad += step) {
+          const cnt = Math.max(8, Math.round((2 * Math.PI * rad) / step));
+          for (let i = 0; i < cnt; i++) {
+            // 0, -1, +1, -2, +2 … steps out from prevAng so near-previous angles win.
+            const off = ((i + 1) >> 1) * (i % 2 === 0 ? 1 : -1);
+            const ang = prevAng + (off / cnt) * 2 * Math.PI;
+            const cx = hx + Math.cos(ang) * rad;
+            const cy = hy + Math.sin(ang) * rad;
+            if (!pred(cx, cy)) continue;
+            apply(cx, cy);
+            return true;
+          }
+        }
+        return false;
+      };
+      // 1) Home is the true location — snap back whenever it is clear and comfortably
+      //    inland. A coastal home (on land but within the eroded margin) falls through
+      //    so the ring search can push the dot in off the water.
       if (ok(hx, hy)) {
         addDot(hx, hy, dotR);
         continue;
@@ -3556,26 +3710,11 @@ export function mountNercOrgMap(): void {
         apply(hx + prevDx, hy + prevDy);
         continue;
       }
-      // 3) Ring-search outward for the nearest clear, on-land slot. Bias the angular
-      // scan toward last frame's direction so the new slot stays close to the old
-      // one (smaller, smoother moves) instead of snapping to a far equivalent.
-      const prevAng = prevDx || prevDy ? Math.atan2(prevDy, prevDx) : 0;
-      let placed = false;
-      for (let rad = step; rad <= leash && !placed; rad += step) {
-        const cnt = Math.max(8, Math.round((2 * Math.PI * rad) / step));
-        for (let i = 0; i < cnt; i++) {
-          // 0, -1, +1, -2, +2 … steps out from prevAng so near-previous angles win.
-          const off = ((i + 1) >> 1) * (i % 2 === 0 ? 1 : -1);
-          const ang = prevAng + (off / cnt) * 2 * Math.PI;
-          const cx = hx + Math.cos(ang) * rad;
-          const cy = hy + Math.sin(ang) * rad;
-          if (!ok(cx, cy)) continue;
-          apply(cx, cy);
-          placed = true;
-          break;
-        }
-      }
-      // Boxed in by larger neighbours: give way by hiding rather than overlapping.
+      // 3) Search inland (eroded land) first; if nothing clears there, accept any
+      //    real land (true silhouette) before giving up so coastal dots still show.
+      let placed = ringSearch(ok);
+      if (!placed) placed = ringSearch((x, y) => onLand(x, y) && clearsAll(x, y));
+      // Boxed in by larger neighbours with no land slot at all: give way by hiding.
       if (!placed) d._vis = false;
     }
   }
