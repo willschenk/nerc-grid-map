@@ -246,4 +246,64 @@ export const PLACES = [
   { name: "Kennewick", lat: 46.21, lng: -119.14, tier: 3 },
   { name: "Wenatchee", lat: 47.42, lng: -120.31, tier: 3 },
   { name: "Coeur d'Alene", lat: 47.68, lng: -116.78, tier: 3 },
+
+  // ── Regional fill: towns that give the sparse interior local context at deep
+  // zoom (state capitals + the larger regional hubs). All tier 3 so they stay
+  // secondary to NERC orgs and only appear once zoomed into their area. ──
+  // Central / High Plains (Kansas, Nebraska, Oklahoma)
+  { name: "Topeka", lat: 39.05, lng: -95.69, tier: 3 },
+  { name: "Salina", lat: 38.84, lng: -97.61, tier: 3 },
+  { name: "Hays", lat: 38.88, lng: -99.32, tier: 3 },
+  { name: "Hutchinson", lat: 38.06, lng: -97.93, tier: 3 },
+  { name: "Liberal", lat: 37.04, lng: -100.92, tier: 3 },
+  { name: "Manhattan", lat: 39.18, lng: -96.57, tier: 3 },
+  { name: "Lincoln", lat: 40.81, lng: -96.7, tier: 3 },
+  { name: "Grand Island", lat: 40.92, lng: -98.34, tier: 3 },
+  { name: "Kearney", lat: 40.7, lng: -99.08, tier: 3 },
+  { name: "Enid", lat: 36.4, lng: -97.88, tier: 3 },
+  { name: "Lawton", lat: 34.61, lng: -98.39, tier: 3 },
+  { name: "Woodward", lat: 36.43, lng: -99.39, tier: 3 },
+  // Dakotas
+  { name: "Watertown", lat: 44.9, lng: -97.12, tier: 3 },
+  { name: "Mitchell", lat: 43.71, lng: -98.03, tier: 3 },
+  { name: "Dickinson", lat: 46.88, lng: -102.79, tier: 3 },
+  { name: "Minot", lat: 48.23, lng: -101.3, tier: 3 },
+  // Montana / Wyoming
+  { name: "Butte", lat: 45.99, lng: -112.53, tier: 3 },
+  { name: "Kalispell", lat: 48.2, lng: -114.31, tier: 3 },
+  { name: "Miles City", lat: 46.41, lng: -105.84, tier: 3 },
+  { name: "Havre", lat: 48.55, lng: -109.68, tier: 3 },
+  { name: "Sheridan", lat: 44.8, lng: -106.96, tier: 3 },
+  { name: "Gillette", lat: 44.29, lng: -105.5, tier: 3 },
+  { name: "Rock Springs", lat: 41.59, lng: -109.2, tier: 3 },
+  { name: "Laramie", lat: 41.31, lng: -105.59, tier: 3 },
+  { name: "Cody", lat: 44.53, lng: -109.06, tier: 3 },
+  // Colorado / New Mexico
+  { name: "Fort Collins", lat: 40.59, lng: -105.08, tier: 3 },
+  { name: "Durango", lat: 37.27, lng: -107.88, tier: 3 },
+  { name: "Montrose", lat: 38.48, lng: -107.88, tier: 3 },
+  { name: "Sterling", lat: 40.62, lng: -103.21, tier: 3 },
+  { name: "Farmington", lat: 36.73, lng: -108.22, tier: 3 },
+  { name: "Carlsbad", lat: 32.42, lng: -104.23, tier: 3 },
+  { name: "Hobbs", lat: 32.7, lng: -103.14, tier: 3 },
+  { name: "Clovis", lat: 34.4, lng: -103.2, tier: 3 },
+  { name: "Gallup", lat: 35.53, lng: -108.74, tier: 3 },
+  // Great Basin / Utah / Idaho
+  { name: "Elko", lat: 40.83, lng: -115.76, tier: 3 },
+  { name: "Winnemucca", lat: 40.97, lng: -117.74, tier: 3 },
+  { name: "Ely", lat: 39.25, lng: -114.89, tier: 3 },
+  { name: "Cedar City", lat: 37.68, lng: -113.06, tier: 3 },
+  { name: "Moab", lat: 38.57, lng: -109.55, tier: 3 },
+  { name: "Vernal", lat: 40.46, lng: -109.53, tier: 3 },
+  { name: "Logan", lat: 41.74, lng: -111.83, tier: 3 },
+  { name: "Lewiston", lat: 46.42, lng: -117.02, tier: 3 },
+  // West Texas
+  { name: "Pampa", lat: 35.54, lng: -100.96, tier: 3 },
+  { name: "Childress", lat: 34.43, lng: -100.2, tier: 3 },
+  { name: "Del Rio", lat: 29.36, lng: -100.9, tier: 3 },
+  { name: "Alpine", lat: 30.36, lng: -103.66, tier: 3 },
+  { name: "Pecos", lat: 31.42, lng: -103.49, tier: 3 },
+  // Other interior hubs
+  { name: "Pendleton", lat: 45.67, lng: -118.79, tier: 3 },
+  { name: "Klamath Falls", lat: 42.22, lng: -121.78, tier: 3 },
 ];
