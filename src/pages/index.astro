@@ -136,4 +136,115 @@ const base = import.meta.env.BASE_URL;
   import { mountNercOrgMap } from "../lib/nerc/map/nerc-org-map";
 
   mountNercOrgMap();
+
+  const pillExplain = {
+    BA: "Balancing Authority",
+    DP: "Distribution Provider",
+    FRSG: "Frequency Response Sharing Group",
+    GO: "Generator Owner",
+    GOP: "Generator Operator",
+    LSE: "Load-Serving Entity",
+    PC: "Planning Coordinator",
+    PSE: "Purchasing-Selling Entity",
+    RC: "Reliability Coordinator",
+    RP: "Resource Planner",
+    RRSG: "Reactive Reserve Sharing Group",
+    RSG: "Reserve Sharing Group",
+    TO: "Transmission Owner",
+    TOP: "Transmission Operator",
+    TP: "Transmission Planner",
+    TSP: "Transmission Service Provider",
+    "ISO / RTO": "Independent System Operator / Regional Transmission Organization",
+    "PJM Zone": "PJM Transmission Zone",
+    "MISO LBA": "MISO Local Balancing Authority",
+    "NYISO TO": "NYISO Transmission Owner",
+    "ISO-NE PTO": "ISO New England Participating Transmission Owner",
+    "SPP TO": "Southwest Power Pool Transmission Owner",
+  };
+
+  const shell = document.querySelector("[data-nerc-map]");
+  const pillSelector = ".nerc-rolepill, .nerc-panel-tag";
+  let pillExplainTimer;
+
+  function pillText(el) {
+    return String(el?.textContent ?? "").replace(/\s+/g, " ").trim();
+  }
+
+  function findPill(target) {
+    if (!(target instanceof Element)) return null;
+    const pill = target.closest(pillSelector);
+    return pill instanceof HTMLElement && shell?.contains(pill) ? pill : null;
+  }
+
+  function explainFor(pill) {
+    const code = pillText(pill);
+    const fromTitle = String(pill.getAttribute("title") || "").trim();
+    const text = pill.dataset.role ? pillExplain[pill.dataset.role] : pillExplain[code];
+    const name = text || fromTitle || (/^\+\d+/.test(code) ? "Additional roles are hidden in this compact view." : "");
+    return name ? { code, name } : null;
+  }
+
+  function makePart(className, text) {
+    const span = document.createElement("span");
+    span.className = className;
+    span.textContent = text;
+    return span;
+  }
+
+  function hidePillExplain() {
+    if (pillExplainTimer != null) window.clearTimeout(pillExplainTimer);
+    pillExplainTimer = undefined;
+    const popover = document.getElementById("nerc-role-popover");
+    if (popover) popover.hidden = true;
+  }
+
+  function showPillExplain(pill) {
+    const info = explainFor(pill);
+    const popover = document.getElementById("nerc-role-popover");
+    if (!info || !popover) return;
+
+    if (!pill.hasAttribute("title")) pill.setAttribute("title", info.name);
+    if (!pill.hasAttribute("aria-label")) pill.setAttribute("aria-label", `${info.code}: ${info.name}`);
+    pill.style.cursor = "help";
+
+    popover.replaceChildren(makePart("nerc-role-popover-code", info.code), makePart("nerc-role-popover-name", info.name));
+    popover.hidden = false;
+    popover.style.visibility = "hidden";
+    popover.style.left = "0px";
+    popover.style.top = "0px";
+
+    const margin = 8;
+    const gap = 8;
+    const anchor = pill.getBoundingClientRect();
+    const rect = popover.getBoundingClientRect();
+    const centered = anchor.left + anchor.width / 2;
+    const x = Math.min(window.innerWidth - rect.width - margin, Math.max(margin, centered - rect.width / 2));
+    let y = anchor.top - rect.height - gap;
+    if (y < margin) y = anchor.bottom + gap;
+    y = Math.min(window.innerHeight - rect.height - margin, Math.max(margin, y));
+
+    popover.style.left = `${Math.round(x)}px`;
+    popover.style.top = `${Math.round(y)}px`;
+    popover.style.visibility = "";
+
+    if (pillExplainTimer != null) window.clearTimeout(pillExplainTimer);
+    pillExplainTimer = window.setTimeout(hidePillExplain, 4200);
+  }
+
+  shell?.addEventListener("pointerover", (ev) => {
+    const pill = findPill(ev.target);
+    if (!pill || !(ev.pointerType === "mouse" || window.matchMedia("(hover: hover)").matches)) return;
+    showPillExplain(pill);
+  }, true);
+
+  shell?.addEventListener("pointerout", (ev) => {
+    const pill = findPill(ev.target);
+    if (!pill || (ev.relatedTarget instanceof Node && pill.contains(ev.relatedTarget))) return;
+    window.setTimeout(hidePillExplain, 120);
+  }, true);
+
+  shell?.addEventListener("click", (ev) => {
+    const pill = findPill(ev.target);
+    if (pill) showPillExplain(pill);
+  }, true);
 </script>
