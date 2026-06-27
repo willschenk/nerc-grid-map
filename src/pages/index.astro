@@ -137,7 +137,7 @@ const base = import.meta.env.BASE_URL;
 
   mountNercOrgMap();
 
-  const pillExplain = {
+  const pillExplain: Record<string, string> = {
     BA: "Balancing Authority",
     DP: "Distribution Provider",
     FRSG: "Frequency Response Sharing Group",
@@ -162,21 +162,21 @@ const base = import.meta.env.BASE_URL;
     "SPP TO": "Southwest Power Pool Transmission Owner",
   };
 
-  const shell = document.querySelector("[data-nerc-map]");
+  const shell = document.querySelector<HTMLElement>("[data-nerc-map]");
   const pillSelector = ".nerc-rolepill, .nerc-panel-tag";
-  let pillExplainTimer;
+  let pillExplainTimer: number | undefined;
 
-  function pillText(el) {
+  function pillText(el: Element | null): string {
     return String(el?.textContent ?? "").replace(/\s+/g, " ").trim();
   }
 
-  function findPill(target) {
+  function findPill(target: EventTarget | null): HTMLElement | null {
     if (!(target instanceof Element)) return null;
     const pill = target.closest(pillSelector);
     return pill instanceof HTMLElement && shell?.contains(pill) ? pill : null;
   }
 
-  function explainFor(pill) {
+  function explainFor(pill: HTMLElement): { code: string; name: string } | null {
     const code = pillText(pill);
     const fromTitle = String(pill.getAttribute("title") || "").trim();
     const text = pill.dataset.role ? pillExplain[pill.dataset.role] : pillExplain[code];
@@ -184,7 +184,7 @@ const base = import.meta.env.BASE_URL;
     return name ? { code, name } : null;
   }
 
-  function makePart(className, text) {
+  function makePart(className: string, text: string): HTMLSpanElement {
     const span = document.createElement("span");
     span.className = className;
     span.textContent = text;
@@ -198,7 +198,7 @@ const base = import.meta.env.BASE_URL;
     if (popover) popover.hidden = true;
   }
 
-  function showPillExplain(pill) {
+  function showPillExplain(pill: HTMLElement): void {
     const info = explainFor(pill);
     const popover = document.getElementById("nerc-role-popover");
     if (!info || !popover) return;
@@ -232,14 +232,16 @@ const base = import.meta.env.BASE_URL;
   }
 
   shell?.addEventListener("pointerover", (ev) => {
+    const pointer = ev as PointerEvent;
     const pill = findPill(ev.target);
-    if (!pill || !(ev.pointerType === "mouse" || window.matchMedia("(hover: hover)").matches)) return;
+    if (!pill || !(pointer.pointerType === "mouse" || window.matchMedia("(hover: hover)").matches)) return;
     showPillExplain(pill);
   }, true);
 
   shell?.addEventListener("pointerout", (ev) => {
+    const pointer = ev as PointerEvent;
     const pill = findPill(ev.target);
-    if (!pill || (ev.relatedTarget instanceof Node && pill.contains(ev.relatedTarget))) return;
+    if (!pill || (pointer.relatedTarget instanceof Node && pill.contains(pointer.relatedTarget))) return;
     window.setTimeout(hidePillExplain, 120);
   }, true);
 
