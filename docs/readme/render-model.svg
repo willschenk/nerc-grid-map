@@ -3,7 +3,7 @@
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080d22"/><stop offset="1" stop-color="#111b3a"/></linearGradient>
     <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#23305b" stroke-width="1" opacity=".34"/></pattern>
     <filter id="softGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7383d8"/></marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7383d8"/></marker>
   </defs>
   <rect width="920" height="520" rx="22" fill="url(#bg)"/>
   <rect width="920" height="520" rx="22" fill="url(#grid)" opacity=".75"/>
@@ -12,59 +12,59 @@
     .node{fill:#101936;stroke-width:2.6}
     .label{fill:#fff;font-size:20px;font-weight:800;letter-spacing:.15px;text-anchor:middle;dominant-baseline:middle}
     .final{fill:#fff;font-size:24px;font-weight:850;letter-spacing:.2px;text-anchor:middle;dominant-baseline:middle}
-    .arrow{fill:none;stroke:#7383d8;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#arrow)}
+    .arrow{fill:none;stroke:#7383d8;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
   </style>
   <g filter="url(#softGlow)">
-    <path class="arrow" d="M202 122 C218 122 220 88 236 88"/>
-    <path class="arrow" d="M202 122 C218 122 220 178 236 178"/>
-    <path class="arrow" d="M388 88 H448"/>
-    <path class="arrow" d="M388 178 H448"/>
-    <path class="arrow" d="M202 292 H448"/>
-    <path class="arrow" d="M202 397 H448"/>
-    <path class="arrow" d="M604 88 C650 88 650 230 694 230"/>
-    <path class="arrow" d="M604 178 C650 178 650 245 694 245"/>
-    <path class="arrow" d="M604 292 H694"/>
-    <path class="arrow" d="M604 397 C650 397 650 307 694 307"/>
+    <path class="arrow" d="M190 122 C210 122 208 88 228 88" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M190 122 C210 122 208 178 228 178" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M398 88 H454" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M398 178 H454" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M190 292 H454" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M190 397 H454" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M624 88 C688 88 662 230 714 230" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M624 178 C682 178 662 245 714 245" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M624 292 H714" marker-end="url(#arrow)"/>
+    <path class="arrow" d="M624 397 C688 397 662 307 714 307" marker-end="url(#arrow)"/>
   </g>
   <g>
-    <rect class="node" x="42" y="84" width="160" height="76" rx="18" stroke="#6f39d9"/>
-    <text class="label" x="122" y="122">Roles</text>
+    <rect class="node" x="28" y="84" width="150" height="76" rx="18" stroke="#6f39d9"/>
+    <text class="label" x="103" y="122">Roles</text>
   </g>
   <g>
-    <rect class="node" x="236" y="50" width="152" height="76" rx="18" stroke="#25b07d"/>
-    <text class="label" x="312" y="88">Weights</text>
+    <rect class="node" x="242" y="50" width="144" height="76" rx="18" stroke="#25b07d"/>
+    <text class="label" x="314" y="88">Weights</text>
   </g>
   <g>
-    <rect class="node" x="236" y="140" width="152" height="76" rx="18" stroke="#1ba69b"/>
-    <text class="label" x="312" y="178">Color anchors</text>
+    <rect class="node" x="242" y="140" width="144" height="76" rx="18" stroke="#1ba69b"/>
+    <text class="label" x="314" y="178">Color anchors</text>
   </g>
   <g>
-    <rect class="node" x="448" y="50" width="156" height="76" rx="18" stroke="#3650d2"/>
-    <text class="label" x="526" y="88">Size</text>
+    <rect class="node" x="468" y="50" width="144" height="76" rx="18" stroke="#3650d2"/>
+    <text class="label" x="540" y="88">Size</text>
   </g>
   <g>
-    <rect class="node" x="448" y="140" width="156" height="76" rx="18" stroke="#c96f20"/>
-    <text class="label" x="526" y="178">Bubble color</text>
+    <rect class="node" x="468" y="140" width="144" height="76" rx="18" stroke="#c96f20"/>
+    <text class="label" x="540" y="178">Bubble color</text>
   </g>
   <g>
-    <rect class="node" x="42" y="254" width="160" height="76" rx="18" stroke="#6f39d9"/>
-    <text class="label" x="122" y="292">Short names</text>
+    <rect class="node" x="28" y="254" width="150" height="76" rx="18" stroke="#6f39d9"/>
+    <text class="label" x="103" y="292">Short names</text>
   </g>
   <g>
-    <rect class="node" x="448" y="254" width="156" height="76" rx="18" stroke="#25b07d"/>
-    <text class="label" x="526" y="292">Labels</text>
+    <rect class="node" x="468" y="254" width="144" height="76" rx="18" stroke="#25b07d"/>
+    <text class="label" x="540" y="292">Labels</text>
   </g>
   <g>
-    <rect class="node" x="42" y="359" width="160" height="76" rx="18" stroke="#1ba69b"/>
-    <text class="label" x="122" y="397">Locations</text>
+    <rect class="node" x="28" y="359" width="150" height="76" rx="18" stroke="#1ba69b"/>
+    <text class="label" x="103" y="397">Locations</text>
   </g>
   <g>
-    <rect class="node" x="448" y="359" width="156" height="76" rx="18" stroke="#3650d2"/>
-    <text class="label" x="526" y="397">Positions</text>
+    <rect class="node" x="468" y="359" width="144" height="76" rx="18" stroke="#3650d2"/>
+    <text class="label" x="540" y="397">Positions</text>
   </g>
   <g>
-    <rect class="node" x="694" y="205" width="184" height="124" rx="24" stroke="#6f39d9" stroke-width="3.4"/>
-    <text class="final" x="786" y="254">Readable</text>
-    <text class="final" x="786" y="286">map</text>
+    <rect class="node" x="728" y="205" width="166" height="124" rx="24" stroke="#6f39d9" stroke-width="3.4"/>
+    <text class="final" x="811" y="254">Readable</text>
+    <text class="final" x="811" y="286">map</text>
   </g>
 </svg>
