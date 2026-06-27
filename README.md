@@ -54,52 +54,11 @@ Bubble size is scaled by role weight. An organization with rare, high‑impact r
 
 ## Data pipeline
 
-```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif", "primaryTextColor": "#ffffff", "lineColor": "#5a70c9"}}}%%
-flowchart LR
-  A[NERC registry spreadsheet] --> B[Ingest + normalize]
-  B --> C[Research names + locations]
-  C --> D[Build static JSON]
-  D --> E[Astro page]
-  E --> F[D3 map renderer]
-
-  classDef source fill:#101936,stroke:#6f39d9,color:#ffffff,stroke-width:2px;
-  classDef work fill:#101936,stroke:#1ba69b,color:#ffffff,stroke-width:2px;
-  classDef output fill:#101936,stroke:#3650d2,color:#ffffff,stroke-width:2px;
-  classDef render fill:#101936,stroke:#c96f20,color:#ffffff,stroke-width:2px;
-
-  class A source;
-  class B,C work;
-  class D output;
-  class E,F render;
-```
+<img src="docs/readme/data-pipeline.svg" alt="NERC Grid Map data pipeline" width="920">
 
 ## Render model
 
-```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif", "primaryTextColor": "#ffffff", "lineColor": "#5a70c9"}}}%%
-flowchart TB
-  R[Functional roles] --> W[Weights + priority]
-  R --> C[Color anchors]
-  N[Researched short names] --> L[Labels]
-  G[Researched locations] --> M[Map positions]
-  W --> S[Bubble size]
-  C --> B[Bubble color]
-  L --> V[Readable map view]
-  M --> V
-  S --> V
-  B --> V
-
-  classDef input fill:#101936,stroke:#584dcf,color:#ffffff,stroke-width:2px;
-  classDef logic fill:#101936,stroke:#25b07d,color:#ffffff,stroke-width:2px;
-  classDef visual fill:#101936,stroke:#cd5027,color:#ffffff,stroke-width:2px;
-  classDef final fill:#101936,stroke:#6f39d9,color:#ffffff,stroke-width:3px;
-
-  class R,N,G input;
-  class W,C,L,M logic;
-  class S,B visual;
-  class V final;
-```
+<img src="docs/readme/render-model.svg" alt="NERC Grid Map render model" width="920">
 
 ## Project shape
 
