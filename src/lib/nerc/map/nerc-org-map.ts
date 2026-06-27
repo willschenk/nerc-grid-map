@@ -31,7 +31,7 @@ type Place = { name: string; lat: number; lng: number; tier: number; _x?: number
 
 // The curated market families that support click-to-focus mode. Each maps to a
 // hub org plus a membership set (see the *_IDS sets and marketFamily below).
-type MarketFamilyId = "PJM" | "MISO" | "NYISO" | "ISONE" | "SPP";
+type MarketFamilyId = "PJM" | "MISO" | "NYISO" | "ISONE" | "SPP" | "CAISO" | "ERCOT";
 
 type Org = {
   ncr_id: string;
@@ -515,11 +515,75 @@ const SPP_TO_IDS = new Set<string>([
   "NCR01061", // Board of Public Utilities (Kansas City, KS)
 ]);
 
+// The CAISO hub org (California Independent System Operator) — anchor for the
+// California / western family.
+const CAISO_HUB_ID = "NCR05048";
+// CAISO Participating Transmission Owners (PTOs) — organization-level transmission
+// owners whose facilities are placed under CAISO operational control. Use this
+// instead of EIM/WEIM/EDAM entities or pricing polygons because this project maps
+// organizations, not western market participation. Curated by ncr_id, limited to
+// members whose registration carries a transmission role and exists as a clean org
+// bubble. Excluded after verification: California Department of Water Resources
+// (NCR05047) and Metropolitan Water District (NCR05236) — water agencies that own
+// transmission for their own pumping load, not CAISO PTOs; GridLiance Holdco
+// (NCR11783) — already represented as a MISO member (GridLiance Heartland), so it
+// stays in one family.
+const CAISO_PTO_IDS = new Set<string>([
+  "NCR05299", // Pacific Gas and Electric Company
+  "NCR05398", // Southern California Edison Company
+  "NCR05377", // San Diego Gas & Electric
+  "NCR03036", // Trans Bay Cable LLC
+  "NCR13015", // LS Power Grid California (DesertLink)
+  "NCR12006", // Horizon West Transmission, LLC
+  "NCR05447", // Valley Electric Association (CAISO's Nevada PTO; transmission now
+              // operated by GridLiance West, but the member org bubble is VEA)
+]);
+
+// The ERCOT hub org (Electric Reliability Council of Texas) — anchor for the Texas
+// family.
+const ERCOT_HUB_ID = "NCR04056";
+// ERCOT Transmission Service Providers (TSPs) — organization-level transmission
+// owners/operators in the ERCOT region. Use this instead of ERCOT Load Zones /
+// Weather Zones / settlement points, which are geographic/market constructs, not
+// org bubbles. Curated by ncr_id, limited to members whose registration carries a
+// transmission role. NOTE: AEP Texas has no separate ERCOT bubble — it is folded
+// into the PJM-classified AEP combine (NCR00682, Ohio), so it is intentionally
+// absent here.
+const ERCOT_TSP_IDS = new Set<string>([
+  "NCR04056", // Electric Reliability Council of Texas — hub only (no member pill)
+  "NCR04028", // CenterPoint Energy Houston Electric, LLC
+  "NCR04109", // Oncor Electric Delivery Company LLC
+  "NCR04143", // Texas-New Mexico Power Co (TNMP)
+  "NCR04093", // Lower Colorado River Authority (combined bubble; absorbs LCRA
+              // Transmission Services Corp NCR04091)
+  "NCR10211", // Electric Transmission Texas, LLC (ETT)
+  "NCR11114", // Cross Texas Transmission, LLC
+  "NCR11076", // Lone Star Transmission, LLC
+  "NCR04119", // Sharyland Utilities, L.L.C.
+  "NCR11074", // Wind Energy Transmission Texas, LLC (WETT)
+  "NCR04029", // City of Austin dba Austin Energy
+  "NCR04037", // CPS Energy
+  "NCR04022", // Bryan Texas Utilities
+  "NCR04033", // City of Garland (Garland Power & Light)
+  "NCR04049", // Denton Municipal Electric
+  "NCR12106", // City of Lubbock / Lubbock Power and Light
+  "NCR04015", // Brazos Electric Power Co Op, Inc.
+  "NCR04018", // Brownsville Public Utilities Board
+  "NCR04032", // City of College Station
+  "NCR04124", // South Texas Electric Cooperative, Inc.
+  "NCR04113", // Rayburn Country Electric Cooperative, Inc.
+  "NCR04111", // Pedernales Electric Cooperative
+  "NCR04013", // Bluebonnet Electric Co Op, Inc.
+  "NCR04008", // Bandera Electric Cooperative, Inc.
+  "NCR11456", // Texas Municipal Power Agency (TMPA)
+]);
+
 // Per-family metadata the renderer keys off: the anchor hub, the svg focus class
 // + member saber class that drive the dim/glow CSS, and the classification pill
-// shown for a member (PJM Zone / MISO LBA / NYISO TO / ISO-NE PTO). Membership
-// itself lives in marketFamily() (it needs the closure's area-alias helpers).
-// Adding a family = a *_IDS set, one row here, and the matching CSS block.
+// shown for a member (e.g. PJM Zone / MISO LBA / NYISO TO / ISO-NE PTO / SPP TO /
+// CAISO PTO / ERCOT TSP). Membership itself lives in marketFamily() (it needs the
+// closure's area-alias helpers). Adding a family = a *_IDS set, one row here, and
+// the matching CSS block.
 interface MarketFamilyMeta {
   hubId: string;
   focusClass: string; // svg root class while this family is focused
@@ -580,6 +644,26 @@ const MARKET_FAMILIES: Record<MarketFamilyId, MarketFamilyMeta> = {
     pillTitle: "Southwest Power Pool Transmission Owner",
     panelTagClass: "p-sppto",
     panelBadgeClass: "p-sppto-badge",
+  },
+  CAISO: {
+    hubId: CAISO_HUB_ID,
+    focusClass: "focus-caiso",
+    saberClass: "caiso-saber",
+    pillLabel: "CAISO PTO",
+    pillClass: "nerc-caiso-area-pill",
+    pillTitle: "CAISO Participating Transmission Owner",
+    panelTagClass: "p-caisopto",
+    panelBadgeClass: "p-caisopto-badge",
+  },
+  ERCOT: {
+    hubId: ERCOT_HUB_ID,
+    focusClass: "focus-ercot",
+    saberClass: "ercot-saber",
+    pillLabel: "ERCOT TSP",
+    pillClass: "nerc-ercot-area-pill",
+    pillTitle: "ERCOT Transmission Service Provider",
+    panelTagClass: "p-ercottsp",
+    panelBadgeClass: "p-ercottsp-badge",
   },
 };
 const MARKET_FAMILY_IDS = Object.keys(MARKET_FAMILIES) as MarketFamilyId[];
@@ -2458,6 +2542,12 @@ export function mountNercOrgMap(): void {
   function isSppTransmissionOwner(o: Org): boolean {
     return SPP_TO_IDS.has(o.ncr_id);
   }
+  function isCaisoParticipatingTransmissionOwner(o: Org): boolean {
+    return CAISO_PTO_IDS.has(o.ncr_id);
+  }
+  function isErcotTransmissionServiceProvider(o: Org): boolean {
+    return ERCOT_TSP_IDS.has(o.ncr_id);
+  }
   // True when `o` is a non-hub member of the given family (drives the membership
   // pill/badge). Uses each family's own predicate rather than marketFamily so a
   // dual-market utility (PJM zone AND MISO LBA) shows BOTH tags; the hub shows the
@@ -2475,6 +2565,10 @@ export function mountNercOrgMap(): void {
         return isIsoneTransmissionOwner(o);
       case "SPP":
         return isSppTransmissionOwner(o);
+      case "CAISO":
+        return isCaisoParticipatingTransmissionOwner(o);
+      case "ERCOT":
+        return isErcotTransmissionServiceProvider(o);
     }
   }
 
@@ -2496,6 +2590,8 @@ export function mountNercOrgMap(): void {
     else if (o.ncr_id === NYISO_HUB_ID || isNyisoTransmissionOwner(o)) v = "NYISO";
     else if (o.ncr_id === ISONE_HUB_ID || isIsoneTransmissionOwner(o)) v = "ISONE";
     else if (o.ncr_id === SPP_HUB_ID || isSppTransmissionOwner(o)) v = "SPP";
+    else if (o.ncr_id === CAISO_HUB_ID || isCaisoParticipatingTransmissionOwner(o)) v = "CAISO";
+    else if (o.ncr_id === ERCOT_HUB_ID || isErcotTransmissionServiceProvider(o)) v = "ERCOT";
     return (o._mf = v);
   }
 

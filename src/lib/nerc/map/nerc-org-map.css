@@ -282,7 +282,9 @@
 #nerc-svg.focus-miso .org-saber:not(.miso-saber),
 #nerc-svg.focus-nyiso .org-saber:not(.nyiso-saber),
 #nerc-svg.focus-isone .org-saber:not(.isone-saber),
-#nerc-svg.focus-spp .org-saber:not(.spp-saber) {
+#nerc-svg.focus-spp .org-saber:not(.spp-saber),
+#nerc-svg.focus-caiso .org-saber:not(.caiso-saber),
+#nerc-svg.focus-ercot .org-saber:not(.ercot-saber) {
   opacity: 0.16;
   filter: none;
   animation: none;
@@ -322,6 +324,8 @@
   --nyiso-area-color: hsl(168, 72%, 38%); /* teal-green — NYISO only */
   --isone-area-color: hsl(270, 60%, 60%); /* violet — ISO-NE only */
   --spp-area-color: hsl(353, 72%, 52%); /* crimson — SPP only */
+  --caiso-area-color: hsl(212, 64%, 50%); /* California ocean blue — CAISO only */
+  --ercot-area-color: hsl(10, 70%, 48%); /* Texas rust-red — ERCOT only */
 }
 
 /* ── Market focus mode ─────────────────────────────────────────────────────────
@@ -373,6 +377,18 @@
   --focus-family: var(--spp-area-color);
   --focus-family-strong: hsl(353, 84%, 64%);
   --focus-family-soft: hsla(353, 72%, 52%, 0.52);
+}
+
+#nerc-svg.focus-caiso {
+  --focus-family: var(--caiso-area-color);
+  --focus-family-strong: hsl(208, 78%, 62%);
+  --focus-family-soft: hsla(212, 64%, 50%, 0.52);
+}
+
+#nerc-svg.focus-ercot {
+  --focus-family: var(--ercot-area-color);
+  --focus-family-strong: hsl(14, 82%, 60%);
+  --focus-family-soft: hsla(10, 70%, 48%, 0.52);
 }
 
 /* Unrelated organizations: faded grey context while a focus is active. Still
@@ -492,7 +508,7 @@
 }
 
 /* The selected hub keeps its generic orange saber; no per-family hue (orange is the
-   one focus colour). The .{pjm,miso,nyiso,isone,spp}-saber classes are left unstyled —
+   one focus colour). The .{pjm,miso,nyiso,isone,spp,caiso,ercot}-saber classes are left unstyled —
    they only exempt the active hub's ring from the focus dim rule above, so every
    ISO/RTO ring stays the same calm orange in the default view. */
 
@@ -1100,6 +1116,14 @@
   background: var(--spp-area-color);
 }
 
+.nerc-rolepill.nerc-caiso-area-pill {
+  background: var(--caiso-area-color);
+}
+
+.nerc-rolepill.nerc-ercot-area-pill {
+  background: var(--ercot-area-color);
+}
+
 .nerc-role-popover {
   position: fixed;
   z-index: 70;
@@ -1538,7 +1562,9 @@
 
 .nerc-panel .p-nyisoto,
 .nerc-panel .p-isonepto,
-.nerc-panel .p-sppto {
+.nerc-panel .p-sppto,
+.nerc-panel .p-caisopto,
+.nerc-panel .p-ercottsp {
   display: inline-flex;
   gap: 0.35rem;
   margin: 0 0.3rem 0.28rem 0;
@@ -1546,7 +1572,9 @@
 
 .nerc-panel .p-nyisoto-badge,
 .nerc-panel .p-isonepto-badge,
-.nerc-panel .p-sppto-badge {
+.nerc-panel .p-sppto-badge,
+.nerc-panel .p-caisopto-badge,
+.nerc-panel .p-ercottsp-badge {
   flex: none;
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
@@ -1566,6 +1594,14 @@
 
 .nerc-panel .p-sppto-badge {
   background: var(--spp-area-color);
+}
+
+.nerc-panel .p-caisopto-badge {
+  background: var(--caiso-area-color);
+}
+
+.nerc-panel .p-ercottsp-badge {
+  background: var(--ercot-area-color);
 }
 
 /* Detail fields as a column grid of self-contained blocks (label above value),
