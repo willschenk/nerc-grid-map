@@ -157,6 +157,12 @@ const KNOWN_ACRONYMS = new Map([
   ["calpine", "Calpine"],
   ["sunflower electric power", "SEPC"],
   ["deseret generation and transmission", "DG&T"],
+  ["garkane energy cooperative", "Garkane"],
+  ["moon lake electric association", "MoonLake"],
+  ["dixie power", "Dixie"],
+  ["flowell electric association", "Flowell"],
+  ["bridger valley electric association", "BVEA"],
+  ["lower valley energy", "LVE"],
 ]);
 
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;

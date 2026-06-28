@@ -4269,7 +4269,7 @@
       "source": "official_website",
       "source_url": "https://apps.deseretpower.com/",
       "org_type": "cooperative",
-      "notes": "Deseret G&T cooperative HQ South Jordan UT. Twin: NCR05126.",
+      "notes": "Deseret G&T is the wholesale generation-and-transmission cooperative layer for several rural Utah-area distribution co-ops. Local co-ops such as Garkane, Moon Lake, Dixie Power, and Flowell should appear as supplemental distribution utilities, not as NERC-registered transmission entities unless separately verified. Twin: NCR05126.",
       "seed": true,
       "acronym": "Deseret Power",
       "acronym_source": "official_website",
@@ -4286,7 +4286,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://apps.deseretpower.com/",
-          "geo_notes": "Deseret G&T cooperative HQ South Jordan UT. Twin: NCR05126."
+          "geo_notes": "Deseret G&T is the wholesale generation-and-transmission cooperative layer for several rural Utah-area distribution co-ops. Local co-ops such as Garkane, Moon Lake, Dixie Power, and Flowell should appear as supplemental distribution utilities, not as NERC-registered transmission entities unless separately verified. Twin: NCR05126."
         },
         {
           "rank": 2,
@@ -123641,7 +123641,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://apps.deseretpower.com/",
-      "notes": "Deseret G&T cooperative HQ; Bonanza coal plant operator.",
+      "notes": "Deseret G&T is the wholesale generation-and-transmission cooperative layer for several rural Utah-area distribution co-ops. Local co-ops such as Garkane, Moon Lake, Dixie Power, and Flowell should appear as supplemental distribution utilities, not as NERC-registered transmission entities unless separately verified. Bonanza coal plant operator.",
       "seed": false,
       "locations": [
         {
@@ -123656,7 +123656,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://apps.deseretpower.com/",
-          "geo_notes": "Deseret G&T cooperative HQ; Bonanza coal plant operator."
+          "geo_notes": "Deseret G&T is the wholesale generation-and-transmission cooperative layer for several rural Utah-area distribution co-ops. Local co-ops such as Garkane, Moon Lake, Dixie Power, and Flowell should appear as supplemental distribution utilities, not as NERC-registered transmission entities unless separately verified. Bonanza coal plant operator."
         },
         {
           "rank": 2,

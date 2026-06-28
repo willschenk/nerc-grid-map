@@ -26,6 +26,7 @@ export const PLACES = [
   { name: "San Diego", lat: 32.72, lng: -117.16, tier: 2 },
   { name: "Portland", lat: 45.52, lng: -122.68, tier: 2 },
   { name: "Salt Lake City", lat: 40.76, lng: -111.89, tier: 2 },
+  { name: "Provo", lat: 40.23, lng: -111.66, tier: 3 },
   { name: "Las Vegas", lat: 36.17, lng: -115.14, tier: 2 },
   { name: "Albuquerque", lat: 35.08, lng: -106.65, tier: 2 },
   { name: "San Antonio", lat: 29.42, lng: -98.49, tier: 2 },
@@ -296,6 +297,10 @@ export const PLACES = [
   { name: "Moab", lat: 38.57, lng: -109.55, tier: 3 },
   { name: "Vernal", lat: 40.46, lng: -109.53, tier: 3 },
   { name: "Logan", lat: 41.74, lng: -111.83, tier: 3 },
+  { name: "Roosevelt", lat: 40.3, lng: -109.99, tier: 3 },
+  { name: "Duchesne", lat: 40.16, lng: -110.4, tier: 3 },
+  { name: "Loa", lat: 38.4, lng: -111.64, tier: 3 },
+  { name: "Fillmore", lat: 38.97, lng: -112.33, tier: 3 },
   { name: "Lewiston", lat: 46.42, lng: -117.02, tier: 3 },
   // West Texas
   { name: "Pampa", lat: 35.54, lng: -100.96, tier: 3 },

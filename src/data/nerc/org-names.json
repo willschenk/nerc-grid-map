@@ -22084,6 +22084,49 @@
       "shortest_source_url": "https://www.newfortressenergy.com/contact-us-general"
     },
     {
+      "ncr_id": "SUP-garkane-energy-cooperative-inc",
+      "entity_name": "Garkane Energy Cooperative, Inc.",
+      "shortest": "Garkane",
+      "short": "Garkane Energy",
+      "normal": "Garkane Energy Cooperative, Inc.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.garkaneenergy.com/"
+    },
+    {
+      "ncr_id": "SUP-moon-lake-electric-association-inc",
+      "entity_name": "Moon Lake Electric Association, Inc.",
+      "shortest": "MoonLake",
+      "short": "Moon Lake Electric",
+      "normal": "Moon Lake Electric Association, Inc.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.mlea.coop/"
+    },
+    {
+      "ncr_id": "SUP-dixie-power",
+      "entity_name": "Dixie Power",
+      "shortest": "Dixie",
+      "short": "Dixie Power",
+      "normal": "Dixie Power",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.dixiepower.com/"
+    },
+    {
+      "ncr_id": "SUP-flowell-electric-association",
+      "entity_name": "Flowell Electric Association",
+      "shortest": "Flowell",
+      "short": "Flowell Electric",
+      "normal": "Flowell Electric Association",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "public_utility_records"
+    },
+    {
       "ncr_id": "SUP-hamakua-energy-llc",
       "entity_name": "Hamakua Energy, LLC",
       "shortest": "Hamakua Energy",
