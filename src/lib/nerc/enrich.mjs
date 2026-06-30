@@ -171,6 +171,11 @@ const KNOWN_ACRONYMS = new Map([
   ["northern rio arriba electric cooperative", "NORA"],
   ["otero county electric cooperative", "Otero"],
   ["roosevelt county rural electric cooperative", "RCEC"],
+  ["heart of texas electric cooperative", "HOTEC"],
+  ["mid-south synergy", "MidSouth"],
+  ["j-a-c electric cooperative", "JAC"],
+  ["deaf smith electric cooperative", "DeafSmth"],
+  ["coserv electric", "CoServ"],
 ]);
 
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;
