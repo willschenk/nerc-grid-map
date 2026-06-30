@@ -163,6 +163,14 @@ const KNOWN_ACRONYMS = new Map([
   ["flowell electric association", "Flowell"],
   ["bridger valley electric association", "BVEA"],
   ["lower valley energy", "LVE"],
+  ["central new mexico electric cooperative", "CNMEC"],
+  ["central valley electric cooperative", "CVEC"],
+  ["jemez mountains electric cooperative", "Jemez"],
+  ["kit carson electric cooperative", "KCEC"],
+  ["mora san miguel electric cooperative", "Mora"],
+  ["northern rio arriba electric cooperative", "NORA"],
+  ["otero county electric cooperative", "Otero"],
+  ["roosevelt county rural electric cooperative", "RCEC"],
 ]);
 
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;
