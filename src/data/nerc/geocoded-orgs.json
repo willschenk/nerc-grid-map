@@ -87503,7 +87503,8 @@
       "confidence": "MEDIUM",
       "source": "official_website",
       "source_url": "https://www.aep.com/",
-      "notes": "AEP Service Corp agent for AEP Texas and PSO; Columbus, OH HQ. Combined on map with related AEP registrations (outside Texas RE footprint).",
+      "notes": "AEP Service Corp agent for AEP Texas and PSO; Columbus, OH HQ. Combined on map with related AEP registrations (outside Texas RE footprint). AEP Texas is the regulated transmission & distribution utility (TDU) for much of South and West Texas in ERCOT.",
+      "parent_org": "American Electric Power",
       "seed": false,
       "locations": [
         {
@@ -87518,7 +87519,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://www.aep.com/",
-          "geo_notes": "AEP Service Corp agent for AEP Texas and PSO; Columbus, OH HQ. Combined on map with related AEP registrations (outside Texas RE footprint)."
+          "geo_notes": "AEP Service Corp agent for AEP Texas and PSO; Columbus, OH HQ. Combined on map with related AEP registrations (outside Texas RE footprint). AEP Texas is the regulated transmission & distribution utility (TDU) for much of South and West Texas in ERCOT."
         },
         {
           "rank": 2,
@@ -90119,7 +90120,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.brazoselectric.com",
-      "notes": "Generation and transmission cooperative HQ in Waco.",
+      "notes": "Generation and transmission cooperative HQ in Waco. Wholesale G&T cooperative supplying many central and north Texas distribution co-ops (e.g., United Cooperative Services, HILCO, Wise, Tri-County, Navasota Valley, Comanche), which appear as supplemental SUP- distribution utilities rather than separate NERC registrations.",
       "seed": false,
       "locations": [
         {
@@ -90134,7 +90135,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.brazoselectric.com",
-          "geo_notes": "Generation and transmission cooperative HQ in Waco."
+          "geo_notes": "Generation and transmission cooperative HQ in Waco. Wholesale G&T cooperative supplying many central and north Texas distribution co-ops (e.g., United Cooperative Services, HILCO, Wise, Tri-County, Navasota Valley, Comanche), which appear as supplemental SUP- distribution utilities rather than separate NERC registrations."
         },
         {
           "rank": 2,
@@ -90979,7 +90980,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.btutilities.com/contact-us",
-      "notes": "Municipal utility HQ; acronym BTU on official site.",
+      "notes": "Municipal utility HQ; acronym BTU on official site. City-owned (Bryan, TX) public-power utility in ERCOT and a member city of the Texas Municipal Power Agency (TMPA).",
+      "org_type": "municipal",
       "seed": false,
       "locations": [
         {
@@ -90994,7 +90996,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.btutilities.com/contact-us",
-          "geo_notes": "Municipal utility HQ; acronym BTU on official site."
+          "geo_notes": "Municipal utility HQ; acronym BTU on official site. City-owned (Bryan, TX) public-power utility in ERCOT and a member city of the Texas Municipal Power Agency (TMPA)."
         },
         {
           "rank": 2,
@@ -92289,7 +92291,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.centerpointenergy.com/en-us/corp/pages/contact-us.aspx",
-      "notes": "CenterPoint Energy Houston Electric corporate HQ.",
+      "notes": "CenterPoint Energy Houston Electric corporate HQ. Regulated transmission & distribution utility (TDU) for the Houston metro area in ERCOT; delivers power for competitive retail providers. Subsidiary of CenterPoint Energy.",
+      "parent_org": "CenterPoint Energy",
       "seed": false,
       "locations": [
         {
@@ -92304,7 +92307,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.centerpointenergy.com/en-us/corp/pages/contact-us.aspx",
-          "geo_notes": "CenterPoint Energy Houston Electric corporate HQ."
+          "geo_notes": "CenterPoint Energy Houston Electric corporate HQ. Regulated transmission & distribution utility (TDU) for the Houston metro area in ERCOT; delivers power for competitive retail providers. Subsidiary of CenterPoint Energy."
         },
         {
           "rank": 2,
@@ -94003,7 +94006,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.cpsenergy.com",
-      "notes": "CPS Energy municipal utility HQ in San Antonio TX.",
+      "notes": "CPS Energy municipal utility HQ in San Antonio TX. The largest municipally owned electric and gas utility in the United States; a vertically integrated public-power utility in ERCOT.",
+      "org_type": "municipal",
       "seed": false,
       "locations": [
         {
@@ -94018,7 +94022,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.cpsenergy.com",
-          "geo_notes": "CPS Energy municipal utility HQ in San Antonio TX."
+          "geo_notes": "CPS Energy municipal utility HQ in San Antonio TX. The largest municipally owned electric and gas utility in the United States; a vertically integrated public-power utility in ERCOT."
         },
         {
           "rank": 2,
@@ -104691,7 +104695,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.oncor.com/us/en/home/contact-us.html",
-      "notes": "Largest Texas wires utility; corporate HQ Dallas.",
+      "notes": "Largest Texas wires utility; corporate HQ Dallas. Regulated transmission & distribution utility (TDU) delivering power for ~13 million Texans across North, West and Central Texas in ERCOT; it carries electricity for competitive retail providers and does not sell power directly. Majority-owned by Sempra.",
+      "parent_org": "Sempra",
       "seed": false,
       "locations": [
         {
@@ -104706,7 +104711,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.oncor.com/us/en/home/contact-us.html",
-          "geo_notes": "Largest Texas wires utility; corporate HQ Dallas."
+          "geo_notes": "Largest Texas wires utility; corporate HQ Dallas. Regulated transmission & distribution utility (TDU) delivering power for ~13 million Texans across North, West and Central Texas in ERCOT; it carries electricity for competitive retail providers and does not sell power directly. Majority-owned by Sempra."
         },
         {
           "rank": 2,
@@ -105217,7 +105222,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://mypec.com/contact/",
-      "notes": "Pedernales Electric Cooperative headquarters Johnson City TX.",
+      "notes": "Pedernales Electric Cooperative headquarters Johnson City TX. The largest distribution electric cooperative in the United States by membership, serving the Texas Hill Country and Austin exurbs in ERCOT.",
+      "org_type": "cooperative",
       "seed": false,
       "locations": [
         {
@@ -105232,7 +105238,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://mypec.com/contact/",
-          "geo_notes": "Pedernales Electric Cooperative headquarters Johnson City TX."
+          "geo_notes": "Pedernales Electric Cooperative headquarters Johnson City TX. The largest distribution electric cooperative in the United States by membership, serving the Texas Hill Country and Austin exurbs in ERCOT."
         },
         {
           "rank": 2,
@@ -109480,7 +109486,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.stec.org/about-us/who-we-are/",
-      "notes": "G&T co-op HQ at Sam Rayburn Power Plant complex.",
+      "notes": "G&T co-op HQ at Sam Rayburn Power Plant complex. Wholesale generation & transmission cooperative supplying South Texas distribution co-ops (Karnes, Wharton County, Victoria, Jackson, San Patricio, Nueces, Magic Valley, Medina), which appear as supplemental SUP- distribution utilities.",
       "seed": false,
       "locations": [
         {
@@ -109495,7 +109501,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.stec.org/about-us/who-we-are/",
-          "geo_notes": "G&T co-op HQ at Sam Rayburn Power Plant complex."
+          "geo_notes": "G&T co-op HQ at Sam Rayburn Power Plant complex. Wholesale generation & transmission cooperative supplying South Texas distribution co-ops (Karnes, Wharton County, Victoria, Jackson, San Patricio, Nueces, Magic Valley, Medina), which appear as supplemental SUP- distribution utilities."
         },
         {
           "rank": 2,
