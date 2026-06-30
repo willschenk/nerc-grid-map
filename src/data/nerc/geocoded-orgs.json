@@ -44524,7 +44524,8 @@
       "source": "eia_861",
       "source_url": "https://www.xcelenergy.com/",
       "org_type": "IOU",
-      "notes": "Xcel Energy operating company for Texas Panhandle and eastern New Mexico; Amarillo service center. Retires NCR-SEED-046.",
+      "notes": "Xcel Energy operating company for the Texas Panhandle and eastern New Mexico (Eastern Interconnection); Amarillo service center. Wholesale and retail supplier behind several eastern NM co-ops shown as supplemental SUP- entities (Roosevelt County, Farmers', Central Valley, Southwestern). Retires NCR-SEED-046.",
+      "parent_org": "Xcel Energy",
       "seed": false,
       "locations": [
         {
@@ -44539,7 +44540,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.xcelenergy.com/",
-          "geo_notes": "Xcel Energy operating company for Texas Panhandle and eastern New Mexico; Amarillo service center. Retires NCR-SEED-046."
+          "geo_notes": "Xcel Energy operating company for the Texas Panhandle and eastern New Mexico (Eastern Interconnection); Amarillo service center. Wholesale and retail supplier behind several eastern NM co-ops shown as supplemental SUP- entities (Roosevelt County, Farmers', Central Valley, Southwestern). Retires NCR-SEED-046."
         },
         {
           "rank": 2,
@@ -111779,7 +111780,8 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.sec.gov/cgi-bin/viewer?accession_number=0001108426-25-000014",
-      "notes": "TXNM Energy subsidiary; Texas T&D service provider HQ Lewisville.",
+      "notes": "TXNM Energy subsidiary and sister utility to PNM; Texas T&D service provider HQ Lewisville. Despite the Texas-New Mexico Power name, TNMP's regulated service territory is now entirely within Texas.",
+      "parent_org": "TXNM Energy (formerly PNM Resources)",
       "seed": false,
       "locations": [
         {
@@ -111794,7 +111796,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sec.gov/cgi-bin/viewer?accession_number=0001108426-25-000014",
-          "geo_notes": "TXNM Energy subsidiary; Texas T&D service provider HQ Lewisville."
+          "geo_notes": "TXNM Energy subsidiary and sister utility to PNM; Texas T&D service provider HQ Lewisville. Despite the Texas-New Mexico Power name, TNMP's regulated service territory is now entirely within Texas."
         },
         {
           "rank": 2,
@@ -124369,7 +124371,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.epelectric.com/customer-service/payment-options/in-person",
-      "notes": "IOU HQ Stanton Tower; West Texas and southern New Mexico service territory.",
+      "notes": "IOU HQ Stanton Tower; West Texas and southern New Mexico service territory, including the Las Cruces area. Taken private in 2020 by the Infrastructure Investments Fund (IIF), advised by J.P. Morgan.",
+      "parent_org": "Infrastructure Investments Fund (IIF)",
       "seed": false,
       "locations": [
         {
@@ -124384,7 +124387,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.epelectric.com/customer-service/payment-options/in-person",
-          "geo_notes": "IOU HQ Stanton Tower; West Texas and southern New Mexico service territory."
+          "geo_notes": "IOU HQ Stanton Tower; West Texas and southern New Mexico service territory, including the Las Cruces area. Taken private in 2020 by the Infrastructure Investments Fund (IIF), advised by J.P. Morgan."
         },
         {
           "rank": 2,
@@ -137434,7 +137437,8 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.pnm.com/contact-us",
-      "notes": "PNM IOU corporate HQ Albuquerque NM.",
+      "notes": "PNM IOU corporate HQ Albuquerque NM. New Mexico's largest electric utility and principal subsidiary of TXNM Energy (formerly PNM Resources), which in May 2025 agreed to be acquired by Blackstone Infrastructure (pending, expected to close in 2026). Smaller New Mexico distribution co-ops and municipal utilities appear as supplemental SUP- entities.",
+      "parent_org": "TXNM Energy (formerly PNM Resources)",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137451,7 +137455,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.pnm.com/contact-us",
-          "geo_notes": "PNM IOU corporate HQ Albuquerque NM."
+          "geo_notes": "PNM IOU corporate HQ Albuquerque NM. New Mexico's largest electric utility and principal subsidiary of TXNM Energy (formerly PNM Resources), which in May 2025 agreed to be acquired by Blackstone Infrastructure (pending, expected to close in 2026). Smaller New Mexico distribution co-ops and municipal utilities appear as supplemental SUP- entities."
         },
         {
           "rank": 2,
@@ -150096,7 +150100,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.tristate.coop/contact-us",
-      "notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location.",
+      "notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location. Tri-State is the wholesale generation-and-transmission cooperative behind many New Mexico rural distribution co-ops (e.g., Central New Mexico, Continental Divide, Jemez Mountains, Mora-San Miguel, Otero County, Sierra, Socorro, Springer), which appear as supplemental SUP- distribution utilities rather than separate NERC transmission registrations.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -150113,7 +150117,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.tristate.coop/contact-us",
-          "geo_notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location."
+          "geo_notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location. Tri-State is the wholesale generation-and-transmission cooperative behind many New Mexico rural distribution co-ops (e.g., Central New Mexico, Continental Divide, Jemez Mountains, Mora-San Miguel, Otero County, Sierra, Socorro, Springer), which appear as supplemental SUP- distribution utilities rather than separate NERC transmission registrations."
         },
         {
           "rank": 2,

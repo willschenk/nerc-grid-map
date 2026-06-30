@@ -22136,6 +22136,204 @@
       "shortest_type": "meaningful_name",
       "shortest_source": "eia_861",
       "shortest_source_url": "https://www.interconnection.fyi/eia/project/55369-ct2"
+    },
+    {
+      "ncr_id": "SUP-central-new-mexico-electric-cooperative",
+      "entity_name": "Central New Mexico Electric Cooperative",
+      "shortest": "CNMEC",
+      "short": "Central NM Electric",
+      "normal": "Central New Mexico Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cnmec.org/"
+    },
+    {
+      "ncr_id": "SUP-central-valley-electric-cooperative",
+      "entity_name": "Central Valley Electric Cooperative",
+      "shortest": "CVEC",
+      "short": "Central Valley Electric",
+      "normal": "Central Valley Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cvecoop.org/"
+    },
+    {
+      "ncr_id": "SUP-farmers-electric-cooperative-nm",
+      "entity_name": "Farmers' Electric Cooperative (NM)",
+      "shortest": "Farmers",
+      "short": "Farmers' Electric",
+      "normal": "Farmers' Electric Cooperative (NM)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.fecnm.org/"
+    },
+    {
+      "ncr_id": "SUP-jemez-mountains-electric-cooperative",
+      "entity_name": "Jemez Mountains Electric Cooperative",
+      "shortest": "Jemez",
+      "short": "Jemez Mountains Electric",
+      "normal": "Jemez Mountains Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.jemezcoop.org/"
+    },
+    {
+      "ncr_id": "SUP-kit-carson-electric-cooperative",
+      "entity_name": "Kit Carson Electric Cooperative",
+      "shortest": "KCEC",
+      "short": "Kit Carson Electric",
+      "normal": "Kit Carson Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://kitcarson.com/"
+    },
+    {
+      "ncr_id": "SUP-mora-san-miguel-electric-cooperative",
+      "entity_name": "Mora-San Miguel Electric Cooperative",
+      "shortest": "Mora",
+      "short": "Mora-San Miguel Electric",
+      "normal": "Mora-San Miguel Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.msmelectric.com/"
+    },
+    {
+      "ncr_id": "SUP-northern-rio-arriba-electric-cooperative",
+      "entity_name": "Northern Rio Arriba Electric Cooperative",
+      "shortest": "NORA",
+      "short": "Northern Rio Arriba Electric",
+      "normal": "Northern Rio Arriba Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.noraelectric.org/"
+    },
+    {
+      "ncr_id": "SUP-otero-county-electric-cooperative",
+      "entity_name": "Otero County Electric Cooperative",
+      "shortest": "Otero",
+      "short": "Otero County Electric",
+      "normal": "Otero County Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.ocec-inc.com/"
+    },
+    {
+      "ncr_id": "SUP-roosevelt-county-rural-electric-cooperative",
+      "entity_name": "Roosevelt County Rural Electric Cooperative",
+      "shortest": "RCEC",
+      "short": "Roosevelt County Electric",
+      "normal": "Roosevelt County Rural Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.rcrec.org/"
+    },
+    {
+      "ncr_id": "SUP-sierra-electric-cooperative",
+      "entity_name": "Sierra Electric Cooperative",
+      "shortest": "Sierra",
+      "short": "Sierra Electric",
+      "normal": "Sierra Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.sierraelectric.org/"
+    },
+    {
+      "ncr_id": "SUP-socorro-electric-cooperative",
+      "entity_name": "Socorro Electric Cooperative",
+      "shortest": "Socorro",
+      "short": "Socorro Electric",
+      "normal": "Socorro Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.socorroelectric.com/"
+    },
+    {
+      "ncr_id": "SUP-southwestern-electric-cooperative-nm",
+      "entity_name": "Southwestern Electric Cooperative (NM)",
+      "shortest": "SWEC",
+      "short": "Southwestern Electric",
+      "normal": "Southwestern Electric Cooperative (NM)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.swec-coop.org/"
+    },
+    {
+      "ncr_id": "SUP-springer-electric-cooperative",
+      "entity_name": "Springer Electric Cooperative",
+      "shortest": "Springer",
+      "short": "Springer Electric",
+      "normal": "Springer Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.springercoop.org/"
+    },
+    {
+      "ncr_id": "SUP-navopache-electric-cooperative",
+      "entity_name": "Navopache Electric Cooperative",
+      "shortest": "Navopache",
+      "short": "Navopache Electric",
+      "normal": "Navopache Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.navopache.org/"
+    },
+    {
+      "ncr_id": "SUP-city-of-aztec-electric",
+      "entity_name": "City of Aztec Electric Utility",
+      "shortest": "Aztec",
+      "short": "Aztec Electric",
+      "normal": "City of Aztec Electric Utility",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.aztecnm.gov/"
+    },
+    {
+      "ncr_id": "SUP-los-alamos-county-dpu",
+      "entity_name": "Los Alamos County Department of Public Utilities",
+      "shortest": "LAC DPU",
+      "short": "Los Alamos County DPU",
+      "normal": "Los Alamos County Department of Public Utilities",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.losalamosnm.us/government/departments/public_utilities"
+    },
+    {
+      "ncr_id": "SUP-raton-public-service-company",
+      "entity_name": "Raton Public Service Company",
+      "shortest": "Raton",
+      "short": "Raton Public Service",
+      "normal": "Raton Public Service Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.cityofratonnm.com/"
+    },
+    {
+      "ncr_id": "SUP-city-of-truth-or-consequences-electric",
+      "entity_name": "City of Truth or Consequences Electric",
+      "shortest": "T or C",
+      "short": "Truth or Consequences",
+      "normal": "City of Truth or Consequences",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.torcnm.org/"
     }
   ]
 }
