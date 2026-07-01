@@ -176,6 +176,11 @@ const KNOWN_ACRONYMS = new Map([
   ["j-a-c electric cooperative", "JAC"],
   ["deaf smith electric cooperative", "DeafSmth"],
   ["coserv electric", "CoServ"],
+  ["mountain view electric association", "MtnView"],
+  ["san miguel power association", "SMPA"],
+  ["y-w electric association", "Y-W"],
+  ["southeast colorado power association", "SECPA"],
+  ["sangre de cristo electric association", "Sangre"],
 ]);
 
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;

@@ -117711,7 +117711,7 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.blackhillscorp.com",
-      "notes": "Parent IOU holding company; WECC via western utility subsidiaries.",
+      "notes": "Parent IOU holding company; WECC via western utility subsidiaries including Black Hills Colorado Electric (formerly Aquila), which serves the Pueblo and southern Colorado area, and Black Hills Energy in Wyoming.",
       "seed": false,
       "locations": [
         {
@@ -117726,7 +117726,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.blackhillscorp.com",
-          "geo_notes": "Parent IOU holding company; WECC via western utility subsidiaries."
+          "geo_notes": "Parent IOU holding company; WECC via western utility subsidiaries including Black Hills Colorado Electric (formerly Aquila), which serves the Pueblo and southern Colorado area, and Black Hills Energy in Wyoming."
         },
         {
           "rank": 2,
@@ -121937,7 +121937,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.csu.org/contact-us",
-      "notes": "Community-owned electric, gas, water and wastewater utility.",
+      "notes": "Community-owned electric, gas, water and wastewater utility; the largest municipally owned utility in Colorado, serving Colorado Springs in the Western Interconnection.",
+      "org_type": "municipal",
       "seed": false,
       "locations": [
         {
@@ -121952,7 +121953,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.csu.org/contact-us",
-          "geo_notes": "Community-owned electric, gas, water and wastewater utility."
+          "geo_notes": "Community-owned electric, gas, water and wastewater utility; the largest municipally owned utility in Colorado, serving Colorado Springs in the Western Interconnection."
         },
         {
           "rank": 2,
@@ -137157,7 +137158,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://prpa.org/contact-prpa/",
-      "notes": "PRPA joint-action utility HQ Fort Collins CO.",
+      "notes": "PRPA joint-action utility HQ Fort Collins CO. Wholesale generation & transmission provider owned by its four member municipalities — Fort Collins, Longmont, Loveland and Estes Park — which appear as municipal utilities (Estes Park as a supplemental SUP- entity).",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137174,7 +137175,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://prpa.org/contact-prpa/",
-          "geo_notes": "PRPA joint-action utility HQ Fort Collins CO."
+          "geo_notes": "PRPA joint-action utility HQ Fort Collins CO. Wholesale generation & transmission provider owned by its four member municipalities — Fort Collins, Longmont, Loveland and Estes Park — which appear as municipal utilities (Estes Park as a supplemental SUP- entity)."
         },
         {
           "rank": 2,
@@ -138518,7 +138519,8 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://stories.xcelenergy.com/stories/Xcel-Energy-s-Colorado-headquarters-relocating-in-2025",
-      "notes": "Xcel Energy Colorado operating company HQ Denver RiNo.",
+      "notes": "Xcel Energy Colorado operating company HQ Denver RiNo. Colorado's largest electric utility, serving the Denver metro and much of the Front Range in the Western Interconnection; a subsidiary of Xcel Energy.",
+      "parent_org": "Xcel Energy",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -138535,7 +138537,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://stories.xcelenergy.com/stories/Xcel-Energy-s-Colorado-headquarters-relocating-in-2025",
-          "geo_notes": "Xcel Energy Colorado operating company HQ Denver RiNo."
+          "geo_notes": "Xcel Energy Colorado operating company HQ Denver RiNo. Colorado's largest electric utility, serving the Denver metro and much of the Front Range in the Western Interconnection; a subsidiary of Xcel Energy."
         },
         {
           "rank": 2,
@@ -150106,7 +150108,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.tristate.coop/contact-us",
-      "notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location. Tri-State is the wholesale generation-and-transmission cooperative behind many New Mexico rural distribution co-ops (e.g., Central New Mexico, Continental Divide, Jemez Mountains, Mora-San Miguel, Otero County, Sierra, Socorro, Springer), which appear as supplemental SUP- distribution utilities rather than separate NERC transmission registrations.",
+      "notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location. Tri-State is the wholesale generation-and-transmission cooperative behind many Western rural distribution co-ops across Colorado, New Mexico, Nebraska and Wyoming (in Colorado e.g. Mountain View, Highline, Morgan County, K.C., Y-W, San Isabel, Sangre de Cristo, Southeast Colorado, Empire, San Miguel; in New Mexico e.g. Central New Mexico, Continental Divide, Mora-San Miguel, Otero County, Sierra, Socorro), which appear as supplemental SUP- distribution utilities rather than separate NERC transmission registrations.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -150123,7 +150125,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.tristate.coop/contact-us",
-          "geo_notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location. Tri-State is the wholesale generation-and-transmission cooperative behind many New Mexico rural distribution co-ops (e.g., Central New Mexico, Continental Divide, Jemez Mountains, Mora-San Miguel, Otero County, Sierra, Socorro, Springer), which appear as supplemental SUP- distribution utilities rather than separate NERC transmission registrations."
+          "geo_notes": "Tri-State reliability registration; folded into the Tri-State Westminster HQ map location. Tri-State is the wholesale generation-and-transmission cooperative behind many Western rural distribution co-ops across Colorado, New Mexico, Nebraska and Wyoming (in Colorado e.g. Mountain View, Highline, Morgan County, K.C., Y-W, San Isabel, Sangre de Cristo, Southeast Colorado, Empire, San Miguel; in New Mexico e.g. Central New Mexico, Continental Divide, Mora-San Miguel, Otero County, Sierra, Socorro), which appear as supplemental SUP- distribution utilities rather than separate NERC transmission registrations."
         },
         {
           "rank": 2,
