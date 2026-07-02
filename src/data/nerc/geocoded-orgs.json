@@ -5845,7 +5845,7 @@
       "source_url": "https://www.basinelectric.com/contacts/",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "MRO registration for Basin Electric Power Cooperative; folded into the BEPC Bismarck HQ map location.",
+      "notes": "MRO registration for Basin Electric Power Cooperative; folded into the BEPC Bismarck HQ map location. One of the largest generation & transmission cooperatives in the U.S., supplying wholesale power to member G&Ts and distribution cooperatives across nine states, including most of North and South Dakota.",
       "seed": false,
       "locations": [
         {
@@ -5860,7 +5860,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.basinelectric.com/contacts/",
-          "geo_notes": "MRO registration for Basin Electric Power Cooperative; folded into the BEPC Bismarck HQ map location."
+          "geo_notes": "MRO registration for Basin Electric Power Cooperative; folded into the BEPC Bismarck HQ map location. One of the largest generation & transmission cooperatives in the U.S., supplying wholesale power to member G&Ts and distribution cooperatives across nine states, including most of North and South Dakota."
         },
         {
           "rank": 2,
@@ -7415,7 +7415,7 @@
       "source_url": "https://www.centralpwr.com/contact-us",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "North Dakota transmission G&T; six member distribution cooperatives.",
+      "notes": "North Dakota transmission G&T with six member distribution cooperatives, including Verendrye, North Central, McLean, KEM, and Burke-Divide.",
       "seed": false,
       "locations": [
         {
@@ -7430,7 +7430,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.centralpwr.com/contact-us",
-          "geo_notes": "North Dakota transmission G&T; six member distribution cooperatives."
+          "geo_notes": "North Dakota transmission G&T with six member distribution cooperatives, including Verendrye, North Central, McLean, KEM, and Burke-Divide."
         },
         {
           "rank": 2,
@@ -9664,7 +9664,7 @@
       "source_url": "https://eastriver.coop/",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "HQ at 211 South Harth Avenue, Madison SD; corrected longitude from an east-of-state coordinate typo.",
+      "notes": "East River Electric Power Cooperative HQ, Madison SD. Generation & transmission provider for most of eastern South Dakota's distribution cooperatives — Sioux Valley Energy, Codington-Clark, Kingsbury, Dakota Energy, Lake Region, Charles Mix, and others; a Basin Electric member.",
       "seed": false,
       "locations": [
         {
@@ -9679,7 +9679,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://eastriver.coop/",
-          "geo_notes": "HQ at 211 South Harth Avenue, Madison SD; corrected longitude from an east-of-state coordinate typo."
+          "geo_notes": "East River Electric Power Cooperative HQ, Madison SD. Generation & transmission provider for most of eastern South Dakota's distribution cooperatives — Sioux Valley Energy, Codington-Clark, Kingsbury, Dakota Energy, Lake Region, Charles Mix, and others; a Basin Electric member."
         },
         {
           "rank": 2,
@@ -15338,7 +15338,7 @@
       "source_url": "https://www.minnkota.com/minnkota-website/contact-us",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "Generation and transmission cooperative for eastern North Dakota and northwest Minnesota.",
+      "notes": "Generation and transmission cooperative for eastern North Dakota and northwest Minnesota; its associated distribution members include Nodak, Cass County, Cavalier, and other eastern-ND cooperatives.",
       "seed": false,
       "locations": [
         {
@@ -15353,7 +15353,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.minnkota.com/minnkota-website/contact-us",
-          "geo_notes": "Generation and transmission cooperative for eastern North Dakota and northwest Minnesota."
+          "geo_notes": "Generation and transmission cooperative for eastern North Dakota and northwest Minnesota; its associated distribution members include Nodak, Cass County, Cavalier, and other eastern-ND cooperatives."
         },
         {
           "rank": 2,
@@ -15476,7 +15476,7 @@
       "source_url": "https://www.mrenergy.com/contact-us",
       "org_type": "municipal",
       "parent_org": null,
-      "notes": "Joint-action wholesale agency; does business as Missouri River Energy Services for 60 member municipal utilities.",
+      "notes": "Joint-action wholesale agency; does business as Missouri River Energy Services for 60+ member municipal utilities across South Dakota, Minnesota, Iowa, and North Dakota, including Watertown, Brookings, Madison, Pierre, and Flandreau.",
       "seed": false,
       "locations": [
         {
@@ -15491,7 +15491,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.mrenergy.com/contact-us",
-          "geo_notes": "Joint-action wholesale agency; does business as Missouri River Energy Services for 60 member municipal utilities."
+          "geo_notes": "Joint-action wholesale agency; does business as Missouri River Energy Services for 60+ member municipal utilities across South Dakota, Minnesota, Iowa, and North Dakota, including Watertown, Brookings, Madison, Pierre, and Flandreau."
         },
         {
           "rank": 2,
@@ -17458,8 +17458,7 @@
       "source": "official_website",
       "source_url": "https://www.otpco.com/contact-us/",
       "org_type": "IOU",
-      "parent_org": "Otter Tail Corporation",
-      "notes": "Investor-owned electric utility in Minnesota, North Dakota, and South Dakota.",
+      "notes": "Investor-owned electric utility serving eastern North Dakota, northeastern South Dakota, and western Minnesota (~130,000 customers); subsidiary of Otter Tail Corporation.",
       "seed": false,
       "locations": [
         {
@@ -17474,7 +17473,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.otpco.com/contact-us/",
-          "geo_notes": "Investor-owned electric utility in Minnesota, North Dakota, and South Dakota."
+          "geo_notes": "Investor-owned electric utility serving eastern North Dakota, northeastern South Dakota, and western Minnesota (~130,000 customers); subsidiary of Otter Tail Corporation."
         },
         {
           "rank": 2,
@@ -17504,7 +17503,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Otter Tail Corporation"
     },
     {
       "ncr_id": "NCR13471",
