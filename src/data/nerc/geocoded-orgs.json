@@ -116589,7 +116589,7 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://investor.avistacorp.com",
-      "notes": "Investor-owned utility HQ in Spokane WA.",
+      "notes": "Investor-owned utility HQ in Spokane WA. Avista serves eastern Washington and northern Idaho with electric and natural gas service and owns the Spokane River and Clark Fork hydro systems.",
       "seed": false,
       "locations": [
         {
@@ -116604,7 +116604,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://investor.avistacorp.com",
-          "geo_notes": "Investor-owned utility HQ in Spokane WA."
+          "geo_notes": "Investor-owned utility HQ in Spokane WA. Avista serves eastern Washington and northern Idaho with electric and natural gas service and owns the Spokane River and Clark Fork hydro systems."
         },
         {
           "rank": 2,
@@ -118177,7 +118177,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.bpa.gov",
-      "notes": "Federal power marketing administration, Pacific Northwest.",
+      "notes": "Federal power marketing administration, Pacific Northwest. Markets wholesale hydropower from the 31 federal dams of the Columbia/Snake River system and operates roughly three-quarters of the region's high-voltage transmission; the wholesale backbone for most Northwest PUDs, cooperatives, and municipal utilities.",
       "seed": false,
       "locations": [
         {
@@ -118192,7 +118192,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.bpa.gov",
-          "geo_notes": "Federal power marketing administration, Pacific Northwest."
+          "geo_notes": "Federal power marketing administration, Pacific Northwest. Markets wholesale hydropower from the 31 federal dams of the Columbia/Snake River system and operates roughly three-quarters of the region's high-voltage transmission; the wholesale backbone for most Northwest PUDs, cooperatives, and municipal utilities."
         },
         {
           "rank": 2,
@@ -121412,7 +121412,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.mytpu.org/",
-      "notes": "Tacoma Public Utilities Light Division headquarters.",
+      "notes": "Tacoma Public Utilities Light Division headquarters (Tacoma Power). Municipal utility serving the City of Tacoma and parts of Pierce County; owns the Cushman and Cowlitz River hydro projects.",
       "seed": false,
       "locations": [
         {
@@ -121427,7 +121427,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.mytpu.org/",
-          "geo_notes": "Tacoma Public Utilities Light Division headquarters."
+          "geo_notes": "Tacoma Public Utilities Light Division headquarters (Tacoma Power). Municipal utility serving the City of Tacoma and parts of Pierce County; owns the Cushman and Cowlitz River hydro projects."
         },
         {
           "rank": 2,
@@ -137306,7 +137306,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://investors.portlandgeneral.com/contact-us",
-      "notes": "PGE corporate HQ Portland OR.",
+      "notes": "PGE corporate HQ Portland OR. Oregon's largest investor-owned utility, serving the Portland metro and northern Willamette Valley (~900,000 customers); an independent publicly traded company.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137323,7 +137323,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://investors.portlandgeneral.com/contact-us",
-          "geo_notes": "PGE corporate HQ Portland OR."
+          "geo_notes": "PGE corporate HQ Portland OR. Oregon's largest investor-owned utility, serving the Portland metro and northern Willamette Valley (~900,000 customers); an independent publicly traded company."
         },
         {
           "rank": 2,
@@ -137593,7 +137593,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.snopud.com/contact/directory/",
-      "notes": "Snohomish County PUD HQ Everett WA.",
+      "notes": "Snohomish County PUD HQ Everett WA. The largest public utility district in Washington and the second-largest publicly owned utility in the state, serving Snohomish County and Camano Island.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137610,7 +137610,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.snopud.com/contact/directory/",
-          "geo_notes": "Snohomish County PUD HQ Everett WA."
+          "geo_notes": "Snohomish County PUD HQ Everett WA. The largest public utility district in Washington and the second-largest publicly owned utility in the state, serving Snohomish County and Camano Island."
         },
         {
           "rank": 2,
@@ -137736,7 +137736,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.chelanpud.org/about-us/contact-us",
-      "notes": "Chelan County PUD main office Wenatchee WA.",
+      "notes": "Chelan County PUD main office Wenatchee WA. Owns the Rocky Reach and Rock Island dams on the Columbia River, a major source of low-cost hydropower for Northwest public power.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137753,7 +137753,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.chelanpud.org/about-us/contact-us",
-          "geo_notes": "Chelan County PUD main office Wenatchee WA."
+          "geo_notes": "Chelan County PUD main office Wenatchee WA. Owns the Rocky Reach and Rock Island dams on the Columbia River, a major source of low-cost hydropower for Northwest public power."
         },
         {
           "rank": 2,
@@ -137881,7 +137881,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.grantpud.org",
-      "notes": "Grant County PUD HQ Ephrata WA.",
+      "notes": "Grant County PUD HQ Ephrata WA. Owns the Priest Rapids and Wanapum dams on the mid-Columbia River (Priest Rapids Hydroelectric Project).",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -137898,7 +137898,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.grantpud.org",
-          "geo_notes": "Grant County PUD HQ Ephrata WA."
+          "geo_notes": "Grant County PUD HQ Ephrata WA. Owns the Priest Rapids and Wanapum dams on the mid-Columbia River (Priest Rapids Hydroelectric Project)."
         },
         {
           "rank": 2,
@@ -138031,7 +138031,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.pse.com/en/Customer-Service/pse-locations-2",
-      "notes": "PSE corporate HQ Bellevue WA.",
+      "notes": "PSE corporate HQ Bellevue WA. Washington's largest utility, serving the Puget Sound region for both electric and natural gas; owned by an investor consortium through Puget Energy (Puget Holdings).",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -138048,7 +138048,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.pse.com/en/Customer-Service/pse-locations-2",
-          "geo_notes": "PSE corporate HQ Bellevue WA."
+          "geo_notes": "PSE corporate HQ Bellevue WA. Washington's largest utility, serving the Puget Sound region for both electric and natural gas; owned by an investor consortium through Puget Energy (Puget Holdings)."
         },
         {
           "rank": 2,
@@ -138078,7 +138078,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Puget Energy (Puget Holdings)"
     },
     {
       "ncr_id": "NCR05454",
@@ -144704,7 +144705,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.seattle.gov/city-light",
-      "notes": "Municipal utility executive offices in Seattle Municipal Tower.",
+      "notes": "Municipal utility executive offices in Seattle Municipal Tower. One of the largest publicly owned utilities in the U.S. and among the first to reach carbon-neutral; owns the Skagit and Boundary hydro projects.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -144721,7 +144722,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.seattle.gov/city-light",
-          "geo_notes": "Municipal utility executive offices in Seattle Municipal Tower."
+          "geo_notes": "Municipal utility executive offices in Seattle Municipal Tower. One of the largest publicly owned utilities in the U.S. and among the first to reach carbon-neutral; owns the Skagit and Boundary hydro projects."
         },
         {
           "rank": 2,
