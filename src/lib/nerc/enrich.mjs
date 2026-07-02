@@ -195,6 +195,19 @@ const KNOWN_ACRONYMS = new Map([
   ["withlacoochee river electric cooperative", "WREC"],
   ["peace river electric cooperative", "PRECO"],
   ["glades electric cooperative", "Glades"],
+  ["anza electric cooperative", "Anza EC"],
+  ["surprise valley electrification", "SurprisV"],
+  ["bear valley electric service", "BearVly"],
+  ["moreno valley utility", "MVU"],
+  ["rancho cucamonga municipal utility", "RCMU"],
+  ["victorville municipal utilities services", "Victorvl"],
+  ["truckee donner public utility district", "Truckee"],
+  ["trinity public utility district", "Trinity"],
+  ["wells rural electric", "Wells"],
+  ["mt wheeler power", "MtWheelr"],
+  ["harney electric cooperative", "Harney"],
+  ["raft river rural electric cooperative", "RaftRivr"],
+  ["alamo power district", "Alamo PD"],
 ]);
 
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;

@@ -128540,7 +128540,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.iid.com/customer-service/contact-us/office-locations-and-hours",
-      "notes": "Public power utility operating HQ in Imperial CA.",
+      "notes": "Public power utility operating HQ in Imperial CA. Serves the Imperial Valley and the eastern Coachella Valley; the largest irrigation district in the U.S. and a Balancing Authority.",
       "seed": false,
       "locations": [
         {
@@ -128555,7 +128555,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.iid.com/customer-service/contact-us/office-locations-and-hours",
-          "geo_notes": "Public power utility operating HQ in Imperial CA."
+          "geo_notes": "Public power utility operating HQ in Imperial CA. Serves the Imperial Valley and the eastern Coachella Valley; the largest irrigation district in the U.S. and a Balancing Authority."
         },
         {
           "rank": 2,
@@ -131289,7 +131289,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.ladwp.com/doing-business-ladwp/filming-locations/place/john-ferraro-building-jfb",
-      "notes": "John Ferraro Building municipal utility HQ Bunker Hill.",
+      "notes": "John Ferraro Building municipal utility HQ Bunker Hill. Largest municipal utility in the United States by customers, serving the City of Los Angeles.",
       "seed": false,
       "locations": [
         {
@@ -131304,7 +131304,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.ladwp.com/doing-business-ladwp/filming-locations/place/john-ferraro-building-jfb",
-          "geo_notes": "John Ferraro Building municipal utility HQ Bunker Hill."
+          "geo_notes": "John Ferraro Building municipal utility HQ Bunker Hill. Largest municipal utility in the United States by customers, serving the City of Los Angeles."
         },
         {
           "rank": 2,
@@ -135498,7 +135498,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.ncpa.com/contact/",
-      "notes": "Joint powers agency HQ Roseville CA.",
+      "notes": "Joint powers agency HQ Roseville CA. Wholesale generation & transmission for its publicly owned members, which include Alameda, Biggs, Gridley, Healdsburg, Lodi, Lompoc, Palo Alto, Roseville, Santa Clara (Silicon Valley Power), Ukiah, Truckee Donner PUD, and Plumas-Sierra REC.",
       "seed": false,
       "locations": [
         {
@@ -135513,7 +135513,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.ncpa.com/contact/",
-          "geo_notes": "Joint powers agency HQ Roseville CA."
+          "geo_notes": "Joint powers agency HQ Roseville CA. Wholesale generation & transmission for its publicly owned members, which include Alameda, Biggs, Gridley, Healdsburg, Lodi, Lompoc, Palo Alto, Roseville, Santa Clara (Silicon Valley Power), Ukiah, Truckee Donner PUD, and Plumas-Sierra REC."
         },
         {
           "rank": 2,
@@ -136038,7 +136038,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.nvenergy.com",
-      "notes": "Investor-owned utility HQ Las Vegas NV.",
+      "notes": "Investor-owned utility HQ Las Vegas NV. Berkshire Hathaway Energy company operating as Nevada Power Company (southern Nevada) and Sierra Pacific Power Company (northern Nevada); serves ~1.4 million customers.",
       "seed": false,
       "locations": [
         {
@@ -136053,7 +136053,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.nvenergy.com",
-          "geo_notes": "Investor-owned utility HQ Las Vegas NV."
+          "geo_notes": "Investor-owned utility HQ Las Vegas NV. Berkshire Hathaway Energy company operating as Nevada Power Company (southern Nevada) and Sierra Pacific Power Company (northern Nevada); serves ~1.4 million customers."
         },
         {
           "rank": 2,
@@ -136083,7 +136083,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Berkshire Hathaway Energy"
     },
     {
       "ncr_id": "NCR13423",
@@ -141432,7 +141433,7 @@
       "confidence": "HIGH",
       "source": "ferc_filing",
       "source_url": "https://www.pge.com",
-      "notes": "Principal office per FERC Form 1 2024; relocated from San Francisco to Oakland.",
+      "notes": "Principal office per FERC Form 1 2024; relocated from San Francisco to Oakland. Investor-owned utility of PG&E Corporation serving most of northern and central California (~16 million people across a 70,000-square-mile service area).",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -141449,7 +141450,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "ferc_filing",
           "geo_source_url": "https://www.pge.com",
-          "geo_notes": "Principal office per FERC Form 1 2024; relocated from San Francisco to Oakland."
+          "geo_notes": "Principal office per FERC Form 1 2024; relocated from San Francisco to Oakland. Investor-owned utility of PG&E Corporation serving most of northern and central California (~16 million people across a 70,000-square-mile service area)."
         },
         {
           "rank": 2,
@@ -141479,7 +141480,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "PG&E Corporation"
     },
     {
       "ncr_id": "NCR11442",
@@ -141643,7 +141645,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.pacificorp.com",
-      "notes": "Principal office on company contact page; d/b/a Pacific Power in OR/WA/CA.",
+      "notes": "Principal office on company contact page; d/b/a Pacific Power in OR/WA/CA, including far northeastern California (Modoc and Siskiyou counties). Berkshire Hathaway Energy company.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -141660,7 +141662,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.pacificorp.com",
-          "geo_notes": "Principal office on company contact page; d/b/a Pacific Power in OR/WA/CA."
+          "geo_notes": "Principal office on company contact page; d/b/a Pacific Power in OR/WA/CA, including far northeastern California (Modoc and Siskiyou counties). Berkshire Hathaway Energy company."
         },
         {
           "rank": 2,
@@ -141690,7 +141692,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Berkshire Hathaway Energy"
     },
     {
       "ncr_id": "NCR13496",
@@ -143871,7 +143874,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.smud.org",
-      "notes": "Community-owned utility serving Sacramento County CA.",
+      "notes": "Community-owned utility serving Sacramento County CA; one of the largest publicly owned electric utilities in the U.S. and a Balancing Authority.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -143888,7 +143891,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.smud.org",
-          "geo_notes": "Community-owned utility serving Sacramento County CA."
+          "geo_notes": "Community-owned utility serving Sacramento County CA; one of the largest publicly owned electric utilities in the U.S. and a Balancing Authority."
         },
         {
           "rank": 2,
@@ -144222,7 +144225,7 @@
       "confidence": "HIGH",
       "source": "sec_filing",
       "source_url": "https://www.sdge.com",
-      "notes": "Principal office per SEC 10-K; Sempra California IOU.",
+      "notes": "Principal office per SEC 10-K; Sempra California IOU serving San Diego and southern Orange counties.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -144239,7 +144242,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sdge.com",
-          "geo_notes": "Principal office per SEC 10-K; Sempra California IOU."
+          "geo_notes": "Principal office per SEC 10-K; Sempra California IOU serving San Diego and southern Orange counties."
         },
         {
           "rank": 2,
@@ -144269,7 +144272,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Sempra"
     },
     {
       "ncr_id": "NCR13262",
@@ -146931,7 +146935,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.sce.com",
-      "notes": "Major IOU serving central and southern California; Edison International subsidiary.",
+      "notes": "Major IOU serving central and southern California; Edison International subsidiary (~15 million people). Retail distribution partner for many of the region's Community Choice Aggregators.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -146948,7 +146952,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.sce.com",
-          "geo_notes": "Major IOU serving central and southern California; Edison International subsidiary."
+          "geo_notes": "Major IOU serving central and southern California; Edison International subsidiary (~15 million people). Retail distribution partner for many of the region's Community Choice Aggregators."
         },
         {
           "rank": 2,
@@ -146978,7 +146982,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Edison International"
     },
     {
       "ncr_id": "NCR11396",

@@ -20375,17 +20375,6 @@
       "shortest_source_url": "https://www.cityofdenton.com/331/Denton-Municipal-Electric-DME"
     },
     {
-      "ncr_id": "SUP-sacramento-municipal-utility-district",
-      "entity_name": "Sacramento Municipal Utility District",
-      "shortest": "SMUD",
-      "short": "Sacramento Municipal Utility District",
-      "normal": "SMUD",
-      "tier": "normal",
-      "shortest_type": "acronym",
-      "shortest_source": "official_website",
-      "shortest_source_url": "https://www.smud.org/"
-    },
-    {
       "ncr_id": "SUP-riviera-utilities",
       "entity_name": "Riviera Utilities",
       "shortest": "Riviera Utilities",
@@ -20472,17 +20461,6 @@
       "shortest_type": "acronym",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.btutilities.com/"
-    },
-    {
-      "ncr_id": "SUP-turlock-irrigation-district",
-      "entity_name": "Turlock Irrigation District",
-      "shortest": "TID",
-      "short": "Turlock Irrigation District",
-      "normal": "Turlock ID",
-      "tier": "normal",
-      "shortest_type": "acronym",
-      "shortest_source": "official_website",
-      "shortest_source_url": "https://www.tid.org/contact/"
     },
     {
       "ncr_id": "SUP-ava-community-energy",
@@ -24049,6 +24027,325 @@
       "tier": "standard",
       "shortest_type": "common_name",
       "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-banning",
+      "entity_name": "City of Banning",
+      "shortest": "Banning",
+      "short": "Banning Electric",
+      "normal": "City of Banning (Banning Electric Utility)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-biggs",
+      "entity_name": "City of Biggs",
+      "shortest": "Biggs",
+      "short": "Biggs Municipal Utilities",
+      "normal": "City of Biggs (Biggs Municipal Utilities)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-cerritos",
+      "entity_name": "City of Cerritos",
+      "shortest": "Cerritos",
+      "short": "Cerritos Electric",
+      "normal": "City of Cerritos (Cerritos Electric Utility)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-industry",
+      "entity_name": "City of Industry",
+      "shortest": "Industry",
+      "short": "City of Industry Utility",
+      "normal": "City of Industry Public Utility",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-corona",
+      "entity_name": "City of Corona",
+      "shortest": "Corona",
+      "short": "Corona Water & Power",
+      "normal": "City of Corona (Department of Water & Power)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-gridley",
+      "entity_name": "City of Gridley",
+      "shortest": "Gridley",
+      "short": "Gridley Electric",
+      "normal": "City of Gridley (Gridley Electric Utility)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-healdsburg",
+      "entity_name": "City of Healdsburg",
+      "shortest": "Healdsbg",
+      "short": "Healdsburg Electric",
+      "normal": "City of Healdsburg (Healdsburg Electric)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-hercules",
+      "entity_name": "City of Hercules",
+      "shortest": "Hercules",
+      "short": "Hercules Municipal Utility",
+      "normal": "City of Hercules (Hercules Municipal Utility)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-lodi",
+      "entity_name": "City of Lodi",
+      "shortest": "Lodi",
+      "short": "Lodi Electric",
+      "normal": "City of Lodi (Lodi Electric Utility)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-lompoc",
+      "entity_name": "City of Lompoc",
+      "shortest": "Lompoc",
+      "short": "Lompoc Electric",
+      "normal": "City of Lompoc (Electric Division)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-moreno-valley-utility",
+      "entity_name": "Moreno Valley Utility",
+      "shortest": "MVU",
+      "short": "Moreno Valley Utility",
+      "normal": "Moreno Valley Utility (MVU)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-needles",
+      "entity_name": "City of Needles",
+      "shortest": "Needles",
+      "short": "Needles Public Utility",
+      "normal": "City of Needles (Public Utility Authority)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-pittsburg-power-company-island-energy",
+      "entity_name": "Pittsburg Power Company (Island Energy)",
+      "shortest": "IslandE",
+      "short": "Island Energy",
+      "normal": "Pittsburg Power Company (Island Energy)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-rancho-cucamonga-municipal-utility",
+      "entity_name": "Rancho Cucamonga Municipal Utility",
+      "shortest": "RCMU",
+      "short": "Rancho Cucamonga MU",
+      "normal": "Rancho Cucamonga Municipal Utility (RCMU)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-vernon",
+      "entity_name": "City of Vernon",
+      "shortest": "Vernon",
+      "short": "Vernon Public Utilities",
+      "normal": "City of Vernon (Vernon Public Utilities)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-victorville-municipal-utilities-services",
+      "entity_name": "Victorville Municipal Utilities Services",
+      "shortest": "Victorvl",
+      "short": "Victorville Municipal",
+      "normal": "Victorville Municipal Utilities Services",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-shasta-lake",
+      "entity_name": "City of Shasta Lake",
+      "shortest": "ShastaLk",
+      "short": "Shasta Lake Electric",
+      "normal": "City of Shasta Lake (Electric Utility)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-truckee-donner-public-utility-district",
+      "entity_name": "Truckee Donner Public Utility District",
+      "shortest": "Truckee",
+      "short": "Truckee Donner PUD",
+      "normal": "Truckee Donner Public Utility District",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-trinity-public-utility-district",
+      "entity_name": "Trinity Public Utility District",
+      "shortest": "Trinity",
+      "short": "Trinity PUD",
+      "normal": "Trinity Public Utility District",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-anza-electric-cooperative",
+      "entity_name": "Anza Electric Cooperative",
+      "shortest": "Anza EC",
+      "short": "Anza Electric",
+      "normal": "Anza Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NRECA",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-surprise-valley-electrification-corporation",
+      "entity_name": "Surprise Valley Electrification Corporation",
+      "shortest": "SurprisV",
+      "short": "Surprise Valley Electric",
+      "normal": "Surprise Valley Electrification Corporation",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NRECA",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-bear-valley-electric-service",
+      "entity_name": "Bear Valley Electric Service",
+      "shortest": "BearVly",
+      "short": "Bear Valley Electric",
+      "normal": "Bear Valley Electric Service",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-boulder-city",
+      "entity_name": "Boulder City",
+      "shortest": "BoulderC",
+      "short": "Boulder City Utility",
+      "normal": "Boulder City Municipal Utility",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-fallon",
+      "entity_name": "City of Fallon",
+      "shortest": "Fallon",
+      "short": "Fallon Electric",
+      "normal": "City of Fallon (Municipal Electric)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-wells-rural-electric-company",
+      "entity_name": "Wells Rural Electric Company",
+      "shortest": "Wells",
+      "short": "Wells Rural Electric",
+      "normal": "Wells Rural Electric Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NRECA",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-mt-wheeler-power",
+      "entity_name": "Mt. Wheeler Power",
+      "shortest": "MtWheelr",
+      "short": "Mt. Wheeler Power",
+      "normal": "Mt. Wheeler Power, Inc.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NRECA",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-alamo-power-district-no-3",
+      "entity_name": "Alamo Power District No. 3",
+      "shortest": "Alamo PD",
+      "short": "Alamo Power District",
+      "normal": "Alamo Power District No. 3",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "California Municipal Utilities Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-harney-electric-cooperative",
+      "entity_name": "Harney Electric Cooperative",
+      "shortest": "Harney",
+      "short": "Harney Electric",
+      "normal": "Harney Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NRECA",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-raft-river-rural-electric-cooperative",
+      "entity_name": "Raft River Rural Electric Cooperative",
+      "shortest": "RaftRivr",
+      "short": "Raft River Electric",
+      "normal": "Raft River Rural Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NRECA",
       "shortest_source_url": null
     }
   ]
