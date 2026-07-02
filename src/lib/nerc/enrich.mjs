@@ -181,6 +181,20 @@ const KNOWN_ACRONYMS = new Map([
   ["y-w electric association", "Y-W"],
   ["southeast colorado power association", "SECPA"],
   ["sangre de cristo electric association", "Sangre"],
+  ["escambia river electric cooperative", "EREC"],
+  ["choctawhatchee electric cooperative", "CHELCO"],
+  ["west florida electric cooperative", "WFEC"],
+  ["gulf coast electric cooperative", "GCEC"],
+  ["talquin electric cooperative", "Talquin"],
+  ["tri county electric cooperative", "TCEC"],
+  ["suwannee valley electric cooperative", "SVEC"],
+  ["okefenoke rural electric membership", "Okefenke"],
+  ["clay electric cooperative", "Clay EC"],
+  ["central florida electric cooperative", "CFEC"],
+  ["seco energy", "SECO"],
+  ["withlacoochee river electric cooperative", "WREC"],
+  ["peace river electric cooperative", "PRECO"],
+  ["glades electric cooperative", "Glades"],
 ]);
 
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;

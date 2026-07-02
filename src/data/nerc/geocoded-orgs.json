@@ -69078,7 +69078,7 @@
       "confidence": "MEDIUM",
       "source": "eia_861",
       "source_url": "https://www.duke-energy.com/florida",
-      "notes": "Duke Energy Florida uses DEF in Duke and regulatory materials; FPC is retained only as the legacy Florida Power Corporation area alias. HQ St. Petersburg.",
+      "notes": "Duke Energy Florida uses DEF in Duke and regulatory materials; FPC is retained only as the legacy Florida Power Corporation area alias. HQ St. Petersburg. Subsidiary of Duke Energy Corporation (the former Progress Energy Florida / Florida Power Corporation).",
       "seed": false,
       "locations": [
         {
@@ -69093,7 +69093,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "eia_861",
           "geo_source_url": "https://www.duke-energy.com/florida",
-          "geo_notes": "Duke Energy Florida uses DEF in Duke and regulatory materials; FPC is retained only as the legacy Florida Power Corporation area alias. HQ St. Petersburg."
+          "geo_notes": "Duke Energy Florida uses DEF in Duke and regulatory materials; FPC is retained only as the legacy Florida Power Corporation area alias. HQ St. Petersburg. Subsidiary of Duke Energy Corporation (the former Progress Energy Florida / Florida Power Corporation)."
         },
         {
           "rank": 2,
@@ -69123,7 +69123,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Duke Energy Corporation"
     },
     {
       "ncr_id": "NCR01298",
@@ -70991,7 +70992,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://fmpa.com/contact-us/",
-      "notes": "Florida municipal wholesale power agency HQ.",
+      "notes": "Florida municipal wholesale power agency HQ. Joint-action agency supplying wholesale power to member municipal utilities; its All-Requirements Project serves cities including Bushnell, Clewiston, Fort Meade, Fort Pierce, Green Cove Springs, Havana, Jacksonville Beach, Key West, Kissimmee, Lake Worth Beach, Leesburg, Newberry, Ocala, Quincy, and Starke.",
       "seed": false,
       "locations": [
         {
@@ -71006,7 +71007,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://fmpa.com/contact-us/",
-          "geo_notes": "Florida municipal wholesale power agency HQ."
+          "geo_notes": "Florida municipal wholesale power agency HQ. Joint-action agency supplying wholesale power to member municipal utilities; its All-Requirements Project serves cities including Bushnell, Clewiston, Fort Meade, Fort Pierce, Green Cove Springs, Havana, Jacksonville Beach, Key West, Kissimmee, Lake Worth Beach, Leesburg, Newberry, Ocala, Quincy, and Starke."
         },
         {
           "rank": 2,
@@ -71131,7 +71132,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.fpl.com",
-      "notes": "NextEra IOU HQ; peninsular Florida BA/RC functions.",
+      "notes": "NextEra IOU HQ; peninsular Florida BA/RC functions. Subsidiary of NextEra Energy, Inc.; absorbed Gulf Power Company into FPL in 2021, extending FPL service into the northwest Florida panhandle.",
       "seed": false,
       "locations": [
         {
@@ -71146,7 +71147,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.fpl.com",
-          "geo_notes": "NextEra IOU HQ; peninsular Florida BA/RC functions."
+          "geo_notes": "NextEra IOU HQ; peninsular Florida BA/RC functions. Subsidiary of NextEra Energy, Inc.; absorbed Gulf Power Company into FPL in 2021, extending FPL service into the northwest Florida panhandle."
         },
         {
           "rank": 2,
@@ -71176,7 +71177,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "NextEra Energy, Inc."
     },
     {
       "ncr_id": "NCR00025",
@@ -71197,7 +71199,7 @@
       "confidence": "MEDIUM",
       "source": "sec_filing",
       "source_url": "https://www.fpuc.com/",
-      "notes": "Chesapeake Utilities electric/gas utility HQ; SEC historical principal office.",
+      "notes": "Chesapeake Utilities electric/gas utility HQ; SEC historical principal office. Subsidiary of Chesapeake Utilities Corporation; retail electric service in northwest Florida (Marianna/Chipley area) and on Amelia Island (Fernandina Beach).",
       "seed": false,
       "locations": [
         {
@@ -71212,7 +71214,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.fpuc.com/",
-          "geo_notes": "Chesapeake Utilities electric/gas utility HQ; SEC historical principal office."
+          "geo_notes": "Chesapeake Utilities electric/gas utility HQ; SEC historical principal office. Subsidiary of Chesapeake Utilities Corporation; retail electric service in northwest Florida (Marianna/Chipley area) and on Amelia Island (Fernandina Beach)."
         },
         {
           "rank": 2,
@@ -71242,7 +71244,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Chesapeake Utilities Corporation"
     },
     {
       "ncr_id": "NCR00026",
@@ -78724,7 +78727,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.ouc.com/about/business-locations/",
-      "notes": "Municipal utility HQ Reliable Plaza downtown Orlando.",
+      "notes": "Municipal utility HQ Reliable Plaza downtown Orlando. Under an interlocal agreement OUC also plans, operates, and maintains the electric system serving the City of St. Cloud (Osceola County), which is why St. Cloud has no separate operating utility on this map.",
       "seed": false,
       "locations": [
         {
@@ -78739,7 +78742,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.ouc.com/about/business-locations/",
-          "geo_notes": "Municipal utility HQ Reliable Plaza downtown Orlando."
+          "geo_notes": "Municipal utility HQ Reliable Plaza downtown Orlando. Under an interlocal agreement OUC also plans, operates, and maintains the electric system serving the City of St. Cloud (Osceola County), which is why St. Cloud has no separate operating utility on this map."
         },
         {
           "rank": 2,
@@ -79583,7 +79586,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.powersouth.com",
-      "notes": "G&T cooperative HQ Andalusia AL.",
+      "notes": "G&T cooperative HQ Andalusia AL. Wholesale generation & transmission provider whose Florida distribution members are Choctawhatchee (CHELCO), Escambia River, Gulf Coast, and West Florida electric cooperatives in the panhandle.",
       "seed": false,
       "locations": [
         {
@@ -79598,7 +79601,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.powersouth.com",
-          "geo_notes": "G&T cooperative HQ Andalusia AL."
+          "geo_notes": "G&T cooperative HQ Andalusia AL. Wholesale generation & transmission provider whose Florida distribution members are Choctawhatchee (CHELCO), Escambia River, Gulf Coast, and West Florida electric cooperatives in the panhandle."
         },
         {
           "rank": 2,
@@ -81101,7 +81104,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.seminole-electric.com",
-      "notes": "Florida G&T cooperative HQ; generation assets in Putnam and Hardee counties.",
+      "notes": "Florida G&T cooperative HQ; generation assets in Putnam and Hardee counties. Wholesale generation & transmission provider for its member distribution co-ops — Central Florida, Clay, Glades, Lee County, Peace River, SECO Energy (Sumter), Suwannee Valley, Talquin, Tri-County, and Withlacoochee River.",
       "seed": false,
       "locations": [
         {
@@ -81116,7 +81119,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.seminole-electric.com",
-          "geo_notes": "Florida G&T cooperative HQ; generation assets in Putnam and Hardee counties."
+          "geo_notes": "Florida G&T cooperative HQ; generation assets in Putnam and Hardee counties. Wholesale generation & transmission provider for its member distribution co-ops — Central Florida, Clay, Glades, Lee County, Peace River, SECO Energy (Sumter), Suwannee Valley, Talquin, Tri-County, and Withlacoochee River."
         },
         {
           "rank": 2,
@@ -84012,7 +84015,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.tampaelectric.com",
-      "notes": "Tampa Electric IOU HQ downtown Tampa.",
+      "notes": "Tampa Electric IOU HQ downtown Tampa. Operating utility of TECO Energy, owned by Emera Inc. (Halifax, Nova Scotia) since 2016.",
       "seed": false,
       "locations": [
         {
@@ -84027,7 +84030,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.tampaelectric.com",
-          "geo_notes": "Tampa Electric IOU HQ downtown Tampa."
+          "geo_notes": "Tampa Electric IOU HQ downtown Tampa. Operating utility of TECO Energy, owned by Emera Inc. (Halifax, Nova Scotia) since 2016."
         },
         {
           "rank": 2,
@@ -84057,7 +84060,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Emera Inc. (TECO Energy)"
     },
     {
       "ncr_id": "NCR03043",

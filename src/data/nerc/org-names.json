@@ -20320,28 +20320,6 @@
       "shortest_source_url": "https://austinenergy.com/"
     },
     {
-      "ncr_id": "SUP-bartow-electric-department",
-      "entity_name": "Bartow Electric Department",
-      "shortest": "Bartow Electric",
-      "short": "Bartow Electric Department",
-      "normal": "Bartow Electric",
-      "tier": "normal",
-      "shortest_type": "meaningful_name",
-      "shortest_source": "user_provided",
-      "shortest_source_url": "https://www.cityofbartow.net/184/Electric"
-    },
-    {
-      "ncr_id": "SUP-beaches-energy-services",
-      "entity_name": "Beaches Energy Services",
-      "shortest": "Beaches Energy",
-      "short": "Beaches Energy Services",
-      "normal": "Beaches Energy Services",
-      "tier": "normal",
-      "shortest_type": "meaningful_name",
-      "shortest_source": "user_provided",
-      "shortest_source_url": "https://www.beachesenergy.com/"
-    },
-    {
       "ncr_id": "SUP-city-of-vinton-electric-utility",
       "entity_name": "City of Vinton Electric Utility",
       "shortest": "Vinton Electric",
@@ -21664,17 +21642,6 @@
       "shortest_type": "meaningful_name",
       "shortest_source": "app_public_power",
       "shortest_source_url": "https://www.publicpower.org/public-power-nebraska"
-    },
-    {
-      "ncr_id": "SUP-reedy-creek-improvement-district",
-      "entity_name": "Reedy Creek Improvement District",
-      "shortest": "ReedyCrk",
-      "short": "Reedy Creek Improvement District",
-      "normal": "Reedy Creek Improvement District",
-      "tier": "normal",
-      "shortest_type": "meaningful_name",
-      "shortest_source": "app_public_power",
-      "shortest_source_url": "https://www.publicpower.org/public-power-florida"
     },
     {
       "ncr_id": "SUP-murray-electric-system",
@@ -23796,6 +23763,292 @@
       "tier": "standard",
       "shortest_type": "common_name",
       "shortest_source": "official_website",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-blountstown",
+      "entity_name": "City of Blountstown",
+      "shortest": "Blountst",
+      "short": "Blountstown Electric",
+      "normal": "City of Blountstown",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-bushnell",
+      "entity_name": "City of Bushnell",
+      "shortest": "Bushnell",
+      "short": "Bushnell Electric",
+      "normal": "City of Bushnell",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-clewiston",
+      "entity_name": "City of Clewiston",
+      "shortest": "Clewistn",
+      "short": "Clewiston Utilities",
+      "normal": "City of Clewiston",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-fort-meade",
+      "entity_name": "City of Fort Meade",
+      "shortest": "Ft Meade",
+      "short": "Fort Meade Electric",
+      "normal": "City of Fort Meade",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-moore-haven",
+      "entity_name": "City of Moore Haven",
+      "shortest": "MooreHvn",
+      "short": "Moore Haven Electric",
+      "normal": "City of Moore Haven",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-mount-dora",
+      "entity_name": "City of Mount Dora",
+      "shortest": "Mt Dora",
+      "short": "Mount Dora Electric",
+      "normal": "City of Mount Dora",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-newberry",
+      "entity_name": "City of Newberry",
+      "shortest": "Newberry",
+      "short": "Newberry Electric",
+      "normal": "City of Newberry",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-quincy",
+      "entity_name": "City of Quincy",
+      "shortest": "Quincy",
+      "short": "Quincy Electric",
+      "normal": "City of Quincy",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-starke",
+      "entity_name": "City of Starke",
+      "shortest": "Starke",
+      "short": "Starke Electric",
+      "normal": "City of Starke",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-wauchula",
+      "entity_name": "City of Wauchula",
+      "shortest": "Wauchula",
+      "short": "Wauchula Electric",
+      "normal": "City of Wauchula",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-havana-electric",
+      "entity_name": "Havana Electric",
+      "shortest": "Havana",
+      "short": "Havana Electric",
+      "normal": "Town of Havana Electric",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-escambia-river-electric-cooperative",
+      "entity_name": "Escambia River Electric Cooperative",
+      "shortest": "EREC",
+      "short": "Escambia River EC",
+      "normal": "Escambia River Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-choctawhatchee-electric-cooperative-chelco",
+      "entity_name": "Choctawhatchee Electric Cooperative (CHELCO)",
+      "shortest": "CHELCO",
+      "short": "Choctawhatchee Electric",
+      "normal": "Choctawhatchee Electric Cooperative (CHELCO)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-west-florida-electric-cooperative",
+      "entity_name": "West Florida Electric Cooperative",
+      "shortest": "WFEC",
+      "short": "West Florida Electric",
+      "normal": "West Florida Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-gulf-coast-electric-cooperative",
+      "entity_name": "Gulf Coast Electric Cooperative",
+      "shortest": "GCEC",
+      "short": "Gulf Coast Electric",
+      "normal": "Gulf Coast Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-talquin-electric-cooperative",
+      "entity_name": "Talquin Electric Cooperative",
+      "shortest": "Talquin",
+      "short": "Talquin Electric",
+      "normal": "Talquin Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-tri-county-electric-cooperative",
+      "entity_name": "Tri-County Electric Cooperative",
+      "shortest": "TCEC",
+      "short": "Tri-County Electric (FL)",
+      "normal": "Tri-County Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-suwannee-valley-electric-cooperative",
+      "entity_name": "Suwannee Valley Electric Cooperative",
+      "shortest": "SVEC",
+      "short": "Suwannee Valley Electric",
+      "normal": "Suwannee Valley Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-okefenoke-rural-electric-membership-corporat",
+      "entity_name": "Okefenoke Rural Electric Membership Corporation",
+      "shortest": "Okefenke",
+      "short": "Okefenoke Electric",
+      "normal": "Okefenoke Rural Electric Membership Corp.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-clay-electric-cooperative",
+      "entity_name": "Clay Electric Cooperative",
+      "shortest": "Clay EC",
+      "short": "Clay Electric",
+      "normal": "Clay Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-central-florida-electric-cooperative",
+      "entity_name": "Central Florida Electric Cooperative",
+      "shortest": "CFEC",
+      "short": "Central Florida EC",
+      "normal": "Central Florida Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-seco-energy",
+      "entity_name": "SECO Energy",
+      "shortest": "SECO",
+      "short": "SECO Energy",
+      "normal": "SECO Energy (Sumter Electric Cooperative)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-withlacoochee-river-electric-cooperative",
+      "entity_name": "Withlacoochee River Electric Cooperative",
+      "shortest": "WREC",
+      "short": "Withlacoochee River EC",
+      "normal": "Withlacoochee River Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-peace-river-electric-cooperative",
+      "entity_name": "Peace River Electric Cooperative",
+      "shortest": "PRECO",
+      "short": "Peace River Electric",
+      "normal": "Peace River Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-glades-electric-cooperative",
+      "entity_name": "Glades Electric Cooperative",
+      "shortest": "Glades",
+      "short": "Glades Electric",
+      "normal": "Glades Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Electric Cooperatives Association",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-williston",
+      "entity_name": "City of Williston",
+      "shortest": "Willistn",
+      "short": "Williston Electric",
+      "normal": "City of Williston (FL)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Florida Municipal Electric Association",
       "shortest_source_url": null
     }
   ]
