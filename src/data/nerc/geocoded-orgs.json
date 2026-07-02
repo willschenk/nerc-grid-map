@@ -15549,8 +15549,7 @@
       "source": "official_website",
       "source_url": "https://www.mdu.com/contact-us",
       "org_type": "IOU",
-      "parent_org": "MDU Resources Group",
-      "notes": "Regulated electric and natural gas utility in Montana, North Dakota, South Dakota, and Wyoming.",
+      "notes": "Regulated electric and natural gas utility in Montana, North Dakota, South Dakota, and Wyoming. Electric operations in eastern/central Montana and the Dakotas sit in the Eastern Interconnection.",
       "seed": false,
       "locations": [
         {
@@ -15565,7 +15564,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.mdu.com/contact-us",
-          "geo_notes": "Regulated electric and natural gas utility in Montana, North Dakota, South Dakota, and Wyoming."
+          "geo_notes": "Regulated electric and natural gas utility in Montana, North Dakota, South Dakota, and Wyoming. Electric operations in eastern/central Montana and the Dakotas sit in the Eastern Interconnection."
         },
         {
           "rank": 2,
@@ -15595,7 +15594,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "MDU Resources Group"
     },
     {
       "ncr_id": "NCR01016",
@@ -21611,7 +21611,7 @@
       "source_url": "https://uppermo.com/contact-us",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "Transmission cooperative serving eastern Montana and western North Dakota member systems.",
+      "notes": "Transmission cooperative serving eastern Montana and western North Dakota member systems. The wholesale/transmission provider (with Basin Electric) for the eastern-Montana Eastern-Interconnection distribution co-ops — Big Flat, Goldenwest, Lower Yellowstone, McCone, Mid-Yellowstone, NorVal, Sheridan, Southeast, and Tongue River.",
       "seed": false,
       "locations": [
         {
@@ -21626,7 +21626,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://uppermo.com/contact-us",
-          "geo_notes": "Transmission cooperative serving eastern Montana and western North Dakota member systems."
+          "geo_notes": "Transmission cooperative serving eastern Montana and western North Dakota member systems. The wholesale/transmission provider (with Basin Electric) for the eastern-Montana Eastern-Interconnection distribution co-ops — Big Flat, Goldenwest, Lower Yellowstone, McCone, Mid-Yellowstone, NorVal, Sheridan, Southeast, and Tongue River."
         },
         {
           "rank": 2,
@@ -120739,7 +120739,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.ifpower.org/",
-      "notes": "Idaho Falls Power municipal utility with local generation.",
+      "notes": "Idaho Falls Power municipal utility with local generation — one of the few municipal electric utilities in Idaho, with city-owned hydro on the Snake River.",
       "seed": false,
       "locations": [
         {
@@ -120754,7 +120754,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.ifpower.org/",
-          "geo_notes": "Idaho Falls Power municipal utility with local generation."
+          "geo_notes": "Idaho Falls Power municipal utility with local generation — one of the few municipal electric utilities in Idaho, with city-owned hydro on the Snake River."
         },
         {
           "rank": 2,
@@ -125239,7 +125239,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.fallriverelectric.com/contact-us",
-      "notes": "Fall River Rural Electric Cooperative headquarters; Ashton ID.",
+      "notes": "Fall River Rural Electric Cooperative headquarters; Ashton ID. Distribution cooperative serving eastern Idaho, western Wyoming, and a small part of Montana; member of PNGC Power.",
       "seed": false,
       "locations": [
         {
@@ -125254,7 +125254,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.fallriverelectric.com/contact-us",
-          "geo_notes": "Fall River Rural Electric Cooperative headquarters; Ashton ID."
+          "geo_notes": "Fall River Rural Electric Cooperative headquarters; Ashton ID. Distribution cooperative serving eastern Idaho, western Wyoming, and a small part of Montana; member of PNGC Power."
         },
         {
           "rank": 2,
@@ -128400,7 +128400,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.idahopower.com",
-      "notes": "NERC/WECC audit identifies Idaho Power Company as IPCO; HQ Boise.",
+      "notes": "NERC/WECC audit identifies Idaho Power Company as IPCO; HQ Boise. Serves southern Idaho and eastern Oregon (~600,000 customers) and owns the Hells Canyon Complex on the Snake River; subsidiary of IDACORP, Inc.",
       "seed": false,
       "locations": [
         {
@@ -128415,7 +128415,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.idahopower.com",
-          "geo_notes": "NERC/WECC audit identifies Idaho Power Company as IPCO; HQ Boise."
+          "geo_notes": "NERC/WECC audit identifies Idaho Power Company as IPCO; HQ Boise. Serves southern Idaho and eastern Oregon (~600,000 customers) and owns the Hells Canyon Complex on the Snake River; subsidiary of IDACORP, Inc."
         },
         {
           "rank": 2,
@@ -128445,7 +128445,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "IDACORP, Inc."
     },
     {
       "ncr_id": "NCR11103",
@@ -135704,7 +135705,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.northwesternenergy.com",
-      "notes": "NorthWestern Energy corporate HQ, Sioux Falls, SD; WECC BA/operations. Combined on map with NorthWestern Energy Public Service (MRO).",
+      "notes": "NorthWestern Energy corporate HQ, Sioux Falls, SD; WECC BA/operations. Combined on map with NorthWestern Energy Public Service (MRO). NorthWestern Energy is Montana's largest electric utility, serving about two-thirds of the state plus parts of South Dakota and Nebraska; its operational headquarters is in Butte, Montana.",
       "seed": false,
       "locations": [
         {
@@ -135719,7 +135720,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.northwesternenergy.com",
-          "geo_notes": "NorthWestern Energy corporate HQ, Sioux Falls, SD; WECC BA/operations. Combined on map with NorthWestern Energy Public Service (MRO)."
+          "geo_notes": "NorthWestern Energy corporate HQ, Sioux Falls, SD; WECC BA/operations. Combined on map with NorthWestern Energy Public Service (MRO). NorthWestern Energy is Montana's largest electric utility, serving about two-thirds of the state plus parts of South Dakota and Nebraska; its operational headquarters is in Butte, Montana."
         },
         {
           "rank": 2,
