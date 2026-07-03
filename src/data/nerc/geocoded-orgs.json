@@ -3424,7 +3424,7 @@
       "source": "official_website",
       "source_url": "https://www.evergy.com/about-us/contact-us",
       "org_type": "IOU",
-      "notes": "WR is the legacy Westar / Evergy Kansas Central OASIS area alias; HQ remains Evergy Kansas Central in Topeka.",
+      "notes": "Evergy's Kansas Central operating company (the former Westar Energy); investor-owned utility serving central and eastern Kansas including Topeka and Wichita; subsidiary of Evergy, Inc.",
       "seed": true,
       "acronym": "WR",
       "acronym_source": "oasis",
@@ -3441,7 +3441,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.evergy.com/about-us/contact-us",
-          "geo_notes": "WR is the legacy Westar / Evergy Kansas Central OASIS area alias; HQ remains Evergy Kansas Central in Topeka."
+          "geo_notes": "Evergy's Kansas Central operating company (the former Westar Energy); investor-owned utility serving central and eastern Kansas including Topeka and Wichita; subsidiary of Evergy, Inc."
         },
         {
           "rank": 2,
@@ -3471,7 +3471,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Evergy, Inc."
     },
     {
       "ncr_id": "NCR-SEED-049",
@@ -12931,7 +12932,7 @@
       "source_url": "https://www.kepco.org/contact-us/",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "Kansas generation and transmission cooperative serving 16 member distribution co-ops.",
+      "notes": "Kansas generation and transmission cooperative serving member distribution co-ops across central and eastern Kansas, including FreeState, Flint Hills, Bluestem, Heartland, Caney Valley, and Sedgwick County.",
       "seed": false,
       "locations": [
         {
@@ -12946,7 +12947,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.kepco.org/contact-us/",
-          "geo_notes": "Kansas generation and transmission cooperative serving 16 member distribution co-ops."
+          "geo_notes": "Kansas generation and transmission cooperative serving member distribution co-ops across central and eastern Kansas, including FreeState, Flint Hills, Bluestem, Heartland, Caney Valley, and Sedgwick County."
         },
         {
           "rank": 2,
@@ -13749,7 +13750,7 @@
       "source_url": "https://www.les.com/company/contact-us",
       "org_type": "municipal",
       "parent_org": null,
-      "notes": "Public power utility for Lincoln, Nebraska; coal, gas, and renewable generation portfolio.",
+      "notes": "Public power utility for Lincoln, Nebraska; coal, gas, and renewable generation portfolio, jointly planned with Nebraska Public Power District.",
       "seed": false,
       "locations": [
         {
@@ -13764,7 +13765,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.les.com/company/contact-us",
-          "geo_notes": "Public power utility for Lincoln, Nebraska; coal, gas, and renewable generation portfolio."
+          "geo_notes": "Public power utility for Lincoln, Nebraska; coal, gas, and renewable generation portfolio, jointly planned with Nebraska Public Power District."
         },
         {
           "rank": 2,
@@ -15753,7 +15754,7 @@
       "source_url": "https://www.nmppenergy.org/mean",
       "org_type": "municipal",
       "parent_org": "NMPP Energy",
-      "notes": "Municipal Energy Agency of Nebraska (MEAN) MRO registration; Lincoln, NE HQ. Combined on map with MEAN WECC registration.",
+      "notes": "Municipal Energy Agency of Nebraska (MEAN) MRO registration; Lincoln, NE HQ. Combined on map with MEAN WECC registration. The wholesale power agency for roughly 70 municipal electric systems across Nebraska and neighboring states.",
       "seed": false,
       "locations": [
         {
@@ -15768,7 +15769,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.nmppenergy.org/mean",
-          "geo_notes": "Municipal Energy Agency of Nebraska (MEAN) MRO registration; Lincoln, NE HQ. Combined on map with MEAN WECC registration."
+          "geo_notes": "Municipal Energy Agency of Nebraska (MEAN) MRO registration; Lincoln, NE HQ. Combined on map with MEAN WECC registration. The wholesale power agency for roughly 70 municipal electric systems across Nebraska and neighboring states."
         },
         {
           "rank": 2,
@@ -44165,7 +44166,7 @@
       "source": "official_website",
       "source_url": "https://www.nppd.com/",
       "org_type": "municipal",
-      "notes": "State public power district HQ in Columbus; contact page lists street and PO Box (PO not used for map pin). Retires NCR-SEED-049.",
+      "notes": "State public power district HQ in Columbus. Nebraska Public Power District is the state's largest electric utility and a wholesale generation & transmission provider supplying most of the rural public power districts and municipal systems that make Nebraska the only 100%-public-power state in the nation.",
       "seed": false,
       "locations": [
         {
@@ -44180,7 +44181,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "official_website",
           "geo_source_url": "https://www.nppd.com/",
-          "geo_notes": "State public power district HQ in Columbus; contact page lists street and PO Box (PO not used for map pin). Retires NCR-SEED-049."
+          "geo_notes": "State public power district HQ in Columbus. Nebraska Public Power District is the state's largest electric utility and a wholesale generation & transmission provider supplying most of the rural public power districts and municipal systems that make Nebraska the only 100%-public-power state in the nation."
         },
         {
           "rank": 2,
@@ -44382,7 +44383,7 @@
       "source": "google_maps",
       "source_url": "https://www.oppd.com/",
       "org_type": "municipal",
-      "notes": "Public power district corporate offices on 16th Street Mall. Retires NCR-SEED-045.",
+      "notes": "Public power district corporate offices on 16th Street Mall, Omaha. Serves the Omaha metro and southeast Nebraska; one of the largest publicly owned electric utilities in the U.S.",
       "seed": false,
       "locations": [
         {
@@ -44397,7 +44398,7 @@
           "geo_confidence": "MEDIUM",
           "geo_source": "google_maps",
           "geo_source_url": "https://www.oppd.com/",
-          "geo_notes": "Public power district corporate offices on 16th Street Mall. Retires NCR-SEED-045."
+          "geo_notes": "Public power district corporate offices on 16th Street Mall, Omaha. Serves the Omaha metro and southeast Nebraska; one of the largest publicly owned electric utilities in the U.S."
         },
         {
           "rank": 2,
@@ -44597,7 +44598,7 @@
       "source": "official_website",
       "source_url": "https://www.sunflower.net/contact-us",
       "org_type": "cooperative",
-      "notes": "NERC audit identifies Sunflower Electric Power Corporation as SECI; G&T cooperative HQ in Hays, Kansas.",
+      "notes": "NERC audit identifies Sunflower Electric Power Corporation as SECI; generation & transmission cooperative HQ in Hays, Kansas. Wholesale supplier to six western-Kansas distribution co-ops (Pioneer, Lane-Scott, Victory, Wheatland, Prairie Land, Western) and the parent of Mid-Kansas Electric.",
       "seed": false,
       "locations": [
         {
@@ -44612,7 +44613,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.sunflower.net/contact-us",
-          "geo_notes": "NERC audit identifies Sunflower Electric Power Corporation as SECI; G&T cooperative HQ in Hays, Kansas."
+          "geo_notes": "NERC audit identifies Sunflower Electric Power Corporation as SECI; generation & transmission cooperative HQ in Hays, Kansas. Wholesale supplier to six western-Kansas distribution co-ops (Pioneer, Lane-Scott, Victory, Wheatland, Prairie Land, Western) and the parent of Mid-Kansas Electric."
         },
         {
           "rank": 2,
