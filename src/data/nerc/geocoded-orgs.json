@@ -131489,7 +131489,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.lvenergy.com/contact-us/",
-      "notes": "Northwest Wyoming electric and gas cooperative HQ.",
+      "notes": "Northwest Wyoming electric and gas cooperative HQ, Afton. Serves the Star Valley, Jackson Hole, and Teton Valley (WY/ID) areas; a Wyoming Rural Electric Association member.",
       "seed": false,
       "locations": [
         {
@@ -131504,7 +131504,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.lvenergy.com/contact-us/",
-          "geo_notes": "Northwest Wyoming electric and gas cooperative HQ."
+          "geo_notes": "Northwest Wyoming electric and gas cooperative HQ, Afton. Serves the Star Valley, Jackson Hole, and Teton Valley (WY/ID) areas; a Wyoming Rural Electric Association member."
         },
         {
           "rank": 2,
@@ -139275,7 +139275,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://precorp.coop/locations",
-      "notes": "PRECorp rural co-op corporate HQ Sundance WY.",
+      "notes": "PRECorp rural cooperative corporate HQ Sundance WY. The largest of Wyoming's electric cooperatives, serving the Powder River Basin coal and ranch country of northeastern Wyoming (Campbell, Crook, Weston, Sheridan, and Johnson counties); a Wyoming Rural Electric Association member.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -139292,7 +139292,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://precorp.coop/locations",
-          "geo_notes": "PRECorp rural co-op corporate HQ Sundance WY."
+          "geo_notes": "PRECorp rural cooperative corporate HQ Sundance WY. The largest of Wyoming's electric cooperatives, serving the Powder River Basin coal and ranch country of northeastern Wyoming (Campbell, Crook, Weston, Sheridan, and Johnson counties); a Wyoming Rural Electric Association member."
         },
         {
           "rank": 2,
@@ -143465,7 +143465,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.rockymountainpower.net",
-      "notes": "PacifiCorp operating company; principal office Salt Lake City UT.",
+      "notes": "PacifiCorp operating company; principal office Salt Lake City UT. Rocky Mountain Power is PacifiCorp's d/b/a in Utah, Wyoming, and Idaho and is Wyoming's largest electric utility; a Berkshire Hathaway Energy company.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -143482,7 +143482,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.rockymountainpower.net",
-          "geo_notes": "PacifiCorp operating company; principal office Salt Lake City UT."
+          "geo_notes": "PacifiCorp operating company; principal office Salt Lake City UT. Rocky Mountain Power is PacifiCorp's d/b/a in Utah, Wyoming, and Idaho and is Wyoming's largest electric utility; a Berkshire Hathaway Energy company."
         },
         {
           "rank": 2,
@@ -143512,7 +143512,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Berkshire Hathaway Energy"
     },
     {
       "ncr_id": "NCR13248",

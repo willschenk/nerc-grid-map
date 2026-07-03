@@ -26338,6 +26338,237 @@
       "shortest_type": "common_name",
       "shortest_source": "Dakotas public power",
       "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-big-horn-rural-electric-company",
+      "entity_name": "Big Horn Rural Electric Company",
+      "shortest": "BHREC",
+      "short": "Big Horn Rural Electric",
+      "normal": "Big Horn Rural Electric Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-bridger-valley-electric-association",
+      "entity_name": "Bridger Valley Electric Association",
+      "shortest": "BVEA",
+      "short": "Bridger Valley Electric",
+      "normal": "Bridger Valley Electric Association",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-carbon-power-light",
+      "entity_name": "Carbon Power & Light",
+      "shortest": "Carbon",
+      "short": "Carbon Power & Light",
+      "normal": "Carbon Power & Light, Inc.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-garland-light-power",
+      "entity_name": "Garland Light & Power",
+      "shortest": "Garland",
+      "short": "Garland Light & Power",
+      "normal": "Garland Light & Power Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-high-plains-power",
+      "entity_name": "High Plains Power",
+      "shortest": "HiPlains",
+      "short": "High Plains Power",
+      "normal": "High Plains Power, Inc.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-high-west-energy",
+      "entity_name": "High West Energy",
+      "shortest": "HighWest",
+      "short": "High West Energy",
+      "normal": "High West Energy, Inc.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-niobrara-electric-association",
+      "entity_name": "Niobrara Electric Association",
+      "shortest": "Niobrara",
+      "short": "Niobrara Electric",
+      "normal": "Niobrara Electric Association, Inc.",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-wheatland-rural-electric-association",
+      "entity_name": "Wheatland Rural Electric Association",
+      "shortest": "WheatREA",
+      "short": "Wheatland REA",
+      "normal": "Wheatland Rural Electric Association",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-wyrulec-company",
+      "entity_name": "Wyrulec Company",
+      "shortest": "Wyrulec",
+      "short": "Wyrulec",
+      "normal": "Wyrulec Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-cody",
+      "entity_name": "City of Cody",
+      "shortest": "Cody",
+      "short": "Cody Electric",
+      "normal": "City of Cody (Electric Division)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-powell",
+      "entity_name": "City of Powell",
+      "shortest": "Powell",
+      "short": "Powell Electric",
+      "normal": "City of Powell",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-basin",
+      "entity_name": "Town of Basin",
+      "shortest": "Basin",
+      "short": "Basin Electric (muni)",
+      "normal": "Town of Basin (WY)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-deaver",
+      "entity_name": "Town of Deaver",
+      "shortest": "Deaver",
+      "short": "Deaver Electric",
+      "normal": "Town of Deaver",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-gillette",
+      "entity_name": "City of Gillette",
+      "shortest": "Gillette",
+      "short": "Gillette Electric",
+      "normal": "City of Gillette",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-fort-laramie",
+      "entity_name": "Town of Fort Laramie",
+      "shortest": "FtLaramy",
+      "short": "Fort Laramie Electric",
+      "normal": "Town of Fort Laramie",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-guernsey",
+      "entity_name": "Town of Guernsey",
+      "shortest": "Guernsey",
+      "short": "Guernsey Electric",
+      "normal": "Town of Guernsey",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-lingle",
+      "entity_name": "Town of Lingle",
+      "shortest": "Lingle",
+      "short": "Lingle Electric",
+      "normal": "Town of Lingle",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-lusk",
+      "entity_name": "Town of Lusk",
+      "shortest": "Lusk",
+      "short": "Lusk Electric",
+      "normal": "Town of Lusk",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-pine-bluffs",
+      "entity_name": "Town of Pine Bluffs",
+      "shortest": "PineBlfs",
+      "short": "Pine Bluffs Electric",
+      "normal": "Town of Pine Bluffs",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-city-of-torrington",
+      "entity_name": "City of Torrington",
+      "shortest": "Torringt",
+      "short": "Torrington Electric",
+      "normal": "City of Torrington",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
+    },
+    {
+      "ncr_id": "SUP-town-of-wheatland",
+      "entity_name": "Town of Wheatland",
+      "shortest": "Wheatlnd",
+      "short": "Wheatland Municipal",
+      "normal": "Town of Wheatland (WY)",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Wyoming public power",
+      "shortest_source_url": null
     }
   ]
 }

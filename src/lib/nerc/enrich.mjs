@@ -310,6 +310,14 @@ const KNOWN_ACRONYMS = new Map([
   ["union county electric", "UnionCty"],
   ["west central electric cooperative", "WCentral"],
   ["whetstone valley electric", "Whetstn"],
+  ["big horn rural electric", "BHREC"],
+  ["carbon power", "Carbon"],
+  ["garland light", "Garland"],
+  ["high plains power", "HiPlains"],
+  ["high west energy", "HighWest"],
+  ["niobrara electric", "Niobrara"],
+  ["wheatland rural electric", "WheatREA"],
+  ["wyrulec", "Wyrulec"],
 ]);
 
 const LEGAL_SUFFIX = /\b(incorporated|inc|llc|l\.l\.c|lp|l\.p|company|co|corporation|corp|services|service|association|assn|limited|ltd)\b/gi;
