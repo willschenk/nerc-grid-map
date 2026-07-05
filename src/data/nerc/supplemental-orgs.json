@@ -8303,7 +8303,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "RF"
   },
   {
     "entity_name": "Benham City Utilities",
@@ -8368,7 +8369,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "RF"
   },
   {
     "entity_name": "Berea Municipal Utilities",
@@ -8433,7 +8435,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Bowling Green Municipal Utilities",
@@ -8498,7 +8501,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "City of Bardstown Electric Utility",
@@ -8563,7 +8567,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "City of Madisonville Electric Department",
@@ -8628,7 +8633,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "City of Nicholasville Electric Department",
@@ -8693,7 +8699,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "City of Olive Hill Utility Department",
@@ -8758,7 +8765,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "RF"
   },
   {
     "entity_name": "City of Paris Electric Utility",
@@ -8823,7 +8831,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "City of Providence Electric Utility",
@@ -8888,7 +8897,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Corbin City Utilities Commission",
@@ -8953,7 +8963,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "RF"
   },
   {
     "entity_name": "Frankfort Plant Board",
@@ -9018,7 +9029,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Franklin Electric Plant Board",
@@ -9083,7 +9095,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Glasgow Electric Plant Board",
@@ -9148,7 +9161,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Hopkinsville Electric System",
@@ -9213,7 +9227,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Kentucky Municipal Energy Agency",
@@ -9279,7 +9294,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Kentucky Municipal Power Agency",
@@ -9345,7 +9361,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Mayfield Electric & Water System",
@@ -9410,7 +9427,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Murray Electric System",
@@ -9475,7 +9493,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Williamstown Utility Commission",
@@ -9540,7 +9559,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "RF"
   },
   {
     "entity_name": "City of Kaplan Electric Utility",
@@ -12972,7 +12992,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Benton County Electric System",
@@ -13037,7 +13058,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Bolivar Energy Authority",
@@ -13102,7 +13124,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "BrightRidge",
@@ -13167,7 +13190,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Bristol Tennessee Essential Services",
@@ -13232,7 +13256,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Brownsville Utility Department",
@@ -13297,7 +13322,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "CDE Lightband",
@@ -13362,7 +13388,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Chattanooga Electric Power Board",
@@ -13427,7 +13454,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "City of Alcoa Electric Department",
@@ -13492,7 +13520,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "City of Cookeville Electric Department",
@@ -13557,7 +13586,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Cleveland Utilities",
@@ -13622,7 +13652,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Clinton Utilities Board",
@@ -13687,7 +13718,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Columbia Power & Water Systems",
@@ -13752,7 +13784,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Dickson Electric System",
@@ -13817,7 +13850,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Dyersburg Electric System",
@@ -13882,7 +13916,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Elizabethton Electric System",
@@ -13947,7 +13982,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Fayetteville Public Utilities",
@@ -14012,7 +14048,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Gallatin Department of Electricity",
@@ -14077,7 +14114,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Greeneville Light & Power System",
@@ -14142,7 +14180,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Jackson Energy Authority",
@@ -14207,7 +14246,8 @@
         "geo_source_url": null,
         "geo_notes": null
       }
-    ]
+    ],
+    "region": "SERC"
   },
   {
     "entity_name": "Brownfield Municipal Light & Power",
@@ -80925,6 +80965,4353 @@
         "geo_source": "EIA-861 / state municipal utilities association",
         "geo_source_url": null,
         "geo_notes": "City-level placement at the City of Jackson Ohio Electric service headquarters in Jackson, OH (Eastern Interconnection); supplemental context (the American Municipal Power (Ohio) member systems), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-big-sandy-rural-electric-cooperative",
+    "entity_name": "Big Sandy Rural Electric Cooperative",
+    "acronym": "BigSandy",
+    "name_shortest": "BigSandy",
+    "name_short": "Big Sandy RECC",
+    "name_normal": "Big Sandy Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Paintsville",
+    "lat": 37.8145,
+    "lng": -82.8072,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Big Sandy Rural Electric Cooperative service headquarters in Paintsville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.8145,
+        "lng": -82.8072,
+        "headquarters_address": null,
+        "city": "Paintsville",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Big Sandy Rural Electric Cooperative service headquarters in Paintsville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-blue-grass-energy-cooperative",
+    "entity_name": "Blue Grass Energy Cooperative",
+    "acronym": "BlueGras",
+    "name_shortest": "BlueGras",
+    "name_short": "Blue Grass Energy",
+    "name_normal": "Blue Grass Energy Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Nicholasville",
+    "lat": 37.8814,
+    "lng": -84.573,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Blue Grass Energy Cooperative service headquarters in Nicholasville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.8814,
+        "lng": -84.573,
+        "headquarters_address": null,
+        "city": "Nicholasville",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Blue Grass Energy Cooperative service headquarters in Nicholasville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-clark-energy-cooperative",
+    "entity_name": "Clark Energy Cooperative",
+    "acronym": "ClarkEng",
+    "name_shortest": "ClarkEng",
+    "name_short": "Clark Energy",
+    "name_normal": "Clark Energy Cooperative",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Winchester",
+    "lat": 37.9903,
+    "lng": -84.1794,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Clark Energy Cooperative service headquarters in Winchester, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.9903,
+        "lng": -84.1794,
+        "headquarters_address": null,
+        "city": "Winchester",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Clark Energy Cooperative service headquarters in Winchester, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-cumberland-valley-electric",
+    "entity_name": "Cumberland Valley Electric",
+    "acronym": "CumbVall",
+    "name_shortest": "CumbVall",
+    "name_short": "Cumberland Valley",
+    "name_normal": "Cumberland Valley Electric",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Gray",
+    "lat": 36.9445,
+    "lng": -83.9502,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Cumberland Valley Electric service headquarters in Gray, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.9445,
+        "lng": -83.9502,
+        "headquarters_address": null,
+        "city": "Gray",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Cumberland Valley Electric service headquarters in Gray, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-farmers-rural-electric-cooperative",
+    "entity_name": "Farmers Rural Electric Cooperative",
+    "acronym": "FarmrsKY",
+    "name_shortest": "FarmrsKY",
+    "name_short": "Farmers RECC",
+    "name_normal": "Farmers Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Glasgow",
+    "lat": 37.0059,
+    "lng": -85.9219,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Farmers Rural Electric Cooperative service headquarters in Glasgow, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.0059,
+        "lng": -85.9219,
+        "headquarters_address": null,
+        "city": "Glasgow",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Farmers Rural Electric Cooperative service headquarters in Glasgow, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-fleming-mason-energy-cooperative",
+    "entity_name": "Fleming-Mason Energy Cooperative",
+    "acronym": "FlemMasn",
+    "name_shortest": "FlemMasn",
+    "name_short": "Fleming-Mason Energy",
+    "name_normal": "Fleming-Mason Energy Cooperative",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Flemingsburg",
+    "lat": 38.4212,
+    "lng": -83.7343,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Fleming-Mason Energy Cooperative service headquarters in Flemingsburg, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 38.4212,
+        "lng": -83.7343,
+        "headquarters_address": null,
+        "city": "Flemingsburg",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Fleming-Mason Energy Cooperative service headquarters in Flemingsburg, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-grayson-rural-electric-cooperative",
+    "entity_name": "Grayson Rural Electric Cooperative",
+    "acronym": "Grayson",
+    "name_shortest": "Grayson",
+    "name_short": "Grayson RECC",
+    "name_normal": "Grayson Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Grayson",
+    "lat": 38.332,
+    "lng": -82.9385,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Grayson Rural Electric Cooperative service headquarters in Grayson, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 38.332,
+        "lng": -82.9385,
+        "headquarters_address": null,
+        "city": "Grayson",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Grayson Rural Electric Cooperative service headquarters in Grayson, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-inter-county-energy-cooperative",
+    "entity_name": "Inter-County Energy Cooperative",
+    "acronym": "InterCty",
+    "name_shortest": "InterCty",
+    "name_short": "Inter-County Energy",
+    "name_normal": "Inter-County Energy Cooperative",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Danville",
+    "lat": 37.6456,
+    "lng": -84.7722,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Inter-County Energy Cooperative service headquarters in Danville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.6456,
+        "lng": -84.7722,
+        "headquarters_address": null,
+        "city": "Danville",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Inter-County Energy Cooperative service headquarters in Danville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-jackson-energy-cooperative",
+    "entity_name": "Jackson Energy Cooperative",
+    "acronym": "JacksnKY",
+    "name_shortest": "JacksnKY",
+    "name_short": "Jackson Energy (KY)",
+    "name_normal": "Jackson Energy Cooperative",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "McKee",
+    "lat": 37.4306,
+    "lng": -83.9997,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Jackson Energy Cooperative service headquarters in McKee, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.4306,
+        "lng": -83.9997,
+        "headquarters_address": null,
+        "city": "McKee",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Jackson Energy Cooperative service headquarters in McKee, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-licking-valley-rural-electric-cooperative",
+    "entity_name": "Licking Valley Rural Electric Cooperative",
+    "acronym": "LickVall",
+    "name_shortest": "LickVall",
+    "name_short": "Licking Valley RECC",
+    "name_normal": "Licking Valley Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "West Liberty",
+    "lat": 37.9214,
+    "lng": -83.2585,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Licking Valley Rural Electric Cooperative service headquarters in West Liberty, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.9214,
+        "lng": -83.2585,
+        "headquarters_address": null,
+        "city": "West Liberty",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Licking Valley Rural Electric Cooperative service headquarters in West Liberty, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-nolin-rural-electric-cooperative",
+    "entity_name": "Nolin Rural Electric Cooperative",
+    "acronym": "Nolin",
+    "name_shortest": "Nolin",
+    "name_short": "Nolin RECC",
+    "name_normal": "Nolin Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Elizabethtown",
+    "lat": 37.6939,
+    "lng": -85.8591,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Nolin Rural Electric Cooperative service headquarters in Elizabethtown, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.6939,
+        "lng": -85.8591,
+        "headquarters_address": null,
+        "city": "Elizabethtown",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Nolin Rural Electric Cooperative service headquarters in Elizabethtown, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-owen-electric-cooperative",
+    "entity_name": "Owen Electric Cooperative",
+    "acronym": "OwenElec",
+    "name_shortest": "OwenElec",
+    "name_short": "Owen Electric",
+    "name_normal": "Owen Electric Cooperative",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Owenton",
+    "lat": 38.539,
+    "lng": -84.8438,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Owen Electric Cooperative service headquarters in Owenton, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 38.539,
+        "lng": -84.8438,
+        "headquarters_address": null,
+        "city": "Owenton",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Owen Electric Cooperative service headquarters in Owenton, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-salt-river-electric-cooperative",
+    "entity_name": "Salt River Electric Cooperative",
+    "acronym": "SaltRivr",
+    "name_shortest": "SaltRivr",
+    "name_short": "Salt River Electric",
+    "name_normal": "Salt River Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Bardstown",
+    "lat": 37.8093,
+    "lng": -85.4669,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Salt River Electric Cooperative service headquarters in Bardstown, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.8093,
+        "lng": -85.4669,
+        "headquarters_address": null,
+        "city": "Bardstown",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Salt River Electric Cooperative service headquarters in Bardstown, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-shelby-energy-cooperative",
+    "entity_name": "Shelby Energy Cooperative",
+    "acronym": "ShelbyEn",
+    "name_shortest": "ShelbyEn",
+    "name_short": "Shelby Energy",
+    "name_normal": "Shelby Energy Cooperative",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Shelbyville",
+    "lat": 38.2117,
+    "lng": -85.2233,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Shelby Energy Cooperative service headquarters in Shelbyville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 38.2117,
+        "lng": -85.2233,
+        "headquarters_address": null,
+        "city": "Shelbyville",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Shelby Energy Cooperative service headquarters in Shelbyville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-south-kentucky-rural-electric-cooperative",
+    "entity_name": "South Kentucky Rural Electric Cooperative",
+    "acronym": "SoKentky",
+    "name_shortest": "SoKentky",
+    "name_short": "South Kentucky RECC",
+    "name_normal": "South Kentucky Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Somerset",
+    "lat": 37.092,
+    "lng": -84.6041,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the South Kentucky Rural Electric Cooperative service headquarters in Somerset, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.092,
+        "lng": -84.6041,
+        "headquarters_address": null,
+        "city": "Somerset",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the South Kentucky Rural Electric Cooperative service headquarters in Somerset, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-taylor-county-rural-electric-cooperative",
+    "entity_name": "Taylor County Rural Electric Cooperative",
+    "acronym": "TaylorKY",
+    "name_shortest": "TaylorKY",
+    "name_short": "Taylor County RECC",
+    "name_normal": "Taylor County Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Campbellsville",
+    "lat": 37.3434,
+    "lng": -85.3419,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Taylor County Rural Electric Cooperative service headquarters in Campbellsville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.3434,
+        "lng": -85.3419,
+        "headquarters_address": null,
+        "city": "Campbellsville",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Taylor County Rural Electric Cooperative service headquarters in Campbellsville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-kenergy-corp",
+    "entity_name": "Kenergy Corp",
+    "acronym": "Kenergy",
+    "name_shortest": "Kenergy",
+    "name_short": "Kenergy",
+    "name_normal": "Kenergy Corp",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Henderson",
+    "lat": 37.8361,
+    "lng": -87.59,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Kenergy Corp service headquarters in Henderson, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.8361,
+        "lng": -87.59,
+        "headquarters_address": null,
+        "city": "Henderson",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Kenergy Corp service headquarters in Henderson, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-jackson-purchase-energy-corporation",
+    "entity_name": "Jackson Purchase Energy Corporation",
+    "acronym": "JackPurc",
+    "name_shortest": "JackPurc",
+    "name_short": "Jackson Purchase",
+    "name_normal": "Jackson Purchase Energy Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Paducah",
+    "lat": 37.0834,
+    "lng": -88.6,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Jackson Purchase Energy Corporation service headquarters in Paducah, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.0834,
+        "lng": -88.6,
+        "headquarters_address": null,
+        "city": "Paducah",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Jackson Purchase Energy Corporation service headquarters in Paducah, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-meade-county-rural-electric-cooperative",
+    "entity_name": "Meade County Rural Electric Cooperative",
+    "acronym": "MeadeCo",
+    "name_shortest": "MeadeCo",
+    "name_short": "Meade County RECC",
+    "name_normal": "Meade County Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Brandenburg",
+    "lat": 37.999,
+    "lng": -86.1697,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Meade County Rural Electric Cooperative service headquarters in Brandenburg, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 37.999,
+        "lng": -86.1697,
+        "headquarters_address": null,
+        "city": "Brandenburg",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Meade County Rural Electric Cooperative service headquarters in Brandenburg, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-warren-rural-electric-cooperative",
+    "entity_name": "Warren Rural Electric Cooperative",
+    "acronym": "WarrenKY",
+    "name_shortest": "WarrenKY",
+    "name_short": "Warren RECC",
+    "name_normal": "Warren Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Bowling Green",
+    "lat": 36.9685,
+    "lng": -86.4808,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Warren Rural Electric Cooperative service headquarters in Bowling Green, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.9685,
+        "lng": -86.4808,
+        "headquarters_address": null,
+        "city": "Bowling Green",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Warren Rural Electric Cooperative service headquarters in Bowling Green, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-pennyrile-rural-electric-cooperative",
+    "entity_name": "Pennyrile Rural Electric Cooperative",
+    "acronym": "Pennyrle",
+    "name_shortest": "Pennyrle",
+    "name_short": "Pennyrile RECC",
+    "name_normal": "Pennyrile Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Hopkinsville",
+    "lat": 36.8656,
+    "lng": -87.4886,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Pennyrile Rural Electric Cooperative service headquarters in Hopkinsville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.8656,
+        "lng": -87.4886,
+        "headquarters_address": null,
+        "city": "Hopkinsville",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Pennyrile Rural Electric Cooperative service headquarters in Hopkinsville, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-west-kentucky-rural-electric-cooperative",
+    "entity_name": "West Kentucky Rural Electric Cooperative",
+    "acronym": "WestKY",
+    "name_shortest": "WestKY",
+    "name_short": "West Kentucky RECC",
+    "name_normal": "West Kentucky Rural Electric Cooperative Corporation",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Mayfield",
+    "lat": 36.7417,
+    "lng": -88.6367,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the West Kentucky Rural Electric Cooperative service headquarters in Mayfield, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.7417,
+        "lng": -88.6367,
+        "headquarters_address": null,
+        "city": "Mayfield",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the West Kentucky Rural Electric Cooperative service headquarters in Mayfield, KY (Eastern Interconnection); supplemental context (the East Kentucky Power Cooperative / Big Rivers distribution members), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-fulton-electric-system",
+    "entity_name": "Fulton Electric System",
+    "acronym": "Fulton",
+    "name_shortest": "Fulton",
+    "name_short": "Fulton Electric",
+    "name_normal": "Fulton Electric System",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Fulton",
+    "lat": 36.5045,
+    "lng": -88.8734,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Fulton Electric System service headquarters in Fulton, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.5045,
+        "lng": -88.8734,
+        "headquarters_address": null,
+        "city": "Fulton",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Fulton Electric System service headquarters in Fulton, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-russellville-electric-plant-board",
+    "entity_name": "Russellville Electric Plant Board",
+    "acronym": "Russellv",
+    "name_shortest": "Russellv",
+    "name_short": "Russellville EPB",
+    "name_normal": "Russellville Electric Plant Board",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Russellville",
+    "lat": 36.8453,
+    "lng": -86.8875,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Russellville Electric Plant Board service headquarters in Russellville, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.8453,
+        "lng": -86.8875,
+        "headquarters_address": null,
+        "city": "Russellville",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Russellville Electric Plant Board service headquarters in Russellville, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-city-of-vanceburg-electric",
+    "entity_name": "City of Vanceburg Electric",
+    "acronym": "Vancebrg",
+    "name_shortest": "Vancebrg",
+    "name_short": "Vanceburg Electric",
+    "name_normal": "City of Vanceburg Electric Plant Board",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Vanceburg",
+    "lat": 38.5983,
+    "lng": -83.3183,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the City of Vanceburg Electric service headquarters in Vanceburg, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 38.5983,
+        "lng": -83.3183,
+        "headquarters_address": null,
+        "city": "Vanceburg",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the City of Vanceburg Electric service headquarters in Vanceburg, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-falmouth-municipal-electric",
+    "entity_name": "Falmouth Municipal Electric",
+    "acronym": "Falmouth",
+    "name_shortest": "Falmouth",
+    "name_short": "Falmouth Electric",
+    "name_normal": "Falmouth Municipal Electric",
+    "region": "SERC",
+    "state": "KY",
+    "country": "US",
+    "city": "Falmouth",
+    "lat": 38.6759,
+    "lng": -84.3327,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Falmouth Municipal Electric service headquarters in Falmouth, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 38.6759,
+        "lng": -84.3327,
+        "headquarters_address": null,
+        "city": "Falmouth",
+        "state": "KY",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Falmouth Municipal Electric service headquarters in Falmouth, KY (Eastern Interconnection); supplemental context (Kentucky municipal electric utilities), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-appalachian-electric-cooperative",
+    "entity_name": "Appalachian Electric Cooperative",
+    "acronym": "Appalach",
+    "name_shortest": "Appalach",
+    "name_short": "Appalachian EC",
+    "name_normal": "Appalachian Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "New Market",
+    "lat": 36.0995,
+    "lng": -83.5541,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Appalachian Electric Cooperative service headquarters in New Market, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.0995,
+        "lng": -83.5541,
+        "headquarters_address": null,
+        "city": "New Market",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Appalachian Electric Cooperative service headquarters in New Market, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-caney-fork-electric-cooperative",
+    "entity_name": "Caney Fork Electric Cooperative",
+    "acronym": "CaneyFrk",
+    "name_shortest": "CaneyFrk",
+    "name_short": "Caney Fork EC",
+    "name_normal": "Caney Fork Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "McMinnville",
+    "lat": 35.6834,
+    "lng": -85.77,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Caney Fork Electric Cooperative service headquarters in McMinnville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.6834,
+        "lng": -85.77,
+        "headquarters_address": null,
+        "city": "McMinnville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Caney Fork Electric Cooperative service headquarters in McMinnville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-chickasaw-electric-cooperative",
+    "entity_name": "Chickasaw Electric Cooperative",
+    "acronym": "Chickasw",
+    "name_shortest": "Chickasw",
+    "name_short": "Chickasaw EC",
+    "name_normal": "Chickasaw Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Somerville",
+    "lat": 35.2331,
+    "lng": -89.3535,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Chickasaw Electric Cooperative service headquarters in Somerville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.2331,
+        "lng": -89.3535,
+        "headquarters_address": null,
+        "city": "Somerville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Chickasaw Electric Cooperative service headquarters in Somerville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-cumberland-electric-membership-corporation",
+    "entity_name": "Cumberland Electric Membership Corporation",
+    "acronym": "CumbEMC",
+    "name_shortest": "CumbEMC",
+    "name_short": "Cumberland EMC",
+    "name_normal": "Cumberland Electric Membership Corporation",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Clarksville",
+    "lat": 36.5298,
+    "lng": -87.3595,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Cumberland Electric Membership Corporation service headquarters in Clarksville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.5298,
+        "lng": -87.3595,
+        "headquarters_address": null,
+        "city": "Clarksville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Cumberland Electric Membership Corporation service headquarters in Clarksville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-duck-river-electric-membership-corporation",
+    "entity_name": "Duck River Electric Membership Corporation",
+    "acronym": "DuckRivr",
+    "name_shortest": "DuckRivr",
+    "name_short": "Duck River EMC",
+    "name_normal": "Duck River Electric Membership Corporation",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Shelbyville",
+    "lat": 35.4834,
+    "lng": -86.4603,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Duck River Electric Membership Corporation service headquarters in Shelbyville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.4834,
+        "lng": -86.4603,
+        "headquarters_address": null,
+        "city": "Shelbyville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Duck River Electric Membership Corporation service headquarters in Shelbyville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-forked-deer-electric-cooperative",
+    "entity_name": "Forked Deer Electric Cooperative",
+    "acronym": "FrkdDeer",
+    "name_shortest": "FrkdDeer",
+    "name_short": "Forked Deer EC",
+    "name_normal": "Forked Deer Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Halls",
+    "lat": 35.876,
+    "lng": -89.4084,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Forked Deer Electric Cooperative service headquarters in Halls, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.876,
+        "lng": -89.4084,
+        "headquarters_address": null,
+        "city": "Halls",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Forked Deer Electric Cooperative service headquarters in Halls, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-fort-loudoun-electric-cooperative",
+    "entity_name": "Fort Loudoun Electric Cooperative",
+    "acronym": "FtLoudon",
+    "name_shortest": "FtLoudon",
+    "name_short": "Fort Loudoun EC",
+    "name_normal": "Fort Loudoun Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Vonore",
+    "lat": 35.5964,
+    "lng": -84.2405,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Fort Loudoun Electric Cooperative service headquarters in Vonore, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.5964,
+        "lng": -84.2405,
+        "headquarters_address": null,
+        "city": "Vonore",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Fort Loudoun Electric Cooperative service headquarters in Vonore, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-gibson-electric-membership-corporation",
+    "entity_name": "Gibson Electric Membership Corporation",
+    "acronym": "GibsonEM",
+    "name_shortest": "GibsonEM",
+    "name_short": "Gibson EMC",
+    "name_normal": "Gibson Electric Membership Corporation",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Trenton",
+    "lat": 35.9628,
+    "lng": -88.9414,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Gibson Electric Membership Corporation service headquarters in Trenton, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.9628,
+        "lng": -88.9414,
+        "headquarters_address": null,
+        "city": "Trenton",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Gibson Electric Membership Corporation service headquarters in Trenton, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-holston-electric-cooperative",
+    "entity_name": "Holston Electric Cooperative",
+    "acronym": "Holston",
+    "name_shortest": "Holston",
+    "name_short": "Holston EC",
+    "name_normal": "Holston Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Rogersville",
+    "lat": 36.4076,
+    "lng": -83.0088,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Holston Electric Cooperative service headquarters in Rogersville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.4076,
+        "lng": -83.0088,
+        "headquarters_address": null,
+        "city": "Rogersville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Holston Electric Cooperative service headquarters in Rogersville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-meriwether-lewis-electric-cooperative",
+    "entity_name": "Meriwether Lewis Electric Cooperative",
+    "acronym": "MeriwLew",
+    "name_shortest": "MeriwLew",
+    "name_short": "Meriwether Lewis EC",
+    "name_normal": "Meriwether Lewis Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Centerville",
+    "lat": 35.7784,
+    "lng": -87.4695,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Meriwether Lewis Electric Cooperative service headquarters in Centerville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.7784,
+        "lng": -87.4695,
+        "headquarters_address": null,
+        "city": "Centerville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Meriwether Lewis Electric Cooperative service headquarters in Centerville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-middle-tennessee-electric",
+    "entity_name": "Middle Tennessee Electric",
+    "acronym": "MidTenn",
+    "name_shortest": "MidTenn",
+    "name_short": "Middle Tennessee Elec",
+    "name_normal": "Middle Tennessee Electric Membership Corporation",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Murfreesboro",
+    "lat": 35.8456,
+    "lng": -86.3903,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Middle Tennessee Electric service headquarters in Murfreesboro, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.8456,
+        "lng": -86.3903,
+        "headquarters_address": null,
+        "city": "Murfreesboro",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Middle Tennessee Electric service headquarters in Murfreesboro, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-mountain-electric-cooperative",
+    "entity_name": "Mountain Electric Cooperative",
+    "acronym": "MountnEC",
+    "name_shortest": "MountnEC",
+    "name_short": "Mountain Electric",
+    "name_normal": "Mountain Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Mountain City",
+    "lat": 36.4787,
+    "lng": -81.801,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Mountain Electric Cooperative service headquarters in Mountain City, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.4787,
+        "lng": -81.801,
+        "headquarters_address": null,
+        "city": "Mountain City",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Mountain Electric Cooperative service headquarters in Mountain City, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-pickwick-electric-cooperative",
+    "entity_name": "Pickwick Electric Cooperative",
+    "acronym": "Pickwick",
+    "name_shortest": "Pickwick",
+    "name_short": "Pickwick EC",
+    "name_normal": "Pickwick Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Selmer",
+    "lat": 35.1712,
+    "lng": -88.592,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Pickwick Electric Cooperative service headquarters in Selmer, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.1712,
+        "lng": -88.592,
+        "headquarters_address": null,
+        "city": "Selmer",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Pickwick Electric Cooperative service headquarters in Selmer, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-plateau-electric-cooperative",
+    "entity_name": "Plateau Electric Cooperative",
+    "acronym": "Plateau",
+    "name_shortest": "Plateau",
+    "name_short": "Plateau EC",
+    "name_normal": "Plateau Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Oneida",
+    "lat": 36.503,
+    "lng": -84.5155,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Plateau Electric Cooperative service headquarters in Oneida, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.503,
+        "lng": -84.5155,
+        "headquarters_address": null,
+        "city": "Oneida",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Plateau Electric Cooperative service headquarters in Oneida, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-powell-valley-electric-cooperative",
+    "entity_name": "Powell Valley Electric Cooperative",
+    "acronym": "PowellVl",
+    "name_shortest": "PowellVl",
+    "name_short": "Powell Valley EC",
+    "name_normal": "Powell Valley Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "New Tazewell",
+    "lat": 36.4428,
+    "lng": -83.6002,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Powell Valley Electric Cooperative service headquarters in New Tazewell, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.4428,
+        "lng": -83.6002,
+        "headquarters_address": null,
+        "city": "New Tazewell",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Powell Valley Electric Cooperative service headquarters in New Tazewell, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-sequachee-valley-electric-cooperative",
+    "entity_name": "Sequachee Valley Electric Cooperative",
+    "acronym": "SequaVal",
+    "name_shortest": "SequaVal",
+    "name_short": "Sequachee Valley EC",
+    "name_normal": "Sequachee Valley Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "South Pittsburg",
+    "lat": 35.0117,
+    "lng": -85.7016,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Sequachee Valley Electric Cooperative service headquarters in South Pittsburg, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.0117,
+        "lng": -85.7016,
+        "headquarters_address": null,
+        "city": "South Pittsburg",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Sequachee Valley Electric Cooperative service headquarters in South Pittsburg, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-southwest-tennessee-electric-membership-corporation",
+    "entity_name": "Southwest Tennessee Electric Membership Corporation",
+    "acronym": "SWTennEM",
+    "name_shortest": "SWTennEM",
+    "name_short": "Southwest Tenn EMC",
+    "name_normal": "Southwest Tennessee Electric Membership Corporation",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Brownsville",
+    "lat": 35.5934,
+    "lng": -89.2626,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Southwest Tennessee Electric Membership Corporation service headquarters in Brownsville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.5934,
+        "lng": -89.2626,
+        "headquarters_address": null,
+        "city": "Brownsville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Southwest Tennessee Electric Membership Corporation service headquarters in Brownsville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-tennessee-valley-electric-cooperative",
+    "entity_name": "Tennessee Valley Electric Cooperative",
+    "acronym": "TennVall",
+    "name_shortest": "TennVall",
+    "name_short": "Tennessee Valley EC",
+    "name_normal": "Tennessee Valley Electric Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Savannah",
+    "lat": 35.2245,
+    "lng": -88.2489,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Tennessee Valley Electric Cooperative service headquarters in Savannah, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.2245,
+        "lng": -88.2489,
+        "headquarters_address": null,
+        "city": "Savannah",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Tennessee Valley Electric Cooperative service headquarters in Savannah, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-tri-county-electric-membership-corporation-tennessee",
+    "entity_name": "Tri-County Electric Membership Corporation (Tennessee)",
+    "acronym": "TriCntTN",
+    "name_shortest": "TriCntTN",
+    "name_short": "Tri-County EMC (TN)",
+    "name_normal": "Tri-County Electric Membership Corporation (Tennessee)",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Lafayette",
+    "lat": 36.5209,
+    "lng": -86.0275,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Tri-County Electric Membership Corporation (Tennessee) service headquarters in Lafayette, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.5209,
+        "lng": -86.0275,
+        "headquarters_address": null,
+        "city": "Lafayette",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Tri-County Electric Membership Corporation (Tennessee) service headquarters in Lafayette, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-upper-cumberland-electric-membership-corporation",
+    "entity_name": "Upper Cumberland Electric Membership Corporation",
+    "acronym": "UppCumb",
+    "name_shortest": "UppCumb",
+    "name_short": "Upper Cumberland EMC",
+    "name_normal": "Upper Cumberland Electric Membership Corporation",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Carthage",
+    "lat": 36.2528,
+    "lng": -85.9502,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Upper Cumberland Electric Membership Corporation service headquarters in Carthage, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.2528,
+        "lng": -85.9502,
+        "headquarters_address": null,
+        "city": "Carthage",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Upper Cumberland Electric Membership Corporation service headquarters in Carthage, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-volunteer-energy-cooperative",
+    "entity_name": "Volunteer Energy Cooperative",
+    "acronym": "VolntrEn",
+    "name_shortest": "VolntrEn",
+    "name_short": "Volunteer Energy",
+    "name_normal": "Volunteer Energy Cooperative",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Decatur",
+    "lat": 35.5209,
+    "lng": -84.791,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "cooperative",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state electric cooperative association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Volunteer Energy Cooperative service headquarters in Decatur, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.5209,
+        "lng": -84.791,
+        "headquarters_address": null,
+        "city": "Decatur",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state electric cooperative association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Volunteer Energy Cooperative service headquarters in Decatur, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-knoxville-utilities-board",
+    "entity_name": "Knoxville Utilities Board",
+    "acronym": "KUB",
+    "name_shortest": "KUB",
+    "name_short": "Knoxville Util Board",
+    "name_normal": "Knoxville Utilities Board",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Knoxville",
+    "lat": 35.9606,
+    "lng": -83.9207,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Knoxville Utilities Board service headquarters in Knoxville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.9606,
+        "lng": -83.9207,
+        "headquarters_address": null,
+        "city": "Knoxville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Knoxville Utilities Board service headquarters in Knoxville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-morristown-utility-systems",
+    "entity_name": "Morristown Utility Systems",
+    "acronym": "Morrstwn",
+    "name_shortest": "Morrstwn",
+    "name_short": "Morristown Utility",
+    "name_normal": "Morristown Utility Systems",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Morristown",
+    "lat": 36.214,
+    "lng": -83.2951,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Morristown Utility Systems service headquarters in Morristown, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.214,
+        "lng": -83.2951,
+        "headquarters_address": null,
+        "city": "Morristown",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Morristown Utility Systems service headquarters in Morristown, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-sevier-county-electric-system",
+    "entity_name": "Sevier County Electric System",
+    "acronym": "SevierCo",
+    "name_shortest": "SevierCo",
+    "name_short": "Sevier County Elec",
+    "name_normal": "Sevier County Electric System",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Sevierville",
+    "lat": 35.8681,
+    "lng": -83.5619,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Sevier County Electric System service headquarters in Sevierville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.8681,
+        "lng": -83.5619,
+        "headquarters_address": null,
+        "city": "Sevierville",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Sevier County Electric System service headquarters in Sevierville, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-tullahoma-utilities-authority",
+    "entity_name": "Tullahoma Utilities Authority",
+    "acronym": "Tullahom",
+    "name_shortest": "Tullahom",
+    "name_short": "Tullahoma Utilities",
+    "name_normal": "Tullahoma Utilities Authority",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Tullahoma",
+    "lat": 35.362,
+    "lng": -86.2094,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Tullahoma Utilities Authority service headquarters in Tullahoma, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.362,
+        "lng": -86.2094,
+        "headquarters_address": null,
+        "city": "Tullahoma",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Tullahoma Utilities Authority service headquarters in Tullahoma, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-lenoir-city-utilities-board",
+    "entity_name": "Lenoir City Utilities Board",
+    "acronym": "LenoirCy",
+    "name_shortest": "LenoirCy",
+    "name_short": "Lenoir City Util",
+    "name_normal": "Lenoir City Utilities Board",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Lenoir City",
+    "lat": 35.797,
+    "lng": -84.2611,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Lenoir City Utilities Board service headquarters in Lenoir City, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.797,
+        "lng": -84.2611,
+        "headquarters_address": null,
+        "city": "Lenoir City",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Lenoir City Utilities Board service headquarters in Lenoir City, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-lawrenceburg-utility-systems",
+    "entity_name": "Lawrenceburg Utility Systems",
+    "acronym": "Lawrncbg",
+    "name_shortest": "Lawrncbg",
+    "name_short": "Lawrenceburg Util",
+    "name_normal": "Lawrenceburg Utility Systems",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Lawrenceburg",
+    "lat": 35.2423,
+    "lng": -87.3348,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Lawrenceburg Utility Systems service headquarters in Lawrenceburg, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.2423,
+        "lng": -87.3348,
+        "headquarters_address": null,
+        "city": "Lawrenceburg",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Lawrenceburg Utility Systems service headquarters in Lawrenceburg, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-pulaski-electric-system",
+    "entity_name": "Pulaski Electric System",
+    "acronym": "Pulaski",
+    "name_shortest": "Pulaski",
+    "name_short": "Pulaski Electric",
+    "name_normal": "Pulaski Electric System",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Pulaski",
+    "lat": 35.1998,
+    "lng": -87.03,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Pulaski Electric System service headquarters in Pulaski, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.1998,
+        "lng": -87.03,
+        "headquarters_address": null,
+        "city": "Pulaski",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Pulaski Electric System service headquarters in Pulaski, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-lewisburg-electric-system",
+    "entity_name": "Lewisburg Electric System",
+    "acronym": "Lewisbrg",
+    "name_shortest": "Lewisbrg",
+    "name_short": "Lewisburg Electric",
+    "name_normal": "Lewisburg Electric System",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Lewisburg",
+    "lat": 35.4492,
+    "lng": -86.7889,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Lewisburg Electric System service headquarters in Lewisburg, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.4492,
+        "lng": -86.7889,
+        "headquarters_address": null,
+        "city": "Lewisburg",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Lewisburg Electric System service headquarters in Lewisburg, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-springfield-electric-system-tennessee",
+    "entity_name": "Springfield Electric System (Tennessee)",
+    "acronym": "SprngfTN",
+    "name_shortest": "SprngfTN",
+    "name_short": "Springfield Elec (TN)",
+    "name_normal": "Springfield Electric System (Tennessee)",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Springfield",
+    "lat": 36.5092,
+    "lng": -86.8853,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Springfield Electric System (Tennessee) service headquarters in Springfield, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.5092,
+        "lng": -86.8853,
+        "headquarters_address": null,
+        "city": "Springfield",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Springfield Electric System (Tennessee) service headquarters in Springfield, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-sweetwater-utilities-board",
+    "entity_name": "Sweetwater Utilities Board",
+    "acronym": "Sweetwtr",
+    "name_shortest": "Sweetwtr",
+    "name_short": "Sweetwater Util",
+    "name_normal": "Sweetwater Utilities Board",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Sweetwater",
+    "lat": 35.6009,
+    "lng": -84.461,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Sweetwater Utilities Board service headquarters in Sweetwater, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.6009,
+        "lng": -84.461,
+        "headquarters_address": null,
+        "city": "Sweetwater",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Sweetwater Utilities Board service headquarters in Sweetwater, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-etowah-utilities",
+    "entity_name": "Etowah Utilities",
+    "acronym": "Etowah",
+    "name_shortest": "Etowah",
+    "name_short": "Etowah Utilities",
+    "name_normal": "Etowah Utilities",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Etowah",
+    "lat": 35.3234,
+    "lng": -84.5252,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Etowah Utilities service headquarters in Etowah, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.3234,
+        "lng": -84.5252,
+        "headquarters_address": null,
+        "city": "Etowah",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Etowah Utilities service headquarters in Etowah, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-newport-utilities",
+    "entity_name": "Newport Utilities",
+    "acronym": "Newport",
+    "name_shortest": "Newport",
+    "name_short": "Newport Utilities",
+    "name_normal": "Newport Utilities",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Newport",
+    "lat": 35.967,
+    "lng": -83.1871,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Newport Utilities service headquarters in Newport, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.967,
+        "lng": -83.1871,
+        "headquarters_address": null,
+        "city": "Newport",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Newport Utilities service headquarters in Newport, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-erwin-utilities",
+    "entity_name": "Erwin Utilities",
+    "acronym": "Erwin",
+    "name_shortest": "Erwin",
+    "name_short": "Erwin Utilities",
+    "name_normal": "Erwin Utilities",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Erwin",
+    "lat": 36.1443,
+    "lng": -82.416,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Erwin Utilities service headquarters in Erwin, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 36.1443,
+        "lng": -82.416,
+        "headquarters_address": null,
+        "city": "Erwin",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Erwin Utilities service headquarters in Erwin, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-rockwood-electric-utility",
+    "entity_name": "Rockwood Electric Utility",
+    "acronym": "Rockwood",
+    "name_shortest": "Rockwood",
+    "name_short": "Rockwood Electric",
+    "name_normal": "Rockwood Electric Utility",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Rockwood",
+    "lat": 35.8617,
+    "lng": -84.6844,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Rockwood Electric Utility service headquarters in Rockwood, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.8617,
+        "lng": -84.6844,
+        "headquarters_address": null,
+        "city": "Rockwood",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Rockwood Electric Utility service headquarters in Rockwood, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-harriman-utility-board",
+    "entity_name": "Harriman Utility Board",
+    "acronym": "Harriman",
+    "name_shortest": "Harriman",
+    "name_short": "Harriman Utility",
+    "name_normal": "Harriman Utility Board",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Harriman",
+    "lat": 35.9384,
+    "lng": -84.5527,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Harriman Utility Board service headquarters in Harriman, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.9384,
+        "lng": -84.5527,
+        "headquarters_address": null,
+        "city": "Harriman",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Harriman Utility Board service headquarters in Harriman, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "ncr_id": "SUP-milan-public-utilities",
+    "entity_name": "Milan Public Utilities",
+    "acronym": "Milan",
+    "name_shortest": "Milan",
+    "name_short": "Milan Public Util",
+    "name_normal": "Milan Public Utilities",
+    "region": "SERC",
+    "state": "TN",
+    "country": "US",
+    "city": "Milan",
+    "lat": 35.9198,
+    "lng": -88.7595,
+    "headquarters_address": null,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "geo_source": "EIA-861 / state municipal utilities association",
+    "geo_source_url": null,
+    "geo_notes": "City-level placement at the Milan Public Utilities service headquarters in Milan, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract.",
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 35.9198,
+        "lng": -88.7595,
+        "headquarters_address": null,
+        "city": "Milan",
+        "state": "TN",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "EIA-861 / state municipal utilities association",
+        "geo_source_url": null,
+        "geo_notes": "City-level placement at the Milan Public Utilities service headquarters in Milan, TN (Eastern Interconnection); supplemental context (the Tennessee Valley Authority local power company distributors), not a standalone NERC registration in the uploaded extract."
       },
       {
         "rank": 2,
