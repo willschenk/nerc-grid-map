@@ -65801,7 +65801,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.cepci.org",
-      "notes": "South Carolina G&T cooperative HQ.",
+      "notes": "South Carolina G&T cooperative; aggregates wholesale power (largely from Santee Cooper) for the state's distribution electric cooperatives. Member co-ops mapped as supplemental context include Aiken, Berkeley, Black River, Horry, Laurens, Mid-Carolina, Palmetto, Santee, Tri-County, and York Electric.",
       "seed": false,
       "locations": [
         {
@@ -65816,7 +65816,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.cepci.org",
-          "geo_notes": "South Carolina G&T cooperative HQ."
+          "geo_notes": "South Carolina G&T cooperative; aggregates wholesale power (largely from Santee Cooper) for the state's distribution electric cooperatives. Member co-ops mapped as supplemental context include Aiken, Berkeley, Black River, Horry, Laurens, Mid-Carolina, Palmetto, Santee, Tri-County, and York Electric."
         },
         {
           "rank": 2,
@@ -65846,7 +65846,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "South Carolina Public Service Authority (Santee Cooper)"
     },
     {
       "ncr_id": "NCR00065",
@@ -69613,7 +69614,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.electricities.com/contact-us/",
-      "notes": "Public power agency HQ Raleigh.",
+      "notes": "Municipal power agency operating the NCEMPA and NCMPA1 joint-action agencies for North Carolina's public-power communities. Members mapped as supplemental context include Greenville Utilities, Rocky Mount, Wilson Energy, High Point, Concord, Gastonia, Kings Mountain, Shelby, Statesville, and Lexington.",
       "seed": false,
       "locations": [
         {
@@ -69628,7 +69629,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.electricities.com/contact-us/",
-          "geo_notes": "Public power agency HQ Raleigh."
+          "geo_notes": "Municipal power agency operating the NCEMPA and NCMPA1 joint-action agencies for North Carolina's public-power communities. Members mapped as supplemental context include Greenville Utilities, Rocky Mount, Wilson Energy, High Point, Concord, Gastonia, Kings Mountain, Shelby, Statesville, and Lexington."
         },
         {
           "rank": 2,
@@ -78262,7 +78263,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.ncelectriccooperatives.com/who-we-are/contact-us",
-      "notes": "G&T cooperative HQ serving NC electric co-ops.",
+      "notes": "G&T cooperative supplying wholesale power to North Carolina's distribution electric membership corporations (EMCs). Member distribution co-ops mapped as supplemental context include Wake Electric, Union Power, Randolph EMC, Jones-Onslow EMC, Roanoke EC, Piedmont EMC, Pee Dee Electric, South River EMC, Surry-Yadkin EMC, Rutherford EMC, and Tideland EMC.",
       "seed": false,
       "locations": [
         {
@@ -78277,7 +78278,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.ncelectriccooperatives.com/who-we-are/contact-us",
-          "geo_notes": "G&T cooperative HQ serving NC electric co-ops."
+          "geo_notes": "G&T cooperative supplying wholesale power to North Carolina's distribution electric membership corporations (EMCs). Member distribution co-ops mapped as supplemental context include Wake Electric, Union Power, Randolph EMC, Jones-Onslow EMC, Roanoke EC, Piedmont EMC, Pee Dee Electric, South River EMC, Surry-Yadkin EMC, Rutherford EMC, and Tideland EMC."
         },
         {
           "rank": 2,
@@ -81704,7 +81705,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.santeecooper.com",
-      "notes": "Santee Cooper state-owned utility HQ Moncks Corner SC.",
+      "notes": "Santee Cooper, the state-owned generation & transmission utility (HQ Moncks Corner). Wholesale supplier to Central Electric Power Cooperative — and thus South Carolina's 20 distribution co-ops — and to several municipal systems.",
       "seed": false,
       "locations": [
         {
@@ -81719,7 +81720,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.santeecooper.com",
-          "geo_notes": "Santee Cooper state-owned utility HQ Moncks Corner SC."
+          "geo_notes": "Santee Cooper, the state-owned generation & transmission utility (HQ Moncks Corner). Wholesale supplier to Central Electric Power Cooperative — and thus South Carolina's 20 distribution co-ops — and to several municipal systems."
         },
         {
           "rank": 2,
