@@ -2212,7 +2212,7 @@
       "source": "official_website",
       "source_url": "https://www.dominionenergy.com",
       "org_type": "IOU",
-      "notes": "Dominion Energy Virginia; transmission in PJM.",
+      "notes": "Dominion Energy Virginia (VEPCO), the dominant Virginia IOU — generation, transmission, and distribution across most of the state and northeastern North Carolina.",
       "seed": true,
       "acronym": "Dominion",
       "acronym_source": "common_market_name",
@@ -2229,7 +2229,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.dominionenergy.com",
-          "geo_notes": "Dominion Energy Virginia; transmission in PJM."
+          "geo_notes": "Dominion Energy Virginia (VEPCO), the dominant Virginia IOU — generation, transmission, and distribution across most of the state and northeastern North Carolina."
         },
         {
           "rank": 2,
@@ -2259,7 +2259,8 @@
           "geo_source_url": null,
           "geo_notes": null
         }
-      ]
+      ],
+      "parent_org": "Dominion Energy, Inc."
     },
     {
       "ncr_id": "NCR-SEED-032",
@@ -56437,7 +56438,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.odec.com/contact-us/",
-      "notes": "Old Dominion Electric Cooperative HQ.",
+      "notes": "G&T cooperative (Glen Allen) supplying wholesale power to Virginia's distribution co-ops. Member systems mapped as supplemental context include A&N, BARC, Central Virginia (Firefly), Community, Mecklenburg, Northern Neck, Prince George, Rappahannock, Shenandoah Valley, and Southside Electric — plus Choptank (MD) and Delaware Electric Cooperative.",
       "seed": false,
       "entity_name": "Old Dominion Electric Cooperative",
       "roles": [
@@ -56460,7 +56461,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.odec.com/contact-us/",
-          "geo_notes": "Old Dominion Electric Cooperative HQ."
+          "geo_notes": "G&T cooperative (Glen Allen) supplying wholesale power to Virginia's distribution co-ops. Member systems mapped as supplemental context include A&N, BARC, Central Virginia (Firefly), Community, Mecklenburg, Northern Neck, Prince George, Rappahannock, Shenandoah Valley, and Southside Electric — plus Choptank (MD) and Delaware Electric Cooperative."
         },
         {
           "rank": 2,
