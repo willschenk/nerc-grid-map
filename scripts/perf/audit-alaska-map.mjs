@@ -190,10 +190,13 @@ const MAP_PROBE = `(async (akAriaLabels) => {
   const akPath = [...svg.querySelectorAll("path.state")].find(
     (p) => p.__data__?.properties?.name === "Alaska",
   );
+  // True-position Alaska: the "box" is the state's projected bounds, padded to
+  // absorb honest declutter roam around the coast.
+  const AK_BOX_PAD = 36;
   let akInsetBox = null;
   if (akPath) {
     const bb = akPath.getBBox();
-    akInsetBox = { x0: bb.x, y0: bb.y, x1: bb.x + bb.width, y1: bb.y + bb.height };
+    akInsetBox = { x0: bb.x - AK_BOX_PAD, y0: bb.y - AK_BOX_PAD, x1: bb.x + bb.width + AK_BOX_PAD, y1: bb.y + bb.height + AK_BOX_PAD };
   }
 
   const centerInAkInset = (cx, cy) => {
@@ -289,8 +292,22 @@ const MAP_PROBE = `(async (akAriaLabels) => {
   };
 
   const rect = svg.getBoundingClientRect();
-  const akAnchorX = rect.left + rect.width * 0.14;
-  const akAnchorY = rect.top + rect.height * 0.88;
+  // Anchor the zoom on true-position Alaska (its projected center), not the old
+  // schematic inset corner.
+  let akAnchorX = rect.left + rect.width * 0.25;
+  let akAnchorY = rect.top + rect.height * 0.2;
+  if (akPath) {
+    const bb = akPath.getBBox();
+    const pt = svg.createSVGPoint();
+    pt.x = bb.x + bb.width / 2;
+    pt.y = bb.y + bb.height / 2;
+    const ctm = akPath.getScreenCTM();
+    if (ctm) {
+      const sp = pt.matrixTransform(ctm);
+      akAnchorX = sp.x;
+      akAnchorY = sp.y;
+    }
+  }
   const centerX = rect.left + rect.width * 0.5;
   const centerY = rect.top + rect.height * 0.55;
 
@@ -299,7 +316,7 @@ const MAP_PROBE = `(async (akAriaLabels) => {
   await wheelTo(2.2, akAnchorX, akAnchorY);
   samples.push({ phase: "ak-inset-k~2.2", ...orgMetrics() });
   await wheelTo(1.0, centerX, centerY);
-  samples.push({ phase: "mainland-k~1", ...orgMetrics() });
+  samples.push({ phase: "continent-k~1", ...orgMetrics() });
   return { samples, akInsetBox };
 })`;
 
@@ -319,10 +336,15 @@ const HI_MAP_PROBE = `(async (hiAriaLabels, targetK) => {
   const hiPath = [...svg.querySelectorAll("path.state")].find(
     (p) => p.__data__?.properties?.name === "Hawaii",
   );
+  // True-position Hawaii: pad the projected island bounds — mid-zoom placement
+  // legitimately roams a labelled pill a couple of its own radii around the
+  // islands (the declutter leash bounds this at ~3.2× the pill extents, which
+  // on a phone viewBox is on the order of 150 units).
+  const HI_BOX_PAD = 150;
   let hiInsetBox = null;
   if (hiPath) {
     const bb = hiPath.getBBox();
-    hiInsetBox = { x0: bb.x, y0: bb.y, x1: bb.x + bb.width, y1: bb.y + bb.height };
+    hiInsetBox = { x0: bb.x - HI_BOX_PAD, y0: bb.y - HI_BOX_PAD, x1: bb.x + bb.width + HI_BOX_PAD, y1: bb.y + bb.height + HI_BOX_PAD };
   }
 
   const centerInHiInset = (cx, cy) => {
@@ -517,26 +539,20 @@ function summarizeMap(results) {
       const nonKey = `non${inset}InInset`;
       for (const sample of probe.samples ?? []) {
         if (sample[landKey] === false) issues.push(`${vp} ${sample.phase}: ${inset} land not visible`);
+        // AK/HI plot in true position now, so orgs being visible at overview and
+        // on the continent view is correct — the invariants that remain are
+        // "the state's orgs stay near the state" and "no stranger drifts in".
         if ((sample[nonKey] ?? 0) > 0) {
-          issues.push(`${vp} ${sample.phase}: ${sample[nonKey]} non-${inset} org(s) in ${inset} inset`);
+          issues.push(`${vp} ${sample.phase}: ${sample[nonKey]} non-${inset} org(s) inside ${inset} bounds`);
         }
         if ((sample[outKey] ?? 0) > 0) {
-          issues.push(`${vp} ${sample.phase}: ${sample[outKey]} ${inset} org(s) outside inset`);
-        }
-        if (sample.phase === "overview" && (sample[visKey] ?? 0) > 0) {
-          issues.push(`${vp} ${sample.phase}: ${sample[visKey]} ${inset} org(s) visible at overview`);
+          issues.push(`${vp} ${sample.phase}: ${sample[outKey]} ${inset} org(s) outside ${inset} bounds`);
         }
         if (sample.phase.includes("inset-k~") && (sample[visKey] ?? 0) === 0 && sample.k >= (probe.targetK ?? 2) * 0.92) {
-          // Compact HI inset slots are capacity-gated; mobile safety is nonHiInInset/hiOutsideInset.
+          // Compact HI slots are capacity-gated; mobile safety is nonHiInInset/hiOutsideInset.
           if (inset === "HI" && vp === "mobile") continue;
           issues.push(`${vp} ${sample.phase}: no ${inset} orgs visible at k=${sample.k}`);
         }
-      }
-    }
-    if (data?.ak && data?.ak?.samples) {
-      const mainland = data.ak.samples.find((s) => s.phase === "mainland-k~1");
-      if (mainland?.akVisible > 0) {
-        issues.push(`${vp} mainland: ${mainland.akVisible} AK org(s) visible on mainland view`);
       }
     }
   }
