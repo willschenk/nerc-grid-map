@@ -211,8 +211,11 @@ async function main() {
     for (let i = 0; i < 80; i++) { const v = await evalJs(conn, sessionId, `document.querySelectorAll('rect.org').length`).catch(() => 0); if (v > 0) break; await sleep(150); }
     await sleep(3000);
 
-    // Zoom in a few steps so pills grow and the deeper layers (incl. give-way dots) reveal.
-    for (let i = 0; i < 6; i++) { await evalJs(conn, sessionId, `document.getElementById('nerc-zoom-in').click()`); await sleep(420); }
+    // Zoom in a few steps so pills grow and the deeper layers (incl. give-way dots)
+    // reveal. 8 steps since the continent-frame projection: k=1 now shows all of
+    // North America, so the regional depth this test was designed around sits about
+    // one 1.55× step deeper than under the old lower-48 fit.
+    for (let i = 0; i < 8; i++) { await evalJs(conn, sessionId, `document.getElementById('nerc-zoom-in').click()`); await sleep(420); }
     await sleep(800);
 
     console.log("\n── hit-target shape (tight rect, not bounding circle) ──");

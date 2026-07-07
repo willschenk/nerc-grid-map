@@ -97,6 +97,28 @@ function stageCanada() {
   writeFileSync(CANADA_OUT, JSON.stringify(canada));
   console.log(`nerc: wrote ${CANADA_OUT.replace(root + "/", "")} (Canada context)`);
 }
+
+// Stage the rest of North America (Mexico, Greenland, Central America, Caribbean)
+// as one context FeatureCollection. Best-effort like stageCanada.
+function stageNaContext() {
+  if (!existsSync(WORLD_SRC)) {
+    console.warn(`WARN: world-atlas not found at ${WORLD_SRC}; NA context land will be missing.`);
+    return;
+  }
+  const world = JSON.parse(readFileSync(WORLD_SRC, "utf8"));
+  const countries = feature(world, world.objects.countries);
+  const picked = countries.features.filter((f) =>
+    NA_CONTEXT_COUNTRY_IDS.has(String(f.id).padStart(3, "0")),
+  );
+  if (picked.length === 0) {
+    console.warn("WARN: no NA context countries matched in world-atlas; context will be missing.");
+    return;
+  }
+  writeFileSync(NA_CONTEXT_OUT, JSON.stringify({ type: "FeatureCollection", features: picked }));
+  console.log(
+    `nerc: wrote ${NA_CONTEXT_OUT.replace(root + "/", "")} (${picked.length} NA context countries)`,
+  );
+}
 // A geocoding-agent output file (JSON array or {orgs:[...]}) overrides the seed
 // when present, so the real registry can drop in without touching this script.
 const GEOCODED = resolve(root, "src/data/nerc/geocoded-orgs.json");
@@ -120,6 +142,32 @@ const BASEMAP_OUT = resolve(OUT_DIR, "states-10m.json");
 // it via a conic that mirrors the Albers lower-48 piece). Country id 124.
 const WORLD_SRC = resolve(root, "node_modules/world-atlas/countries-50m.json");
 const CANADA_OUT = resolve(OUT_DIR, "canada-land.json");
+// Rest-of-North-America landmass (Mexico, Greenland, Central America, the
+// Caribbean) drawn as pure context — no NERC entities plot onto it. ISO 3166-1
+// numeric ids in world-atlas countries-50m.
+const NA_CONTEXT_OUT = resolve(OUT_DIR, "na-context.json");
+const NA_CONTEXT_COUNTRY_IDS = new Set([
+  "484", // Mexico
+  "304", // Greenland
+  "084", // Belize
+  "320", // Guatemala
+  "340", // Honduras
+  "222", // El Salvador
+  "558", // Nicaragua
+  "188", // Costa Rica
+  "591", // Panama
+  "192", // Cuba
+  "044", // Bahamas
+  "388", // Jamaica
+  "332", // Haiti
+  "214", // Dominican Republic
+  "630", // Puerto Rico
+  "850", // U.S. Virgin Islands
+  "796", // Turks and Caicos Is.
+  "136", // Cayman Is.
+  "060", // Bermuda
+  "666", // St-Pierre-et-Miquelon
+]);
 
 function loadIngestedRegions() {
   if (!existsSync(INGESTED)) return new Map();
@@ -362,6 +410,7 @@ function main() {
 
   stageBasemap();
   stageCanada();
+  stageNaContext();
 
   const isoCount = orgs.filter((o) => o.is_iso_rto).length;
   console.log(`nerc: enriched ${orgs.length} orgs from ${payload.source_file}`);

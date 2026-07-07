@@ -3,10 +3,11 @@
 // Coverage tiers:
 //   1. Lower 48 + Canada context — NERC registry orgs + mainland supplemental orgs.
 //   2. Alaska & Hawaii — supplemental utilities only (not in the NERC extract);
-//      geocoded normally and rendered on geoAlbersUsa's built-in AK/HI insets.
-//      Same rules for both: state AK|HI, out_of_footprint false, real lat/lng.
+//      geocoded normally and rendered in TRUE position on the continent-wide
+//      North America Albers conic (no schematic insets since the full-continent
+//      map). Same rules for both: state AK|HI, out_of_footprint false, real lat/lng.
 //   3. Puerto Rico & U.S. Virgin Islands — supplemental only; `out_of_footprint`
-//      schematic offshore insets (no mainland projection).
+//      (orgs product-hidden; the islands themselves draw via the NA context layer).
 //   4. Guam, American Samoa, Northern Mariana Islands — excluded entirely.
 //
 // Known non-Alaska NERC registry rows with Alaska-adjacent names (mapped in the
@@ -26,7 +27,7 @@ export const EXCLUDED_TERRITORY_FIPS = new Set(["60", "66", "69"]);
 /** Carried as supplemental orgs in labelled offshore insets — not lat/lng on the mainland. */
 export const OUT_OF_FOOTPRINT_CODES = new Set(["PR", "VI"]);
 
-/** Projectable on geoAlbersUsa native insets; geocode with real lat/lng; never out_of_footprint. */
+/** Non-contiguous states in true position on the continent conic; geocode with real lat/lng; never out_of_footprint. */
 export const US_INSET_STATE_CODES = new Set(["AK", "HI"]);
 
 /** Approximate HQ bounding boxes for QA (decimal degrees). */

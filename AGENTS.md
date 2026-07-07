@@ -47,9 +47,10 @@ or Hawaii like excluded or out-of-footprint territories.
 
 | Area | In NERC extract? | On map? | How |
 |------|------------------|---------|-----|
-| Lower 48 + Canada context | Yes (registry) | Yes | Main Albers projection |
-| Alaska & Hawaii | No (supplemental only) | Yes | geoAlbersUsa AK/HI insets; real lat/lng |
-| Puerto Rico & U.S. Virgin Islands | No (supplemental) | Yes | `out_of_footprint` offshore inset boxes |
+| Lower 48 + Canada context | Yes (registry) | Yes | Continent-wide North America Albers conic |
+| Alaska & Hawaii | No (supplemental only) | Yes | TRUE position on the continent conic; real lat/lng |
+| Mexico, Greenland, Central America, Caribbean | No | Yes (land only) | `na-context.json` context layer — no orgs plot there |
+| Puerto Rico & U.S. Virgin Islands | No (supplemental) | Land only | Orgs stay `out_of_footprint` (product-hidden); islands draw via the context layer |
 | Guam, American Samoa, N. Mariana Islands | No | No | Excluded from data and basemap |
 
 Alaska and Hawaii utilities belong in `supplemental-orgs.json` with
@@ -57,11 +58,12 @@ Alaska and Hawaii utilities belong in `supplemental-orgs.json` with
 their state. They are not NERC-registered and must not be marked
 `out_of_footprint` (that flag is PR/VI only).
 
-**Renderer:** Alaska/Hawaii land always draws on the geoAlbersUsa insets.
-Supplemental inset utilities defer until ~k 1.5–2.5 so the tiny overview inset
-stays clean; mainland bubble packing is fenced out of the inset bounds so dots
-never drift across regions. City dots, city names, and inset state labels inside
-AK/HI defer until ~k 3.2 so the inset reads as land-only context at overview.
+**Renderer:** one `geoConicEqualArea` (rotate 96°W, parallels 20°/60°) carries
+everything; `fitExtent` frames US ∪ Canada ∪ Mexico, and Greenland/Caribbean
+bleed in as context. Alaska draws and reveals like any mainland state. Hawaii
+keeps island-cluster affordances (supplemental reveal deferred until ~k 1.5–2.5,
+extra spider spread and tap area, exemption from coarse land-mask fencing —
+its islands are smaller than a mask cell).
 
 ## Key files
 

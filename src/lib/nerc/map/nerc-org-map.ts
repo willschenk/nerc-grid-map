@@ -1,4 +1,4 @@
-import { geoAlbersUsa, geoConicEqualArea, geoMercator, geoPath } from "d3-geo";
+import { geoConicEqualArea, geoMercator, geoPath } from "d3-geo";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from "d3-zoom";
 import { forceSimulation, forceX, forceY, type Simulation } from "d3-force";
@@ -7,7 +7,7 @@ import "d3-transition";
 import { feature, mesh } from "topojson-client";
 import { tightenMapLabel } from "../display-names.mjs";
 import { PLACES } from "../places.mjs";
-import { isExcludedTerritoryFips, US_INSET_STATE_CODES } from "../geography-scope.mjs";
+import { isExcludedTerritoryFips } from "../geography-scope.mjs";
 import {
   CONFIDENCE_LABELS,
   confidenceLabel,
@@ -120,9 +120,13 @@ type Org = {
   // Last viewBox hit radius written to the invisible target. It follows the
   // resolved visual radius, not just zoom, so panning at deep zoom stays aligned.
   _hr?: number;
-  // Which projection placed this org: mainland Albers ("us"), the Canada conic
-  // ("ca"), or a territory inset ("terr").
+  // Which land-mask frame fences this org: US ("us"), Canada ("ca"), or a
+  // territory inset ("terr", exempt from land fencing).
   _frame?: "us" | "ca" | "terr";
+  // The coarse land mask cannot see this org's own home as land (sub-cell
+  // islands like Hawaii, thin coastal strips). The mask then has no useful
+  // signal for it, so bubble placement skips the on-land gate.
+  _maskBlind?: boolean;
   // Static memos — set once after orgs load, never change at runtime.
   _tiny?: string;       // tinyName(o)
   _mrc?: number;        // meaningfulRoleCount(o)
@@ -321,13 +325,16 @@ const ZERO_VISUAL_PRIORITY_ROLES = new Set(["GO", "GOP", "COP", "PSE"]);
 // gives way to (moves around) the real bubbles and only shows details on
 // hover/click. Zoom-gated: hidden at the calm national overview, faded in as
 // the user zooms into a region. Reveal-K and fade span are tunable here.
-// Reveal earlier (was 4.5 / 5.0) so dots show at regional zoom, not only deep
-// zoom — they fade in sub-pixel at reveal-K and grow, so an earlier gate adds
-// texture without clutter and (being out of the sim) can never displace a bubble.
-// Compact reveals sooner (3.0 vs 3.4 desktop) so phone users see dots after fewer
-// pinch steps; the overview (k ≈ 1) stays dot-free on both layouts.
-const GIVE_WAY_DOT_REVEAL_K = 3.4;
-const GIVE_WAY_DOT_REVEAL_K_COMPACT = 3.0;
+// Reveal at REGIONAL zoom — they fade in sub-pixel at reveal-K and grow, so the
+// gate adds texture without clutter and (being out of the sim) can never
+// displace a bubble. Compact reveals relatively sooner so phone users see dots
+// after fewer pinch steps; the overview stays dot-free on both layouts.
+// Retuned for the continent frame (was 3.4 / 3.0 against the lower-48 fit):
+// k=1 now shows all of North America, so the same GEOGRAPHIC depth — where dot
+// spacing matches the pill hit-pad design — sits about one 1.55× zoom step
+// deeper than before.
+const GIVE_WAY_DOT_REVEAL_K = 5.2;
+const GIVE_WAY_DOT_REVEAL_K_COMPACT = 4.6;
 // Short fade so dots reach full (still small) size soon after reveal — visible and
 // clickable in the regional view rather than lingering sub-pixel. Compact uses a
 // tighter span so phone dots finish growing sooner after the gate opens.
@@ -683,10 +690,9 @@ const FEDERAL_NAME = /\b(Power Administration|Tennessee Valley Authority|Bonnevi
 const PUBLIC_POWER_AUTHORITY_NAME = /\b(Power Authority|Power Administration)\b/i;
 const PUBLIC_UTILITY_NAME = /\b(Public Power|Public Utility|Utility District|PUD|Municipal|City of|Town of|Electric Department|Light Department|Cooperative|Electric Membership)\b/i;
 
-// Out-of-footprint U.S. territories rendered as labelled inset clusters (geoAlbersUsa
-// cannot plot them on the mainland canvas).
+// Out-of-footprint U.S. territories rendered as labelled inset clusters.
 // Territory insets (Puerto Rico / U.S. Virgin Islands) are disabled by product
-// choice. Their orgs drop out and the Atlantic lane is reclaimed so the lower-48
+// choice — their land now draws in true position via the NA context layer. Their orgs drop out and the Atlantic lane is reclaimed so the lower-48
 // map fills the canvas width.
 const SHOW_TERRITORIES = false;
 const TERRITORY_STATES = new Set(["PR", "VI"]);
@@ -697,19 +703,20 @@ const TERRITORY_LABELS: Record<string, string> = {
 // Right-to-bottom layout order; Puerto Rico is largest and anchors the cluster.
 const TERRITORY_LAYOUT_ORDER = ["PR", "VI"] as const;
 // FIPS ids of the territory land outlines carried in the states topojson, so the
-// inset can draw the real island shape (geoAlbersUsa can't project them).
+// inset can draw the real island shape.
 const TERRITORY_FIPS: Record<string, string> = { PR: "72", VI: "78" };
 // Out-of-footprint PR/VI inset dots use a fixed schematic radius, sized like
 // ordinary small map bubbles instead of oversized island callouts.
 const TERRITORY_BUBBLE_RADIUS_PX = { desktop: 4.6, compact: 5.4 };
 const TERRITORY_HIT_RADIUS_PX = { desktop: 8.6, compact: 10 };
 
-// Alaska and Hawaii plot on geoAlbersUsa's built-in lower-left/right insets.
-// They share the mainland declutter path but need extra spread and tap area at
-// overview zoom where the inset is tiny on screen. (PR/VI use separate offshore
-// inset boxes — see layoutTerritoryInsets and geography-scope.mjs.)
-function isUsInsetOrg(o: { state?: string | null }): boolean {
-  return US_INSET_STATE_CODES.has(o.state ?? "");
+// Alaska plots in true position on the continent conic. Hawaii does too, but its
+// 21 utilities share a few islands that stay tiny at overview zoom, so they keep
+// the extra spread / tap area / deferred reveal that the old map gave both inset
+// states. (PR/VI use separate offshore inset boxes — see layoutTerritoryInsets
+// and geography-scope.mjs.)
+function isHawaiiOrg(o: { state?: string | null }): boolean {
+  return (o.state ?? "") === "HI";
 }
 
 // Dense upper-Midwest utility belt (NE/IA/MN/WI): extra declutter spread and
@@ -749,17 +756,37 @@ const PROVINCE_LABELS: Array<{ name: string; lat: number; lng: number }> = [
   { name: "New Brunswick", lat: 46.7, lng: -66.4 },
   { name: "Nova Scotia", lat: 45.1, lng: -62.9 },
   { name: "Newfoundland & Labrador", lat: 48.7, lng: -56.2 },
+  { name: "Yukon", lat: 63.6, lng: -135.6 },
+  { name: "Northwest Territories", lat: 64.3, lng: -119.2 },
+  { name: "Nunavut", lat: 64.6, lng: -95.5 },
+  // Context countries beyond the NERC footprint, labelled like provinces so the
+  // continent reads as a whole (they carry no NERC data).
+  { name: "Mexico", lat: 24.2, lng: -102.6 },
+  { name: "Greenland", lat: 68.6, lng: -45.5 },
+  { name: "Cuba", lat: 21.5, lng: -78.8 },
 ];
 
 // Water-body labels filling the big open ocean/lake gaps around the footprint —
 // always-open space, so they give the map geographic context without ever
-// crowding the data. Projected with the lower-48 albersUsa like the states.
+// crowding the data. Projected like the states.
 const WATER_LABELS: Array<{ name: string; lat: number; lng: number; interior?: boolean }> = [
   // Overview-only open water + Great Lakes (hide once zoomed in).
   { name: "Gulf of Mexico", lat: 26, lng: -91 },
   { name: "Atlantic Ocean", lat: 31, lng: -75 },
   { name: "Pacific Ocean", lat: 38, lng: -125 },
   { name: "Gulf of Maine", lat: 43, lng: -67.8 },
+  // Northern / continental waters framing the full North America canvas.
+  { name: "Hudson Bay", lat: 59.5, lng: -85.5 },
+  { name: "Bering Sea", lat: 57.5, lng: -172 },
+  { name: "Gulf of Alaska", lat: 56.5, lng: -145 },
+  { name: "Beaufort Sea", lat: 71.8, lng: -136 },
+  { name: "Baffin Bay", lat: 73, lng: -66.5 },
+  { name: "Labrador Sea", lat: 58, lng: -54.5 },
+  { name: "Caribbean Sea", lat: 16.2, lng: -77.5 },
+  { name: "Gulf of California", lat: 27.9, lng: -111.7, interior: true },
+  { name: "Great Bear Lake", lat: 65.9, lng: -120.9, interior: true },
+  { name: "Great Slave Lake", lat: 61.7, lng: -114.1, interior: true },
+  { name: "Lake Winnipeg", lat: 52.2, lng: -97.4, interior: true },
   { name: "Lake Superior", lat: 47.7, lng: -87.7 },
   { name: "Lake Michigan", lat: 43.6, lng: -87.1 },
   { name: "Lake Huron", lat: 44.8, lng: -82.2 },
@@ -847,6 +874,13 @@ const QUIET_LAND_LABELS = new Set([
   "Gulf of Mexico", "Gulf of America",
   "Manitoba", "Ontario", "Québec", "Quebec",
   "New Brunswick", "Maine",
+  // Continent-frame context: far-north provinces, context countries, and the
+  // big peripheral waters stay quiet so the NERC footprint keeps the focus.
+  "Yukon", "Northwest Territories", "Nunavut",
+  "Mexico", "Greenland", "Cuba",
+  "Hudson Bay", "Bering Sea", "Gulf of Alaska", "Beaufort Sea",
+  "Baffin Bay", "Labrador Sea", "Caribbean Sea", "Gulf of California",
+  "Great Bear Lake", "Great Slave Lake", "Lake Winnipeg",
   "Appalachians", "Great Plains", "Ozarks", "Sierra Nevada", "Cascades", "Adirondacks",
   "Badlands", "Black Hills",
   // Broad interior regions render quiet so they read as faint orientation context,
@@ -856,25 +890,22 @@ const QUIET_LAND_LABELS = new Set([
 ]);
 
 // Tiny states whose centroid label would clutter the map at overview; held back
-// until zoomed in. Alaska and Hawaii live in the Albers USA insets and are tiny
-// on screen at national scale.
+// until zoomed in. Hawaii's islands stay small on the continent frame; Alaska is
+// now continent-scale land, so its label shows like any other state's.
 const SMALL_STATES = new Set([
   "Rhode Island", "Delaware", "Connecticut", "New Jersey", "New Hampshire",
-  "Vermont", "Massachusetts", "Maryland", "District of Columbia", "Alaska", "Hawaii",
+  "Vermont", "Massachusetts", "Maryland", "District of Columbia", "Hawaii",
 ]);
 
-// Curated label anchors for multi-island / inset states (centroids sit in open water).
+// Curated label anchors for multi-island states (centroids sit in open water).
 const INSET_STATE_LABEL_LNG_LAT: Record<string, [number, number]> = {
   Alaska: [-152.5, 63.5],
   Hawaii: [-157.5, 20.3],
 };
 
-// City dots/names inside the AK/HI inset boxes defer until this zoom — same band as
-// the inset state labels — so the tiny overview inset stays land-only until zoomed in.
-const INSET_AMBIENT_CONTEXT_MIN_K = 3.2;
-
-// Extra clearance (screen px) when fencing mainland bubbles out of AK/HI insets.
-const INSET_MAINLAND_FENCE_PAD_PX = 4;
+// Tiny-state labels (SMALL_STATES) defer until this zoom so the overview stays
+// uncluttered where several small states pack together.
+const SMALL_STATE_LABEL_MIN_K = 3.2;
 
 const ROLE_TOUR_LABELS: Record<string, string> = {
   BA: "Balancing Authorities (BA)",
@@ -966,6 +997,8 @@ export function mountNercOrgMap(): void {
   const orgsPayloadPromise = loadJson<OrgsPayload>(`${dataBase}nerc/orgs-render.json`);
   const topoPromise = loadJson<unknown>(`${dataBase}nerc/states-10m.json`);
   const canadaPromise = loadJson<unknown>(`${dataBase}nerc/canada-land.json`).catch(() => null);
+  // Mexico + Greenland + Central America + Caribbean, drawn as pure context.
+  const naContextPromise = loadJson<unknown>(`${dataBase}nerc/na-context.json`).catch(() => null);
 
   const svgNode = byId<SVGSVGElement>("nerc-svg");
   const svg = select(svgNode);
@@ -1009,13 +1042,15 @@ export function mountNercOrgMap(): void {
   const infoToggle = byId<HTMLButtonElement>("nerc-info-toggle");
   const metricsToggle = byId<HTMLButtonElement>("nerc-metrics-toggle");
 
-  const projection = geoAlbersUsa();
+  // One continent-wide Albers equal-area conic (the standard North America
+  // Albers: central meridian 96°W, standard parallels 20°/60°) carries the whole
+  // map: US states (Alaska and Hawaii in TRUE position — no schematic insets),
+  // Canada, and the Mexico/Greenland/Caribbean context land. fitExtent() in
+  // project() frames it to the US ∪ Canada ∪ Mexico footprint. The rotation puts
+  // the projection seam at 84°E, so the dateline-crossing Aleutians stay
+  // continuous with the rest of the chain.
+  const projection = geoConicEqualArea().rotate([96, 0]).center([0, 40]).parallels([20, 60]);
   const path = geoPath(projection);
-  // Canada is drawn with a conic that mirrors the Albers lower-48 piece (same
-  // rotate/center/parallels), then locked to the composite's scale/translate
-  // after fitSize — so Canadian land and entities line up north of the border.
-  const canadaProj = geoConicEqualArea().rotate([96, 0]).center([-0.6, 38.7]).parallels([29.5, 45.5]);
-  const canadaPath = geoPath(canadaProj);
 
   let transform: ZoomTransform = zoomIdentity;
   let zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> | null = null;
@@ -1056,12 +1091,11 @@ export function mountNercOrgMap(): void {
   let nationFeature: unknown = null;
   let nationOutline: unknown = null;
   let canadaFeature: unknown = null;
+  let naContextFeature: unknown = null;
+  // What fitExtent frames: US ∪ Canada ∪ Mexico. Greenland / Central America /
+  // the Caribbean stay outside the fit and bleed in at the edges as context.
+  let frameFeature: unknown = null;
   let stateFeatures: unknown[] = [];
-  // Screen-space bounds of the geoAlbersUsa AK/HI inset silhouettes (recomputed on
-  // every project()). Used to keep mainland packing out of the insets and AK/HI
-  // utilities inside their home inset.
-  let akInsetBounds: [[number, number], [number, number]] | null = null;
-  let hiInsetBounds: [[number, number], [number, number]] | null = null;
   // Low-res land masks in viewBox space, rebuilt on every project(). Separate US
   // and Canada silhouettes so mainland orgs cannot drift across the border.
   let landMask: Uint8Array | null = null;
@@ -1464,10 +1498,11 @@ export function mountNercOrgMap(): void {
     return compact ? FULL_REGISTRY_REVEAL_K_COMPACT : FULL_REGISTRY_REVEAL_K;
   }
 
-  // Supplemental AK/HI utilities defer until zoom makes the Albers inset large
-  // enough to read; land geometry and state labels still show as context.
+  // Supplemental Hawaii utilities defer until zoom spreads the island cluster
+  // enough to read; land geometry and the state label still show as context.
+  // (Alaska now has continent-scale room, so its orgs reveal normally.)
   function insetOrgRevealK(o: Org): number {
-    if (!isUsInsetOrg(o) || o.nerc_registered !== false) return 0;
+    if (!isHawaiiOrg(o) || o.nerc_registered !== false) return 0;
     const pri = visualPriority(o);
     const w = o.weight ?? 0;
     if (pri >= 35 || w >= 14) return compact ? 1.75 : 1.45;
@@ -1575,7 +1610,7 @@ export function mountNercOrgMap(): void {
     // The real ISOs/RTOs are headline orgs: always eligible at every zoom so they
     // are visible whenever their area is on screen (incl. the zoomed-out overview).
     if (isIsoRtoOperator(o)) return true;
-    if (isUsInsetOrg(o) && k < insetOrgRevealK(o)) return false;
+    if (isHawaiiOrg(o) && k < insetOrgRevealK(o)) return false;
     // The fully zoomed-out view is a major-org overview: smaller eligible orgs
     // wait until the next zoom bucket so they do not take slots from high-ranked
     // regulated entities.
@@ -2157,8 +2192,8 @@ export function mountNercOrgMap(): void {
     // this never reintroduces overlap). Compact stays gentler so more pills fit
     // in the narrow phone band.
     const deepMinPx = (compact ? 7.8 : 12) * smoothStep((k - 6) / 14) * (0.55 + 0.45 * tierT);
-    // Overview floor for AK/HI inset dots.
-    const insetOverviewMinPx = isUsInsetOrg(o) ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2) : 0;
+    // Overview floor for the tight Hawaii island cluster.
+    const insetOverviewMinPx = isHawaiiOrg(o) ? (compact ? 6.4 : 7) * smoothStep((2.8 - k) / 2) : 0;
     const topTierOverviewMinPx =
       tier >= 6 ? (compact ? 10.5 : 13.5) * (1 - smoothStep((k - 1.25) / 2.75)) : 0;
     const postRevealT = postRevealBoostT(o, k);
@@ -2293,9 +2328,9 @@ export function mountNercOrgMap(): void {
       const promoteClickPx = (compact ? 9 : 7) * (1 - discloseT) * smoothStep((k - 1.5) / 3);
       target = Math.max(target, (floorPx + promoteClickPx) * unitPerPx);
     }
-    // Inset utilities sit tight at overview; keep tap rings generous without
+    // Hawaii utilities sit tight at overview; keep tap rings generous without
     // changing mainland hit math.
-    if (isUsInsetOrg(o)) {
+    if (isHawaiiOrg(o)) {
       const insetClickPx = (compact ? 11.5 : 9.2) * smoothStep((3 - k) / 2.2);
       target = Math.max(target, insetClickPx * unitPerPx);
     }
@@ -2422,7 +2457,7 @@ export function mountNercOrgMap(): void {
     for (const cluster of clusters.values()) {
       if (cluster.length < 2) continue;
       cluster.sort((a, b) => a.ncr_id.localeCompare(b.ncr_id));
-      const insetCluster = cluster.some(isUsInsetOrg);
+      const insetCluster = cluster.some(isHawaiiOrg);
       const midwestCluster = cluster.some(isMidwestOrg);
       const ringStep = insetCluster ? step * 1.42 : midwestCluster ? step * 1.22 : step * (spiderFanScale(transform.k) > 0.4 ? 1.38 : 1);
       cluster.forEach((o, i) => {
@@ -3015,24 +3050,21 @@ export function mountNercOrgMap(): void {
     const fitPadX = (compact ? 30 : 18) * unitPerPx;
     const fitPadY = (compact ? 12 : 8) * unitPerPx;
     const territoryLane = SHOW_TERRITORIES ? territoryLayoutMetrics(compact, unitPerPx, W, H).laneW : 0;
-    // With the territory lane reclaimed, keep a small ocean margin on each side of
-    // the lower-48 (desktop) so the coastal water labels — Pacific / Atlantic —
-    // have open sea to sit in and frame the map, instead of the coast jamming the
-    // canvas edge. The phone already has ample ocean above/below its narrow band.
-    const oceanInset = SHOW_TERRITORIES || compact ? 0 : 52 * unitPerPx;
+    // Frame the whole continent: US ∪ Canada ∪ Mexico. The Aleutians and the
+    // Canadian arctic set the west/north edges, Mexico the south; Greenland and
+    // the Caribbean render as context bleeding past the fitted frame.
     projection.fitExtent(
       [
-        [fitPadX + oceanInset, fitPadY],
-        [W - fitPadX - territoryLane - oceanInset, H - fitPadY],
+        [fitPadX, fitPadY],
+        [W - fitPadX - territoryLane, H - fitPadY],
       ],
-      nationFeature as never,
+      (frameFeature ?? nationFeature) as never,
     );
-    // Lock the Canada conic onto the composite's lower-48 scale/translate.
-    canadaProj.scale(projection.scale()).translate(projection.translate() as [number, number]);
-    if (canadaFeature) gMap.select<SVGPathElement>("path.canada").attr("d", canadaPath(canadaFeature as never));
+    if (naContextFeature)
+      gMap.select<SVGPathElement>("path.context-land").attr("d", path(naContextFeature as never));
+    if (canadaFeature) gMap.select<SVGPathElement>("path.canada").attr("d", path(canadaFeature as never));
     gMap.selectAll<SVGPathElement, unknown>("path.state").attr("d", path as never);
     gMap.select<SVGPathElement>("path.nation").attr("d", path((nationOutline ?? nationFeature) as never));
-    syncInsetBounds();
     buildLandMask();
 
     for (const o of orgs) {
@@ -3050,16 +3082,20 @@ export function mountNercOrgMap(): void {
         o._y = undefined;
         continue;
       }
-      const proj = o.country === "CA" ? canadaProj : projection;
-      const p = proj([o.lng, o.lat]);
+      const p = projection([o.lng, o.lat]);
       if (!p) {
         o._x = undefined;
         o._y = undefined;
         continue;
       }
+      // The frame tag still routes land-mask lookups (border fencing), even
+      // though a single projection now places both countries.
       o._frame = o.country === "CA" ? "ca" : "us";
       o._x = p[0];
       o._y = p[1];
+      // Homes the coarse mask can't see as land (sub-cell islands, thin coasts)
+      // opt out of land fencing — the mask carries no signal for them.
+      o._maskBlind = !onLandForFrame(p[0], p[1], o._frame, true);
     }
 
     layoutTerritoryInsets();
@@ -3109,53 +3145,6 @@ export function mountNercOrgMap(): void {
     return mask;
   }
 
-  function syncInsetBounds(): void {
-    akInsetBounds = null;
-    hiInsetBounds = null;
-    for (const f of stateFeatures) {
-      const name = (f as { properties?: { name?: string } }).properties?.name;
-      if (name !== "Alaska" && name !== "Hawaii") continue;
-      const b = path.bounds(f as never) as [[number, number], [number, number]];
-      if (name === "Alaska") akInsetBounds = b;
-      else hiInsetBounds = b;
-    }
-  }
-
-  function pointInInsetBounds(
-    x: number,
-    y: number,
-    bounds: [[number, number], [number, number]] | null,
-    pad = 0,
-  ): boolean {
-    if (!bounds) return false;
-    return (
-      x >= bounds[0][0] - pad &&
-      x <= bounds[1][0] + pad &&
-      y >= bounds[0][1] - pad &&
-      y <= bounds[1][1] + pad
-    );
-  }
-
-  function insetMainlandFencePad(): number {
-    return INSET_MAINLAND_FENCE_PAD_PX * unitPerPx;
-  }
-
-  function pointInAnyInset(x: number, y: number, pad = 0): boolean {
-    return (
-      pointInInsetBounds(x, y, akInsetBounds, pad) || pointInInsetBounds(x, y, hiInsetBounds, pad)
-    );
-  }
-
-  function placeInUsInsetViewBox(x: number, y: number): boolean {
-    return pointInAnyInset(x, y);
-  }
-
-  function insetHomeForOrg(o: Org, x: number, y: number): boolean {
-    if (o.state === "AK") return pointInInsetBounds(x, y, akInsetBounds);
-    if (o.state === "HI") return pointInInsetBounds(x, y, hiInsetBounds);
-    return false;
-  }
-
   // Cells of inland margin the give-way dot mask erodes the coastline by. One coarse
   // cell (maskScale=6 viewBox units) is enough to keep dots off shallow-water coasts
   // without stranding generators on narrow landforms (Cape Cod, Long Island, the
@@ -3200,19 +3189,18 @@ export function mountNercOrgMap(): void {
     });
     if (canadaFeature) {
       caLandMask = rasterizeLandMask((ctx) => {
-        const p = geoPath(canadaProj, ctx as CanvasRenderingContext2D);
+        const p = geoPath(projection, ctx as CanvasRenderingContext2D);
         ctx.beginPath();
         p(canadaFeature as never);
         ctx.fill();
       });
       landMask = rasterizeLandMask((ctx) => {
-        const pUs = geoPath(projection, ctx as CanvasRenderingContext2D);
+        const p = geoPath(projection, ctx as CanvasRenderingContext2D);
         ctx.beginPath();
-        pUs(nationFeature as never);
+        p(nationFeature as never);
         ctx.fill();
-        const pCa = geoPath(canadaProj, ctx as CanvasRenderingContext2D);
         ctx.beginPath();
-        pCa(canadaFeature as never);
+        p(canadaFeature as never);
         ctx.fill();
       });
     } else {
@@ -3279,15 +3267,13 @@ export function mountNercOrgMap(): void {
     o?: Org,
   ): boolean {
     if (frame === "terr") return true;
+    // Hawaii is island-bound by its curated geocodes, and each island is at most
+    // a mask cell or two — the coarse mask (and especially the ±0.75r cardinal
+    // probes below) would reject every mid-zoom slot. Same exemption the old
+    // inset box gave it.
+    if (o && (o._maskBlind || isHawaiiOrg(o))) return true;
     const bx = cx / bucket;
     const by = cy / bucket;
-    if (o) {
-      if (isUsInsetOrg(o)) {
-        if (!insetHomeForOrg(o, bx, by)) return false;
-      } else if (pointInAnyInset(bx, by, insetMainlandFencePad())) {
-        return false;
-      }
-    }
     if (!onLandForFrame(bx, by, frame, false)) return false;
     if (tiny) return true;
     const rr = r / bucket;
@@ -3335,10 +3321,26 @@ export function mountNercOrgMap(): void {
     const half = (o: Org) => orgBubbleHalfExtents(o, k);
     const GAP = 6;
     const shift = (o: Org, dx: number, dy: number): void => {
-      o._dx = (o._dx ?? 0) + dx;
-      o._dy = (o._dy ?? 0) + dy;
-      o._sx = (o._sx as number) + dx;
-      o._sy = (o._sy as number) + dy;
+      // Durable clamp: this runs on every redraw and _dx/_dy persist, so an org
+      // the sim doesn't reset each tick (an unplaced-but-forced headliner) would
+      // otherwise accrue the lift indefinitely — on the phone continent view
+      // ISO-NE marched ~560 units from Massachusetts into the Labrador Sea.
+      // Bounded, the trio separates as far as honest geography allows and then
+      // accepts the residual overlap.
+      const { hw, hh } = half(o);
+      const cap = Math.max(hw, hh) * 3.2;
+      let ndx = (o._dx ?? 0) + dx;
+      let ndy = (o._dy ?? 0) + dy;
+      const total = Math.hypot(ndx, ndy);
+      if (total > cap) {
+        const s = cap / total;
+        ndx *= s;
+        ndy *= s;
+      }
+      o._sx = (o._sx as number) + (ndx - (o._dx ?? 0));
+      o._sy = (o._sy as number) + (ndy - (o._dy ?? 0));
+      o._dx = ndx;
+      o._dy = ndy;
     };
 
     // Give NYISO and ISO-NE a deterministic horizontal gap. Unlike the former
@@ -3515,6 +3517,13 @@ export function mountNercOrgMap(): void {
         // Family members get more iterations so a dense sub-area cluster (e.g. all
         // of PJM's zones) can fully separate; others keep the cheaper budget.
         const iters = focusMember ? 48 : 24;
+        // Geographic honesty cap: nudging may dodge a neighbour or two, never walk
+        // a headliner across a stacked cluster to open water hundreds of miles off
+        // (ISO-NE was ratcheted from Massachusetts into the Labrador Sea on the
+        // phone continent view). Past the cap the bubble holds near home and
+        // accepts the residual overlap — it is drawn on top anyway.
+        const nudgeCap = Math.max(hw, hh) * 2.6;
+        const sx0 = sx, sy0 = sy;
         let separated = false;
         for (let iter = 0; iter < iters; iter++) {
           const push = pushOut(b, g);
@@ -3526,6 +3535,13 @@ export function mountNercOrgMap(): void {
           // instead of oscillating past each other in a tight cluster.
           sx += push.x * 0.6;
           sy += push.y * 0.6;
+          const off = Math.hypot(sx - sx0, sy - sy0);
+          if (off > nudgeCap) {
+            const s = nudgeCap / off;
+            sx = sx0 + (sx - sx0) * s;
+            sy = sy0 + (sy - sy0) * s;
+            break;
+          }
           b = bubbleBox(sx, sy, hw, hh);
         }
         // A focus sub-area that could not find a gap is hidden rather than left
@@ -3535,10 +3551,25 @@ export function mountNercOrgMap(): void {
           o._vis = false;
           continue;
         }
-        o._dx = (o._dx ?? 0) + (sx - o._sx);
-        o._dy = (o._dy ?? 0) + (sy - o._sy);
-        o._sx = sx;
-        o._sy = sy;
+        let ndx = (o._dx ?? 0) + (sx - o._sx);
+        let ndy = (o._dy ?? 0) + (sy - o._sy);
+        // The per-loop cap above bounds ONE pass, but _dx/_dy persist across
+        // redraws, so an unseparable cluster would still ratchet a headliner
+        // cap-by-cap across the map. Clamp the durable offset too (focus members
+        // excepted — their wide fan-out is intentional).
+        if (!focusMember) {
+          const total = Math.hypot(ndx, ndy);
+          const totalCap = Math.max(hw, hh) * 3.2;
+          if (total > totalCap) {
+            const s = totalCap / total;
+            ndx *= s;
+            ndy *= s;
+          }
+        }
+        o._sx += ndx - (o._dx ?? 0);
+        o._sy += ndy - (o._dy ?? 0);
+        o._dx = ndx;
+        o._dy = ndy;
       }
       keep(b, g);
     }
@@ -4000,16 +4031,12 @@ export function mountNercOrgMap(): void {
         n.vx *= 0.4;
         n.vy *= 0.4;
       }
-      // Off land or wrong inset: steer back toward true home, not the displaced slot.
-      if (!onLandForFrame(n.x / bucket, n.y / bucket, n.frame, true)) {
+      // Off land: steer back toward true home, not the displaced slot. Mask-blind
+      // and Hawaii orgs skip this — their whole neighborhood reads as water in
+      // the coarse mask, so the pull would just fight the declutter displacement.
+      if (!n.o._maskBlind && !isHawaiiOrg(n.o) && !onLandForFrame(n.x / bucket, n.y / bucket, n.frame, true)) {
         n.vx += (n.hx - n.x) * 0.24;
         n.vy += (n.hy - n.y) * 0.24;
-      } else if (
-        (isUsInsetOrg(n.o) && !insetHomeForOrg(n.o, n.x / bucket, n.y / bucket)) ||
-        (!isUsInsetOrg(n.o) && pointInAnyInset(n.x / bucket, n.y / bucket, insetMainlandFencePad()))
-      ) {
-        n.vx += (n.hx - n.x) * 0.38;
-        n.vy += (n.hy - n.y) * 0.38;
       }
       n.o._dx = n.x - n.hx;
       n.o._dy = n.y - n.hy;
@@ -4037,7 +4064,7 @@ export function mountNercOrgMap(): void {
       landLabels.push({ name: w.name, x: xy[0], y: xy[1], small: false, kind: "water", interior: w.interior });
     }
     for (const p of PROVINCE_LABELS) {
-      const xy = canadaProj([p.lng, p.lat]);
+      const xy = projection([p.lng, p.lat]);
       if (!xy) continue;
       landLabels.push({ name: p.name, x: xy[0], y: xy[1], small: false, kind: "province" });
     }
@@ -4804,7 +4831,6 @@ export function mountNercOrgMap(): void {
     if (!tourRunning) {
       for (const p of places) {
         if (p._x == null || p._y == null) continue;
-        if (placeInUsInsetViewBox(p._x, p._y) && k < INSET_AMBIENT_CONTEXT_MIN_K) continue;
         if (k < placeDotMinK(p.tier)) continue;
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
@@ -4827,7 +4853,6 @@ export function mountNercOrgMap(): void {
       for (const p of sortedPlaces) {
         if (placedPlaces >= placeCap) break;
         if (p._x == null || p._y == null) continue;
-        if (placeInUsInsetViewBox(p._x, p._y) && k < INSET_AMBIENT_CONTEXT_MIN_K) continue;
         if (k < placeLabelMinK(p.tier)) continue;
         const sx = transform.applyX(p._x);
         const sy = transform.applyY(p._y);
@@ -4880,7 +4905,7 @@ export function mountNercOrgMap(): void {
       const landCap = Math.max(12, Math.round((compact ? 28 : 80) * (1 - 0.22 * deepLandT)));
       for (const L of landOrder) {
         if (placedLand >= landCap) break;
-        if (L.kind === "state" && L.small && k < INSET_AMBIENT_CONTEXT_MIN_K) continue; // inset + tiny states
+        if (L.kind === "state" && L.small && k < SMALL_STATE_LABEL_MIN_K) continue; // tiny states defer
         if (L.kind === "state" && !L.small && k >= 16) continue; // big state names fade at deep zoom
         // Open ocean / Great Lakes: overview/mid context only. Interior water (rivers,
         // lakes, bays) does the opposite — it fills the open space AS you zoom into a
@@ -6148,7 +6173,10 @@ export function mountNercOrgMap(): void {
       .clickDistance(compact ? 6 : 4)
       .tapDistance(compact ? 12 : 8)
       .wheelDelta(wheelDelta)
-      .filter((event) => !event.ctrlKey && !event.button)
+      // ctrlKey+wheel is how trackpads report pinch-to-zoom — it must pass the
+      // filter so wheelDelta's pinch branch handles it (and d3 preventDefaults
+      // it, keeping the browser from page-zooming instead).
+      .filter((event) => (!event.ctrlKey || event.type === "wheel") && !event.button)
       // Pan/zoom gestures are allowed DURING a walkthrough so you can explore
       // while it plays — the tour only highlights, it never drives the camera per
       // step, so a manual move just changes what you're looking at. (The Stop
@@ -6189,6 +6217,56 @@ export function mountNercOrgMap(): void {
       if (tourRunning) stopTour(true);
       closePopovers();
     });
+    setupSafariGestureZoom();
+  }
+
+  // Safari on macOS reports trackpad pinch as proprietary GestureEvents — not
+  // the ctrl+wheel that Chrome/Firefox synthesize — so d3-zoom never sees it
+  // and Safari full-page zooms instead. Translate the gesture into scaleBy
+  // calls anchored at the pointer. Gated to gesture-capable, non-touch
+  // browsers (Safari desktop): on iOS the same pinch already arrives through
+  // d3's touch handlers, and feeding both would double-zoom.
+  function setupSafariGestureZoom(): void {
+    if (!("GestureEvent" in window) || navigator.maxTouchPoints > 0) return;
+    const node = svg.node();
+    if (!node) return;
+    type SafariGestureEvent = Event & { scale: number; clientX: number; clientY: number };
+    let lastScale = 1;
+    node.addEventListener(
+      "gesturestart",
+      (ev) => {
+        ev.preventDefault();
+        lastScale = (ev as SafariGestureEvent).scale ?? 1;
+        // Ride the wheel-zoom redraw path: coalesced light redraws while the
+        // fingers move, one full redraw at gestureend.
+        wheelZooming = true;
+      },
+      { passive: false },
+    );
+    node.addEventListener(
+      "gesturechange",
+      (ev) => {
+        ev.preventDefault();
+        if (!zoomBehavior) return;
+        const g = ev as SafariGestureEvent;
+        const scale = g.scale ?? 1;
+        const factor = scale / lastScale;
+        lastScale = scale;
+        if (!Number.isFinite(factor) || factor <= 0) return;
+        const rect = node.getBoundingClientRect();
+        const anchor: [number, number] = [g.clientX - rect.left, g.clientY - rect.top];
+        svg.call(zoomBehavior.scaleBy as never, factor, anchor);
+      },
+      { passive: false },
+    );
+    node.addEventListener(
+      "gestureend",
+      (ev) => {
+        ev.preventDefault();
+        if (wheelZooming) finishWheelZoom();
+      },
+      { passive: false },
+    );
   }
 
   function setPlayState(running: boolean): void {
@@ -6297,10 +6375,11 @@ export function mountNercOrgMap(): void {
   }
 
   async function init(): Promise<void> {
-    const [orgsPayload, topo, canadaMaybe] = await Promise.all([
+    const [orgsPayload, topo, canadaMaybe, naContextMaybe] = await Promise.all([
       orgsPayloadPromise,
       topoPromise,
       canadaPromise,
+      naContextPromise,
     ]);
 
     if (!Array.isArray(orgsPayload.orgs)) throw new Error("No orgs array found in NERC payload");
@@ -6309,16 +6388,38 @@ export function mountNercOrgMap(): void {
 
     // Canada landmass (context). Non-fatal if the file is missing.
     canadaFeature = canadaMaybe;
+    // Mexico / Greenland / Central America / Caribbean context. Non-fatal too.
+    naContextFeature = naContextMaybe;
 
     const topoAny = topo as { objects: Record<string, unknown> };
     const states = feature(topo as never, topoAny.objects.states as never) as never as { features: unknown[] };
+    // PR/VI (FIPS 72/78) are carried in the topojson for the territory insets but
+    // must not join the state layer: their orgs are product-hidden and their land
+    // already draws quietly via the NA context layer.
+    const offMainlandFips = new Set(["72", "78"]);
+    const stateFips = (f: unknown): string => String((f as { id?: string | number }).id ?? "");
     stateFeatures = states.features.filter(
-      (f) => !isExcludedTerritoryFips(String((f as { id?: string | number }).id ?? "")),
+      (f) => !isExcludedTerritoryFips(stateFips(f)) && !offMainlandFips.has(stateFips(f)),
     );
     nationFeature = { type: "FeatureCollection", features: stateFeatures };
-    nationOutline = mesh(topo as never, topoAny.objects.states as never, (a, b) => a === b);
+    nationOutline = mesh(
+      topo as never,
+      topoAny.objects.states as never,
+      (a, b) => a === b && !offMainlandFips.has(stateFips(a)),
+    );
 
-    // Draw order inside the basemap group: Canada (context) → states → nation.
+    // The fitted frame: US states (incl. true-position AK/HI) ∪ Canada ∪ Mexico.
+    // Greenland and the Caribbean stay context-only so they don't inflate the fit.
+    const mexicoFeature = ((naContextFeature as { features?: Array<{ properties?: { name?: string } }> })
+      ?.features ?? []).find((f) => f.properties?.name === "Mexico");
+    frameFeature = {
+      type: "FeatureCollection",
+      features: [...stateFeatures, canadaFeature, mexicoFeature].filter(Boolean),
+    };
+
+    // Draw order inside the basemap group: NA context (Mexico/Greenland/Caribbean)
+    // → Canada (context) → states → nation.
+    if (naContextFeature) gMap.append("path").attr("class", "context-land");
     if (canadaFeature) gMap.append("path").attr("class", "canada");
     gMap.selectAll("path.state").data(stateFeatures).join("path").attr("class", "state");
     gMap.append("path").attr("class", "nation");

@@ -68,6 +68,17 @@
   pointer-events: none;
 }
 
+/* Rest of North America (Mexico, Greenland, Central America, Caribbean): pure
+   context with no NERC data — a step quieter than Canada so the eye still lands
+   on the registry footprint first. */
+#nerc-svg .context-land {
+  fill: #e2e7e4;
+  stroke: rgba(120, 134, 128, 0.3);
+  stroke-width: 0.4;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
 #nerc-svg .org {
   fill-opacity: 1;
   opacity: var(--org-opacity, 1);
