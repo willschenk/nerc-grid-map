@@ -100,7 +100,10 @@ async function clickHub(conn, sessionId, namePart) {
   })()`);
   if (!box) throw new Error(`hub not found: ${namePart}`);
   await clickAt(conn, sessionId, box.x, box.y);
-  await sleep(700);
+  // The fit is two-phase (frame animation, then a settle/correction pass) and
+  // dense families reveal progressively while they separate — assert on the
+  // settled state, not mid-animation.
+  await sleep(1800);
 }
 // d3-zoom needs a pointer position established before the press, so move first.
 async function clickAt(conn, sessionId, x, y) {

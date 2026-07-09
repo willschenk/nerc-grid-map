@@ -1359,6 +1359,45 @@ export function mountNercOrgMap(): void {
     return best;
   }
 
+  // Forgiving tap pick: the nearest visible org whose pill edge lies within
+  // tolPx of the pointer. The background-click handler uses this so a tap that
+  // barely misses every pill (fat finger, or a bubble still drifting for a
+  // moment after a zoom while the layout settles) selects the intended org
+  // instead of silently clearing the panel and focus.
+  function orgNearPointer(ev: MouseEvent, tolPx: number): Org | null {
+    const point = pointerViewPoint(ev);
+    if (!point) return null;
+    const k = transform.k;
+    const fanScale = spiderFanScale(k);
+    const declScale = declutterScale(k);
+    const tol = tolPx * unitPerPx;
+    let best: Org | null = null;
+    let bestD = Infinity;
+    for (const o of placeableOrgs) {
+      if (!o._vis || o._x == null || o._y == null) continue;
+      const dx = transform.applyX(orgRenderX(o, fanScale, declScale)) - point.x;
+      const dy = transform.applyY(orgRenderY(o, fanScale, declScale)) - point.y;
+      const { hw, hh } = orgBubbleHalfExtents(o, k);
+      const ex = Math.max(0, Math.abs(dx) - hw);
+      const ey = Math.max(0, Math.abs(dy) - hh);
+      const d = Math.hypot(ex, ey);
+      if (d > tol) continue;
+      if (
+        d < bestD - 0.5 * unitPerPx ||
+        (best !== null &&
+          Math.abs(d - bestD) <= 0.5 * unitPerPx &&
+          renderedRadius(o, k) < renderedRadius(best, k))
+      ) {
+        best = o;
+        bestD = d;
+      } else if (best === null) {
+        best = o;
+        bestD = d;
+      }
+    }
+    return best;
+  }
+
   function colorFor(role: string): string {
     const el = document.querySelector(`.nerc-role-def[data-role="${CSS.escape(role)}"] .nerc-dot`) as HTMLElement | null;
     return el ? getComputedStyle(el).backgroundColor : "#777";
@@ -4505,18 +4544,23 @@ export function mountNercOrgMap(): void {
     // the real layout is final and before the DOM sync below picks up dot positions.
     layoutDotGiveWay(dotOrgs, finalVisibleOrgs, k);
 
-    for (const o of finalVisibleOrgs) {
-      if (o._promoteBackground || selectedOrg?.ncr_id === o.ncr_id || hot?.ncr_id === o.ncr_id) {
-        raiseVisibleOrg(o);
-      }
-    }
-    // Focus-mode layering: related areas above the muted background, the focused
-    // hub on top of everything (raised last). Muted orgs keep their natural order
-    // underneath. Only runs while a hub is focused, so the default map is untouched.
+    // Layering (bottom→top): promoted background dots, focus-related areas, the
+    // focused hub, then the selected and hovered org so the active pick always
+    // reads on top. Muted orgs keep their natural order underneath.
+    // Assembled as ONE ordered list and applied idempotently (raiseOrgsInOrder):
+    // redraw runs on every warm sim tick, and re-appending a node the user is
+    // mid-press on cancels the browser's pending click (mousedown target
+    // reinserted → no click event) — unconditional raise() here made the whole
+    // focused family randomly unclickable for seconds after every zoom.
+    const raiseList: Org[] = [];
+    for (const o of finalVisibleOrgs) if (o._promoteBackground) raiseList.push(o);
     if (activeFocusGroup != null) {
-      for (const o of finalVisibleOrgs) if (isFocusRelated(o)) raiseVisibleOrg(o);
-      for (const o of finalVisibleOrgs) if (isFocusParent(o)) raiseVisibleOrg(o);
+      for (const o of finalVisibleOrgs) if (isFocusRelated(o)) raiseList.push(o);
+      for (const o of finalVisibleOrgs) if (isFocusParent(o)) raiseList.push(o);
     }
+    for (const o of finalVisibleOrgs) if (selectedOrg?.ncr_id === o.ncr_id) raiseList.push(o);
+    for (const o of finalVisibleOrgs) if (hot?.ncr_id === o.ncr_id) raiseList.push(o);
+    raiseOrgsInOrder(raiseList);
 
     gOverlay.selectAll<SVGRectElement, Org>("rect.org").each(function (o) {
       const node = this as SVGRectElement;
@@ -5852,8 +5896,42 @@ export function mountNercOrgMap(): void {
     animateTransform(next, duration);
   }
 
-  // Frame the whole PJM or MISO family in view — zooms out when needed so every
-  // member fits in the area the detail card leaves clear.
+  // The viewport rectangles left clear by the topbar and the detail card, in
+  // viewBox units. A desktop bottom-right corner card blocks only its corner,
+  // so BOTH candidates are returned — the strip above it and the strip left of
+  // it — and the fit keeps whichever frames the family larger (always reserving
+  // a full-width bottom band used to strand the family high with a dead
+  // bottom-left quarter). A full-width bottom sheet (phones) just shortens the
+  // single rect.
+  type ClearRect = { x0: number; y0: number; x1: number; y1: number };
+  function focusClearRects(): ClearRect[] {
+    const side = (compact ? 12 : 24) * unitPerPx;
+    const full: ClearRect = {
+      x0: side,
+      y0: (compact ? 66 : 52) * unitPerPx,
+      x1: W - side,
+      y1: H - (compact ? 18 : 20) * unitPerPx,
+    };
+    const card = panelRectVB();
+    if (!card) return [full];
+    const gap = 10 * unitPerPx;
+    if (!compact && card.left > W * 0.4 && card.top > H * 0.35) {
+      return [
+        { ...full, y1: Math.min(full.y1, card.top - gap) },
+        { ...full, x1: Math.min(full.x1, card.left - gap) },
+      ];
+    }
+    return [{ ...full, y1: Math.min(full.y1, card.top - gap) }];
+  }
+
+  // Frame the whole focused family in view. Solved in SCREEN terms: pills keep
+  // a roughly constant on-screen size, so the fit reserves the family's largest
+  // half-extent (plus a packing-drift allowance — members fan out around their
+  // neighbours) as a screen-space border and solves
+  //   k = (view - 2·border) / geographicSpan
+  // per axis. The previous data-space padding either ate the viewport at high
+  // zoom (small families framed tiny) or under-reserved and clipped members
+  // (MISO's Entergy cut off at the bottom, ERCOT's LP&L under the topbar).
   function fitFocusGroup(group: MarketFamilyId, duration = 380): void {
     const members = orgs.filter((o) => marketFamily(o) === group && o._x != null && o._y != null);
     if (members.length === 0) return;
@@ -5868,53 +5946,153 @@ export function mountNercOrgMap(): void {
       minY = Math.min(minY, o._y as number);
       maxY = Math.max(maxY, o._y as number);
     }
-
-    const span = Math.max(maxX - minX, maxY - minY, 24 * unitPerPx);
-    const pad = span * 0.1 + 20 * unitPerPx;
-    minX -= pad;
-    maxX += pad;
-    minY -= pad;
-    maxY += pad;
+    const dataW = Math.max(maxX - minX, 1e-3);
+    const dataH = Math.max(maxY - minY, 1e-3);
     const dataCx = (minX + maxX) / 2;
     const dataCy = (minY + maxY) / 2;
-    const bboxW = maxX - minX;
-    const bboxH = maxY - minY;
 
-    let mL = (compact ? 24 : 32) * unitPerPx;
-    let mT = (compact ? 68 : 48) * unitPerPx;
-    let mR = (compact ? 24 : 32) * unitPerPx;
-    let mB = (compact ? 36 : 28) * unitPerPx;
-    const card = panelRectVB();
-    const desktopCornerCard = !compact && card != null && card.left > W * 0.35;
-    if (card) {
-      if (desktopCornerCard) {
-        // Bottom-right card only blocks its corner — reserve card height below and
-        // card width at the right edge, not a full-height strip from card.left.
-        mR = Math.max(mR, W - card.right + 14 * unitPerPx);
-        mB = Math.max(mB, H - card.top + 10 * unitPerPx);
-      } else {
-        mB = Math.max(mB, H - card.top + 8 * unitPerPx);
+    let bestK = 0;
+    let bestRect: ClearRect | null = null;
+    for (const rect of focusClearRects()) {
+      const vw = rect.x1 - rect.x0;
+      const vh = rect.y1 - rect.y0;
+      if (vw < 60 * unitPerPx || vh < 60 * unitPerPx) continue;
+      // Two passes pin down the mildly zoom-dependent pill extents.
+      let k = Math.min(vw / dataW, vh / dataH);
+      for (let pass = 0; pass < 2; pass++) {
+        let ext = 0;
+        for (const o of members) {
+          const { hw, hh } = orgBubbleHalfExtents(o, Math.max(k, 0.72));
+          ext = Math.max(ext, hw, hh);
+        }
+        const border = Math.min(
+          ext * (members.length > 9 ? 2.2 : 1.5) + 6 * unitPerPx,
+          0.42 * Math.min(vw, vh),
+        );
+        k = Math.min((vw - 2 * border) / dataW, (vh - 2 * border) / dataH);
+      }
+      if (k > bestK) {
+        bestK = k;
+        bestRect = rect;
       }
     }
-    const viewW = Math.max(W * 0.35, W - mL - mR);
-    const viewH = Math.max(H * 0.35, H - mT - mB);
-    // Desktop corner card: mild horizontal bias (matches centerOnOrg) instead of
-    // recentering in a falsely narrowed strip that leaves empty ocean on the right.
-    const viewCx = desktopCornerCard ? W * 0.48 : mL + viewW / 2;
-    const viewCy = mT + viewH / 2;
-
-    // Fill the clear viewport a little past the padded bbox (the pad is empty
-    // margin) so the family frames up closer/more zoomed-in rather than floating
-    // small in the middle.
-    const k = Math.max(
-      0.72,
-      Math.min(MAX_ZOOM, Math.min(viewW / bboxW, viewH / bboxH) * 1.12),
-    );
+    if (!bestRect || !(bestK > 0)) return;
+    // Cap so a single-metro family (NYISO) frames as a readable regional
+    // close-up instead of diving toward street level; floor at the overview.
+    const k = Math.max(0.72, Math.min(bestK, 11));
+    const viewCx = (bestRect.x0 + bestRect.x1) / 2;
+    const viewCy = (bestRect.y0 + bestRect.y1) / 2;
     focusPanPending = true;
     const next = zoomIdentity.translate(viewCx, viewCy).scale(k).translate(-dataCx, -dataCy);
+    focusFitTarget = next;
     requestAnimationFrame(() => {
       focusPanPending = false;
       animateTransform(next, duration);
+    });
+    scheduleFocusFitCorrection(group, duration);
+  }
+
+  // After the fit animation settles (placements have re-packed at the final
+  // zoom), measure where the family ACTUALLY rendered and gently correct the
+  // view if packing drift still pushed members past the clear viewport — the
+  // analytic fit reserves an allowance for that drift, but a crowded family can
+  // exceed any fixed guess. One follow-up move, only when something is clipped.
+  let focusFitToken = 0;
+  // The transform the last fit/correction steered to. Corrections only fire
+  // while the live transform still matches it — the moment the user pans or
+  // zooms away, the view is theirs and a delayed correction must not yank it.
+  let focusFitTarget: ZoomTransform | null = null;
+  function viewStillAtFitTarget(): boolean {
+    const t = focusFitTarget;
+    if (!t) return false;
+    return (
+      Math.abs(transform.k - t.k) <= t.k * 0.02 &&
+      Math.abs(transform.x - t.x) <= 6 * unitPerPx &&
+      Math.abs(transform.y - t.y) <= 6 * unitPerPx
+    );
+  }
+  function scheduleFocusFitCorrection(group: MarketFamilyId, fitDuration: number): void {
+    const token = ++focusFitToken;
+    // Two passes: right after the fit lands, and again once the warm sim has
+    // finished settling (late nudges can push an edge member a few px under the
+    // topbar after the first pass already ran).
+    for (const delay of [fitDuration + 140, fitDuration + 1000]) {
+      window.setTimeout(() => {
+        requestAnimationFrame(() => {
+          if (token !== focusFitToken || activeFocusGroup !== group) return;
+          if (userPanning || wheelZooming || tourRunning) return;
+          if (!viewStillAtFitTarget()) return;
+          correctFocusFit();
+        });
+      }, delay);
+    }
+  }
+
+  function correctFocusFit(): void {
+    const k = transform.k;
+    let x0 = Infinity;
+    let y0 = Infinity;
+    let x1 = -Infinity;
+    let y1 = -Infinity;
+    let count = 0;
+    for (const o of placeableOrgs) {
+      if (!isFocusMember(o) || !o._vis || o._sx == null || o._sy == null) continue;
+      const { hw, hh } = orgBubbleHalfExtents(o, k);
+      x0 = Math.min(x0, o._sx - hw);
+      y0 = Math.min(y0, o._sy - hh);
+      x1 = Math.max(x1, o._sx + hw);
+      y1 = Math.max(y1, o._sy + hh);
+      count++;
+    }
+    if (count === 0) return;
+    const famW = x1 - x0;
+    const famH = y1 - y0;
+    const famCx = (x0 + x1) / 2;
+    const famCy = (y0 + y1) / 2;
+    // Pick the correction with the least visual disruption across the candidate
+    // clear rects; a zoom-out counts as a large move so translation-only wins
+    // whenever the family fits at the current scale.
+    let best: { scale: number; dx: number; dy: number; rect: ClearRect; move: number } | null = null;
+    for (const rect of focusClearRects()) {
+      const vw = rect.x1 - rect.x0;
+      const vh = rect.y1 - rect.y0;
+      if (vw <= 0 || vh <= 0) continue;
+      const scale = Math.min(1, vw / famW, vh / famH);
+      let dx = 0;
+      let dy = 0;
+      if (scale >= 0.995) {
+        if (x0 < rect.x0) dx = rect.x0 - x0;
+        else if (x1 > rect.x1) dx = rect.x1 - x1;
+        if (y0 < rect.y0) dy = rect.y0 - y0;
+        else if (y1 > rect.y1) dy = rect.y1 - y1;
+      } else {
+        dx = (rect.x0 + rect.x1) / 2 - famCx;
+        dy = (rect.y0 + rect.y1) / 2 - famCy;
+      }
+      const move = Math.hypot(dx, dy) + (1 - scale) * H * 2;
+      if (!best || move < best.move) best = { scale, dx, dy, rect, move };
+    }
+    if (!best) return;
+    const fix = best;
+    if (Math.abs(fix.dx) < 2 * unitPerPx && Math.abs(fix.dy) < 2 * unitPerPx && fix.scale >= 0.995) return;
+    focusPanPending = true;
+    requestAnimationFrame(() => {
+      focusPanPending = false;
+      if (fix.scale >= 0.995) {
+        const next = zoomIdentity.translate(transform.x + fix.dx, transform.y + fix.dy).scale(k);
+        focusFitTarget = next;
+        animateTransform(next, 260);
+        return;
+      }
+      // Shrink about the family centre, then land it on the clear-rect centre.
+      const k2 = Math.max(0.72, k * fix.scale);
+      const fcxData = (famCx - transform.x) / k;
+      const fcyData = (famCy - transform.y) / k;
+      const rcx = (fix.rect.x0 + fix.rect.x1) / 2;
+      const rcy = (fix.rect.y0 + fix.rect.y1) / 2;
+      const next = zoomIdentity.translate(rcx, rcy).scale(k2).translate(-fcxData, -fcyData);
+      focusFitTarget = next;
+      animateTransform(next, 300);
     });
   }
 
@@ -6007,19 +6185,79 @@ export function mountNercOrgMap(): void {
     applyHighlights();
   }
 
+  // Move a node to the top of its layer — but ONLY when it isn't already there.
+  // An unconditional appendChild on an already-top node still re-inserts it,
+  // which cancels any pending click the user has mid-press on that node.
+  function raiseNodeIfNeeded(this: Element): void {
+    const parent = this.parentNode as (Node & ParentNode) | null;
+    if (parent && parent.lastElementChild !== this) parent.appendChild(this);
+  }
+
   function raiseVisibleOrg(o: Org): void {
     gOverlay
       .selectAll<SVGRectElement, Org>("rect.org")
       .filter((d) => d.ncr_id === o.ncr_id)
-      .raise();
+      .each(raiseNodeIfNeeded);
     gHit
       .selectAll<SVGRectElement, Org>("rect.org-hit")
       .filter((d) => d.ncr_id === o.ncr_id)
-      .raise();
+      .each(raiseNodeIfNeeded);
     gLabels
       .selectAll<SVGTextElement, Org>("text.olabel")
       .filter((d) => d.ncr_id === o.ncr_id)
-      .raise();
+      .each(raiseNodeIfNeeded);
+  }
+
+  // Raise the given orgs so they finish as the TOP children of every render
+  // layer, in list order (last entry topmost; duplicate ids keep their LAST
+  // position). Strict no-op when the trailing DOM order already matches —
+  // see the layering note in redraw(): this runs every warm-sim frame, and any
+  // needless re-append kills in-flight clicks.
+  function raiseOrgsInOrder(list: Org[]): void {
+    if (list.length === 0) return;
+    const seen = new Set<string>();
+    const deduped: Org[] = [];
+    for (let i = list.length - 1; i >= 0; i--) {
+      const o = list[i];
+      if (seen.has(o.ncr_id)) continue;
+      seen.add(o.ncr_id);
+      deduped.push(o);
+    }
+    deduped.reverse();
+    const order = new Map<string, number>();
+    deduped.forEach((o, i) => order.set(o.ncr_id, i));
+    raiseLayerInOrder(gOverlay.selectAll<SVGElement, Org>("rect.org"), order, deduped.length);
+    raiseLayerInOrder(gSaber.selectAll<SVGElement, Org>("rect.org-saber"), order, deduped.length);
+    raiseLayerInOrder(gHit.selectAll<SVGElement, Org>("rect.org-hit"), order, deduped.length);
+    raiseLayerInOrder(gLabels.selectAll<SVGElement, Org>("text.olabel"), order, deduped.length);
+  }
+
+  function raiseLayerInOrder(
+    selection: { each(cb: (this: SVGElement, d: Org) => void): unknown },
+    order: Map<string, number>,
+    count: number,
+  ): void {
+    const slots: Array<SVGElement | null> = new Array(count).fill(null);
+    selection.each(function (d) {
+      const i = order.get(d.ncr_id);
+      if (i != null) slots[i] = this;
+    });
+    const nodes: SVGElement[] = [];
+    for (const el of slots) if (el) nodes.push(el);
+    if (nodes.length === 0) return;
+    const parent = nodes[0].parentNode as (Node & ParentNode) | null;
+    if (!parent) return;
+    let cursor: Element | null = parent.lastElementChild;
+    let ordered = true;
+    for (let i = nodes.length - 1; i >= 0; i--) {
+      if (cursor !== nodes[i]) {
+        ordered = false;
+        break;
+      }
+      cursor = cursor.previousElementSibling;
+    }
+    if (ordered) return;
+    for (const el of nodes) parent.appendChild(el);
   }
 
   function wireOrgPointer(selection: ReturnType<typeof gOverlay.selectAll<SVGRectElement, Org>>): void {
@@ -6213,8 +6451,25 @@ export function mountNercOrgMap(): void {
     updateZoomBounds();
     svg.call(zoomBehavior);
     svg.on("dblclick.zoom", null);
-    svg.on("click", () => {
-      if (tourRunning) stopTour(true);
+    svg.on("click", (ev: MouseEvent) => {
+      if (tourRunning) {
+        stopTour(true);
+        closePopovers();
+        return;
+      }
+      // Forgiving tap: a click that barely misses every pill still selects the
+      // nearest one — bubbles can drift for a beat after a zoom while the
+      // layout settles, and a tap aimed at a pill must not read as "clear
+      // everything". A genuinely empty-background click clears as before.
+      // Desktop keeps the tolerance hairline (hover feedback already shows
+      // whether the cursor is on target, and hit boxes deliberately hug the
+      // pills — see verify-hitbox); touch gets a fat-finger allowance.
+      const near = orgNearPointer(ev, compact ? 14 : 4);
+      if (near) {
+        raiseVisibleOrg(near);
+        selectOrg(near);
+        return;
+      }
       closePopovers();
     });
     setupSafariGestureZoom();
