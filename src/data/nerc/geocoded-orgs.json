@@ -25898,7 +25898,7 @@
       "source_url": "https://cmeec.com/",
       "org_type": "cooperative",
       "parent_org": "Connecticut Municipal Electric Energy Cooperative",
-      "notes": "CTMEEC dba Transco; joint action transmission agency for Connecticut municipal utilities.",
+      "notes": "Connecticut Transmission Municipal Electric Energy Cooperative (TRANSCO) — CMEEC-created joint-action transmission agency serving CMEEC members. Sister wholesale agency CMEEC and member systems Jewett City DPU and South Norwalk Electric & Water (SNEW) are mapped as supplemental context; Groton, Norwich, Bozrah, East Norwalk TTD, Wallingford, and Mohegan Tribal Utility Authority are already registered.",
       "seed": false,
       "locations": [
         {
@@ -25913,7 +25913,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://cmeec.com/",
-          "geo_notes": "CTMEEC dba Transco; joint action transmission agency for Connecticut municipal utilities."
+          "geo_notes": "Connecticut Transmission Municipal Electric Energy Cooperative (TRANSCO) — CMEEC-created joint-action transmission agency serving CMEEC members. Sister wholesale agency CMEEC and member systems Jewett City DPU and South Norwalk Electric & Water (SNEW) are mapped as supplemental context; Groton, Norwich, Bozrah, East Norwalk TTD, Wallingford, and Mohegan Tribal Utility Authority are already registered."
         },
         {
           "rank": 2,
