@@ -25695,7 +25695,7 @@
       "source_url": "https://www.cmpco.com/support/contactus",
       "org_type": "IOU",
       "parent_org": "Avangrid",
-      "notes": "Transmission and distribution utility serving central and southern Maine.",
+      "notes": "Central Maine Power — dominant ME IOU (Avangrid). Consumer-owned Maine T&D utilities mapped as supplemental context (MPUC list): Eastern Maine Electric Cooperative; Houlton Water Company; Van Buren Light & Power; Kennebunk Light & Power District; Madison Electric Works; Matinicus Plantation Electric; Monhegan Plantation Power District; Fox Islands Electric Cooperative; and Isle au Haut Electric Power Company. Versant Power covers eastern/northern Bangor Hydro and Maine Public District territories.",
       "seed": false,
       "locations": [
         {
@@ -25710,7 +25710,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.cmpco.com/support/contactus",
-          "geo_notes": "Transmission and distribution utility serving central and southern Maine."
+          "geo_notes": "Central Maine Power — dominant ME IOU (Avangrid). Consumer-owned Maine T&D utilities mapped as supplemental context (MPUC list): Eastern Maine Electric Cooperative; Houlton Water Company; Van Buren Light & Power; Kennebunk Light & Power District; Madison Electric Works; Matinicus Plantation Electric; Monhegan Plantation Power District; Fox Islands Electric Cooperative; and Isle au Haut Electric Power Company. Versant Power covers eastern/northern Bangor Hydro and Maine Public District territories."
         },
         {
           "rank": 2,
