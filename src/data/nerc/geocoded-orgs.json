@@ -2920,7 +2920,7 @@
       "source": "official_website",
       "source_url": "https://www.nypa.gov",
       "org_type": "municipal",
-      "notes": "Largest state public power organization in the US.",
+      "notes": "New York Power Authority (NYPA) — state power authority generating and transmitting wholesale hydropower; preference customers include NY municipal electrics and rural co-ops mapped as supplemental context (MEUA/NYAPP/NYMPA members).",
       "seed": true,
       "acronym": "NYPA",
       "acronym_source": "common_market_name",
@@ -2937,7 +2937,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.nypa.gov",
-          "geo_notes": "Largest state public power organization in the US."
+          "geo_notes": "New York Power Authority (NYPA) — state power authority generating and transmitting wholesale hydropower; preference customers include NY municipal electrics and rural co-ops mapped as supplemental context (MEUA/NYAPP/NYMPA members)."
         },
         {
           "rank": 2,
@@ -33030,7 +33030,7 @@
       "source_url": "https://nypa.gov/Contact-Us",
       "org_type": "other",
       "parent_org": null,
-      "notes": "Pinned to NYPA current headquarters in White Plains.",
+      "notes": "New York Power Authority (NYPA) — state power authority generating and transmitting wholesale hydropower; preference customers include NY municipal electrics and rural co-ops mapped as supplemental context (MEUA/NYAPP/NYMPA members).",
       "seed": false,
       "locations": [
         {
@@ -33045,7 +33045,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://nypa.gov/Contact-Us",
-          "geo_notes": "Pinned to NYPA current headquarters in White Plains."
+          "geo_notes": "New York Power Authority (NYPA) — state power authority generating and transmitting wholesale hydropower; preference customers include NY municipal electrics and rural co-ops mapped as supplemental context (MEUA/NYAPP/NYMPA members)."
         },
         {
           "rank": 2,
