@@ -35699,6 +35699,39 @@
       "shortest_type": "acronym",
       "shortest_source": "MEUA / NYMPA",
       "shortest_source_url": "https://www.meua.org/nympa/nympa-members/"
+    },
+    {
+      "ncr_id": "SUP-jewett-city-department-of-public-utilities",
+      "entity_name": "Jewett City Department of Public Utilities",
+      "shortest": "JCDPU",
+      "short": "Jewett City DPU",
+      "normal": "Jewett City Department of Public Utilities",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "CMEEC member directory",
+      "shortest_source_url": "https://cmeec.com/members/jcdpu/"
+    },
+    {
+      "ncr_id": "SUP-south-norwalk-electric-and-water",
+      "entity_name": "South Norwalk Electric and Water",
+      "shortest": "SNEW",
+      "short": "South Norwalk Electric",
+      "normal": "South Norwalk Electric and Water",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.snew.org/"
+    },
+    {
+      "ncr_id": "SUP-connecticut-municipal-electric-energy-cooperativ",
+      "entity_name": "Connecticut Municipal Electric Energy Cooperative",
+      "shortest": "CMEEC",
+      "short": "CT Municipal Electric",
+      "normal": "Connecticut Municipal Electric Energy Cooperative",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://cmeec.com/"
     }
   ]
 }
