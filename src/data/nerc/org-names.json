@@ -35732,6 +35732,237 @@
       "shortest_type": "acronym",
       "shortest_source": "official_website",
       "shortest_source_url": "https://cmeec.com/"
+    },
+    {
+      "ncr_id": "SUP-ashburnham-municipal-light-plant",
+      "entity_name": "Ashburnham Municipal Light Plant",
+      "shortest": "Ashburnham",
+      "short": "Ashburnham Light",
+      "normal": "Ashburnham Municipal Light Plant",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-belmont-municipal-light-department",
+      "entity_name": "Belmont Municipal Light Department",
+      "shortest": "Belmont",
+      "short": "Belmont Light",
+      "normal": "Belmont Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-boylston-municipal-light-department",
+      "entity_name": "Boylston Municipal Light Department",
+      "shortest": "Boylston",
+      "short": "Boylston Light",
+      "normal": "Boylston Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-chester-municipal-electric-light-department",
+      "entity_name": "Chester Municipal Electric Light Department",
+      "shortest": "Chester",
+      "short": "Chester Light",
+      "normal": "Chester Municipal Electric Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-concord-municipal-light-plant",
+      "entity_name": "Concord Municipal Light Plant",
+      "shortest": "Concord",
+      "short": "Concord Light",
+      "normal": "Concord Municipal Light Plant",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-georgetown-municipal-light-department",
+      "entity_name": "Georgetown Municipal Light Department",
+      "shortest": "Georgetown",
+      "short": "Georgetown Light",
+      "normal": "Georgetown Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-gosnold-electric-light-company",
+      "entity_name": "Gosnold Electric Light Company",
+      "shortest": "Gosnold",
+      "short": "Gosnold Light",
+      "normal": "Gosnold Electric Light Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-groton-electric-light-department",
+      "entity_name": "Groton Electric Light Department",
+      "shortest": "Groton MA",
+      "short": "Groton Light",
+      "normal": "Groton Electric Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-groveland-municipal-light-department",
+      "entity_name": "Groveland Municipal Light Department",
+      "shortest": "Groveland",
+      "short": "Groveland Light",
+      "normal": "Groveland Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-holden-municipal-light-department",
+      "entity_name": "Holden Municipal Light Department",
+      "shortest": "Holden",
+      "short": "Holden Light",
+      "normal": "Holden Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-hull-municipal-lighting-plant",
+      "entity_name": "Hull Municipal Lighting Plant",
+      "shortest": "Hull",
+      "short": "Hull Light",
+      "normal": "Hull Municipal Lighting Plant",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-merrimac-municipal-light-department",
+      "entity_name": "Merrimac Municipal Light Department",
+      "shortest": "Merrimac",
+      "short": "Merrimac Light",
+      "normal": "Merrimac Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-middleton-municipal-light-department",
+      "entity_name": "Middleton Municipal Light Department",
+      "shortest": "Middleton",
+      "short": "Middleton Light",
+      "normal": "Middleton Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-paxton-municipal-light-department",
+      "entity_name": "Paxton Municipal Light Department",
+      "shortest": "Paxton",
+      "short": "Paxton Light",
+      "normal": "Paxton Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-princeton-municipal-light-department",
+      "entity_name": "Princeton Municipal Light Department",
+      "shortest": "Princeton",
+      "short": "Princeton Light",
+      "normal": "Princeton Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-rowley-municipal-lighting-plant",
+      "entity_name": "Rowley Municipal Lighting Plant",
+      "shortest": "Rowley",
+      "short": "Rowley Light",
+      "normal": "Rowley Municipal Lighting Plant",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-russell-municipal-light-department",
+      "entity_name": "Russell Municipal Light Department",
+      "shortest": "Russell",
+      "short": "Russell Light",
+      "normal": "Russell Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-sterling-municipal-light-department",
+      "entity_name": "Sterling Municipal Light Department",
+      "shortest": "Sterling",
+      "short": "Sterling Light",
+      "normal": "Sterling Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-templeton-municipal-light-and-water-plant",
+      "entity_name": "Templeton Municipal Light and Water Plant",
+      "shortest": "Templeton",
+      "short": "Templeton Light",
+      "normal": "Templeton Municipal Light and Water Plant",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-west-boylston-municipal-light-plant",
+      "entity_name": "West Boylston Municipal Light Plant",
+      "shortest": "W Boylston",
+      "short": "West Boylston Light",
+      "normal": "West Boylston Municipal Light Plant",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Mass.gov MLP directory",
+      "shortest_source_url": "https://www.mass.gov/info-details/massachusetts-municipally-owned-electric-companies"
+    },
+    {
+      "ncr_id": "SUP-energy-new-england-llc",
+      "entity_name": "Energy New England LLC",
+      "shortest": "ENE",
+      "short": "Energy New England",
+      "normal": "Energy New England LLC",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-massachusetts"
     }
   ]
 }
