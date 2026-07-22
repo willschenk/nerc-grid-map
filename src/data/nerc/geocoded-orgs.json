@@ -30920,7 +30920,7 @@
       "source_url": "https://www.mmwec.org/who-we-are/public-records/",
       "org_type": "cooperative",
       "parent_org": null,
-      "notes": "Wholesale electric power corporation serving Massachusetts municipal utilities.",
+      "notes": "Massachusetts Municipal Wholesale Electric Company (MMWEC) — state joint-action agency (Ludlow) supplying wholesale power and services to Massachusetts municipal light plants. Supplemental MLP context includes Ashburnham, Belmont, Boylston, Chester, Concord, Georgetown, Gosnold, Groton, Groveland, Holden, Hull, Merrimac, Middleton, Paxton, Princeton, Rowley, Russell, Sterling, Templeton, and West Boylston (plus Energy New England); many other MLPs are already NERC-registered.",
       "seed": false,
       "locations": [
         {
@@ -30935,7 +30935,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.mmwec.org/who-we-are/public-records/",
-          "geo_notes": "Wholesale electric power corporation serving Massachusetts municipal utilities."
+          "geo_notes": "Massachusetts Municipal Wholesale Electric Company (MMWEC) — state joint-action agency (Ludlow) supplying wholesale power and services to Massachusetts municipal light plants. Supplemental MLP context includes Ashburnham, Belmont, Boylston, Chester, Concord, Georgetown, Gosnold, Groton, Groveland, Holden, Hull, Merrimac, Middleton, Paxton, Princeton, Rowley, Russell, Sterling, Templeton, and West Boylston (plus Energy New England); many other MLPs are already NERC-registered."
         },
         {
           "rank": 2,
