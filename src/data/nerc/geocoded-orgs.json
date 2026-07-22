@@ -36440,7 +36440,7 @@
       "source_url": "https://business.sos.ri.gov/CorpWeb/CorpSearch/CorpSummary.aspx?FEIN=000078582",
       "org_type": "IOU",
       "parent_org": "PPL Corporation",
-      "notes": "Pinned to Rhode Island Energy principal office address for The Narragansett Electric Company.",
+      "notes": "The Narragansett Electric Company d/b/a Rhode Island Energy — dominant RI IOU (PPL). Rhode Island's only other distribution utilities are the two quasi-municipal districts mapped as supplemental context: Clear River Electric & Water District (Pascoag/Harrisville; formerly Pascoag Utility District) and Block Island Utility District d/b/a Block Island Power Company.",
       "seed": false,
       "locations": [
         {
@@ -36455,7 +36455,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "state_puc",
           "geo_source_url": "https://business.sos.ri.gov/CorpWeb/CorpSearch/CorpSummary.aspx?FEIN=000078582",
-          "geo_notes": "Pinned to Rhode Island Energy principal office address for The Narragansett Electric Company."
+          "geo_notes": "The Narragansett Electric Company d/b/a Rhode Island Energy — dominant RI IOU (PPL). Rhode Island's only other distribution utilities are the two quasi-municipal districts mapped as supplemental context: Clear River Electric & Water District (Pascoag/Harrisville; formerly Pascoag Utility District) and Block Island Utility District d/b/a Block Island Power Company."
         },
         {
           "rank": 2,

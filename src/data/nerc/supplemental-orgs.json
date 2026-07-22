@@ -77624,6 +77624,138 @@
     ]
   },
   {
+    "entity_name": "Block Island Utility District",
+    "acronym": "BIUD",
+    "state": "RI",
+    "country": "US",
+    "city": "Block Island",
+    "lat": 41.1723,
+    "lng": -71.557,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "region": "NPCC",
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "RIPUC regulated utilities / Block Island Power",
+    "geo_source_url": "https://blockislandpowercompany.com/",
+    "geo_notes": "City-level placement for Block Island Utility District d/b/a Block Island Power Company HQ (100 Ocean Rd, New Shoreham). Member-governed quasi-municipal utility district serving Block Island; connected to the mainland ISO-NE grid via the Block Island cable. Supplemental context, not a standalone NERC registration in the uploaded extract.",
+    "verify": false,
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 41.1723,
+        "lng": -71.557,
+        "headquarters_address": null,
+        "city": "Block Island",
+        "state": "RI",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "RIPUC regulated utilities / Block Island Power",
+        "geo_source_url": "https://blockislandpowercompany.com/",
+        "geo_notes": "City-level placement for Block Island Utility District d/b/a Block Island Power Company HQ (100 Ocean Rd, New Shoreham). Member-governed quasi-municipal utility district serving Block Island; connected to the mainland ISO-NE grid via the Block Island cable. Supplemental context, not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
+    "entity_name": "Clear River Electric and Water District",
+    "acronym": "CREW",
+    "state": "RI",
+    "country": "US",
+    "city": "Pascoag",
+    "lat": 41.9737,
+    "lng": -71.7026,
+    "roles": [
+      "DP"
+    ],
+    "org_type": "municipal",
+    "nerc_registered": false,
+    "region": "NPCC",
+    "geo_confidence": "MEDIUM",
+    "out_of_footprint": false,
+    "priority": "Add now",
+    "geo_source": "RIPUC regulated utilities / CREW",
+    "geo_source_url": "https://crewri.org/",
+    "geo_notes": "City-level placement for Clear River Electric & Water District HQ (253 Pascoag Main St). Quasi-municipal utility formed Jan 1, 2025 by merger of Pascoag Utility District with Harrisville Fire District Water Department; serves ~4,800 electric customers in Pascoag and Harrisville. Supplemental context, not a standalone NERC registration in the uploaded extract.",
+    "verify": false,
+    "locations": [
+      {
+        "rank": 1,
+        "role": "headquarters",
+        "lat": 41.9737,
+        "lng": -71.7026,
+        "headquarters_address": null,
+        "city": "Pascoag",
+        "state": "RI",
+        "country": "US",
+        "geo_confidence": "MEDIUM",
+        "geo_source": "RIPUC regulated utilities / CREW",
+        "geo_source_url": "https://crewri.org/",
+        "geo_notes": "City-level placement for Clear River Electric & Water District HQ (253 Pascoag Main St). Quasi-municipal utility formed Jan 1, 2025 by merger of Pascoag Utility District with Harrisville Fire District Water Department; serves ~4,800 electric customers in Pascoag and Harrisville. Supplemental context, not a standalone NERC registration in the uploaded extract."
+      },
+      {
+        "rank": 2,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      },
+      {
+        "rank": 3,
+        "role": "alternate",
+        "lat": null,
+        "lng": null,
+        "headquarters_address": null,
+        "city": null,
+        "state": null,
+        "country": null,
+        "geo_confidence": null,
+        "geo_source": null,
+        "geo_source_url": null,
+        "geo_notes": null
+      }
+    ]
+  },
+  {
     "entity_name": "Aiken Electric Cooperative",
     "acronym": "AikEC",
     "state": "SC",
