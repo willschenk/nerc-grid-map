@@ -35963,6 +35963,28 @@
       "shortest_type": "acronym",
       "shortest_source": "APPA public power directory",
       "shortest_source_url": "https://www.publicpower.org/public-power-massachusetts"
+    },
+    {
+      "ncr_id": "SUP-clear-river-electric-and-water-district",
+      "entity_name": "Clear River Electric and Water District",
+      "shortest": "CREW",
+      "short": "Clear River Electric",
+      "normal": "Clear River Electric and Water District",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://crewri.org/"
+    },
+    {
+      "ncr_id": "SUP-block-island-utility-district",
+      "entity_name": "Block Island Utility District",
+      "shortest": "BIUD",
+      "short": "Block Island Power",
+      "normal": "Block Island Utility District",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://blockislandpowercompany.com/"
     }
   ]
 }
