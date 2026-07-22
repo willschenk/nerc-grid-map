@@ -36139,6 +36139,72 @@
       "shortest_type": "acronym",
       "shortest_source": "Washington Electric Cooperative / Vermont public power",
       "shortest_source_url": "https://www.washingtonelectric.coop/contact-wec/"
+    },
+    {
+      "ncr_id": "SUP-ashland-electric-department",
+      "entity_name": "Ashland Electric Department",
+      "shortest": "Ashland",
+      "short": "Ashland Electric",
+      "normal": "Ashland Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NH OCA / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-hampshire"
+    },
+    {
+      "ncr_id": "SUP-littleton-water-and-light-department",
+      "entity_name": "Littleton Water and Light Department",
+      "shortest": "Littleton NH",
+      "short": "Littleton Water & Light",
+      "normal": "Littleton Water and Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NH OCA / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-hampshire"
+    },
+    {
+      "ncr_id": "SUP-new-hampton-village-precinct-electric",
+      "entity_name": "New Hampton Village Precinct Electric",
+      "shortest": "New Hampton",
+      "short": "New Hampton Electric",
+      "normal": "New Hampton Village Precinct Electric",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NH OCA / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-hampshire"
+    },
+    {
+      "ncr_id": "SUP-wolfeboro-municipal-electric-department",
+      "entity_name": "Wolfeboro Municipal Electric Department",
+      "shortest": "Wolfeboro",
+      "short": "Wolfeboro Electric",
+      "normal": "Wolfeboro Municipal Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NH OCA / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-hampshire"
+    },
+    {
+      "ncr_id": "SUP-woodsville-water-and-light-department",
+      "entity_name": "Woodsville Water and Light Department",
+      "shortest": "Woodsville",
+      "short": "Woodsville Light",
+      "normal": "Woodsville Water and Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "NH OCA / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-hampshire"
+    },
+    {
+      "ncr_id": "SUP-new-hampshire-electric-cooperative-inc",
+      "entity_name": "New Hampshire Electric Cooperative, Inc.",
+      "shortest": "NHEC",
+      "short": "NH Electric Cooperative",
+      "normal": "New Hampshire Electric Cooperative, Inc.",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "official_website",
+      "shortest_source_url": "https://www.nhec.com/"
     }
   ]
 }

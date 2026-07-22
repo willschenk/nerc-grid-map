@@ -36845,7 +36845,7 @@
       "source_url": "https://www.iso-ne.com/participate/participant-asset-listings/directory?id=50308&type=customer",
       "org_type": "IOU",
       "parent_org": "Unitil Corporation",
-      "notes": "Pinned to Unitil Energy Systems listed participant office.",
+      "notes": "Unitil Energy Systems — NH IOU (Seacoast/Capital). New Hampshire's other distribution utilities include Liberty (Granite State Electric), Eversource (PSNH), New Hampshire Electric Cooperative (NHEC, Plymouth — supplemental), and five municipal electrics mapped as supplemental context: Ashland, Littleton Water & Light, New Hampton Village Precinct, Wolfeboro, and Woodsville.",
       "seed": false,
       "locations": [
         {
@@ -36860,7 +36860,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "iso_ne",
           "geo_source_url": "https://www.iso-ne.com/participate/participant-asset-listings/directory?id=50308&type=customer",
-          "geo_notes": "Pinned to Unitil Energy Systems listed participant office."
+          "geo_notes": "Unitil Energy Systems — NH IOU (Seacoast/Capital). New Hampshire's other distribution utilities include Liberty (Granite State Electric), Eversource (PSNH), New Hampshire Electric Cooperative (NHEC, Plymouth — supplemental), and five municipal electrics mapped as supplemental context: Ashland, Littleton Water & Light, New Hampton Village Precinct, Wolfeboro, and Woodsville."
         },
         {
           "rank": 2,
