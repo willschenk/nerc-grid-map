@@ -36205,6 +36205,105 @@
       "shortest_type": "acronym",
       "shortest_source": "official_website",
       "shortest_source_url": "https://www.nhec.com/"
+    },
+    {
+      "ncr_id": "SUP-eastern-maine-electric-cooperative-inc",
+      "entity_name": "Eastern Maine Electric Cooperative, Inc.",
+      "shortest": "EMEC",
+      "short": "Eastern Maine EC",
+      "normal": "Eastern Maine Electric Cooperative, Inc.",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "MPUC / EMEC",
+      "shortest_source_url": "https://emec.com/contact-us"
+    },
+    {
+      "ncr_id": "SUP-houlton-water-company",
+      "entity_name": "Houlton Water Company",
+      "shortest": "Houlton",
+      "short": "Houlton Water Co",
+      "normal": "Houlton Water Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MPUC / APPA",
+      "shortest_source_url": "https://hwco.org/"
+    },
+    {
+      "ncr_id": "SUP-van-buren-light-and-power-district",
+      "entity_name": "Van Buren Light and Power District",
+      "shortest": "Van Buren",
+      "short": "Van Buren Light & Power",
+      "normal": "Van Buren Light and Power District",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MPUC / APPA",
+      "shortest_source_url": "https://www.publicpower.org/public-power-maine"
+    },
+    {
+      "ncr_id": "SUP-kennebunk-light-and-power-district",
+      "entity_name": "Kennebunk Light and Power District",
+      "shortest": "KLPD",
+      "short": "Kennebunk Light & Power",
+      "normal": "Kennebunk Light and Power District",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "MPUC / KLPD",
+      "shortest_source_url": "https://klpd.org/"
+    },
+    {
+      "ncr_id": "SUP-madison-electric-works",
+      "entity_name": "Madison Electric Works",
+      "shortest": "Madison ME",
+      "short": "Madison Electric Works",
+      "normal": "Madison Electric Works",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MPUC / Madison Electric Works",
+      "shortest_source_url": "https://www.madelec.net/"
+    },
+    {
+      "ncr_id": "SUP-matinicus-plantation-electric-company",
+      "entity_name": "Matinicus Plantation Electric Company",
+      "shortest": "Matinicus",
+      "short": "Matinicus Electric",
+      "normal": "Matinicus Plantation Electric Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MPUC / APPA",
+      "shortest_source_url": "https://matinicusplantation.com/electric-company/"
+    },
+    {
+      "ncr_id": "SUP-monhegan-plantation-power-district",
+      "entity_name": "Monhegan Plantation Power District",
+      "shortest": "Monhegan",
+      "short": "Monhegan Power",
+      "normal": "Monhegan Plantation Power District",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MPUC / Monhegan Plantation Power District",
+      "shortest_source_url": "http://www.monheganpower.com/"
+    },
+    {
+      "ncr_id": "SUP-fox-islands-electric-cooperative",
+      "entity_name": "Fox Islands Electric Cooperative",
+      "shortest": "FIEC",
+      "short": "Fox Islands Electric",
+      "normal": "Fox Islands Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "MPUC / Fox Islands Electric",
+      "shortest_source_url": "https://www.foxislands.net/"
+    },
+    {
+      "ncr_id": "SUP-isle-au-haut-electric-power-company",
+      "entity_name": "Isle au Haut Electric Power Company",
+      "shortest": "Isle au Haut",
+      "short": "Isle au Haut Electric",
+      "normal": "Isle au Haut Electric Power Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MPUC / Isle au Haut Electric",
+      "shortest_source_url": "http://www.isleauhautmaine.us/power-company/"
     }
   ]
 }
