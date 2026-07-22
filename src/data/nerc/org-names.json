@@ -35985,6 +35985,160 @@
       "shortest_type": "acronym",
       "shortest_source": "official_website",
       "shortest_source_url": "https://blockislandpowercompany.com/"
+    },
+    {
+      "ncr_id": "SUP-barton-village-electric-department",
+      "entity_name": "Barton Village Electric Department",
+      "shortest": "Barton",
+      "short": "Barton Electric",
+      "normal": "Barton Village Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-enosburg-falls-electric-light-department",
+      "entity_name": "Enosburg Falls Electric Light Department",
+      "shortest": "Enosburg",
+      "short": "Enosburg Falls Electric",
+      "normal": "Enosburg Falls Electric Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-hardwick-electric-department",
+      "entity_name": "Hardwick Electric Department",
+      "shortest": "Hardwick",
+      "short": "Hardwick Electric",
+      "normal": "Hardwick Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-village-of-hyde-park-electric-department",
+      "entity_name": "Village of Hyde Park Electric Department",
+      "shortest": "Hyde Park",
+      "short": "Hyde Park Electric",
+      "normal": "Village of Hyde Park Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-village-of-jacksonville-electric-company",
+      "entity_name": "Village of Jacksonville Electric Company",
+      "shortest": "Jacksonville",
+      "short": "Jacksonville Electric",
+      "normal": "Village of Jacksonville Electric Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-village-of-johnson-water-and-light-department",
+      "entity_name": "Village of Johnson Water and Light Department",
+      "shortest": "Johnson VT",
+      "short": "Johnson Water & Light",
+      "normal": "Village of Johnson Water and Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-village-of-ludlow-electric-light-department",
+      "entity_name": "Village of Ludlow Electric Light Department",
+      "shortest": "Ludlow",
+      "short": "Ludlow Electric",
+      "normal": "Village of Ludlow Electric Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-lyndonville-electric-department",
+      "entity_name": "Lyndonville Electric Department",
+      "shortest": "Lyndonville",
+      "short": "Lyndonville Electric",
+      "normal": "Lyndonville Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-morrisville-water-and-light-department",
+      "entity_name": "Morrisville Water and Light Department",
+      "shortest": "Morrisville",
+      "short": "Morrisville Water & Light",
+      "normal": "Morrisville Water and Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-northfield-electric-department",
+      "entity_name": "Northfield Electric Department",
+      "shortest": "Northfield",
+      "short": "Northfield Electric",
+      "normal": "Northfield Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-orleans-electric-department",
+      "entity_name": "Orleans Electric Department",
+      "shortest": "Orleans",
+      "short": "Orleans Electric",
+      "normal": "Orleans Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-stowe-electric-department",
+      "entity_name": "Stowe Electric Department",
+      "shortest": "Stowe",
+      "short": "Stowe Electric",
+      "normal": "Stowe Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-swanton-village-electric-department",
+      "entity_name": "Swanton Village Electric Department",
+      "shortest": "Swanton",
+      "short": "Swanton Electric",
+      "normal": "Swanton Village Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "VPPSA / APPA Vermont public power directory",
+      "shortest_source_url": "https://vppsa.com/members-2/"
+    },
+    {
+      "ncr_id": "SUP-washington-electric-cooperative-inc",
+      "entity_name": "Washington Electric Cooperative, Inc.",
+      "shortest": "WEC VT",
+      "short": "Washington Electric Coop",
+      "normal": "Washington Electric Cooperative, Inc.",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "Washington Electric Cooperative / Vermont public power",
+      "shortest_source_url": "https://www.washingtonelectric.coop/contact-wec/"
     }
   ]
 }
