@@ -170,7 +170,7 @@ near the top of the file; change those rather than scattering magic numbers.
 ## Name review
 
 `docs/standards/name-shortest.md` is the only policy source for
-`name_shortest`. `scripts/nerc/name-review-first-500.md` is the active pinned
+`name_shortest`. `scripts/nerc/name-review-progress.md` is the active pinned
 worklist; `src/data/nerc/name-queue.{jsonl,csv}` is reference context.
 
 During a pinned batch:

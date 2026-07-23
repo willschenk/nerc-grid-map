@@ -8,12 +8,14 @@ Editable names: `src/data/nerc/org-names.json`.
 
 | Field | Value |
 | --- | --- |
-| Current status | IN PROGRESS |
+| Current status | PAUSED |
 | Last completed queue order | 260 |
 | Next queue order | 261 |
 | Batch size | 20 |
 
-Do not rerun the queue during an active pinned batch unless intentionally resetting.
+Paused after the nationwide supplemental utility pass (2026-07). Resume at order
+261 when returning to name review. Do not regenerate the queue during a pinned
+batch unless intentionally resetting.
 
 ## Needs user review
 

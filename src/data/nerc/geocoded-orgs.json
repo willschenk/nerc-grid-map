@@ -151292,7 +151292,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.uamps.com/Contact",
-      "notes": "Interlocal agency providing wholesale power and project development for Utah municipalities.",
+      "notes": "Utah Associated Municipal Power Systems (UAMPS) — joint-action / wholesale supplier for Utah municipal systems. Distribution munis not separately NERC-registered (Logan, Heber, Lehi, Spanish Fork, Springville, Washington City, and many smaller cities) plus IPA, SESD, Strawberry ESD, and the four rural co-ops (Dixie, Flowell, Garkane, Moon Lake) are mapped as supplemental context. Bountiful, Murray, Provo, and St. George remain NERC-registered DPs; UMPA is the other Utah joint-action registrant.",
       "skip": false,
       "skip_reason": "",
       "seed": false,
@@ -151309,7 +151309,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.uamps.com/Contact",
-          "geo_notes": "Interlocal agency providing wholesale power and project development for Utah municipalities."
+          "geo_notes": "Utah Associated Municipal Power Systems (UAMPS) — joint-action / wholesale supplier for Utah municipal systems. Distribution munis not separately NERC-registered (Logan, Heber, Lehi, Spanish Fork, Springville, Washington City, and many smaller cities) plus IPA, SESD, Strawberry ESD, and the four rural co-ops (Dixie, Flowell, Garkane, Moon Lake) are mapped as supplemental context. Bountiful, Murray, Provo, and St. George remain NERC-registered DPs; UMPA is the other Utah joint-action registrant."
         },
         {
           "rank": 2,

@@ -20298,17 +20298,6 @@
       "shortest_source_url": null
     },
     {
-      "ncr_id": "SUP-austin-energy",
-      "entity_name": "Austin Energy",
-      "shortest": "Austin Energy",
-      "short": "Austin Energy",
-      "normal": "Austin Energy",
-      "tier": "normal",
-      "shortest_type": "meaningful_name",
-      "shortest_source": "user_provided",
-      "shortest_source_url": "https://austinenergy.com/"
-    },
-    {
       "ncr_id": "SUP-city-of-vinton-electric-utility",
       "entity_name": "City of Vinton Electric Utility",
       "shortest": "Vinton Electric",
@@ -20318,39 +20307,6 @@
       "shortest_type": "meaningful_name",
       "shortest_source": "user_provided",
       "shortest_source_url": "https://www.publicpower.org/public-power-louisiana"
-    },
-    {
-      "ncr_id": "SUP-pedernales-electric-cooperative",
-      "entity_name": "Pedernales Electric Cooperative",
-      "shortest": "PEC",
-      "short": "Pedernales Electric Cooperative",
-      "normal": "Pedernales Electric",
-      "tier": "normal",
-      "shortest_type": "acronym",
-      "shortest_source": "official_website",
-      "shortest_source_url": "https://mypec.com/"
-    },
-    {
-      "ncr_id": "SUP-cps-energy",
-      "entity_name": "CPS Energy",
-      "shortest": "CPS",
-      "short": "CPS Energy",
-      "normal": "CPS Energy",
-      "tier": "normal",
-      "shortest_type": "acronym",
-      "shortest_source": "official_website",
-      "shortest_source_url": "https://www.cpsenergy.com/"
-    },
-    {
-      "ncr_id": "SUP-denton-municipal-electric",
-      "entity_name": "Denton Municipal Electric",
-      "shortest": "DME",
-      "short": "Denton Municipal Electric",
-      "normal": "Denton Municipal Electric",
-      "tier": "normal",
-      "shortest_type": "acronym",
-      "shortest_source": "official_website",
-      "shortest_source_url": "https://www.cityofdenton.com/331/Denton-Municipal-Electric-DME"
     },
     {
       "ncr_id": "SUP-riviera-utilities",
@@ -20428,17 +20384,6 @@
       "shortest_type": "meaningful_name",
       "shortest_source": "user_provided",
       "shortest_source_url": "https://www.publicpower.org/public-power-kentucky"
-    },
-    {
-      "ncr_id": "SUP-bryan-texas-utilities",
-      "entity_name": "Bryan Texas Utilities",
-      "shortest": "BTU",
-      "short": "Bryan Texas Utilities",
-      "normal": "Bryan Texas Utilities",
-      "tier": "normal",
-      "shortest_type": "acronym",
-      "shortest_source": "official_website",
-      "shortest_source_url": "https://www.btutilities.com/"
     },
     {
       "ncr_id": "SUP-ava-community-energy",
@@ -21600,17 +21545,6 @@
       "shortest_source_url": "https://www.publicpower.org/public-power-kentucky"
     },
     {
-      "ncr_id": "SUP-pacific-current-llc",
-      "entity_name": "Pacific Current, LLC",
-      "shortest": "PacCurr",
-      "short": "Pacific Current",
-      "normal": "Pacific Current, LLC",
-      "tier": "normal",
-      "shortest_type": "meaningful_name",
-      "shortest_source": "official_website",
-      "shortest_source_url": "https://www.hei.com/"
-    },
-    {
       "ncr_id": "SUP-peninsula-clean-energy-authority",
       "entity_name": "Peninsula Clean Energy Authority",
       "shortest": "PenClean",
@@ -21743,17 +21677,6 @@
       "shortest_source_url": "https://www.publicpower.org/public-power-washington"
     },
     {
-      "ncr_id": "SUP-public-utility-district-no-1-of-douglas-county",
-      "entity_name": "Public Utility District No. 1 of Douglas County",
-      "shortest": "DougPUD",
-      "short": "Douglas County PUD",
-      "normal": "Public Utility District No. 1 of Douglas County",
-      "tier": "normal",
-      "shortest_type": "meaningful_name",
-      "shortest_source": "app_public_power",
-      "shortest_source_url": "https://www.publicpower.org/public-power-washington"
-    },
-    {
       "ncr_id": "SUP-public-utility-district-no-1-of-kittitas-county",
       "entity_name": "Public Utility District No. 1 of Kittitas County",
       "shortest": "Kittitas",
@@ -21818,17 +21741,6 @@
       "shortest_type": "meaningful_name",
       "shortest_source": "app_public_power",
       "shortest_source_url": "https://www.publicpower.org/public-power-louisiana"
-    },
-    {
-      "ncr_id": "SUP-public-utility-district-no-1-of-whatcom-county",
-      "entity_name": "Public Utility District No. 1 of Whatcom County",
-      "shortest": "Whatcom",
-      "short": "Whatcom County PUD",
-      "normal": "Public Utility District No. 1 of Whatcom County",
-      "tier": "normal",
-      "shortest_type": "meaningful_name",
-      "shortest_source": "app_public_power",
-      "shortest_source_url": "https://www.publicpower.org/public-power-washington"
     },
     {
       "ncr_id": "SUP-evergy-missouri-west",
@@ -24940,61 +24852,6 @@
       "tier": "standard",
       "shortest_type": "common_name",
       "shortest_source": "Washington/Oregon public power",
-      "shortest_source_url": null
-    },
-    {
-      "ncr_id": "SUP-public-utility-district-no-1-of-clallam-coun",
-      "entity_name": "Public Utility District No. 1 of Clallam County",
-      "shortest": "Clallam",
-      "short": "Clallam PUD",
-      "normal": "Public Utility District No. 1 of Clallam County",
-      "tier": "standard",
-      "shortest_type": "common_name",
-      "shortest_source": "Washington public power",
-      "shortest_source_url": null
-    },
-    {
-      "ncr_id": "SUP-public-utility-district-no-1-of-jefferson-co",
-      "entity_name": "Public Utility District No. 1 of Jefferson County",
-      "shortest": "Jeffersn",
-      "short": "Jefferson PUD",
-      "normal": "Public Utility District No. 1 of Jefferson County",
-      "tier": "standard",
-      "shortest_type": "common_name",
-      "shortest_source": "Washington public power",
-      "shortest_source_url": null
-    },
-    {
-      "ncr_id": "SUP-public-utility-district-no-1-of-kittitas-cou",
-      "entity_name": "Public Utility District No. 1 of Kittitas County",
-      "shortest": "Kittitas",
-      "short": "Kittitas PUD",
-      "normal": "Public Utility District No. 1 of Kittitas County",
-      "tier": "standard",
-      "shortest_type": "common_name",
-      "shortest_source": "Washington public power",
-      "shortest_source_url": null
-    },
-    {
-      "ncr_id": "SUP-public-utility-district-no-1-of-skamania-cou",
-      "entity_name": "Public Utility District No. 1 of Skamania County",
-      "shortest": "Skamania",
-      "short": "Skamania PUD",
-      "normal": "Public Utility District No. 1 of Skamania County",
-      "tier": "standard",
-      "shortest_type": "common_name",
-      "shortest_source": "Washington public power",
-      "shortest_source_url": null
-    },
-    {
-      "ncr_id": "SUP-public-utility-district-no-1-of-wahkiakum-co",
-      "entity_name": "Public Utility District No. 1 of Wahkiakum County",
-      "shortest": "Wahkiakm",
-      "short": "Wahkiakum PUD",
-      "normal": "Public Utility District No. 1 of Wahkiakum County",
-      "tier": "standard",
-      "shortest_type": "common_name",
-      "shortest_source": "Washington public power",
       "shortest_source_url": null
     },
     {
@@ -37107,6 +36964,435 @@
       "shortest_type": "acronym",
       "shortest_source": "Delaware Electric Cooperative",
       "shortest_source_url": "https://www.delaware.coop/contact-us"
+    },
+    {
+      "ncr_id": "SUP-caliente-public-utilities",
+      "entity_name": "Caliente Public Utilities",
+      "shortest": "Caliente",
+      "short": "Caliente Utilities",
+      "normal": "Caliente Public Utilities",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "NV Energy utilities map / NREA",
+      "shortest_source_url": "https://www.nrea.coop/about/service-areas/"
+    },
+    {
+      "ncr_id": "SUP-beaver-city-corporation-electric-department",
+      "entity_name": "Beaver City Corporation Electric Department",
+      "shortest": "Beaver",
+      "short": "Beaver Electric",
+      "normal": "Beaver City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-blanding-electric-department",
+      "entity_name": "City of Blanding Electric Department",
+      "shortest": "Blanding",
+      "short": "Blanding Electric",
+      "normal": "City of Blanding Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-brigham-city-corporation-electric-department",
+      "entity_name": "Brigham City Corporation Electric Department",
+      "shortest": "Brigham City",
+      "short": "Brigham Electric",
+      "normal": "Brigham City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-enterprise-electric-department",
+      "entity_name": "City of Enterprise Electric Department",
+      "shortest": "Enterprise UT",
+      "short": "Enterprise Electric",
+      "normal": "City of Enterprise Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-ephraim-electric-department",
+      "entity_name": "City of Ephraim Electric Department",
+      "shortest": "Ephraim",
+      "short": "Ephraim Electric",
+      "normal": "City of Ephraim Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-fairview-city-corporation-electric-department",
+      "entity_name": "Fairview City Corporation Electric Department",
+      "shortest": "Fairview UT",
+      "short": "Fairview Electric",
+      "normal": "Fairview City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-fillmore-city-corporation-electric-department",
+      "entity_name": "Fillmore City Corporation Electric Department",
+      "shortest": "Fillmore",
+      "short": "Fillmore Electric",
+      "normal": "Fillmore City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-heber-light-power-company",
+      "entity_name": "Heber Light & Power Company",
+      "shortest": "Heber",
+      "short": "Heber Light & Power",
+      "normal": "Heber Light & Power Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-helper-electric-department",
+      "entity_name": "City of Helper Electric Department",
+      "shortest": "Helper",
+      "short": "Helper Electric",
+      "normal": "City of Helper Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-holden-town-corporation-electric-department",
+      "entity_name": "Holden Town Corporation Electric Department",
+      "shortest": "Holden",
+      "short": "Holden Electric",
+      "normal": "Holden Town Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-hurricane-city-power",
+      "entity_name": "Hurricane City Power",
+      "shortest": "Hurricane",
+      "short": "Hurricane City Power",
+      "normal": "Hurricane City Power",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-hyrum-city-corporation-electric-department",
+      "entity_name": "Hyrum City Corporation Electric Department",
+      "shortest": "Hyrum",
+      "short": "Hyrum Electric",
+      "normal": "Hyrum City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-town-of-kanosh-electric-department",
+      "entity_name": "Town of Kanosh Electric Department",
+      "shortest": "Kanosh",
+      "short": "Kanosh Electric",
+      "normal": "Town of Kanosh Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-kaysville-city-corporation-electric-department",
+      "entity_name": "Kaysville City Corporation Electric Department",
+      "shortest": "Kaysville",
+      "short": "Kaysville Electric",
+      "normal": "Kaysville City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-lehi-city-power",
+      "entity_name": "Lehi City Power",
+      "shortest": "Lehi",
+      "short": "Lehi City Power",
+      "normal": "Lehi City Power",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-levan-town-corporation-electric-department",
+      "entity_name": "Levan Town Corporation Electric Department",
+      "shortest": "Levan",
+      "short": "Levan Electric",
+      "normal": "Levan Town Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-logan-city-light-power",
+      "entity_name": "Logan City Light & Power",
+      "shortest": "Logan",
+      "short": "Logan Light & Power",
+      "normal": "Logan City Light & Power",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-manti-electric-department",
+      "entity_name": "City of Manti Electric Department",
+      "shortest": "Manti",
+      "short": "Manti Electric",
+      "normal": "City of Manti Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-meadow-town-corporation-electric-department",
+      "entity_name": "Meadow Town Corporation Electric Department",
+      "shortest": "Meadow",
+      "short": "Meadow Electric",
+      "normal": "Meadow Town Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-monroe-city-electric-department",
+      "entity_name": "Monroe City Electric Department",
+      "shortest": "Monroe UT",
+      "short": "Monroe Electric",
+      "normal": "Monroe City Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-morgan-city-corporation-electric-department",
+      "entity_name": "Morgan City Corporation Electric Department",
+      "shortest": "Morgan UT",
+      "short": "Morgan Electric",
+      "normal": "Morgan City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-mount-pleasant-electric-department",
+      "entity_name": "City of Mount Pleasant Electric Department",
+      "shortest": "Mt Pleasant UT",
+      "short": "Mount Pleasant Electric",
+      "normal": "City of Mount Pleasant Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-nephi-city-corporation-electric-department",
+      "entity_name": "Nephi City Corporation Electric Department",
+      "shortest": "Nephi",
+      "short": "Nephi Electric",
+      "normal": "Nephi City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-town-of-oak-city-electric-department",
+      "entity_name": "Town of Oak City Electric Department",
+      "shortest": "Oak City",
+      "short": "Oak City Electric",
+      "normal": "Town of Oak City Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-paragonah-municipal-light-department",
+      "entity_name": "Paragonah Municipal Light Department",
+      "shortest": "Paragonah",
+      "short": "Paragonah Light",
+      "normal": "Paragonah Municipal Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-parowan-city-corporation-electric-department",
+      "entity_name": "Parowan City Corporation Electric Department",
+      "shortest": "Parowan",
+      "short": "Parowan Electric",
+      "normal": "Parowan City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-payson-city-corporation-electric-department",
+      "entity_name": "Payson City Corporation Electric Department",
+      "shortest": "Payson",
+      "short": "Payson Electric",
+      "normal": "Payson City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-south-utah-valley-electric-service-district",
+      "entity_name": "South Utah Valley Electric Service District",
+      "shortest": "SESD",
+      "short": "South Utah Valley ESD",
+      "normal": "South Utah Valley Electric Service District",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-price-city-electric-department",
+      "entity_name": "Price City Electric Department",
+      "shortest": "Price UT",
+      "short": "Price Electric",
+      "normal": "Price City Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-salem-city-corporation-electric-department",
+      "entity_name": "Salem City Corporation Electric Department",
+      "shortest": "Salem UT",
+      "short": "Salem Electric",
+      "normal": "Salem City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-santa-clara-electric-department",
+      "entity_name": "City of Santa Clara Electric Department",
+      "shortest": "Santa Clara UT",
+      "short": "Santa Clara Electric",
+      "normal": "City of Santa Clara Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-spanish-fork-electric-department",
+      "entity_name": "City of Spanish Fork Electric Department",
+      "shortest": "Spanish Fork",
+      "short": "Spanish Fork Electric",
+      "normal": "City of Spanish Fork Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-spring-city-corporation-electric-department",
+      "entity_name": "Spring City Corporation Electric Department",
+      "shortest": "Spring City",
+      "short": "Spring City Electric",
+      "normal": "Spring City Corporation Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-city-of-springville-electric-department",
+      "entity_name": "City of Springville Electric Department",
+      "shortest": "Springville",
+      "short": "Springville Electric",
+      "normal": "City of Springville Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-ticaboo-utility-improvement-district",
+      "entity_name": "Ticaboo Utility Improvement District",
+      "shortest": "Ticaboo",
+      "short": "Ticaboo UID",
+      "normal": "Ticaboo Utility Improvement District",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-washington-city-power",
+      "entity_name": "Washington City Power",
+      "shortest": "Washington UT",
+      "short": "Washington City Power",
+      "normal": "Washington City Power",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "APPA public power Utah",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
+    },
+    {
+      "ncr_id": "SUP-intermountain-power-agency",
+      "entity_name": "Intermountain Power Agency",
+      "shortest": "IPA",
+      "short": "Intermountain Power Agency",
+      "normal": "Intermountain Power Agency",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "APPA public power Utah / IPA",
+      "shortest_source_url": "https://www.ipautah.com/"
+    },
+    {
+      "ncr_id": "SUP-strawberry-electric-service-district",
+      "entity_name": "Strawberry Electric Service District",
+      "shortest": "Strawberry",
+      "short": "Strawberry ESD",
+      "normal": "Strawberry Electric Service District",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "Utah public power / special district records",
+      "shortest_source_url": "https://www.publicpower.org/public-power-utah"
     }
   ]
 }
