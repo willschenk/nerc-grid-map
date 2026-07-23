@@ -4080,7 +4080,14 @@ export function mountNercOrgMap(): void {
       n.o._dx = n.x - n.hx;
       n.o._dy = n.y - n.hy;
     }
-    scheduleRedraw();
+    // While a wheel/pinch zoom is in flight the sim reheats on every bucket cross
+    // and never settles, so routing its per-tick animation through the FULL redraw
+    // (resolveBubbleOverlaps + label layout) shadows the deliberately light wheel
+    // path and drives the gesture to a crawl. During the gesture, animate the sim
+    // via the same coalesced light path the wheel handler uses; finishWheelZoom
+    // does one full redraw when the gesture ends so labels/overlaps resettle.
+    if (wheelZooming) scheduleWheelRedraw();
+    else scheduleRedraw();
   }
 
   // U.S. state + Canadian province name anchors (base coordinates), drawn faintly
@@ -6427,8 +6434,10 @@ export function mountNercOrgMap(): void {
         if (isPanSourceEvent(ev.sourceEvent)) {
           userPanning = false;
           lastPanEndAt = performance.now();
-          // Pan is over: do one full redraw so labels/place/land resettle for the
-          // new viewport (during the drag they were frozen and only translated).
+          // Pan is over: schedule a final redraw so nudgeSelectedOrgIntoView and any
+          // pan-suppressed follow-ups settle for the resting viewport. (Each drag
+          // frame already runs a full redraw — the pan-only translate fast path was
+          // removed so panned-in orgs no longer stay blank; see redraw().)
           scheduleRedraw();
         }
         if (isWheelEvent(ev.sourceEvent)) finishWheelZoom();
