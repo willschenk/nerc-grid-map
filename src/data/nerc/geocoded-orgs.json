@@ -56903,7 +56903,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.pepco.com",
-      "notes": "Pepco HQ Washington DC.",
+      "notes": "Potomac Electric Power Company (Pepco) — sole electric distribution utility for the District of Columbia (Exelon; also serves adjacent Maryland). DC has no municipal electric utilities or rural electric cooperatives; competitive suppliers provide generation choice only. Sister Exelon/PHI companies include BGE (MD) and Delmarva Power (DE).",
       "seed": false,
       "entity_name": "Potomac Electric Power Company",
       "roles": [
@@ -56925,7 +56925,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.pepco.com",
-          "geo_notes": "Pepco HQ Washington DC."
+          "geo_notes": "Potomac Electric Power Company (Pepco) — sole electric distribution utility for the District of Columbia (Exelon; also serves adjacent Maryland). DC has no municipal electric utilities or rural electric cooperatives; competitive suppliers provide generation choice only. Sister Exelon/PHI companies include BGE (MD) and Delmarva Power (DE)."
         },
         {
           "rank": 2,
