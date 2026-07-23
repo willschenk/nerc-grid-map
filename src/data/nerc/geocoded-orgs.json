@@ -2282,7 +2282,7 @@
       "source": "official_website",
       "source_url": "https://www.pseg.com",
       "org_type": "IOU",
-      "notes": "Largest utility in New Jersey; wires and distribution in PJM.",
+      "notes": "Public Service Electric and Gas (PSE&G) — dominant NJ IOU. Other NJ distribution utilities include Atlantic City Electric, Jersey Central Power & Light (JCPL PJM-zone stub), City of Vineland Municipal Electric Utility (registered), eight PPANJ municipal systems mapped as supplemental (Butler, Lavallette, Madison, Milltown, Park Ridge, Pemberton, Seaside Heights, South River), and Sussex Rural Electric Cooperative (NJ's only co-op).",
       "seed": true,
       "acronym": "PSE&G",
       "acronym_source": "common_market_name",
@@ -2299,7 +2299,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.pseg.com",
-          "geo_notes": "Largest utility in New Jersey; wires and distribution in PJM."
+          "geo_notes": "Public Service Electric and Gas (PSE&G) — dominant NJ IOU. Other NJ distribution utilities include Atlantic City Electric, Jersey Central Power & Light (JCPL PJM-zone stub), City of Vineland Municipal Electric Utility (registered), eight PPANJ municipal systems mapped as supplemental (Butler, Lavallette, Madison, Milltown, Park Ridge, Pemberton, Seaside Heights, South River), and Sussex Rural Electric Cooperative (NJ's only co-op)."
         },
         {
           "rank": 2,
@@ -42333,7 +42333,7 @@
       "source_url": "https://utilities.vinelandcity.org/about-us/",
       "org_type": "municipal",
       "parent_org": null,
-      "notes": "Pinned to Vineland Municipal Electric Utility headquarters. New Jersey's only municipally owned generating electric utility.",
+      "notes": "City of Vineland Municipal Electric Utility (VMEU) — New Jersey's largest municipal electric; PPANJ member. Sister PPANJ municipal systems and Sussex Rural Electric Cooperative are mapped as supplemental context.",
       "seed": false,
       "locations": [
         {
@@ -42348,7 +42348,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://utilities.vinelandcity.org/about-us/",
-          "geo_notes": "Pinned to Vineland Municipal Electric Utility headquarters. New Jersey's only municipally owned generating electric utility."
+          "geo_notes": "City of Vineland Municipal Electric Utility (VMEU) — New Jersey's largest municipal electric; PPANJ member. Sister PPANJ municipal systems and Sussex Rural Electric Cooperative are mapped as supplemental context."
         },
         {
           "rank": 2,
@@ -57101,7 +57101,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://corporate.pseg.com/aboutpseg/companyinformation/thepsegfamilyofcompanies",
-      "notes": "Official PSE&G acronym for Public Service Electric & Gas; corporate HQ at 80 Park Plaza in Newark.",
+      "notes": "Public Service Electric and Gas (PSE&G) — dominant NJ IOU. Other NJ distribution utilities include Atlantic City Electric, Jersey Central Power & Light (JCPL PJM-zone stub), City of Vineland Municipal Electric Utility (registered), eight PPANJ municipal systems mapped as supplemental (Butler, Lavallette, Madison, Milltown, Park Ridge, Pemberton, Seaside Heights, South River), and Sussex Rural Electric Cooperative (NJ's only co-op).",
       "seed": false,
       "entity_name": "Public Service Electric & Gas Company",
       "roles": [
@@ -57123,7 +57123,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://corporate.pseg.com/aboutpseg/companyinformation/thepsegfamilyofcompanies",
-          "geo_notes": "Official PSE&G acronym for Public Service Electric & Gas; corporate HQ at 80 Park Plaza in Newark."
+          "geo_notes": "Public Service Electric and Gas (PSE&G) — dominant NJ IOU. Other NJ distribution utilities include Atlantic City Electric, Jersey Central Power & Light (JCPL PJM-zone stub), City of Vineland Municipal Electric Utility (registered), eight PPANJ municipal systems mapped as supplemental (Butler, Lavallette, Madison, Milltown, Park Ridge, Pemberton, Seaside Heights, South River), and Sussex Rural Electric Cooperative (NJ's only co-op)."
         },
         {
           "rank": 2,
