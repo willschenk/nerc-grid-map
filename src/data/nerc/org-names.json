@@ -36997,6 +36997,116 @@
       "shortest_type": "acronym",
       "shortest_source": "MD OPC / Choptank Electric Cooperative",
       "shortest_source_url": "https://choptankelectric.coop/contact-us"
+    },
+    {
+      "ncr_id": "SUP-city-of-newark-electric-department",
+      "entity_name": "City of Newark Electric Department",
+      "shortest": "Newark DE",
+      "short": "Newark Electric",
+      "normal": "City of Newark Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-municipal-services-commission-of-the-city-of-new",
+      "entity_name": "Municipal Services Commission of the City of New Castle",
+      "shortest": "New Castle DE",
+      "short": "MSC New Castle",
+      "normal": "Municipal Services Commission of the City of New Castle",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-town-of-middletown-electric-department",
+      "entity_name": "Town of Middletown Electric Department",
+      "shortest": "Middletown DE",
+      "short": "Middletown Electric",
+      "normal": "Town of Middletown Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-town-of-smyrna-electric-department",
+      "entity_name": "Town of Smyrna Electric Department",
+      "shortest": "Smyrna",
+      "short": "Smyrna Electric",
+      "normal": "Town of Smyrna Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-town-of-clayton-electric-department",
+      "entity_name": "Town of Clayton Electric Department",
+      "shortest": "Clayton DE",
+      "short": "Clayton Electric",
+      "normal": "Town of Clayton Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-city-of-dover-electric-department",
+      "entity_name": "City of Dover Electric Department",
+      "shortest": "Dover DE",
+      "short": "Dover Electric",
+      "normal": "City of Dover Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-city-of-milford-electric-department",
+      "entity_name": "City of Milford Electric Department",
+      "shortest": "Milford DE",
+      "short": "Milford Electric",
+      "normal": "City of Milford Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-city-of-seaford-electric-department",
+      "entity_name": "City of Seaford Electric Department",
+      "shortest": "Seaford",
+      "short": "Seaford Electric",
+      "normal": "City of Seaford Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-lewes-board-of-public-works",
+      "entity_name": "Lewes Board of Public Works",
+      "shortest": "Lewes",
+      "short": "Lewes BPW",
+      "normal": "Lewes Board of Public Works",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "DEMEC member directory",
+      "shortest_source_url": "https://www.demecinc.net/corporate/"
+    },
+    {
+      "ncr_id": "SUP-delaware-electric-cooperative",
+      "entity_name": "Delaware Electric Cooperative",
+      "shortest": "DEC",
+      "short": "Delaware Electric Co-op",
+      "normal": "Delaware Electric Cooperative",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "Delaware Electric Cooperative",
+      "shortest_source_url": "https://www.delaware.coop/contact-us"
     }
   ]
 }
