@@ -56636,7 +56636,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.peco.com",
-      "notes": "PECO principal office.",
+      "notes": "PECO Energy Company — Philadelphia-area IOU (Exelon). Pennsylvania also has PPL Electric, Duquesne Light, UGI Utilities, and FirstEnergy operating companies (Met-Ed / Penelec / West Penn via FE agent registration). Municipal electrics (PMEA/~35 borough systems) and PREA rural electric cooperatives plus Allegheny Electric Cooperative (G&T) are mapped as supplemental context; PJM APS/METED/PENELEC zone stubs remain for transmission-zone labeling.",
       "seed": false,
       "entity_name": "PECO Energy Company",
       "roles": [
@@ -56658,7 +56658,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.peco.com",
-          "geo_notes": "PECO principal office."
+          "geo_notes": "PECO Energy Company — Philadelphia-area IOU (Exelon). Pennsylvania also has PPL Electric, Duquesne Light, UGI Utilities, and FirstEnergy operating companies (Met-Ed / Penelec / West Penn via FE agent registration). Municipal electrics (PMEA/~35 borough systems) and PREA rural electric cooperatives plus Allegheny Electric Cooperative (G&T) are mapped as supplemental context; PJM APS/METED/PENELEC zone stubs remain for transmission-zone labeling."
         },
         {
           "rank": 2,
