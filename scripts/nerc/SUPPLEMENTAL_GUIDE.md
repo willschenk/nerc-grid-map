@@ -86,12 +86,21 @@ functions — don't use them.) If `roles` is `[]`, the dot is colored by
   build also auto-skips supplemental entries whose name matches an existing NERC
   org, but don't rely on it for near-matches/aliases.
 - **Only Puerto Rico and the U.S. Virgin Islands are carried as out-of-footprint
-  territories** (`out_of_footprint: true`), rendered as labelled offshore insets.
-  See `src/lib/nerc/geography-scope.mjs` for the full scope table.
-- **Alaska & Hawaii DO render** (Albers USA has native insets). Geocode them
-  normally with `out_of_footprint: false`. They are supplemental-only because the
-  NERC Compliance Registry extract has no AK/HI rows.
+  territories** (`out_of_footprint: true`). They stay product-hidden as orgs; land
+  draws via the North America context layer. See
+  `src/lib/nerc/geography-scope.mjs` / `AGENTS.md` for the full scope table.
+- **Alaska & Hawaii DO render** at true lat/lng on the continent-wide North America
+  Albers conic (`out_of_footprint: false`). They are supplemental-only because the
+  NERC Compliance Registry extract has no AK/HI rows — not because they are insets.
 - Keep entries sorted/clean; the converter re-sorts by state then name on run.
+
+## Coverage status (state pass)
+
+A state-by-state public-power / co-op pass is **complete** for the lower 48, plus
+AK/HI and PR/VI territory context. DC has no municipal or cooperative electric
+utilities (Pepco is NERC-registered). Thin counts in CT/RI/NV are expected when
+most systems are already on the registry. Prefer targeted gap-fills (EIA-861 /
+APPA / state association diffs) over reopening whole states.
 
 ## Where to find more candidates
 
@@ -99,5 +108,6 @@ functions — don't use them.) If `roles` is `[]`, the dot is colored by
   utilities, co-ops, munis, and CCAs with IDs and locations:
   https://www.eia.gov/electricity/data/eia861/
 - EIA-860 (generators) for merchant plants; FERC market-based-rate sellers for
-  marketers. The candidate CSV already seeds AK/HI/territories + a CA/TX/WA
-  sample — expand from EIA-861 by state.
+  marketers. `supplemental-candidates.csv` is a historical seed queue (mostly
+  applied); expand new work from EIA-861 / association directories, not by
+  replaying the whole CSV.

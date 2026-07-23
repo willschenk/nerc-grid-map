@@ -5,6 +5,10 @@ correctness work worth doing later. **Nothing here is committed work**, and this
 list is intentionally scoped to *improving what already exists* — not adding new
 UI features. Grouped by area; highest-leverage items first within each.
 
+**Supplemental state pass:** complete for the lower 48 + AK/HI (+ PR/VI
+territory context). Prefer targeted EIA-861 / association gap-fills over
+reopening whole states; see `scripts/nerc/SUPPLEMENTAL_GUIDE.md`.
+
 The bulk research items (names, locations, combines) are meant to be run through
 Cursor in batches — see **`docs/cursor-research-prompts.md`** for ready-to-paste
 prompts.
