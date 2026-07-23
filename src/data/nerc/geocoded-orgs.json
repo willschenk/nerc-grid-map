@@ -45596,7 +45596,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.demecinc.net/contact/",
-      "notes": "Joint action agency for nine DE municipal utilities.",
+      "notes": "Delaware Municipal Electric Corporation (DEMEC) — joint-action / wholesale supplier for Delaware's nine municipal electric utilities (Newark, New Castle/MSC, Middletown, Smyrna, Clayton, Dover, Milford, Seaford, Lewes), mapped as supplemental distribution context. Delmarva Power is the dominant IOU; Delaware Electric Cooperative (Greenwood) covers rural Kent/Sussex.",
       "seed": false,
       "locations": [
         {
@@ -45611,7 +45611,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.demecinc.net/contact/",
-          "geo_notes": "Joint action agency for nine DE municipal utilities."
+          "geo_notes": "Delaware Municipal Electric Corporation (DEMEC) — joint-action / wholesale supplier for Delaware's nine municipal electric utilities (Newark, New Castle/MSC, Middletown, Smyrna, Clayton, Dover, Milford, Seaford, Lewes), mapped as supplemental distribution context. Delmarva Power is the dominant IOU; Delaware Electric Cooperative (Greenwood) covers rural Kent/Sussex."
         },
         {
           "rank": 2,
@@ -45662,7 +45662,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.delmarva.com",
-      "notes": "Exelon subsidiary Delmarva Peninsula.",
+      "notes": "Delmarva Power & Light — dominant Delaware IOU (Exelon/Pepco Holdings; HQ Newark, DE; also serves Delmarva Peninsula MD). Delaware's other distribution systems are DEMEC's nine municipal members (supplemental), Delaware Electric Cooperative (Greenwood, supplemental), and DEMEC itself (NERC-registered joint-action/GO).",
       "seed": false,
       "locations": [
         {
@@ -45677,7 +45677,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.delmarva.com",
-          "geo_notes": "Exelon subsidiary Delmarva Peninsula."
+          "geo_notes": "Delmarva Power & Light — dominant Delaware IOU (Exelon/Pepco Holdings; HQ Newark, DE; also serves Delmarva Peninsula MD). Delaware's other distribution systems are DEMEC's nine municipal members (supplemental), Delaware Electric Cooperative (Greenwood, supplemental), and DEMEC itself (NERC-registered joint-action/GO)."
         },
         {
           "rank": 2,
