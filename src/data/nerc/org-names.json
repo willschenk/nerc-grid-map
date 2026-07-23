@@ -36942,6 +36942,61 @@
       "shortest_type": "acronym",
       "shortest_source": "PREA / Sussex REC",
       "shortest_source_url": "https://www.sussexrec.com/contact"
+    },
+    {
+      "ncr_id": "SUP-town-of-berlin-electric-department",
+      "entity_name": "Town of Berlin Electric Department",
+      "shortest": "Berlin MD",
+      "short": "Berlin Electric",
+      "normal": "Town of Berlin Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MD OPC / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-maryland"
+    },
+    {
+      "ncr_id": "SUP-hagerstown-light-department",
+      "entity_name": "Hagerstown Light Department",
+      "shortest": "Hagerstown",
+      "short": "Hagerstown Light",
+      "normal": "Hagerstown Light Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MD OPC / APPA public power directory",
+      "shortest_source_url": "https://www.hagerstownmd.org/565/Utility-Billing"
+    },
+    {
+      "ncr_id": "SUP-thurmont-municipal-light-company",
+      "entity_name": "Thurmont Municipal Light Company",
+      "shortest": "Thurmont",
+      "short": "Thurmont Light",
+      "normal": "Thurmont Municipal Light Company",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MD OPC / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-maryland"
+    },
+    {
+      "ncr_id": "SUP-town-of-williamsport-electric-department",
+      "entity_name": "Town of Williamsport Electric Department",
+      "shortest": "Williamsport MD",
+      "short": "Williamsport Electric",
+      "normal": "Town of Williamsport Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "MD OPC / APPA public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-maryland"
+    },
+    {
+      "ncr_id": "SUP-choptank-electric-cooperative-inc",
+      "entity_name": "Choptank Electric Cooperative, Inc.",
+      "shortest": "Choptank",
+      "short": "Choptank Electric",
+      "normal": "Choptank Electric Cooperative, Inc.",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "MD OPC / Choptank Electric Cooperative",
+      "shortest_source_url": "https://choptankelectric.coop/contact-us"
     }
   ]
 }

@@ -39895,7 +39895,7 @@
       "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000009466",
       "org_type": "IOU",
       "parent_org": "Exelon Corporation",
-      "notes": "Exelon delivery utility for central Maryland.",
+      "notes": "Baltimore Gas and Electric (BGE) — dominant central MD IOU (Exelon). Maryland's other distribution utilities include Pepco (registered, DC HQ), Potomac Edison (FirstEnergy; WV supplemental placement), Delmarva Power (registered, DE HQ), SMECO and Easton Utilities (registered), plus supplemental Choptank Electric Cooperative and municipal systems in Berlin, Hagerstown, Thurmont, and Williamsport.",
       "seed": false,
       "locations": [
         {
@@ -39910,7 +39910,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "sec_filing",
           "geo_source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000009466",
-          "geo_notes": "Exelon delivery utility for central Maryland."
+          "geo_notes": "Baltimore Gas and Electric (BGE) — dominant central MD IOU (Exelon). Maryland's other distribution utilities include Pepco (registered, DC HQ), Potomac Edison (FirstEnergy; WV supplemental placement), Delmarva Power (registered, DE HQ), SMECO and Easton Utilities (registered), plus supplemental Choptank Electric Cooperative and municipal systems in Berlin, Hagerstown, Thurmont, and Williamsport."
         },
         {
           "rank": 2,
@@ -59086,7 +59086,7 @@
       "confidence": "HIGH",
       "source": "official_website",
       "source_url": "https://www.smeco.coop/facilities/headquarters/",
-      "notes": "SMECO cooperative HQ Hughesville MD.",
+      "notes": "Southern Maryland Electric Cooperative (SMECO) — distribution cooperative serving Calvert, Charles, and St. Mary's counties (Hughesville HQ). Sister Maryland co-op Choptank Electric (Denton) is mapped as supplemental context; Easton Utilities and the Berlin/Hagerstown/Thurmont/Williamsport munis complete the MD public-power set.",
       "seed": false,
       "locations": [
         {
@@ -59101,7 +59101,7 @@
           "geo_confidence": "HIGH",
           "geo_source": "official_website",
           "geo_source_url": "https://www.smeco.coop/facilities/headquarters/",
-          "geo_notes": "SMECO cooperative HQ Hughesville MD."
+          "geo_notes": "Southern Maryland Electric Cooperative (SMECO) — distribution cooperative serving Calvert, Charles, and St. Mary's counties (Hughesville HQ). Sister Maryland co-op Choptank Electric (Denton) is mapped as supplemental context; Easton Utilities and the Berlin/Hagerstown/Thurmont/Williamsport munis complete the MD public-power set."
         },
         {
           "rank": 2,
