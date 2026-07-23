@@ -36843,6 +36843,105 @@
       "shortest_type": "common_name",
       "shortest_source": "PREA member cooperative directory",
       "shortest_source_url": "https://www.central.coop/contact-us"
+    },
+    {
+      "ncr_id": "SUP-borough-of-butler-electric-department",
+      "entity_name": "Borough of Butler Electric Department",
+      "shortest": "Butler NJ",
+      "short": "Butler Electric",
+      "normal": "Borough of Butler Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-lavallette-electric-department",
+      "entity_name": "Lavallette Electric Department",
+      "shortest": "Lavallette",
+      "short": "Lavallette Electric",
+      "normal": "Lavallette Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-borough-of-madison-electric-department",
+      "entity_name": "Borough of Madison Electric Department",
+      "shortest": "Madison NJ",
+      "short": "Madison Electric",
+      "normal": "Borough of Madison Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-borough-of-milltown-electric-department",
+      "entity_name": "Borough of Milltown Electric Department",
+      "shortest": "Milltown",
+      "short": "Milltown Electric",
+      "normal": "Borough of Milltown Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-park-ridge-electric-department",
+      "entity_name": "Park Ridge Electric Department",
+      "shortest": "Park Ridge",
+      "short": "Park Ridge Electric",
+      "normal": "Park Ridge Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-borough-of-pemberton-electric-department",
+      "entity_name": "Borough of Pemberton Electric Department",
+      "shortest": "Pemberton",
+      "short": "Pemberton Electric",
+      "normal": "Borough of Pemberton Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-borough-of-seaside-heights-electric-department",
+      "entity_name": "Borough of Seaside Heights Electric Department",
+      "shortest": "Seaside Heights",
+      "short": "Seaside Heights Electric",
+      "normal": "Borough of Seaside Heights Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-borough-of-south-river-electric-department",
+      "entity_name": "Borough of South River Electric Department",
+      "shortest": "South River",
+      "short": "South River Electric",
+      "normal": "Borough of South River Electric Department",
+      "tier": "standard",
+      "shortest_type": "common_name",
+      "shortest_source": "PPANJ / APPA New Jersey public power directory",
+      "shortest_source_url": "https://www.publicpower.org/public-power-new-jersey"
+    },
+    {
+      "ncr_id": "SUP-sussex-rural-electric-cooperative-inc",
+      "entity_name": "Sussex Rural Electric Cooperative, Inc.",
+      "shortest": "Sussex REC",
+      "short": "Sussex Rural EC",
+      "normal": "Sussex Rural Electric Cooperative, Inc.",
+      "tier": "standard",
+      "shortest_type": "acronym",
+      "shortest_source": "PREA / Sussex REC",
+      "shortest_source_url": "https://www.sussexrec.com/contact"
     }
   ]
 }
